@@ -1,0 +1,5 @@
+Theme: AN_Website_Theme
+Type: website
+Version: 1.0.2
+Date: 2025-06-16T20:08:40.247Z
+Message: Improved navigation design with modern styling

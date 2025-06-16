@@ -102,20 +102,28 @@ async function exportTheme(type, versionBump, message) {
       newVersion = `${major}.${minor}.${patch + 1}`;
   }
 
-  // Build theme first
-  await buildTheme(type);
-
-  // Get theme name from settings_schema.json
+  // Update version in settings_schema.json BEFORE building
   const schemaPath = path.join(__dirname, '..', 'themes', type, 'config', 'settings_schema.json');
   let themeName = `AN-${type}`;
   
   if (fs.existsSync(schemaPath)) {
     const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
     const themeInfo = schema.find(s => s.name === 'theme_info');
-    if (themeInfo && themeInfo.theme_name) {
-      themeName = themeInfo.theme_name.replace(/\s+/g, '_');
+    if (themeInfo) {
+      // Update version
+      themeInfo.theme_version = newVersion;
+      
+      if (themeInfo.theme_name) {
+        themeName = themeInfo.theme_name.replace(/\s+/g, '_');
+      }
+      
+      // Write updated schema back to file
+      fs.writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
     }
   }
+
+  // Build theme after updating version
+  await buildTheme(type);
 
   // Create export directory
   const exportDir = path.join(__dirname, '..', 'exports', 'releases', `v${newVersion}`);

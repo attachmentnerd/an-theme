@@ -8,19 +8,154 @@
     {% else %}
       background-color: {{ section.settings.background_color | default: "#FFFFFF" }};
     {% endif %}
-    font-size: {{ section.settings.font_size_desktop }};
+    font-size: {{ section.settings.font_size_desktop | default: "16px" }};
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.08);
+    padding: 16px 0;
   }
+  
+  /* Navigation Link Styles */
   .header a,
-  .header a.link-list__link,
-  .header a.link-list__link:hover,
+  .header a.link-list__link {
+    color: {{ section.settings.text_color | default: "#1F2937" }};
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    padding: 8px 16px;
+    position: relative;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  
+  .header a.link-list__link:hover {
+    color: {{ section.settings.text_color | default: "#1F2937" }};
+    background-color: rgba(0,0,0,0.04);
+  }
+  
   .header a.social-icons__icon,
   .header .user__login a,
-  .header .dropdown__item a,
-  .header .dropdown__trigger:hover {
-    color: {{ section.settings.text_color | default: dark_text }};
+  .header .dropdown__item a {
+    color: {{ section.settings.text_color | default: "#1F2937" }};
   }
+  
+  /* Dropdown Trigger Styles */
   .header .dropdown__trigger {
-    color: {{ section.settings.text_color | default: dark_text }} !important;
+    color: {{ section.settings.text_color | default: "#1F2937" }} !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .header .dropdown__trigger:hover {
+    color: {{ section.settings.text_color | default: "#1F2937" }} !important;
+    background-color: rgba(0,0,0,0.04);
+  }
+  
+  /* Dropdown Icon */
+  .header .dropdown__icon {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+  }
+  
+  .header .dropdown.active .dropdown__icon {
+    transform: rotate(180deg);
+  }
+  
+  /* Improved Link List Spacing */
+  .header .link-list {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Header Container Alignment */
+  .header__container {
+    align-items: center;
+    min-height: 60px;
+  }
+  
+  /* CTA Button Styling */
+  .header .header__block--cta .btn {
+    background-color: #4F46E5;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    border: none;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .header .header__block--cta .btn:hover {
+    background-color: #4338CA;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    color: white;
+  }
+  
+  /* Logo Styles */
+  .header .header__block--logo img {
+    max-height: 40px;
+    width: auto;
+  }
+  
+  .header .header__block--logo a {
+    padding: 0;
+    background: none !important;
+  }
+  
+  /* Dropdown Menu Styles */
+  .header .dropdown {
+    position: relative;
+  }
+  
+  .header .dropdown__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 1000;
+  }
+  
+  .header .dropdown.active .dropdown__menu,
+  .header .dropdown:hover .dropdown__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .header .dropdown__item {
+    display: block;
+  }
+  
+  .header .dropdown__item a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    color: #374151;
+    font-weight: 400;
+  }
+  
+  .header .dropdown__item a:hover {
+    background-color: #F3F4F6;
+    color: #1F2937;
   }
   /* Mobile Header Styles */
   @media (max-width: 767px) {
