@@ -1,0 +1,64 @@
+{% assign library_text = section.settings.library %}
+
+{% assign KJB_library_text = 'library' | settings_id: section: section %}
+{% case section.settings.back_link_url %}
+  {% when 'library' %}
+    {% assign library_link_href = '/library' %}
+  {% when 'site_home' %}
+    {% assign library_link_href = current_site.url %}
+  {% when 'custom' %}
+    {% assign library_link_href = section.settings.custom_destination %}
+{% endcase %}
+
+
+
+
+<div class="product-title">
+  {% if section.settings.hide_back_link != true %}
+    <i class="product-title-icon responsive-toggle-trigger fas fa-times"></i>
+    <a href="{{library_link_href}}" class="product-title-back" kjb-settings-id="{{ KJB_library_text }}">
+      <i class="fas fa-chevron-left"></i>
+      {{ library_text }}
+    </a>
+  {% endif %}
+  <h1>{{ current_product.title }}</h1>
+</div>
+
+{% schema %}
+  {
+    "name": "Navigation Title",
+    "elements": [
+      {
+        "type": "text",
+        "id": "library",
+        "label": "Back Link Text",
+        "default": "Library"
+      },{
+        "type": "checkbox",
+        "id": "hide_back_link",
+        "label": "Hide Back Link",
+        "default": "false"
+      },
+      {
+        "type": "radio",
+        "id": "back_link_url",
+        "label": "Back Link Destination",
+        "default": "library",
+        "options": [
+          { "label": "Library", "value": "library" },
+          { "label": "Site Home", "value": "site_home" },
+          { "label": "Custom", "value": "custom" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "custom_destination",
+        "label": "Custom Destination",
+        "hide_if": {
+          "back_link_url": ["library", "site_home"],
+          "operator": "or"
+        }
+      }
+    ]
+  }
+{% endschema %}

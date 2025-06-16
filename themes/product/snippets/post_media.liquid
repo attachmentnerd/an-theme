@@ -1,0 +1,20 @@
+{% assign color = settings.primary_color %}
+{% assign thumbnail = post.poster_image_url %}
+
+{% if post.assessment %}
+  <div class="main-content-assessment">
+    {{ post.assessment | assessment: color: color }}
+  </div>
+{% elsif post.live_session %}
+  <div class="main-content-live-session">
+    {{ post.live_session | live_session: color: color }}
+  </div>
+{% elsif post.audio %}
+  <div class="main-content-audio">
+    {{ post.audio | wistia_audio: player_color: color, still_url: thumbnail }}
+  </div>
+{% elsif post.video %}
+  <div class="main-content-video">
+    {{ post.video | wistia_video: player_color: color, still_url: thumbnail, playerPreference: "html5" }}
+  </div>
+{% endif %}

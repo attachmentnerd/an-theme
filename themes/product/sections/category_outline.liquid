@@ -1,0 +1,33 @@
+{% assign progress_text = section.settings.progress_text %}
+{% assign complete_text = section.settings.complete_text %}
+{% assign percent_complete = category.completion.percent %}
+{% assign total = category.completion.total %}
+{% assign total_complete = category.completion.completed %}
+
+{% assign KJB_progress_text = 'progress_text' | settings_id: section: section %}
+{% assign KJB_complete_text = 'complete_text' | settings_id: section: section %}
+
+<div class="category-outline">
+  {% include "category_progress" %}
+  {% include "category_posts" %}
+</div>
+
+{% schema %}
+  {
+    "name": "Outline",
+    "elements": [
+      {
+        "type": "text",
+        "default": "Category Progress",
+        "label": "Progress Text",
+        "id": "progress_text"
+      },
+      {
+        "type": "text",
+        "default": "Lessons Complete",
+        "label": "Complete Text",
+        "id": "complete_text"
+      }
+    ]
+  }
+{% endschema %}

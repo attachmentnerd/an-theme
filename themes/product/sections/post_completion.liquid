@@ -1,0 +1,125 @@
+{% assign product_completion = current_product.completion.percent %}
+{% assign product_completion_next = current_product.completion.next_post.url %}
+{% assign user_name = current_site_user.name | split: ' ' | first %}
+{% assign auto_advance = section.settings.auto_advance %}
+{% assign post_next = post.next %}
+{% assign post_next_url = post.next.url %}
+
+{% assign complete_text = section.settings.complete_text %}
+{% assign message_text = section.settings.message_text %}
+{% assign lesson_text = section.settings.lesson_text %}
+{% assign next_text = section.settings.next_text %}
+{% assign cancel_text = section.settings.cancel_text %}
+{% assign timer = 10 %}
+{% assign starts_text = section.settings.starts_text %}
+{% assign seconds_text = section.settings.seconds_text %}
+
+{% assign KJB_complete_text = 'complete_text' | settings_id: section: section %}
+{% assign KJB_message_text = 'message_text' | settings_id: section: section %}
+{% assign KJB_lesson_text = 'lesson_text' | settings_id: section: section %}
+{% assign KJB_auto_advance = 'auto_advance' | settings_id: section: section %}
+{% assign KJB_next_text = 'next_text' | settings_id: section: section %}
+{% assign KJB_cancel_text = 'cancel_text' | settings_id: section: section %}
+{% assign KJB_starts_text = 'starts_text' | settings_id: section: section %}
+{% assign KJB_seconds_text = 'seconds_text' | settings_id: section: section %}
+
+<div class="post-completion" data-page="{{ post_next_url }}" data-counter="{{ timer }}" data-auto="{{ auto_advance }}">
+  <div class="post-completion-box">
+    {%- if section.settings.display_avatar -%}
+      <div class="avatar avatar-md avatar-grey avatar-{{ product_completion }}">
+        <img class="avatar-img" src="{{ user_avatar }}"/>
+      </div>
+    {%- endif -%}
+    <div class="post-completion-box-percent" kjb-settings-id="{{ KJB_complete_text }}">{{ product_completion }}% {{ complete_text }}</div>
+    <h4 class="post-completion-box-message" kjb-settings-id="{{ KJB_message_text }}">{{ message_text }} {{ user_name }}</h4>
+    <p class="post-completion-box-post" kjb-settings-id="{{ KJB_lesson_text }}">{{ lesson_text }}<br />{{ post.title }}</p>
+    {% if post_next %}
+      <a href="{{ post_next_url }}" class="btn post-completion-box-btn" kjb-settings-id="{{ KJB_next_text }}">
+        {{ next_text }}
+      </a>
+    {% endif %}
+    <a href="#" class="post-completion-box-cancel" kjb-settings-id="{{ KJB_cancel_text }}">{{ cancel_text }}</a>
+  </div>
+  {% if auto_advance %}
+    {% if post_next %}
+      <div class="post-completion-next" kjb-settings-id="{{ KJB_auto_advance }}">
+        <div class="media align-items-center">
+          <div class="media-body">
+            <div class="post-completion-next-starts" kjb-settings-id="{{ KJB_starts_text }}">{{ starts_text }}<br /><span class="ticker">{{ timer }}</span> <span kjb-settings-id="{{ KJB_seconds_text }}">{{ seconds_text }}</span></div>
+            <a href="{{ post_next_url }}" class="post-completion-next-title" kjb-settings-id="{{ KJB_lesson_text }}">
+              {{ post_next.title }}
+            </a>
+          </div>
+          {% if post_next.poster_image_url %}
+            <div>
+              <img src="{{ post_next.poster_image_url }}" class="post-completion-next-img">
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Completion Message",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "auto_advance",
+        "label": "Auto Advance",
+        "default": "false"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_avatar",
+        "label": "Display Avatar",
+        "default": "true"
+      },
+      {
+        "type": "text",
+        "id": "complete_text",
+        "label": "Complete Text",
+        "default": "Complete"
+      },
+      {
+        "type": "text",
+        "id": "message_text",
+        "label": "Message Text",
+        "default": "Nice Work,"
+      },
+      {
+        "type": "text",
+        "id": "lesson_text",
+        "label": "Lesson Text",
+        "default": "You just completed the lesson:"
+      },
+      {
+        "type": "text",
+        "id": "next_text",
+        "label": "Next Text",
+        "default": "Go to Next Lesson"
+      },
+      {
+        "type": "text",
+        "id": "cancel_text",
+        "label": "Cancel Text",
+        "default": "Cancel"
+      },
+      {
+        "type": "text",
+        "id": "starts_text",
+        "label": "Starts Text",
+        "default": "Next Lesson Starts In"
+      },
+      {
+        "type": "text",
+        "id": "seconds_text",
+        "label": "Seconds Text",
+        "default": "Seconds"
+      }
+    ]
+  }
+{% endschema %}

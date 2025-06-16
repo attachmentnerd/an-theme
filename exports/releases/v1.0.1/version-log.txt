@@ -1,0 +1,5 @@
+Theme: AN_Product_Theme
+Type: product
+Version: 1.0.1
+Date: 2025-06-16T19:52:14.164Z
+Message: Initial product theme creation

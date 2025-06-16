@@ -1,0 +1,211 @@
+const fs = require('fs-extra');
+const path = require('path');
+const archiver = require('archiver');
+const { execSync } = require('child_process');
+
+const THEME_TYPES = ['website', 'landing', 'product', 'email'];
+const VERSION_FILE = path.join(__dirname, '..', 'versions.json');
+
+// Load or initialize versions
+function loadVersions() {
+  if (fs.existsSync(VERSION_FILE)) {
+    return JSON.parse(fs.readFileSync(VERSION_FILE, 'utf8'));
+  }
+  return {
+    website: '1.0.0',
+    landing: '1.0.0',
+    product: '1.0.0',
+    email: '1.0.0'
+  };
+}
+
+// Save versions
+function saveVersions(versions) {
+  fs.writeFileSync(VERSION_FILE, JSON.stringify(versions, null, 2));
+}
+
+// Build theme
+async function buildTheme(type) {
+  const sourceDir = path.join(__dirname, '..', 'themes', type);
+  const buildDir = path.join(__dirname, '..', 'build', type);
+  const sharedDir = path.join(__dirname, '..', 'shared');
+
+  console.log(`Building ${type} theme...`);
+
+  // Clean build directory
+  await fs.remove(buildDir);
+  await fs.ensureDir(buildDir);
+
+  // Copy theme files
+  await fs.copy(sourceDir, buildDir, {
+    filter: (src) => !src.includes('/_') && !src.includes('styles/')
+  });
+
+  // Copy shared components
+  if (fs.existsSync(path.join(sharedDir, 'snippets'))) {
+    await fs.copy(
+      path.join(sharedDir, 'snippets'),
+      path.join(buildDir, 'snippets'),
+      { overwrite: false }
+    );
+  }
+
+  // Copy styles.scss.liquid directly (don't compile - it has Liquid tags)
+  const sassPath = path.join(sourceDir, 'assets', 'styles.scss.liquid');
+  if (fs.existsSync(sassPath)) {
+    await fs.ensureDir(path.join(buildDir, 'assets'));
+    await fs.copy(
+      sassPath,
+      path.join(buildDir, 'assets', 'styles.scss.liquid')
+    );
+  }
+
+  // Copy shared scripts
+  if (fs.existsSync(path.join(sharedDir, 'scripts'))) {
+    const scripts = await fs.readdir(path.join(sharedDir, 'scripts'));
+    for (const script of scripts) {
+      if (script.endsWith('.js')) {
+        await fs.copy(
+          path.join(sharedDir, 'scripts', script),
+          path.join(buildDir, 'assets', script)
+        );
+      }
+    }
+  }
+
+  // Remove layouts directory for landing and email themes
+  if (type === 'landing' || type === 'email') {
+    await fs.remove(path.join(buildDir, 'layouts'));
+  }
+
+  console.log(`✓ Built ${type} theme`);
+}
+
+// Export theme
+async function exportTheme(type, versionBump, message) {
+  const versions = loadVersions();
+  const currentVersion = versions[type];
+  
+  // Calculate new version
+  const [major, minor, patch] = currentVersion.split('.').map(Number);
+  let newVersion;
+  
+  switch (versionBump) {
+    case 'major':
+      newVersion = `${major + 1}.0.0`;
+      break;
+    case 'minor':
+      newVersion = `${major}.${minor + 1}.0`;
+      break;
+    case 'patch':
+    default:
+      newVersion = `${major}.${minor}.${patch + 1}`;
+  }
+
+  // Build theme first
+  await buildTheme(type);
+
+  // Get theme name from settings_schema.json
+  const schemaPath = path.join(__dirname, '..', 'themes', type, 'config', 'settings_schema.json');
+  let themeName = `AN-${type}`;
+  
+  if (fs.existsSync(schemaPath)) {
+    const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+    const themeInfo = schema.find(s => s.name === 'theme_info');
+    if (themeInfo && themeInfo.theme_name) {
+      themeName = themeInfo.theme_name.replace(/\s+/g, '_');
+    }
+  }
+
+  // Create export directory
+  const exportDir = path.join(__dirname, '..', 'exports', 'releases', `v${newVersion}`);
+  await fs.ensureDir(exportDir);
+
+  // Create ZIP with proper structure
+  const zipPath = path.join(exportDir, `${themeName}_${newVersion}.zip`);
+  const output = fs.createWriteStream(zipPath);
+  const archive = archiver('zip', { zlib: { level: 9 } });
+
+  archive.pipe(output);
+
+  // Add files with subdirectory structure
+  const buildDir = path.join(__dirname, '..', 'build', type);
+  archive.directory(buildDir, `${themeName}/`);
+
+  await archive.finalize();
+
+  // Wait for stream to finish
+  await new Promise((resolve) => output.on('close', resolve));
+
+  // Remove macOS extended attributes
+  try {
+    execSync(`xattr -cr "${zipPath}"`, { stdio: 'inherit' });
+  } catch (e) {
+    // xattr might not be available on all systems
+  }
+
+  // Update version
+  versions[type] = newVersion;
+  saveVersions(versions);
+
+  // Create version log
+  const logPath = path.join(exportDir, 'version-log.txt');
+  const logContent = `Theme: ${themeName}
+Type: ${type}
+Version: ${newVersion}
+Date: ${new Date().toISOString()}
+Message: ${message || 'No message provided'}
+`;
+  await fs.writeFile(logPath, logContent);
+
+  console.log(`✓ Exported ${themeName} v${newVersion} to ${zipPath}`);
+  
+  return zipPath;
+}
+
+// CLI commands
+const command = process.argv[2];
+const args = process.argv.slice(3);
+
+switch (command) {
+  case 'build':
+    if (!args[0] || !THEME_TYPES.includes(args[0])) {
+      console.error('Usage: npm run theme:build <type>');
+      console.error(`Types: ${THEME_TYPES.join(', ')}`);
+      process.exit(1);
+    }
+    buildTheme(args[0]);
+    break;
+
+  case 'export':
+    if (!args[0] || !THEME_TYPES.includes(args[0])) {
+      console.error('Usage: npm run theme:export <type> [patch|minor|major] [message]');
+      console.error(`Types: ${THEME_TYPES.join(', ')}`);
+      process.exit(1);
+    }
+    exportTheme(args[0], args[1] || 'patch', args.slice(2).join(' '));
+    break;
+
+  case 'version':
+    const versions = loadVersions();
+    if (args[0] && args[1]) {
+      // Set version
+      if (THEME_TYPES.includes(args[0])) {
+        versions[args[0]] = args[1];
+        saveVersions(versions);
+        console.log(`✓ Set ${args[0]} version to ${args[1]}`);
+      }
+    } else {
+      // Show versions
+      console.log('Current theme versions:');
+      for (const [type, version] of Object.entries(versions)) {
+        console.log(`  ${type}: v${version}`);
+      }
+    }
+    break;
+
+  default:
+    console.error('Unknown command:', command);
+    console.error('Available commands: build, export, version');
+    process.exit(1);
+}
