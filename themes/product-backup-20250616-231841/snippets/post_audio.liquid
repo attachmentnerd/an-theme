@@ -1,0 +1,19 @@
+{% if post.downloads.size > 0 %}
+  <div class="audio">
+    {% for download in post.downloads %}
+      {% if download.extension == '.mp3' %}
+        <div style="display:none;">{% increment audio_count %}</div>
+      {% endif %}
+    {% endfor %}
+    {% if audio_count > 0 %}
+      <audio preload="auto"></audio>
+      <ol class="downloads-list">
+        {% for download in post.downloads %}
+          {% if download.extension == '.mp3' %}
+            <li><a href="#" data-src="{{ download.url }}">{{ download.display_name }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ol>
+    {% endif %}
+  </div>
+{% endif %}

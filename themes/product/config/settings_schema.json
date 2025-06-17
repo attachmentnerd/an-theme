@@ -2,10 +2,10 @@
   {
     "name": "theme_info",
     "theme_name": "AN Product Theme",
-    "theme_version": "10.7.0",
-    "theme_author": "AN Themes",
-    "theme_documentation_url": "https://anthemes.com/docs",
-    "theme_support_url": "https://anthemes.com/support"
+    "theme_version": "10.7.7",
+    "theme_author": "Attachment Nerd",
+    "theme_documentation_url": "https://themes.kajabi.com/changelog/product-themes/premier",
+    "theme_support_url": "https://learn.kajabi.com"
   },
   {
     "name": "Favicon",
@@ -36,6 +36,18 @@
         "type": "divider"
       },
       {
+        "type": "color",
+        "id": "text_color",
+        "label": "Dark Font Color",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "text_color_light",
+        "label": "Light Font Color",
+        "default": "#fff"
+      },
+      {
         "type": "font_select",
         "label": "Base Font Family",
         "id": "font_family",
@@ -47,21 +59,9 @@
         "type": "font_select",
         "label": "Heading Font Family",
         "id": "heading_font_family",
-        "default": "Open Sans",
+        "default": "Montserrat",
         "preset": "google_fonts",
         "options": []
-      },
-      {
-        "type": "color",
-        "id": "text_dark",
-        "label": "Text Dark",
-        "default": "#30373d"
-      },
-      {
-        "type": "color",
-        "id": "text_light",
-        "label": "Text Light",
-        "default": "#fff"
       }
     ]
   },
@@ -74,122 +74,119 @@
       },
       {
         "type": "color",
-        "id": "primary_color",
+        "id": "color_primary",
         "label": "Primary",
         "default": "#2e91fc"
       },
       {
         "type": "color",
-        "id": "accent_color",
-        "label": "Accent",
-        "default": "#2e91fc"
+        "id": "color_offset",
+        "label": "Offset",
+        "default": "#f9f9f9"
       },
       {
         "type": "color",
-        "id": "sidebar_background",
-        "label": "Sidebar Background",
-        "default": "#fff"
+        "id": "color_dark",
+        "label": "Dark",
+        "default": "#30373e"
+      },
+      {
+        "type": "color",
+        "id": "color_darker",
+        "label": "Darker",
+        "default": "#272d34"
       }
     ]
   },
   {
-    "name": "General Settings",
+    "name": "Message Colors",
     "elements": [
       {
         "type": "header",
-        "content": "Visibility"
+        "content": "Message Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Success",
+        "default": "#1abc9c"
+      },
+      {
+        "type": "color",
+        "id": "color_info",
+        "label": "Info",
+        "default": "#34495e"
+      },
+      {
+        "type": "color",
+        "id": "color_warning",
+        "label": "Warning",
+        "default": "#f39c12"
+      },
+      {
+        "type": "color",
+        "id": "color_danger",
+        "label": "Danger",
+        "default": "#e74c3c"
+      }
+    ]
+  },
+  {
+    "name": "General Appearance",
+    "elements": [
+      {
+        "type": "header",
+        "content": "General Appearance"
+      },
+      {
+        "type": "color",
+        "id": "color_container_bg",
+        "label": "Background",
+        "default": "#f9f9f9"
       },
       {
         "type": "checkbox",
-        "id": "show_dashboard",
-        "label": "Show Dashboard",
-        "default": "true"
-      },
-      {
-        "type": "checkbox",
-        "id": "welcome_banner_use_thumbnail",
-        "label": "Show product image in welcome banner",
+        "id": "use_bg_img",
+        "label": "Use Background Image",
         "default": "false"
       },
       {
-        "type": "checkbox",
-        "id": "show_search",
-        "label": "Show Search",
-        "default": "true"
+        "type": "image_picker",
+        "id": "page_background_img",
+        "label": "Page Background Image",
+        "info": "Suggested dimensions: 2500 × 2500"
       },
       {
-        "type": "text",
-        "default": "Search for something...",
-        "label": "Search Text",
-        "id": "search_text"
+        "type": "radio",
+        "id": "v_align",
+        "label": "Vertical Alignment",
+        "default": "top",
+        "options": [
+          {
+            "label": "Top",
+            "value": "top"
+          },
+          {
+            "label": "Middle",
+            "value": "middle"
+          }
+        ]
       },
       {
-        "type": "header",
-        "content": "Pagination"
-      },
-      {
-        "type": "text",
-        "id": "previous_text",
-        "label": "Previous Text",
-        "default": "Previous"
-      },
-      {
-        "type": "text",
-        "id": "next_text",
-        "label": "Next Text",
-        "default": "Next"
-      },
-      {
-        "type": "header",
-        "content": "Comments"
-      },
-      {
-        "type": "text",
-        "id": "language_comment_locked",
-        "label": "Comments Locked",
-        "default": "Comments Locked"
-      },
-      {
-        "type": "text",
-        "id": "language_comment_placeholder",
-        "label": "Comments Placeholder",
-        "default": "Say Something..."
-      },
-      {
-        "type": "text",
-        "id": "language_comment_submitting",
-        "label": "Comment Submitting",
-        "default": "submitting"
-      },
-      {
-        "type": "text",
-        "id": "language_comment_add",
-        "label": "Comment Submit",
-        "default": "Post Comment"
-      },
-      {
-        "type": "text",
-        "id": "language_comment_reply",
-        "label": "Comment Reply",
-        "default": "REPLY"
-      },
-      {
-        "type": "text",
-        "id": "language_comment_edit",
-        "label": "Comment Edit",
-        "default": "EDIT"
-      },
-      {
-        "type": "text",
-        "id": "language_comment_show_more",
-        "label": "Show More Comments",
-        "default": "Show More"
-      },
-      {
-        "type": "text",
-        "id": "language_comment_show_more_loading",
-        "label": "Show More Comments Loading",
-        "default": "Loading More Comments..."
+        "type": "radio",
+        "id": "body_width",
+        "label": "Body Column Width",
+        "default": "auto",
+        "options": [
+          {
+            "label": "Auto",
+            "value": "auto"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          }
+        ]
       }
     ]
   },

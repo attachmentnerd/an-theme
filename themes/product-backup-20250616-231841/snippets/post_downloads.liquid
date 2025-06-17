@@ -1,0 +1,15 @@
+{% if post_downloads_count > 0 %}
+  <div class="downloads dropdown">
+    <a class="downloads-trigger" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" kjb-settings-id="{{ KJB_downloads_text }}">
+      {% include "icon_download" %} {{ post_downloads_count }} <span class="downloads-trigger-text">{{ downloads_text }}</span>
+    </a>
+    <div class="downloads-dropdown dropdown-menu">
+      {% for download in post.downloads %}
+        <a class="downloads-link media" href="{{ download.url }}">
+          <div class="media-body">{{ download.display_name }}</div>
+          <div class="downloads-icon">{% include "icon_download" %}</div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

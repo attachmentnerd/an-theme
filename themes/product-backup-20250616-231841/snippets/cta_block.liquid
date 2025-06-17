@@ -1,0 +1,86 @@
+{% assign btn_block_id = block.id %}
+{% assign btn_settings_id = 'btn_action' | settings_id: section: section, block: block %}
+{% assign btn_action = block.settings.btn_action  %}
+{% assign btn_new_tab = block.settings.btn_new_tab  %}
+{% assign btn-color = block.settings.btn_background_color | default: settings.accent_color %}
+{% assign btn_text_color = block.settings.btn_text_color | default: settings.text_light %}
+{% assign btn_style = block.settings.btn_style  %}
+{% assign btn_width = block.settings.btn_width  %}
+{% assign btn_size = block.settings.btn_size  %}
+{% assign btn_alignment = block.settings.btn_alignment  %}
+
+<style>
+  /*============================================================================
+    #Individual CTA Style
+  ==============================================================================*/
+  .btn--{{ btn_block_id }} {
+    font-weight: 600;
+  }
+  .btn--solid.btn--{{ btn_block_id }} {
+    background: {{ btn-color }} !important;
+    border-color: {{ btn-color }} !important;
+    color: {{ btn_text_color }} !important;
+  }
+  .btn--solid.btn--{{ btn_block_id }}:hover {
+    color: {{ btn_text_color }} !important;
+  }
+  .btn--outline.btn--{{ btn_block_id }} {
+    border-color: {{ btn-color }} !important;
+    color: {{ btn-color }} !important;
+  }
+  .btn--outline.btn--{{ btn_block_id }}:hover {
+    color: {{ btn-color }} !important;
+  }
+
+  .btn--auto.btn--{{ btn_block_id }} {
+  }
+  .btn--full.btn--{{ btn_block_id }} {
+    display: inline-block;
+    width: 100%;
+  }
+  .btn--small.btn--{{ btn_block_id }} {
+    font-size: 90%;
+    padding: 8px 16px;
+  }
+  .btn--medium.btn--{{ btn_block_id }} {
+    padding: 10px 20px;
+  }
+  .btn--large.btn--{{ btn_block_id }} {
+    font-size: 120%;
+    padding: 12px 40px;
+  }
+  .btn--left.btn--{{ btn_block_id }} {
+    text-align: left;
+  }
+  .btn--center.btn--{{ btn_block_id }} {
+    text-align: center;
+  }
+  .btn--right.btn--{{ btn_block_id }} {
+    text-align: right;
+  }
+</style>
+<a
+  href="{{ btn_action }}"
+  class="
+    btn
+    btn-cta
+    btn--{{ btn_style }}
+    btn--{{ btn_width }}
+    btn--{{ btn_size }}
+    btn--{{ btn_alignment }}
+    btn--{{ btn_block_id }}
+  "
+  {%- if btn_new_tab == true -%}
+    target="_blank"
+    rel="noopener"
+  {%- endif -%}
+  {%- if is_block -%}
+    id="block-{{ block.id }}"
+    {% block_attributes %}
+  {%- endif -%}
+  kjb-settings-id="{{ btn_settings_id }}"
+>
+  {%- element "block.settings.btn_text" -%}
+    {{ block.settings.btn_text }}
+  {%- endelement -%}
+</a>
