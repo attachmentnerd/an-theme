@@ -25,17 +25,17 @@
 .bg-light { background-color: var(--an-bg-light); }
 
 /* ==========================================================================
-   2. Mobile Navigation
+   2. Mobile Navigation - Clean Modern Design
    ========================================================================== */
 
-/* Mobile menu backdrop */
+/* Mobile menu backdrop - Subtle overlay */
 .header__mobile-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--an-mobile-backdrop);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: var(--an-z-backdrop);
   display: none;
   opacity: 0;
@@ -47,41 +47,289 @@
   opacity: 1;
 }
 
-/* Mobile menu container */
+/* Mobile menu container - Full screen minimal design */
 .header__content--mobile {
   position: fixed !important;
   top: 0;
   right: -100%;
-  width: var(--an-mobile-menu-width);
-  max-width: var(--an-mobile-menu-max);
+  width: 100%;
   height: 100%;
-  background-color: var(--an-bg-white);
+  background-color: var(--an-mobile-bg);
   z-index: var(--an-z-mobile-menu);
   overflow-y: auto;
+  overflow-x: hidden;
   transition: right var(--an-transition-smooth);
-  box-shadow: var(--an-mobile-shadow);
-  display: block !important;
+  display: flex !important;
+  flex-direction: column;
 }
 
 .header__content--mobile.active {
   right: 0;
 }
 
-/* Mobile close button */
+/* Mobile header - Minimal top section with terracotta bar */
 .header__mobile-close {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  padding: var(--an-space-md) var(--an-space-lg);
-  border-bottom: 1px solid var(--an-border);
+  padding: var(--an-space-lg) var(--an-space-xl);
+  background-color: transparent;
+  position: relative;
 }
 
+/* Terracotta color bar at top */
+.header__mobile-close::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--an-mobile-accent);
+  z-index: -1;
+}
+
+/* Close button styling - X icon */
 .header__mobile-close .hamburger {
   margin: 0;
   cursor: pointer;
+  padding: 0;
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Hamburger improvements */
+/* Create X with the hamburger slices */
+.header__mobile-close .hamburger__slice {
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background-color: #1a1a1a;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-1 {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-2 {
+  opacity: 0;
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-3 {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-4 {
+  opacity: 0;
+}
+
+/* Mobile menu content wrapper */
+.header__content--mobile .header__switch-content {
+  flex: 1;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Clean navigation section */
+.header__content--mobile .link-list {
+  padding: var(--an-space-3xl) var(--an-space-xl) var(--an-space-xl);
+}
+
+/* Mobile navigation links - Ultra minimal style */
+.header__content--mobile .link-list__link {
+  display: block;
+  padding: var(--an-space-lg) 0;
+  color: #1a1a1a;
+  font-size: 24px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: opacity var(--an-transition-fast);
+  position: relative;
+  letter-spacing: -0.5px;
+}
+
+.header__content--mobile .link-list__link:hover {
+  opacity: 0.6;
+}
+
+/* Active/current page indicator - subtle underline */
+.header__content--mobile .link-list__link.active,
+.header__content--mobile .link-list__link.current {
+  color: #1a1a1a;
+}
+
+.header__content--mobile .link-list__link.active::after,
+.header__content--mobile .link-list__link.current::after {
+  content: '';
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background-color: var(--an-mobile-accent);
+}
+
+/* Mobile dropdowns - Minimal design with arrow */
+.header__content--mobile .dropdown {
+  margin: 0;
+  padding: 0 var(--an-space-xl);
+}
+
+.header__content--mobile .dropdown .dropdown__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--an-space-lg) 0;
+  color: #1a1a1a;
+  font-size: 24px;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity var(--an-transition-fast);
+  letter-spacing: -0.5px;
+}
+
+.header__content--mobile .dropdown .dropdown__trigger:hover {
+  opacity: 0.6;
+}
+
+/* Dropdown arrow - minimal chevron */
+.header__content--mobile .dropdown .dropdown__trigger:after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 5L16 12L9 19' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform var(--an-transition-fast);
+  opacity: 0.5;
+}
+
+.header__content--mobile .dropdown.active .dropdown__trigger:after {
+  transform: rotate(90deg);
+}
+
+/* Dropdown menu - Indented style */
+.header__content--mobile .dropdown .dropdown__menu {
+  display: none;
+  background-color: transparent;
+  box-shadow: none;
+  padding: var(--an-space-xs) 0;
+  margin: 0;
+}
+
+.header__content--mobile .dropdown.active .dropdown__menu {
+  display: block;
+}
+
+.header__content--mobile .dropdown .dropdown__item a {
+  display: block;
+  padding: var(--an-space-sm) var(--an-space-lg);
+  margin: 0 var(--an-space-md) 0 calc(var(--an-space-lg) + var(--an-space-md));
+  border-radius: var(--an-radius-sm);
+  font-size: 15px;
+  color: var(--an-text-medium);
+  text-decoration: none;
+  transition: all var(--an-transition-fast);
+}
+
+.header__content--mobile .dropdown .dropdown__item a:hover {
+  background-color: var(--an-bg-light);
+  color: var(--an-text-dark);
+  transform: translateX(4px);
+}
+
+/* Remove dividers for cleaner look */
+.header__content--mobile .link-list:not(:last-child)::after {
+  display: none;
+}
+
+/* Mobile CTA section - Minimal button at bottom */
+.header__content--mobile .header__block--cta {
+  padding: var(--an-space-xl);
+  background-color: transparent;
+  margin-top: auto;
+  padding-bottom: var(--an-space-3xl);
+}
+
+.header__content--mobile .header__block--cta .btn {
+  display: inline-block;
+  padding: var(--an-space-md) var(--an-space-xl);
+  border: 1px solid #1a1a1a;
+  border-radius: 30px;
+  background-color: transparent;
+  color: #1a1a1a;
+  font-weight: 400;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all var(--an-transition-fast);
+  letter-spacing: -0.3px;
+}
+
+.header__content--mobile .header__block--cta .btn:hover {
+  background-color: #1a1a1a;
+  color: #FAF8F5;
+}
+
+/* User account section */
+.header__content--mobile .header__block--user {
+  padding: var(--an-space-md) var(--an-space-lg);
+}
+
+.header__content--mobile .header__block--user a {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--an-space-sm) 0;
+  color: var(--an-text-medium);
+  font-size: 15px;
+  text-decoration: none;
+  transition: color var(--an-transition-fast);
+}
+
+.header__content--mobile .header__block--user a:hover {
+  color: var(--an-primary);
+}
+
+/* Social icons in mobile menu */
+.header__content--mobile .header__block--social-icons {
+  padding: var(--an-space-lg);
+  display: flex;
+  justify-content: center;
+  gap: var(--an-space-md);
+}
+
+.header__content--mobile .social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--an-radius-full);
+  background-color: var(--an-bg-light);
+  color: var(--an-text-medium);
+  transition: all var(--an-transition-fast);
+}
+
+.header__content--mobile .social-icon:hover {
+  background-color: var(--an-primary);
+  color: var(--an-text-white);
+  transform: translateY(-2px);
+}
+
+/* Hamburger animation enhancement */
 .hamburger {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
   transition: opacity var(--an-transition-fast);
 }
 
@@ -89,114 +337,11 @@
   opacity: 0.7;
 }
 
-/* Mobile menu content */
-.header__content--mobile .header__switch-content {
-  padding: 0;
-}
-
-/* Mobile navigation links */
-.header__content--mobile .link-list__link {
-  padding: var(--an-space-md) var(--an-space-lg);
-  display: block;
-  border-bottom: 1px solid var(--an-border-light);
-  transition: all var(--an-transition-fast);
-  position: relative;
-  color: var(--an-text-dark);
-}
-
-.header__content--mobile .link-list__link:hover {
-  background-color: var(--an-bg-light);
-  padding-left: calc(var(--an-space-lg) + var(--an-space-xs));
-  color: var(--an-primary);
-  text-decoration: none;
-}
-
-/* Mobile link accent bar */
-.header__content--mobile .link-list__link:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 0;
-  background-color: var(--an-primary);
-  transition: height var(--an-transition-fast);
-}
-
-.header__content--mobile .link-list__link:hover:after {
-  height: 60%;
-}
-
-/* Mobile dropdowns */
-.header__content--mobile .dropdown {
-  border-bottom: 1px solid var(--an-border-light);
-}
-
-.header__content--mobile .dropdown .dropdown__trigger {
-  padding: var(--an-space-md) var(--an-space-lg);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--an-text-dark);
-}
-
-.header__content--mobile .dropdown .dropdown__trigger:after {
-  content: '+';
-  font-size: 20px;
-  font-weight: 300;
-  transition: transform var(--an-transition-smooth);
-  color: var(--an-text-medium);
-}
-
-.header__content--mobile .dropdown.active .dropdown__trigger:after {
-  transform: rotate(45deg);
-}
-
-.header__content--mobile .dropdown .dropdown__menu {
-  background-color: var(--an-bg-light);
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-}
-
-.header__content--mobile .dropdown .dropdown__item a {
-  padding: calc(var(--an-space-sm) + var(--an-space-xs)) var(--an-space-lg) calc(var(--an-space-sm) + var(--an-space-xs)) calc(var(--an-space-xl) + var(--an-space-sm));
-  font-size: 14px;
-  border-bottom: 1px solid var(--an-border);
-  color: var(--an-text-medium);
-}
-
-.header__content--mobile .dropdown .dropdown__item:last-child a {
-  border-bottom: none;
-}
-
-.header__content--mobile .dropdown .dropdown__item a:hover {
-  color: var(--an-primary);
-  background-color: var(--an-bg-lighter);
-}
-
-/* Mobile CTA area */
-.header__content--mobile .header__block--cta {
-  padding: var(--an-space-lg);
-  border-top: 1px solid var(--an-border);
-  margin-top: auto;
-}
-
-.header__content--mobile .header__block--cta .btn {
-  display: block;
-  text-align: center;
-  padding: calc(var(--an-space-sm) + var(--an-space-xs)) var(--an-space-lg);
-  border-radius: var(--an-radius-md);
-  background-color: var(--an-primary);
-  color: var(--an-text-white);
-  transition: all var(--an-transition-fast);
-}
-
-.header__content--mobile .header__block--cta .btn:hover {
-  background-color: var(--an-primary-hover);
-  transform: translateY(-2px);
-  text-decoration: none;
+/* Make slices thinner and cleaner */
+.hamburger__slice {
+  height: 2px;
+  background-color: currentColor;
+  transition: all var(--an-transition-smooth);
 }
 
 /* Prevent body scroll when menu is open */
@@ -204,6 +349,13 @@ body.mobile-menu-open {
   overflow: hidden;
   position: fixed;
   width: 100%;
+  height: 100%;
+}
+
+/* Smooth scrolling for mobile menu */
+.header__content--mobile {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 /* Z-index hierarchy */
@@ -214,7 +366,12 @@ body.mobile-menu-open {
 /* Mobile-specific header adjustments */
 @media (max-width: 767px) {
   .header__content--mobile {
-    display: block !important;
+    display: flex !important;
+  }
+  
+  /* Reduce header padding on mobile */
+  .header .header__content {
+    padding: var(--an-space-md) var(--an-space-md);
   }
 }
 
