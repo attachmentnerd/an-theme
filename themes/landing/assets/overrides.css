@@ -1,7 +1,7 @@
 /* ==========================================================================
    AN Landing Theme Custom Styles
-   Version: 10.4.3
-   Last Updated: 2024-01-16
+   Version: 10.6.2
+   Last Updated: 2025-01-16
    ========================================================================== */
 
 /* Table of Contents
@@ -31,6 +31,196 @@
 /* Landing pages typically don't have mobile menus, but may have simplified nav */
 .header--landing {
   padding: var(--an-space-lg) 0;
+}
+
+/* Mobile Menu Styles - Clean Minimal Design */
+@media (max-width: 767px) {
+  /* Mobile menu container - Full screen minimal design */
+  .header__content--mobile {
+    position: fixed !important;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--an-mobile-bg);
+    z-index: var(--an-z-mobile-menu);
+    transition: right var(--an-transition-smooth);
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  /* Accent bar at the top */
+  .header__content--mobile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--an-mobile-accent);
+  }
+
+  /* When menu is open */
+  .header__content--mobile.header__content--show {
+    right: 0;
+  }
+
+  /* Close button container */
+  .header__content--mobile .hamburger {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+  }
+
+  /* X close button using existing 4-slice structure */
+  .header__content--mobile .hamburger__slice {
+    background-color: var(--an-mobile-text) !important;
+    transition: all var(--an-transition-smooth);
+  }
+
+  .header__content--mobile.header__content--show .hamburger--slice-1 {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .header__content--mobile.header__content--show .hamburger--slice-2,
+  .header__content--mobile.header__content--show .hamburger--slice-3 {
+    opacity: 0;
+  }
+
+  .header__content--mobile.header__content--show .hamburger--slice-4 {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  /* Mobile menu content area */
+  .header__content--mobile .header__switch-content {
+    padding: 80px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* Mobile navigation links */
+  .header__content--mobile .link-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .header__content--mobile .link-list__link {
+    font-size: 24px !important;
+    line-height: 1.5;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+    color: var(--an-mobile-text) !important;
+    font-weight: 400;
+    text-align: left !important;
+    position: relative;
+    transition: opacity var(--an-transition-fast);
+  }
+
+  .header__content--mobile .link-list__link:hover {
+    opacity: 0.7;
+  }
+
+  /* Dropdown menu items */
+  .header__content--mobile .dropdown__trigger {
+    font-size: 24px !important;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+    color: var(--an-mobile-text) !important;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Simple arrow for dropdowns */
+  .header__content--mobile .dropdown__trigger::after {
+    content: '→';
+    font-size: 20px;
+    opacity: 0.5;
+    transition: transform var(--an-transition-fast);
+  }
+
+  .header__content--mobile .dropdown--active .dropdown__trigger::after {
+    transform: rotate(90deg);
+  }
+
+  /* Dropdown content */
+  .header__content--mobile .dropdown__content {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0 0 0 24px;
+    margin-top: 8px;
+  }
+
+  .header__content--mobile .dropdown__item a {
+    font-size: 18px !important;
+    padding: 12px 0;
+    color: var(--an-mobile-text) !important;
+    opacity: 0.8;
+  }
+
+  /* Mobile CTA button - minimal style */
+  .header__content--mobile .btn {
+    margin-top: 24px;
+    background-color: transparent !important;
+    color: var(--an-mobile-text) !important;
+    border: 1px solid var(--an-mobile-text) !important;
+    border-radius: 30px;
+    padding: 12px 32px;
+    font-size: 16px !important;
+    font-weight: 400;
+    text-align: center;
+    transition: all var(--an-transition-fast);
+  }
+
+  .header__content--mobile .btn:hover {
+    background-color: var(--an-mobile-text) !important;
+    color: var(--an-mobile-bg) !important;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Social icons in mobile menu */
+  .header__content--mobile .social-icons {
+    display: flex;
+    gap: 20px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(26, 26, 26, 0.1);
+  }
+
+  .header__content--mobile .social-icons__icon {
+    color: var(--an-mobile-text) !important;
+    font-size: 20px;
+    opacity: 0.6;
+    transition: opacity var(--an-transition-fast);
+  }
+
+  .header__content--mobile .social-icons__icon:hover {
+    opacity: 1;
+  }
+
+  /* Mobile backdrop */
+  .header__content--mobile::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--an-mobile-backdrop);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--an-transition-smooth);
+    pointer-events: none;
+  }
+
+  .header__content--mobile.header__content--show::after {
+    opacity: 1;
+  }
 }
 
 /* ==========================================================================
