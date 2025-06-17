@@ -1,25 +1,36 @@
 {% assign dark_text = settings.color_body %}
 
 <style>
-  /* AN Theme Design System Variables */
+  /* AN Theme Design System Variables - Attachment Nerd Brand */
   :root {
-    /* Core Colors */
-    --an-primary: #4F46E5;
-    --an-primary-hover: #4338CA;
-    --an-primary-light: #6366F1;
-    --an-secondary: #10B981;
-    --an-secondary-hover: #059669;
+    /* Core Brand Colors */
+    --an-navy: #1A2D4E;
+    --an-teal: #2AB3B1;
+    --an-coral: #F57C6F;
+    --an-gold: #FFC63F;
+    --an-plum: #A449A5;
+    --an-peach: #FFF4F0;
+    --an-white: #FFFFFF;
+    --an-grey: #F8F7F5;
+    --an-slate: #3A4A63;
+    
+    /* Legacy Mappings for Compatibility */
+    --an-primary: var(--an-navy);
+    --an-primary-hover: #152541;
+    --an-primary-light: var(--an-teal);
+    --an-secondary: var(--an-teal);
+    --an-secondary-hover: #239A98;
     
     /* Text Colors */
-    --an-text-dark: #1F2937;
-    --an-text-medium: #4B5563;
+    --an-text-dark: var(--an-slate);
+    --an-text-medium: var(--an-slate);
     --an-text-light: #6B7280;
-    --an-text-white: #FFFFFF;
+    --an-text-white: var(--an-white);
     
     /* Background Colors */
-    --an-bg-white: #FFFFFF;
-    --an-bg-light: #F9FAFB;
-    --an-bg-lighter: #F3F4F6;
+    --an-bg-white: var(--an-white);
+    --an-bg-light: var(--an-grey);
+    --an-bg-lighter: var(--an-peach);
     --an-border: #E5E7EB;
     --an-border-light: #F3F4F6;
     
@@ -39,9 +50,9 @@
     --an-mobile-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
     
     /* Mobile Menu Colors - Clean Design */
-    --an-mobile-bg: #FAF8F5;
-    --an-mobile-accent: #C46B5C;
-    --an-mobile-text: #1a1a1a;
+    --an-mobile-bg: var(--an-peach);
+    --an-mobile-accent: var(--an-coral);
+    --an-mobile-text: var(--an-slate);
     
     /* Transitions */
     --an-transition-fast: 0.2s ease;

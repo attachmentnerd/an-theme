@@ -1,6 +1,6 @@
 /* ==========================================================================
-   AN Landing Theme Custom Styles
-   Version: 10.6.2
+   AN Landing Theme Custom Styles - Attachment Nerd Brand
+   Version: 10.7.0
    Last Updated: 2025-01-16
    ========================================================================== */
 
@@ -18,11 +18,27 @@
    1. Design System Extensions
    ========================================================================== */
 
-/* Additional color utilities */
+/* Additional color utilities - Attachment Nerd Brand */
 .text-primary { color: var(--an-primary); }
 .text-primary-hover:hover { color: var(--an-primary-hover); }
 .bg-primary { background-color: var(--an-primary); }
 .bg-light { background-color: var(--an-bg-light); }
+
+/* Brand-specific utilities */
+.text-navy { color: var(--an-navy); }
+.text-teal { color: var(--an-teal); }
+.text-coral { color: var(--an-coral); }
+.text-gold { color: var(--an-gold); }
+.text-plum { color: var(--an-plum); }
+.text-slate { color: var(--an-slate); }
+
+.bg-navy { background-color: var(--an-navy); }
+.bg-teal { background-color: var(--an-teal); }
+.bg-coral { background-color: var(--an-coral); }
+.bg-gold { background-color: var(--an-gold); }
+.bg-plum { background-color: var(--an-plum); }
+.bg-peach { background-color: var(--an-peach); }
+.bg-grey { background-color: var(--an-grey); }
 
 /* ==========================================================================
    2. Landing Page Specific
@@ -241,16 +257,48 @@
   transform: translateY(0);
 }
 
-/* Primary button style using CSS variables */
-.btn--primary {
-  background-color: var(--an-primary);
-  color: var(--an-text-white);
+/* Primary button - Nerd Navy */
+.btn--primary,
+.btn-primary {
+  background-color: var(--an-navy) !important;
+  color: var(--an-white) !important;
   border-radius: var(--an-radius-md);
   padding: var(--an-space-md) var(--an-space-xl);
 }
 
-.btn--primary:hover {
-  background-color: var(--an-primary-hover);
+.btn--primary:hover,
+.btn-primary:hover {
+  background-color: var(--an-primary-hover) !important;
+}
+
+/* Secondary button - Secure Teal */
+.btn--secondary,
+.btn-secondary {
+  background-color: var(--an-teal) !important;
+  color: var(--an-white) !important;
+  border-radius: var(--an-radius-md);
+  padding: var(--an-space-md) var(--an-space-xl);
+}
+
+.btn--secondary:hover,
+.btn-secondary:hover {
+  background-color: var(--an-secondary-hover) !important;
+}
+
+/* Emotional CTA button - Sunrise Coral */
+.btn--emotional,
+.btn-emotional,
+.btn--coral {
+  background-color: var(--an-coral) !important;
+  color: var(--an-white) !important;
+  border-radius: var(--an-radius-md);
+  padding: var(--an-space-md) var(--an-space-xl);
+}
+
+.btn--emotional:hover,
+.btn-emotional:hover,
+.btn--coral:hover {
+  background-color: #F36B5D !important;
 }
 
 /* ==========================================================================

@@ -1,6 +1,10 @@
 # AN Kajabi Themes - Development Guide
 
-This guide documents the CSS architecture and development conventions for the AN Kajabi themes to prevent breaking changes and maintain consistency.
+This guide documents the CSS architecture and development conventions for the AN (Attachment Nerd) Kajabi themes to prevent breaking changes and maintain consistency.
+
+## Brand Identity
+**Mission**: Equip every caregiver with science-backed, relationship-building tools so children grow up feeling safe, seen, soothed, and secure.
+**Tagline**: "Deep Science, Practical Parenting, Secure Futures."
 
 ## Theme Structure
 
@@ -14,13 +18,24 @@ The project contains three distinct themes:
 ### Overview
 We use a **hybrid CSS Variables + organized overrides.css** approach for maintainable, scalable styling across all themes.
 
-### 1. CSS Variables Design System
+### 1. CSS Variables Design System - Attachment Nerd Brand
 All themes include CSS custom properties defined in header.liquid:
 ```css
 :root {
-  /* Core Colors */
-  --an-primary: #4F46E5;
-  --an-primary-hover: #4338CA;
+  /* Core Brand Colors */
+  --an-navy: #1A2D4E;      /* Nerd Navy - Primary headings, buttons */
+  --an-teal: #2AB3B1;      /* Secure Teal - Interactive states */
+  --an-coral: #F57C6F;     /* Sunrise Coral - Emotional CTAs */
+  --an-gold: #FFC63F;      /* Sunshine Gold - Highlights, icons */
+  --an-plum: #A449A5;      /* Modern Plum - Depth accents, links */
+  --an-peach: #FFF4F0;     /* Blush Peach - Soft backgrounds */
+  --an-white: #FFFFFF;     /* White - Base */
+  --an-grey: #F8F7F5;      /* Warm Grey - Secondary backgrounds */
+  --an-slate: #3A4A63;     /* Slate Ink - Body text */
+  
+  /* Legacy mappings for compatibility */
+  --an-primary: var(--an-navy);
+  --an-secondary: var(--an-teal);
   
   /* Spacing System */
   --an-space-sm: 8px;
@@ -134,14 +149,24 @@ Color settings are controlled via Liquid variables:
 
 ## CSS Variable Reference
 
-### Color System
+### Attachment Nerd Brand Colors
 ```css
---an-primary: #4F46E5;          /* Main brand color */
---an-primary-hover: #4338CA;    /* Hover state */
---an-text-dark: #1F2937;        /* Primary text */
---an-text-medium: #4B5563;      /* Secondary text */
---an-bg-light: #F9FAFB;         /* Light backgrounds */
---an-border: #E5E7EB;           /* Border color */
+/* Core Brand Colors */
+--an-navy: #1A2D4E;            /* Primary headings, buttons */
+--an-teal: #2AB3B1;            /* Interactive states, charts */
+--an-coral: #F57C6F;           /* Emotional CTAs, alerts */
+--an-gold: #FFC63F;            /* Highlights, icons */
+--an-plum: #A449A5;            /* Depth accents, links */
+--an-peach: #FFF4F0;           /* Soft backgrounds */
+--an-white: #FFFFFF;           /* Base */
+--an-grey: #F8F7F5;            /* Secondary backgrounds */
+--an-slate: #3A4A63;           /* Body text */
+
+/* Legacy Mappings */
+--an-primary: var(--an-navy);
+--an-secondary: var(--an-teal);
+--an-text-dark: var(--an-slate);
+--an-bg-light: var(--an-grey);
 ```
 
 ### Spacing System
@@ -274,3 +299,24 @@ Before deploying CSS changes:
 - [ ] Test on actual mobile devices
 
 Remember: The CSS in these themes is tightly integrated with Kajabi's platform. Always test thoroughly in the Kajabi environment before releasing changes.
+
+## Version History
+
+### v10.7.0 (2025-01-16)
+- **BRAND UPDATE**: Implemented Attachment Nerd brand colors across all themes
+- Updated CSS variables to use brand palette (Navy, Teal, Coral, Gold, Plum, etc.)
+- Enhanced button styles with brand-specific classes (.btn--coral, .btn--emotional)
+- Maintained legacy color mappings for backward compatibility
+- Updated mobile menu to use brand colors (Blush Peach background, Coral accent)
+
+### v10.6.2 (2025-01-16)
+- Added clean, minimal mobile menu design to both website and landing themes
+- Full-screen mobile menu with beige background and terracotta accent
+- Large navigation links (24px) for better mobile UX
+- Minimal rounded button styling
+
+### v10.5.2 (2025-01-16)  
+- Established CSS Variables design system
+- Created organized overrides.css structure
+- Added comprehensive documentation (CLAUDE.md)
+- Fixed CSS breaking issues from improper file editing
