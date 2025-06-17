@@ -37,6 +37,66 @@
     {% endif %}
     {{ 'core.css' | kajabi_asset_url | stylesheet_tag }}
     {{ 'styles.css' | asset_url | stylesheet_tag }}
+    {{ 'overrides.css' | asset_url | stylesheet_tag }}
+    
+    <style>
+      /* AN Theme Design System Variables */
+      :root {
+        /* Core Colors */
+        --an-primary: #4F46E5;
+        --an-primary-hover: #4338CA;
+        --an-primary-light: #6366F1;
+        --an-secondary: #10B981;
+        --an-secondary-hover: #059669;
+        
+        /* Text Colors */
+        --an-text-dark: #1F2937;
+        --an-text-medium: #4B5563;
+        --an-text-light: #6B7280;
+        --an-text-white: #FFFFFF;
+        
+        /* Background Colors */
+        --an-bg-white: #FFFFFF;
+        --an-bg-light: #F9FAFB;
+        --an-bg-lighter: #F3F4F6;
+        --an-border: #E5E7EB;
+        --an-border-light: #F3F4F6;
+        
+        /* Spacing System */
+        --an-space-xs: 4px;
+        --an-space-sm: 8px;
+        --an-space-md: 16px;
+        --an-space-lg: 24px;
+        --an-space-xl: 32px;
+        --an-space-2xl: 48px;
+        --an-space-3xl: 64px;
+        
+        /* Transitions */
+        --an-transition-fast: 0.2s ease;
+        --an-transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --an-transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        
+        /* Z-index System */
+        --an-z-dropdown: 50;
+        --an-z-header: 100;
+        --an-z-backdrop: 998;
+        --an-z-mobile-menu: 999;
+        --an-z-modal: 1000;
+        
+        /* Border Radius */
+        --an-radius-sm: 4px;
+        --an-radius-md: 6px;
+        --an-radius-lg: 8px;
+        --an-radius-xl: 12px;
+        --an-radius-full: 9999px;
+        
+        /* Shadows */
+        --an-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --an-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --an-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        --an-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+    </style>
 
     {%- if settings.welcome_banner_use_thumbnail and current_product.thumbnail_url -%}
       <style>

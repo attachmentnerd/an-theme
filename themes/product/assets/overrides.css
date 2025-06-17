@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AN Landing Theme Custom Styles
+   AN Product Theme Custom Styles
    Version: 10.4.3
    Last Updated: 2024-01-16
    ========================================================================== */
@@ -7,9 +7,9 @@
 /* Table of Contents
    ========================================================================== 
    1. Design System Extensions
-   2. Landing Page Specific
-   3. Enhanced Buttons
-   4. Form Improvements  
+   2. Product/Course Specific
+   3. Enhanced Cards
+   4. Progress Indicators  
    5. Custom Sections
    6. Utility Classes
    ========================================================================== */
@@ -25,98 +25,111 @@
 .bg-light { background-color: var(--an-bg-light); }
 
 /* ==========================================================================
-   2. Landing Page Specific
+   2. Product/Course Specific
    ========================================================================== */
 
-/* Landing pages typically don't have mobile menus, but may have simplified nav */
-.header--landing {
-  padding: var(--an-space-lg) 0;
+/* Course cards improvements */
+.product-card {
+  border: 1px solid var(--an-border);
+  border-radius: var(--an-radius-lg);
+  transition: all var(--an-transition-fast);
+  overflow: hidden;
 }
 
-/* ==========================================================================
-   3. Enhanced Buttons
-   ========================================================================== */
+.product-card:hover {
+  box-shadow: var(--an-shadow-lg);
+  transform: translateY(-4px);
+}
 
-/* Button improvements */
-.btn {
+/* Category cards */
+.category-card {
+  background: var(--an-bg-white);
+  border: 1px solid var(--an-border);
+  border-radius: var(--an-radius-md);
+  padding: var(--an-space-lg);
+  margin-bottom: var(--an-space-md);
   transition: all var(--an-transition-fast);
 }
 
-.btn:hover {
-  transform: translateY(-2px);
+.category-card:hover {
+  border-color: var(--an-primary-light);
   box-shadow: var(--an-shadow-md);
 }
 
-.btn:active {
-  transform: translateY(0);
-}
-
-/* Primary button style using CSS variables */
-.btn--primary {
-  background-color: var(--an-primary);
-  color: var(--an-text-white);
-  border-radius: var(--an-radius-md);
-  padding: var(--an-space-md) var(--an-space-xl);
-}
-
-.btn--primary:hover {
-  background-color: var(--an-primary-hover);
-}
-
 /* ==========================================================================
-   4. Form Improvements  
+   3. Enhanced Cards
    ========================================================================== */
 
-/* Form field focus states */
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="tel"]:focus,
-input[type="url"]:focus,
-input[type="search"]:focus,
-textarea:focus {
-  outline: 2px solid var(--an-primary);
-  outline-offset: 2px;
-  border-color: var(--an-primary-light);
-}
-
-/* Form field styling */
-.form-control {
-  border: 1px solid var(--an-border);
+/* Lesson cards */
+.lesson-card {
+  background: var(--an-bg-white);
+  border: 1px solid var(--an-border-light);
   border-radius: var(--an-radius-md);
   padding: var(--an-space-md);
+  margin-bottom: var(--an-space-sm);
   transition: all var(--an-transition-fast);
 }
 
-.form-control:hover {
-  border-color: var(--an-border-light);
+.lesson-card:hover {
+  background: var(--an-bg-light);
+  border-color: var(--an-primary-light);
+}
+
+.lesson-card.completed {
+  background: var(--an-bg-lighter);
+  border-color: var(--an-secondary);
+}
+
+/* ==========================================================================
+   4. Progress Indicators
+   ========================================================================== */
+
+/* Progress bar styling */
+.progress {
+  height: 8px;
+  background-color: var(--an-bg-lighter);
+  border-radius: var(--an-radius-full);
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: var(--an-primary);
+  transition: width var(--an-transition-smooth);
+}
+
+/* Completion badges */
+.badge-completed {
+  background-color: var(--an-secondary);
+  color: var(--an-text-white);
+  padding: var(--an-space-xs) var(--an-space-sm);
+  border-radius: var(--an-radius-sm);
+  font-size: 12px;
+  font-weight: 600;
 }
 
 /* ==========================================================================
    5. Custom Sections
    ========================================================================== */
 
-/* Hero section improvements */
-.hero {
-  padding: var(--an-space-3xl) 0;
-}
-
-/* Feature sections */
-.features {
+/* Dashboard improvements */
+.dashboard-section {
   padding: var(--an-space-2xl) 0;
 }
 
-.feature-card {
+.dashboard-card {
   background: var(--an-bg-white);
   border: 1px solid var(--an-border);
   border-radius: var(--an-radius-lg);
   padding: var(--an-space-xl);
-  transition: all var(--an-transition-fast);
+  margin-bottom: var(--an-space-lg);
+  box-shadow: var(--an-shadow-sm);
 }
 
-.feature-card:hover {
-  box-shadow: var(--an-shadow-lg);
-  transform: translateY(-4px);
+/* Mini dashboard styling */
+.mini-dashboard {
+  background: var(--an-bg-light);
+  padding: var(--an-space-xl) 0;
+  border-bottom: 1px solid var(--an-border);
 }
 
 /* ==========================================================================
@@ -172,3 +185,9 @@ textarea:focus {
 .d-flex { display: flex; }
 .d-inline { display: inline; }
 .d-inline-block { display: inline-block; }
+
+/* Product-specific utilities */
+.text-muted { color: var(--an-text-light); }
+.text-success { color: var(--an-secondary); }
+.border-top { border-top: 1px solid var(--an-border); }
+.border-bottom { border-bottom: 1px solid var(--an-border); }
