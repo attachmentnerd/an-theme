@@ -1,0 +1,6 @@
+Theme: AN_Website_Theme
+Type: website
+Version: AN-2.0.1
+Date: 2025-06-16T20:43:05.971Z
+Message: Updated navigation and added Full Width CTA section
+File: AN_Website_Theme_AN-2.0.1.zip

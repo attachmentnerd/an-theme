@@ -11,11 +11,12 @@ function loadVersions() {
   if (fs.existsSync(VERSION_FILE)) {
     return JSON.parse(fs.readFileSync(VERSION_FILE, 'utf8'));
   }
+  // Initialize with version 10.x.x to avoid Kajabi conflicts
   return {
-    website: '1.0.0',
-    landing: '1.0.0',
-    product: '1.0.0',
-    email: '1.0.0'
+    website: '10.0.0',
+    landing: '10.0.0',
+    product: '10.0.0',
+    email: '10.0.0'
   };
 }
 
@@ -81,26 +82,46 @@ async function buildTheme(type) {
   console.log(`✓ Built ${type} theme`);
 }
 
+// Generate version starting from 10.x.x to avoid Kajabi internal version conflicts
+function generateKajabiSafeVersion(type, major, minor, patch) {
+  // Start from version 10 to avoid all Kajabi reserved versions
+  // Kajabi uses versions up to 7.x.x, so 10+ should be safe
+  return `${major}.${minor}.${patch}`;
+}
+
 // Export theme
 async function exportTheme(type, versionBump, message) {
   const versions = loadVersions();
   const currentVersion = versions[type];
   
-  // Calculate new version
-  const [major, minor, patch] = currentVersion.split('.').map(Number);
-  let newVersion;
+  // Parse version - always numeric format now
+  let [major, minor, patch] = currentVersion.split('.').map(Number);
   
+  // Ensure we start from version 10 minimum
+  if (major < 10) {
+    major = 10;
+    minor = 0;
+    patch = 0;
+  }
+  
+  // Calculate new version numbers
   switch (versionBump) {
     case 'major':
-      newVersion = `${major + 1}.0.0`;
+      major += 1;
+      minor = 0;
+      patch = 0;
       break;
     case 'minor':
-      newVersion = `${major}.${minor + 1}.0`;
+      minor += 1;
+      patch = 0;
       break;
     case 'patch':
     default:
-      newVersion = `${major}.${minor}.${patch + 1}`;
+      patch += 1;
   }
+  
+  // Generate Kajabi-safe version with text prefix
+  const newVersion = generateKajabiSafeVersion(type, major, minor, patch);
 
   // Update version in settings_schema.json BEFORE building
   const schemaPath = path.join(__dirname, '..', 'themes', type, 'config', 'settings_schema.json');
@@ -110,11 +131,22 @@ async function exportTheme(type, versionBump, message) {
     const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
     const themeInfo = schema.find(s => s.name === 'theme_info');
     if (themeInfo) {
-      // Update version
-      themeInfo.theme_version = newVersion;
+      // Ensure theme_info has exactly 6 required fields
+      const cleanThemeInfo = {
+        name: 'theme_info',
+        theme_name: themeInfo.theme_name || themeName,
+        theme_version: newVersion,
+        theme_author: themeInfo.theme_author || 'AN Themes',
+        theme_documentation_url: themeInfo.theme_documentation_url || 'https://anthemes.com/docs',
+        theme_support_url: themeInfo.theme_support_url || 'https://anthemes.com/support'
+      };
       
-      if (themeInfo.theme_name) {
-        themeName = themeInfo.theme_name.replace(/\s+/g, '_');
+      // Replace the theme_info object with clean version
+      const themeInfoIndex = schema.findIndex(s => s.name === 'theme_info');
+      schema[themeInfoIndex] = cleanThemeInfo;
+      
+      if (cleanThemeInfo.theme_name) {
+        themeName = cleanThemeInfo.theme_name.replace(/\s+/g, '_');
       }
       
       // Write updated schema back to file
@@ -130,7 +162,9 @@ async function exportTheme(type, versionBump, message) {
   await fs.ensureDir(exportDir);
 
   // Create ZIP with proper structure
-  const zipPath = path.join(exportDir, `${themeName}_${newVersion}.zip`);
+  // Use underscores in filename but keep version format as-is
+  const safeVersion = newVersion.replace(/[^a-zA-Z0-9.-]/g, '_');
+  const zipPath = path.join(exportDir, `${themeName}_${safeVersion}.zip`);
   const output = fs.createWriteStream(zipPath);
   const archive = archiver('zip', { zlib: { level: 9 } });
 
@@ -163,6 +197,7 @@ Type: ${type}
 Version: ${newVersion}
 Date: ${new Date().toISOString()}
 Message: ${message || 'No message provided'}
+File: ${path.basename(zipPath)}
 `;
   await fs.writeFile(logPath, logContent);
 

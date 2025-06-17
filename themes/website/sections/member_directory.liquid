@@ -27,7 +27,31 @@
     border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "black" }};
     border-radius: {{ section.settings.border_radius | default: 4 | append: "px" }};
     background-color: {{ section.settings.member_background_color }};
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    {% case section.settings.box_shadow %}
+      {% when 'small' %}
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+      {% when 'medium' %}
+        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.075);
+      {% when 'large' %}
+        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.1);
+    {% endcase %}
   }
+  {% if section.settings.box_shadow != 'none' %}
+  .member:hover {
+    {% case section.settings.box_shadow %}
+      {% when 'small' %}
+        box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+      {% when 'medium' %}
+        box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.12);
+        transform: translateY(-3px);
+      {% when 'large' %}
+        box-shadow: 0 15px 50px 0 rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+    {% endcase %}
+  }
+  {% endif %}
   .member__name {
     color: {{ section.settings.color_name_text }} !important;
   }

@@ -3057,16 +3057,60 @@ pre {
 .box-shadow-small {
   -webkit-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.box-shadow-small:hover {
+  -webkit-box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
 .box-shadow-medium {
   -webkit-box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.075);
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.075);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.box-shadow-medium:hover {
+  -webkit-box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
 }
 
 .box-shadow-large {
   -webkit-box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.box-shadow-large:hover {
+  -webkit-box-shadow: 0 15px 50px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 50px 0 rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Apply hover effects to block containers with shadows */
+.block-type--text .box-shadow-small:hover,
+.block-type--text .box-shadow-medium:hover,
+.block-type--text .box-shadow-large:hover,
+.block-type--image .box-shadow-small:hover,
+.block-type--image .box-shadow-medium:hover,
+.block-type--image .box-shadow-large:hover {
+  transform: translateY(0);
+}
+
+/* Special hover for card-like blocks */
+.block-type--card .block,
+.block-type--feature .block,
+.block-type--testimonial .block {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.block-type--card:hover .block,
+.block-type--feature:hover .block,
+.block-type--testimonial:hover .block {
+  transform: translateY(-4px);
 }
 
 .accordion .accordion-title:after {
@@ -6328,25 +6372,41 @@ a {
 .store-card,
 .product,
 .blog-listing,
-.offer-card {
+.offer-card,
+.member {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
+
+/* Default subtle shadow for all cards */
+.card,
+.store-card,
+.product,
+.blog-listing__panel,
+.offer-card,
+.member {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
 .card:hover,
 .store-card:hover,
 .product:hover,
 .blog-listing:hover,
-.offer-card:hover {
+.blog-listing__panel:hover,
+.offer-card:hover,
+.member:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
+
 .card:hover,
 .store-card:hover,
 .product:hover,
 .blog-listing:hover,
-.offer-card:hover {
+.offer-card:hover,
+.member:hover {
   filter: none;
 }
 
