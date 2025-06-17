@@ -1,0 +1,34 @@
+{% assign is_completed = post.completed? %}
+{% assign percent_complete = post.progress_percent %}
+
+<style>
+.product-outline-post.active {
+    font-weight: bold;
+}
+</style>
+
+<a href="{{ post.url }}" class="product-outline-post {% if post.id == current_post_id %} active {% endif %}">
+  <div class="media">
+    <div class="mr">
+      {% if percent_complete > 0 or is_completed %}
+        {% include "icon_progress", is_completed: is_completed, percent_complete: percent_complete %}
+      {% else %}
+        {% if post.video %}
+          {% include "icon_video" %}
+        {% elsif post.assessment %}
+          {% include "icon_assessment" %}
+        {% elsif post.live_session %}
+          {% include "icon_live_session" %}
+        {% else %}
+          {% include "icon_text" %}
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="media-body">
+      {{ post.title }}
+    </div>
+    <div href="#" data-favorited="{{ post.favorited? }}" data-favorite-token="{{ post.favorite_token }}" class="product-outline-favorite {% if post.favorited? %}favorited{% endif %}">
+      <i class="far fa-star"></i>
+    </div>
+  </div>
+</a>

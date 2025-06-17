@@ -1,0 +1,24 @@
+{% assign show_dashboard = true %}
+
+<div class="main-sidebar col flex-fill">
+  {% section "product_title" %}
+  {% section "product_outline" %}
+</div>
+<div class="main-content col flex-fill">
+  <div class="banner-image">
+    {% include "responsive_toggle" %}
+    {% section "dashboard_welcome" %}
+  </div>
+  <div class="main-content-spacer">
+    <div class="row">
+      <div class="col-sm-8">
+        {% assign active = "dashboard" %}
+        {% section "dashboard_tabs" %}
+      </div>
+      <div class="col-sm-4">
+        {% include "search" %}
+      </div>
+    </div>
+    {% section "search_results" %}
+  </div>
+</div>

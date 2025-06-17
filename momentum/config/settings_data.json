@@ -1,0 +1,107 @@
+{
+  "current": {
+    "sections": {
+      "product_body": {
+        "name": "Product Body",
+        "type": "product_body",
+        "blocks": {
+          "1544746514938": {
+            "type": "product_text",
+            "settings": {
+              "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui.</p>"
+            }
+          }
+        },
+        "hidden": "false",
+        "settings": {
+          "alignment": "left"
+        },
+        "block_order": [
+          "1544746514938"
+        ]
+      },
+      "dashboard_tabs": {
+        "name": "Dashboard Tabs",
+        "type": "dashboard_tabs",
+        "hidden": "false",
+        "settings": {
+          "modules": "Categories",
+          "dashboard": "Dashboard",
+          "announcements": "Announcements"
+        }
+      },
+      "product_outline": {
+        "name": "Product Outline",
+        "type": "product_outline",
+        "hidden": "false",
+        "settings": {
+          "show_posts": "true"
+        }
+      },
+      "product_sidebar": {
+        "name": "Product Sidebar",
+        "type": "product_sidebar",
+        "blocks": {
+          "1544746523002": {
+            "type": "product_card",
+            "settings": {
+              "image": "",
+              "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui.</p>",
+              "img_action": "",
+              "link_target": "false"
+            }
+          },
+          "1544746531181": {
+            "type": "product_img",
+            "settings": {
+              "image": "",
+              "img_action": "",
+              "link_target": "false"
+            }
+          }
+        },
+        "hidden": "false",
+        "settings": {
+          "alignment": "left"
+        },
+        "block_order": [
+          "1544746523002",
+          "1544746531181"
+        ]
+      },
+      "dashboard_welcome": {
+        "name": "Dashboard Welcome",
+        "type": "dashboard_welcome",
+        "hidden": "false",
+        "settings": {
+          "again": "Start Course Over",
+          "start": "Start Course",
+          "resume": "Resume Course",
+          "welcome": "Welcome back,",
+          "complete": "Complete",
+          "remaining": "Remaining"
+        }
+      }
+    },
+    "favicon": "",
+    "font_family": "Open Sans",
+    "heading_font_family": "Open Sans",
+    "text_dark": "#30373d",
+    "text_light": "#fff",
+    "primary_color": "#343332",
+    "accent_color": "#ff3e14",
+    "sidebar_background": "#fff",
+    "show_search": "true",
+    "search_text": "Search for something...",
+    "previous_text": "Previous",
+    "next_text": "Next",
+    "language_comment_locked": "Comments Locked",
+    "language_comment_placeholder": "Say Something...",
+    "language_comment_submitting": "submitting",
+    "language_comment_add": "Post Comment",
+    "language_comment_reply": "REPLY",
+    "language_comment_edit": "EDIT",
+    "language_comment_show_more": "Show More",
+    "language_comment_show_more_loading": "Loading More Comments..."
+  }
+}
