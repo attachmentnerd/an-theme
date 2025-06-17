@@ -1,6 +1,6 @@
 /* ==========================================================================
    AN Theme Custom Styles - Attachment Nerd Brand
-   Version: 10.7.0
+   Version: 10.7.1
    Last Updated: 2025-01-16
    ========================================================================== */
 
@@ -148,14 +148,26 @@
 /* Mobile menu content wrapper */
 .header__content--mobile .header__switch-content {
   flex: 1;
-  padding: 0;
+  padding: 80px 24px 40px;
   display: flex;
   flex-direction: column;
+  gap: 0;
+}
+
+/* Ensure all header blocks are vertical */
+.header__content--mobile .header__block {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Clean navigation section */
 .header__content--mobile .link-list {
-  padding: var(--an-space-3xl) var(--an-space-xl) var(--an-space-xl);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 /* Mobile navigation links - Ultra minimal style */
@@ -195,7 +207,9 @@
 /* Mobile dropdowns - Minimal design with arrow */
 .header__content--mobile .dropdown {
   margin: 0;
-  padding: 0 var(--an-space-xl);
+  padding: 0;
+  display: block !important;
+  width: 100% !important;
 }
 
 .header__content--mobile .dropdown .dropdown__trigger {
@@ -260,7 +274,6 @@
 .header__content--mobile .dropdown .dropdown__item a:hover {
   background-color: var(--an-bg-light);
   color: var(--an-text-dark);
-  transform: translateX(4px);
 }
 
 /* Remove dividers for cleaner look */
@@ -270,29 +283,32 @@
 
 /* Mobile CTA section - Minimal button at bottom */
 .header__content--mobile .header__block--cta {
-  padding: var(--an-space-xl);
+  padding: var(--an-space-lg) 0;
   background-color: transparent;
-  margin-top: auto;
-  padding-bottom: var(--an-space-3xl);
+  margin-top: var(--an-space-lg);
+  display: block !important;
+  width: 100% !important;
 }
 
 .header__content--mobile .header__block--cta .btn {
-  display: inline-block;
+  display: block;
+  width: 100%;
   padding: var(--an-space-md) var(--an-space-xl);
-  border: 1px solid #1a1a1a;
+  border: 1px solid var(--an-slate);
   border-radius: 30px;
   background-color: transparent;
-  color: #1a1a1a;
+  color: var(--an-slate);
   font-weight: 400;
   font-size: 16px;
   text-decoration: none;
-  transition: all var(--an-transition-fast);
+  text-align: center;
+  transition: background-color var(--an-transition-fast), color var(--an-transition-fast);
   letter-spacing: -0.3px;
 }
 
 .header__content--mobile .header__block--cta .btn:hover {
-  background-color: #1a1a1a;
-  color: #FAF8F5;
+  background-color: var(--an-slate);
+  color: var(--an-peach);
 }
 
 /* User account section */
@@ -337,7 +353,6 @@
 .header__content--mobile .social-icon:hover {
   background-color: var(--an-primary);
   color: var(--an-text-white);
-  transform: translateY(-2px);
 }
 
 /* Hamburger animation enhancement */
@@ -408,15 +423,16 @@ body.mobile-menu-open {
 
 /* Button improvements - Attachment Nerd Brand */
 .btn {
-  transition: all var(--an-transition-fast);
+  transition: background-color var(--an-transition-fast), color var(--an-transition-fast), border-color var(--an-transition-fast);
+  transform: none !important;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
+  transform: none !important;
 }
 
 .btn:active {
-  transform: translateY(0);
+  transform: none !important;
 }
 
 /* Primary button - Nerd Navy */

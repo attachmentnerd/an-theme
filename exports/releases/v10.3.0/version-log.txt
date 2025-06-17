@@ -1,6 +1,0 @@
-Theme: AN_Website_Theme
-Type: website
-Version: 10.3.0
-Date: 2025-06-17T00:36:36.911Z
-Message: Added modern UI enhancements including improved buttons, forms, loading states, accessibility, and animations
-File: AN_Website_Theme_10.3.0.zip

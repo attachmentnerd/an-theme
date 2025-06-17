@@ -1,6 +1,6 @@
 /* ==========================================================================
    AN Landing Theme Custom Styles - Attachment Nerd Brand
-   Version: 10.7.0
+   Version: 10.7.1
    Last Updated: 2025-01-16
    ========================================================================== */
 
@@ -113,7 +113,15 @@
     padding: 80px 24px 40px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 0;
+  }
+
+  /* Ensure all header blocks are vertical */
+  .header__content--mobile .header__block {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   /* Mobile navigation links */
@@ -121,6 +129,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    padding: 0;
   }
 
   .header__content--mobile .link-list__link {
@@ -137,6 +146,14 @@
 
   .header__content--mobile .link-list__link:hover {
     opacity: 0.7;
+  }
+
+  /* Mobile dropdowns */
+  .header__content--mobile .dropdown {
+    margin: 0;
+    padding: 0;
+    display: block !important;
+    width: 100% !important;
   }
 
   /* Dropdown menu items */
@@ -178,9 +195,18 @@
     opacity: 0.8;
   }
 
+  /* Mobile CTA section */
+  .header__content--mobile .header__block--cta {
+    padding: var(--an-space-lg) 0;
+    margin-top: var(--an-space-lg);
+    display: block !important;
+    width: 100% !important;
+  }
+
   /* Mobile CTA button - minimal style */
   .header__content--mobile .btn {
-    margin-top: 24px;
+    display: block;
+    width: 100%;
     background-color: transparent !important;
     color: var(--an-mobile-text) !important;
     border: 1px solid var(--an-mobile-text) !important;
@@ -189,14 +215,12 @@
     font-size: 16px !important;
     font-weight: 400;
     text-align: center;
-    transition: all var(--an-transition-fast);
+    transition: background-color var(--an-transition-fast), color var(--an-transition-fast);
   }
 
   .header__content--mobile .btn:hover {
     background-color: var(--an-mobile-text) !important;
     color: var(--an-mobile-bg) !important;
-    transform: none;
-    box-shadow: none;
   }
 
   /* Social icons in mobile menu */
@@ -245,16 +269,17 @@
 
 /* Button improvements */
 .btn {
-  transition: all var(--an-transition-fast);
+  transition: background-color var(--an-transition-fast), color var(--an-transition-fast), border-color var(--an-transition-fast);
+  transform: none !important;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--an-shadow-md);
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .btn:active {
-  transform: translateY(0);
+  transform: none !important;
 }
 
 /* Primary button - Nerd Navy */
@@ -354,7 +379,6 @@ textarea:focus {
 
 .feature-card:hover {
   box-shadow: var(--an-shadow-lg);
-  transform: translateY(-4px);
 }
 
 /* ==========================================================================

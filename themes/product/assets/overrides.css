@@ -1,6 +1,6 @@
 /* ==========================================================================
    AN Product Theme Custom Styles - Attachment Nerd Brand
-   Version: 10.7.0
+   Version: 10.7.1
    Last Updated: 2025-01-16
    ========================================================================== */
 
@@ -54,7 +54,6 @@
 
 .product-card:hover {
   box-shadow: var(--an-shadow-lg);
-  transform: translateY(-4px);
 }
 
 /* Category cards */
@@ -154,15 +153,16 @@
 
 /* Button improvements - Attachment Nerd Brand */
 .btn {
-  transition: all var(--an-transition-fast);
+  transition: background-color var(--an-transition-fast), color var(--an-transition-fast), border-color var(--an-transition-fast);
+  transform: none !important;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
+  transform: none !important;
 }
 
 .btn:active {
-  transform: translateY(0);
+  transform: none !important;
 }
 
 /* Primary button - Nerd Navy */
