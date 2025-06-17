@@ -1,7 +1,7 @@
 /* ==========================================================================
    AN Landing Theme Custom Styles - Attachment Nerd Brand
-   Version: 10.7.1
-   Last Updated: 2025-01-16
+   Version: 10.7.2
+   Last Updated: 2025-01-17
    ========================================================================== */
 
 /* Table of Contents
@@ -41,7 +41,473 @@
 .bg-grey { background-color: var(--an-grey); }
 
 /* ==========================================================================
-   2. Landing Page Specific
+   2. Modern Navigation - Clean White/Blue Design
+   ========================================================================== */
+
+/* Modern header styling */
+.header {
+  background-color: #ffffff;
+  box-shadow: none;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  padding: 16px 0;
+}
+
+.header--fixed {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Container alignment */
+.header__container {
+  align-items: center;
+  min-height: 48px;
+}
+
+/* Logo styling */
+.header__logo {
+  margin-right: 48px;
+}
+
+.header__logo img {
+  max-height: 32px;
+  width: auto;
+}
+
+/* Navigation menu styling - Kajabi specific selectors */
+.header .link-list {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header .link-list__item {
+  position: relative;
+  padding: 0;
+}
+
+/* Main navigation links */
+.header .link-list__link,
+.header__content--desktop .link-list__link {
+  color: #1a1a1a !important;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 8px 0 !important;
+  margin: 0 !important;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  position: relative;
+  text-decoration: none !important;
+  display: inline-block;
+  background: none !important;
+}
+
+.header .link-list__link:hover {
+  color: #666666 !important;
+  background: none !important;
+}
+
+/* Dropdown trigger styling */
+.header .dropdown__trigger {
+  color: #1a1a1a !important;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 8px 0 !important;
+  background: none !important;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+  text-decoration: none !important;
+}
+
+.header .dropdown__trigger:hover {
+  color: #666666 !important;
+  background: none !important;
+}
+
+.header .dropdown__trigger::after {
+  content: '▼';
+  font-size: 10px;
+  transition: transform 0.2s ease;
+}
+
+.header .dropdown.active .dropdown__trigger::after {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu styling */
+.header .dropdown__menu {
+  background-color: #ffffff;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 200px;
+  margin-top: 8px;
+}
+
+.header .dropdown__item a {
+  color: #1a1a1a !important;
+  padding: 12px 20px !important;
+  font-size: 15px;
+  display: block;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+}
+
+.header .dropdown__item a:hover {
+  color: #666666 !important;
+  background-color: #f8f8f8;
+}
+
+/* User menu styling */
+.header .user__login a {
+  color: #1a1a1a !important;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 8px 16px !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease;
+}
+
+.header .user__login a:hover {
+  color: #666666 !important;
+}
+
+/* CTA Button - Blue rounded button */
+.header .btn,
+.header__block--cta .btn {
+  background-color: #0066ff !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  display: inline-block !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+}
+
+.header .btn:hover,
+.header__block--cta .btn:hover {
+  background-color: #0052cc !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2) !important;
+}
+
+/* Block spacing adjustments */
+.header__block {
+  margin: 0;
+}
+
+.header__block--menu {
+  flex-grow: 1;
+  margin-right: auto;
+}
+
+.header__block--user {
+  margin-left: 24px;
+}
+
+.header__block--cta {
+  margin-left: 24px;
+}
+
+/* Cart icon styling */
+.header .cart__link {
+  color: #1a1a1a !important;
+  position: relative;
+  padding: 8px;
+  transition: color 0.2s ease;
+}
+
+.header .cart__link:hover {
+  color: #666666 !important;
+}
+
+/* Desktop-only navigation styles */
+@media (min-width: 768px) {
+  /* Ensure dropdown icon transitions work */
+  .header .dropdown__icon {
+    transition: transform 0.2s ease;
+  }
+  
+  .header .dropdown.active .dropdown__icon,
+  .header .dropdown:hover .dropdown__icon {
+    transform: rotate(180deg);
+  }
+}
+
+/* ==========================================================================
+   3. Mobile Navigation - Clean Modern Design
+   ========================================================================== */
+
+/* Mobile menu backdrop - Subtle overlay */
+.header__mobile-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: var(--an-z-backdrop);
+  display: none;
+  opacity: 0;
+  transition: opacity var(--an-transition-smooth);
+}
+
+.header__mobile-backdrop.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Mobile menu container - Clean white design */
+.header__content--mobile {
+  position: fixed !important;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: right 0.3s ease;
+  display: flex !important;
+  flex-direction: column;
+}
+
+.header__content--mobile.active {
+  right: 0;
+}
+
+/* Mobile header - Clean top section */
+.header__mobile-close {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Close button styling - X icon */
+.header__mobile-close .hamburger {
+  margin: 0;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Create X with the hamburger slices */
+.header__mobile-close .hamburger__slice {
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background-color: #1a1a1a;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-1 {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-2 {
+  opacity: 0;
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-3 {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.header__mobile-close .hamburger__slice.hamburger--slice-4 {
+  opacity: 0;
+}
+
+/* Mobile menu content wrapper */
+.header__content--mobile .header__switch-content {
+  flex: 1;
+  padding: 80px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Ensure all header blocks are vertical */
+.header__content--mobile .header__block {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Clean navigation section */
+.header__content--mobile .link-list {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Mobile navigation links - Clean centered style */
+.header__content--mobile .link-list__link {
+  display: block;
+  padding: 12px 0;
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  text-align: center;
+}
+
+.header__content--mobile .link-list__link:hover {
+  color: #666666;
+}
+
+/* Mobile dropdowns - Minimal design with arrow */
+.header__content--mobile .dropdown {
+  margin: 0;
+  padding: 0;
+  display: block !important;
+  width: 100% !important;
+}
+
+.header__content--mobile .dropdown .dropdown__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--an-space-lg) 0;
+  color: #1a1a1a;
+  font-size: 24px;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity var(--an-transition-fast);
+  letter-spacing: -0.5px;
+}
+
+.header__content--mobile .dropdown .dropdown__trigger:hover {
+  opacity: 0.6;
+}
+
+/* Dropdown arrow - minimal chevron */
+.header__content--mobile .dropdown .dropdown__trigger:after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 5L16 12L9 19' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform var(--an-transition-fast);
+  opacity: 0.5;
+}
+
+.header__content--mobile .dropdown.active .dropdown__trigger:after {
+  transform: rotate(90deg);
+}
+
+/* Dropdown menu - Indented style */
+.header__content--mobile .dropdown .dropdown__menu {
+  display: none;
+  background-color: transparent;
+  box-shadow: none;
+  padding: var(--an-space-xs) 0;
+  margin: 0;
+}
+
+.header__content--mobile .dropdown.active .dropdown__menu {
+  display: block;
+}
+
+.header__content--mobile .dropdown .dropdown__item a {
+  display: block;
+  padding: var(--an-space-sm) var(--an-space-lg);
+  margin: 0 var(--an-space-md) 0 calc(var(--an-space-lg) + var(--an-space-md));
+  border-radius: var(--an-radius-sm);
+  font-size: 15px;
+  color: var(--an-text-medium);
+  text-decoration: none;
+  transition: all var(--an-transition-fast);
+}
+
+.header__content--mobile .dropdown .dropdown__item a:hover {
+  background-color: var(--an-bg-light);
+  color: var(--an-text-dark);
+}
+
+/* Remove dividers for cleaner look */
+.header__content--mobile .link-list:not(:last-child)::after {
+  display: none;
+}
+
+/* Mobile CTA section - Minimal button at bottom */
+.header__content--mobile .header__block--cta {
+  padding: 32px 40px;
+  background-color: transparent;
+  margin-top: 16px;
+  display: block !important;
+  width: 100% !important;
+  text-align: center;
+}
+
+.header__content--mobile .header__block--cta .btn {
+  display: inline-block;
+  width: auto;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: #0066ff !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.header__content--mobile .header__block--cta .btn:hover {
+  background-color: #0052cc !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+}
+
+/* User account section */
+.header__content--mobile .header__block--user {
+  padding: var(--an-space-md) var(--an-space-lg);
+}
+
+.header__content--mobile .header__block--user a {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--an-space-sm) 0;
+  color: var(--an-text-medium);
+  font-size: 15px;
+  text-decoration: none;
+  transition: color var(--an-transition-fast);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   3. Landing Page Specific
    ========================================================================== */
 
 /* Landing pages typically don't have mobile menus, but may have simplified nav */
@@ -379,6 +845,249 @@ textarea:focus {
 
 .feature-card:hover {
   box-shadow: var(--an-shadow-lg);
+}
+
+/* ==========================================================================
+   Section: Book Section
+   Added: 2025-01-17
+   ========================================================================== */
+.section--book {
+  padding: var(--an-space-xl) 0;
+  background-color: var(--an-grey);
+  overflow: hidden;
+}
+
+/* Top text styling */
+.book__top-text {
+  text-align: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--an-slate);
+  margin-bottom: var(--an-space-lg);
+  font-weight: 500;
+}
+
+/* Logo row */
+.book__logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--an-space-xl);
+  margin-bottom: var(--an-space-xl);
+  flex-wrap: wrap;
+}
+
+.book__logo {
+  opacity: 0.6;
+  transition: opacity var(--an-transition-fast);
+}
+
+.book__logo:hover {
+  opacity: 1;
+}
+
+.book__logo img {
+  max-height: 30px;
+  width: auto;
+  filter: grayscale(100%);
+  transition: filter var(--an-transition-fast);
+}
+
+.book__logo:hover img {
+  filter: grayscale(0%);
+}
+
+/* Main content layout */
+.book__content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--an-space-xl);
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Quote sections */
+.book__quote {
+  padding: var(--an-space-lg);
+}
+
+.book__quote--left {
+  text-align: right;
+}
+
+.book__quote--right {
+  text-align: left;
+}
+
+/* Star ratings */
+.book__stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: var(--an-space-md);
+}
+
+.book__quote--left .book__stars {
+  justify-content: flex-end;
+}
+
+.book__quote--right .book__stars {
+  justify-content: flex-start;
+}
+
+.book__star {
+  color: var(--an-gold);
+  width: 16px;
+  height: 16px;
+}
+
+/* Quote text */
+.book__quote-text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--an-slate);
+  margin: 0 0 var(--an-space-lg) 0;
+  font-style: italic;
+}
+
+/* Author section */
+.book__author {
+  display: flex;
+  align-items: center;
+  gap: var(--an-space-md);
+}
+
+.book__quote--left .book__author {
+  justify-content: flex-end;
+}
+
+.book__quote--right .book__author {
+  justify-content: flex-start;
+}
+
+.book__author-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.book__author-info {
+  text-align: left;
+}
+
+.book__quote--left .book__author-info {
+  text-align: right;
+}
+
+.book__author-name {
+  font-weight: 600;
+  color: var(--an-navy);
+  margin-bottom: 2px;
+}
+
+.book__author-bio {
+  font-size: 14px;
+  color: var(--an-text-medium);
+  line-height: 1.4;
+}
+
+/* Book image wrapper */
+.book__image-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book__image {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  border-radius: var(--an-radius-md);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge */
+.book__badge {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background-color: var(--an-gold);
+  color: var(--an-navy);
+  padding: var(--an-space-sm) var(--an-space-md);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.2;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 198, 63, 0.3);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991px) {
+  .book__content {
+    grid-template-columns: 1fr;
+    gap: var(--an-space-xl);
+  }
+  
+  .book__quote {
+    text-align: center !important;
+  }
+  
+  .book__stars {
+    justify-content: center !important;
+  }
+  
+  .book__author {
+    justify-content: center !important;
+  }
+  
+  .book__author-info {
+    text-align: left !important;
+  }
+  
+  .book__image-wrapper {
+    order: -1;
+    margin-bottom: var(--an-space-xl);
+  }
+  
+  .book__image {
+    max-width: 280px;
+  }
+  
+  .book__badge {
+    width: 100px;
+    height: 100px;
+    font-size: 11px;
+    top: -15px;
+    right: -15px;
+  }
+}
+
+@media (max-width: 767px) {
+  .book__logos {
+    gap: var(--an-space-lg);
+  }
+  
+  .book__logo img {
+    max-height: 24px;
+  }
+  
+  .book__quote-text {
+    font-size: 16px;
+  }
+  
+  .book__image {
+    max-width: 240px;
+  }
 }
 
 /* ==========================================================================

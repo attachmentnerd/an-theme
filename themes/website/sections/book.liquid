@@ -1,0 +1,237 @@
+{% comment %} Book Section - Website Theme {% endcomment %}
+<div class="section section--book" id="section-{{ section.id }}">
+  <div class="container">
+    
+    {% comment %} Top Text {% endcomment %}
+    {% if section.settings.top_text != blank %}
+      <div class="book__top-text">
+        {{ section.settings.top_text }}
+      </div>
+    {% endif %}
+    
+    {% comment %} Logo Row {% endcomment %}
+    <div class="book__logos">
+      {% for block in section.blocks %}
+        {% if block.type == 'logo' %}
+          <div class="book__logo" {{ block.shopify_attributes }}>
+            {% if block.settings.logo_image != blank %}
+              <img src="{{ block.settings.logo_image | img_url: '200x' }}" 
+                   alt="{{ block.settings.logo_alt_text | default: 'Logo' }}"
+                   loading="lazy">
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    {% comment %} Main Content {% endcomment %}
+    <div class="book__content">
+      
+      {% comment %} Left Quote {% endcomment %}
+      <div class="book__quote book__quote--left">
+        <div class="book__stars">
+          {% for i in (1..5) %}
+            <svg class="book__star" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/>
+            </svg>
+          {% endfor %}
+        </div>
+        
+        {% if section.settings.left_quote != blank %}
+          <blockquote class="book__quote-text">
+            "{{ section.settings.left_quote }}"
+          </blockquote>
+        {% endif %}
+        
+        {% if section.settings.left_author_image != blank or section.settings.left_author_name != blank %}
+          <div class="book__author">
+            {% if section.settings.left_author_image != blank %}
+              <img src="{{ section.settings.left_author_image | img_url: '60x60' }}" 
+                   alt="{{ section.settings.left_author_name | default: 'Author' }}"
+                   class="book__author-image"
+                   loading="lazy">
+            {% endif %}
+            <div class="book__author-info">
+              {% if section.settings.left_author_name != blank %}
+                <div class="book__author-name">{{ section.settings.left_author_name }}</div>
+              {% endif %}
+              {% if section.settings.left_author_bio != blank %}
+                <div class="book__author-bio">{{ section.settings.left_author_bio }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      
+      {% comment %} Center Book Image {% endcomment %}
+      <div class="book__image-wrapper">
+        {% if section.settings.book_image != blank %}
+          <img src="{{ section.settings.book_image | img_url: 'master' }}" 
+               alt="{{ section.settings.book_alt_text | default: 'Book cover' }}"
+               class="book__image"
+               loading="lazy">
+        {% endif %}
+        
+        {% if section.settings.badge_text != blank %}
+          <div class="book__badge">
+            {{ section.settings.badge_text }}
+          </div>
+        {% endif %}
+      </div>
+      
+      {% comment %} Right Quote {% endcomment %}
+      <div class="book__quote book__quote--right">
+        <div class="book__stars">
+          {% for i in (1..5) %}
+            <svg class="book__star" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/>
+            </svg>
+          {% endfor %}
+        </div>
+        
+        {% if section.settings.right_quote != blank %}
+          <blockquote class="book__quote-text">
+            "{{ section.settings.right_quote }}"
+          </blockquote>
+        {% endif %}
+        
+        {% if section.settings.right_author_image != blank or section.settings.right_author_name != blank %}
+          <div class="book__author">
+            {% if section.settings.right_author_image != blank %}
+              <img src="{{ section.settings.right_author_image | img_url: '60x60' }}" 
+                   alt="{{ section.settings.right_author_name | default: 'Author' }}"
+                   class="book__author-image"
+                   loading="lazy">
+            {% endif %}
+            <div class="book__author-info">
+              {% if section.settings.right_author_name != blank %}
+                <div class="book__author-name">{{ section.settings.right_author_name }}</div>
+              {% endif %}
+              {% if section.settings.right_author_bio != blank %}
+                <div class="book__author-bio">{{ section.settings.right_author_bio }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Book Section",
+  "elements": [
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "Top Text",
+      "default": "THE INSTANT WORLDWIDE BESTSELLER"
+    },
+    {
+      "type": "image_picker",
+      "id": "book_image",
+      "label": "Book Image"
+    },
+    {
+      "type": "text",
+      "id": "book_alt_text",
+      "label": "Book Alt Text",
+      "default": "Book cover"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "OVER 20 MILLION COPIES SOLD"
+    },
+    {
+      "type": "header",
+      "content": "Left Quote"
+    },
+    {
+      "type": "textarea",
+      "id": "left_quote",
+      "label": "Left Quote Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_author_image",
+      "label": "Left Author Image"
+    },
+    {
+      "type": "text",
+      "id": "left_author_name",
+      "label": "Left Author Name"
+    },
+    {
+      "type": "text",
+      "id": "left_author_bio",
+      "label": "Left Author Bio"
+    },
+    {
+      "type": "header",
+      "content": "Right Quote"
+    },
+    {
+      "type": "textarea",
+      "id": "right_quote",
+      "label": "Right Quote Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_author_image",
+      "label": "Right Author Image"
+    },
+    {
+      "type": "text",
+      "id": "right_author_name",
+      "label": "Right Author Name"
+    },
+    {
+      "type": "text",
+      "id": "right_author_bio",
+      "label": "Right Author Bio"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "elements": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "logo_alt_text",
+          "label": "Logo Alt Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Book Section",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -302,6 +302,15 @@ Remember: The CSS in these themes is tightly integrated with Kajabi's platform. 
 
 ## Version History
 
+### v10.7.2 (2025-01-17)
+- **NAVIGATION FIX**: Fixed desktop navigation styling issues
+- Corrected CSS selectors to use Kajabi's `.link-list__link` class structure
+- Changed overrides.css loading from async to synchronous for proper cascade
+- Added modern hover effects with underline animations on navigation links
+- Enhanced dropdown menu styling with teal accent colors
+- Fixed specificity issues by targeting both `.header` and `.header__content--desktop`
+- Applied same fixes to both website and landing themes
+
 ### v10.7.0 (2025-01-16)
 - **BRAND UPDATE**: Implemented Attachment Nerd brand colors across all themes
 - Updated CSS variables to use brand palette (Navy, Teal, Coral, Gold, Plum, etc.)
@@ -315,8 +324,86 @@ Remember: The CSS in these themes is tightly integrated with Kajabi's platform. 
 - Large navigation links (24px) for better mobile UX
 - Minimal rounded button styling
 
+### v10.12.1 (2025-01-17)
+- **BOOK SECTION**: Added new book section for testimonials and social proof
+- Implemented center book image with quotes on both sides
+- Added author avatars, names, and bios for testimonials
+- Included logo row for press/partner logos with hover effects
+- **IMPORTANT FIX**: Sections in Kajabi require "category" field in presets to appear in editor
+- Applied to both website and landing themes
+
 ### v10.5.2 (2025-01-16)  
 - Established CSS Variables design system
 - Created organized overrides.css structure
 - Added comprehensive documentation (CLAUDE.md)
 - Fixed CSS breaking issues from improper file editing
+
+## Kajabi Section Development
+
+### Creating New Sections
+
+When creating new sections for Kajabi themes, follow these requirements:
+
+1. **File Location**: Place section files in `/themes/[theme-name]/sections/`
+
+2. **Schema Structure**: Kajabi uses `"elements"` instead of `"settings"`:
+   ```liquid
+   {% schema %}
+   {
+     "name": "Section Name",
+     "elements": [
+       {
+         "type": "text",
+         "id": "heading",
+         "label": "Heading"
+       }
+     ],
+     "blocks": [
+       {
+         "type": "block_type",
+         "name": "Block Name",
+         "elements": [
+           {
+             "type": "text",
+             "id": "text",
+             "label": "Text"
+           }
+         ]
+       }
+     ],
+     "presets": [
+       {
+         "name": "Section Name",
+         "category": "Content",  // REQUIRED for section to appear in editor!
+         "settings": {}
+       }
+     ]
+   }
+   {% endschema %}
+   ```
+
+3. **Required Fields for Visibility**:
+   - `"presets"` array must exist
+   - Each preset MUST have a `"category"` field
+   - Valid categories: "Content", "Hero", "Features", etc.
+
+4. **Common Gotchas**:
+   - Missing `"category"` = section won't appear in editor
+   - Using `"settings"` instead of `"elements"` = incompatible section
+   - Not including section in theme export = section missing
+
+### Section Compatibility
+
+Kajabi has specific rules for section compatibility:
+- **Same theme type only**: Website sections work on website pages, landing on landing pages
+- **Saved sections**: Can only be reused within same theme type
+- **Cross-theme sharing**: Not supported between different theme types (e.g., Encore to Premiere)
+
+### Debugging Missing Sections
+
+If a section doesn't appear in the Kajabi editor:
+1. Check the schema has `"presets"` array
+2. Verify each preset has a `"category"` field
+3. Confirm using `"elements"` not `"settings"`
+4. Re-export the theme after changes
+5. Clear browser cache and reload Kajabi editor
