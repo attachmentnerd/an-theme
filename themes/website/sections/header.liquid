@@ -179,7 +179,7 @@
         color: {{ section.settings.mobile_header_text_color }} !important;
       }
     {% endif %}
-    .header .hamburger__line {
+    .header .hamburger__slices .hamburger__slice {
       {% if section.settings.hamburger_color != blank %}
         background-color: {{ section.settings.hamburger_color  }};
       {% else %}
@@ -222,7 +222,7 @@
         color: {{ section.settings.sticky_text_color }} !important;
       }
     {% endif %}
-    .header.header--fixed .hamburger__line {
+    .header.header--fixed .hamburger__slice {
       {% if section.settings.sticky_hamburger_color != blank %}
         background-color: {{ section.settings.sticky_hamburger_color }};
       {% else %}
@@ -277,117 +277,26 @@
             {% endcase %}
           {% endfor %}
           {% if show_hamburger %}
-            <button class="hamburger hidden--desktop" kjb-settings-id="{{ 'hamburger_color' | settings_id: section: section }}" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-menu">
-              <span class="hamburger__line"></span>
-              <span class="hamburger__line"></span>
-              <span class="hamburger__line"></span>
-            </button>
+            <div class="hamburger hidden--desktop" kjb-settings-id="{{ 'hamburger_color' | settings_id: section: section }}">
+              <div class="hamburger__slices">
+                <div class="hamburger__slice hamburger--slice-1"></div>
+                <div class="hamburger__slice hamburger--slice-2"></div>
+                <div class="hamburger__slice hamburger--slice-3"></div>
+                <div class="hamburger__slice hamburger--slice-4"></div>
+              </div>
+            </div>
           {% endif %}
           {% if section.settings.cart == true %}
             {% include "header_block_cart" %}
           {% endif %}
         </div>
       </div>
-      <div class="header__mobile-backdrop"></div>
-      <div class="header__content header__content--mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
-        <div class="header__mobile-close">
-          <button class="hamburger hamburger--opened" aria-label="Close mobile menu">
-            <span class="hamburger__line"></span>
-            <span class="hamburger__line"></span>
-            <span class="hamburger__line"></span>
-          </button>
-        </div>
-        <nav class="header__nav--mobile">
-          <div class="header__switch-content header__spacer"></div>
-        </nav>
+      <div class="header__content header__content--mobile">
+        <div class="header__switch-content header__spacer"></div>
       </div>
     </div>
   {% endif %}
 </header>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const hamburger = document.querySelector('.hamburger');
-  const mobileMenu = document.querySelector('.header__content--mobile');
-  const mobileBackdrop = document.querySelector('.header__mobile-backdrop');
-  const mobileClose = document.querySelector('.header__mobile-close .hamburger');
-  const body = document.body;
-  
-  function openMobileMenu() {
-    mobileMenu.classList.add('active');
-    mobileBackdrop.style.display = 'block';
-    setTimeout(() => mobileBackdrop.classList.add('active'), 10);
-    body.style.overflow = 'hidden';
-    hamburger.classList.add('hamburger--opened');
-    hamburger.setAttribute('aria-expanded', 'true');
-  }
-  
-  function closeMobileMenu() {
-    mobileMenu.classList.remove('active');
-    mobileBackdrop.classList.remove('active');
-    setTimeout(() => mobileBackdrop.style.display = 'none', 300);
-    body.style.overflow = '';
-    hamburger.classList.remove('hamburger--opened');
-    hamburger.setAttribute('aria-expanded', 'false');
-  }
-  
-  // Enhanced hamburger click handler
-  if (hamburger) {
-    hamburger.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (mobileMenu.classList.contains('active')) {
-        closeMobileMenu();
-      } else {
-        openMobileMenu();
-      }
-    });
-  }
-  
-  // Close button handler
-  if (mobileClose) {
-    mobileClose.addEventListener('click', closeMobileMenu);
-  }
-  
-  // Backdrop click handler
-  if (mobileBackdrop) {
-    mobileBackdrop.addEventListener('click', closeMobileMenu);
-  }
-  
-  // Close on escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-      closeMobileMenu();
-    }
-  });
-  
-  // Handle dropdown menus in mobile
-  const mobileDropdowns = mobileMenu.querySelectorAll('.dropdown__trigger');
-  mobileDropdowns.forEach(trigger => {
-    trigger.addEventListener('click', function(e) {
-      if (window.innerWidth <= 767) {
-        e.preventDefault();
-        e.stopPropagation();
-        const dropdown = this.nextElementSibling;
-        const isActive = dropdown.classList.contains('active');
-        
-        // Close all other dropdowns
-        mobileMenu.querySelectorAll('.dropdown__menu.active').forEach(menu => {
-          menu.classList.remove('active');
-        });
-        mobileMenu.querySelectorAll('.dropdown__trigger.active').forEach(t => {
-          t.classList.remove('active');
-        });
-        
-        // Toggle current dropdown
-        if (!isActive) {
-          dropdown.classList.add('active');
-          this.classList.add('active');
-        }
-      }
-    });
-  });
-});
-</script>
 
 {% schema %}
 {
