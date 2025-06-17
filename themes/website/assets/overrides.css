@@ -1,1 +1,302 @@
-/* Custom Styles */
+/* ==========================================================================
+   AN Theme Custom Styles
+   Version: 10.5.2
+   Last Updated: 2024-01-16
+   ========================================================================== */
+
+/* Table of Contents
+   ========================================================================== 
+   1. Design System Extensions
+   2. Mobile Navigation
+   3. Enhanced Buttons
+   4. Form Improvements  
+   5. Custom Sections
+   6. Utility Classes
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Design System Extensions
+   ========================================================================== */
+
+/* Additional color utilities */
+.text-primary { color: var(--an-primary); }
+.text-primary-hover:hover { color: var(--an-primary-hover); }
+.bg-primary { background-color: var(--an-primary); }
+.bg-light { background-color: var(--an-bg-light); }
+
+/* ==========================================================================
+   2. Mobile Navigation
+   ========================================================================== */
+
+/* Mobile menu backdrop */
+.header__mobile-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--an-mobile-backdrop);
+  z-index: var(--an-z-backdrop);
+  display: none;
+  opacity: 0;
+  transition: opacity var(--an-transition-smooth);
+}
+
+.header__mobile-backdrop.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Mobile menu container */
+.header__content--mobile {
+  position: fixed !important;
+  top: 0;
+  right: -100%;
+  width: var(--an-mobile-menu-width);
+  max-width: var(--an-mobile-menu-max);
+  height: 100%;
+  background-color: var(--an-bg-white);
+  z-index: var(--an-z-mobile-menu);
+  overflow-y: auto;
+  transition: right var(--an-transition-smooth);
+  box-shadow: var(--an-mobile-shadow);
+  display: block !important;
+}
+
+.header__content--mobile.active {
+  right: 0;
+}
+
+/* Mobile close button */
+.header__mobile-close {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--an-space-md) var(--an-space-lg);
+  border-bottom: 1px solid var(--an-border);
+}
+
+.header__mobile-close .hamburger {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Hamburger improvements */
+.hamburger {
+  transition: opacity var(--an-transition-fast);
+}
+
+.hamburger:hover {
+  opacity: 0.7;
+}
+
+/* Mobile menu content */
+.header__content--mobile .header__switch-content {
+  padding: 0;
+}
+
+/* Mobile navigation links */
+.header__content--mobile .link-list__link {
+  padding: var(--an-space-md) var(--an-space-lg);
+  display: block;
+  border-bottom: 1px solid var(--an-border-light);
+  transition: all var(--an-transition-fast);
+  position: relative;
+  color: var(--an-text-dark);
+}
+
+.header__content--mobile .link-list__link:hover {
+  background-color: var(--an-bg-light);
+  padding-left: calc(var(--an-space-lg) + var(--an-space-xs));
+  color: var(--an-primary);
+  text-decoration: none;
+}
+
+/* Mobile link accent bar */
+.header__content--mobile .link-list__link:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background-color: var(--an-primary);
+  transition: height var(--an-transition-fast);
+}
+
+.header__content--mobile .link-list__link:hover:after {
+  height: 60%;
+}
+
+/* Mobile dropdowns */
+.header__content--mobile .dropdown {
+  border-bottom: 1px solid var(--an-border-light);
+}
+
+.header__content--mobile .dropdown .dropdown__trigger {
+  padding: var(--an-space-md) var(--an-space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--an-text-dark);
+}
+
+.header__content--mobile .dropdown .dropdown__trigger:after {
+  content: '+';
+  font-size: 20px;
+  font-weight: 300;
+  transition: transform var(--an-transition-smooth);
+  color: var(--an-text-medium);
+}
+
+.header__content--mobile .dropdown.active .dropdown__trigger:after {
+  transform: rotate(45deg);
+}
+
+.header__content--mobile .dropdown .dropdown__menu {
+  background-color: var(--an-bg-light);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.header__content--mobile .dropdown .dropdown__item a {
+  padding: calc(var(--an-space-sm) + var(--an-space-xs)) var(--an-space-lg) calc(var(--an-space-sm) + var(--an-space-xs)) calc(var(--an-space-xl) + var(--an-space-sm));
+  font-size: 14px;
+  border-bottom: 1px solid var(--an-border);
+  color: var(--an-text-medium);
+}
+
+.header__content--mobile .dropdown .dropdown__item:last-child a {
+  border-bottom: none;
+}
+
+.header__content--mobile .dropdown .dropdown__item a:hover {
+  color: var(--an-primary);
+  background-color: var(--an-bg-lighter);
+}
+
+/* Mobile CTA area */
+.header__content--mobile .header__block--cta {
+  padding: var(--an-space-lg);
+  border-top: 1px solid var(--an-border);
+  margin-top: auto;
+}
+
+.header__content--mobile .header__block--cta .btn {
+  display: block;
+  text-align: center;
+  padding: calc(var(--an-space-sm) + var(--an-space-xs)) var(--an-space-lg);
+  border-radius: var(--an-radius-md);
+  background-color: var(--an-primary);
+  color: var(--an-text-white);
+  transition: all var(--an-transition-fast);
+}
+
+.header__content--mobile .header__block--cta .btn:hover {
+  background-color: var(--an-primary-hover);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Prevent body scroll when menu is open */
+body.mobile-menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Z-index hierarchy */
+.header {
+  z-index: var(--an-z-header);
+}
+
+/* Mobile-specific header adjustments */
+@media (max-width: 767px) {
+  .header__content--mobile {
+    display: block !important;
+  }
+}
+
+/* Desktop - hide mobile elements */
+@media (min-width: 768px) {
+  .header__mobile-backdrop {
+    display: none !important;
+  }
+  
+  .header__content--mobile {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   3. Enhanced Buttons
+   ========================================================================== */
+
+/* Button improvements from previous version */
+.btn {
+  transition: all var(--an-transition-fast);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   4. Form Improvements  
+   ========================================================================== */
+
+/* Form field focus states */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+textarea:focus {
+  outline: 2px solid var(--an-primary);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   5. Custom Sections
+   ========================================================================== */
+
+/* Full Width CTA Section */
+.full-width-cta {
+  /* Styles will be added when section is implemented */
+}
+
+/* ==========================================================================
+   6. Utility Classes
+   ========================================================================== */
+
+/* Spacing utilities */
+.mt-xs { margin-top: var(--an-space-xs); }
+.mt-sm { margin-top: var(--an-space-sm); }
+.mt-md { margin-top: var(--an-space-md); }
+.mt-lg { margin-top: var(--an-space-lg); }
+.mt-xl { margin-top: var(--an-space-xl); }
+
+.mb-xs { margin-bottom: var(--an-space-xs); }
+.mb-sm { margin-bottom: var(--an-space-sm); }
+.mb-md { margin-bottom: var(--an-space-md); }
+.mb-lg { margin-bottom: var(--an-space-lg); }
+.mb-xl { margin-bottom: var(--an-space-xl); }
+
+/* Shadow utilities */
+.shadow-sm { box-shadow: var(--an-shadow-sm); }
+.shadow-md { box-shadow: var(--an-shadow-md); }
+.shadow-lg { box-shadow: var(--an-shadow-lg); }
+.shadow-xl { box-shadow: var(--an-shadow-xl); }
+
+/* Radius utilities */
+.rounded-sm { border-radius: var(--an-radius-sm); }
+.rounded-md { border-radius: var(--an-radius-md); }
+.rounded-lg { border-radius: var(--an-radius-lg); }
+.rounded-xl { border-radius: var(--an-radius-xl); }
+.rounded-full { border-radius: var(--an-radius-full); }

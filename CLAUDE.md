@@ -11,27 +11,73 @@ The project contains three distinct themes:
 
 ## CSS Architecture
 
-### 1. Main Styles File
-Each theme has a primary `styles.scss.liquid` file that contains:
-- AOS (Animate On Scroll) animation definitions at the beginning
-- Core theme styles
-- Component-specific styles
-- Responsive breakpoints
+### Overview
+We use a **hybrid CSS Variables + organized overrides.css** approach for maintainable, scalable styling across all themes.
 
-### 2. CSS Naming Conventions
+### 1. CSS Variables Design System
+All themes include CSS custom properties defined in header.liquid:
+```css
+:root {
+  /* Core Colors */
+  --an-primary: #4F46E5;
+  --an-primary-hover: #4338CA;
+  
+  /* Spacing System */
+  --an-space-sm: 8px;
+  --an-space-md: 16px;
+  --an-space-lg: 24px;
+  
+  /* And more... */
+}
+```
+
+**Benefits:**
+- Consistent design tokens across themes
+- Easy to update globally
+- Works with Kajabi's platform
+- No build process required
+
+### 2. File Structure
+```
+styles.scss.liquid   - Main theme styles (DO NOT EDIT - compiled by Kajabi)
+overrides.css       - Custom styles using CSS variables (EDIT THIS)
+global_custom_css   - User settings CSS from theme editor
+```
+
+### 3. overrides.css Organization
+```css
+/* ==========================================================================
+   AN Theme Custom Styles
+   Version: X.X.X
+   ========================================================================== */
+
+/* Table of Contents
+   1. Design System Extensions
+   2. Mobile Navigation
+   3. Enhanced Buttons
+   4. Form Improvements
+   5. Custom Sections
+   6. Utility Classes
+*/
+```
+
+### 4. CSS Naming Conventions
 The themes use **BEM-like naming** with Kajabi-specific patterns:
 - Block: `.header`, `.section`, `.block`
 - Element: `.header__content`, `.header__nav`, `.block__title`
 - Modifier: `.header--fixed`, `.btn--primary`, `.hidden--mobile`
 - Special: `.hamburger--slice-1` (numbered variants)
 
-### 3. Liquid Integration
-CSS files use Liquid templating for dynamic styles:
-```liquid
-.header {
-  {% if section.settings.background_color != blank %}
-    background-color: {{ section.settings.background_color }};
-  {% endif %}
+### 5. Adding New Sections
+When creating new sections, add styles to overrides.css:
+```css
+/* ==========================================================================
+   Section: [Section Name]
+   Added: [Date]
+   ========================================================================== */
+.section-name {
+  padding: var(--an-space-xl) 0;
+  background: var(--an-bg-light);
 }
 ```
 
@@ -68,9 +114,11 @@ Color settings are controlled via Liquid variables:
 
 ## CSS Load Order
 
-1. `styles.scss.liquid` - Main theme styles (compiled)
-2. `overrides.css` - Custom user styles (empty by default)
+1. `styles.scss.liquid` - Main theme styles (compiled - DO NOT EDIT DIRECTLY)
+2. `overrides.css` - Custom user styles (USE THIS FOR CUSTOM CSS)
 3. Inline `<style>` blocks in section files
+
+**⚠️ IMPORTANT**: Never append CSS directly to styles.scss.liquid as it's a compiled file. Always use overrides.css for custom CSS additions.
 
 ## Responsive Design
 
@@ -84,22 +132,58 @@ Color settings are controlled via Liquid variables:
 - `.hidden--desktop` - Hidden on desktop
 - `.hidden--tablet` - Hidden on tablet
 
+## CSS Variable Reference
+
+### Color System
+```css
+--an-primary: #4F46E5;          /* Main brand color */
+--an-primary-hover: #4338CA;    /* Hover state */
+--an-text-dark: #1F2937;        /* Primary text */
+--an-text-medium: #4B5563;      /* Secondary text */
+--an-bg-light: #F9FAFB;         /* Light backgrounds */
+--an-border: #E5E7EB;           /* Border color */
+```
+
+### Spacing System
+```css
+--an-space-xs: 4px;   /* Tight spacing */
+--an-space-sm: 8px;   /* Small spacing */
+--an-space-md: 16px;  /* Default spacing */
+--an-space-lg: 24px;  /* Large spacing */
+--an-space-xl: 32px;  /* Extra large */
+```
+
+### Usage Example
+```css
+.my-section {
+  padding: var(--an-space-xl) 0;
+  background: var(--an-bg-light);
+  border-top: 1px solid var(--an-border);
+}
+
+.my-section__title {
+  color: var(--an-text-dark);
+  margin-bottom: var(--an-space-md);
+}
+```
+
 ## Best Practices
 
 ### DO:
-1. **Test on multiple devices** before deploying CSS changes
-2. **Use existing class patterns** when adding new components
-3. **Maintain the 4-slice hamburger structure**
-4. **Use Liquid variables** for colors that users can customize
-5. **Add styles to the END of files** to avoid conflicts
-6. **Use specific selectors** to avoid unintended cascade effects
+1. **Use CSS variables** for all colors, spacing, and common values
+2. **Add new styles to overrides.css** with proper section comments
+3. **Test on multiple devices** before deploying CSS changes
+4. **Maintain the 4-slice hamburger structure**
+5. **Document new sections** with date and purpose
+6. **Use semantic variable names** (e.g., `--an-primary` not `--blue`)
 
 ### DON'T:
-1. **Don't modify hamburger menu structure** without extensive testing
-2. **Don't change existing class names** - add new ones if needed
-3. **Don't remove Liquid conditionals** around styles
-4. **Don't use `!important`** unless absolutely necessary
-5. **Don't modify AOS animation definitions** at the beginning of files
+1. **Don't edit styles.scss.liquid** - it's compiled by Kajabi
+2. **Don't append to files with cat >>** - can break CSS
+3. **Don't modify hamburger menu structure** without extensive testing
+4. **Don't use hard-coded colors** - use CSS variables
+5. **Don't use `!important`** unless absolutely necessary
+6. **Don't forget to test** in Kajabi's preview mode
 
 ## Version Management
 
@@ -148,6 +232,33 @@ When making CSS changes:
 - No hamburger menu implementation
 - Course-specific components
 
+## Cross-Theme CSS Management
+
+### Implementing Changes Across All Themes
+
+1. **CSS Variables** - Copy the `:root` block to all theme headers:
+   - `/themes/website/sections/header.liquid`
+   - `/themes/landing/sections/header.liquid`
+   - `/themes/product/sections/header.liquid` (if it has a header)
+
+2. **overrides.css** - Each theme has its own, but use consistent structure:
+   ```
+   themes/website/assets/overrides.css
+   themes/landing/assets/overrides.css
+   themes/product/assets/overrides.css
+   ```
+
+3. **Shared Styles** - For truly universal styles, consider:
+   - Creating a shared snippet that all themes include
+   - Maintaining consistent section numbers in overrides.css
+
+### CSS Workflow
+
+1. **Development**: Work in website theme first
+2. **Testing**: Validate in Kajabi preview
+3. **Propagation**: Copy tested changes to other themes
+4. **Version**: Update all theme versions together
+
 ## Testing Checklist
 
 Before deploying CSS changes:
@@ -158,5 +269,8 @@ Before deploying CSS changes:
 - [ ] Validate in Kajabi theme editor
 - [ ] Check for console errors
 - [ ] Test with different color settings
+- [ ] Verify CSS variables are loading
+- [ ] Check overrides.css is applied correctly
+- [ ] Test on actual mobile devices
 
 Remember: The CSS in these themes is tightly integrated with Kajabi's platform. Always test thoroughly in the Kajabi environment before releasing changes.
