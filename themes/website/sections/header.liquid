@@ -291,12 +291,109 @@
           {% endif %}
         </div>
       </div>
+      <div class="header__mobile-backdrop"></div>
       <div class="header__content header__content--mobile">
+        <div class="header__mobile-close">
+          <div class="hamburger hamburger--close">
+            <div class="hamburger__slices">
+              <div class="hamburger__slice hamburger--slice-1"></div>
+              <div class="hamburger__slice hamburger--slice-2"></div>
+              <div class="hamburger__slice hamburger--slice-3"></div>
+              <div class="hamburger__slice hamburger--slice-4"></div>
+            </div>
+          </div>
+        </div>
         <div class="header__switch-content header__spacer"></div>
       </div>
     </div>
   {% endif %}
 </header>
+
+<script>
+// Enhanced mobile menu functionality
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var hamburger = document.querySelector('.hamburger');
+    var mobileMenu = document.querySelector('.header__content--mobile');
+    var mobileBackdrop = document.querySelector('.header__mobile-backdrop');
+    var mobileClose = document.querySelector('.header__mobile-close .hamburger');
+    var body = document.body;
+    
+    if (!hamburger || !mobileMenu) return;
+    
+    // Override the existing hamburger click handler
+    var existingHandler = hamburger.onclick;
+    hamburger.onclick = null;
+    
+    function openMobileMenu() {
+      mobileMenu.classList.add('active');
+      mobileBackdrop.style.display = 'block';
+      setTimeout(function() {
+        mobileBackdrop.classList.add('active');
+      }, 10);
+      body.classList.add('mobile-menu-open');
+      hamburger.classList.add('hamburger--opened');
+    }
+    
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('active');
+      mobileBackdrop.classList.remove('active');
+      setTimeout(function() {
+        mobileBackdrop.style.display = 'none';
+      }, 300);
+      body.classList.remove('mobile-menu-open');
+      hamburger.classList.remove('hamburger--opened');
+    }
+    
+    // New hamburger click handler
+    hamburger.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+    
+    // Close button handler
+    if (mobileClose) {
+      mobileClose.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMobileMenu();
+      });
+    }
+    
+    // Backdrop click handler
+    if (mobileBackdrop) {
+      mobileBackdrop.addEventListener('click', closeMobileMenu);
+    }
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      }
+    });
+    
+    // Handle dropdown menus in mobile
+    var mobileDropdowns = mobileMenu.querySelectorAll('.dropdown');
+    mobileDropdowns.forEach(function(dropdown) {
+      var trigger = dropdown.querySelector('.dropdown__trigger');
+      if (trigger) {
+        trigger.addEventListener('click', function(e) {
+          if (window.innerWidth <= 767) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
+          }
+        });
+      }
+    });
+  });
+})();
+</script>
 
 {% schema %}
 {

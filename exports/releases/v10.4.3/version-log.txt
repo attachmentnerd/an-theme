@@ -1,6 +1,6 @@
-Theme: AN_Product_Theme
-Type: product
+Theme: AN_Website_Theme
+Type: website
 Version: 10.4.3
-Date: 2025-06-17T01:38:00.664Z
+Date: 2025-06-17T01:43:15.904Z
 Message: No message provided
-File: AN_Product_Theme_10.4.3.zip
+File: AN_Website_Theme_10.4.3.zip
