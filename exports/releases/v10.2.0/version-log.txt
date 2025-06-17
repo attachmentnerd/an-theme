@@ -1,6 +1,6 @@
-Theme: AN_Website_Theme
-Type: website
+Theme: AN_Product_Theme
+Type: product
 Version: 10.2.0
-Date: 2025-06-17T00:16:08.346Z
-Message: Enhanced card components with modern shadows and hover effects, improved navigation styling
-File: AN_Website_Theme_10.2.0.zip
+Date: 2025-06-17T00:42:43.491Z
+Message: Added UI enhancements: forms, accessibility, loading states, and animations
+File: AN_Product_Theme_10.2.0.zip
