@@ -1,0 +1,101 @@
+{% comment %}
+  Utility-First Hero Section
+  Demonstrates how to use utility classes with Kajabi settings
+{% endcomment %}
+
+{% assign bg_class = '' %}
+{% assign text_class = '' %}
+
+{% comment %}Map common color settings to utility classes{% endcomment %}
+{% if section.settings.background_color == '#1A2D4E' %}
+  {% assign bg_class = 'section-navy' %}
+{% elsif section.settings.background_color == '#2AB3B1' %}
+  {% assign bg_class = 'section-teal' %}
+{% elsif section.settings.background_color == '#F57C6F' %}
+  {% assign bg_class = 'section-coral' %}
+{% elsif section.settings.background_color == '#FFF4F0' %}
+  {% assign bg_class = 'section-peach' %}
+{% elsif section.settings.background_color == '#F8F7F5' %}
+  {% assign bg_class = 'section-grey' %}
+{% endif %}
+
+<section class="utility-hero {{ bg_class }} py-5 position-relative overflow-hidden"
+         {% unless bg_class %}style="background-color: {{ section.settings.background_color }};"{% endunless %}>
+  <div class="container">
+    <div class="max-w-xl mx-auto text-center">
+      {% if section.settings.eyebrow %}
+        <p class="text-sm uppercase tracking-wide opacity-75 mb-2">
+          {{ section.settings.eyebrow }}
+        </p>
+      {% endif %}
+      
+      {% if section.settings.heading %}
+        <h1 class="text-4xl font-bold mb-3">
+          {{ section.settings.heading }}
+        </h1>
+      {% endif %}
+      
+      {% if section.settings.description %}
+        <p class="text-lg leading-relaxed mb-4 opacity-75">
+          {{ section.settings.description }}
+        </p>
+      {% endif %}
+      
+      {% if section.settings.button_text %}
+        <a href="{{ section.settings.button_url }}" 
+           class="btn btn-coral hover-lift">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Utility Hero",
+  "elements": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome to Your Success"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#1A2D4E"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "text",
+      "id": "button_url",
+      "label": "Button URL",
+      "default": "#"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Utility Hero",
+      "category": "Hero",
+      "description": "Hero section using utility classes"
+    }
+  ]
+}
+{% endschema %}

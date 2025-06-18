@@ -49,3 +49,22 @@ Each theme's `settings_schema.json` must contain exactly these 6 fields in the t
 ## Export Naming
 Export files follow this pattern: `{THEME_NAME}_{VERSION}.zip`
 - Example: `AN_Website_Theme_10.0.0.zip`
+
+## Version History
+
+### v11.1.2 (2025-01-18)
+- **MOBILE MENU FIX**: Fixed missing mobile menu functionality
+  - Updated mobile menu CSS to work with `.active` class from JavaScript
+  - Added mobile backdrop and close button functionality
+  - Fixed mobile menu content not displaying header blocks
+  - Enhanced mobile menu slide-in animation from right side
+  - Fixed body scroll lock when mobile menu is open
+  - Website and Landing themes updated to v10.1.2
+
+### v11.1.0 (2025-01-18)
+- **UNIFIED HEADER**: Consolidated header implementation
+  - Removed redundant `header_landing.liquid` variant
+  - Single shared `header.liquid` now serves both Website and Landing themes
+  - Maintains full Adaptable Nav block system support
+  - Theme-specific styling handled through settings/blocks rather than separate files
+  - Reduces maintenance burden and ensures consistent navigation UX

@@ -326,6 +326,8 @@
 </div>
 
 <header class="header header--{{ section.settings.position }} {% if section.settings.sticky %}sticky{% endif %}{% if section.settings.hide_on_desktop %}hidden--desktop{% endif %} {% if section.settings.hide_on_mobile %}hidden--mobile{% endif %} {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %} {% if section.settings.close_on_scroll %}header--close-on-scroll{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+  {% comment %}
+  <!-- Hello bars/Announcement bars removed -->
   <div class="hello-bars">
     {% for block in section.blocks %}
       {% case block.type %}
@@ -334,6 +336,7 @@
       {% endcase %}
     {% endfor %}
   </div>
+  {% endcomment %}
   {% if hello_bar_count != section.blocks.size and section.blocks.size != 0 %}
     <div class="header__wrap">
       <div class="header__content header__content--desktop background-{{ section.settings.background_color | color_scheme_class }}">
@@ -387,7 +390,33 @@
             </div>
           </div>
         </div>
-        <div class="header__switch-content header__spacer"></div>
+        <div class="header__mobile-content">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when "logo" %}
+                {% include "header_block" type: "shared_block_logo_enhanced" class: "header__block--logo header__block--show header__switch-content" %}
+              {% when "menu" %}
+                {% include "header_block" type: "shared_block_menu_styled" class: "header__switch-content header__block--menu" %}
+              {% when "cta" %}
+                {% include "header_block" type: "block_cta" class: "header__switch-content header__block--cta" %}
+              {% when "user" %}
+                {% include "header_block" type: "header_block_user" class: "header__switch-content header__block--user" %}
+              {% when "dropdown" %}
+                {% include "header_block" type: "header_block_dropdown" class: "header__switch-content header__block--dropdown" %}
+              {% when "social_icons" %}
+                {% include "header_block" type: "block_social_icons" class: "header__switch-content header__block--social-icons" %}
+              {% when "custom_link" %}
+                {% include "header_block" type: "header_block_custom_link" class: "header__switch-content header__block--custom-link" %}
+              {% when "featured_button" %}
+                {% include "header_block" type: "header_block_featured_button" class: "header__switch-content header__block--featured-button" %}
+              {% when "spacer" %}
+                {% include "header_block" type: "header_block_spacer" class: "header__switch-content header__block--spacer" %}
+            {% endcase %}
+          {% endfor %}
+          {% if section.settings.cart == true %}
+            {% include "header_block_cart" %}
+          {% endif %}
+        </div>
       </div>
     </div>
   {% endif %}

@@ -115,12 +115,18 @@ During build:
    ========================================================================== */
 
 /* Table of Contents
-   1. Design System Extensions
-   2. Mobile Navigation
-   3. Enhanced Buttons
-   4. Form Improvements
-   5. Custom Sections
+   1. CSS Variables (Brand Design System)
+   2. Typography Base
+   3. Common Button Styles
+   4. Shared Navigation Styles
+   5. Shared Footer Styles
    6. Utility Classes
+   7. Responsive Helpers
+   ...
+   14. Comprehensive Utility Classes
+   15. About Hero Section
+   16. Responsive Utilities
+   17. Component-Specific Utilities
 */
 ```
 
@@ -236,12 +242,228 @@ Color settings are controlled via Liquid variables:
 
 ### Spacing System
 ```css
---an-space-xs: 4px;   /* Tight spacing */
---an-space-sm: 8px;   /* Small spacing */
---an-space-md: 16px;  /* Default spacing */
---an-space-lg: 24px;  /* Large spacing */
---an-space-xl: 32px;  /* Extra large */
+--an-space-xs: 4px;    /* Tight spacing */
+--an-space-sm: 8px;    /* Small spacing */
+--an-space-md: 16px;   /* Default spacing */
+--an-space-lg: 24px;   /* Large spacing */
+--an-space-xl: 32px;   /* Extra large */
+--an-space-2xl: 48px;  /* 2X large */
+--an-space-3xl: 64px;  /* 3X large */
 ```
+
+### Typography Scale
+```css
+--an-font-xs: 0.75rem;    /* 12px */
+--an-font-sm: 0.875rem;   /* 14px */
+--an-font-base: 1rem;     /* 16px */
+--an-font-lg: 1.125rem;   /* 18px */
+--an-font-xl: 1.25rem;    /* 20px */
+--an-font-2xl: 1.5rem;    /* 24px */
+--an-font-3xl: 1.875rem;  /* 30px */
+--an-font-4xl: 2.25rem;   /* 36px */
+```
+
+### Other Design Tokens
+```css
+/* Borders & Radius */
+--an-border: rgba(26, 45, 78, 0.1);
+--an-radius-sm: 4px;
+--an-radius-md: 8px;
+--an-radius-lg: 16px;
+--an-radius-full: 9999px;
+
+/* Shadows */
+--an-shadow-sm: 0 1px 2px 0 rgba(26, 45, 78, 0.05);
+--an-shadow-md: 0 4px 6px -1px rgba(26, 45, 78, 0.1);
+--an-shadow-lg: 0 10px 15px -3px rgba(26, 45, 78, 0.1);
+
+/* Transitions */
+--an-transition-fast: 150ms ease-in-out;
+--an-transition-base: 200ms ease-in-out;
+--an-transition-slow: 300ms ease-in-out;
+```
+
+## Comprehensive Utility Classes (v11.1.0+)
+
+The AN themes now include an extensive utility class system that leverages the CSS variables design system. This eliminates the need to redeclare colors and styles in section CSS.
+
+### Color Utilities
+```html
+<!-- Text colors -->
+<p class="text-navy">Navy text</p>
+<p class="text-teal">Teal text</p>
+<p class="text-coral">Coral text</p>
+<p class="text-slate">Slate text</p>
+
+<!-- Background colors -->
+<div class="bg-peach">Peach background</div>
+<div class="bg-grey">Grey background</div>
+<section class="section-navy">Navy section with white text</section>
+```
+
+### Typography Utilities
+```html
+<!-- Font sizes -->
+<h1 class="text-4xl">Extra large heading</h1>
+<p class="text-lg">Large paragraph text</p>
+<small class="text-xs">Extra small text</small>
+
+<!-- Font weight -->
+<p class="font-bold">Bold text</p>
+<p class="font-medium">Medium weight text</p>
+
+<!-- Text transform -->
+<p class="uppercase tracking-wide">UPPERCASE WITH SPACING</p>
+<p class="capitalize">Capitalize Each Word</p>
+
+<!-- Alignment -->
+<p class="text-center">Centered text</p>
+<p class="text-right">Right aligned</p>
+```
+
+### Spacing Utilities
+```html
+<!-- Margin (m) and Padding (p) -->
+<!-- Format: {property}{direction}-{size} -->
+<!-- Directions: t(top), r(right), b(bottom), l(left), x(horizontal), y(vertical) -->
+<!-- Sizes: 0-6 mapping to space variables -->
+
+<div class="mt-4 mb-2">Margin top 4, bottom 2</div>
+<div class="px-3 py-4">Padding x-axis 3, y-axis 4</div>
+<div class="m-auto">Auto margins (centered)</div>
+
+<!-- Responsive spacing -->
+<div class="mt-2 mt-4--tablet-up">Different spacing on tablet+</div>
+```
+
+### Layout Utilities
+```html
+<!-- Display -->
+<div class="d-flex">Flexbox container</div>
+<div class="d-none d-block--tablet-up">Hidden on mobile</div>
+
+<!-- Flexbox -->
+<div class="d-flex justify-content-between align-items-center">
+  <div>Left content</div>
+  <div>Right content</div>
+</div>
+
+<!-- Gap utilities -->
+<div class="d-flex gap-3">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</div>
+
+<!-- Position -->
+<div class="position-relative">
+  <div class="position-absolute top-0 right-0">Corner badge</div>
+</div>
+
+<!-- Width/Height -->
+<div class="w-full h-screen">Full width, viewport height</div>
+<div class="max-w-md mx-auto">Max width medium, centered</div>
+```
+
+### Border & Shadow Utilities
+```html
+<!-- Borders -->
+<div class="border border-teal rounded-lg">Teal bordered box</div>
+<div class="border-bottom pb-3 mb-3">Bottom border divider</div>
+
+<!-- Shadows -->
+<div class="shadow-lg rounded p-4">Large shadow card</div>
+<div class="card-shadow">Hover effect shadow</div>
+```
+
+### Component Utilities
+```html
+<!-- Buttons -->
+<button class="btn btn-navy">Navy button</button>
+<button class="btn btn-coral">Coral CTA button</button>
+<button class="btn btn-outline-teal">Outlined teal button</button>
+
+<!-- Badges -->
+<span class="badge badge-gold">NEW</span>
+<span class="badge badge-teal">FEATURED</span>
+
+<!-- Sections -->
+<section class="section-peach py-5">
+  <!-- Peach background with appropriate text color -->
+</section>
+
+<!-- Cards -->
+<div class="card-border card-shadow p-4">
+  <!-- Bordered card with shadow -->
+</div>
+```
+
+### State & Animation Utilities
+```html
+<!-- Hover effects -->
+<button class="hover-lift">Lifts on hover</button>
+<div class="hover-shadow">Shadow on hover</div>
+
+<!-- States -->
+<button class="disabled">Disabled button</button>
+<a class="active">Active navigation item</a>
+
+<!-- Animations -->
+<div class="animate-fade-in">Fades in</div>
+<div class="animate-slide-up">Slides up</div>
+
+<!-- Transitions -->
+<div class="transition-all hover-opacity">Smooth opacity change</div>
+```
+
+### Responsive Utilities
+```html
+<!-- Visibility -->
+<div class="hidden--mobile">Hidden on mobile</div>
+<div class="hidden--desktop">Hidden on desktop</div>
+
+<!-- Responsive text -->
+<h2 class="text-2xl text-3xl--tablet-up">Responsive heading</h2>
+
+<!-- Responsive layout -->
+<div class="flex-column flex-row--tablet-up">
+  <!-- Column on mobile, row on tablet+ -->
+</div>
+```
+
+### Best Practices for Utility Classes
+
+1. **Use utilities instead of inline styles**:
+   ```html
+   <!-- ❌ Don't -->
+   <div style="background-color: #FFF4F0; padding: 32px;">
+   
+   <!-- ✅ Do -->
+   <div class="bg-peach p-4">
+   ```
+
+2. **Combine utilities for complex layouts**:
+   ```html
+   <section class="section-grey py-5">
+     <div class="max-w-xl mx-auto text-center">
+       <h2 class="text-3xl font-bold text-navy mb-3">Title</h2>
+       <p class="text-lg text-slate">Description</p>
+     </div>
+   </section>
+   ```
+
+3. **Use responsive utilities for mobile-first design**:
+   ```html
+   <div class="px-3 px-5--tablet-up">
+     <h1 class="text-2xl text-4xl--tablet-up">Responsive heading</h1>
+   </div>
+   ```
+
+4. **Leverage component utilities for consistency**:
+   ```html
+   <button class="btn btn-coral hover-lift">
+     Get Started
+   </button>
+   ```
 
 ### Usage Example
 ```css
@@ -261,23 +483,26 @@ Color settings are controlled via Liquid variables:
 
 ### DO:
 1. **Use CSS variables** for all colors, spacing, and common values
-2. **Add ALL Website/Landing components to /shared/** folders
-3. **Add Product-specific components to /themes/product/**
-4. **Test on multiple devices** before deploying CSS changes
-5. **Maintain the 4-slice hamburger structure**
-6. **Document new sections** with date and purpose
-7. **Use semantic variable names** (e.g., `--an-primary` not `--blue`)
-8. **Run `npm run theme:export [theme]`** to build themes with shared components
-9. **Test in BOTH Website and Landing** contexts when modifying shared components
+2. **Use utility classes** instead of inline styles or redeclaring colors
+3. **Add ALL Website/Landing components to /shared/** folders
+4. **Add Product-specific components to /themes/product/**
+5. **Test on multiple devices** before deploying CSS changes
+6. **Maintain the 4-slice hamburger structure**
+7. **Document new sections** with date and purpose
+8. **Use semantic variable names** (e.g., `--an-primary` not `--blue`)
+9. **Run `npm run theme:export [theme]`** to build themes with shared components
+10. **Test in BOTH Website and Landing** contexts when modifying shared components
+11. **Leverage utility classes** for consistent styling across sections
 
 ### DON'T:
 1. **Don't edit styles.scss.liquid** - it's compiled by Kajabi
 2. **Don't add Website/Landing components to theme folders** - use shared
 3. **Don't modify hamburger menu structure** without extensive testing
-4. **Don't use hard-coded colors** - use CSS variables
-5. **Don't use `!important`** unless absolutely necessary
+4. **Don't use hard-coded colors** - use CSS variables or utility classes
+5. **Don't use `!important`** unless in utility classes
 6. **Don't forget to test** in Kajabi's preview mode
 7. **Don't create theme-specific versions** of Website/Landing components
+8. **Don't redeclare colors in section CSS** - use utility classes instead
 
 ## Version Management
 
@@ -461,6 +686,19 @@ The AN themes now use a modern, modular JavaScript approach replacing the legacy
 5. Modern ES6+ features with broad browser support
 
 ## Version History
+
+### v11.1.0 (2025-01-18)
+- **COMPREHENSIVE UTILITY CLASSES**: Extensive utility-first CSS system
+- Added 600+ utility classes leveraging existing CSS variables
+- Complete spacing utilities (margin/padding all directions)
+- Typography utilities (sizes, weights, transforms, alignment)
+- Layout utilities (display, flexbox, position, sizing)
+- Component utilities (buttons, badges, sections, cards)
+- Responsive utilities with mobile-first approach
+- Animation and transition utilities
+- Eliminates need to redeclare colors in section CSS
+- Updated CLAUDE.md with comprehensive utility documentation
+- overrides.css grew from 1,321 to 1,889 lines
 
 ### v11.0.0 (2025-01-18)
 - **MODERN JAVASCRIPT**: Complete JavaScript architecture overhaul

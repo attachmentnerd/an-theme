@@ -49,8 +49,7 @@ As of v10.0.6+, the AN Kajabi themes use a unified shared component architecture
 ## Shared Sections (29 total)
 
 ### Core Sections
-- `header.liquid` - Main site header
-- `header_landing.liquid` - Simplified landing page header
+- `header.liquid` - Main site header (used by both website and landing)
 - `footer.liquid` - Site footer
 - `hero.liquid` - Flexible hero section
 - `about_hero.liquid` - About page hero
