@@ -1,0 +1,118 @@
+{% comment %}
+  AN Theme Modern Script Loading
+  Conditional, performant JavaScript loading
+{% endcomment %}
+
+<!-- Core AN Theme Scripts (lightweight ~20KB) -->
+{{ 'an-core.js' | asset_url | script_tag }}
+{{ 'an-modules.js' | asset_url | script_tag }}
+
+{% comment %} jQuery - Only if needed by Kajabi {% endcomment %}
+{% if settings.load_jquery != false %}
+  {% unless jquery_loaded %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCJHL/34SEsLJMC7m19Wz9zAGO/p7rJb/tYrBEvXjmv9pDkVNmVfqyyU" crossorigin="anonymous"></script>
+    {% assign jquery_loaded = true %}
+  {% endunless %}
+{% endif %}
+
+{% comment %} AOS - Animate On Scroll (load only if elements exist) {% endcomment %}
+{% if page.content contains 'data-aos' or section.settings.enable_animations %}
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <script>
+    // Lazy load AOS when needed
+    if (document.querySelector('[data-aos]')) {
+      const aosScript = document.createElement('script');
+      aosScript.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';
+      aosScript.onload = () => {
+        AOS.init({
+          duration: 800,
+          once: true,
+          offset: 100,
+          disable: window.innerWidth < 768
+        });
+      };
+      document.head.appendChild(aosScript);
+    }
+  </script>
+{% endif %}
+
+{% comment %} Moment.js - Only for countdown sections {% endcomment %}
+{% assign has_countdown = false %}
+{% for section in sections %}
+  {% for block in section.blocks %}
+    {% if block.type == 'countdown' or block.type == 'event_countdown' %}
+      {% assign has_countdown = true %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% if has_countdown %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.40/moment-timezone-with-data-10-year-range.min.js" defer></script>
+{% endif %}
+
+{% comment %} Slick Carousel - Only if carousel elements exist {% endcomment %}
+{% if page.content contains 'carousel' %}
+  <script>
+    // Check if carousel elements exist before loading Slick
+    if (document.querySelector('.carousel:not(.reveal .carousel)')) {
+      // Only load if jQuery is available
+      const loadSlick = () => {
+        if (!window.jQuery.fn.slick) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css';
+          document.head.appendChild(link);
+          
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js';
+          script.onload = () => {
+            if (window.ANTheme) {
+              window.ANTheme.initCarousels();
+            }
+          };
+          document.head.appendChild(script);
+        }
+      };
+      
+      if (window.jQuery) {
+        loadSlick();
+      } else {
+        window.addEventListener('load', loadSlick);
+      }
+    }
+  </script>
+{% endif %}
+
+{% comment %} Wistia - Only load API if Wistia videos exist {% endcomment %}
+{% if page.content contains 'wistia' %}
+  <script>
+    // Wistia API will auto-load when needed
+    window._wq = window._wq || [];
+  </script>
+{% endif %}
+
+{% comment %} Performance monitoring (optional) {% endcomment %}
+{% if settings.enable_performance_monitoring %}
+  <script>
+    // Log performance metrics
+    window.addEventListener('load', () => {
+      if (window.performance && window.performance.timing) {
+        const timing = window.performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        console.log(`Page load time: ${loadTime}ms`);
+        
+        // Send to analytics if needed
+        if (window.gtag) {
+          gtag('event', 'timing_complete', {
+            'name': 'load',
+            'value': loadTime
+          });
+        }
+      }
+    });
+  </script>
+{% endif %}
+
+{% comment %} Custom JS from theme settings {% endcomment %}
+{% include "global_custom_js" %}

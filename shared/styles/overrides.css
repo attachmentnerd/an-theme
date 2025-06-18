@@ -1317,5 +1317,29 @@ label {
 }
 
 /* ==========================================================================
+   JavaScript Transition Support
+   Added: 2025-01-18
+   ========================================================================== */
+
+/* Mobile menu slide transition (replaces jQuery slideToggle) */
+.header__content--mobile {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.header__content--mobile.is-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth scroll behavior for modern browsers */
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ==========================================================================
    END OF SHARED STYLES
    ========================================================================== */

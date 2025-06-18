@@ -1,0 +1,48 @@
+themes/product/snippets/welcome_transition.liquid:14:      {% if current_user.last_post_for_product[current_product.id] %}
+themes/product/snippets/welcome_transition.liquid:17:        Ready to start your learning journey with {{ current_product.title }}?
+themes/product/snippets/welcome_transition.liquid:25:      {% for category in current_product.categories %}
+themes/product/snippets/welcome_transition.liquid:57:      {% if current_user.last_post_for_product[current_product.id] %}
+themes/product/snippets/welcome_transition.liquid:58:        <a href="{{ current_user.last_post_for_product[current_product.id].url }}" class="btn btn--an-primary btn--large">
+themes/product/snippets/welcome_transition.liquid:66:        <a href="{{ current_product.posts.first.url }}" class="btn btn--an-coral btn--large">
+themes/product/snippets/product_course_progress.liquid:17:{% assign completion = current_product.completion %}
+themes/product/snippets/product_course_progress.liquid:20:    {% if current_product.thumbnail_url %}
+themes/product/snippets/product_course_progress.liquid:21:      <img class="img-fluid" src="{{ current_product.thumbnail_url }}" kjb-settings-id="{{ 'show_img' | settings_id: section: section, block: block }}">
+themes/product/snippets/sidebar_course_progress.liquid:17:{% assign completion = current_product.completion %}
+themes/product/snippets/sidebar_course_progress.liquid:20:    {% if current_product.thumbnail_url %}
+themes/product/snippets/sidebar_course_progress.liquid:21:      <img class="img-fluid" src="{{ current_product.thumbnail_url }}" kjb-settings-id="{{ 'show_img' | settings_id: section: section, block: block }}">
+themes/product/snippets/product_info.liquid:3:    {% if current_product.thumbnail_url %}
+themes/product/snippets/product_info.liquid:4:      <img class="img-fluid" src="{{ current_product.thumbnail_url }}" kjb-settings-id="{{ 'show_img' | settings_id: section: section, block: block }}">
+themes/product/snippets/product_info.liquid:10:    <h1 class="panel__title" kjb-settings-id="{{ 'show_title' | settings_id: section: section, block: block }}">{{ current_product.title }}</h1>
+themes/product/snippets/product_info.liquid:13:    <p class="panel__text" kjb-settings-id="{{ 'show_desc' | settings_id: section: section, block: block }}">{{ current_product.description }}</p>
+themes/product/snippets/start_block.liquid:10:{% assign btnProgress   = current_product.completion.percent %}
+themes/product/snippets/start_block.liquid:11:{% assign btnAction   = current_product.completion.next_post.url %}
+themes/product/snippets/start_block.liquid:19:  {% assign btnAction   = current_product.categories.first.posts.first.url %}
+themes/product/snippets/hero_info.liquid:3:    <h1 kjb-settings-id="{{ 'show_title' | settings_id: section: section, block: block }}">{{ current_product.title }}</h1>
+themes/product/snippets/hero_info.liquid:6:    <p kjb-settings-id="{{ 'show_desc' | settings_id: section: section, block: block }}">{{ current_product.description }}</p>
+themes/product/snippets/breadcrumb_nav.liquid:20:            {{ current_product.title }}
+themes/product/snippets/breadcrumb_nav.liquid:24:            <a href="{{ current_product.url }}" class="breadcrumb-nav__link">{{ current_product.title }}</a>
+themes/product/snippets/breadcrumb_nav.liquid:32:            <a href="{{ current_product.url }}" class="breadcrumb-nav__link">{{ current_product.title }}</a>
+themes/product/snippets/product_progress.liquid:2:{% assign completion = current_product.completion %}
+themes/product/snippets/product_syllabus.liquid:5:    {% paginate product.categories by 10 %}
+themes/product/snippets/product_syllabus.liquid:81:          {% element "section.settings.categories" %}{{ section.settings.categories }}{% endelement %}<span class="pull-right">{{ current_product.categories.size }}</span>
+themes/product/snippets/product_syllabus.liquid:84:          {% paginate current_product.categories by 12 %}
+themes/product/snippets/sidebar_course_progress_enhanced.liquid:11:  {% for category in current_product.categories %}
+themes/product/snippets/sidebar_course_progress_enhanced.liquid:66:    {% for category in current_product.categories %}
+themes/product/snippets/sidebar_course_progress_enhanced.liquid:96:    {% if current_user.last_post_for_product[current_product.id] %}
+themes/product/snippets/sidebar_course_progress_enhanced.liquid:97:      <a href="{{ current_user.last_post_for_product[current_product.id].url }}" class="btn btn--an-primary btn--block">
+themes/product/snippets/sidebar_course_progress_enhanced.liquid:102:      <a href="{{ current_product.posts.first.url }}" class="btn btn--an-primary btn--block">
+themes/product/sections/categories_body.liquid:5:      <span class="pull-right">{{ current_product.categories.size }}</span>
+themes/product/sections/categories_body.liquid:7:    {% paginate current_product.categories by 10 %}
+themes/product/sections/announcements_body.liquid:3:    {% if current_product.announcements.size > 0 %}
+themes/product/sections/announcements_body.liquid:8:    {% paginate current_product.announcements by 10 %}
+themes/product/sections/community_widget.liquid:1:{% assign showConfigurationBanner   = current_product.course_access_group.show_configuration_banner? %}
+themes/product/sections/community_widget.liquid:2:{% assign widgetConfigured          = current_product.course_access_group.widget_configured? %}
+themes/product/sections/community_widget.liquid:3:{% assign hasCommunity              = current_product.course_access_group.site_has_community? %}
+themes/product/sections/community_widget.liquid:4:{% assign course_product_type_name  = current_product.course_product_type_name %}
+themes/product/sections/community_widget.liquid:5:{% assign settings_url              = current_product.settings_url %}
+themes/product/sections/community_widget.liquid:29:            Create a <a href="{{ current_product.create_community_url }}" target="_blank" data-kjb-clickable>community</a> to use this feature!
+themes/product/sections/pop_upsell.liquid:3:{% assign courseCompletion = current_product.completion.percent %}
+themes/product/sections/breadcrumbs.liquid:16:        <a href="{{ current_product.url }}">{{ current_product.title }}</a>
+themes/product/sections/breadcrumbs.liquid:23:          <a href="{{ current_product.categories_url }}">{{ section.settings.categories }}</a>
+themes/product/sections/breadcrumbs.liquid:39:          <a href="{{ current_product.categories_url }}">{{ section.settings.categories }}</a>
+themes/product/sections/search.liquid:27:      <form action="{{ current_product.search_url }}" method="get" role="search">

@@ -1,148 +1,163 @@
-# AN Theme Shared Components System
+# Shared Components System
 
 ## Overview
 
-This document describes the shared component system for the AN Kajabi themes. The system allows us to maintain consistency across all three themes (website, landing, product) while reducing duplication and making updates more efficient.
+As of v10.0.6+, the AN Kajabi themes use a unified shared component architecture where Website and Landing themes share ALL components, while Product theme remains separate due to its unique course-specific functionality.
 
-## Structure
+## Architecture
 
 ```
-/shared
-  /scripts     - Shared JavaScript files
-  /sections    - Shared Liquid sections (hero, etc.)
-  /snippets    - Shared Liquid snippets
-  /styles      - Shared CSS files (brand variables, common styles)
+/shared/
+├── styles/
+│   └── overrides.css          # All common CSS (1,321 lines)
+├── snippets/                  # 107 shared snippets
+│   ├── Navigation & Headers
+│   ├── Footers
+│   ├── Content Blocks
+│   ├── Forms & CTAs
+│   ├── Blog Components
+│   ├── Newsletter Components
+│   └── Utility Components
+└── sections/                  # 29 shared sections
+    ├── Heroes & CTAs
+    ├── Content Sections
+    ├── Blog & Newsletter
+    ├── E-commerce
+    └── Utility Sections
 ```
 
-## Current Shared Components
+## Theme Structure
 
-### CSS (`/shared/styles/`)
-- **overrides.css** - Complete shared styles containing:
-  - AN brand CSS variables (colors, spacing, typography, shadows, transitions)
-  - Typography base styles
-  - Common button styles (primary, secondary, coral/emotional)
-  - Shared navigation styles (desktop and mobile)
-  - Shared footer styles with enhancements
-  - Book Section styles
-  - Book Buy Section styles
-  - Modern navigation (white/blue design)
-  - Complete mobile navigation implementation
-  - Form styling improvements
-  - Extended utility classes (spacing, display, flexbox, text, borders, shadows, radius)
-  - Responsive helpers
+### Website Theme
+- **Sections**: 0 (all in shared)
+- **Snippets**: 0 (all in shared)
+- **Purpose**: Full-featured marketing site with blog, newsletter, and e-commerce
+- **Uses**: All shared components
 
-### Sections (`/shared/sections/`)
-- **hero.liquid** - Flexible hero section with multiple layout options
-- **about_hero.liquid** - About page hero section (legacy)
+### Landing Theme  
+- **Sections**: 0 (all in shared)
+- **Snippets**: 0 (all in shared)
+- **Purpose**: Focused landing pages for campaigns
+- **Uses**: All shared components (user selects which to use)
 
-### Snippets (`/shared/snippets/`)
-- **shared_block_menu.liquid** - Basic navigation menu
-- **shared_block_menu_styled.liquid** - Styled navigation menu
-- **shared_block_logo.liquid** - Logo block
-- **shared_block_logo_enhanced.liquid** - Enhanced logo with additional features
-- **footer_block.liquid** - Footer content block
-- **footer_block_copyright.liquid** - Copyright section
-- **footer_block_social_icons.liquid** - Social media icons
+### Product Theme
+- **Sections**: Theme-specific (course functionality)
+- **Snippets**: Theme-specific (course UI components)
+- **Purpose**: Course/product delivery
+- **Uses**: Only shared CSS, maintains separate components
 
-## How It Works
+## Shared Sections (29 total)
 
-1. **Development**: Edit files in the `/shared` folder
-2. **Build Process**: The `theme-manager.js` script automatically copies shared components to each theme during build
-3. **Export**: Each theme gets its own complete copy, making it Kajabi-compatible
+### Core Sections
+- `header.liquid` - Main site header
+- `header_landing.liquid` - Simplified landing page header
+- `footer.liquid` - Site footer
+- `hero.liquid` - Flexible hero section
+- `about_hero.liquid` - About page hero
 
-## Build Commands
+### Content Sections
+- `section.liquid` - Generic content section
+- `page_content.liquid` - Page body content
+- `carousel.liquid` - Testimonial/content carousel
+- `book.liquid` - Book showcase
+- `book_buy.liquid` - Book purchase links
 
-```bash
-# Build individual themes
-node scripts/theme-manager.js build website
-node scripts/theme-manager.js build landing
-node scripts/theme-manager.js build product
+### CTA & Conversion
+- `cta_section.liquid` - Gradient CTA section
+- `full_width_cta.liquid` - Full-width image CTA
+- `exit_pop.liquid` - Exit intent popup
+- `two_step.liquid` - Two-step opt-in
 
-# Export themes with version bump
-node scripts/theme-manager.js export website patch "Update shared styles"
-node scripts/theme-manager.js export landing minor "Add new features"
-```
+### Blog & Newsletter
+- `blog_listings.liquid` - Blog post grid
+- `blog_post_body.liquid` - Single blog post
+- `blog_search_results.liquid` - Blog search
+- `newsletter_hero.liquid` - Newsletter signup hero
+- `newsletter_listings.liquid` - Newsletter archive
+- `newsletter_post_body.liquid` - Newsletter post
+- `newsletter_recent_posts.liquid` - Recent newsletters
 
-## Adding New Shared Components
+### E-commerce
+- `products.liquid` - Product grid
+- `store_builder.liquid` - Store layout
+- `sales_page_body.liquid` - Sales page content
+- `sales_page_sidebar.liquid` - Sales page sidebar
 
-### 1. CSS Files
-Place new CSS files in `/shared/styles/`:
-```bash
-/shared/styles/new-component.css
-```
+### Utility
+- `announcements.liquid` - Site announcements
+- `login.liquid` - Login form
+- `member_directory.liquid` - Member listing
+- `thank_you.liquid` - Thank you page
 
-### 2. Sections
-Place new Liquid sections in `/shared/sections/`:
-```bash
-/shared/sections/new-section.liquid
-```
-**Note**: Only share sections that are truly universal. Theme-specific sections should remain in individual theme folders.
+## Shared Snippets (107 total)
 
-### 3. Snippets
-Place new Liquid snippets in `/shared/snippets/`:
-```bash
-/shared/snippets/new-snippet.liquid
-```
+The shared snippets include all UI components, form elements, navigation parts, and utility functions used across both Website and Landing themes.
 
-### 4. Scripts
-Place new JavaScript files in `/shared/scripts/`:
-```bash
-/shared/scripts/new-script.js
-```
+## CSS Architecture
 
-## CSS Management Workflow
-
-### Development Process
-1. **All CSS edits go in `/shared/styles/overrides.css`** - Never edit individual theme CSS files
-2. **Individual theme CSS files remain empty** - They only contain a comment explaining the shared system
-3. **Theme-specific styles** - Can be added to individual theme CSS files ONLY for truly unique features
+### Shared CSS (`/shared/styles/overrides.css`)
+- 1,321 lines of consolidated styles
+- AN brand design system
+- Component styles for all shared elements
+- Responsive utilities
+- Animation and transition effects
 
 ### Theme-Specific CSS
-- **Website Theme**: Currently empty (all styles shared)
-- **Landing Theme**: Contains landing-specific styles (hero, features)
-- **Product Theme**: Contains course-specific styles (video player, syllabus, modules, etc.)
+- **Website**: Empty (uses 100% shared)
+- **Landing**: Empty (uses 100% shared)  
+- **Product**: Course-specific styles only
+
+## Build Process
+
+The `theme-manager.js` script handles the build process:
+
+1. Copies theme base files
+2. Copies ALL shared snippets (overwrites existing)
+3. Copies ALL shared sections (overwrites existing)
+4. Merges shared CSS + theme CSS
+5. Creates versioned export
+
+## Benefits
+
+1. **Complete Unification**: Website and Landing themes are truly unified
+2. **Single Source of Truth**: One place to update components
+3. **No Duplication**: Zero duplicate code between Website/Landing
+4. **Maximum Flexibility**: Landing pages can use any component
+5. **Easier Maintenance**: Update once, deploy everywhere
+6. **Consistent Experience**: Guaranteed parity between themes
+
+## Development Workflow
+
+### Adding New Components
+
+1. **Sections**: Add to `/shared/sections/`
+2. **Snippets**: Add to `/shared/snippets/`
+3. **Styles**: Add to `/shared/styles/overrides.css`
+4. **Export**: Run `npm run theme:export website` or `landing`
+
+### Modifying Components
+
+1. Edit the file in `/shared/`
+2. Test with both themes
+3. Export both themes when ready
+
+### Theme-Specific Customization
+
+For Website/Landing differences:
+- Use Liquid conditionals checking theme type
+- Use CSS classes with theme prefixes
+- Leverage section settings for variations
 
 ## Best Practices
 
-1. **Test All Themes**: When updating shared components, test all three themes
-2. **Version Control**: Use semantic versioning when exporting themes
-3. **Document Changes**: Update this file when adding new shared components
-4. **Backwards Compatibility**: Ensure changes don't break existing functionality
-5. **CSS Location**: ALWAYS edit `/shared/styles/overrides.css` for shared styles
+1. **Component Naming**: Use descriptive, purpose-based names
+2. **Documentation**: Comment complex components
+3. **Settings**: Make components flexible via settings
+4. **Testing**: Always test in both Website and Landing contexts
+5. **Versioning**: Update version numbers when making changes
 
-## CSS Variable Reference
+## Version History
 
-Key brand variables available in all themes:
-
-```css
-/* Core Brand Colors */
---an-navy: #1A2D4E;      /* Primary headings, buttons */
---an-teal: #2AB3B1;      /* Interactive states */
---an-coral: #F57C6F;     /* Emotional CTAs */
---an-gold: #FFC63F;      /* Highlights, icons */
---an-plum: #A449A5;      /* Links, accents */
---an-peach: #FFF4F0;     /* Soft backgrounds */
---an-white: #FFFFFF;     /* Base white */
---an-grey: #F8F7F5;      /* Secondary backgrounds */
---an-slate: #3A4A63;     /* Body text */
-```
-
-## Troubleshooting
-
-### Shared component not appearing in build
-1. Check file is in correct shared folder
-2. Ensure file extension is correct (.css, .liquid, .js)
-3. Run build command again
-4. Check build output in `/build/[theme-name]/`
-
-### CSS not applying
-1. Verify overrides.css is loading in browser
-2. Check CSS specificity
-3. Ensure no syntax errors in shared CSS
-
-## Future Improvements
-
-- [ ] Add shared sections support
-- [ ] Create automated testing for shared components
-- [ ] Add visual regression testing
-- [ ] Create component preview system
+- **v10.0.6+**: Full unification of Website/Landing components
+- **v10.0.3-10.0.5**: Initial shared component system
+- **Pre-v10.0.3**: Separate components per theme
