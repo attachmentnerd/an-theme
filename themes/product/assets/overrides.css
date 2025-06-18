@@ -1,0 +1,702 @@
+/* ==========================================================================
+   AN Product Theme - Custom Overrides
+   ========================================================================== */
+
+/* 
+   This file contains ONLY product/course-specific styles.
+   
+   All shared styles are maintained in /shared/styles/overrides.css
+   and copied here during the build process.
+   
+   Product-specific styles below are for course functionality only.
+*/
+
+/* ==========================================================================
+   Course Layout & Sidebar
+   ========================================================================== */
+
+/* Course container */
+.course__container {
+  display: flex;
+  gap: var(--an-space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--an-space-xl);
+}
+
+/* Sidebar styling */
+.course__sidebar {
+  flex: 0 0 300px;
+  background: var(--an-white);
+  border-radius: 12px;
+  box-shadow: var(--an-shadow-sm);
+  padding: var(--an-space-lg);
+  height: fit-content;
+  position: sticky;
+  top: var(--an-space-lg);
+}
+
+/* Course content area */
+.course__content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Sidebar navigation */
+.course__nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.course__nav-item {
+  margin-bottom: var(--an-space-sm);
+}
+
+.course__nav-link {
+  display: block;
+  padding: var(--an-space-md);
+  border-radius: 8px;
+  color: var(--an-slate);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.course__nav-link:hover {
+  background: var(--an-peach);
+  color: var(--an-navy);
+}
+
+.course__nav-link--active {
+  background: var(--an-teal);
+  color: var(--an-white);
+}
+
+/* ==========================================================================
+   Video Player & Carousel
+   ========================================================================== */
+
+/* Video container */
+.video__container {
+  position: relative;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: var(--an-space-xl);
+}
+
+.video__player {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+/* Video carousel */
+.video-carousel {
+  background: var(--an-grey);
+  padding: var(--an-space-lg);
+  border-radius: 12px;
+  margin-bottom: var(--an-space-xl);
+}
+
+.video-carousel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--an-space-lg);
+}
+
+.video-carousel__title {
+  font-size: 24px;
+  color: var(--an-navy);
+  margin: 0;
+}
+
+.video-carousel__track {
+  display: flex;
+  gap: var(--an-space-md);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--an-space-sm);
+}
+
+.video-carousel__item {
+  flex: 0 0 280px;
+  background: var(--an-white);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.video-carousel__item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--an-shadow-md);
+}
+
+.video-carousel__thumbnail {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.video-carousel__info {
+  padding: var(--an-space-md);
+}
+
+.video-carousel__item-title {
+  font-size: 16px;
+  color: var(--an-navy);
+  margin-bottom: var(--an-space-xs);
+}
+
+.video-carousel__duration {
+  font-size: 14px;
+  color: var(--an-slate);
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Syllabus & Module Cards
+   ========================================================================== */
+
+/* Syllabus container */
+.syllabus {
+  background: var(--an-white);
+  border-radius: 12px;
+  padding: var(--an-space-xl);
+  box-shadow: var(--an-shadow-sm);
+}
+
+.syllabus__header {
+  border-bottom: 2px solid var(--an-grey);
+  padding-bottom: var(--an-space-lg);
+  margin-bottom: var(--an-space-xl);
+}
+
+.syllabus__title {
+  font-size: 32px;
+  color: var(--an-navy);
+  margin: 0;
+}
+
+/* Module cards */
+.module-card {
+  background: var(--an-grey);
+  border-radius: 8px;
+  padding: var(--an-space-lg);
+  margin-bottom: var(--an-space-md);
+  transition: all 0.2s ease;
+}
+
+.module-card:hover {
+  background: var(--an-peach);
+}
+
+.module-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--an-space-md);
+}
+
+.module-card__title {
+  font-size: 20px;
+  color: var(--an-navy);
+  margin: 0;
+}
+
+.module-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--an-space-xs);
+  padding: 4px 12px;
+  background: var(--an-white);
+  border-radius: 20px;
+  font-size: 14px;
+  color: var(--an-slate);
+}
+
+.module-card__status--completed {
+  background: var(--an-teal);
+  color: var(--an-white);
+}
+
+.module-card__lessons {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.module-card__lesson {
+  display: flex;
+  align-items: center;
+  gap: var(--an-space-md);
+  padding: var(--an-space-sm) 0;
+  color: var(--an-slate);
+}
+
+.module-card__lesson-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--an-teal);
+}
+
+/* ==========================================================================
+   Mobile Responsive Design
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  .course__container {
+    flex-direction: column;
+  }
+  
+  .course__sidebar {
+    position: static;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .course__container {
+    padding: var(--an-space-md);
+  }
+  
+  .video-carousel__track {
+    gap: var(--an-space-sm);
+  }
+  
+  .video-carousel__item {
+    flex: 0 0 240px;
+  }
+  
+  .syllabus {
+    padding: var(--an-space-lg);
+  }
+}
+
+/* ==========================================================================
+   Welcome Banner & Breadcrumbs
+   ========================================================================== */
+
+/* Welcome banner */
+.welcome-banner {
+  background: linear-gradient(135deg, var(--an-navy) 0%, var(--an-plum) 100%);
+  color: var(--an-white);
+  padding: var(--an-space-2xl) 0;
+  text-align: center;
+  margin-bottom: var(--an-space-xl);
+}
+
+.welcome-banner__title {
+  font-size: 36px;
+  margin-bottom: var(--an-space-md);
+}
+
+.welcome-banner__subtitle {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--an-space-sm);
+  padding: var(--an-space-md) 0;
+  font-size: 14px;
+}
+
+.breadcrumbs__item {
+  color: var(--an-slate);
+}
+
+.breadcrumbs__link {
+  color: var(--an-plum);
+  text-decoration: none;
+}
+
+.breadcrumbs__link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs__separator {
+  color: var(--an-slate);
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   Community & Discussion
+   ========================================================================== */
+
+/* Community widget */
+.community-widget {
+  background: var(--an-white);
+  border-radius: 12px;
+  padding: var(--an-space-lg);
+  box-shadow: var(--an-shadow-sm);
+  margin-bottom: var(--an-space-xl);
+}
+
+.community-widget__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--an-space-lg);
+}
+
+.community-widget__title {
+  font-size: 20px;
+  color: var(--an-navy);
+  margin: 0;
+}
+
+.community-widget__badge {
+  background: var(--an-coral);
+  color: var(--an-white);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Discussion posts */
+.discussion-post {
+  border-bottom: 1px solid var(--an-grey);
+  padding: var(--an-space-md) 0;
+}
+
+.discussion-post:last-child {
+  border-bottom: none;
+}
+
+.discussion-post__header {
+  display: flex;
+  gap: var(--an-space-md);
+  margin-bottom: var(--an-space-sm);
+}
+
+.discussion-post__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.discussion-post__meta {
+  flex: 1;
+}
+
+.discussion-post__author {
+  font-weight: 600;
+  color: var(--an-navy);
+  display: block;
+}
+
+.discussion-post__time {
+  font-size: 12px;
+  color: var(--an-slate);
+  opacity: 0.7;
+}
+
+.discussion-post__content {
+  margin-left: 52px;
+  color: var(--an-slate);
+}
+
+/* ==========================================================================
+   JavaScript Enhancement Styles
+   ========================================================================== */
+
+/* Progress tracking */
+.progress-ring {
+  width: 60px;
+  height: 60px;
+  transform: rotate(-90deg);
+}
+
+.progress-ring__bg {
+  fill: none;
+  stroke: var(--an-grey);
+  stroke-width: 4;
+}
+
+.progress-ring__fill {
+  fill: none;
+  stroke: var(--an-teal);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+/* Interactive lesson items */
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: var(--an-space-md);
+  padding: var(--an-space-md);
+  background: var(--an-white);
+  border-radius: 8px;
+  margin-bottom: var(--an-space-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lesson-item:hover {
+  background: var(--an-peach);
+  transform: translateX(4px);
+}
+
+.lesson-item__checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--an-teal);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.lesson-item--completed .lesson-item__checkbox {
+  background: var(--an-teal);
+}
+
+.lesson-item--completed .lesson-item__checkbox::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--an-white);
+  font-size: 14px;
+}
+
+/* Continue button states */
+.continue-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.continue-button:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Video player enhancements */
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.video__container:hover .video-overlay {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.video-overlay__play-button {
+  width: 80px;
+  height: 80px;
+  background: var(--an-teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.video-overlay__play-button:hover {
+  transform: scale(1.1);
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip__content {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--an-navy);
+  color: var(--an-white);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.tooltip:hover .tooltip__content {
+  opacity: 1;
+  visibility: visible;
+  bottom: calc(100% + 8px);
+}
+
+.tooltip__content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--an-navy);
+}
+
+/* Loading states */
+.skeleton {
+  background: linear-gradient(90deg, var(--an-grey) 25%, rgba(255, 255, 255, 0.5) 50%, var(--an-grey) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================================================
+   Post Content Styling
+   ========================================================================== */
+
+/* Content typography */
+.post__content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--an-slate);
+}
+
+.post__content h1,
+.post__content h2,
+.post__content h3,
+.post__content h4,
+.post__content h5,
+.post__content h6 {
+  color: var(--an-navy);
+  margin-top: var(--an-space-xl);
+  margin-bottom: var(--an-space-lg);
+}
+
+.post__content h2 {
+  font-size: 28px;
+  border-bottom: 2px solid var(--an-grey);
+  padding-bottom: var(--an-space-md);
+}
+
+.post__content h3 {
+  font-size: 24px;
+}
+
+.post__content p {
+  margin-bottom: var(--an-space-lg);
+}
+
+.post__content a {
+  color: var(--an-plum);
+  text-decoration: underline;
+}
+
+.post__content a:hover {
+  color: var(--an-teal);
+}
+
+.post__content blockquote {
+  border-left: 4px solid var(--an-teal);
+  padding-left: var(--an-space-lg);
+  margin: var(--an-space-xl) 0;
+  font-style: italic;
+  color: var(--an-slate);
+  opacity: 0.9;
+}
+
+.post__content code {
+  background: var(--an-grey);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.post__content pre {
+  background: var(--an-navy);
+  color: var(--an-white);
+  padding: var(--an-space-lg);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.post__content pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.post__content ul,
+.post__content ol {
+  margin-bottom: var(--an-space-lg);
+  padding-left: var(--an-space-xl);
+}
+
+.post__content li {
+  margin-bottom: var(--an-space-sm);
+}
+
+.post__content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: var(--an-space-xl) 0;
+}
+
+.post__content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--an-space-xl) 0;
+}
+
+.post__content th,
+.post__content td {
+  padding: var(--an-space-md);
+  border: 1px solid var(--an-grey);
+  text-align: left;
+}
+
+.post__content th {
+  background: var(--an-grey);
+  font-weight: 600;
+  color: var(--an-navy);
+}
+
+.post__content tr:nth-child(even) {
+  background: rgba(248, 247, 245, 0.5);
+}

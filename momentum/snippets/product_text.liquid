@@ -1,9 +1,0 @@
-{% assign b-content = block.settings.content %}
-
-{% assign KJB_content = 'content' | settings_id: section: section, block: block %}
-
-<div class="dashboard-text" kjb-settings-id="{{ KJB_content }}" id="block-{{ block.id }}" {% block_attributes %}>
-  {%- element "block.settings.content" -%}
-    {{ block.settings.content }}
-  {%- endelement -%}
-</div>

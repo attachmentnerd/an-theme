@@ -1,0 +1,251 @@
+<!-- Welcome Transition Component -->
+{% if include.show_welcome %}
+<div class="welcome-transition" id="welcomeTransition" style="display: none;">
+  <div class="welcome-transition__content">
+    <div class="welcome-transition__icon">
+      <i class="fa fa-graduation-cap"></i>
+    </div>
+    
+    <h2 class="welcome-transition__title">
+      Welcome back, {{ current_user.first_name }}!
+    </h2>
+    
+    <p class="welcome-transition__message">
+      {% if current_user.last_post_for_product[current_product.id] %}
+        Ready to continue your learning journey?
+      {% else %}
+        Ready to start your learning journey with {{ current_product.title }}?
+      {% endif %}
+    </p>
+    
+    <div class="welcome-transition__stats">
+      {% assign total_posts = 0 %}
+      {% assign completed_posts = 0 %}
+      
+      {% for category in current_product.categories %}
+        {% for post in category.posts %}
+          {% assign total_posts = total_posts | plus: 1 %}
+          {% if post.completed %}
+            {% assign completed_posts = completed_posts | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+      
+      {% if total_posts > 0 %}
+        {% assign progress_percentage = completed_posts | times: 100.0 | divided_by: total_posts | round %}
+      {% else %}
+        {% assign progress_percentage = 0 %}
+      {% endif %}
+      
+      <div class="stat-card">
+        <div class="stat-card__value">{{ progress_percentage }}%</div>
+        <div class="stat-card__label">Complete</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__value">{{ completed_posts }}</div>
+        <div class="stat-card__label">Lessons Done</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-card__value">{{ total_posts | minus: completed_posts }}</div>
+        <div class="stat-card__label">To Go</div>
+      </div>
+    </div>
+    
+    <div class="welcome-transition__actions">
+      {% if current_user.last_post_for_product[current_product.id] %}
+        <a href="{{ current_user.last_post_for_product[current_product.id].url }}" class="btn btn--an-primary btn--large">
+          <i class="fa fa-play-circle"></i>
+          Continue Where You Left Off
+        </a>
+        <button class="btn btn--outline" onclick="$('#welcomeTransition').fadeOut();">
+          Browse All Lessons
+        </button>
+      {% else %}
+        <a href="{{ current_product.posts.first.url }}" class="btn btn--an-coral btn--large">
+          <i class="fa fa-rocket"></i>
+          Start First Lesson
+        </a>
+        <button class="btn btn--outline" onclick="$('#welcomeTransition').fadeOut();">
+          Explore Course First
+        </button>
+      {% endif %}
+    </div>
+    
+    <button class="welcome-transition__close" onclick="$('#welcomeTransition').fadeOut();">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+  // Show welcome transition when coming from main site
+  $(document).ready(function() {
+    // Check if user came from main site or it's their first visit today
+    const referrer = document.referrer;
+    const lastVisit = localStorage.getItem('lastProductVisit');
+    const today = new Date().toDateString();
+    
+    if ((referrer && referrer.includes('{{ current_site.domain }}') && !referrer.includes('/products')) || 
+        lastVisit !== today) {
+      $('#welcomeTransition').fadeIn(400);
+      localStorage.setItem('lastProductVisit', today);
+    }
+  });
+</script>
+
+<style>
+  .welcome-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--an-space-lg);
+  }
+  
+  .welcome-transition__content {
+    background: var(--an-white);
+    border-radius: 16px;
+    padding: var(--an-space-2xl);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    animation: slideUp 0.4s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .welcome-transition__icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--an-space-lg);
+    background: linear-gradient(135deg, var(--an-teal) 0%, var(--an-coral) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .welcome-transition__icon i {
+    font-size: 40px;
+    color: var(--an-white);
+  }
+  
+  .welcome-transition__title {
+    font-size: 32px;
+    color: var(--an-navy);
+    margin-bottom: var(--an-space-md);
+    font-family: var(--an-font-heading);
+  }
+  
+  .welcome-transition__message {
+    font-size: 18px;
+    color: var(--an-slate);
+    margin-bottom: var(--an-space-xl);
+  }
+  
+  .welcome-transition__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--an-space-lg);
+    margin-bottom: var(--an-space-xl);
+  }
+  
+  .stat-card {
+    padding: var(--an-space-lg);
+    background: var(--an-grey);
+    border-radius: 12px;
+  }
+  
+  .stat-card__value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--an-teal);
+    margin-bottom: 4px;
+  }
+  
+  .stat-card__label {
+    font-size: 14px;
+    color: var(--an-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .welcome-transition__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--an-space-md);
+    align-items: center;
+  }
+  
+  .welcome-transition__actions .btn {
+    min-width: 300px;
+  }
+  
+  .btn--large {
+    padding: 16px 32px;
+    font-size: 18px;
+  }
+  
+  .welcome-transition__close {
+    position: absolute;
+    top: var(--an-space-lg);
+    right: var(--an-space-lg);
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--an-slate);
+    cursor: pointer;
+    transition: var(--an-transition);
+  }
+  
+  .welcome-transition__close:hover {
+    color: var(--an-navy);
+    transform: scale(1.1);
+  }
+  
+  @media (max-width: 767px) {
+    .welcome-transition__content {
+      padding: var(--an-space-xl);
+    }
+    
+    .welcome-transition__title {
+      font-size: 24px;
+    }
+    
+    .welcome-transition__stats {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--an-space-md);
+    }
+    
+    .stat-card {
+      padding: var(--an-space-md);
+    }
+    
+    .stat-card__value {
+      font-size: 24px;
+    }
+    
+    .welcome-transition__actions .btn {
+      min-width: 100%;
+    }
+  }
+</style>
+{% endif %}

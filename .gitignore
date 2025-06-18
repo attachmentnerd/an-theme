@@ -6,9 +6,8 @@ package-lock.json
 build/
 dist/
 
-# Exports (keep the structure but not the ZIPs)
-exports/releases/*/*
-!exports/releases/*/version-log.txt
+# All exports - we can rebuild these anytime
+exports/
 
 # OS files
 .DS_Store
@@ -29,14 +28,44 @@ Thumbs.db
 logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Version tracking
-versions.json
-
-# Temporary files
+# Temporary files and folders
+temp/
+temp_*/
+tmp/
+.tmp/
 *.tmp
 *.temp
 .sass-cache/
 
-# Original ZIP files (already extracted)
+# All ZIP files (we have the source)
 *.zip
+
+# Extracted theme folders (we only need our custom themes)
+attachment-nerd-base*/
+encore-page/
+momentum/
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Test outputs
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.kajabi-cache/
+
+# Keep only essential source files
+!themes/
+!scripts/
+!package.json
+!README.md
+!CLAUDE.md
+!VERSIONING.md
+!ADAPTABLE_NAV_GUIDE.md

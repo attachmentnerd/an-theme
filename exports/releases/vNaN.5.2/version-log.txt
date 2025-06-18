@@ -1,5 +1,0 @@
-Theme: AN_Website_Theme
-Type: website
-Version: NaN.5.2
-Date: 2025-06-16T20:25:49.525Z
-Message: Added Full Width CTA section - Using text-prefixed version to avoid Kajabi conflicts

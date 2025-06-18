@@ -1,0 +1,532 @@
+<section class="hero-section hero-section--{{ section.settings.layout_style }}" 
+         style="{% if section.settings.background_image %}background-image: url('{{ section.settings.background_image | image_picker_url: 'hero-bg.jpg' }}');{% endif %}
+                {% if section.settings.background_color %}background-color: {{ section.settings.background_color }};{% endif %}
+                {% if section.settings.text_color %}color: {{ section.settings.text_color }};{% endif %}">
+  
+  {% if section.settings.background_overlay %}
+    <div class="hero-overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+  {% endif %}
+  
+  <div class="container">
+    <div class="hero-content hero-content--{{ section.settings.text_alignment }}">
+      
+      {% comment %} Optional badge/tagline {% endcomment %}
+      {% if section.settings.badge_text != blank %}
+        <div class="hero-badge">
+          {{ section.settings.badge_text }}
+        </div>
+      {% endif %}
+      
+      {% comment %} Pre-heading {% endcomment %}
+      {% if section.settings.pre_heading != blank %}
+        <p class="hero-pre-heading" kjb-settings-id="{{ 'pre_heading' | settings_id: section: section }}">
+          {{ section.settings.pre_heading }}
+          {% if section.settings.pre_heading_link != blank %}
+            <a href="{{ section.settings.pre_heading_link }}" class="hero-pre-heading-link">{{ section.settings.pre_heading_link_text }}</a>
+          {% endif %}
+        </p>
+      {% endif %}
+      
+      {% comment %} Main heading {% endcomment %}
+      <h1 class="hero-title hero-title--{{ section.settings.heading_size }}" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+        {{ section.settings.heading }}
+      </h1>
+      
+      {% comment %} Subheading {% endcomment %}
+      {% if section.settings.subheading != blank %}
+        <p class="hero-subtitle" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
+      
+      {% comment %} Buttons {% endcomment %}
+      {% if section.blocks.size > 0 %}
+        <div class="hero-buttons">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'button' %}
+                <a href="{{ block.settings.button_link }}" 
+                   class="btn btn--{{ block.settings.button_style }} hero-btn" 
+                   kjb-settings-id="{{ 'button_text' | settings_id: section: section, block: block }}">
+                  {{ block.settings.button_text }}
+                </a>
+              
+              {% when 'form' %}
+                <form action="{{ block.settings.form_action }}" method="post" class="hero-form">
+                  <input type="email" 
+                         name="email" 
+                         placeholder="{{ block.settings.placeholder_text }}" 
+                         class="hero-form-input" 
+                         required>
+                  <button type="submit" class="btn btn--primary hero-form-submit">
+                    {{ block.settings.submit_text }}
+                  </button>
+                </form>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      {% comment %} Optional image {% endcomment %}
+      {% if section.settings.content_image %}
+        <div class="hero-image">
+          <img src="{{ section.settings.content_image | image_picker_url: 'hero-content.jpg' }}" 
+               alt="{{ section.settings.content_image_alt }}"
+               class="hero-image-img">
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hero Section Base Styles */
+  .hero-section {
+    position: relative;
+    padding: 80px 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 1;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Text Alignment Variations */
+  .hero-content--left {
+    text-align: left;
+    margin-left: 0;
+  }
+  
+  .hero-content--center {
+    text-align: center;
+  }
+  
+  .hero-content--right {
+    text-align: right;
+    margin-right: 0;
+  }
+  
+  /* Badge */
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background-color: var(--an-coral);
+    color: white;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  /* Pre-heading */
+  .hero-pre-heading {
+    font-size: 16px;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+  
+  .hero-pre-heading-link {
+    color: inherit;
+    text-decoration: underline;
+    margin-left: 8px;
+  }
+  
+  /* Title Styles */
+  .hero-title {
+    margin: 0 0 24px 0;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  
+  .hero-title--small {
+    font-size: 36px;
+  }
+  
+  .hero-title--medium {
+    font-size: 48px;
+  }
+  
+  .hero-title--large {
+    font-size: 60px;
+  }
+  
+  .hero-title--xlarge {
+    font-size: 72px;
+  }
+  
+  /* Subtitle */
+  .hero-subtitle {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+    opacity: 0.9;
+  }
+  
+  /* Buttons */
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .hero-content--center .hero-buttons {
+    justify-content: center;
+  }
+  
+  .hero-content--right .hero-buttons {
+    justify-content: flex-end;
+  }
+  
+  .hero-btn {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+  
+  /* Form Styles */
+  .hero-form {
+    display: flex;
+    gap: 12px;
+    max-width: 480px;
+  }
+  
+  .hero-content--center .hero-form {
+    margin: 0 auto;
+  }
+  
+  .hero-form-input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    font-size: 16px;
+  }
+  
+  .hero-form-input::placeholder {
+    color: inherit;
+    opacity: 0.7;
+  }
+  
+  /* Hero Image */
+  .hero-image {
+    margin-top: 48px;
+  }
+  
+  .hero-image-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Layout Styles */
+  .hero-section--split {
+    padding: 0;
+  }
+  
+  .hero-section--split .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    min-height: 600px;
+  }
+  
+  .hero-section--minimal {
+    padding: 120px 0;
+  }
+  
+  .hero-section--full-height {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 767px) {
+    .hero-section {
+      padding: 60px 0;
+    }
+    
+    .hero-title--small {
+      font-size: 28px;
+    }
+    
+    .hero-title--medium {
+      font-size: 32px;
+    }
+    
+    .hero-title--large {
+      font-size: 36px;
+    }
+    
+    .hero-title--xlarge {
+      font-size: 42px;
+    }
+    
+    .hero-subtitle {
+      font-size: 18px;
+    }
+    
+    .hero-buttons {
+      flex-direction: column;
+    }
+    
+    .hero-btn {
+      width: 100%;
+    }
+    
+    .hero-form {
+      flex-direction: column;
+    }
+    
+    .hero-section--split .container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Section",
+  "class": "hero-section-wrapper",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "default": "center",
+      "options": [
+        { "label": "Standard", "value": "standard" },
+        { "label": "Split Content", "value": "split" },
+        { "label": "Minimal", "value": "minimal" },
+        { "label": "Full Height", "value": "full-height" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "center",
+      "options": [
+        { "label": "Left", "value": "left" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#1A2D4E"
+    },
+    {
+      "type": "checkbox",
+      "id": "background_overlay",
+      "label": "Add Overlay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text"
+    },
+    {
+      "type": "text",
+      "id": "pre_heading",
+      "label": "Pre-heading"
+    },
+    {
+      "type": "text",
+      "id": "pre_heading_link_text",
+      "label": "Pre-heading Link Text"
+    },
+    {
+      "type": "action",
+      "id": "pre_heading_link",
+      "label": "Pre-heading Link"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome to Our Platform"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "default": "large",
+      "options": [
+        { "label": "Small", "value": "small" },
+        { "label": "Medium", "value": "medium" },
+        { "label": "Large", "value": "large" },
+        { "label": "Extra Large", "value": "xlarge" }
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Build something amazing with our powerful platform"
+    },
+    {
+      "type": "header",
+      "content": "Content Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "content_image",
+      "label": "Content Image"
+    },
+    {
+      "type": "text",
+      "id": "content_image_alt",
+      "label": "Image Alt Text"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "elements": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "action",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            { "label": "Primary", "value": "primary" },
+            { "label": "Secondary", "value": "secondary" },
+            { "label": "Coral (Emotional)", "value": "coral" },
+            { "label": "Outline", "value": "outline" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "form",
+      "name": "Email Form",
+      "elements": [
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "Placeholder Text",
+          "default": "Enter your email"
+        },
+        {
+          "type": "text",
+          "id": "submit_text",
+          "label": "Submit Button Text",
+          "default": "Subscribe"
+        },
+        {
+          "type": "text",
+          "id": "form_action",
+          "label": "Form Action URL",
+          "default": "/subscribe"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Section",
+      "category": "Hero",
+      "settings": {
+        "layout_style": "standard",
+        "text_alignment": "center",
+        "background_color": "#1A2D4E",
+        "background_overlay": true,
+        "overlay_opacity": 50,
+        "heading": "Welcome to Attachment Nerd",
+        "heading_size": "large",
+        "subheading": "Science-backed tools for building secure relationships with your children",
+        "text_color": "#FFFFFF"
+      },
+      "blocks": [
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Get Started",
+            "button_style": "primary"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Learn More",
+            "button_style": "outline"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

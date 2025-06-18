@@ -1,0 +1,627 @@
+/* ==========================================================================
+   AN Theme Shared Styles
+   Version: 1.0.0
+   Description: Shared CSS variables and common styles for all AN Kajabi themes
+   ========================================================================== */
+
+/* Table of Contents
+   1. CSS Variables (Brand Design System)
+   2. Typography Base
+   3. Common Button Styles
+   4. Shared Navigation Styles
+   5. Shared Footer Styles
+   6. Utility Classes
+   7. Responsive Helpers
+*/
+
+/* ==========================================================================
+   1. CSS Variables - Attachment Nerd Brand Design System
+   ========================================================================== */
+:root {
+  /* Core Brand Colors */
+  --an-navy: #1A2D4E;      /* Nerd Navy - Primary headings, buttons */
+  --an-teal: #2AB3B1;      /* Secure Teal - Interactive states */
+  --an-coral: #F57C6F;     /* Sunrise Coral - Emotional CTAs */
+  --an-gold: #FFC63F;      /* Sunshine Gold - Highlights, icons */
+  --an-plum: #A449A5;      /* Modern Plum - Depth accents, links */
+  --an-peach: #FFF4F0;     /* Blush Peach - Soft backgrounds */
+  --an-white: #FFFFFF;     /* White - Base */
+  --an-grey: #F8F7F5;      /* Warm Grey - Secondary backgrounds */
+  --an-slate: #3A4A63;     /* Slate Ink - Body text */
+  
+  /* Legacy mappings for compatibility */
+  --an-primary: var(--an-navy);
+  --an-secondary: var(--an-teal);
+  --an-text-dark: var(--an-slate);
+  --an-text-medium: rgba(58, 74, 99, 0.7);
+  --an-bg-light: var(--an-grey);
+  
+  /* Spacing System */
+  --an-space-xs: 4px;
+  --an-space-sm: 8px;
+  --an-space-md: 16px;
+  --an-space-lg: 24px;
+  --an-space-xl: 32px;
+  --an-space-2xl: 48px;
+  --an-space-3xl: 64px;
+  
+  /* Typography Scale */
+  --an-font-xs: 0.75rem;    /* 12px */
+  --an-font-sm: 0.875rem;   /* 14px */
+  --an-font-base: 1rem;     /* 16px */
+  --an-font-lg: 1.125rem;   /* 18px */
+  --an-font-xl: 1.25rem;    /* 20px */
+  --an-font-2xl: 1.5rem;    /* 24px */
+  --an-font-3xl: 1.875rem;  /* 30px */
+  --an-font-4xl: 2.25rem;   /* 36px */
+  
+  /* Border & Radius */
+  --an-border: rgba(26, 45, 78, 0.1);
+  --an-radius-sm: 4px;
+  --an-radius-md: 8px;
+  --an-radius-lg: 16px;
+  --an-radius-full: 9999px;
+  
+  /* Shadows */
+  --an-shadow-sm: 0 1px 2px 0 rgba(26, 45, 78, 0.05);
+  --an-shadow-md: 0 4px 6px -1px rgba(26, 45, 78, 0.1);
+  --an-shadow-lg: 0 10px 15px -3px rgba(26, 45, 78, 0.1);
+  
+  /* Transitions */
+  --an-transition-fast: 150ms ease-in-out;
+  --an-transition-base: 200ms ease-in-out;
+  --an-transition-slow: 300ms ease-in-out;
+}
+
+/* ==========================================================================
+   2. Typography Base
+   ========================================================================== */
+body {
+  color: var(--an-slate);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--an-navy);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+a {
+  color: var(--an-plum);
+  text-decoration: none;
+  transition: color var(--an-transition-base);
+}
+
+a:hover {
+  color: var(--an-teal);
+}
+
+/* ==========================================================================
+   3. Common Button Styles
+   ========================================================================== */
+.btn {
+  transition: all var(--an-transition-base);
+  border-radius: var(--an-radius-md);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--an-shadow-md);
+}
+
+/* Primary Button - Navy */
+.btn--primary,
+.btn.btn-primary {
+  background-color: var(--an-navy);
+  border-color: var(--an-navy);
+  color: var(--an-white);
+}
+
+.btn--primary:hover,
+.btn.btn-primary:hover {
+  background-color: var(--an-teal);
+  border-color: var(--an-teal);
+}
+
+/* Emotional CTA - Coral */
+.btn--coral,
+.btn--emotional {
+  background-color: var(--an-coral);
+  border-color: var(--an-coral);
+  color: var(--an-white);
+}
+
+.btn--coral:hover,
+.btn--emotional:hover {
+  background-color: #f4695a;
+  border-color: #f4695a;
+}
+
+/* Secondary - Teal */
+.btn--secondary,
+.btn.btn-secondary {
+  background-color: var(--an-teal);
+  border-color: var(--an-teal);
+  color: var(--an-white);
+}
+
+.btn--secondary:hover,
+.btn.btn-secondary:hover {
+  background-color: #239a98;
+  border-color: #239a98;
+}
+
+/* ==========================================================================
+   4. Shared Navigation Styles
+   ========================================================================== */
+.header {
+  background-color: var(--an-white);
+  border-bottom: 1px solid var(--an-border);
+}
+
+.header__nav .link-list__link {
+  color: var(--an-navy);
+  font-weight: 500;
+  position: relative;
+  transition: color var(--an-transition-base);
+}
+
+.header__nav .link-list__link:hover {
+  color: var(--an-teal);
+}
+
+/* Underline animation */
+.header__nav .link-list__link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 50%;
+  background-color: var(--an-teal);
+  transition: all var(--an-transition-base);
+  transform: translateX(-50%);
+}
+
+.header__nav .link-list__link:hover::after {
+  width: 100%;
+}
+
+/* Mobile Navigation */
+.header__content--mobile {
+  background-color: var(--an-peach);
+}
+
+.header__content--mobile .link-list__link {
+  color: var(--an-navy);
+  font-size: var(--an-font-xl);
+  padding: var(--an-space-md) 0;
+  border-bottom: 1px solid rgba(26, 45, 78, 0.1);
+}
+
+.header__content--mobile .link-list__link:hover {
+  color: var(--an-coral);
+  padding-left: var(--an-space-sm);
+}
+
+/* ==========================================================================
+   5. Shared Footer Styles
+   ========================================================================== */
+.footer {
+  background-color: var(--an-navy);
+  color: var(--an-white);
+  padding: var(--an-space-3xl) 0 var(--an-space-xl);
+}
+
+.footer__title {
+  color: var(--an-white);
+  margin-bottom: var(--an-space-lg);
+}
+
+.footer__link {
+  color: rgba(255, 255, 255, 0.8);
+  transition: color var(--an-transition-base);
+}
+
+.footer__link:hover {
+  color: var(--an-teal);
+}
+
+.footer__social-icon {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--an-radius-full);
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--an-transition-base);
+}
+
+.footer__social-icon:hover {
+  background-color: var(--an-teal);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   6. Utility Classes
+   ========================================================================== */
+.text-navy { color: var(--an-navy) !important; }
+.text-teal { color: var(--an-teal) !important; }
+.text-coral { color: var(--an-coral) !important; }
+.text-gold { color: var(--an-gold) !important; }
+.text-plum { color: var(--an-plum) !important; }
+
+.bg-navy { background-color: var(--an-navy) !important; }
+.bg-teal { background-color: var(--an-teal) !important; }
+.bg-coral { background-color: var(--an-coral) !important; }
+.bg-gold { background-color: var(--an-gold) !important; }
+.bg-peach { background-color: var(--an-peach) !important; }
+.bg-grey { background-color: var(--an-grey) !important; }
+
+/* Spacing utilities */
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: var(--an-space-sm) !important; }
+.mt-2 { margin-top: var(--an-space-md) !important; }
+.mt-3 { margin-top: var(--an-space-lg) !important; }
+.mt-4 { margin-top: var(--an-space-xl) !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: var(--an-space-sm) !important; }
+.mb-2 { margin-bottom: var(--an-space-md) !important; }
+.mb-3 { margin-bottom: var(--an-space-lg) !important; }
+.mb-4 { margin-bottom: var(--an-space-xl) !important; }
+
+/* ==========================================================================
+   7. Responsive Helpers
+   ========================================================================== */
+@media (max-width: 767px) {
+  .hidden--mobile { display: none !important; }
+  
+  :root {
+    --an-font-4xl: 1.875rem;  /* 30px on mobile */
+    --an-font-3xl: 1.5rem;    /* 24px on mobile */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .hidden--tablet { display: none !important; }
+}
+
+@media (min-width: 992px) {
+  .hidden--desktop { display: none !important; }
+}
+
+/* ==========================================================================
+   8. Book Section
+   ========================================================================== */
+.section--book {
+  padding: var(--an-space-xl) 0;
+  background-color: var(--an-grey);
+  overflow: hidden;
+}
+
+/* Top text styling */
+.book__top-text {
+  text-align: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--an-slate);
+  margin-bottom: var(--an-space-lg);
+  font-weight: 500;
+}
+
+/* Logo row */
+.book__logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--an-space-xl);
+  margin-bottom: var(--an-space-xl);
+  flex-wrap: wrap;
+}
+
+.book__logo {
+  opacity: 0.6;
+  transition: opacity var(--an-transition-fast);
+}
+
+.book__logo:hover {
+  opacity: 1;
+}
+
+.book__logo img {
+  max-height: 30px;
+  width: auto;
+  filter: grayscale(100%);
+  transition: filter var(--an-transition-fast);
+}
+
+.book__logo:hover img {
+  filter: grayscale(0%);
+}
+
+/* Main content layout */
+.book__content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--an-space-xl);
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Quote sections */
+.book__quote {
+  padding: var(--an-space-lg);
+}
+
+.book__quote--left {
+  text-align: right;
+}
+
+.book__quote--right {
+  text-align: left;
+}
+
+/* Star ratings */
+.book__stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: var(--an-space-md);
+}
+
+.book__quote--left .book__stars {
+  justify-content: flex-end;
+}
+
+.book__quote--right .book__stars {
+  justify-content: flex-start;
+}
+
+.book__star {
+  color: var(--an-gold);
+  width: 16px;
+  height: 16px;
+}
+
+/* Quote text */
+.book__quote-text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--an-slate);
+  margin: 0 0 var(--an-space-lg) 0;
+  font-style: italic;
+}
+
+/* Author section */
+.book__author {
+  display: flex;
+  align-items: center;
+  gap: var(--an-space-md);
+}
+
+.book__quote--left .book__author {
+  justify-content: flex-end;
+}
+
+.book__quote--right .book__author {
+  justify-content: flex-start;
+}
+
+.book__author-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.book__author-info {
+  text-align: left;
+}
+
+.book__quote--left .book__author-info {
+  text-align: right;
+}
+
+.book__author-name {
+  font-weight: 600;
+  color: var(--an-navy);
+  margin-bottom: 2px;
+}
+
+.book__author-bio {
+  font-size: 14px;
+  color: var(--an-text-medium);
+  line-height: 1.4;
+}
+
+/* Book image wrapper */
+.book__image-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book__image {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  border-radius: var(--an-radius-md);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge */
+.book__badge {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background-color: var(--an-gold);
+  color: var(--an-navy);
+  padding: var(--an-space-sm) var(--an-space-md);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.2;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 198, 63, 0.3);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991px) {
+  .book__content {
+    grid-template-columns: 1fr;
+    gap: var(--an-space-xl);
+  }
+  
+  .book__quote {
+    text-align: center !important;
+  }
+  
+  .book__stars {
+    justify-content: center !important;
+  }
+  
+  .book__author {
+    justify-content: center !important;
+  }
+  
+  .book__author-info {
+    text-align: left !important;
+  }
+  
+  .book__image-wrapper {
+    order: -1;
+    margin-bottom: var(--an-space-xl);
+  }
+  
+  .book__image {
+    max-width: 280px;
+  }
+  
+  .book__badge {
+    width: 100px;
+    height: 100px;
+    font-size: 11px;
+    top: -15px;
+    right: -15px;
+  }
+}
+
+@media (max-width: 767px) {
+  .book__logos {
+    gap: var(--an-space-lg);
+  }
+  
+  .book__logo img {
+    max-height: 24px;
+  }
+  
+  .book__quote-text {
+    font-size: 16px;
+  }
+  
+  .book__image {
+    max-width: 240px;
+  }
+}
+
+/* ==========================================================================
+   9. Book Buy Section
+   ========================================================================== */
+.book-buy {
+  border-top: 1px solid var(--an-border);
+  border-bottom: 1px solid var(--an-border);
+}
+
+/* Smooth logo transitions */
+.book-buy__retailer {
+  position: relative;
+}
+
+.book-buy__retailer::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: var(--an-coral);
+  transition: width 0.3s ease;
+}
+
+.book-buy__retailer:hover::after {
+  width: 80%;
+}
+
+/* Better mobile wrapping */
+@media (max-width: 480px) {
+  .book-buy__wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .book-buy__divider {
+    width: 60px;
+    height: 1px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* ==========================================================================
+   10. Enhanced Footer Additions
+   ========================================================================== */
+/* Column title underline accent */
+.footer__column-title {
+  position: relative;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.footer__column-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 30px;
+  height: 2px;
+  background-color: var(--an-coral);
+}
+
+/* Center align title underline on mobile */
+@media (max-width: 767px) {
+  .footer__column[style*="text-align: center"] .footer__column-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Logo column special styling */
+.footer__logo + .footer__text {
+  opacity: 0.85;
+  font-style: italic;
+}
+
+/* Bottom bar link separator styling */
+.footer__bottom-links a + a::before {
+  content: ' | ';
+  margin: 0 8px;
+  color: var(--an-border);
+}
+
+/* ==========================================================================
+   END OF SHARED STYLES
+   ========================================================================== */

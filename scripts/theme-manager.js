@@ -51,6 +51,15 @@ async function buildTheme(type) {
     );
   }
 
+  // Copy shared sections
+  if (fs.existsSync(path.join(sharedDir, 'sections'))) {
+    await fs.copy(
+      path.join(sharedDir, 'sections'),
+      path.join(buildDir, 'sections'),
+      { overwrite: false }
+    );
+  }
+
   // Copy styles.scss.liquid directly (don't compile - it has Liquid tags)
   const sassPath = path.join(sourceDir, 'assets', 'styles.scss.liquid');
   if (fs.existsSync(sassPath)) {
@@ -70,6 +79,52 @@ async function buildTheme(type) {
           path.join(sharedDir, 'scripts', script),
           path.join(buildDir, 'assets', script)
         );
+      }
+    }
+  }
+
+  // Copy shared styles
+  if (fs.existsSync(path.join(sharedDir, 'styles'))) {
+    const styles = await fs.readdir(path.join(sharedDir, 'styles'));
+    for (const style of styles) {
+      if (style.endsWith('.css') || style.endsWith('.scss')) {
+        // For CSS files, we need to handle merging
+        if (style === 'overrides.css') {
+          // Read shared CSS
+          const sharedCSS = await fs.readFile(
+            path.join(sharedDir, 'styles', style),
+            'utf8'
+          );
+          
+          // Check if theme has its own overrides.css with theme-specific styles
+          const themeOverridesPath = path.join(sourceDir, 'assets', style);
+          let themeSpecificCSS = '';
+          
+          if (fs.existsSync(themeOverridesPath)) {
+            const themeCSS = await fs.readFile(themeOverridesPath, 'utf8');
+            // Extract everything after the header comment if it contains theme-specific styles
+            const parts = themeCSS.split('Theme-specific styles (if any) can be added below.');
+            if (parts.length > 1 && parts[1].trim()) {
+              // Use the content after the header comment
+              themeSpecificCSS = parts[1];
+            } else if (themeCSS.trim() && !themeCSS.includes('This file is intentionally empty')) {
+              // Use the whole file if no header comment
+              themeSpecificCSS = '\n\n' + themeCSS;
+            }
+          }
+          
+          // Write combined CSS
+          await fs.writeFile(
+            path.join(buildDir, 'assets', style),
+            sharedCSS + themeSpecificCSS
+          );
+        } else {
+          // For other files, just copy
+          await fs.copy(
+            path.join(sharedDir, 'styles', style),
+            path.join(buildDir, 'assets', style)
+          );
+        }
       }
     }
   }
