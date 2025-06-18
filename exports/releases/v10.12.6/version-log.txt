@@ -1,0 +1,6 @@
+Theme: AN_Landing_Theme
+Type: landing
+Version: 10.12.6
+Date: 2025-06-18T01:14:18.664Z
+Message: Fixed section presets format - added description field and simplified block structure
+File: AN_Landing_Theme_10.12.6.zip

@@ -5,9 +5,486 @@
 
 /* ==========================================================================
    AN Product Theme Custom Styles - Attachment Nerd Brand
-   Version: 10.8.1
+   Version: 10.8.0
    Last Updated: 2025-01-16
    ========================================================================== */
+
+/* ==========================================================================
+   Modern Navigation - Clean White/Blue Design
+   ========================================================================== */
+
+/* Modern header styling */
+.header {
+  background-color: #ffffff;
+  box-shadow: none;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  padding: 16px 0;
+}
+
+.header--fixed {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Container alignment */
+.header__container {
+  align-items: center;
+  min-height: 48px;
+}
+
+/* Logo styling */
+.header__logo {
+  margin-right: 48px;
+  
+  img {
+    max-height: 32px;
+    width: auto;
+  }
+}
+
+/* Navigation menu styling - Kajabi specific selectors */
+.header .link-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header .link-list__item {
+  position: relative;
+  padding: 0;
+}
+
+/* Main navigation links */
+.header .link-list__link,
+.header__content--desktop .link-list__link {
+  color: #1a1a1a !important;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 8px 0 !important;
+  margin: 0 !important;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  position: relative;
+  text-decoration: none !important;
+  display: inline-block;
+  background: none !important;
+  
+  &:hover {
+    color: #666666 !important;
+    background: none !important;
+  }
+}
+
+/* Dropdown menu styling */
+.header .dropdown__menu {
+  background-color: #ffffff;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 200px;
+  margin-top: 8px;
+}
+
+/* Dropdown trigger */
+.header .dropdown__trigger {
+  color: #1a1a1a !important;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 8px 0 !important;
+  background: none !important;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+  text-decoration: none !important;
+  
+  &:hover {
+    color: #666666 !important;
+    background: none !important;
+  }
+  
+  &::after {
+    content: '▼';
+    font-size: 10px;
+    transition: transform 0.2s ease;
+  }
+}
+
+.header .dropdown.active .dropdown__trigger::after {
+  transform: rotate(180deg);
+}
+
+.header .dropdown__item {
+  a {
+    color: #1a1a1a !important;
+    padding: 12px 20px !important;
+    font-size: 15px;
+    display: block;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: #666666 !important;
+      background-color: #f8f8f8;
+    }
+  }
+}
+
+/* User menu styling */
+.header .user__login a {
+  color: #1a1a1a !important;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 8px 16px !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #666666 !important;
+  }
+}
+
+/* CTA Button - Blue rounded button */
+.header .btn,
+.header__block--cta .btn {
+  background-color: #0066ff !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  display: inline-block !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  
+  &:hover {
+    background-color: #0052cc !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2) !important;
+  }
+}
+
+/* Block spacing adjustments */
+.header__block {
+  margin: 0;
+}
+
+.header__block--menu {
+  flex-grow: 1;
+  margin-right: auto;
+}
+
+.header__block--user {
+  margin-left: 24px;
+}
+
+.header__block--cta {
+  margin-left: 24px;
+}
+
+/* Cart icon styling */
+.header .cart__link {
+  color: #1a1a1a !important;
+  position: relative;
+  padding: 8px;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #666666 !important;
+  }
+}
+
+/* ==========================================================================
+   Modern Video Player - Carousel Style
+   ========================================================================== */
+
+/* Main Player Container */
+.player--modern {
+  background: #f8f7f5 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto !important;
+  
+  .player__video {
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    margin-left: 60px;
+    margin-right: 60px;
+    
+    /* Blue play button overlay */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: #2B7FFF;
+      border-radius: 50%;
+      z-index: 10;
+      cursor: pointer;
+      opacity: 1;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-40%, -50%);
+      width: 0;
+      height: 0;
+      border-left: 20px solid #fff;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      z-index: 11;
+      pointer-events: none;
+    }
+    
+    &.playing::before,
+    &.playing::after {
+      opacity: 0;
+    }
+    
+    .wistia_embed {
+      border-radius: 12px;
+    }
+    
+    @media (max-width: 768px) {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    
+    @media (max-width: 480px) {
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 0;
+    }
+  }
+}
+
+/* Carousel Container */
+.player__carousel {
+  position: relative;
+  padding: 0 60px;
+  margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0;
+  }
+}
+
+/* Carousel Navigation Arrows */
+.carousel__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: #2B7FFF;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 5;
+  
+  &:hover {
+    background: #1a6eff;
+    transform: translateY(-50%) scale(1.1);
+  }
+  
+  &:disabled {
+    background: #e0e0e0;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: translateY(-50%);
+    }
+  }
+  
+  &--prev {
+    left: 0;
+  }
+  
+  &--next {
+    right: 0;
+  }
+  
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+    
+    i {
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    display: none; // Hide arrows on mobile, rely on swipe
+  }
+  
+  i {
+    font-size: 18px;
+  }
+}
+
+/* Carousel Track */
+.carousel__track-container {
+  overflow: hidden;
+  margin: 0 20px;
+  
+  @media (max-width: 480px) {
+    margin: 0 16px;
+  }
+}
+
+.carousel__track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s ease;
+}
+
+/* Video Cards in Carousel */
+.carousel__item {
+  flex: 0 0 calc(25% - 15px);
+  min-width: 250px;
+  
+  @media (max-width: 1200px) {
+    flex: 0 0 calc(33.333% - 14px);
+  }
+  
+  @media (max-width: 900px) {
+    flex: 0 0 calc(50% - 10px);
+  }
+  
+  @media (max-width: 600px) {
+    flex: 0 0 calc(100%);
+  }
+}
+
+.video-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    
+    .video-card__thumb {
+      transform: scale(1.05);
+    }
+  }
+  
+  &--active {
+    .video-card__progress {
+      background: #2B7FFF;
+    }
+    
+    .video-card__title {
+      color: #2B7FFF;
+      font-weight: 600;
+    }
+  }
+  
+  &--completed {
+    .video-card__check {
+      display: flex;
+    }
+  }
+}
+
+.video-card__thumb-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f0f0f0;
+  aspect-ratio: 16/9;
+  margin-bottom: 12px;
+}
+
+.video-card__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.video-card__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  
+  i {
+    color: #fff;
+    font-size: 12px;
+  }
+}
+
+.video-card__title {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.video-card__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #e0e0e0;
+  
+  &-fill {
+    height: 100%;
+    background: #4CAF50;
+    transition: width 0.3s ease;
+  }
+}
+
+/* Hide default playlist when using modern player */
+.player--modern .player__playlist {
+  display: none !important;
+}
 
 /* ==========================================================================
    Product Syllabus - Modern Card Design

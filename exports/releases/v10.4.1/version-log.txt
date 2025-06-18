@@ -1,6 +1,0 @@
-Theme: AN_Website_Theme
-Type: website
-Version: 10.4.1
-Date: 2025-01-16T21:00:00.000Z
-Message: Revert mobile navigation changes that broke CSS styling
-File: AN_Website_Theme_10.4.1.zip

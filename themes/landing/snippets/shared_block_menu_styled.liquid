@@ -1,0 +1,138 @@
+{% comment %}
+  Enhanced menu block with font controls and hover effects
+{% endcomment %}
+
+{% comment %} Get settings {% endcomment %}
+{% assign font_size = block.settings.font_size | default: "default" %}
+{% assign font_weight = block.settings.font_weight | default: "normal" %}
+{% assign text_transform = block.settings.text_transform | default: "none" %}
+{% assign menu_text_color = block.settings.menu_text_color %}
+{% assign menu_hover_color = block.settings.menu_hover_color %}
+{% assign hover_effect = block.settings.hover_effect | default: "color" %}
+{% assign hover_background = block.settings.hover_background %}
+{% assign item_spacing = block.settings.item_spacing | default: 20 %}
+{% assign item_padding_vertical = block.settings.item_padding_vertical | default: 8 %}
+{% assign item_padding_horizontal = block.settings.item_padding_horizontal | default: 0 %}
+{% assign custom_spacing_mobile = block.settings.custom_spacing_mobile | default: false %}
+
+{% comment %} Generate unique ID for this menu block {% endcomment %}
+{% assign menu_id = "menu-" | append: block.id %}
+
+{% comment %} Font size values {% endcomment %}
+{% case font_size %}
+  {% when "small" %}
+    {% assign font_size_value = "14px" %}
+  {% when "medium" %}
+    {% assign font_size_value = "18px" %}
+  {% when "large" %}
+    {% assign font_size_value = "20px" %}
+  {% else %}
+    {% assign font_size_value = "16px" %}
+{% endcase %}
+
+{% comment %} Custom styles for this menu {% endcomment %}
+<style>
+  /* Container spacing */
+  .header__block--menu-{{ block.id }} .link-list {
+    gap: {{ item_spacing }}px !important;
+    margin: 0 -{{ item_spacing | divided_by: 2 }}px;
+  }
+  
+  /* Base menu styles */
+  .header__block--menu-{{ block.id }} .link-list__link {
+    {% if font_size != "default" %}
+      font-size: {{ font_size_value }} !important;
+    {% endif %}
+    {% if font_weight != "normal" %}
+      font-weight: {{ font_weight }} !important;
+    {% endif %}
+    {% if text_transform != "none" %}
+      text-transform: {{ text_transform }} !important;
+    {% endif %}
+    {% if menu_text_color != blank %}
+      color: {{ menu_text_color }} !important;
+    {% endif %}
+    padding: {{ item_padding_vertical }}px {{ item_padding_horizontal }}px !important;
+    margin: 0 {{ item_spacing | divided_by: 2 }}px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  /* Hover effects */
+  {% case hover_effect %}
+    {% when "underline" %}
+      .header__block--menu-{{ block.id }} .link-list__link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 50%;
+        background-color: {{ menu_hover_color | default: 'currentColor' }};
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+      
+      .header__block--menu-{{ block.id }} .link-list__link:hover::after {
+        width: 100%;
+      }
+    
+    {% when "background" %}
+      .header__block--menu-{{ block.id }} .link-list__link {
+        border-radius: 4px;
+      }
+      
+      .header__block--menu-{{ block.id }} .link-list__link:hover {
+        background-color: {{ hover_background | default: '#f0f0f0' }} !important;
+      }
+    
+    {% when "scale" %}
+      .header__block--menu-{{ block.id }} .link-list__link:hover {
+        transform: scale(1.05);
+      }
+  {% endcase %}
+  
+  /* Hover color for all effects */
+  .header__block--menu-{{ block.id }} .link-list__link:hover {
+    {% if menu_hover_color != blank %}
+      color: {{ menu_hover_color }} !important;
+    {% endif %}
+  }
+  
+  /* Mobile styles */
+  @media (max-width: 767px) {
+    {% if custom_spacing_mobile %}
+      .header__content--mobile .header__block--menu-{{ block.id }} .link-list {
+        gap: {{ item_spacing }}px !important;
+      }
+      
+      .header__content--mobile .header__block--menu-{{ block.id }} .link-list__link {
+        padding: {{ item_padding_vertical }}px {{ item_padding_horizontal }}px !important;
+        margin: 0 {{ item_spacing | divided_by: 2 }}px;
+      }
+    {% endif %}
+    
+    .header__content--mobile .header__block--menu-{{ block.id }} .link-list__link {
+      {% if font_size != "default" %}
+        {% case font_size %}
+          {% when "small" %}
+            font-size: 18px !important;
+          {% when "medium" %}
+            font-size: 22px !important;
+          {% when "large" %}
+            font-size: 24px !important;
+          {% else %}
+            font-size: 20px !important;
+        {% endcase %}
+      {% endif %}
+    }
+  }
+</style>
+
+<div class="header__block--menu-{{ block.id }}">
+  <div class="link-list justify-content-{{ block.settings.alignment }}" kjb-settings-id="{{ 'menu' | settings_id: section: section, block: block }}">
+    {% for link in current_site.link_lists[block.settings.menu].links %}
+      <a class="link-list__link" href="{{ link.url }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>{{ link.name }}</a>
+    {% endfor %}
+  </div>
+</div>

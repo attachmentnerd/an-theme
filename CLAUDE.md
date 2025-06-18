@@ -407,3 +407,97 @@ If a section doesn't appear in the Kajabi editor:
 3. Confirm using `"elements"` not `"settings"`
 4. Re-export the theme after changes
 5. Clear browser cache and reload Kajabi editor
+
+### Kajabi Element Type Requirements
+
+**CRITICAL**: Kajabi only supports specific element types in section schemas:
+
+#### Valid Element Types:
+- `"text"` - Single line text input
+- `"textarea"` - Multi-line text input
+- `"select"` - Dropdown selection
+- `"radio"` - Radio button group
+- `"checkbox"` - Boolean toggle
+- `"color"` - Color picker
+- `"image_picker"` - Image upload/selection
+- `"range"` - Slider input (NOT "number"!)
+- `"link_list"` - Navigation menu selector
+- `"action"` - URL/action input
+- `"header"` - Section divider (content only)
+
+#### Invalid Types That Will Cause Errors:
+- ❌ `"number"` - Use `"range"` instead
+- ❌ `"url"` - Use `"text"` or `"action"` instead
+- ❌ `"email"` - Use `"text"` instead
+- ❌ `"integer"` - Use `"range"` instead
+
+#### Range Type Configuration:
+When using `"range"` type, always include:
+```json
+{
+  "type": "range",
+  "id": "font_size",
+  "label": "Font Size",
+  "default": 16,
+  "min": 10,
+  "max": 48,
+  "step": 1,
+  "unit": "px"
+}
+```
+
+### Liquid Syntax Restrictions
+
+Kajabi has specific Liquid syntax requirements:
+
+#### ❌ NOT Supported:
+```liquid
+<!-- Ternary operators -->
+{{ condition ? 'true' : 'false' }}
+
+<!-- Filter chains with ternary -->
+{{ value | default: condition ? 'a' : 'b' }}
+```
+
+#### ✅ Use Instead:
+```liquid
+<!-- If/else statements -->
+{% if condition %}true{% else %}false{% endif %}
+
+<!-- Separate if blocks -->
+{% if condition %}
+  {{ value | default: 'a' }}
+{% else %}
+  {{ value | default: 'b' }}
+{% endif %}
+```
+
+### Common Section Development Issues
+
+1. **Section Not Appearing in Picker**
+   - Missing `"presets"` array in schema
+   - Missing `"category"` in preset
+   - Missing `"description"` in preset (recommended)
+   - Invalid element types (e.g., "number" instead of "range")
+
+2. **Schema Validation Errors**
+   - Using `"type": "number"` → Change to `"type": "range"`
+   - Missing required range properties (min, max, step)
+   - Using unsupported Liquid syntax (ternary operators)
+
+3. **Best Practices for Presets**
+   ```json
+   "presets": [
+     {
+       "name": "Section Name",
+       "description": "Brief description of section",
+       "category": "Content",
+       "blocks": [
+         { "type": "block_type" }
+       ]
+     }
+   ]
+   ```
+   - Keep block definitions simple in presets
+   - Don't include settings in preset blocks
+   - Use valid categories from existing theme

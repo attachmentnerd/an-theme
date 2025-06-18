@@ -1143,3 +1143,118 @@ textarea:focus {
 .d-flex { display: flex; }
 .d-inline { display: inline; }
 .d-inline-block { display: inline-block; }
+
+/* ==========================================================================
+   7. Book Buy Section
+   ========================================================================== */
+
+/* Enhanced book buy section */
+.book-buy {
+  border-top: 1px solid var(--an-border);
+  border-bottom: 1px solid var(--an-border);
+}
+
+/* Smooth logo transitions */
+.book-buy__retailer {
+  position: relative;
+}
+
+.book-buy__retailer::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: var(--an-coral);
+  transition: width 0.3s ease;
+}
+
+.book-buy__retailer:hover::after {
+  width: 80%;
+}
+
+/* Better mobile wrapping */
+@media (max-width: 480px) {
+  .book-buy__wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .book-buy__divider {
+    width: 60px;
+    height: 1px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* ==========================================================================
+   8. Enhanced Footer
+   ========================================================================== */
+
+/* Modern footer enhancements */
+.footer {
+  font-family: var(--font-sans-serif);
+}
+
+/* Smooth hover transitions for all footer links */
+.footer__link,
+.footer__social-icon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced social icon hover */
+.footer__social-icon:hover {
+  box-shadow: 0 4px 12px rgba(42, 179, 177, 0.25);
+}
+
+/* Better mobile footer spacing */
+@media (max-width: 767px) {
+  .footer__column + .footer__column {
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  
+  .footer__column:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+/* Footer column heading style enhancement */
+.footer__column-title {
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.footer__column-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 30px;
+  height: 2px;
+  background-color: var(--an-coral);
+}
+
+/* Center align title underline on mobile */
+@media (max-width: 767px) {
+  .footer__column[style*="text-align: center"] .footer__column-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Logo column special styling */
+.footer__logo + .footer__text {
+  opacity: 0.85;
+  font-style: italic;
+}
+
+/* Bottom bar link separator styling */
+.footer__bottom-links a + a::before {
+  content: ' | ';
+  margin: 0 8px;
+  color: var(--an-border);
+}

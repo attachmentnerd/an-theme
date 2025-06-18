@@ -1,0 +1,6 @@
+Theme: AN_Landing_Theme
+Type: landing
+Version: 10.12.8
+Date: 2025-06-18T01:33:01.415Z
+Message: Fixed Kajabi compatibility - changed all number types to range with proper min/max/step values
+File: AN_Landing_Theme_10.12.8.zip

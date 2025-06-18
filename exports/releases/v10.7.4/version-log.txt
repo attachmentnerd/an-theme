@@ -1,6 +1,0 @@
-Theme: Premier
-Type: product
-Version: 10.7.4
-Date: 2025-06-17T05:23:15.711Z
-Message: No message provided
-File: Premier_10.7.4.zip

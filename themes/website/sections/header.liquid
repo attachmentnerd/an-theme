@@ -341,9 +341,9 @@
           {% for block in section.blocks %}
             {% case block.type %}
               {% when "logo" %}
-                {% include "header_block" type: "shared_block_logo" class: "header__block--logo header__block--show header__switch-content" %}
+                {% include "header_block" type: "shared_block_logo_enhanced" class: "header__block--logo header__block--show header__switch-content" %}
               {% when "menu" %}
-                {% include "header_block" type: "shared_block_menu" class: "header__switch-content header__block--menu" %}
+                {% include "header_block" type: "shared_block_menu_styled" class: "header__switch-content header__block--menu" %}
               {% when "cta" %}
                 {% include "header_block" type: "block_cta" class: "header__switch-content header__block--cta" %}
               {% when "user" %}
@@ -352,6 +352,12 @@
                 {% include "header_block" type: "header_block_dropdown" class: "header__switch-content header__block--dropdown" %}
               {% when "social_icons" %}
                 {% include "header_block" type: "block_social_icons" class: "header__switch-content header__block--social-icons" %}
+              {% when "custom_link" %}
+                {% include "header_block" type: "header_block_custom_link" class: "header__switch-content header__block--custom-link" %}
+              {% when "featured_button" %}
+                {% include "header_block" type: "header_block_featured_button" class: "header__switch-content header__block--featured-button" %}
+              {% when "spacer" %}
+                {% include "header_block" type: "header_block_spacer" class: "header__switch-content header__block--spacer" %}
             {% endcase %}
           {% endfor %}
           {% if show_hamburger %}
@@ -555,7 +561,7 @@
           "type": "select",
           "id": "horizontal",
           "label": "Horizontal Alignment",
-          "default": "between",
+          "default": "left",
           "info": "Horizonatal alignment only applies if all blocks have stretch disabled.",
           "options": [
             {
@@ -670,6 +676,12 @@
           "content": "Logo"
         },
         {
+          "type": "checkbox",
+          "id": "show_logo",
+          "label": "Show Logo",
+          "default": true
+        },
+        {
           "type": "radio",
           "id": "logo_type",
           "label": "Logo Type",
@@ -701,6 +713,65 @@
           "label": "Logo Image Width",
           "info": "You may use the format 10px or simply 10.",
           "default": "50"
+        },
+        {
+          "type": "header",
+          "content": "Logo Sizing & Display"
+        },
+        {
+          "type": "select",
+          "id": "logo_sizing",
+          "label": "Logo Sizing Method",
+          "default": "width",
+          "options": [
+            { "label": "Fixed Width (maintains aspect ratio)", "value": "width" },
+            { "label": "Fixed Height (maintains aspect ratio)", "value": "height" },
+            { "label": "Max Dimensions (fits within box)", "value": "max" },
+            { "label": "Custom (set both width and height)", "value": "custom" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "logo_height",
+          "label": "Logo Image Height",
+          "info": "Used when sizing method is 'Fixed Height' or 'Custom'. Format: 10px or 10",
+          "default": "40"
+        },
+        {
+          "type": "select",
+          "id": "logo_object_fit",
+          "label": "Logo Fit Method",
+          "default": "contain",
+          "info": "How the logo fits within its container",
+          "options": [
+            { "label": "Contain (fit inside, maintain ratio)", "value": "contain" },
+            { "label": "Cover (fill space, may crop)", "value": "cover" },
+            { "label": "Scale Down (never enlarge)", "value": "scale-down" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_logo_mobile",
+          "label": "Show Logo in Mobile Menu",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "logo_width_mobile",
+          "label": "Mobile Logo Width",
+          "info": "Logo width on mobile devices. Leave blank to use desktop width.",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "logo_height_mobile",
+          "label": "Mobile Logo Height",
+          "info": "Logo height on mobile devices. Leave blank to use desktop height.",
+          "default": ""
         },
         {
           "type": "text",
@@ -756,15 +827,137 @@
           "type": "checkbox",
           "id": "stretch",
           "label": "Stretch Block",
-          "default": "true",
+          "default": "false",
           "info": "Stretch block to fill the remaining space of this section"
         },
         {
           "type": "align",
           "id": "alignment",
           "label": "Text Alignment",
-          "default": "right",
+          "default": "left",
           "direction": "horizontal"
+        },
+        {
+          "type": "header",
+          "content": "Font Settings"
+        },
+        {
+          "type": "select",
+          "id": "font_size",
+          "label": "Font Size",
+          "default": "default",
+          "options": [
+            { "label": "Small (14px)", "value": "small" },
+            { "label": "Default (16px)", "value": "default" },
+            { "label": "Medium (18px)", "value": "medium" },
+            { "label": "Large (20px)", "value": "large" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "default": "normal",
+          "options": [
+            { "label": "Light", "value": "300" },
+            { "label": "Normal", "value": "normal" },
+            { "label": "Medium", "value": "500" },
+            { "label": "Semibold", "value": "600" },
+            { "label": "Bold", "value": "700" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_transform",
+          "label": "Text Transform",
+          "default": "none",
+          "options": [
+            { "label": "None", "value": "none" },
+            { "label": "Uppercase", "value": "uppercase" },
+            { "label": "Lowercase", "value": "lowercase" },
+            { "label": "Capitalize", "value": "capitalize" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Colors & Effects"
+        },
+        {
+          "type": "color",
+          "id": "menu_text_color",
+          "label": "Text Color",
+          "allow_blank": true,
+          "info": "Override default menu text color"
+        },
+        {
+          "type": "color",
+          "id": "menu_hover_color",
+          "label": "Hover Color",
+          "allow_blank": true,
+          "info": "Color when hovering over menu items"
+        },
+        {
+          "type": "select",
+          "id": "hover_effect",
+          "label": "Hover Effect",
+          "default": "color",
+          "options": [
+            { "label": "Color Change Only", "value": "color" },
+            { "label": "Underline", "value": "underline" },
+            { "label": "Background", "value": "background" },
+            { "label": "Scale", "value": "scale" }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "hover_background",
+          "label": "Hover Background Color",
+          "allow_blank": true,
+          "info": "Background color on hover (if hover effect is 'Background')"
+        },
+        {
+          "type": "header",
+          "content": "Spacing & Padding"
+        },
+        {
+          "type": "range",
+          "id": "item_spacing",
+          "label": "Space Between Items",
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "unit": "px",
+          "default": 20,
+          "info": "Horizontal spacing between menu items"
+        },
+        {
+          "type": "range",
+          "id": "item_padding_vertical",
+          "label": "Vertical Padding",
+          "min": 0,
+          "max": 20,
+          "step": 2,
+          "unit": "px",
+          "default": 8,
+          "info": "Top and bottom padding for each menu item"
+        },
+        {
+          "type": "range",
+          "id": "item_padding_horizontal",
+          "label": "Horizontal Padding",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0,
+          "info": "Left and right padding for each menu item"
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_spacing_mobile",
+          "label": "Apply custom spacing on mobile",
+          "default": false,
+          "info": "Use these spacing settings on mobile devices (otherwise uses theme defaults)"
         }
       ]
     },
@@ -1313,6 +1506,147 @@
                 }
               ]
             }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "custom_link",
+      "name": "Custom Link",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Custom Link"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Custom Link"
+        },
+        {
+          "type": "action",
+          "id": "link_action",
+          "label": "Link Action",
+          "default": "page"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": false
+        },
+        {
+          "type": "align",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "default": "left",
+          "direction": "horizontal"
+        }
+      ]
+    },
+    {
+      "type": "featured_button",
+      "name": "Featured Button",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Featured Button"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "action",
+          "id": "button_action",
+          "label": "Button Action",
+          "default": "page"
+        },
+        {
+          "type": "radio",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            { "label": "Primary (Blue)", "value": "primary" },
+            { "label": "Secondary (Outline)", "value": "outline" },
+            { "label": "White", "value": "white" }
+          ]
+        },
+        {
+          "type": "radio",
+          "id": "button_size",
+          "label": "Button Size",
+          "default": "medium",
+          "options": [
+            { "label": "Small", "value": "small" },
+            { "label": "Medium", "value": "medium" },
+            { "label": "Large", "value": "large" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button Color (Optional)",
+          "allow_blank": true,
+          "info": "Override default button color"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color (Optional)",
+          "allow_blank": true,
+          "info": "Override default button text color"
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": false
+        },
+        {
+          "type": "align",
+          "id": "alignment",
+          "label": "Button Alignment",
+          "default": "left",
+          "direction": "horizontal"
+        }
+      ]
+    },
+    {
+      "type": "spacer",
+      "name": "Spacer",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Spacer"
+        },
+        {
+          "type": "select",
+          "id": "space_size",
+          "label": "Space Size",
+          "default": "medium",
+          "options": [
+            { "label": "Small (8px)", "value": "small" },
+            { "label": "Medium (16px)", "value": "medium" },
+            { "label": "Large (32px)", "value": "large" },
+            { "label": "Extra Large (48px)", "value": "xlarge" },
+            { "label": "Auto (Fill Space)", "value": "auto" }
           ]
         }
       ]

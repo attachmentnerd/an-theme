@@ -1,5 +1,6 @@
 {% assign logo_settings_id = 'logo' | settings_id: section: section, block: block %}
 
+{% if block.settings.show_logo %}
 <style>
   #block-{{ block.id }} {
     line-height: 1;
@@ -24,3 +25,4 @@
     <p class="logo__text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section, block: block }}">{{ block.settings.logo_text }}</p>
   {% endif %}
 </a>
+{% endif %}

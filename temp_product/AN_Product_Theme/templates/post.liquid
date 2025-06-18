@@ -1,0 +1,19 @@
+<div id="" class="section section--global section--product">
+  <div class="container">
+    <div class="row">
+      {% section "breadcrumbs" %}
+    </div>
+    <div class="row">
+      {% section "post_player" %}
+    </div>
+    <div class="row section__row">
+      <div class="section__body col-lg-8">
+        {% section "post_body" %}
+        {% section "post_comments" %}
+      </div>
+      {% section "post_sidebar" %}
+    </div>
+  </div>
+</div>
+{% section "pop_upsell" %}
+{% section "post_paywall" %}

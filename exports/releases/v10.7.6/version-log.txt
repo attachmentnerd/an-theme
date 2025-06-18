@@ -1,6 +1,0 @@
-Theme: AN_Product_Theme
-Type: product
-Version: 10.7.6
-Date: 2025-06-17T05:33:46.348Z
-Message: No message provided
-File: AN_Product_Theme_10.7.6.zip
