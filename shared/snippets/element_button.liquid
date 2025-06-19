@@ -18,15 +18,30 @@
   }
 </style>
 
-<a
-  id="btn-{{ block.id }}"
-  class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }}"
-  href="{{ block.settings.btn_action }}"
-  {% if block.settings.btn_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %}
-  {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}
-  kjb-settings-id="{{ 'btn_background_color' | settings_id: section: section, block: block }}"
->
-  {%- element "block.settings.btn_text" -%}
-    {{ block.settings.btn_text }}
-  {%- endelement -%}
-</a>
+{% if block.settings.btn_action == "#" or block.settings.btn_action == "" or block.settings.btn_action == "#two-step" %}
+  <button
+    id="btn-{{ block.id }}"
+    type="button"
+    class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }}"
+    {% if block.settings.btn_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %}
+    {% if block.settings.btn_aria_label %} aria-label="{{ block.settings.btn_aria_label }}" {% endif %}
+    kjb-settings-id="{{ 'btn_background_color' | settings_id: section: section, block: block }}"
+  >
+    {%- element "block.settings.btn_text" -%}
+      {{ block.settings.btn_text }}
+    {%- endelement -%}
+  </button>
+{% else %}
+  <a
+    id="btn-{{ block.id }}"
+    class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }}"
+    href="{{ block.settings.btn_action }}"
+    {% if block.settings.new_tab == true %} target="_blank" rel="noopener noreferrer" {% endif %}
+    {% if block.settings.btn_aria_label %} aria-label="{{ block.settings.btn_aria_label }}" {% endif %}
+    kjb-settings-id="{{ 'btn_background_color' | settings_id: section: section, block: block }}"
+  >
+    {%- element "block.settings.btn_text" -%}
+      {{ block.settings.btn_text }}
+    {%- endelement -%}
+  </a>
+{% endif %}

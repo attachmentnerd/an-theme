@@ -113,6 +113,8 @@
   --an-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --an-shadow-md: var(--shadow-card);
   --an-shadow-lg: var(--shadow-media);
+  --an-shadow-xl: 0 20px 25px -5px rgba(26, 45, 78, 0.1);
+  --an-shadow-2xl: 0 25px 50px -12px rgba(26, 45, 78, 0.25);
   
   /* Motion & Timing */
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -122,6 +124,69 @@
   --an-transition-fast: 150ms var(--ease-out);
   --an-transition-base: 200ms var(--ease-out);
   --an-transition-slow: 300ms var(--ease-out);
+  
+  /* Modern Brand Update - Additional Variables */
+  --an-primary-gradient: linear-gradient(135deg, #5E3BFF 0%, #8B7BFF 100%);
+  --an-accent-teal: #18D5E4;
+  --an-accent-peach: #FF8BCB;
+  --an-accent-lemon: #FFE86B;
+  --an-muted: #D4D4D8;
+  --an-ink-normal: #0A0A0B;
+  --an-ink-light: #71717A;
+  --an-ink-lighter: #A1A1AA;
+  --an-border-light: #F4F4F5;
+  --an-lavender: #E9E6FF;
+  
+  /* Additional Text Colors */
+  --an-text-light: var(--an-ink-lighter);
+  --an-text-white: var(--an-white);
+  
+  /* Additional Background Colors */
+  --an-bg-white: var(--an-white);
+  --an-bg-lighter: var(--an-lavender);
+  
+  /* Additional Typography */
+  --an-font-display: 3rem;
+  --an-space-4xl: 96px;
+  
+  /* Font Weights */
+  --an-font-normal: 400;
+  --an-font-medium: 500;
+  --an-font-semibold: 600;
+  --an-font-bold: 700;
+  
+  /* Line Heights */
+  --an-leading-tight: 1.25;
+  --an-leading-normal: 1.5;
+  --an-leading-relaxed: 1.75;
+  
+  /* Container Widths */
+  --an-container-sm: 640px;
+  --an-container-md: 768px;
+  --an-container-lg: 1024px;
+  --an-container-xl: 1280px;
+  --an-container-2xl: 1536px;
+  
+  /* Z-index System */
+  --an-z-dropdown: 50;
+  --an-z-header: 100;
+  --an-z-sticky: 200;
+  --an-z-overlay: 300;
+  --an-z-modal: 1000;
+  
+  /* Additional Radius Variables */
+  --an-radius-xl: 24px;
+  --an-radius-2xl: 32px;
+  
+  /* Blur Effects */
+  --an-blur-sm: 4px;
+  --an-blur-md: 8px;
+  --an-blur-lg: 16px;
+  --an-blur-xl: 24px;
+  
+  /* Additional Transition Variables */
+  --an-ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --an-ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 /* ==========================================================================
@@ -1924,6 +1989,101 @@ label {
     text-align: center;
   }
 }
+
+/* ==========================================================================
+   Accessibility Utilities
+   Added: 2025-01-18
+   ========================================================================== */
+
+/* Visually hidden but accessible to screen readers */
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--an-primary, #5E3BFF);
+  outline-offset: 2px;
+}
+
+/* Remove default focus for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 1em;
+  background-color: var(--an-primary, #5E3BFF);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--an-radius-md);
+}
+
+.skip-to-content:focus {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 1rem;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .progress__inner,
+  .progress__fill {
+    border: 1px solid;
+  }
+  
+  .btn {
+    border-width: 2px !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus styles for interactive elements */
+.btn:focus-visible,
+.element_button:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--an-primary, #5E3BFF);
+  outline-offset: 2px;
+}
+
+/* Ensure interactive elements have minimum touch target */
+.btn,
+button,
+a[role="button"],
+input[type="submit"],
+input[type="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 
 /* ==========================================================================
    JavaScript Transition Support

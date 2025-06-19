@@ -37,91 +37,114 @@
 
 {% comment %} Custom button color styles {% endcomment %}
 <style>
-  /* Button size styles */
-  .header .header__block--featured-button-{{ block.id }} .btn--small {
+  /* Button size styles - works in both header and navigation contexts */
+  .header__block--featured-button-{{ block.id }} .btn--small,
+  .navigation__block--featured-button-{{ block.id }} .btn--small {
     padding: 6px 16px !important;
     font-size: 13px !important;
     line-height: 1.4 !important;
   }
   
-  .header .header__block--featured-button-{{ block.id }} .btn--large {
+  .header__block--featured-button-{{ block.id }} .btn--large,
+  .navigation__block--featured-button-{{ block.id }} .btn--large {
     padding: 14px 32px !important;
     font-size: 18px !important;
     line-height: 1.5 !important;
   }
   
   /* Button style overrides */
-  .header .header__block--featured-button-{{ block.id }} .btn--primary {
-    background-color: var(--an-primary, #1A2D4E) !important;
-    border-color: var(--an-primary, #1A2D4E) !important;
+  .header__block--featured-button-{{ block.id }} .btn--primary,
+  .navigation__block--featured-button-{{ block.id }} .btn--primary {
+    background-color: var(--an-primary, #5E3BFF) !important;
+    border-color: var(--an-primary, #5E3BFF) !important;
     color: #ffffff !important;
   }
   
-  .header .header__block--featured-button-{{ block.id }} .btn--outline {
+  .header__block--featured-button-{{ block.id }} .btn--outline,
+  .navigation__block--featured-button-{{ block.id }} .btn--outline {
     background-color: transparent !important;
-    border: 2px solid var(--an-primary, #1A2D4E) !important;
-    color: var(--an-primary, #1A2D4E) !important;
+    border: 2px solid var(--an-primary, #5E3BFF) !important;
+    color: var(--an-primary, #5E3BFF) !important;
   }
   
-  .header .header__block--featured-button-{{ block.id }} .btn--white {
+  .header__block--featured-button-{{ block.id }} .btn--white,
+  .navigation__block--featured-button-{{ block.id }} .btn--white {
     background-color: #ffffff !important;
     border-color: #ffffff !important;
-    color: var(--an-primary, #1A2D4E) !important;
+    color: var(--an-primary, #5E3BFF) !important;
   }
   
   /* Hover states */
-  .header .header__block--featured-button-{{ block.id }} .btn--primary:hover {
-    background-color: var(--an-primary, #1A2D4E) !important;
-    border-color: var(--an-primary, #1A2D4E) !important;
+  .header__block--featured-button-{{ block.id }} .btn--primary:hover,
+  .navigation__block--featured-button-{{ block.id }} .btn--primary:hover {
+    background-color: var(--an-primary, #5E3BFF) !important;
+    border-color: var(--an-primary, #5E3BFF) !important;
     opacity: 0.9 !important;
   }
   
-  .header .header__block--featured-button-{{ block.id }} .btn--outline:hover {
-    background-color: var(--an-primary, #1A2D4E) !important;
-    border-color: var(--an-primary, #1A2D4E) !important;
+  .header__block--featured-button-{{ block.id }} .btn--outline:hover,
+  .navigation__block--featured-button-{{ block.id }} .btn--outline:hover {
+    background-color: var(--an-primary, #5E3BFF) !important;
+    border-color: var(--an-primary, #5E3BFF) !important;
     color: #ffffff !important;
   }
   
-  .header .header__block--featured-button-{{ block.id }} .btn--white:hover {
+  .header__block--featured-button-{{ block.id }} .btn--white:hover,
+  .navigation__block--featured-button-{{ block.id }} .btn--white:hover {
     background-color: #f5f5f5 !important;
     border-color: #f5f5f5 !important;
   }
   
   {% if button_color != blank %}
     /* Custom background color */
-    .header .header__block--featured-button-{{ block.id }} .btn--primary,
-    .header .header__block--featured-button-{{ block.id }} .btn--primary:hover {
+    .header__block--featured-button-{{ block.id }} .btn--primary,
+    .navigation__block--featured-button-{{ block.id }} .btn--primary,
+    .header__block--featured-button-{{ block.id }} .btn--primary:hover,
+    .navigation__block--featured-button-{{ block.id }} .btn--primary:hover {
       background-color: {{ button_color }} !important;
       border-color: {{ button_color }} !important;
     }
     
-    .header .header__block--featured-button-{{ block.id }} .btn--outline {
+    .header__block--featured-button-{{ block.id }} .btn--outline,
+    .navigation__block--featured-button-{{ block.id }} .btn--outline {
       border-color: {{ button_color }} !important;
       color: {{ button_color }} !important;
     }
     
-    .header .header__block--featured-button-{{ block.id }} .btn--outline:hover {
+    .header__block--featured-button-{{ block.id }} .btn--outline:hover,
+    .navigation__block--featured-button-{{ block.id }} .btn--outline:hover {
       background-color: {{ button_color }} !important;
       border-color: {{ button_color }} !important;
-      color: #ffffff !important;
+      {% if button_text_color != blank %}
+        color: {{ button_text_color }} !important;
+      {% else %}
+        color: #ffffff !important;
+      {% endif %}
     }
   {% endif %}
   
   {% if button_text_color != blank %}
-    /* Custom text color */
-    .header .header__block--featured-button-{{ block.id }} .btn {
+    /* Custom text color with proper specificity */
+    .header__block--featured-button-{{ block.id }} .btn,
+    .navigation__block--featured-button-{{ block.id }} .btn,
+    .header__block--featured-button-{{ block.id }} .btn--primary,
+    .navigation__block--featured-button-{{ block.id }} .btn--primary,
+    .header__block--featured-button-{{ block.id }} .btn--outline,
+    .navigation__block--featured-button-{{ block.id }} .btn--outline,
+    .header__block--featured-button-{{ block.id }} .btn--white,
+    .navigation__block--featured-button-{{ block.id }} .btn--white {
       color: {{ button_text_color }} !important;
     }
     
-    {% if button_color != blank %}
-      .header .header__block--featured-button-{{ block.id }} .btn--outline:hover {
-        color: {{ button_text_color }} !important;
-      }
-    {% endif %}
+    /* Maintain custom text color on primary button hover */
+    .header__block--featured-button-{{ block.id }} .btn--primary:hover,
+    .navigation__block--featured-button-{{ block.id }} .btn--primary:hover {
+      color: {{ button_text_color }} !important;
+    }
   {% endif %}
 </style>
 
-<div class="header__block--featured-button header__block--featured-button-{{ block.id }}">
+<div class="header__block--featured-button navigation__block--featured-button navigation__block--featured-button-{{ block.id }} header__block--featured-button-{{ block.id }}">
   {% case button_action.action_type %}
     {% when "page" %}
       <a href="{{ button_action.page_path | url_for_path }}" class="{{ btn_classes }}" {{ target }}>

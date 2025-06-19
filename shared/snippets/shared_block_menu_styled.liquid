@@ -32,14 +32,16 @@
 
 {% comment %} Custom styles for this menu {% endcomment %}
 <style>
-  /* Container spacing */
-  .header__block--menu-{{ block.id }} .link-list {
+  /* Container spacing - works in both header and navigation */
+  .header__block--menu-{{ block.id }} .link-list,
+  .navigation__block .header__block--menu-{{ block.id }} .link-list {
     gap: {{ item_spacing }}px !important;
     margin: 0 -{{ item_spacing | divided_by: 2 }}px;
   }
   
   /* Base menu styles */
-  .header__block--menu-{{ block.id }} .link-list__link {
+  .header__block--menu-{{ block.id }} .link-list__link,
+  .navigation__block .header__block--menu-{{ block.id }} .link-list__link {
     {% if font_size != "default" %}
       font-size: {{ font_size_value }} !important;
     {% endif %}
@@ -61,7 +63,8 @@
   /* Hover effects */
   {% case hover_effect %}
     {% when "underline" %}
-      .header__block--menu-{{ block.id }} .link-list__link::after {
+      .header__block--menu-{{ block.id }} .link-list__link::after,
+      .navigation__block .header__block--menu-{{ block.id }} .link-list__link::after {
         content: '';
         position: absolute;
         width: 0;
@@ -73,27 +76,32 @@
         transform: translateX(-50%);
       }
       
-      .header__block--menu-{{ block.id }} .link-list__link:hover::after {
+      .header__block--menu-{{ block.id }} .link-list__link:hover::after,
+      .navigation__block .header__block--menu-{{ block.id }} .link-list__link:hover::after {
         width: 100%;
       }
     
     {% when "background" %}
-      .header__block--menu-{{ block.id }} .link-list__link {
+      .header__block--menu-{{ block.id }} .link-list__link,
+      .navigation__block .header__block--menu-{{ block.id }} .link-list__link {
         border-radius: 4px;
       }
       
-      .header__block--menu-{{ block.id }} .link-list__link:hover {
+      .header__block--menu-{{ block.id }} .link-list__link:hover,
+      .navigation__block .header__block--menu-{{ block.id }} .link-list__link:hover {
         background-color: {{ hover_background | default: '#f0f0f0' }} !important;
       }
     
     {% when "scale" %}
-      .header__block--menu-{{ block.id }} .link-list__link:hover {
+      .header__block--menu-{{ block.id }} .link-list__link:hover,
+      .navigation__block .header__block--menu-{{ block.id }} .link-list__link:hover {
         transform: scale(1.05);
       }
   {% endcase %}
   
   /* Hover color for all effects */
-  .header__block--menu-{{ block.id }} .link-list__link:hover {
+  .header__block--menu-{{ block.id }} .link-list__link:hover,
+  .navigation__block .header__block--menu-{{ block.id }} .link-list__link:hover {
     {% if menu_hover_color != blank %}
       color: {{ menu_hover_color }} !important;
     {% endif %}

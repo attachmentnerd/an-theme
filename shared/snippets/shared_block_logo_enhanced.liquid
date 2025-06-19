@@ -32,6 +32,13 @@
       position: relative;
     }
     
+    /* Navigation-specific logo styles */
+    .navigation #block-{{ block.id }} .logo {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+    
     #block-{{ block.id }} .logo__image {
       display: block;
       {% case logo_sizing %}
@@ -69,7 +76,8 @@
           display: none !important;
         }
       {% else %}
-        .header__content--mobile #block-{{ block.id }} .logo__image {
+        .header__content--mobile #block-{{ block.id }} .logo__image,
+        .navigation #block-{{ block.id }} .logo__image {
           {% case logo_sizing %}
             {% when "width" %}
               width: {{ logo_width_mobile }}px;
@@ -86,6 +94,12 @@
           {% endcase %}
         }
       {% endif %}
+      
+      /* Ensure logo stays visible in navigation on mobile */
+      .navigation #block-{{ block.id }} {
+        display: flex !important;
+        align-items: center;
+      }
     }
     
     /* Sticky header logo adjustments */

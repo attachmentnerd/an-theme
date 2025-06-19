@@ -61,31 +61,27 @@ As of v10.0.6+, Website and Landing themes are FULLY UNIFIED, sharing 100% of co
 ### Overview
 We use a **hybrid CSS Variables + organized overrides.css** approach for maintainable, scalable styling across all themes.
 
-### 1. CSS Variables Design System - Attachment Nerd Brand
-All themes include CSS custom properties defined in header.liquid:
+### 1. CSS Variables Design System - Modern Brand
+All CSS variables are now defined in `/shared/styles/overrides.css` and load automatically with the theme:
 ```css
 :root {
   /* Core Brand Colors */
-  --an-navy: #1A2D4E;      /* Nerd Navy - Primary headings, buttons */
-  --an-teal: #2AB3B1;      /* Secure Teal - Interactive states */
-  --an-coral: #F57C6F;     /* Sunrise Coral - Emotional CTAs */
-  --an-gold: #FFC63F;      /* Sunshine Gold - Highlights, icons */
-  --an-plum: #A449A5;      /* Modern Plum - Depth accents, links */
-  --an-peach: #FFF4F0;     /* Blush Peach - Soft backgrounds */
-  --an-white: #FFFFFF;     /* White - Base */
-  --an-grey: #F8F7F5;      /* Warm Grey - Secondary backgrounds */
-  --an-slate: #3A4A63;     /* Slate Ink - Body text */
+  --c-brand-600: #5E3BFF;      /* Brand Primary - Buttons, links */
+  --c-brand-800: #4025E0;      /* Brand Dark - Hover states */
+  --c-brand-100: #E9E6FF;      /* Brand Light - Backgrounds */
+  --c-accent-teal: #18D5E4;    /* Accent Teal */
+  --c-accent-peach: #FF8BCB;   /* Accent Peach */
+  --c-accent-lemon: #FFE86B;   /* Accent Lemon */
   
-  /* Legacy mappings for compatibility */
-  --an-primary: var(--an-navy);
-  --an-secondary: var(--an-teal);
+  /* Legacy AN mappings for compatibility */
+  --an-primary: #5E3BFF;
+  --an-teal: #18D5E4;
+  --an-coral: #FF8BCB;
+  --an-gold: #FFE86B;
+  --an-lavender: #E9E6FF;
   
-  /* Spacing System */
-  --an-space-sm: 8px;
-  --an-space-md: 16px;
-  --an-space-lg: 24px;
-  
-  /* And more... */
+  /* Typography, Spacing, Shadows, etc. */
+  /* All design system variables... */
 }
 ```
 
@@ -931,7 +927,125 @@ Kajabi has specific Liquid syntax requirements:
    - Don't include settings in preset blocks
    - Use valid categories from existing theme
 
+## Accessibility Features (v13.0.0+)
+
+The AN themes include comprehensive accessibility features to ensure an inclusive experience for all users:
+
+### Core Accessibility Features
+1. **ARIA Support**:
+   - Progress bars with proper ARIA attributes
+   - Form inputs with labels and ARIA descriptions
+   - Buttons with aria-labels where needed
+   - Landmarks and regions properly marked
+
+2. **Keyboard Navigation**:
+   - Full keyboard support for all interactive elements
+   - Focus indicators on all focusable elements
+   - Skip-to-content link for screen reader users
+   - Proper tab order throughout the interface
+
+3. **Screen Reader Support**:
+   - Visually hidden helper text (.visually-hidden, .sr-only)
+   - Proper heading hierarchy
+   - Descriptive link and button text
+   - Alt text for all images
+
+4. **Visual Accessibility**:
+   - High contrast mode support
+   - Focus visible indicators
+   - Minimum touch target sizes (44x44px)
+   - Reduced motion support
+
+### Implementation Examples
+
+#### Progress Bars
+```liquid
+{% render 'element_progress', percent: 75, label: 'Course progress' %}
+```
+
+#### Accessible Buttons
+```liquid
+{% render 'element_button', 
+  block: block,
+  btn_text: 'Start Course',
+  btn_aria_label: 'Start the JavaScript fundamentals course'
+%}
+```
+
+#### Form Inputs
+```html
+<label for="search-{{ block.id }}" class="visually-hidden">Search</label>
+<input 
+  id="search-{{ block.id }}"
+  type="search" 
+  aria-label="Search blog posts"
+>
+```
+
+### CSS Utilities for Accessibility
+- `.visually-hidden` / `.sr-only` - Hide visually but keep for screen readers
+- `.skip-to-content` - Skip navigation link
+- Focus styles automatically applied to interactive elements
+- High contrast mode adjustments
+- Reduced motion preferences respected
+
 ## Version History
+
+### v15.0.0 (2025-01-18)
+- **CLEAN MODULAR HEADER ARCHITECTURE**: Complete redesign with separated components
+- Cleaned header.liquid to minimal version (logo only)
+- Removed all navigation and mobile menu code from header
+- Created navigation.liquid - Flexible navigation bar with mobile hamburger
+- Created mobile_menu.liquid - Dedicated slide-out mobile menu
+- Benefits:
+  - Enable/disable navigation on specific pages
+  - Different navigation styles per page possible
+  - Cleaner separation of concerns
+  - Better mobile experience with dedicated menu
+  - Faster page loads with minimal header
+  - More maintainable codebase
+
+### v14.0.0 (2025-01-18)
+- **REMOVED ALL SLIDERS**: Simplified site by removing carousel/slider functionality
+- Deleted testimonial_slider.liquid section
+- Deleted carousel.liquid section  
+- Removed all tiny-slider CSS (273 lines)
+- Removed carousel loading code from an-core.js
+- Cleaner, faster page loads without slider dependencies
+- Encourages static content for better performance and SEO
+
+### v13.2.0 (2025-01-18)
+- **SIMPLIFIED CAROUSEL LOADING**: Switched to traditional script loading for better compatibility
+- Updated testimonial_slider.liquid to use traditional <script> tags instead of ES6 modules
+- Updated carousel.liquid to use traditional script loading
+- Removed the separate fallback version as it's no longer needed
+- All carousel/slider sections now use consistent loading approach
+- Better compatibility across all browsers and Kajabi environments
+- Maintains all features while ensuring reliable initialization
+
+### v13.1.0 (2025-01-18)
+- **LIGHTWEIGHT CAROUSEL IMPLEMENTATION**: Replaced Slick with tiny-slider
+- Created new testimonial_slider.liquid section with tiny-slider (5KB vs 43KB)
+- Updated carousel.liquid to use tiny-slider instead of Slick Carousel
+- Removed jQuery dependency for carousels
+- Updated an-core.js to remove Slick carousel code
+- Added comprehensive tiny-slider CSS styles
+- Carousel features maintained: autoplay, navigation, fade mode, responsive
+- 88% reduction in carousel library size (43KB → 5KB)
+- Better accessibility with ARIA labels and keyboard navigation
+
+### v13.0.0 (2025-01-18)
+- **ACCESSIBILITY IMPROVEMENTS**: Comprehensive accessibility enhancements
+- Updated progress components with ARIA attributes and labels
+- Enhanced button elements to use proper `<button>` tags when appropriate
+- Added visually-hidden utility classes for screen reader text
+- Implemented focus-visible styles for keyboard navigation
+- Added skip-to-content functionality
+- Updated form inputs with proper labels and ARIA attributes
+- Added keyboard support for role="button" links in an-core.js
+- Included high contrast mode and reduced motion support
+- Minimum touch target sizes enforced (44x44px)
+- Updated shared CSS to 2,061 lines with accessibility utilities
 
 ### v12.0.0 (2025-01-18)
 - **MAJOR BRAND REDESIGN**: Complete overhaul to new modern brand style guide
@@ -991,3 +1105,16 @@ Kajabi has specific Liquid syntax requirements:
 - Exported themes:
   - Website: v10.0.6
   - Landing: v10.0.7
+
+### v12.1.0 (2025-01-19)
+- **MODULAR HEADER ARCHITECTURE**: Complete separation of concerns
+- Removed all sliders/carousels from the site (testimonial_slider, carousel)
+- Removed 273 lines of slider CSS from overrides.css
+- Created modular header system:
+  - header.liquid: Scripts/analytics only (no visual elements)
+  - navigation.liquid: Flexible navigation bar component
+  - mobile_menu.liquid: Slide-out mobile menu
+- Moved ALL CSS variables from header sections to shared/styles/overrides.css
+- CSS variables now load automatically with the theme (no manual section needed)
+- Fixed footer heading color overrides with more specific CSS selectors
+- Enables page-specific control over visual elements while maintaining consistent script loading

@@ -22,6 +22,7 @@
   class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }}"
   type="submit"
   name="commit"
+  {% if block.settings.btn_aria_label %} aria-label="{{ block.settings.btn_aria_label }}" {% endif %}
 >
   {%- element "block.settings.btn_text" -%}
     {{ block.settings.btn_text }}

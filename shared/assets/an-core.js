@@ -332,11 +332,6 @@
         this.loadCountdowns();
       }
 
-      // Check for carousels
-      const carousels = document.querySelectorAll('.carousel:not(.reveal .carousel)');
-      if (carousels.length) {
-        this.loadCarousels();
-      }
 
       // Check for AOS animations
       const aosElements = document.querySelectorAll('[data-aos]');
@@ -438,47 +433,6 @@
       }
     },
 
-    /**
-     * Load Carousels (if needed)
-     */
-    loadCarousels() {
-      // Load Slick carousel from CDN if carousel elements exist
-      if (window.jQuery && !window.jQuery.fn.slick) {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js';
-        script.onload = () => this.initCarousels();
-        document.head.appendChild(script);
-
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css';
-        document.head.appendChild(link);
-      } else if (window.jQuery?.fn?.slick) {
-        this.initCarousels();
-      }
-    },
-
-    initCarousels() {
-      jQuery('.carousel:not(.reveal .carousel)').each(function() {
-        jQuery(this).slick({
-          responsive: [{
-            breakpoint: 768,
-            settings: {
-              arrows: false
-            }
-          }]
-        });
-
-        // Pause videos on slide change
-        jQuery(this).on('afterChange', function() {
-          jQuery(this).find('.wistia_embed').each(function() {
-            if (this.wistiaApi) {
-              this.wistiaApi.pause();
-            }
-          });
-        });
-      });
-    },
 
     /**
      * Load AOS (Animate On Scroll)
@@ -578,5 +532,33 @@
 
   // Export for use in other scripts
   window.ANTheme = ANTheme;
+
+  /**
+   * Accessibility Enhancements
+   */
+  // Make links with role="button" behave like buttons
+  document.querySelectorAll('a[role="button"]').forEach(link => {
+    // Add tabindex if not present
+    if (!link.hasAttribute('tabindex')) {
+      link.setAttribute('tabindex', '0');
+    }
+    
+    // Handle space key like a button
+    link.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        link.click();
+      }
+    });
+  });
+
+  // Add skip to content link if not present
+  if (!document.querySelector('.skip-to-content')) {
+    const skipLink = document.createElement('a');
+    skipLink.href = '#main-content';
+    skipLink.className = 'skip-to-content';
+    skipLink.textContent = 'Skip to main content';
+    document.body.insertBefore(skipLink, document.body.firstChild);
+  }
 
 })();

@@ -42,10 +42,11 @@
     text-align: {{ section.settings.text_align }};
   }
   
-  .footer__column-title {
+  .footer__column-title,
+  .footer h3.footer__column-title {
     font-size: {{ section.settings.title_font_size }}px;
     font-weight: {{ section.settings.title_font_weight | default: 500 }};
-    color: {{ section.settings.title_color }};
+    color: {{ section.settings.title_color }} !important;
     margin-bottom: {{ section.settings.title_margin_bottom }}px;
     text-transform: {{ section.settings.title_text_transform }};
     letter-spacing: {{ section.settings.title_letter_spacing }}px;
@@ -151,6 +152,16 @@
   .footer__copyright {
     color: {{ section.settings.copyright_color }};
     font-size: {{ section.settings.copyright_font_size }}px;
+  }
+  
+  /* Ensure all headings in footer columns respect the title color */
+  .footer__column h1,
+  .footer__column h2,
+  .footer__column h3,
+  .footer__column h4,
+  .footer__column h5,
+  .footer__column h6 {
+    color: {{ section.settings.title_color }} !important;
   }
   
   /* Mobile Responsive */

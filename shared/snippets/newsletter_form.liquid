@@ -39,9 +39,9 @@
         <div>
           <button 
             id="form-button" 
-            class="form-btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }}" 
-            type="submit" 
-            role="button" 
+            class="form-btn btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }}" 
+            type="submit"
+            aria-label="{{ btn_text }} to newsletter"
           >
             {%- element "section.settings.form_btn_text" -%}{{ btn_text }}{%- endelement -%}
           </button>
