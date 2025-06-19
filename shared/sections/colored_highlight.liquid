@@ -1,0 +1,893 @@
+<style>
+  /* Colored Highlight Section */
+  .colored-highlight {
+    padding: {{ section.settings.padding_top | default: 80 }}px 0 {{ section.settings.padding_bottom | default: 80 }}px;
+    background-color: {{ section.settings.background_color | default: '#F5F5F7' }};
+  }
+  
+  .colored-highlight__container {
+    max-width: {{ section.settings.max_width | default: 1200 }}px;
+    margin: 0 auto;
+    padding: 0 {{ section.settings.padding_x | default: 20 }}px;
+  }
+  
+  /* Header */
+  .colored-highlight__header {
+    text-align: {{ section.settings.header_align | default: 'center' }};
+    margin-bottom: {{ section.settings.header_margin | default: 60 }}px;
+  }
+  
+  .colored-highlight__title {
+    font-size: {{ section.settings.title_size | default: 48 }}px;
+    font-weight: {{ section.settings.title_weight | default: 700 }};
+    line-height: {{ section.settings.title_line_height | default: 1.2 }};
+    color: {{ section.settings.title_color | default: '#1A1A1A' }};
+    margin: 0 0 {{ section.settings.title_margin | default: 16 }}px;
+  }
+  
+  .colored-highlight__subtitle {
+    font-size: {{ section.settings.subtitle_size | default: 20 }}px;
+    font-weight: {{ section.settings.subtitle_weight | default: 400 }};
+    line-height: {{ section.settings.subtitle_line_height | default: 1.6 }};
+    color: {{ section.settings.subtitle_color | default: '#666666' }};
+    margin: 0;
+    max-width: {{ section.settings.subtitle_max_width | default: 800 }}px;
+    {% if section.settings.header_align == 'center' %}
+    margin-left: auto;
+    margin-right: auto;
+    {% endif %}
+  }
+  
+  /* Cards Grid */
+  .colored-highlight__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns | default: 2 }}, 1fr);
+    gap: {{ section.settings.gap | default: 32 }}px;
+  }
+  
+  /* Individual Card */
+  .colored-highlight__card {
+    background-color: var(--card-bg);
+    border-radius: {{ section.settings.card_radius | default: 80 }}px;
+    padding: {{ section.settings.card_padding | default: 80 }}px {{ section.settings.card_padding_x | default: 60 }}px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--ease);
+    min-height: {{ section.settings.card_min_height | default: 320 }}px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .colored-highlight__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Icon Container */
+  .colored-highlight__icon-wrapper {
+    width: {{ section.settings.icon_size | default: 80 }}px;
+    height: {{ section.settings.icon_size | default: 80 }}px;
+    background-color: {{ section.settings.icon_bg | default: '#FFFFFF' }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: {{ section.settings.icon_margin | default: 24 }}px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .colored-highlight__icon {
+    width: {{ section.settings.icon_image_size | default: 40 }}px;
+    height: {{ section.settings.icon_image_size | default: 40 }}px;
+    object-fit: contain;
+  }
+  
+  /* Icon Font Alternative */
+  .colored-highlight__icon-font {
+    font-size: {{ section.settings.icon_font_size | default: 40 }}px;
+    color: var(--card-bg);
+  }
+  
+  /* Card Content */
+  .colored-highlight__card-title {
+    font-size: {{ section.settings.card_title_size | default: 36 }}px;
+    font-weight: {{ section.settings.card_title_weight | default: 600 }};
+    line-height: {{ section.settings.card_title_line_height | default: 1.4 }};
+    color: {{ section.settings.card_text_color | default: '#FFFFFF' }};
+    margin: 0;
+    max-width: 500px;
+  }
+  
+  .colored-highlight__card-text {
+    font-size: {{ section.settings.card_text_size | default: 18 }}px;
+    font-weight: {{ section.settings.card_text_weight | default: 400 }};
+    line-height: {{ section.settings.card_text_line_height | default: 1.5 }};
+    color: {{ section.settings.card_text_color | default: '#FFFFFF' }};
+    margin: 0;
+    opacity: 0.95;
+  }
+  
+  /* Highlight Text Styling - Simplified */
+  .colored-highlight__highlight {
+    font-weight: {{ section.settings.highlight_weight | default: 700 }};
+  }
+  
+  /* Responsive */
+  @media (max-width: 991px) {
+    .colored-highlight__grid {
+      grid-template-columns: repeat({{ section.settings.tablet_columns | default: 2 }}, 1fr);
+      gap: {{ section.settings.tablet_gap | default: 24 }}px;
+    }
+    
+    .colored-highlight__title {
+      font-size: {{ section.settings.tablet_title_size | default: 36 }}px;
+    }
+    
+    .colored-highlight__card {
+      padding: {{ section.settings.tablet_card_padding | default: 40 }}px;
+      min-height: {{ section.settings.tablet_card_min_height | default: 250 }}px;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .colored-highlight {
+      padding: {{ section.settings.mobile_padding_top | default: 60 }}px 0 {{ section.settings.mobile_padding_bottom | default: 60 }}px;
+    }
+    
+    .colored-highlight__grid {
+      grid-template-columns: 1fr;
+      gap: {{ section.settings.mobile_gap | default: 20 }}px;
+    }
+    
+    .colored-highlight__title {
+      font-size: {{ section.settings.mobile_title_size | default: 32 }}px;
+    }
+    
+    .colored-highlight__subtitle {
+      font-size: {{ section.settings.mobile_subtitle_size | default: 18 }}px;
+    }
+    
+    .colored-highlight__card {
+      padding: {{ section.settings.mobile_card_padding | default: 32 }}px;
+      min-height: {{ section.settings.mobile_card_min_height | default: 200 }}px;
+    }
+    
+    .colored-highlight__card-title {
+      font-size: {{ section.settings.mobile_card_title_size | default: 24 }}px;
+    }
+    
+    .colored-highlight__card-text {
+      font-size: {{ section.settings.mobile_card_text_size | default: 16 }}px;
+    }
+  }
+  
+  /* Card Color Styles */
+  {% for block in section.blocks %}
+    {% if block.type == 'highlight_card' %}
+      #highlight-card-{{ block.id }} {
+        --card-bg: {{ block.settings.background_color | default: '#F2C94C' }};
+      }
+    {% endif %}
+  {% endfor %}
+</style>
+
+<section class="colored-highlight" id="colored-highlight-{{ section.id }}">
+  <div class="colored-highlight__container">
+    <!-- Header -->
+    {% if section.settings.title != blank or section.settings.subtitle != blank %}
+      <div class="colored-highlight__header">
+        {% if section.settings.title != blank %}
+          <h2 class="colored-highlight__title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p class="colored-highlight__subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+    
+    <!-- Cards Grid -->
+    <div class="colored-highlight__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'highlight_card' %}
+          <div class="colored-highlight__card" id="highlight-card-{{ block.id }}" {{ block.shopify_attributes }}>
+            <!-- Icon -->
+            {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
+              <div class="colored-highlight__icon-wrapper">
+                <img src="{{ block.settings.icon_image | image_picker_url: 'icon.png' }}" 
+                     alt="{{ block.settings.icon_alt | default: 'Icon' }}"
+                     class="colored-highlight__icon"
+                     loading="lazy">
+              </div>
+            {% elsif block.settings.icon_type == 'emoji' and block.settings.icon_emoji != blank %}
+              <div class="colored-highlight__icon-wrapper">
+                <span class="colored-highlight__icon-font">{{ block.settings.icon_emoji }}</span>
+              </div>
+            {% elsif block.settings.icon_type == 'text' and block.settings.icon_text != blank %}
+              <div class="colored-highlight__icon-wrapper">
+                <span class="colored-highlight__icon-font">{{ block.settings.icon_text }}</span>
+              </div>
+            {% endif %}
+            
+            <!-- Content -->
+            {% if block.settings.title != blank %}
+              <h3 class="colored-highlight__card-title">
+                {{ block.settings.title }}
+              </h3>
+            {% endif %}
+            
+            {% if block.settings.text != blank %}
+              <p class="colored-highlight__card-text">
+                {{ block.settings.text }}
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Colored Highlight",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F8F8FB"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum Width (px)",
+      "default": 1200,
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "default": 80,
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "default": 80,
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Mobile Padding Top (px)",
+      "default": 60,
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Mobile Padding Bottom (px)",
+      "default": 60,
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Horizontal Padding (px)",
+      "default": 20,
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Header Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "header_margin",
+      "label": "Header Bottom Margin (px)",
+      "default": 60,
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Title Styling"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size (px)",
+      "default": 48,
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tablet_title_size",
+      "label": "Tablet Title Size (px)",
+      "default": 36,
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_title_size",
+      "label": "Mobile Title Size (px)",
+      "default": 32,
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Font Weight",
+      "default": "700",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_line_height",
+      "label": "Title Line Height",
+      "default": 1.2,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "title_margin",
+      "label": "Title Bottom Margin (px)",
+      "default": 16,
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Subtitle Styling"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size (px)",
+      "default": 20,
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_subtitle_size",
+      "label": "Mobile Subtitle Size (px)",
+      "default": 18,
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_weight",
+      "label": "Subtitle Font Weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "subtitle_line_height",
+      "label": "Subtitle Line Height",
+      "default": 1.6,
+      "min": 1.2,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "subtitle_max_width",
+      "label": "Subtitle Max Width (px)",
+      "default": 800,
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop Columns",
+      "default": 2,
+      "min": 1,
+      "max": 4,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "tablet_columns",
+      "label": "Tablet Columns",
+      "default": 2,
+      "min": 1,
+      "max": 3,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap Between Cards (px)",
+      "default": 32,
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tablet_gap",
+      "label": "Tablet Gap (px)",
+      "default": 24,
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Mobile Gap (px)",
+      "default": 20,
+      "min": 12,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Border Radius (px)",
+      "default": 80,
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card Vertical Padding (px)",
+      "default": 80,
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_padding_x",
+      "label": "Card Horizontal Padding (px)",
+      "default": 60,
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tablet_card_padding",
+      "label": "Tablet Card Padding (px)",
+      "default": 40,
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_padding",
+      "label": "Mobile Card Padding (px)",
+      "default": 32,
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_min_height",
+      "label": "Card Min Height (px)",
+      "default": 320,
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tablet_card_min_height",
+      "label": "Tablet Card Min Height (px)",
+      "default": 250,
+      "min": 150,
+      "max": 400,
+      "step": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_min_height",
+      "label": "Mobile Card Min Height (px)",
+      "default": 200,
+      "min": 150,
+      "max": 350,
+      "step": 20,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg",
+      "label": "Icon Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Container Size (px)",
+      "default": 80,
+      "min": 60,
+      "max": 120,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_image_size",
+      "label": "Icon Image Size (px)",
+      "default": 40,
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_font_size",
+      "label": "Icon Font Size (px)",
+      "default": 40,
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_margin",
+      "label": "Icon Bottom Margin (px)",
+      "default": 24,
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Card Text"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Card Title Size (px)",
+      "default": 36,
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "label": "Mobile Card Title Size (px)",
+      "default": 24,
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "card_title_weight",
+      "label": "Card Title Font Weight",
+      "default": "700",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_title_line_height",
+      "label": "Card Title Line Height",
+      "default": 1.3,
+      "min": 1,
+      "max": 1.8,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "card_title_margin",
+      "label": "Card Title Bottom Margin (px)",
+      "default": 16,
+      "min": 0,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "label": "Card Text Size (px)",
+      "default": 18,
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_text_size",
+      "label": "Mobile Card Text Size (px)",
+      "default": 16,
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "card_text_weight",
+      "label": "Card Text Font Weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_text_line_height",
+      "label": "Card Text Line Height",
+      "default": 1.5,
+      "min": 1.2,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "header",
+      "content": "Highlight Style"
+    },
+    {
+      "type": "select",
+      "id": "highlight_style",
+      "label": "Highlight Style",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "underline", "label": "Underline" },
+        { "value": "background", "label": "Background" }
+      ],
+      "info": "Use {{text}} in card content to highlight"
+    },
+    {
+      "type": "select",
+      "id": "highlight_weight",
+      "label": "Highlight Font Weight",
+      "default": "700",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "highlight_card",
+      "name": "Highlight Card",
+      "elements": [
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#F2C94C"
+        },
+        {
+          "type": "header",
+          "content": "Icon"
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon Type",
+          "default": "emoji",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "image", "label": "Image" },
+            { "value": "emoji", "label": "Emoji" },
+            { "value": "text", "label": "Text" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image",
+          "info": "Used when Icon Type is Image"
+        },
+        {
+          "type": "text",
+          "id": "icon_alt",
+          "label": "Icon Alt Text",
+          "default": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "icon_emoji",
+          "label": "Icon Emoji",
+          "default": "🏠",
+          "info": "Used when Icon Type is Emoji"
+        },
+        {
+          "type": "text",
+          "id": "icon_text",
+          "label": "Icon Text",
+          "default": "1",
+          "info": "Used when Icon Type is Text (e.g., numbers)"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Play at home on your schedule just 45 minutes a week."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "info": "Optional additional text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Colored Highlight",
+      "description": "Vibrant colored cards with icons and highlights",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "highlight_card",
+          "settings": {
+            "background_color": "#F2C94C",
+            "icon_type": "emoji",
+            "icon_emoji": "🏠",
+            "title": "Play at home on your schedule just 45 minutes a week."
+          }
+        },
+        {
+          "type": "highlight_card",
+          "settings": {
+            "background_color": "#27C9A9",
+            "icon_type": "emoji",
+            "icon_emoji": "💪",
+            "title": "87% of families see improvements within 90 days."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

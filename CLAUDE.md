@@ -930,3 +930,64 @@ Kajabi has specific Liquid syntax requirements:
    - Keep block definitions simple in presets
    - Don't include settings in preset blocks
    - Use valid categories from existing theme
+
+## Version History
+
+### v12.0.0 (2025-01-18)
+- **MAJOR BRAND REDESIGN**: Complete overhaul to new modern brand style guide
+- Updated color system:
+  - Brand purple (#5E3BFF) as primary with gradient
+  - New accent colors: Teal (#18D5E4), Peach (#FF8BCB), Lemon (#FFE86B)
+  - Updated ink colors for text hierarchy
+  - Lavender (#E9E6FF) as default hero background
+- Typography updates:
+  - New type scale with display (48px), h1 (40px), h2 (30px)
+  - Inter font family
+  - Medium weight (500) for headings
+- Component redesign:
+  - Pill-shaped primary buttons with gradient and glow effect
+  - Updated secondary buttons with subtle borders
+  - New card designs with updated shadows
+  - Modernized form inputs with focus states
+- Motion and animation:
+  - New easing curves (ease-spring, ease-out)
+  - Hover lift effects
+  - Fade and slide animations
+- Updated hero sections with lavender backgrounds
+- Modernized CTA sections with white content boxes
+- Maintained backward compatibility with legacy color mappings
+
+### v11.1.0 (2025-01-18)
+- **COMPREHENSIVE UTILITY CLASSES**: Extensive utility-first CSS system
+- Added 600+ utility classes leveraging existing CSS variables
+- Complete spacing utilities (margin/padding all directions)
+- Typography utilities (sizes, weights, transforms, alignment)
+- Layout utilities (display, flexbox, position, sizing)
+- Component utilities (buttons, badges, sections, cards)
+- Responsive utilities with mobile-first approach
+- Animation and transition utilities
+- Eliminates need to redeclare colors in section CSS
+- Updated CLAUDE.md with comprehensive utility documentation
+- overrides.css grew from 1,321 to 1,889 lines
+
+### v11.0.0 (2025-01-18)
+- **MODERN JAVASCRIPT**: Complete JavaScript architecture overhaul
+- Replaced 980KB scripts.js bundle with 20KB modular approach
+- Created an-core.js with essential vanilla JS functionality
+- Created an-modules.js with feature-specific modules
+- Implemented conditional loading for heavy libraries (AOS, moment.js, Slick)
+- Removed jQuery dependency (loads only if Kajabi requires)
+- Native Date API for countdowns instead of moment.js
+- CSS transitions replace jQuery slideToggle animations
+- Lazy loading for all non-critical JavaScript
+- 98% reduction in JavaScript bundle size
+
+### v10.0.6+ (2025-01-18)
+- **FULL UNIFICATION**: Website and Landing themes now share 100% of components
+- Moved ALL sections (29) and snippets (107) from Website theme to shared
+- Removed all components from Landing theme folders
+- Landing theme now identical to Website theme in functionality
+- Updated documentation to reflect unified architecture
+- Exported themes:
+  - Website: v10.0.6
+  - Landing: v10.0.7

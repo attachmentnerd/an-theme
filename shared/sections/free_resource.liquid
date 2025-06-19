@@ -1,0 +1,787 @@
+{% comment %} Free Resource Section {% endcomment %}
+
+<style>
+  .free-resource {
+    background: linear-gradient(135deg, {{ section.settings.gradient_start | default: '#3B4B7C' }} 0%, {{ section.settings.gradient_end | default: '#A449A5' }} 100%);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    color: {{ section.settings.text_color | default: '#FFFFFF' }};
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .free-resource__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  
+  .free-resource__content {
+    z-index: 2;
+  }
+  
+  .free-resource__header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .free-resource__icon {
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: {{ section.settings.icon_size | divided_by: 2 }}px;
+  }
+  
+  .free-resource__badge {
+    background: {{ section.settings.badge_bg_color | default: '#F57C6F' }};
+    color: {{ section.settings.badge_text_color | default: '#FFFFFF' }};
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .free-resource__title {
+    font-size: clamp(2.5rem, 5vw, {{ section.settings.title_size }}px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: {{ section.settings.text_color | default: '#FFFFFF' }} !important;
+  }
+  
+  .free-resource__description {
+    font-size: {{ section.settings.description_size }}px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+  
+  .free-resource__benefits-title {
+    font-size: {{ section.settings.benefits_title_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.benefits_title_color | default: '#FFC63F' }} !important;
+    margin-bottom: 20px;
+  }
+  
+  .free-resource__benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .free-resource__benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .free-resource__benefit-check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  
+  .free-resource__benefit-check svg {
+    width: 14px;
+    height: 14px;
+    color: {{ section.settings.check_color | default: '#FFFFFF' }};
+  }
+  
+  .free-resource__benefit-text {
+    font-size: {{ section.settings.benefit_text_size }}px;
+    line-height: 1.5;
+  }
+  
+  /* Form Card */
+  .free-resource__form-card {
+    background: {{ section.settings.card_bg_color | default: '#FFFFFF' }};
+    border-radius: 24px;
+    padding: 50px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .free-resource__form-icon {
+    width: 60px;
+    height: 60px;
+    background: {{ section.settings.form_icon_bg | default: '#E8F5F5' }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    font-size: 30px;
+  }
+  
+  .free-resource__form-title {
+    font-size: {{ section.settings.form_title_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.form_title_color | default: '#1A2D4E' }} !important;
+    margin-bottom: 10px;
+  }
+  
+  .free-resource__form-subtitle {
+    font-size: {{ section.settings.form_subtitle_size }}px;
+    color: {{ section.settings.form_subtitle_color | default: '#3A4A63' }};
+    margin-bottom: 30px;
+  }
+  
+  .free-resource__form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  /* Kajabi Form Integration Styles */
+  .free-resource__form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .free-resource__form .form-group label {
+    display: none; /* Hide labels since we're using placeholders */
+  }
+  
+  .free-resource__form .form-control,
+  .free-resource__form input[type="text"],
+  .free-resource__form input[type="email"] {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 16px;
+    border: 2px solid {{ section.settings.input_border_color | default: '#E5E7EB' }};
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+    background: #FFFFFF;
+    color: #333333;
+  }
+  
+  .free-resource__form .form-control:focus,
+  .free-resource__form input[type="text"]:focus,
+  .free-resource__form input[type="email"]:focus {
+    outline: none;
+    border-color: {{ section.settings.input_focus_color | default: '#2AB3B1' }};
+  }
+  
+  .free-resource__input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 16px;
+    border: 2px solid {{ section.settings.input_border_color | default: '#E5E7EB' }};
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .free-resource__input:focus {
+    outline: none;
+    border-color: {{ section.settings.input_focus_color | default: '#2AB3B1' }};
+  }
+  
+  .free-resource__submit {
+    width: 100%;
+    padding: 16px 30px;
+    background: {{ section.settings.button_bg_color | default: '#F57C6F' }};
+    color: {{ section.settings.button_text_color | default: '#FFFFFF' }};
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .free-resource__submit:hover {
+    background: {{ section.settings.button_hover_bg | default: '#E56B5E' }};
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(245, 124, 111, 0.3);
+  }
+  
+  .free-resource__form-footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: {{ section.settings.footer_text_color | default: '#6B7280' }};
+  }
+  
+  .free-resource__form-features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 15px;
+  }
+  
+  .free-resource__form-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: {{ section.settings.feature_text_color | default: '#6B7280' }};
+  }
+  
+  .free-resource__form-feature svg {
+    width: 16px;
+    height: 16px;
+    color: {{ section.settings.feature_check_color | default: '#10B981' }};
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 991px) {
+    .free-resource__container {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    
+    .free-resource__header {
+      justify-content: center;
+    }
+    
+    .free-resource__benefits {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    
+    .free-resource__form-card {
+      padding: 40px 30px;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .free-resource {
+      padding: 60px 0;
+    }
+    
+    .free-resource__title {
+      font-size: 2rem;
+    }
+    
+    .free-resource__form-card {
+      padding: 30px 20px;
+    }
+    
+    .free-resource__form-features {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+</style>
+
+<section class="free-resource" id="section-{{ section.id }}">
+  <div class="free-resource__container">
+    <!-- Left Content -->
+    <div class="free-resource__content">
+      <div class="free-resource__header">
+        {% if section.settings.show_icon %}
+          <div class="free-resource__icon">
+            {{ section.settings.icon_emoji | default: '🎁' }}
+          </div>
+        {% endif %}
+        
+        {% if section.settings.badge_text != blank %}
+          <div class="free-resource__badge">
+            {{ section.settings.badge_text }}
+          </div>
+        {% endif %}
+      </div>
+      
+      <h2 class="free-resource__title">{{ section.settings.title }}</h2>
+      
+      {% if section.settings.description != blank %}
+        <p class="free-resource__description">
+          {{ section.settings.description }}
+        </p>
+      {% endif %}
+      
+      {% if section.settings.benefits_title != blank %}
+        <h3 class="free-resource__benefits-title">{{ section.settings.benefits_title }}</h3>
+      {% endif %}
+      
+      <ul class="free-resource__benefits">
+        {% for block in section.blocks %}
+          {% if block.type == 'benefit' %}
+            <li class="free-resource__benefit" {{ block.shopify_attributes }}>
+              <div class="free-resource__benefit-check">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <span class="free-resource__benefit-text">{{ block.settings.benefit_text }}</span>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    
+    <!-- Right Form Card -->
+    <div class="free-resource__form-card">
+      {% if section.settings.form_icon_emoji != blank %}
+        <div class="free-resource__form-icon">
+          {{ section.settings.form_icon_emoji }}
+        </div>
+      {% endif %}
+      
+      <h3 class="free-resource__form-title">{{ section.settings.form_title }}</h3>
+      
+      {% if section.settings.form_subtitle != blank %}
+        <p class="free-resource__form-subtitle">{{ section.settings.form_subtitle }}</p>
+      {% endif %}
+      
+      <!-- Form Integration -->
+      {% assign f = current_site.find_form[section.settings.form] %}
+      {% if f %}
+        <div class="free-resource__form">
+          {% form f %}
+            <input type="hidden" name="thank_you_url" value="{{ section.settings.thank_you_url }}">
+            {% for field in f.fields %}
+              {% if field.input_type == 'email' %}
+                {{ field | form_input: class: "form-group", input_class: "form-control free-resource__input", placeholder: section.settings.input_placeholder }}
+              {% else %}
+                {{ field | form_input: class: "form-group", input_class: "form-control free-resource__input", placeholder: field.label }}
+              {% endif %}
+            {% endfor %}
+            <button type="submit" class="free-resource__submit" name="commit">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
+              </svg>
+              {{ section.settings.button_text | default: 'Get Free Chapter' }}
+            </button>
+          {% endform %}
+        </div>
+      {% else %}
+        <!-- Fallback form -->
+        <form class="free-resource__form" action="#" method="post">
+          <input type="email" 
+                 class="free-resource__input" 
+                 placeholder="{{ section.settings.input_placeholder | default: 'Enter your email address' }}"
+                 required>
+          <button type="submit" class="free-resource__submit">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
+            </svg>
+            {{ section.settings.button_text | default: 'Get Free Chapter' }}
+          </button>
+        </form>
+      {% endif %}
+      
+      {% if section.settings.footer_text != blank %}
+        <p class="free-resource__form-footer">{{ section.settings.footer_text }}</p>
+      {% endif %}
+      
+      <div class="free-resource__form-features">
+        {% for block in section.blocks %}
+          {% if block.type == 'feature' %}
+            <div class="free-resource__form-feature" {{ block.shopify_attributes }}>
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              {{ block.settings.feature_text }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Free Resource",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Icon",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "icon_emoji",
+      "label": "Icon Emoji",
+      "default": "🎁"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Size",
+      "default": 60,
+      "min": 40,
+      "max": 100,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "FREE CHAPTER"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Main Title",
+      "default": "Get the First Chapter Free"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "default": 56,
+      "min": 32,
+      "max": 72,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Start your journey to stronger family connections today. Download the first chapter and see how secure attachment can transform your relationship with your kids."
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description Font Size",
+      "default": 18,
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "benefits_title",
+      "label": "Benefits Title",
+      "default": "What you'll discover:"
+    },
+    {
+      "type": "range",
+      "id": "benefits_title_size",
+      "label": "Benefits Title Size",
+      "default": 28,
+      "min": 20,
+      "max": 36,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "benefit_text_size",
+      "label": "Benefit Text Size",
+      "default": 18,
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Form Card"
+    },
+    {
+      "type": "text",
+      "id": "form_icon_emoji",
+      "label": "Form Icon Emoji",
+      "default": "⬇️"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Download Now"
+    },
+    {
+      "type": "range",
+      "id": "form_title_size",
+      "label": "Form Title Size",
+      "default": 32,
+      "min": 24,
+      "max": 40,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "form_subtitle",
+      "label": "Form Subtitle",
+      "default": "Join 50,000+ parents who've downloaded this guide"
+    },
+    {
+      "type": "range",
+      "id": "form_subtitle_size",
+      "label": "Form Subtitle Size",
+      "default": 16,
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "input_placeholder",
+      "label": "Input Placeholder",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Get Free Chapter"
+    },
+    {
+      "type": "form",
+      "id": "form",
+      "label": "Form",
+      "default": "default",
+      "allow_blank": true
+    },
+    {
+      "type": "text",
+      "id": "thank_you_url",
+      "label": "Thank You Page URL",
+      "default": "/thank-you",
+      "info": "Where to redirect after form submission"
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer Text",
+      "default": "No spam, ever. Just evidence-based parenting insights."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient Start Color",
+      "default": "#3B4B7C"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient End Color",
+      "default": "#A449A5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background",
+      "default": "#F57C6F"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "benefits_title_color",
+      "label": "Benefits Title Color",
+      "default": "#FFC63F"
+    },
+    {
+      "type": "color",
+      "id": "check_color",
+      "label": "Checkmark Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Form Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "form_icon_bg",
+      "label": "Form Icon Background",
+      "default": "#E8F5F5"
+    },
+    {
+      "type": "color",
+      "id": "form_title_color",
+      "label": "Form Title Color",
+      "default": "#1A2D4E"
+    },
+    {
+      "type": "color",
+      "id": "form_subtitle_color",
+      "label": "Form Subtitle Color",
+      "default": "#3A4A63"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input Border Color",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "color",
+      "id": "input_focus_color",
+      "label": "Input Focus Color",
+      "default": "#2AB3B1"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background",
+      "default": "#F57C6F"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Button Hover Background",
+      "default": "#E56B5E"
+    },
+    {
+      "type": "color",
+      "id": "footer_text_color",
+      "label": "Footer Text Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "feature_text_color",
+      "label": "Feature Text Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "feature_check_color",
+      "label": "Feature Check Color",
+      "default": "#10B981"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "default": 100,
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "default": 100,
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "elements": [
+        {
+          "type": "text",
+          "id": "benefit_text",
+          "label": "Benefit Text",
+          "default": "The 4 attachment styles and how they show up in your family"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Form Feature",
+      "elements": [
+        {
+          "type": "text",
+          "id": "feature_text",
+          "label": "Feature Text",
+          "default": "Instant download"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Free Resource",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_text": "The 4 attachment styles and how they show up in your family"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_text": "Why traditional discipline often backfires"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_text": "Your child's hidden need behind challenging behavior"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_text": "The single most important thing for raising secure kids"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "Instant download"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "No credit card required"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

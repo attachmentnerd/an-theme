@@ -116,6 +116,17 @@
       </div>
       
     </div>
+    
+    {% comment %} CTA Button {% endcomment %}
+    {% if section.settings.show_cta and section.settings.cta_text != blank %}
+      <div class="book__cta-wrapper">
+        <a href="{{ section.settings.cta_link | default: '#' }}" 
+           class="book__cta {% if section.settings.use_gradient_button %}book__cta--gradient{% endif %}"
+           {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+          {{ section.settings.cta_text }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 </div>
 
@@ -193,6 +204,40 @@
       "type": "text",
       "id": "right_author_bio",
       "label": "Right Author Bio"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Order Your Copy"
+    },
+    {
+      "type": "text",
+      "id": "cta_link",
+      "label": "Button Link",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open in New Tab",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_button",
+      "label": "Use Brand Gradient Button",
+      "default": true
     }
   ],
   "blocks": [

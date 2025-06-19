@@ -1,47 +1,68 @@
 {% assign dark_text = settings.color_body %}
 
 <style>
-  /* AN Theme Design System Variables - Attachment Nerd Brand */
+  /* AN Theme Design System Variables - New Brand */
   :root {
     /* Core Brand Colors */
-    --an-navy: #1A2D4E;
-    --an-teal: #2AB3B1;
-    --an-coral: #F57C6F;
-    --an-gold: #FFC63F;
-    --an-plum: #A449A5;
-    --an-peach: #FFF4F0;
-    --an-white: #FFFFFF;
-    --an-grey: #F8F7F5;
-    --an-slate: #3A4A63;
+    --c-brand-600: #5E3BFF;      /* Brand Primary - Buttons, links, icon fills */
+    --c-brand-800: #4025E0;      /* Brand Dark - Hover states, active states */
+    --c-brand-100: #E9E6FF;      /* Brand Light - Hero & card backgrounds */
+    --c-accent-teal: #18D5E4;    /* Accent Teal - Small sparks, gradient stops */
+    --c-accent-peach: #FF8BCB;   /* Accent Peach - Emoji marks, button halos */
+    --c-accent-lemon: #FFE86B;   /* Accent Lemon - New badges, confetti dots */
+    --c-ink-900: #1B1B29;        /* Ink 900 - Headings */
+    --c-ink-700: #323346;        /* Ink 700 - Body copy */
+    --c-ink-500: #6E6F7B;        /* Ink 500 - Secondary text, captions */
+    --c-white: #FFFFFF;          /* White - Cards / surfaces */
     
-    /* Legacy Mappings for Compatibility */
-    --an-primary: var(--an-navy);
-    --an-primary-hover: #152541;
-    --an-primary-light: var(--an-teal);
-    --an-secondary: var(--an-teal);
-    --an-secondary-hover: #239A98;
+    /* Signature Gradient */
+    --g-brand: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
+    
+    /* Legacy mappings for compatibility */
+    --an-navy: var(--c-brand-600);
+    --an-teal: var(--c-accent-teal);
+    --an-coral: var(--c-accent-peach);
+    --an-gold: var(--c-accent-lemon);
+    --an-plum: var(--c-brand-800);
+    --an-peach: var(--c-brand-100);
+    --an-white: var(--c-white);
+    --an-grey: #F8F9FA;
+    --an-slate: var(--c-ink-700);
+    --an-primary: var(--c-brand-600);
+    --an-primary-hover: var(--c-brand-800);
+    --an-primary-light: var(--c-accent-teal);
+    --an-secondary: var(--c-accent-teal);
+    --an-secondary-hover: #15C2D1;
     
     /* Text Colors */
-    --an-text-dark: var(--an-slate);
-    --an-text-medium: var(--an-slate);
-    --an-text-light: #6B7280;
-    --an-text-white: var(--an-white);
+    --an-text-dark: var(--c-ink-900);
+    --an-text-medium: var(--c-ink-700);
+    --an-text-light: var(--c-ink-500);
+    --an-text-white: var(--c-white);
     
     /* Background Colors */
-    --an-bg-white: var(--an-white);
-    --an-bg-light: var(--an-grey);
-    --an-bg-lighter: var(--an-peach);
-    --an-border: #E5E7EB;
-    --an-border-light: #F3F4F6;
+    --an-bg-white: var(--c-white);
+    --an-bg-light: var(--c-brand-100);
+    --an-bg-lighter: var(--c-brand-100);
+    --an-border: rgba(0, 0, 0, 0.04);
+    --an-border-light: rgba(0, 0, 0, 0.02);
     
-    /* Spacing System */
-    --an-space-xs: 4px;
-    --an-space-sm: 8px;
-    --an-space-md: 16px;
-    --an-space-lg: 24px;
-    --an-space-xl: 32px;
+    /* Spacing System - 8-point grid */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 64px;
+    
+    /* Legacy spacing mappings */
+    --an-space-xs: var(--space-xs);
+    --an-space-sm: var(--space-sm);
+    --an-space-md: var(--space-md);
+    --an-space-lg: var(--space-lg);
+    --an-space-xl: var(--space-xl);
     --an-space-2xl: 48px;
-    --an-space-3xl: 64px;
+    --an-space-3xl: var(--space-2xl);
     
     /* Mobile Menu Specific */
     --an-mobile-menu-width: 85%;
@@ -49,10 +70,14 @@
     --an-mobile-backdrop: rgba(0, 0, 0, 0.5);
     --an-mobile-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
     
-    /* Transitions */
-    --an-transition-fast: 0.2s ease;
-    --an-transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --an-transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Motion & Timing */
+    --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    
+    /* Legacy transition mappings */
+    --an-transition-fast: 150ms var(--ease-out);
+    --an-transition-smooth: 200ms var(--ease-out);
+    --an-transition-bounce: 300ms var(--ease-spring);
     
     /* Z-index System */
     --an-z-dropdown: 50;
@@ -62,22 +87,33 @@
     --an-z-modal: 1000;
     
     /* Border Radius */
-    --an-radius-sm: 4px;
-    --an-radius-md: 6px;
-    --an-radius-lg: 8px;
-    --an-radius-xl: 12px;
-    --an-radius-full: 9999px;
+    --radius-sm: 8px;           /* Small controls */
+    --radius-md: 16px;          /* Cards/video frames */
+    --radius-lg: 24px;          /* Hero/CTA panels */
+    --radius-pill: 9999px;      /* Pill buttons */
     
-    /* Shadows */
+    /* Legacy radius mappings */
+    --an-radius-sm: var(--radius-sm);
+    --an-radius-md: var(--radius-md);
+    --an-radius-lg: var(--radius-lg);
+    --an-radius-xl: 12px;
+    --an-radius-full: var(--radius-pill);
+    
+    /* Shadows & Elevation */
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-media: 0 12px 24px rgba(0, 0, 0, 0.08);
+    --glow-brand: 0 0 12px rgba(105, 78, 255, 0.25);
+    
+    /* Legacy shadow mappings */
     --an-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --an-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --an-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --an-shadow-md: var(--shadow-card);
+    --an-shadow-lg: var(--shadow-media);
     --an-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     
     /* Mobile Menu Specific Colors */
-    --an-mobile-bg: var(--an-peach);
-    --an-mobile-accent: var(--an-coral);
-    --an-mobile-text: var(--an-slate);
+    --an-mobile-bg: var(--c-brand-100);
+    --an-mobile-accent: var(--c-accent-peach);
+    --an-mobile-text: var(--c-ink-700);
   }
   /* Default Header Styles */
   .header {

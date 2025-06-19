@@ -17,10 +17,10 @@
 {% endif %}
 
 <style>
-  /* Base Footer Styles */
+  /* Base Footer Styles - Updated with new brand */
   .footer {
-    background-color: {{ section.settings.background_color }};
-    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.background_color | default: '#1B1B29' }};
+    padding: {{ section.settings.padding_top | default: 64 }}px 0 {{ section.settings.padding_bottom | default: 64 }}px;
   }
   
   .footer__container {
@@ -44,11 +44,12 @@
   
   .footer__column-title {
     font-size: {{ section.settings.title_font_size }}px;
-    font-weight: {{ section.settings.title_font_weight }};
+    font-weight: {{ section.settings.title_font_weight | default: 500 }};
     color: {{ section.settings.title_color }};
     margin-bottom: {{ section.settings.title_margin_bottom }}px;
     text-transform: {{ section.settings.title_text_transform }};
     letter-spacing: {{ section.settings.title_letter_spacing }}px;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
   
   /* Text and Links */
@@ -396,37 +397,37 @@
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#F8F7F5"
+      "default": "#1B1B29"
     },
     {
       "type": "color",
       "id": "title_color",
       "label": "Title Color",
-      "default": "#1A2D4E"
+      "default": "#FFFFFF"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text Color",
-      "default": "#3A4A63"
+      "default": "rgba(255, 255, 255, 0.7)"
     },
     {
       "type": "color",
       "id": "link_color",
       "label": "Link Color",
-      "default": "#3A4A63"
+      "default": "rgba(255, 255, 255, 0.7)"
     },
     {
       "type": "color",
       "id": "link_hover_color",
       "label": "Link Hover Color",
-      "default": "#2AB3B1"
+      "default": "#FFFFFF"
     },
     {
       "type": "color",
       "id": "divider_color",
       "label": "Divider Color",
-      "default": "#E5E5E5"
+      "default": "rgba(255, 255, 255, 0.1)"
     },
     {
       "type": "header",
