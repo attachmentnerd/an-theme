@@ -1,0 +1,55 @@
+ {% if section.settings.blog_sidebar or isSingle %}
+  <div class="section__sidebar">
+    {% for block in section.blocks %}
+      {% case block.type %} 
+        {% when 'sidebar_search' %}
+          {% include "sidebar_search" %}
+        {% when 'custom_sidebar' %}
+          {% include "sidebar_custom" %}
+        {% when 'sidebar_optin' %}
+          {% include "sidebar_optin" %}
+        {% when 'recent_posts' %}
+          {% include "sidebar_recent_posts" %}
+        {% when 'categories' %}
+          {% include "sidebar_categories" %}
+        {% when 'sidebar_img' %}
+          {% include "sidebar_img" %}
+        {% when 'sidebar_social' %}
+          {% include "sidebar_social" %}
+        {% when 'Author' %}
+          {% include "instructor" %}
+      {% endcase %} 
+    {% endfor %}
+ 
+    {% if isSingle %}
+        <div class="post-share style-01 post_share_sidebar">
+          <div class="share-label" kjb-settings-id="{{ 'share_button_text' | settings_id: section: section }}">
+                  {{section.settings.share_button_text}}	</div>
+          <div class="share-media">
+            <span class="share-icon fas fa-share-alt"></span>
+            <div class="share-list">
+              <a class="hint--bounce hint--top hint--primary facebook" target="_blank" aria-label="Facebook" href="https://m.facebook.com/sharer.php?u={{ current_site.url }}{{ blog_post.url }}">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a class="hint--bounce hint--top hint--primary twitter" target="_blank" aria-label="Twitter" href="https://twitter.com/share?text={{ blog_post.title }}&url={{ current_site.url }}/{{ blog_post.url }}">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a class="hint--bounce hint--top hint--primary linkedin" target="_blank" aria-label="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ current_site.url }}/{{ blog_post.url }}&title={{ blog_post.title }}">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a class="hint--bounce hint--top hint--primary tumblr" target="_blank" aria-label="Pinterest" href="https://pinterest.com/pin/create/button/?url={{ current_site.url }}/{{ blog_post.url }}&media={{blog_post.image_url}}">
+                <i class="fab fa-pinterest"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+
+  </div>
+{% else %}
+  <style>
+    .section__body {
+      width: 100%;
+    }
+  </style>
+{% endif %}

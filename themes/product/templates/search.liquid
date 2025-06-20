@@ -1,12 +1,4 @@
-<div id="" class="section section--global section--category">
-  <div class="container">
-    <div class="row">
-      {% section "breadcrumbs" %}
-    </div>
-    <div class="row section__row">
-      <div class="col-sm-12">
-        {% section "search_body" %}
-      </div>
-    </div>
-  </div>
-</div>
+{% include "layout" page:"search"  %}
+{% capture search_dynamic  %}
+    {% dynamic_sections_for "search" %}
+{% endcapture %}

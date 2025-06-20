@@ -1,0 +1,11 @@
+{% assign completed_text = block.settings.completed_text %}
+{% assign complete_text = block.settings.complete_text %}
+
+
+<a href="#" data-complete-text="{{ complete_text }}" data-incomplete-text="{{ completed_text }}" data-post-completion-toggle="{{ post.completed? }}" data-token="{{ post.completion_token }}" class="btn post-actions-complete">
+    {% if post.completed? %}
+    <span>{{ completed_text }}</span>
+    {% else %}
+      <span>{{ complete_text }}</span>
+    {% endif %}
+</a>

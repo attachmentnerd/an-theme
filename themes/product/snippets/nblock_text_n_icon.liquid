@@ -1,0 +1,40 @@
+{% assign icon = 'icon' | prepend:p %}
+{% assign icon_position = 'icon_position' | prepend:p %}
+{% assign text = "text" %} 
+{% if is_hero_slider %}
+   {% assign text = "text_" | append: slider_index  %}
+{% endif  %}
+
+   {%- assign iconA = block.settings[icon]  -%}
+   {%- assign d_icon = '<i class="' | append: iconA | append: '"></i>' -%}
+   {% if iconA contains "<svg" -%} 
+      {% assign iconA_color = "var(--accent-color-1)" -%}
+      {% include "icon_replace_colors"  -%}
+      {%- assign d_icon = iconA -%}
+    {% else %}
+      {% if iconA contains "http://" or iconA contains "https://" %} 
+        {%- assign d_icon = '<img src="' | append:iconA | append: '"></imgt_n>' -%}  
+      {% endif %}
+    {% endif %}
+ 
+    {% if block.settings[icon_position] == 'left' %}<div class="textNicon_left"> {{d_icon}} {% endif %}
+    {% if block.settings[icon_position] == 'right' %}<div class="textNicon_right"> {% endif %}
+       
+      {% assign the_text = block.settings[text] %}
+      {% if section.type == 'blog_posts' %}
+         {% include "blog_posts_text" %}
+      {% elsif section.type == 'p_lessons' or section.type == 'p_related_posts'%}
+         {% include "p_lessons_text" %} 
+      {% elsif section.type == 'p_categories' %}
+         {% include "p_categories_text" %} 
+      {% else  %}
+         <div class="textNicon_text">{{the_text}}</div>
+      {%- endif  -%}
+
+    {% if block.settings[icon_position] == 'left' or block.settings[icon_position] == 'Left' %}</div>{% endif %}
+    {% if block.settings[icon_position] == 'right' or block.settings[icon_position] == 'Right' %} {{d_icon}}</div>{% endif %}
+
+ {% if block.settings.animation_effect != 'none' %}
+    {% assign effect_snipp = "anime_" | append: block.settings.animation_effect %}
+    {% include effect_snipp %}
+ {% endif %}

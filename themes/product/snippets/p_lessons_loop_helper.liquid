@@ -1,0 +1,70 @@
+<style>
+  .blog_post_container[post-id="{{post.id}}"] .progress-bar:after {
+    width: {{ post.progress_percent }}%;
+  }
+</style>
+    {% assign show_post = false %}
+    {% include "p_lesson_loop_helper_filters" %}
+
+    {% if show_post %}
+
+      {% assign D_all_items = post.title | append:'|' | append:post.id  | append:'|' | append:post.category.id   | append:'|' | append:post.poster_image_url | append:'||' %}
+      {% assign D_all_posts = D_all_posts | append:D_all_items %}
+      
+      
+    
+      {% assign post_num_minus = post_num | minus:1 %}
+      {% assign offset = section.settings.offset | plus:0 %}
+      {% if post_num_minus < offset %}
+        {% assign post_num = post_num | plus:1 %}
+        {% continue %} 
+      {% endif %}
+
+      {% assign posts_limit = section.settings.posts_limit | plus:section.settings.offset %}
+      {% if post_num > posts_limit %}
+        {% break %} 
+      {% endif %}
+      {% assign duration = "0" %}
+      {% if post.video %}
+        {% assign duration = post.video.duration_in_seconds | duration | replace:"minutes","" | replace:"minute",""  | replace:"Less than","" | strip %}
+      {% endif %}
+
+      {% assign progress = post.progress_percent | divided_by:10 | round  | times:10 %}
+
+        {% if section.settings.link_to_post == true or section.settings.link_to_post == "true" %}
+          <a href="{{post.url}}"
+        {% else %} 
+         <div 
+        {% endif %}
+         class="blog_post_container {% if post.favorited? %} favorited {% endif %} {% if post.completed? %} completed {% endif %} 
+          {%- if post.progress_percent > 0 %} progress-{{progress}}{% endif %} 
+          {%- if post.video %} video {% endif %} {%- if post.assessment %} assessment {% endif %} 
+          {%- if is_swiper1 -%} swiper-slide {%- endif %}" 
+          post-id="{{post.id}}" duration="{{duration}}">
+          {%- for i in (1..number_of_columns) %}   
+              {%- assign tmp_count = 0 %}
+              {%- for block in section.blocks -%}
+                  {% if block.type == 'clmn' %}
+                      {%- assign tmp_count = tmp_count| plus:1 %}
+                      {% if tmp_count ==  i %}
+                          {% assign this_clmn = block %}
+                          {% break %}
+                      {% endif %}
+                  {% endif %}
+              {% endfor %}
+
+              {%- assign clmn_position = this_clmn.settings.position_clmn | plus:0 %} 
+              {%- if skip_clmns contains i or clmn_position != 0%}  {%- continue %}  {%- endif %}
+              {%- include "create_clmn" skip_inner_loop: false, index: i %}
+          {%- endfor %}
+
+          {% if section.settings.link_to_post == true or section.settings.link_to_post == "true" %}
+        </a>
+      {% else %} 
+      </div>
+      {% endif%}
+      {% assign post_num = post_num | plus:1 %}
+      {% assign o_count =  o_count  | plus:1   %}
+
+
+    {% endif %}

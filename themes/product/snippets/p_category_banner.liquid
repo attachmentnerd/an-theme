@@ -1,0 +1,13 @@
+<div class="category-banner">
+  <div class="row align-items-center">
+    <div class="col-8">
+      <h1 class="category-banner-title">{{ category.title }}</h1>
+      <p class="category-banner-description">{{ category.description }}</p>
+    </div>
+    <div class="col-4">
+      {% if category.poster_image_url %}
+        <img src="{{ category.poster_image_url }}" class="category-banner-img">
+      {% endif %}
+    </div>
+  </div>
+</div>

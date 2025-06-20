@@ -1,0 +1,27 @@
+{% comment %}
+  Product Template with Modern Layout Option
+  This template allows switching between classic and modern layouts
+  To use modern layout, add ?modern=true to the URL or set in product settings
+{% endcomment %}
+
+{% if request.params.modern == 'true' or product.metafields.custom.use_modern_layout == true %}
+  {% comment %} Modern Discovery-style layout {% endcomment %}
+  {% section 'modern_course_layout' %}
+{% else %}
+  {% comment %} Classic Kajabi layout {% endcomment %}
+  {% include "breadcrumb_nav" %}
+  {% include "welcome_transition", show_welcome: true %}
+  {% section "product_hero" %}
+  <div id="" class="section section--global section--product">
+    <div class="container">
+      <div class="row section__row">
+        <div class="section__body col-lg-8">
+          {% section "product_body" %}
+          {% section "product_syllabus" %}
+          {% section "community_widget" %}
+        </div>
+        {% section "product_sidebar" %}
+      </div>
+    </div>
+  </div>
+{% endif %}

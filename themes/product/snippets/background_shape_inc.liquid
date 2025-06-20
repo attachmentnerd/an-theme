@@ -1,0 +1,10 @@
+{% for block in section.blocks %}
+    {% if block.type == 'background_shape' or block.type == 'transition_shape' %}
+        {% if   block.settings.parent == 'section' %}
+          {% assign style = "style" %}  
+          {%- assign block_selector =  "." | append:"block-" | append:block.id -%} 
+          {% include "base_block_style"  %} 
+          {% include "base_block" type: block.type, appended_countdown_class: "countdown--standard" %}
+        {% endif %}
+    {% endif %}
+{% endfor %}

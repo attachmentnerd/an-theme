@@ -1,0 +1,13 @@
+{% if block.settings.start %} 
+    {% assign product_completion_next = current_product.completion.next_post.url %}
+    {% if product_completion == 0 %}
+        {% assign btn_text = block.settings.start  %}
+    {% elsif product_completion == 100 %}
+        {% assign btn_text = block.settings.again  %}
+        {% assign product_completion_next = current_product.categories.first.posts.first.url %}
+    {% else %}
+        {% assign btn_text = block.settings.resume  %}  
+    {% endif %}
+
+    {%- assign the_cta_action = product_completion_next -%}
+{%- endif -%}

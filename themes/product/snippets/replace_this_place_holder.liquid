@@ -1,0 +1,15 @@
+{%- assign cst = "#section-" | append:section.id  -%} 
+{%- assign cs = cs | replace: '#this-section',cst  -%} 
+
+{%- if is_hero_slider -%}  
+    {%- assign cst1 = "#" | append:p | append:"block-" | append:block.id | append:"_"  | append:slider_index  -%} 
+    {%- assign cs = cs | replace: '#this-slide',cst1  -%}
+    {%- assign cst = "." | append:p | append:"block-" | append:block.id  -%} 
+{%- else -%} 
+    {%- assign cst = "#" | append:p | append:"block-" | append:block.id  -%} 
+{%- endif  -%} 
+{%- assign cs = cs | replace: '#this-block',cst  -%} 
+{%- assign cs = cs | replace: '#this-column',sinner  -%} 
+
+ 
+

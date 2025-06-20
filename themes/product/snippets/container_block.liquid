@@ -1,0 +1,61 @@
+{%- assign p = prefix -%}
+{%- assign width = 'width' | prepend:p -%}
+ 
+{%- assign element_type = 'element_type' | prepend:p -%}
+{%- assign order = 'order' | prepend:p -%}
+{%- assign text = 'text' | prepend:p -%}
+{%- assign image = 'image' | prepend:p -%}
+{%- assign image_hover = 'image_hover' | prepend:p -%}
+{%- assign use_icon = 'use_icon' | prepend:p -%}
+{%- assign icon = 'icon' | prepend:p -%}
+{%- assign icon_position = 'icon_position' | prepend:p -%}
+
+{%- assign button_preset = 'button_preset' | prepend:p -%}
+{%- assign link_type = 'link_type' | prepend:p -%}
+{%- assign action = 'action' | prepend:p -%}
+{%- assign button_preset = 'button_preset' | prepend:p -%}
+{%- assign style = 'style' | prepend:p -%}
+
+{%- assign this_element_type = block.settings[element_type] -%}
+
+
+{%- if block.settings[make_block] -%}
+  <div class="block-break"></div>
+{%- endif -%}
+
+{%- assign style_code =  block.settings[style] -%}   
+{%- include "style2vars" check_internal_elements:true, eType:block.settings[element_type] -%}
+
+
+{%- assign p_x = p | replace:"e","e_" -%}
+{%- assign kjb_id = element_type -%}
+{%- if this_element_type == "text" or this_element_type == "image" -%}
+    {%- assign kjb_id = this_element_type | prepend:p_x-%}
+{%- endif -%}
+{%- if this_element_type == "button"  -%}
+    {%- assign kjb_id = "text" | prepend:p_x -%}
+{%- endif -%}
+  
+{%- include "container_element_style" -%} 
+<div class="container_block {{a_class}} nblock-{{block.settings[element_type] }} 
+ {%- if this_element_type == "image" %} {% if image_hover_class == "" %}  {{settings.hover_effect}} {%- else -%} {{image_hover_class}} {%- endif -%}{%- endif -%}" id="{{p}}block-{{ block.id }}"
+kjb-settings-id="{{ kjb_id |  settings_id: section: section, block: block }}" >
+        
+        {%- unless block.settings[link_type] == "no link" or block.settings[link_type] == "Link to Blog Post" or  this_element_type == "button"-%}
+          <a href="{{ block.settings[action] }}" {%- if block.settings[link_type] == "Open in a new window" -%} target="_blank" {%- endif -%}
+          {% if block.settings[action] == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %}>
+        {%- endunless -%}
+        
+            {%- include "container_element" -%}
+          
+        {%- unless block.settings[link_type] == "no link"  or block.settings[link_type] == "Link to Blog Post" or  this_element_type == "button" -%}
+          </a>
+        {%- endunless -%} 
+
+
+  
+    </div>
+
+{%- if block.settings[make_block] -%}
+  <div class="block-break"></div>
+{%- endif -%}

@@ -1,0 +1,81 @@
+<script>
+  jQuery(document).ready(function() {
+    check_user_notes()
+  })
+  DB_URL = 'https://dev.robust-themes.com/API/'
+  function check_user_notes() {
+    console.log('user_notes')
+    if ($('.n_p_user_notes').length != 0) {
+      get_notes_from_db()
+    }
+  }
+
+  function get_user_id() {
+    var s = $('.n_p_user_notes script:contains("USER_INFO")')
+    var id = s.html().match(/"user_id": (.*?)$/gm)
+    id = `{${
+      id[0]
+    }}`
+    id = JSON.parse(id)
+    return id.user_id
+  }
+  function get_lessons_id() {
+    var url = $('link[rel="canonical"]').attr('href')
+    var d = url.match(/posts\/(.*?)$/gm)
+    return d[0].replace('posts/', '')
+  }
+  jQuery('.save-user-note').on('click', function(e) {
+    if ($(this).hasClass('disabled')) {
+      return
+    }
+    e.preventDefault()
+    $(this).addClass('disabled')
+    tinymce.triggerSave()
+    var value = $('.user-note-input').val()
+    console.log(value)
+    save_note_to_db(value)
+  })
+  function save_note_to_db(val) {
+    var user_id = get_user_id()
+    var lesson_id = get_lessons_id() 
+    var data = {
+      "action": "add",
+      "user_id": user_id,
+      "lesson_id": lesson_id,
+      "note": val
+    }
+    var url = `${DB_URL}user_notes/user_notes.php`
+    $.post(url, data, function(res) {
+      console.log(res)
+    })
+  }
+  function get_notes_from_db() {
+    var user_id = get_user_id()
+    var lesson_id = get_lessons_id()
+    var url = `${DB_URL}user_notes/user_notes.php?action=get_notes&user_id=${user_id}&lesson_id=${lesson_id}`
+    $.getJSON(decodeURI(url), function(res) {
+      console.log(res)
+      if (res.data.length != 0) {
+        $('#user_notes_input').html(res.data[0].note)
+      } else {
+        $('#user_notes_input').html(``)
+      }
+      tinyMCE.init({
+        selector: '#user_notes_input',
+        menubar: false,
+        setup: function(editor) {
+          editor.on('change', function(e) {
+            $('.save-user-note').removeClass('disabled')
+          })
+        },
+        plugins: [
+          'link',
+          'hr'
+        ],
+        toolbar: 'undo redo | blocks | bold italic | link | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent | hr'
+      })
+      console.log('ddd')
+
+    })
+  }
+</script>

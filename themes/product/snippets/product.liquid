@@ -1,0 +1,60 @@
+<style>
+  .progress__inner {
+    background-color: {{ section.settings.progress_color | default: settings.color_mark }};
+  }
+</style>
+
+<div class="course-item grid-item post-9 lp_course type-lp_course status-publish has-post-thumbnail hentry course_category-computer-science course_tag-general course_tag-programming pmpro-has-access course">
+	<div class="course-wrapper rbst-box fs">
+		<div class="course-thumbnail-wrapper fs   rbst-image">
+			<a href="{{product.url}}" class="course-permalink link-secret">
+				<div class="course-thumbnail">
+					      {% if product.thumbnail_url %}
+        <img src="{{ product.thumbnail_url }}" width="480"/>
+      {% else %} 
+        <img src="{{ "placeholder.png" | asset_url }}" width="480"/>
+      {% endif %}
+					<div class="course-overlay-bg"></div>
+				</div>
+			</a>
+		</div> 
+		<div class="course-info fs f1">
+
+ 
+			<h3 class="course-title">
+				<a href="{{product.url}}">
+				
+	
+		{{product.title}}
+</a>
+			</h3>
+
+			{% if product.description != "" %}
+				<div class="m_product_desc" kjb-settings-id="{{ 'text_truncate' | settings_id: section:section }}" >
+				<p>{{ product.description | strip_html | truncate: section.settings.text_truncate  }}</p>
+			</div>
+			{% endif %}
+
+
+
+		<div class="tm-button-wrapper m-top-a cta_button1 hide-{{block.settings.hide_cta_p24}}"
+		kjb-settings-id="{{ 'cta_text_rc81' | settings_id: section:section }}" >
+		
+				{% if product.trackable? %}  
+     			   {% include "element_progress" percent: product.completion.percent %}
+    		 {% endif %}
+		
+		
+			<a href="{{product.url}}"  class="tm-button-link tm-button style-flat tm-button-nm icon-left" role="button">
+				<div class="button-content-wrapper">
+					<span class="button-text">  
+						{{section.settings.cta_text_rc81}}
+					</span> 
+				</div>
+			</a>
+		</div>
+
+
+		</div>
+	</div>
+</div>

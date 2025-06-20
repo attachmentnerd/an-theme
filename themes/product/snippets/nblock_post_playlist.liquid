@@ -1,0 +1,128 @@
+{% include 'block_playlist_helper' %}
+
+<style>
+    .breadcrumbs {
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .breadcrumbs a {
+        color: #101c2e;
+        text-decoration: underline;
+        
+    }
+
+    .playlist__body .active {
+        background-color: #f1b5ae;
+    }
+    .next-lesson-trigger{
+            margin-left: -12px;
+    }
+    .playlist__body .track {
+        min-height: 83px;
+    }
+</style>
+
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    PLAYLIST_ITEMS = urlParams.get('playlist')
+    if (PLAYLIST_ITEMS != null){
+        var program = urlParams.get('program')
+        PROGRAM_TITLE = program.split('|')[0]
+        PROGRAM_URL = program.split('|')
+        PROGRAM_URL = PROGRAM_URL[1] + '/posts/' + PROGRAM_URL[2]
+        SLIDER_TITLE = urlParams.get('slider')
+
+        var playlist_wrap = document.querySelector('.playlist__body')
+        playlist_wrap.innerHTML = ''
+        var program_title = document.querySelector('.playlist__title h2')
+        program_title.innerHTML = SLIDER_TITLE
+
+        var main_wrap = document.querySelector('.content')
+        let breadcrumbs = document.createElement("div");
+        breadcrumbs.setAttribute('class','breadcrumbs') 
+        var product_url = '{{current_product.url}}'
+        let program_url = product_url + '/categories/' + PROGRAM_URL
+        let breadcrumbs_st = '<a href="'+program_url+'">'+PROGRAM_TITLE+'</a>  &nbsp; >  &nbsp; '
+        breadcrumbs_st += '<a href="'+program_url+'">'+SLIDER_TITLE+'</a>  &nbsp; >  &nbsp; '
+        breadcrumbs_st += '{{post.title}}'
+
+        breadcrumbs.innerHTML = breadcrumbs_st
+        if (PROGRAM_TITLE != 'Homepage'){
+            main_wrap.prepend(breadcrumbs)
+        }
+        
+        program_playlist()
+    }
+
+    function program_playlist(){
+        jQuery(document).ready(function(){
+          var title,id,category,img,href,active_class = ''
+          var product_url = '{{current_product.url}}'
+          var post_id = '{{post.id}}'
+          var img_path1 = '{{post.poster_image_url}}'.split('/')
+          img_path1.pop()
+          var img_path = img_path1.join('/') + '/'
+          var items = decodeURI(PLAYLIST_ITEMS).split('||')
+          var items_html = ''
+          var i = 0
+          for (item of items){
+                item_r = item.split('|')
+
+                title = item_r[0]
+                id = item_r[1]
+                category = item_r[2]
+                img = img_path + item_r[3]
+                href = product_url + '/categories/' + category + '/posts/' + id 
+                href += '?program=' + PROGRAM_TITLE +  '&slider=' + SLIDER_TITLE + '&playlist=' + encodeURI(PLAYLIST_ITEMS)
+
+                active_class= ''
+                if (id == post_id){
+                    active_class = 'active'
+                    next_item = 'none'
+                    if (i < items.length){
+                        next_item = items[i+1]
+                    }
+                }
+    
+                items_html += `
+                    <a href="${href}" class="media track ${active_class}">
+                        <div class="media-left media-middle media-image">
+                            <img src="${img}" class="track__thumb">
+                        </div>
+                        <div class="media-body media-middle">
+                            <p class="track__title">${title}</p>
+                        </div>
+                    </a>`
+
+                
+                i++
+          }
+
+          $('.playlist__body').html(items_html)
+         
+          let top1 = $('.playlist__body .active').position().top - 100
+          $('.playlist__body').scrollTop(top1)
+
+          
+
+        if (next_item != 'none'){
+            let next_item_r = next_item.split('|')
+            id = next_item_r[1]
+            category = next_item_r[2]
+            href = product_url + '/categories/' + category + '/posts/' + id 
+            href += '?program=' + PROGRAM_TITLE +  '&slider=' + SLIDER_TITLE + '&playlist=' + encodeURI(PLAYLIST_ITEMS)
+            next_btn = '<a href="'+href+'">Next Lesson</a>'
+            $('.next-lesson-trigger').html(next_btn)
+        }
+        
+           
+        
+        
+    })
+
+    }
+
+
+</script>

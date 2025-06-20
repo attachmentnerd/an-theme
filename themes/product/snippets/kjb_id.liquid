@@ -1,0 +1,19 @@
+{%- assign block_kjb_id = block.type -%}
+{%- if block_kjb_id == "list" -%}
+  {%- assign block_kjb_id = 'text' -%}
+{%- endif -%}
+{%- if block_kjb_id == "text_n_icon" -%}
+  {%- assign block_kjb_id = 'text' -%}
+{%- endif -%}
+{%- if block_kjb_id == "container" -%}
+  {%- assign block_kjb_id = 'width' -%}
+{%- endif -%}
+{%- if block_kjb_id == "outline" -%}
+  {%- assign block_kjb_id = 'version' -%}
+{%- endif -%}
+{%- if block_kjb_id == "p_user" -%}
+  {%- assign block_kjb_id = 'progress_type' -%}
+{%- endif -%}
+{%- if is_hero_slider -%}
+  {%- assign block_kjb_id = block.type | append: "_" | append: slider_index -%}
+{%- endif -%}

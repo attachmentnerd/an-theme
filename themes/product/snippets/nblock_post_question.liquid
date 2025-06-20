@@ -1,0 +1,158 @@
+{% if post.body contains "lesson_questions_data" and post.body contains '"questions":[' %}
+  {% assign question_obj = post.body | split: "<!--lesson_questions_data" %}
+  {% assign question_obj = question_obj[1] | split: " -->" %}
+  {% assign question_position = question_obj[0] | split: '"position":"' %}
+  {% assign question_position = question_position[1] | split: '"}' %}
+  {% assign questions = question_obj[0] | split: '"questions":[' %}
+  {% assign questions = questions[1] | split: '],"' %}
+  {% assign questions = questions[0] | replace: '"', '' %}
+  {% assign questions = questions | split: ',"' %}
+  <style>
+    #block-{{ block.id}}{
+      display: none;
+    }
+    .{{ question_position[0]}}#block-{{ block.id}}{
+      display: block;
+    }
+  </style>
+  {% assign saved_answers = "" %}
+  {% for cmnts in post.comments %}
+    {% if cmnts.body contains "#Question Submission" %}
+      {% assign saved_answers = cmnts.body %}
+    {% else %}
+      {% continue %}
+    {% endif %}
+  {% endfor %}
+
+  {% if question_position[0] != "above_chat" %}
+    <div class="nblock nblock-questions">
+      <div class="question-heading">
+        <h3>{{ block.settings.heading }}</h3>
+        <p>{{ block.settings.description }}</p>
+      </div>
+
+      <div class="questions">
+        <script>
+          var questionObj = `{{question_obj[0]}}`
+          questionObj = JSON.parse(questionObj)
+          questionObj = questionObj.questions
+          for (question of questionObj) {
+            var st = `
+              <div class="questions-wrapper">
+                <label>${question}</label>
+                <textarea
+                  cols="30"
+                  id="answer"
+                  placeholder="{{block.settings.language_placeholder}}"
+                  rows="10"></textarea>
+              </div>
+              `
+            var element = document.querySelector(`#block-{{block.id}} .questions`)
+            element.insertAdjacentHTML('beforeend', st)
+          }
+        </script>
+      </div>
+      <div class="question-buttons">
+        <button class="submit_answers">{{ block.settings.language_submit }}</button>
+        <button class="edit_answers" style="display: none;">{{ block.settings.language_edit }}</button>
+      </div>
+      <div class="question-form-wrapper" style="display: none">
+        {% form "comment", post %}
+
+          <textarea
+            class="form-control"
+            id="comment_body"
+            kjb-settings-id="{{'language_chat_placeholder' | settings_id: section: section,block: block}}"
+            name="comment[body]"
+            placeholder="{{ block.settings.language_chat_placeholder }}"
+            rows="1"></textarea>
+          <button
+            class="btn comments-btn"
+            data-disable-with="{{ block.settings.language_chat_submitting }}"
+            kjb-settings-id="{{'language_chat_add' | settings_id: section: section,block: block}}"
+            name="commit"
+            type="submit">
+            {{ block.settings.language_chat_add }}
+          </button>
+        {% endform %}
+      </div>
+    </div>
+  {% endif %}
+  <script>
+    jQuery(document).ready(function() {
+      if (`{{question_position[0]}}` == "above_chat" && $(".initial-message").length) { // 
+        $(".initial-message .chat-message").html("")
+        var questionObj = `{{question_obj[0]}}`
+        questionObj = JSON.parse(questionObj)
+        questionObj = questionObj.questions
+        for (question of questionObj) {
+          var st = `
+              <div class="questions-wrapper">
+                <p>${question}</p>
+              </div>
+            `
+          $(".initial-message .chat-message").append(st)
+        }
+
+
+      }
+      if (`{{question_position[0]}}` == "completion_popup") {
+        $(".post-completion-box-btn").hide()
+      }
+      var savedAnswers = `{{saved_answers}}`
+      console.log(savedAnswers)
+      if (savedAnswers != ``) {
+        savedAnswers = savedAnswers.match(/#A: \[.*?\]/sg)
+        if (savedAnswers) {
+          $(`.{{ question_position[0]}} .submit_answers`).prop(`disabled`, true).addClass("disabled", true)
+          $(`.{{ question_position[0]}} .edit_answers`).show()
+          if (`{{question_position[0]}}` == "completion_popup") {
+            $(".post-completion-box-btn").show()
+            $(`.{{ question_position[0]}} .submit_answers`).hide()
+          }
+          var i = 0
+
+          for (answer of savedAnswers) {
+            var ans = answer.split("#A: [")[1].split("]")[0]
+            console.log(ans)
+            $($(`.{{ question_position[0]}} .questions-wrapper textarea`)[i]).val(ans)
+            $($(`.{{ question_position[0]}} .questions-wrapper textarea`)[i]).prop(`disabled`, true).addClass('disabled')
+            i = i + 1
+          }
+        }
+      }
+      $(`.{{ question_position[0]}} .edit_answers`).on(`click`, function() {
+        $(`.{{ question_position[0]}} .submit_answers`).show()
+        $(".post-completion-box-btn").hide()
+        $(`.{{ question_position[0]}} .submit_answers`).prop(`disabled`, false)
+        $(`.{{ question_position[0]}} .submit_answers`).removeClass(`disabled`)
+        $(`.{{ question_position[0]}} .questions-wrapper textarea`).removeClass(`disabled`)
+        $(`.{{ question_position[0]}} .questions-wrapper textarea`).prop(`disabled`, false)
+        $(`.{{ question_position[0]}} .edit_answers`).hide()
+      })
+      $(`.{{ question_position[0]}} .submit_answers`).on(`click`, function() {
+        var titlePost = `{{post.title}}`
+        var comment = `#Question Submission`
+        $(`.{{ question_position[0]}} .questions-wrapper`).each(function() {
+          comment += `\n#Q: ${
+            $(this).children(`label`).text()
+          } \n#A: [${
+            $(this).children(`textarea`).val()
+          }]\n`
+          $(this).children(`textarea`).prop(`disabled`, true)
+          $(this).children(`textarea`).addClass(`disabled`)
+        })
+        $(this).prop(`disabled`, true)
+        $(this).addClass(`disabled`)
+        $(`.{{ question_position[0]}} .question-form-wrapper textarea`).html(comment)
+        $(`.{{ question_position[0]}} .question-form-wrapper button`).click()
+        if (`{{question_position[0]}}` == "completion_popup") {
+          $(this).hide()
+          $(".post-completion-box-btn").show()
+        } else {
+          $(`.{{ question_position[0]}} .edit_answers`).show()
+        }
+      })
+    })
+  </script>
+{% endif %}

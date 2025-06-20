@@ -1,0 +1,49 @@
+{% assign product_url = current_product.url %}
+{% assign categories_url = current_product.categories_url %}
+{% assign announcements_url = current_product.announcements_url %}
+
+
+{% assign dasboard_text = block.settings.dashboard %}
+{% assign modules_text = block.settings.modules %}
+{% assign announcements_text = block.settings.announcements %}
+{% assign favorites_text = block.settings.favorites %}
+{% assign library_text = block.settings.library %}
+
+{% assign KJB_dasboard_text = 'dashboard' | settings_id: section: section, block: block %}
+{% assign KJB_modules_text = 'modules' | settings_id: section: section, block: block %}
+{% assign KJB_announcements_text = 'announcements' | settings_id: section: section, block: block %}
+{% assign KJB_favorites_text = 'favorites' | settings_id: section: section, block: block %}
+{% assign KJB_library_text = 'library' | settings_id: section: section, block: block %}
+
+<div class="dashboard-tabs">
+  <a
+    class="dashboard-tabs-tab {% if page == 'product'  %}dashboard-tabs-active{% endif %} hide-{{block.settings.hide_dashboard}}"
+    href="{{ product_url }}"
+    kjb-settings-id="{{ KJB_dasboard_text }}">
+    {{ dasboard_text }}
+  </a>
+  <a
+    class="dashboard-tabs-tab {% if page == 'categories' %}dashboard-tabs-active{% endif %} hide-{{block.settings.hide_modules}}"
+    href="{{ categories_url }}"
+    kjb-settings-id="{{ KJB_modules_text }}">
+    {{ modules_text }}
+  </a>
+  <a
+    class="dashboard-tabs-tab {% if page == 'announcements' %}dashboard-tabs-active{% endif %} hide-{{block.settings.hide_announcements}}"
+    href="{{ announcements_url }}"
+    kjb-settings-id="{{ KJB_announcements_text }}">
+    {{ announcements_text }}
+  </a>
+  <a
+    class="dashboard-tabs-tab hide-{{block.settings.hide_library}}"
+    href="/library"
+    kjb-settings-id="{{ KJB_library_text }}">
+    {{ library_text }}
+  </a>
+  <a
+    class="dashboard-tabs-tab {% if page == 'search' %}dashboard-tabs-active{% endif %} hide-{{block.settings.hide_favorites}}"
+    href="{{ current_product.search_url | append: '?favorites=true' }}"
+    kjb-settings-id="{{ KJB_favorites_text }}">
+    {{ favorites_text }}
+  </a>
+</div>

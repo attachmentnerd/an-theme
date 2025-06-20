@@ -1,0 +1,38 @@
+{% if section.type == 'p_resume' %}  
+       {% assign post = current_product.completion.next_post %} 
+{% endif %}
+
+
+{% assign this_element_type = block.settings.text_source  %}
+{% if block.settings.link_to_post == true or block.settings.link_to_post == "true"%} 
+    <a href="{{post.url}}" > 
+{% endif %}    
+    {% if this_element_type == "category_title" %}   
+        <span>{{category.title}}</span>  
+    {% endif %} 
+    {% if this_element_type == "text" %} 
+    <span>{{the_text}}</span>  
+{% endif %}
+    {% if this_element_type == "category_description" %} 
+        {% assign truncate_at = block.settings.truncate_content  %}
+        {% assign truncate_at_number = truncate_at | times: 1 %}
+        <p>{{ category.description  | strip_html | truncate_html: truncate_at_number }}</p>
+    {% endif %}
+
+    {% if this_element_type == "total_duration" %}    
+        {% assign duration = total_duration | duration | replace:"minutes","" | replace:"minute",""  | replace:"Less than",""  %}
+        {{duration}} {{block.settings.postfix}}
+    {% endif %}
+
+    {% if this_element_type == "number_of_lessons" %}  
+         {{number_of_lessons}} {{block.settings.postfix}}
+    {% endif %}
+   
+
+
+
+    {% if block.settings.link_to_post == true or block.settings.link_to_post == "true"%} 
+    </a>
+{% endif %}
+ 
+

@@ -1,0 +1,422 @@
+{% comment %}
+  Modern Post Player Section
+  A clean, Discovery-style lesson player for Kajabi posts
+{% endcomment %}
+
+<style>
+  /* Reset and hide default Kajabi elements */
+  .header, .footer, nav.breadcrumb { display: none !important; }
+  body { margin: 0; padding: 0; }
+  
+  /* Modern Post Layout */
+  .modern-post-layout {
+    display: flex;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8f9fa;
+  }
+  
+  /* Sidebar Navigation */
+  .modern-post-sidebar {
+    width: 280px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  
+  .sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .course-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 8px 0;
+  }
+  
+  .course-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: #3b82f6;
+    transition: width 0.3s ease;
+  }
+  
+  .progress-text {
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+  
+  /* Module List */
+  .module-list {
+    padding: 16px 0;
+  }
+  
+  .module-item {
+    margin-bottom: 16px;
+  }
+  
+  .module-header {
+    padding: 12px 20px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .lesson-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .lesson-item:hover {
+    background: #f3f4f6;
+  }
+  
+  .lesson-item.active {
+    background: #eff6ff;
+    border-left: 3px solid #3b82f6;
+    padding-left: 17px;
+  }
+  
+  .lesson-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  
+  .lesson-item.completed .lesson-icon {
+    background: #10b981;
+    color: white;
+  }
+  
+  .lesson-content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .lesson-title {
+    font-size: 14px;
+    color: #111827;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .lesson-duration {
+    font-size: 12px;
+    color: #6b7280;
+  }
+  
+  /* Main Content Area */
+  .modern-post-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  
+  /* Top Bar */
+  .modern-topbar {
+    height: 60px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+  
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .back-button {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .back-button:hover {
+    background: #f3f4f6;
+  }
+  
+  .current-lesson-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #111827;
+  }
+  
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  /* Video Container */
+  .video-container {
+    background: #000;
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 16 / 9;
+  }
+  
+  .video-wrapper iframe,
+  .video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Lesson Navigation */
+  .lesson-nav {
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .nav-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: #374151;
+    font-size: 14px;
+  }
+  
+  .nav-button:hover {
+    background: #f3f4f6;
+  }
+  
+  .nav-button.primary {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+  }
+  
+  .nav-button.primary:hover {
+    background: #2563eb;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .modern-post-sidebar {
+      display: none;
+    }
+    
+    .modern-topbar {
+      padding: 0 16px;
+    }
+    
+    .current-lesson-title {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<div class="modern-post-layout">
+  <!-- Sidebar -->
+  <aside class="modern-post-sidebar">
+    <div class="sidebar-header">
+      <h2 class="course-title">{{ post.product.title }}</h2>
+      <div class="course-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ post.product.percent_complete }}%"></div>
+        </div>
+        <span class="progress-text">{{ post.product.percent_complete }}% Complete</span>
+      </div>
+    </div>
+    
+    <div class="module-list">
+      {% for category in post.product.categories %}
+        <div class="module-item">
+          <div class="module-header">{{ category.title }}</div>
+          {% for lesson_post in category.posts %}
+            <div class="lesson-item {% if lesson_post.id == post.id %}active{% endif %} {% if lesson_post.completed %}completed{% endif %}">
+              <div class="lesson-icon">
+                {% if lesson_post.completed %}
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                {% else %}
+                  <svg width="16" height="16" fill="#9ca3af" viewBox="0 0 20 20">
+                    <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2" fill="none"></circle>
+                  </svg>
+                {% endif %}
+              </div>
+              <div class="lesson-content">
+                <a href="{{ lesson_post.url }}" class="lesson-title">{{ lesson_post.title }}</a>
+                <div class="lesson-duration">{{ lesson_post.duration | default: "5 mins" }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </aside>
+  
+  <!-- Main Content -->
+  <main class="modern-post-main">
+    <!-- Top Bar -->
+    <div class="modern-topbar">
+      <div class="topbar-left">
+        <a href="{{ post.product.url }}" class="back-button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </a>
+        <h1 class="current-lesson-title">{{ post.title }}</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="nav-button mark-complete">
+          {% if post.completed %}
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            Completed
+          {% else %}
+            Mark Complete
+          {% endif %}
+        </button>
+      </div>
+    </div>
+    
+    <!-- Video Player -->
+    <div class="video-container">
+      <div class="video-wrapper">
+        {% if post.video %}
+          {{ post.video | wistia_video: player_color: '#3b82f6', still_url: post.poster_image_url, playerPreference: "html5" }}
+        {% elsif post.audio %}
+          {{ post.audio | wistia_audio: player_color: '#3b82f6', still_url: post.poster_image_url }}
+        {% elsif post.assessment %}
+          {{ post.assessment | assessment: color: '#3b82f6' }}
+        {% else %}
+          <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white;">
+            <div style="text-align: center;">
+              <svg width="64" height="64" fill="currentColor" style="opacity: 0.5; margin-bottom: 16px;">
+                <path d="M32 16C23.163 16 16 23.163 16 32s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zm6.5 16.5l-9 6c-.275.183-.625.025-.625-.281v-12c0-.306.35-.464.625-.281l9 6c.275.183.275.578 0 .562z"/>
+              </svg>
+              <p>No video content available</p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Lesson Navigation -->
+    <div class="lesson-nav">
+      {% if post.previous_post %}
+        <a href="{{ post.previous_post.url }}" class="nav-button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Previous Lesson
+        </a>
+      {% else %}
+        <div></div>
+      {% endif %}
+      
+      {% if post.next_post %}
+        <a href="{{ post.next_post.url }}" class="nav-button primary">
+          Next Lesson
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      {% else %}
+        <a href="{{ post.product.url }}" class="nav-button primary">
+          Back to Course
+        </a>
+      {% endif %}
+    </div>
+  </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Mark complete functionality
+  const markCompleteBtn = document.querySelector('.mark-complete');
+  if (markCompleteBtn) {
+    markCompleteBtn.addEventListener('click', function() {
+      // In real implementation, this would make an API call
+      this.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Completed';
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Modern Post Player",
+  "elements": [
+    {
+      "type": "text",
+      "id": "sidebar_width",
+      "label": "Sidebar Width",
+      "default": "280px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modern Post Player",
+      "category": "Video",
+      "description": "Clean, Discovery-style lesson player"
+    }
+  ]
+}
+{% endschema %}

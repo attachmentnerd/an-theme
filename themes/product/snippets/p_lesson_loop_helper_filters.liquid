@@ -1,0 +1,59 @@
+{% assign show_lessons_from = section.settings.show_lessons_from %}
+{% assign matched = section.settings.categories_to_include %}
+{% if show_lessons_from == "related_posts" %}
+  {% assign matched = related_values %}
+  {% assign show_lessons_from = related_type %}
+{% endif %}
+{% if matched != blank and matched != "" and show_lessons_from == "tags" or show_lessons_from == "specific_tags" %}
+  {% assign match_from = matched | split: "," %}
+  {% assign post_body = post.body %}
+  {% if post_body contains "tags-d-body" %}
+    {% assign tags_array = post_body | split: "!--tag" %}
+    {% assign tags_array = tags_array[1] | split: "--" %}
+    {% for match in match_from %}
+      {% assign match = match | strip %}
+      {% assign match_str = '"' | append: match | append: '"' %}
+      {% if tags_array[0] contains match_str %}
+        {% assign show_post = true %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% elsif matched != blank and matched != "" and show_lessons_from == "custom_fields" or show_lessons_from == "specific_custom_fields" %}
+
+  {% assign match_from = matched | split: "," %}
+  {% assign post_body = post.body %}
+  {% if post_body contains "feature-d-body" %}
+    {% assign custom_array = post_body | split: "!--custom_field" %}
+    {% assign custom_array = custom_array[1] | split: "--" %}
+    {% assign all_match = true %}
+    {% for match in match_from %}
+      {% assign match_title_value = match | split: ":" %}
+      {% assign match_title = match_title_value[0] | strip %}
+      {% assign match_val = match_title_value[1] | strip %}
+      {% assign match_str = '"' | append: match_title | append: '"' | append: ':"' | append: match_val | append: '"' %}
+      {% if custom_array[0] contains match_str and all_match == true %}
+        {% assign all_match = true %}
+      {% else %}
+        {% assign all_match = false %}
+      {% endif %}
+    {% endfor %}
+    {% if all_match == true %}
+      {% assign show_post = true %}
+    {% endif %}
+  {% endif %}
+{% elsif matched != blank and matched != "" and show_lessons_from == "same_tags" %}
+  {% assign match_from = matched | split: "," %}
+  {% assign post_body = post.body %}
+  {% if post_body contains "tags-d-body" %}
+    {% assign tags_array = post_body | split: "!--tag" %}
+    {% assign tags_array = tags_array[1] | split: "--" %}
+    {% for match in match_from %}
+      {% assign match = match | strip %}
+      {% if tags_array[0] contains match %}
+        {% assign show_post = true %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% else %}
+  {% assign show_post = true %}
+{% endif %}

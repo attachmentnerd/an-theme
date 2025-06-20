@@ -1,0 +1,119 @@
+{%- assign margin_left = "0px"  -%} 
+{%- assign margin_right = "0px"  -%}  
+
+
+{%- if desktop_style contains "margin"  -%}
+    {%- assign properties = desktop_style | split:";"  -%}
+    {%- for property in properties  -%}
+        {%- if property contains "margin-left"  -%}
+            {%- assign margin_left = property | split:":" | last | replace:";" | strip  -%}
+        {%- endif  -%}
+        {%- if property contains "margin-right"  -%}
+            {%- assign margin_right = property | split:":" | last | replace:";" | strip  -%}
+        {%- endif  -%}   
+        {%- if property contains "margin:" or property contains "margin :"  -%}
+            {%- assign margins = property | split:":" | last | replace:";" | strip | split:" "%}
+            {%- if margins.size == 1 -%}
+                {%- assign margin_left = margins[0]  -%}
+                {%- assign margin_right = margins[0]  -%}
+            {%- endif  -%}   
+            {%- if margins.size == 2 or  margins.size == 3 -%}
+                {%- assign margin_left = margins[1]  -%}
+                {%- assign margin_right = margins[1]  -%}
+            {%- endif  -%}  
+            {%- if margins.size == 4 -%}
+                {%- assign margin_left = margins[1]  -%}
+                {%- assign margin_right = margins[3]  -%}
+            {%- endif  -%}  
+        {%- endif  -%}
+    {%- endfor  -%} 
+{%- endif  -%}
+
+
+{% if margin_left == 'auto' or margin_left == '0'  %}
+    {%- assign margin_left = "0px"  -%} 
+{%- endif  -%}
+{% if margin_right == 'auto'  or margin_right == '0'   %}
+    {%- assign margin_right = "0px"  -%} 
+{%- endif  -%}
+
+{%- assign width = "width" | prepend:p  -%}
+{%- assign the_width = block.settings[width]  -%}
+
+{% if w_clmn == 'column' %} 
+    {%- assign the_width = this_clmn.settings.clmn_width -%}
+{%- endif  -%}
+{% if w_clmn == 'sub-column' %}
+    {%- assign the_width = block.settings[this_clmn_width]  -%}
+{%- endif  -%}
+
+
+
+{%- if level == "section" -%}
+    {%- assign the_width = section.settings.width  -%}
+{%- endif  -%}
+{%- assign width_prcnt = the_width | times: 8.33 | downcase | append:"%"  -%}
+{%- assign width_calc = "calc(" | append:width_prcnt | append:" - " | append:margin_left | append:" - " | append:margin_right  | append:")"  -%}
+
+
+  
+{%- assign margin_left_mobile = "0px"  -%} 
+{%- assign margin_right_mobile = "0px"  -%}  
+
+{%- assign margin_mobile_is_set = false  -%} 
+{%- if mobile_style contains "margin"  -%}
+    {%- assign properties = mobile_style | split:";"  -%}
+    {%- for property in properties  -%}
+        {%- if property contains "margin-left"  -%}
+            {%- assign margin_left_mobile = property | split:":" | last | replace:";" | strip  -%}
+            {%- assign margin_mobile_is_set = true  -%} 
+        {%- endif  -%}
+        {%- if property contains "margin-right"  -%}
+            {%- assign margin_right_mobile = property | split:":" | last | replace:";" | strip  -%}
+            {%- assign margin_mobile_is_set = true  -%} 
+        {%- endif  -%}
+        {%- if property contains "margin:" or property contains "margin :"  -%}
+            {%- assign margin_mobile_is_set = true  -%} 
+            {%- assign margins = property | split:":" | last | replace:";" | strip | split:" "%}
+            {%- if margins.size == 1 -%} 
+                {%- assign margin_left_mobile = margins[0]  -%}
+                {%- assign margin_right_mobile = margins[0]  -%}
+            {%- endif  -%}   
+            {%- if margins.size == 2 or  margins.size == 3 -%}
+                {%- assign margin_left_mobile = margins[1]  -%}
+                {%- assign margin_right_mobile = margins[1]  -%}
+            {%- endif  -%}  
+            {%- if margins.size == 4 -%}
+                {%- assign margin_left_mobile = margins[1]  -%}
+                {%- assign margin_right_mobile = margins[3]  -%}
+            {%- endif  -%}  
+        {%- endif  -%}
+    {%- endfor  -%}
+{%- endif  -%}
+
+
+{% if margin_left_mobile  == 'auto' or margin_left_mobile  == '0'  %}
+    {%- assign margin_left_mobile  = "0px"  -%} 
+{%- endif  -%}
+{% if margin_right_mobile == 'auto'  or margin_right_mobile == '0'   %}
+    {%- assign margin_right_mobile = "0px"  -%} 
+{%- endif  -%}
+
+{%- if margin_mobile_is_set == false -%}
+    {%- assign margin_left_mobile = margin_left  -%} 
+    {%- assign margin_right_mobile = margin_right  -%} 
+{%- endif  -%}
+
+{%- assign width = "mobile_width" | prepend:p  -%}
+{%- assign the_width = block.settings[width]  -%}
+{%- if level == "section" -%}
+    {%- assign the_width = section.settings.mobile_width  -%}
+{%- endif  -%}
+{%- assign width_prcnt = the_width | times: 8.33 | downcase | append:"%"  -%}
+{%- assign width_calc_mobile = "calc(" | append:width_prcnt | append:" - " | append:margin_left_mobile | append:" - " | append:margin_right_mobile  | append:")"  -%}
+
+
+{%- if block.settings.auto_width -%}
+    {%- assign width_calc = "auto"  -%}
+    {%- assign width_calc_mobile = "auto"  -%}
+{%- endif  -%}

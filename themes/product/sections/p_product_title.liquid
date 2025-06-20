@@ -1,0 +1,26 @@
+{% assign library_text = section.settings.library %}
+
+{% assign KJB_library_text = 'library' | settings_id: section: section %}
+
+<div class="product-title">
+  <i class="product-title-icon responsive-toggle-trigger fas fa-times"></i>
+  <a href="/library" class="product-title-back" kjb-settings-id="{{ KJB_library_text }}">
+    <i class="fas fa-chevron-left"></i>
+    {{ library_text }}
+  </a>
+  <h1>{{ current_product.title }}</h1>
+</div>
+
+{% schema %}
+  {
+    "name": "Navigation Title",
+    "elements": [
+      {
+        "type": "text",
+        "id": "library",
+        "label": "Back Link Text",
+        "default": "Library"
+      }
+    ]
+  }
+{% endschema %}

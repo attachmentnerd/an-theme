@@ -1,0 +1,382 @@
+<!-- Modern Product Theme Header - Using Shared Components -->
+<style>
+  /* Product-specific header styles */
+  .product-header {
+    background: {{ section.settings.background_color | default: '#FFFFFF' }};
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+  }
+  
+  .product-header__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .product-header__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 70px;
+    gap: 2rem;
+  }
+  
+  .product-header__left,
+  .product-header__right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .product-header__center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Navigation styles */
+  .product-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .product-nav__link {
+    color: {{ section.settings.text_color | default: '#374151' }};
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  .product-nav__link:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: {{ section.settings.hover_color | default: section.settings.text_color | default: '#374151' }};
+  }
+  
+  /* User menu styles */
+  .product-user-menu {
+    position: relative;
+  }
+  
+  .product-user-menu__trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: {{ section.settings.text_color | default: '#374151' }};
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .product-user-menu__trigger:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  
+  .product-user-menu__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--an-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+  
+  .product-user-menu__dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+  }
+  
+  .product-user-menu.active .product-user-menu__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .product-user-menu__item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #374151;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  
+  .product-user-menu__item:hover {
+    background-color: #F3F4F6;
+  }
+  
+  .product-user-menu__item:first-child {
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .product-user-menu__item:last-child {
+    border-radius: 0 0 8px 8px;
+  }
+  
+  /* Mobile styles */
+  .product-header__mobile-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .product-header__mobile-toggle svg {
+    width: 24px;
+    height: 24px;
+    color: {{ section.settings.text_color | default: '#374151' }};
+  }
+  
+  @media (max-width: 768px) {
+    .product-header__mobile-toggle {
+      display: block;
+    }
+    
+    .product-header__center,
+    .product-header__right .product-nav {
+      display: none;
+    }
+    
+    .product-header__content {
+      min-height: 60px;
+    }
+  }
+  
+  /* Sticky header */
+  {% if section.settings.sticky %}
+  .product-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  {% endif %}
+</style>
+
+<header class="product-header" data-section-id="{{ section.id }}">
+  <div class="product-header__container">
+    <div class="product-header__content">
+      <!-- Mobile toggle -->
+      <button class="product-header__mobile-toggle" aria-label="Toggle menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+      
+      <!-- Left section -->
+      <div class="product-header__left">
+        {% for block in section.blocks %}
+          {% if block.type == 'logo' %}
+            <div class="product-header__logo">
+              {% if block.settings.logo_type == 'image' and block.settings.logo %}
+                <a href="/">
+                  <img 
+                    src="{{ block.settings.logo | image_picker_url }}" 
+                    alt="{{ block.settings.image_alt | default: 'Logo' }}"
+                    style="height: {{ block.settings.logo_height | default: '40' }}px; width: auto;"
+                  >
+                </a>
+              {% else %}
+                <a href="/" class="text-xl font-bold" style="color: {{ block.settings.logo_text_color | default: section.settings.text_color }}">
+                  {{ block.settings.logo_text | default: 'AN Product' }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      
+      <!-- Center section -->
+      <div class="product-header__center">
+        <nav class="product-nav">
+          {% for block in section.blocks %}
+            {% if block.type == 'menu' %}
+              {% assign menu = linklists[block.settings.menu] %}
+              {% for link in menu.links %}
+                <a href="{{ link.url }}" class="product-nav__link">{{ link.title }}</a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </nav>
+      </div>
+      
+      <!-- Right section -->
+      <div class="product-header__right">
+        <!-- Course progress (if applicable) -->
+        {% if customer %}
+          <div class="product-nav hidden--mobile">
+            <a href="/library" class="product-nav__link">My Library</a>
+          </div>
+          
+          <!-- User menu -->
+          <div class="product-user-menu">
+            <button class="product-user-menu__trigger">
+              <div class="product-user-menu__avatar">
+                {{ customer.first_name | slice: 0 | upcase }}{{ customer.last_name | slice: 0 | upcase }}
+              </div>
+              <span class="hidden--mobile">{{ customer.first_name }}</span>
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="product-user-menu__dropdown">
+              <a href="/settings" class="product-user-menu__item">Settings</a>
+              <a href="/library" class="product-user-menu__item">My Library</a>
+              <a href="/logout" class="product-user-menu__item">Logout</a>
+            </div>
+          </div>
+        {% else %}
+          <a href="/login" class="btn btn-primary">Log In</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+// Simple dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const userMenu = document.querySelector('.product-user-menu');
+  const trigger = document.querySelector('.product-user-menu__trigger');
+  
+  if (trigger) {
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      userMenu.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', function() {
+      userMenu.classList.remove('active');
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Product Header (Modern)",
+  "elements": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#374151"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "Hover Color",
+      "allow_blank": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky Header",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "limit": 1,
+      "elements": [
+        {
+          "type": "radio",
+          "id": "logo_type",
+          "label": "Logo Type",
+          "default": "text",
+          "options": [
+            { "label": "Image", "value": "image" },
+            { "label": "Text", "value": "text" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text",
+          "default": "AN Product"
+        },
+        {
+          "type": "text",
+          "id": "logo_height",
+          "label": "Logo Height (px)",
+          "default": "40"
+        },
+        {
+          "type": "color",
+          "id": "logo_text_color",
+          "label": "Logo Text Color",
+          "allow_blank": true
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Navigation Menu",
+      "limit": 1,
+      "elements": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "main-menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Header (Modern)",
+      "category": "Headers",
+      "blocks": [
+        {
+          "type": "logo",
+          "settings": {
+            "logo_type": "text",
+            "logo_text": "AN Product"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "menu": "main-menu"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

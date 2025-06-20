@@ -1,0 +1,96 @@
+
+{%- assign v_opacity = section.settings.darken_video | divided_by: 100.0  -%}
+{%- assign i_opacity = section.settings.darken_image| divided_by: 100.0  -%}
+<style> 
+	.s-{{ section.id }}{
+		 
+		{%- if section.settings.bg_type == 'none' -%}
+			{%- if settings.color_picker_mode == false -%}
+				{%- if section.settings.background_color == blank -%}
+					{%- if section.settings.background_color_preset == "Primary Background Color" -%}
+						background-color: {{settings.color_bg_1}} !important;
+					{%- elsif section.settings.background_color_preset == "Secondary Background Color" -%}
+						background-color: {{settings.color_bg_2}} !important;
+					{%- elsif section.settings.background_color_preset == "Third Background Color" -%}
+						background-color: {{settings.color_bg_3}} !important;
+					{%- elsif section.settings.background_color_preset == "Fourth Background Color" -%}
+						background-color: {{settings.color_bg_4}} !important
+					{%- else -%}
+						background-color: {{settings.color_bg_dark_4_light}} !important;
+					{%- endif -%}	
+				{%- else -%}
+					background-color: {{section.settings.background_color}} !important;
+				{%- endif -%}
+			{%- endif -%}
+
+
+		{%- elsif section.settings.bg_type == 'image' -%}
+			background-image: url('{% include "image_patch", img: section.settings.bg_image %}') !important;
+			background-size: cover !important;
+		{%- elsif section.settings.bg_type == 'video'  -%}
+			background-color: RGBA(22, 30, 42, {{ v_opacity }})  !important;
+		{%- endif -%}	
+	}
+	.s-{{ section.id }} .darkenImage{
+		background-color: RGBA(0, 0, 0, {{ i_opacity }}); 
+	}
+	@media screen and (min-width:782px) {
+		.s-{{ section.id }}{
+			{%- if section.settings.hide_on_desktop  -%}
+				display:none !important;
+			{%- endif -%}
+			{%- if section.settings.padding_desktop.top != blank  -%}
+				padding-top: {{ section.settings.padding_desktop.top }}px !important;
+			{%- endif -%}	
+			{%- if section.settings.padding_desktop.bottom != blank  -%}
+				padding-bottom: {{ section.settings.padding_desktop.bottom }}px !important;
+			{%- endif -%}	
+			{%- if section.settings.padding_desktop.left != blank  -%}
+				padding-top: {{ section.settings.padding_desktop.left }}px !important;
+			{%- endif -%}	
+			{%- if section.settings.padding_desktop.right != blank  -%}
+				padding-bottom: {{ section.settings.padding_desktop.right }}px !important;
+			{%- endif -%}	
+
+			{%- if section.settings.background_fixed -%}
+				background-attachment: fixed !important;
+			{%- endif -%}
+		}
+	}
+
+
+	@media screen and (max-width:782px) {
+		.s-{{ section.id }}{
+			{%- if section.settings.hide_on_mobile  -%}
+				display:none !important;
+			{%- endif -%}
+			{%- if section.settings.padding_mobile.top != blank  -%}
+				padding-top: {{ section.settings.padding_mobile.top }}px !important;
+			{%- endif -%}	
+			{%- if section.settings.padding_mobile.bottom != blank  -%}
+				padding-bottom: {{ section.settings.padding_mobile.bottom }}px !important;
+			{%- endif -%}	
+				{% if section.settings.padding_mobile.left != blank  -%}
+				padding-top: {{ section.settings.padding_mobile.left }}px !important;
+			{%- endif -%}	
+			{%- if section.settings.padding_mobile.right != blank  -%}
+				padding-bottom: {{ section.settings.padding_mobile.right }}px !important;
+			{%- endif -%}	
+			{%- if section.settings.background_fixed %}	 
+				background-attachment: fixed !important;
+			{%- endif -%}	
+		}
+	}
+	#section-s-{{ section.id }} .backgroundVideo {
+        z-index: -1;
+    }
+</style>
+{%- if section.settings.bg_type == 'video'  -%}
+    {% assign bg_video      = current_site.find_video[section.settings.bg_video] %}	
+    {% assign bg_videoID    = bg_video.wistia_id | default: "aifhr9jyfk" %}
+    <div id="wistia_{{ bg_videoID }}" class="backgroundVideo" data-src="{{ bg_videoID }}" data-img="{{ section.settings.bg_image | image_picker_url: 'background.jpg' }}" data-blank="background.jpg"></div>
+{%- endif -%}
+{%- if section.settings.bg_type == 'image'  -%}
+    <div class="darkenImage"></div>
+{%- endif -%}
+	 

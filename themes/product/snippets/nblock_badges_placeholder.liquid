@@ -1,0 +1,182 @@
+{% assign product_completion = current_product.completion.percent %}
+{% assign user_avatar = current_site_user | avatar_url %}
+{% assign user_name = current_site_user.name %}
+{% assign offer = "" %}
+{%assign offer_badge = ""%}
+{%assign blockdet = ""%}
+{% assign the_section = settings.sections.p_badges %}
+{% for block_id in the_section.block_order %}
+  {% if the_section.blocks[block_id].type == "p_badge_selector" %}
+    {% assign offer_container = the_section.blocks[block_id].settings.offer_container %}
+    {% assign offer = current_site.find_offer[offer_container] %}
+    {% assign blockdet = the_section.blocks[block_id] %}
+    {%if offer.currently_owned? %}
+      {%assign offer_badge = offer%}
+  {%endif%}
+  
+  {% endif %}
+{% endfor %}
+{% include "badge_style" | version: the_section.settings.badge_version %}
+<style>
+    {%- assign style_code =  the_section.settings.section_style -%} 
+    {% include "style2vars" %}
+
+      #block-{{block.id}}{
+          {{desktop_style}}
+      }
+
+      @media(max-width:768px){
+        #block-{{block.id}} {
+            {{mobile_style}}
+        }
+      }  
+
+      {%- unless tablet_style == "" -%}
+      @media(min-width:586px) and (max-width:786px){
+        #block-{{block.id}}{
+            {{tablet_style}}
+        }
+      } 
+      {%- endunless -%}
+
+      {%- unless custom_selectors == "" -%}
+          {{custom_selectors}}
+      {%- endunless -%}
+ 
+      {%- unless custom_selectors_mobile == "" -%}
+         @media(max-width:768px){
+            {{custom_selectors_mobile}}
+         }
+      {%- endunless -%}
+
+     {%- assign style_code =  the_section.settings.pagination_style -%} 
+     {% include "style2vars" %}
+
+      {%- unless custom_selectors == "" -%}
+          {{custom_selectors}}
+      {%- endunless -%}
+
+    {%- unless tablet_style == "" and custom_selectors_tablet == ""-%} 
+     @media(min-width:586px) and (max-width:786px){
+        {{block_selector}}{ {{tablet_style}} }
+
+        {%- unless custom_selectors_tablet == "" -%}
+          {{custom_selectors_tablet}}
+        {%- endunless -%}
+      }
+    {%- endunless -%}
+</style>
+{%- assign offer_title = blockdet.settings.title -%}
+{%- assign offer_image = blockdet.settings.badge_image -%}
+{%- assign offer_description = blockdet.settings.text -%}
+{%- assign use_text = blockdet.settings.use_text -%}
+
+{% if blockdet == "" %}
+{%- assign offer_title = the_section.settings.no_badge_text -%}
+{%- assign offer_image = the_section.settings.no_badge_image -%}
+{%- assign use_text = false -%}
+{% endif %}
+{%- assign complete_text = the_section.settings.complete_text -%}
+
+{%if the_section.settings.badge_version == "badge_only"%}
+<div class="badge-wrapper">
+  <div class="badge-image">
+    <img src='{% include "image_patch", img: offer_image %}' class="nimage" />
+  </div>
+  <div class="badge-title">
+    {{offer_title}}
+  </div>
+</div>
+{% if blockdet.settings.use_text %}
+<div class="badge-post-text"> 
+  {{offer_description}}
+</div>
+{%endif%}
+{% elsif the_section.settings.badge_version == "badge_and_progress" %}
+<div class="badge-wrapper">
+  <div class="badge-image">
+    <img src='{% include "image_patch", img: offer_image %}' class="nimage" />
+  </div>
+  <div class="badge-title">
+    {{offer_title}}
+  </div>
+  <div class="badge-user-details">
+    <p class="badge-user-name">{{ user_name }}</p>
+    {% assign completion = current_product.completion %}
+    <div class="badge-user-completed">{{product_completion}}% {{ complete_text }}</div>
+  </div>
+</div>
+{% if blockdet.settings.use_text %}
+<div class="badge-post-text"> 
+  {{offer_description}}
+</div>
+{%endif%}
+{% elsif the_section.settings.badge_version == "badge_and_avatar" %}
+<style>
+  #block-{{block.id}} .avatar-wrap:after {
+    content: "{{offer_title | replace: '<p>', '' | replace: '</p>', '' }}";
+  }
+</style>
+
+<div class="badge-wrapper">
+  <div class="badge-image">
+    <img src='{% include "image_patch", img: offer_image %}' class="nimage" />
+  </div>
+  <div class="avatar-wrap">
+    <div class="avatar avatar-sm  progress-circle avatar-{{ product_completion }}">
+      <img class="avatar-img" src="{{ user_avatar }}" />
+    </div>
+  </div>
+  <div class="badge-user-details">
+    <p class="badge-user-name">{{ user_name }}</p>
+    {% assign completion = current_product.completion %}
+    <div class="badge-lesson-count">{{ completion.completed }}&nbsp;/&nbsp;{{ completion.total }}&nbsp;<span
+        kjb-settings-id="posts_count_text">{{ complete_text }}</span></span></div>
+  </div>
+</div>
+{% if blockdet.settings.use_text %}
+<div class="badge-post-text">
+  {{offer_description}}
+</div>
+{%endif%}
+{% elsif the_section.settings.badge_version == "cert_badge" %}
+{% assign badge_text = offer.title %}
+{% if block.settings.use_custom_text == true %}
+{% assign badge_text = block.settings.badge_text %}
+{% endif %}
+<div class="badge-wrapper">
+  <div class="cert_badge">
+    <img src='{% include "image_patch", img: offer_image %}' class="nimage" />
+    <div class="cert_title">{{offer_title}}</div>
+  </div>
+</div>
+{% if blockdet.settings.use_text %}
+<div class="badge-post-text">
+  {{offer_description}}
+</div>
+{%endif%}
+{%endif%}
+
+
+{%if the_section.settings.badge_version == "badge_list"%}
+<div class="badge-wrapper">
+  {% for block_id in the_section.block_order %}
+    {% if the_section.blocks[block_id].type == "p_badge_selector" %}
+      {% assign offer_container = the_section.blocks[block_id].settings.offer_container %}
+      {% assign offer = current_site.find_offer[offer_container] %}
+      {% assign blocklist = the_section.blocks[block_id] %}
+      {% assign badge_title =  blocklist.settings.title%}
+      {% assign badge_image =  the_section.settings.no_badge_image%}
+      {%if offer.currently_owned? %}
+        {% assign badge_image =  blocklist.settings.badge_image%}
+      {%endif%}
+    <div class="badges">
+      <div class="badge-image">
+        <img src='{% include "image_patch", img: badge_image %}' class="nimage" />
+      </div>
+      <p class="badge-title">{{badge_title}}</p>
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}

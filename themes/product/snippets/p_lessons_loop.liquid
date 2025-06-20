@@ -1,0 +1,246 @@
+{% assign section_heading = "" %}
+{% assign section_heading_text = section.settings.section_heading | strip_html | strip %}
+
+{%- assign number_of_columns = 0 %}
+{%- for block in section.blocks -%}
+  {% if block.type == 'clmn' %}
+    {%- assign number_of_columns = number_of_columns | plus: 1 %}
+  {% endif %}
+{%- endfor -%}
+
+{%- if canonical_url contains "/categories/" -%}
+  {%- assign page = "category" -%}
+{%- elsif canonical_url contains "/posts/" -%}
+  {%- assign page = "post" -%}
+{%- elsif canonical_url contains "/search" -%}
+  {%- assign page = "search" -%}
+{%- endif -%}
+
+{% if page != 'category' %}
+
+  <div class="blog_section_heading_wrap">
+    <div class="blog_section_heading" kjb-settings-id="{{ 'section_heading' | settings_id: section: section }}">{{ section.settings.section_heading }}</div>
+    {% if section.settings.use_sort == true or section.settings.use_sort == "true" %}
+      {% include "p_lesson_sort" %}
+    {% endif %}
+  </div>
+
+  {% assign selected_category_url = "" %}
+  {% for category in product.categories %}
+    {% if category.title == section.settings.categories_to_include %}
+      {% assign selected_category_url = category.url %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% if section.settings.show_view_all %}
+    <div class="view_all_wrap">
+      <a
+        class="view_all"
+        href="{{selected_category_url}}"
+        kjb-settings-id="{{ 'view_all_text' | settings_id: section: section }}">{{ section.settings.view_all_text }}</a>
+    </div>
+  {% endif %}
+
+{% endif %}
+
+
+{% if page == "post" and section.settings.show_lessons_from == "related_posts" %}
+  {% assign post_category = post.category.title %}
+  {% assign post_related = post.body %}
+  {% assign use_lesson_from = "same_category" %}
+  {% assign match_value = "" %}
+  {% if post_related contains "related-d-body" %}
+    {% assign related_array = post_related | split: "!--related_data" %}
+    {% assign related_array = related_array[1] | split: " -->" %}
+    {% assign use_lesson_from = related_array[0] | split: '"useLessonFrom":"' %}
+    {% assign use_lesson_from = use_lesson_from[1] | split: '","' %}
+    {% assign use_lesson_from = use_lesson_from | first %}
+    {% assign match_value = related_array[0] | split: '"matchValue":"' %}
+    {% assign match_value = match_value[1] | split: '"}' %}
+    {% assign match_value = match_value | first %}
+  {% endif %}
+  {%if use_lesson_from == "same_tags"%}
+  {% if post_related contains "tags-d-body" %}
+    {% assign tags_array = post_related | split: '!--tag{"tags":[' %}
+    {% assign tags_array = tags_array[1] | split: ']} --' %}
+    {%assign match_value = tags_array[0] %}
+    {%endif%}
+  {%endif%}
+{% endif %}
+
+<div class="nblock_row p_lessons_wrap">
+
+  {% assign D_all_posts = "" %}
+
+  {% assign is_swiper1 = false %}
+  {% if section.settings.is_swiper %}
+    {% assign is_swiper1 = true %}
+    <div class="swiper-container-{{section.id}} swiper-container nclmns-{{section.settings.num_of_clmns_desktop}}"  style="width:100%;">
+    <div class="swiper-wrapper">
+  {% endif %}
+
+  {% assign post_num = 1 %}
+  {% assign o_count = 1 %}
+  {% assign loop_categories = product.categories %}
+  {% if page == "post" or page == "search"%}
+    {% assign loop_categories = current_product.categories %}
+  {% endif %}
+  {% if page != 'category' %}
+    {% for category_s in loop_categories %}
+      {% assign match = false %}
+      {% assign matched_category = category_s %}
+      {% if section.settings.show_lessons_from == "related_posts" %}
+        {% include "p_lessons_related_loop" %}
+      {% else %}
+        {% assign selected_catS = section.settings.categories_to_include %}
+        {% if selected_catS != blank and selected_cat != "" and section.settings.show_lessons_from == "categories" %}
+
+          {% assign selected_catS_array = selected_catS | split: "," %}
+          {% for selected_cat in selected_catS_array %}
+            {% if category_s.title != selected_cat %}
+              {% if category_s.children? %}
+                {% for sub_category in category_s.subcategories %}
+                  {% if selected_cat == sub_category.title %}
+                    {% assign match = true %}
+                    {% assign matched_category = sub_category %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% else %}
+              {% assign match = true %}
+            {% endif %}
+          {% endfor %}
+
+          {% if match == false %}
+            {% continue %}
+          {% endif %}
+
+        {% endif %}
+      {% endif %}
+
+      
+      {% for post in matched_category.posts %}
+        {% include "p_lessons_loop_helper" related_type: use_lesson_from related_values: match_value %}
+        {% assign image_path = post.poster_image_url %}
+      {% endfor %}
+
+      {% if matched_category.children? and section.settings.include_lessons_from_subcartegories %}
+        {% for sub_category in matched_category.subcategories %}
+          {% for sub_post in sub_category.posts %}
+            {% include "p_lessons_loop_helper" post: sub_post related_type: use_lesson_from related_values: match_value %}
+            {% assign image_path = sub_post.poster_image_url %}
+          {% endfor %}
+        {% endfor %}
+      {% endif %}
+
+    {% endfor %}
+  {% else %}
+    {% for post in category.posts %}
+      {% include "p_lessons_loop_helper" related_type: use_lesson_from related_values: match_value %}  
+      {% assign image_path = post.poster_image_url %}
+    {% endfor %}
+
+    {% if category.children? %}
+      {% for category in category.subcategories %}
+        {% if category.pending_drip? %}
+
+          {% else %}
+            <h5 class="subcategory_title">{{ category.title }}</h5>
+            {% for post in category.posts %}
+              {% include "p_lessons_loop_helper" %}
+              {% assign image_path = post.poster_image_url %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+    {% endif %}
+
+    {%- assign style_code =  section.settings.container_style -%}
+    {% include "style2vars" %}
+    {% include "nblock_width" p:"", level:"section" %}
+
+    {% if is_swiper1 %}
+      {% include "swiper" %}
+    {% endif %}
+
+  </div>
+
+
+  <style>
+
+
+
+    #section-{{ section.id}} .blog_post_container {
+      {{ desktop_style}}
+      {% unless is_swiper1 %}
+        width: {{ width_calc}};
+      {% endunless %}
+    }
+
+    @media(max-width:768px) {
+      #section-{{ section.id}} .blog_post_container {
+        {{ mobile_style}}
+        {% unless is_swiper1 %}
+          width: {{ width_calc_mobile}};
+        {% endunless %}
+      }
+    }
+
+    {%- unless tablet_style == "" -%}
+      @media(min-width:586px) and (max-width:786px) {
+        #section-{{ section.id}} .blog_post_container {
+          {{ tablet_style}}
+          {% unless is_swiper1 %}
+            width: {{ width_calc_mobile}};
+          {% endunless %}
+        }
+      }
+    {%- endunless -%}
+
+    {%- unless custom_selectors == "" -%}
+      {{ custom_selectors}}
+    {%- endunless -%}
+
+    {%- unless custom_selectors_mobile == "" -%}
+      @media(max-width:768px) {
+        {{ custom_selectors_mobile}}
+      }
+    {%- endunless -%}
+
+    {%- assign style_code =  section.settings.pagination_style -%}
+    {% include "style2vars" %}
+
+    {%- unless custom_selectors == "" -%}
+      {{ custom_selectors}}
+    {%- endunless -%}
+
+    {%- unless tablet_style == "" and custom_selectors_tablet == "" -%}
+      @media(min-width:586px) and (max-width:786px) {
+        {{ block_selector }}{
+          {{ tablet_style}}
+        }
+
+        {%- unless custom_selectors_tablet == "" -%}
+          {{ custom_selectors_tablet}}
+        {%- endunless -%}
+      }
+    {%- endunless -%}
+  </style>
+  {% assign slider_title_striped = section.settings.section_heading | strip_html  %}
+  {% assign D_all_posts = "?program=" | append:"Homepage|0|0&slider=" | append:slider_title_striped | append:'&playlist='  | append: D_all_posts %}
+ 
+   <!--script>
+      var img_path1 = '{{image_path}}'.split('/')
+      img_path1.pop()
+      var img_path = img_path1.join('/') + '/'
+      D_all_posts = `{{D_all_posts}}`
+      var re = new RegExp(img_path, 'g');
+      D_all_posts = D_all_posts.replace(re, '');
+      elms = document.querySelectorAll('#section-{{section.id}} .p_lessons_wrap a')
+      for (elm of elms){
+          var intial_val = elm.getAttribute('href')
+          elm.setAttribute('href',intial_val + D_all_posts)
+      }
+   </script -->

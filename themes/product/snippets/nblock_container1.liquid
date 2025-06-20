@@ -1,0 +1,34 @@
+   
+{% assign prefixes = "i1_,t1_,t2_,t3_,t4_,t5_,i2_,i3_,b1_,b2_,b3_" | split:"," %}
+
+{% assign number_of_clmns_block = block.settings.number_of_clmns | plus:0  %}
+{% for i in (1..6) %}
+    {% assign this_clmn_width = "clmn_width_" | append :i  %}
+    {% assign this_clmn_Valign = "vertical_clmn_" | append :i  %}
+    {% assign this_clmn_Halign = "horizontal_clmn_" | append :i  %}
+    <div class="section-clmn-{{ i }} section-clmn container-clmn  clmn-width-{{block.settings[this_clmn_width]}} clmn-Valign-{{block.settings[this_clmn_Valign]}} clmn-Halign-{{block.settings[this_clmn_Halign]}}  ">
+        <div class="sub-clmn_label" kjb-settings-id="{{ this_clmn_width | settings_id: section: section,block: block }}">Sub-Column {{ i }}</div>
+        <div class="section-clmn-inner">
+ 
+            {% for p in prefixes %}
+                {% assign blocks_clmn_id = 'clmn' | prepend:p %}
+                {% assign block_clmn = block.settings[blocks_clmn_id] | plus:0 %}
+                {% assign hide_block_id = 'hide' | prepend:p %}
+                {% assign hide_block = block.settings[hide_block_id] %}
+                
+                {% if  block_clmn == i and hide_block == false %}
+                    {% include "container_block" prefix: p %}
+                {% endif %}
+            {% endfor %}
+
+ 
+
+
+        </div>
+    </div>
+    {% if i == number_of_clmns_block %}
+        {% break %}
+    {% endif %}
+{% endfor %}
+
+

@@ -1,0 +1,26 @@
+ {% for post in current_site.blog.posts_published limit: block.settings.number_of_posts %}
+     
+     <div class="b_post_wrap">
+        {% if block.settings.hide_image == false %}
+            <div class="b_post_image">   
+                <img  src="{{ post.image_url }}">
+            </div>
+        {% endif %}
+        <div class="b_post_info">   
+            {% if block.settings.hide_title == false %}
+                <a class="b_post_title" href="{{ post.url }}"><span >{{ post.title  }}</span></a>
+            {% endif %}
+            {% if block.settings.hide_content == false %}
+                <span class="b_post_content">{{ post.content | strip_html   }}</span>
+            {% endif %}
+            {% if block.settings.hide_date == false %}
+                <span class="b_post_date">{{ post.created_at | date: "%b %d, 20%y" }}	</span>
+            {% endif %}
+            {% if block.settings.hide_tags == false %}
+            <span class="b_post_tags">{{ tags | first }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+
+ {% endfor %}

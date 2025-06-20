@@ -1,0 +1,23 @@
+{% assign show_search = settings.show_search %}
+{% assign search_text = settings.search_text %}
+
+{% assign KJB_show_search = 'show_search' %}
+{% assign KJB_search_text = 'search_text' %}
+
+<div class="responsive-toggle">
+  <div class="media">
+    <div class="align-self-center"><i class="responsive-toggle-trigger fas fa-bars"></i></div>
+    <div class="align-self-center media-body">
+      {% if show_search %}
+        <form action="{{ current_product.search_url }}" method="get" role="search">
+          <div class="input-group search" kjb-settings-id="{{ KJB_show_search }}">
+            <div class="input-group-prepend">
+              <div class="input-group-text search-icon"><i class="fa fa-search"></i></div>
+            </div>
+            <input class="form-control search-input" type="search" name="q" placeholder="{{ search_text }}" kjb-settings-id="{{ KJB_search_text }}">
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>

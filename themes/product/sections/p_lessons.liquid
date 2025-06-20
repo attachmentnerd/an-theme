@@ -1,0 +1,1582 @@
+{% include "base_html" %}
+
+ 
+
+{% schema %}
+{
+  "name": "Lessons",
+ 
+  "elements": [
+    {
+      "type": "text",
+      "id": "section_name",
+      "label": "Section Name",
+      "default": ""
+     },
+      {
+          "type": "grid",
+          "id": "width",
+          "label": "Container Width",
+          "default": "6"
+      },
+      {
+          "type": "grid",
+          "id": "mobile_width",
+          "label": "Container Width Mobile",
+          "default": "12"
+      },
+      {
+        "type": "select",
+        "id": "show_lessons_from",
+        "label": "Filters - Match Type",
+        "default": "categories",
+        "options": [
+          {
+            "value": "no_filter",
+            "label": "No Filters"
+          },
+          {
+            "value": "categories",
+            "label": "Categories"
+          },
+          {
+            "value": "tags",
+            "label": "Tags"
+          },
+          {
+            "value": "custom_fields",
+            "label": "Custom Fields"
+          },
+          {
+            "value": "related_posts",
+            "label": "Related Posts"
+          }
+        ]
+      },
+      {
+          "type": "text",
+          "id": "categories_to_include",
+          "label": "Filters - Match String",
+          "default": ""
+      },
+      {
+        "type": "checkbox",
+        "id": "include_lessons_from_subcartegories",
+        "label": "Include lessons from sub-categories",
+        "default": false
+      },
+      {
+          "type": "text",
+          "id": "posts_limit",
+          "label": "Posts Limit - Maximun number of posts to include",
+          "default": "100"
+      },
+      {
+        "type": "text",
+        "id": "offset",
+        "label": "Offset (Posts to skip)",
+        "default": "0"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show View All Button",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "link_to_post",
+        "label": "Wrapper Link To Post",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "container_style",
+        "label": "Container Style",
+        "default": "/* -- Desktop Style  -- */ \n\n"
+      },
+      {
+       "type": "textarea",
+       "id": "section_style",
+       "label": "Section Style",
+       "default": "/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n"
+     }
+  ],   
+ 
+  "groups": [
+    {
+      "name": "Sort",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "use_sort",
+          "label": "Use Sort",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sort_text",
+          "label": "Sort Name",
+          "default": "Sort By"
+        },
+        {
+          "type": "checkbox",
+          "id": "sort_by_custom",
+          "label": "Sort By Custom Fields",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sorting_syntax",
+          "label": "Custom Field Sort Syntax",
+          "default": "Label: Beginner, Advanced | Language: Portugues, English"
+        }
+      ]
+    },
+    {
+      "name": "Swiper Settings",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "is_swiper",
+          "label": "Make section a swiper (slider)",
+          "default": false
+        },
+        {
+    "type": "select",
+    "id": "swiper_clmn",
+    "label": "Swiper Column",
+    "default": true,
+    "options": [
+      {
+        "value": "1",
+        "label": "1"
+      },
+      {
+          "value": "2",
+          "label": "2"
+      }, 
+      {
+          "value": "3",
+          "label": "3"
+      }, 
+      {
+          "value": "4",
+          "label": "4"
+      }, 
+      {
+          "value": "5",
+          "label": "5"
+      }, 
+      {
+          "value": "5"    ,
+          "label": "6"
+      }
+    ]
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_play",
+    "label": "Auto play",
+    "default": true
+  },
+  {
+    "type": "text",
+    "id": "delay",
+    "label": "Delay (Milliseconds)",
+    "default": "5000"
+  },
+  {
+    "type": "text",
+    "id": "speed",
+    "label": "Transition Speed (Milliseconds)",
+    "default": "500"
+  },
+  {
+    "type": "checkbox",
+    "id": "loop",
+    "label": "Loop (Preview only)",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "strip_margin",
+    "label": "Strip Margin",
+    "default": true
+  },
+  {
+    "type": "text",
+    "id": "num_of_clmns_desktop",
+    "label": "Number of columns - Desktop",
+    "default": "4"
+  },
+  {
+    "type": "text",
+    "id": "sapce_between_desktop",
+    "label": "Space between slides (px) - Desktop",
+    "default": "20"
+  },
+  {
+    "type": "text",
+    "id": "num_of_clmns_tablet",
+    "label": "Number of columns - Tablet",
+    "default": "2"
+  },
+  {
+    "type": "text",
+    "id": "sapce_between_tablet",
+    "label": "Space between slides (px) - Tablet",
+    "default": "10"
+  },
+  {
+    "type": "text",
+    "id": "num_of_clmns_mobile",
+    "label": "Number of columns - Mobile",
+    "default": "1"
+  },
+  {
+    "type": "text",
+    "id": "sapce_between_mobile",
+    "label": "Space between slides (px) - Mobile",
+    "default": "0"
+  },
+  {
+    "type": "checkbox",
+    "id": "slide_auto_width",
+    "label": "Auto Width Slide",
+    "default": false
+  },
+  {
+    "type": "checkbox",
+    "id": "centered",
+    "label": "Centered",
+    "default": false
+  },
+  {
+    "type": "select",
+    "id": "pagination",
+    "label": "Pagination",
+    "default": "Mobile and Desktop",
+    "options": [
+      { "label": "No Pagination", "value": "No Pagination" },
+      { "label": "Mobile and Desktop", "value": "Mobile and Desktop" },
+      { "label": "Desktop Only", "value": "Desktop Only" },
+      { "label": "Mobile Only", "value": "Mobile Only" }
+    ]
+  },
+  {
+    "type": "select",
+    "id": "arrows",
+    "label": "Arrows",
+    "default": "Desktop Only",
+    "options": [
+      { "label": "No Arrows", "value": "No Arrows" },
+      { "label": "Mobile and Desktop", "value": "Mobile and Desktop" },
+      { "label": "Desktop Only", "value": "Desktop Only" },
+      { "label": "Mobile Only", "value": "Mobile Only" }
+    ]
+  },
+  {
+    "type": "select",
+    "id": "effect",
+    "label": "Effect",
+    "default": "slide",
+    "options": [
+      { "label": "Slide", "value": "slide" },
+      { "label": "Fade", "value": "fade" },
+      { "label": "Cube", "value": "cube" },
+      { "label": "Coverflow", "value": "coverflow" },
+      { "label": "Flip", "value": "flip" }
+
+    ]
+  },
+  {
+    "type": "textarea",
+    "id": "swiper_style",
+    "label": "Swiper Style",
+    "default": "/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n"
+  }
+      ]
+    },
+    {
+      "name": "Section Heading",
+      "elements": [
+        {
+          "type": "rich_text",
+          "id": "section_heading",
+          "label": "Section Heading",
+          "default": "",
+          "info":"Use Section Style to control the heading style"
+        }
+      ]
+    }, 
+    {
+      "name": "View All Button",
+      "elements": [
+        {
+          "type": "rich_text",
+          "id": "view_all_text",
+          "label": "View All Text",
+          "default": "View All"
+        }
+      ]
+    }, 
+    {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "select",
+        "label": "Background Color",
+        "id": "background_color_preset",
+        "options": [
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },     
+          {
+            "value": "No Background Color",
+            "label": "No Background Color"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "label": "Custom Background Color",
+        "id": "background_color",
+        "allow_blank": true,
+        "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+      },
+      {
+        "type": "select",
+        "id": "bg_type",
+        "label": "Background Media Type",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "image",
+            "label": "Image"
+          },
+          {
+            "value": "video",
+            "label": "Video"
+          }
+        ]
+      },
+      {
+        "type": "video",
+        "id": "bg_video",
+        "label": "Background Video"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background Image",
+        "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+        "fit": "max",
+        "width": 3000,
+        "height": 3000
+      },
+      {
+        "type": "select",
+        "id": "bg_position",
+        "label": "Background Image Position",
+        "default": "center center",
+        "info": "Positioning of the background image.",
+        "options": [
+          {"value": "left top", "label": "Left Top"},
+          {"value": "left center", "label": "Left Center"},
+          {"value": "left bottom", "label": "Left Bottom"},
+          {"value": "right top", "label": "Right Top"},
+          {"value": "right center", "label": "Right Center"},
+          {"value": "right bottom", "label": "Right Bottom"},
+          {"value": "center top", "label": "Center Top"},
+          {"value": "center center", "label": "Center Center"},
+          {"value": "center bottom", "label": "Center Bottom"}
+        ]
+      },
+
+      {
+        "type": "radio",
+        "id": "bg_size",
+        "label": "Background Size",
+        "default": "cover",
+        "options": [
+          {"value": "contain", "label": "Contain"},
+          {"value": "cover", "label": "Cover"}
+        ]
+      },
+      
+      {
+        "type": "checkbox",
+        "id": "bg_repeat",
+        "label": "Repeat Background",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "id": "bg_precise_position",
+        "label": "Precise Background position - exmp:30% 50%",
+        "default": ""
+      },
+      {
+        "type": "checkbox",
+        "id": "bg_mobie_hide",
+        "label": "Hide Background on mobile",
+        "default": "false"
+      },
+      { 
+        "type": "checkbox",
+        "id": "background_fixed",
+        "label": "Fixed Background Image (Parallax)",
+        "default": "true",
+        "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+      }
+    ]
+  },
+    {
+    "name": "Desktop Layout",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "hide_on_desktop",
+        "label": "Hide Section",
+        "default": "false",
+        "info": "This will hide this section on desktop."
+      },
+      {
+        "type": "spacer",
+        "id": "padding_desktop",
+        "label": "Desktop Section Padding",
+        "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+        "placeholder": {
+          "top": "100",
+          "right": "40",
+          "bottom": "100",
+          "left": "40"
+        }
+      },
+      {
+        "type": "text",
+        "id": "content_width",
+        "label": "Content Width",
+        "default": "",
+        "info": "Leave blank to use theme default."
+      },
+      {
+        "type": "checkbox",
+        "id": "equal_height",
+        "label": "Equal Height Blocks",
+        "default": "false",
+        "info": "Make this section's blocks equal height."
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make Section Full Width",
+        "default": "false",
+        "info": "This section will fill the full width of the browser window."
+      },
+      {
+        "type": "checkbox",
+        "id": "full_height",
+        "label": "Make Section Full Height",
+        "default": "false",
+        "info": "This section will fill the full height of the browser window."
+      }
+    ]
+  },
+    {
+    "name": "Mobile Layout",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "hide_on_mobile",
+        "label": "Hide Section",
+        "default": "false",
+        "info": "This will hide this section on mobile."
+      },
+      {
+        "type": "spacer",
+        "id": "padding_mobile",
+        "label": "Mobile Section Padding",
+        "info": "Adjust padding inside of the section",
+        "placeholder": {
+          "top": "40",
+          "right": "10",
+          "bottom": "40",
+          "left": "10"
+        }
+      }
+    ]
+  },
+    {
+      "name": "Image Placeholders",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "image_placeholders",
+          "label": "Image Placeholders",
+          "default": ""
+        }
+      ]
+    }
+  ],
+  
+  "blocks": [
+    { 
+    "type": "clmn",
+    "name": "Column",
+    "groups": [
+    ],
+    "elements": [
+        {
+            "type": "grid",
+            "id": "clmn_width",
+            "label": "Width",
+            "default": "6"
+          },
+          {
+            "type": "grid",
+            "id": "clmn_mobile_width",
+            "label": "Mobile Width",
+            "default": "12"
+          },
+          {
+            "type": "select",
+            "id": "position_clmn",
+            "label": "Position (container)",
+            "default": "0",
+            "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+          },
+          {
+            "type": "textarea",
+            "id": "clmn_style",
+            "label": "Style",
+            "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+          }
+    ]
+  },
+    { 
+    "type": "text",
+    "name": "Text",
+    "groups": [
+      {
+    "name": "Text Animation",
+    "elements": [
+      {
+        "type": "select",
+        "id": "animation_effect",
+        "label": "Animation Effect",
+        "default": "none",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Count Up", "value": "Count Up" },
+          { "label": "Effect 1", "value": "1" },
+          { "label": "Effect 2", "value": "2" },
+          { "label": "Effect 3", "value": "3" },
+          { "label": "Effect 6", "value": "6" },
+          { "label": "Effect 7", "value": "7" },
+          { "label": "Effect 9", "value": "9" },
+          { "label": "Effect 10", "value": "10" },
+          { "label": "Effect 11", "value": "11" },
+          { "label": "Effect 12", "value": "12" },
+          { "label": "Effect 13", "value": "13" },
+          { "label": "Effect 14", "value": "14" },
+          { "label": "Effect 16", "value": "16" }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_animation_loop",
+        "label": "Run in loop",
+        "default": "false"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "select",
+        "id": "text_source",
+        "label": "Text Source",
+        "default": "Post Title",
+        "options":[
+            { 
+                "value":"text",
+                "label":"Custom Text"
+            },
+            { 
+                "value":"post_title",
+                "label":"Post Title"
+            },
+            { 
+                "value":"post_body",
+                "label":"Post Body"
+            },
+            { 
+                "value":"video_duration",
+                "label":"Video Duration"
+            },
+            { 
+              "value":"post_category",
+              "label":"Post Category"
+          },
+          { 
+            "value":"custom_fields",
+            "label":"Custom Fields"
+          },
+          { 
+            "value":"custom_tags",
+            "label":"Tags"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "label": "Custom Field Title",
+        "id": "custom_field_title",
+        "default": ""
+      }, 
+      {
+        "type": "text",
+        "label": "Truncate Content (Characters Limit)",
+        "id": "truncate_content",
+        "default": "500"
+      },
+      {
+        "type": "rich_text",
+        "label": "Custom Text",
+        "id": "text",
+        "default": "Lorem ipsum dolor sit amet"
+      },
+      {
+        "type": "checkbox",
+        "id": "link_to_post",
+        "label": "Link To Post",
+        "default":  false
+    },
+
+    {
+        "type": "text",
+        "label": "Video Duration Postfix",
+        "id": "video_duration_postfix",
+        "default": " Min"
+      }, 
+    
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\ncolor:#444;\nfont-size:18px; \n\n\n/* -- Mobile Style --*/\n\n  "
+      }
+    ]
+  },
+    { 
+    "type": "image",
+    "name": "Image / Icon",
+    "groups": [
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "select",
+        "id": "image_source",
+        "label": "Image Source",
+        "default": "Post Image",
+        "options":[
+            { 
+                "value":"Custom Image",
+                "label":"Custom Image"
+            },
+            { 
+                "value":"Post Image",
+                "label":"Post Image"
+            }
+        ]
+      },
+      
+      {
+        "type": "image_picker",
+        "label": "Image",
+        "id": "image",
+        "default": "https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png"
+      },
+      {
+        "type": "checkbox",
+        "id": "link_to_post",
+        "label": "Link To Post",
+        "default":  false
+     },
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+    "type": "text",
+    "label": "Alt tag",
+    "id": "image_alt",
+    "default": ""
+},
+{
+    "type": "range",
+    "id": "image_radius",
+    "label": "Image Radius",
+    "default": "0",
+    "min": "0",
+    "max": "1000"
+},    
+{
+    "type": "header",
+    "content": "Icon"
+},
+{
+    "type": "checkbox",
+    "label": "Use Icon instead",
+    "id": "use_icon",
+    "default": ""
+},
+{
+    "type": "text",
+    "label": "Icon ID / SVG code / URL",
+    "id": "icon_id",
+    "default": "fas fa-chalkboard-teacher"
+},
+{
+    "type": "color",
+    "label": "Icon Color",
+    "id": "icon_color",
+    "allow_blank":"true",
+    "default": ""
+},
+{
+    "type": "range",
+    "id": "icon_size",
+    "label": "Icon Size",
+    "default": "30",
+    "min": "5",
+    "max": "200"
+}, 
+{
+    "type": "checkbox",
+    "label": "Mask Image",
+    "id": "mask_image",
+    "default": "false"
+},  
+{
+    "type": "text",
+    "label": "Mask - Preset Shape / SVG Code ",
+    "id": "mask_preset_shape",
+    "default": ""
+},
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/ \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+
+    ]
+  }, 
+    { 
+    "type": "custom_code",
+    "name": "Custom Code",
+    "groups": [
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Custom Code"
+      },
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "textarea",
+        "id": "custom_code",
+        "label": "Custom Code",
+        "default": ""
+      },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/ \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+    ]
+  }, 
+    { 
+    "type": "button",
+    "name": "Button",
+    "groups": [
+      
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+    "type": "select",
+    "id": "button_preset",
+    "label": "Button preset",
+    "default": "p1_",
+    "options":[
+        { 
+            "value":"p1_",
+            "label":"Preset 1"
+        },
+        { 
+            "value":"p2_",
+            "label":"Preset 2"
+        },
+        { 
+            "value":"p3_",
+            "label":"Preset 3"
+        },
+        { 
+            "value":"p4_",
+            "label":"Preset 4"
+        }
+    ]
+  },
+  {
+    "type": "checkbox",
+    "id": "inherit_defaults",
+    "label": "Inherit Defaults",
+    "default": true
+    },
+ {
+    "type": "text",
+    "id": "button",
+    "label": "text",
+    "default": "Sign Up"
+   },
+   
+   {
+    "type": "action",
+    "id": "cta_action",
+    "label": "Action",
+    "default": "#"
+   },
+   {
+    "type": "checkbox",
+    "id": "in_new_tab",
+    "label": "Open in new tab",
+    "default": "false"
+   }, 
+   
+  {
+    "type": "checkbox",
+    "id": "inherit_defaults",
+    "label": "Inherit Defaults",
+    "default": true
+    },
+   {
+    "type": "header",
+    "content": "Overwrite defaults."   
+  },
+   {
+    "type": "checkbox",
+    "id": "cta_outline",
+    "label": "Outline Only",
+   "default": "false"
+   },
+   {
+    "type": "color",
+    "id": "cta_bg_color",
+    "label": "Background color",
+     "allow_blank": true
+   },
+   {
+    "type": "color",
+    "id": "cta_color",
+    "label": "Color",
+     "allow_blank": true
+   },
+
+   {
+    "type": "text",
+    "id": "cta_min_width",
+    "label": "Minimum width",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_min_height",
+    "label": "Minimum height",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_font_size",
+    "label": "Font size",
+    "default": ""
+   },
+
+   {
+    "type": "text",
+    "id": "cta_min_width_mobile",
+    "label": "Minimum width - Mobile",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_min_height_mobile",
+    "label": "Minimum height - Mobile",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_font_size_mobile",
+    "label": "Font size - Mobile",
+    "default": ""
+   },
+
+   
+   {
+    "type": "text",
+    "id": "cta_border_width",
+    "label": "Border width (outine) ",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_border_radius",
+    "label": "Button radius",
+    "default": ""
+   },
+   
+   {
+    "type": "select",
+    "id": "cta_hide_icon",
+    "label": "Hide Icon",
+    "default": "Use Default",
+    "options":[
+        { 
+        "value":"Use Default",
+        "label":"Use Default"
+        },
+        { 
+            "value":"true",
+            "label":"Hide"
+        },
+        { 
+            "value":"false",
+            "label":"Show"
+        }
+    ]
+  },
+   {
+    "type": "select",
+    "id": "icon_position",
+    "label": "Icon Position",
+    "default": "default",
+    "options":[
+        { 
+            "value":"default",
+            "label":"Default"
+        },
+        { 
+            "value":"left",
+            "label":"Left"
+        },
+        { 
+            "value":"right",
+            "label":"Right"
+        }
+    ]
+  },
+   {
+    "type": "text",
+    "id": "cta_icon",
+    "label": "Icon ID",
+    "default": ""
+   } ,
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\nmargin-left:5px; \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+
+    ]
+  },
+    { 
+    "type": "text_n_icon",
+    "name": "Text and Icon",
+    "groups": [
+      {
+    "name": "Text Animation",
+    "elements": [
+      {
+        "type": "select",
+        "id": "animation_effect",
+        "label": "Animation Effect",
+        "default": "none",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Count Up", "value": "Count Up" },
+          { "label": "Effect 1", "value": "1" },
+          { "label": "Effect 2", "value": "2" },
+          { "label": "Effect 3", "value": "3" },
+          { "label": "Effect 6", "value": "6" },
+          { "label": "Effect 7", "value": "7" },
+          { "label": "Effect 9", "value": "9" },
+          { "label": "Effect 10", "value": "10" },
+          { "label": "Effect 11", "value": "11" },
+          { "label": "Effect 12", "value": "12" },
+          { "label": "Effect 13", "value": "13" },
+          { "label": "Effect 14", "value": "14" },
+          { "label": "Effect 16", "value": "16" }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_animation_loop",
+        "label": "Run in loop",
+        "default": "false"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "select",
+        "id": "text_source",
+        "label": "Text Source",
+        "default": "Post Title",
+        "options":[
+            { 
+                "value":"text",
+                "label":"Custom Text"
+            },
+            { 
+                "value":"post_title",
+                "label":"Post Title"
+            },
+            { 
+                "value":"post_body",
+                "label":"Post Body"
+            },
+            { 
+                "value":"video_duration",
+                "label":"Video Duration"
+            },
+            { 
+              "value":"post_category",
+              "label":"Post Category"
+          },
+          { 
+            "value":"custom_fields",
+            "label":"Custom Fields"
+        },
+        { 
+          "value":"custom_tags",
+          "label":"Tags"
+        }
+        ]
+      }, 
+      {
+        "type": "text",
+        "label": "Custom Field Title",
+        "id": "custom_field_title",
+        "default": ""
+      }, 
+      {
+        "type": "text",
+        "label": "Truncate Content (Characters Limit)",
+        "id": "truncate_content",
+        "default": "500"
+      },
+      {
+        "type": "rich_text",
+        "label": "Text",
+        "id": "text",
+        "default": "Lorem ipsum dolor sit amet"
+      },
+      {
+        "type": "checkbox",
+        "id": "link_to_post",
+        "label": "Link To Post",
+        "default":  false
+      },
+      {
+        "type": "text",
+        "label": "Video Duration Postfix",
+        "id": "video_duration_postfix",
+        "default": " Min"
+      }, 
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  }, 
+      {  
+          "type": "text",
+          "label": "Icon ID / SVG code / URL",
+          "id": "icon",
+          "default": "far fa-sign-in-alt"
+      },      
+      {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon Position",
+          "default": "Left",
+          "options":[
+              { 
+                  "value":"left",
+                  "label":"Left"
+              },
+              { 
+                  "value":"right",
+                  "label":"Right"
+              }
+          ]
+      },   
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\ncolor:#444;\nfont-size:18px; \n\n\n/* -- Mobile Style --*/\n\n   "
+      }
+    ]
+  }
+  ], 
+
+    "presets": [
+        {"name":"Lessons Slider V2","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"3","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\nflex-direction: column;","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n/* -- Custom Selectors --*/\n[Blog Heading]\n#this-section .blog_section_heading *{\nfont-weight: 500; font-size: 32px; color: var(--text-color-1);\n}\n.lessons_heading_wrap{\nalign-items: center;\n}\n[Blog Container]\n#this-section .blog_post_container{\npadding: 20px;\nbackground: var(--bg-color-2);\nmargin-bottom: 10px;\nborder-radius: 10px;\nflex-wrap: wrap;\n}\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"3","sapce_between_desktop":"20","num_of_clmns_tablet":"3","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"No Arrows","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons discovery 4","is_swiper":true,"section_heading":"<h3>Class Categories</h3>","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"12","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: flex-start;\nalign-content: flex-start;\npadding-top: 10px;\norder: 2;\nflex: 1;\ndisplay: flex;\nflex-direction: column;\n/* -- Mobile Style --*/\n\n","clmn_width_2":"12","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 15px;\noverflow: hidden;\norder: 1;\n\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"59125857"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: flex-start;\nalign-content: flex-start;\npadding-top: 10px;\norder: 2;\nflex: 1;\ndisplay: flex;\nflex-direction: column;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 11111&nbsp;</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor: #000;\n\nfont-size:12px;\nbackground-color:var(--accent-color-2);\ntext-align: center;\npadding: 3px 15px 3px 15px;\nborder-radius:15px;\nmargin-bottom: 15px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:24px;\nmargin-bottom: 10px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"100","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:16px;\nmargin-bottom: 15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":false,"button":"Watch Video","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":"Use Default","icon_position":"default","style":"/* -- Desktop Style --*/\nmargin-top: auto;","link_type":"no link","action":"#","clmn":"1","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 15px;\noverflow: hidden;\norder: 1;\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"themes/2149041982/settings_images/SR8DZsfZRFuoNTZK69cp_business-man-explaining-information-woman-blackboard-with-graphs-diagrams-business.jpg","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"font-size:12px;\ncolor: #fff;\npadding: 2px 10px;\nbackground: rgb(0 0 0 / 80%);\nwidth: auto;\nborder-radius: 50px;\nposition: absolute;\ntop: 10px;\nright: 10px;\nfont-weight: 600;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:10px;\nleft:10px;\nfont-size:18px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n.favorited #this-block .fav-icon{\ncolor:#FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"fas fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Lessons Slider","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"3","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n/* -- Custom Selectors --*/\n#this-section .blog_post_container{\nbackground: #fff;\nborder-radius: 10px;\n}\n[Slider Pagination Button]\n#this-section .swiper-button-next, #this-section .swiper-button-prev{\ntop: -18px;\nwidth: 20px;\nheight: 20px;\n}\n#this-section .swiper-button-prev{\nright: 60px !important;\nleft: auto !important;\n}\n#this-section .swiper-button-prev:after, #this-section .swiper-button-next:after{\nbackground-color: #ddd;\nmin-width: 30px !important;\nmin-height: 30px !important;\nborder-radius: 100%;\nfont-size: 14px !important;\npadding: 0;\n}\n#this-section .swiper-button-next:after{\nbackground: var(--accent-color-1);\ncolor: #fff;\n}\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"3","sapce_between_desktop":"10","num_of_clmns_tablet":"3","sapce_between_tablet":"5","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"Mobile and Desktop","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons 1 discovery 3","is_swiper":true,"section_heading":"<h3 style=\"font-weight: 500; font-size: 32px;\">Recommend Lessons</h3>","clmn_borders":true,"number_of_clmns":"1","clmn_width_1":"12","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\nborder-radius: 15px;\noverflow: hidden;\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\n/* -- Mobile Style --*/\n\n","clmn_width_2":"4","clmn_mobile_width_2":"6","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 10px;\noverflow: hidden;\norder: 1;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","image_placeholders":"https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/d080c312-bdb0-4c72-8363-ebbf687aed78.jpg,\nhttps://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/ec5f17b8-eb17-46b4-b106-c2b8b1d73d2e.jpg,\nhttps://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/43e1a83a-eb0a-4db0-b088-9cb44f2ae15a.jpg","kjbid":"46896000"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\nborder-radius: 15px;\noverflow: hidden;\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"themes/2149118256/settings_images/mBDbtBYdRjmmcrJoHYLi_Group_399.jpg","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/\nborder-radius: 10px;\nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 11111&nbsp;</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#000;\nfont-size:12px;\nbackground-color:var(--accent-color-2);\ntext-align: center;\npadding:3px 15px 3px;\nborder-radius:15px;\nposition: absolute;\nbottom: 15px;\nright: -10px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\n    z-index: 9;\n    top: 10px;\n    right: 10px;\n    font-size: 15px;\n    color: var(--accent-color-1);\n    background: #fff;\n    width: 30px;\n    height: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n/* -- Custom Selectors --*/\n#this-block .favorited .fav-icon{\ncolor:#FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"fav\">\n<i class=\"far fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n#this-block .progress-bar{\nbackground-color:#D3D3D3;\nmargin: 0;\n}\n\n","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"image","settings":{"image_source":"Custom Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"6","mobile_width":"12","auto_width":true,"image_radius":"0","icon_id":"fas fa-play","icon_size":"10","mask_image":false,"style":"/* -- Desktop Style --*/ \nwidth: 60px;\nheight: 60px;\nbackground: #fff;\ndisplay: flex;\nalign-items: center;\njustify-content: center;\nborder-radius: 100%;\nposition: absolute;\nleft: calc(50% - 30px);\noverflow: visible;\n/* -- Mobile Style --*/\nwidth: 40px;\nheight: 40px;\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":true,"icon_color":"#125ffd","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"video_duration","truncate_content":"500","text":"","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nwidth: auto;\nfont-size:12px;\nposition: absolute;\nbottom: 15px;\nleft: 10px;\npadding: 2px 6px;\nborder-radius: 10px;\nbackground: rgb(0 0 0 / 40%); \ncolor: #fff;\n\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Cards Slider","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"3","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n/* -- Custom Selectors --*/\n#this-section .blog_post_container{\nbackground: #fff;\nborder-radius: 10px;\n}\n[Slider Pagination Button]\n#this-section .swiper-button-next, #this-section .swiper-button-prev{\ntop: -18px;\nwidth: 20px;\nheight: 20px;\n}\n#this-section .swiper-button-prev{\nright: 60px !important;\nleft: auto !important;\n}\n#this-section .swiper-button-prev:after, #this-section .swiper-button-next:after{\nbackground-color: #ddd;\nmin-width: 30px !important;\nmin-height: 30px !important;\nborder-radius: 100%;\nfont-size: 14px !important;\npadding: 0;\n}\n#this-section .swiper-button-next:after{\nbackground: var(--accent-color-1);\ncolor: #fff;\n}\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"5","sapce_between_desktop":"10","num_of_clmns_tablet":"3","sapce_between_tablet":"5","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"Mobile and Desktop","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons 2 discovery 3","is_swiper":true,"section_heading":"<h3 style=\"font-weight: 500; font-size: 32px;\">Introduction to Strategic Analysis</h3>","clmn_borders":true,"number_of_clmns":"1","clmn_width_1":"12","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\nborder-radius: 15px;\noverflow: hidden;\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\n/* -- Mobile Style --*/\n\n","clmn_width_2":"4","clmn_mobile_width_2":"6","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 10px;\noverflow: hidden;\norder: 1;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"--bg-color-2","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"padding_mobile":{"top":"","left":"10","right":"10","bottom":""},"reveal_units":"seconds","image_placeholders":"https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/f2a2dcce-4fad-4b20-ab5c-99002457baf5.jpg,\nhttps://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/bdda5717-d348-495a-b0bb-807c3623bfba.jpg,\nhttps://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/24ec8782-5628-4db4-a93d-540dc9cb8af4.jpg,\nhttps://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/315044e7-f1ee-476a-9bd4-2350f463299e.jpg","kjbid":"94986019"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\nborder-radius: 15px;\noverflow: hidden;\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"themes/2149118256/settings_images/Jwr11uW8SZebECT54B4I_Instagram_Video_Story_1080x1920_px_2x.jpg","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/\nborder-radius: 10px;\nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 11111&nbsp;</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#000;\nfont-size:12px;\nbackground-color:var(--accent-color-2);\ntext-align: center;\npadding:3px 15px 3px;\nborder-radius:15px;\nposition: absolute;\nbottom: 15px;\nright: -10px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\n    z-index: 9;\n    top: 10px;\n    right: 10px;\n    font-size: 15px;\n    color: var(--accent-color-1);\n    background: #fff;\n    width: 30px;\n    height: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n/* -- Custom Selectors --*/\n#this-block .favorited .fav-icon{\ncolor:#FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"fav\">\n<i class=\"far fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n#this-block .progress-bar{\nbackground-color:#D3D3D3;\nmargin: 0;\n}\n\n","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"image","settings":{"image_source":"Custom Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"6","mobile_width":"12","auto_width":true,"image_radius":"0","icon_id":"fas fa-play","icon_size":"10","mask_image":false,"style":"/* -- Desktop Style --*/ \nwidth: 60px;\nheight: 60px;\nbackground: #fff;\ndisplay: flex;\nalign-items: center;\njustify-content: center;\nborder-radius: 100%;\nposition: absolute;\nleft: calc(50% - 30px);\noverflow: visible;\n/* -- Mobile Style --*/\nwidth: 40px;\nheight: 40px;\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":true,"icon_color":"#125ffd","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"video_duration","truncate_content":"500","text":"","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nwidth: auto;\nfont-size:12px;\nposition: absolute;\nbottom: 15px;\nleft: 10px;\npadding: 2px 6px;\nborder-radius: 10px;\nbackground: rgb(0 0 0 / 40%); \ncolor: #fff;\n\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Lesson List V2","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"2","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n\n/* -- Custom Selectors --*/\n#this-section .blog_post_container{\nflex-wrap: wrap;\n}\n[Header Border Bottom]\n#this-section .blog_section_heading{\nborder-bottom: 1px solid #ccc;\n}","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"2","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"No Arrows","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p style=\"font-family: Playfair Display;\">VIEW ALL</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons curiosity 4","section_heading":"<h3 style=\"color: var(--text-color-1);\">Class Categories</h3>","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"6","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 0;\n/* -- Mobile Style --*/\npadding: 20px 10px;\norder: 2;\n","clmn_width_2":"6","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"67004965"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 0;\n/* -- Mobile Style --*/\npadding: 20px 10px;\norder: 2;\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:12px; \npadding: 2px 10px;\nbackground: var(--bg-color-2);\nborder-radius: 25px;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:28px; \nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"text","truncate_content":"500","text":"<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nborder-bottom: 1px solid #ccc;\npadding-bottom: 15px;\nmargin-bottom: 15px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p2_","inherit_defaults":true,"button":"Watch Video","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":false,"icon_position":"left","style":"/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","clmn":"1","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":"min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-clock","icon_position":"left","style":"/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\ncolor:#ccc;\nfont-size:12px; \nmargin-left: 20px;\n\n\n/* -- Mobile Style --*/\n\n   ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:0;\nleft: 0;\nfont-size:16px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n.fav{\nposition: absolute;\ntop: 10px;\nright: 10px;\nwidth: 35px;\nheight: 35px;\nborder-radius: 50px;\nbackground: var(--accent-color-1);\ndisplay: flex;\nalign-items: center;\njustify-content: center;\n}\n.favorited .fav{\nbackground: #FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"far fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Custom Selectors --*/\n.progress-bar{\nbackground-color:#D3D3D3;\nmargin-bottom: 20px;\n}\n.progress-bar-fill{\nheight:6px;\nbackground-color:var(--accent-color-1);\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Lessons Evolution","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"2","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\nwidth: 100%;\n/* -- Mobile Style --*/\n\n/* -- Custom Selectors --*/\n#this-section .blog_post_container{\nflex-wrap: wrap;\n}\n\n#this-section .view_all_wrap a {\ncolor: var(--text-color-1);\n}","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"2","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"No Arrows","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p style=\"border-bottom: 1px solid;\">VIEW ALL</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons evolution","show_view_all":true,"is_swiper":true,"section_heading":"<h3>Recommended Lessons</h3>","clmn_borders":true,"number_of_clmns":"3","clmn_width_1":"6","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\n/* -- Mobile Style --*/\n\n","clmn_width_2":"12","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","image_placeholders":"https://s3.amazonaws.com/kajabi-storefronts-production/themes/2149307960/settings_images/EHsYtN0NSyuO72B0bj1c_fit-athletic-young-girl-working-out-home-doing-yoga-cobra-pose-mat-bedroom-floor-close-up-low-angle-side-view.jpg,\nhttps://s3.amazonaws.com/kajabi-storefronts-production/themes/2149307960/settings_images/4gY0D4v9SQSwJfgjsxmh_fit-healthy-woman-doing-parighasana-variation-yoga-pose-with-wide-leg-stretch-strengthen-her-hip-flexors.jpg","kjbid":"59416714"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\nmin-height: auto;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"1","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"themes/2149307960/settings_images/4gY0D4v9SQSwJfgjsxmh_fit-healthy-woman-doing-parighasana-variation-yoga-pose-with-wide-leg-stretch-strengthen-her-hip-flexors.jpg","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:0;\nleft: 0;\nfont-size:16px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n[Favorite]\n#this-block .fav{\nposition: absolute;\ntop: 10px;\nleft: 10px;\nwidth: 35px;\nheight: 35px;\nborder-radius: 50px;\nbackground: var(--accent-color-1);\ndisplay: flex;\nalign-items: center;\njustify-content: center;\ncolor: #fff;\n}\n.favorited #this-block .fav{\nbackground: #fff;\ncolor: var(--accent-color-1);\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"fas fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n[Progress Bar]\n#this-block .progress-bar{\nmargin: 0;\n}\n\n#this-block .progress-bar:before,#this-block .progress-after{\nborder-radius: 0;\n}","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":false,"icon":"far fa-clock","icon_position":"left","style":"/* -- Desktop Style --*/\nfont-size:12px;\ncolor: #000;\npadding: 2px 5px;\nposition: absolute;\ntop: 10px;\nright: 10px;\nbackground: #fff;\nwidth: auto;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"1","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 11111&nbsp;</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#FFFFFF;\nfont-size:12px;\nbackground-color: var(--accent-color-2);\ntext-align: center;\npadding:5px 10px;\ntext-transform: uppercase;\nmargin-bottom: 10px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"3","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nfont-size:22px;\nmargin-bottom: 10px;\ncolor: var(--text-color-1);\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"3","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"100","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nfont-size:14px;\nmargin-bottom: 15px;\ncolor:var(--text-color-1);\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"3","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":true,"button":"WATCH VIDEO","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":false,"icon_position":"left","style":"/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","clmn":"3","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Lessons Slider V4","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"4","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\nflex-direction: column;","section_style":"/* -- Desktop Style --*/\nwidth: 100%;\n/* -- Mobile Style --*/\n\n/* -- Custom Selectors --*/\n#this-section .blog_post_container{\nflex-wrap: wrap;\n}\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"3","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"No Arrows","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p style=\"font-family: Playfair Display;\">VIEW ALL</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons curiosity 3 1","is_swiper":true,"section_heading":"<h3 style=\"font-family: Playfair Display; color: var(--text-color-1);\">Recommended Lessons</h3>","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"12","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n","clmn_width_2":"12","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: flex-start; \nflex: 1;\n    flex-direction: column;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"94885109"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:0;\nleft: 0;\nfont-size:16px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n[Favorite]\n#this-block .fav{\nposition: absolute;\ntop: 10px;\nright: 10px;\nwidth: 35px;\nheight: 35px;\nborder-radius: 50px;\nbackground: var(--accent-color-1);\ndisplay: none;\nalign-items: center;\njustify-content: center;\n}\n.favorited #this-block .fav{\ndisplay: flex;\n}\n","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"fav\">\n<i class=\"far fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n[Progress Bar]\n#this-block .progress-bar{\nmargin: 0;\n}\n","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 11111&nbsp;</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#FFFFFF;\nfont-size:12px;\nbackground-color: var(--accent-color-2);\ntext-align: center;\npadding:3px 10px 3px;\nposition: absolute;\nbottom: 10px;\nleft: 5px;\ntext-transform: uppercase;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-clock","icon_position":"left","style":"/* -- Desktop Style --*/\nfont-size:12px;\ncolor: #000;\npadding: 2px 5px;\nposition: absolute;\ntop: 10px;\nleft: 10px;\nbackground: #fff;\nwidth: auto;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: flex-start; \nflex: 1;\n    flex-direction: column;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:22px; \nfont-family: 'Playfair Display';\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"100","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:14px;\nmargin-bottom: 15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":true,"button":"WATCH VIDEO","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":"Use Default","icon_position":"default","style":"/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\nmargin-top: auto;\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","clmn":"2","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Lessons Discover","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"2","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n/* -- Custom Selectors --*/\n[Blog Container]\n#this-section .blog_post_container{\npadding: 30px;\nbackground: var(--bg-color-2);\nmargin-bottom: 10px;\nborder-radius: 10px;\nflex-wrap: wrap;\n}\n/* -- Custom-Selectors Mobile --*/\n#this-section .blog_post_container{\npadding:  20px 20px;}\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"1","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"Mobile and Desktop","arrows":"Desktop Only","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons discovery 1","section_heading":"<h3 style=\"font-weight: 500; font-size: 32px;\">Class Categories</h3>","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"8","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\norder: 2;\nmargin-top: 20px;\npadding-right: 0;","clmn_width_2":"4","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 10px;\noverflow: hidden;\norder: 1;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","image_placeholders":"https://s3.amazonaws.com/kajabi-storefronts-production/themes/2149041982/settings_images/6AGLNpbwSya5b4l5iVhh_business-woman-conducts-business-seminar-company-employees.jpg,\nhttps://s3.amazonaws.com/kajabi-storefronts-production/themes/2149041982/settings_images/SR8DZsfZRFuoNTZK69cp_business-man-explaining-information-woman-blackboard-with-graphs-diagrams-business.jpg","kjbid":"43525138"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"8","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\norder: 2;\nmargin-top: 20px;\npadding-right: 0;"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 1</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor: #000;\n\nfont-size:12px;\nbackground-color:var(--accent-color-2);\ntext-align: center;\npadding: 3px 15px 3px 15px;\nborder-radius:15px;\nmargin-bottom: 15px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor:var(--text-color-1);\nfont-size:32px;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\nfont-size: 24px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"100","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:16px;\nmargin-bottom: 15px;\n\n/* -- Mobile Style --*/\nfont-size: 14px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":false,"button":"Watch Video","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":"Use Default","icon_position":"default","style":"/* -- Button Text --*/\n\n/* -- Desktop Style --*/\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n ","link_type":"no link","action":"#","clmn":"1","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"4","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 10px;\noverflow: hidden;\norder: 1;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"themes/2149041982/settings_images/SR8DZsfZRFuoNTZK69cp_business-man-explaining-information-woman-blackboard-with-graphs-diagrams-business.jpg","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"font-size:12px;\ncolor: #fff;\npadding: 2px 10px;\nbackground: rgb(0 0 0 / 80%);\nwidth: auto;\nborder-radius: 50px;\nposition: absolute;\ntop: 10px;\nright: 10px;\nfont-weight: 600;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:10px;\nleft:20px;\nfont-size:25px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n .favorited #this-block .fav-icon{\ncolor:#FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"fas fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Styles --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n#this-block .progress-bar{\nmargin: 0;\n}\n\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Lesson List V1","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"2","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n\n/* -- Custom Selectors --*/\n@media only screen and (min-width: 580px) and (max-width: 768px){\n#this-section .blog_post_container{\nwidth: calc(50% - 10px);\nmargin: 0 5px;\n}\n}","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"2","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"No Arrows","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p style=\"font-family: Playfair Display;\">VIEW ALL</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons curiosity 2","section_heading":"<h3>Class Categories</h3>","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"6","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 40px;\nbackground: var(--bg-color-2);\n/* -- Mobile Style --*/\norder: 2;\npadding: 20px 10px;\n","clmn_width_2":"6","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"83945447"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 40px;\nbackground: var(--bg-color-2);\n/* -- Mobile Style --*/\norder: 2;\npadding: 20px 10px;\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#fff;\nfont-size:12px; \npadding: 3px 15px;\nbackground: var(--accent-color-2);\nborder-radius: 25px;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:28px; \nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\nfont-size: 22px;\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"text","truncate_content":"500","text":"<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\n\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-clock","icon_position":"left","style":"/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\ncolor:#fff;\nfont-size:14px; \npadding: 5px 20px;\nbackground: rgb(0 0 0 / 70%);\nborder-radius: 25px;\nposition: absolute;\ntop: 10px;\nright: 10px;\n/* -- Mobile Style --*/\n\n   ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:0;\nleft: 0;\nfont-size:16px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n[Favorite]\n#this-block .fav{\nposition: absolute;\ntop: 10px;\nleft: 10px;\nwidth: 35px;\nheight: 35px;\nborder-radius: 50px;\nbackground: var(--accent-color-1);\nalign-items: center;\njustify-content: center;\ndisplay: none;\n}\n.favorited #this-block .fav{\ndisplay: flex;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"far fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n#this-block .progress-bar{\nmargin: 0;\nborder-radius: 0;\n}","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+        {"name":"Lessons Curiosity V1","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"2","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n\n/* -- Custom-Selectors Mobile --*/\n.blog_post_container{\nflex-wrap: wrap;\n}","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"1","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"Mobile and Desktop","arrows":"Desktop Only","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"lessons curiosity 1","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"6","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\npadding: 0;\nmargin: 20px 0;\norder: 2;\n","clmn_width_2":"6","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nalign-content: center;\nborder-radius: 15px;\noverflow: hidden;\n\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"0","left":"30","right":"30","bottom":"50"},"padding_mobile":{"top":"20","left":"","right":"","bottom":""},"reveal_units":"seconds","image_placeholders":"https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/0dd76cb6-b919-435d-83df-fa6bd76852fe.jpg,\nhttps://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/117899/images/26692ffe-d57d-4514-a854-a27f907eea67.jpg,","kjbid":"48714413"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\npadding: 0;\nmargin: 20px 0;\norder: 2;\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Standard Chun</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor:var(--text-color-1);\nfont-size:25px; \nfont-weight: 500;\nmargin-bottom: 15px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"100","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:14px;\nmargin-bottom: 15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 11111&nbsp;</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor: #000;\nfont-size:13px;\nbackground-color: var(--accent-color-2);\ntext-align: center;\npadding: 4px 18px 4px 18px;\nborder-radius:15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"","video_duration_postfix":"min. lesson","width":"6","mobile_width":"12","auto_width":false,"icon":"far fa-clock","icon_position":"left","style":"/* -- Desktop Style --*/\nfont-size:14px;\ncolor: #ccc;\nmargin:0px 0px 0px 25px;\n/* -- Mobile Style --*/\nmargin: 10px 0;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nalign-content: center;\nborder-radius: 15px;\noverflow: hidden;\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:10px;\nleft:10px;\nfont-size:25px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n.favorited #this-block .fav-icon{\ncolor:#FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"fas fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"true","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Custom Selectors --*/\n#this-block .progress-bar{\nbackground-color:#D3D3D3;\nmargin: 0;\n}","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\nbottom:0px;\nleft:0px;\nfont-size:12px;\ncolor: #FFF;\nbackground: #000;\nwidth: 50px;\nheight: 50px;\nborder-radius: 0px 10px 0px 0;\ndisplay: flex;\nalign-items: center;\njustify-content: center;\n/* -- Mobile Style --*/\nwidth: 50px;\nheight: 50px;\n/* -- Custom Selectors --*/\n\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"fas fa-play\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]}
+        
+  ]
+}
+
+
+{% endschema %}

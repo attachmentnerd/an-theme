@@ -1,0 +1,35 @@
+{% assign player_color = block.settings.audio_color | default: settings.color_primary %}
+{% assign audio_image = block.settings.image | image_picker_url %}
+{% assign audio = current_site.find_audio[block.settings.audio] %}
+{% assign title = block.settings.title %}
+{% assign subtitle = block.settings.subtitle %}
+<style>
+  #block-{{block.id}} .audio{
+    position: relative;
+  }
+  #block-{{block.id}} .audio:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url({% include "image_patch", img: block.settings.image %});
+    filter: brightness(0.7) blur(4px);
+    background-size: cover;
+    background-position: center;
+}
+</style>
+<div class="audio">
+  {% if audio %}
+    {% if block.settings.image != "" %}
+      {{ audio | wistia_audio: player_color: player_color, still_url: audio_image, title: title, parent_title: subtitle }}
+    {% else %}
+      {{ audio | wistia_audio: player_color: player_color, title: title, parent_title: subtitle }}
+    {% endif %}
+  {% else %}
+     <div class="audio__null">
+      <img class="audio__null-image" src="{{ 'audio.png' | asset_url }}" alt="Audio Null Image" />
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,722 @@
+{% comment %}
+  AN Integrated Post Section
+  Combines working base functionality with AN brand design
+{% endcomment %}
+
+<style>
+  /* AN Brand Colors */
+  :root {
+    --an-primary: #667eea;
+    --an-secondary: #764ba2;
+    --an-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --an-text: #1a1a1a;
+    --an-bg: #f8f9fa;
+    --an-border: #e5e7eb;
+    --an-success: #10b981;
+  }
+
+  /* Reset */
+  .header, .footer, .breadcrumb { display: none !important; }
+  body { margin: 0; padding: 0; background: var(--an-bg); }
+
+  /* Main Layout */
+  .an-post-layout {
+    display: flex;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Sidebar */
+  .an-sidebar {
+    width: 300px;
+    background: #fff;
+    border-right: 1px solid var(--an-border);
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: margin-left 0.3s ease;
+  }
+
+  .an-sidebar.collapsed {
+    margin-left: -300px;
+  }
+
+  .sidebar-header {
+    padding: 24px;
+    background: var(--an-gradient);
+    color: white;
+  }
+
+  .course-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+  }
+
+  .course-progress {
+    background: rgba(255,255,255,0.2);
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: white;
+    transition: width 0.3s ease;
+  }
+
+  .progress-text {
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Module List */
+  .module-list {
+    padding: 16px 0;
+  }
+
+  .module-item {
+    margin-bottom: 16px;
+  }
+
+  .module-header {
+    padding: 12px 24px;
+    background: #f8f9fa;
+    border-left: 3px solid var(--an-primary);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .module-title {
+    font-weight: 600;
+    color: var(--an-text);
+  }
+
+  .module-toggle {
+    transition: transform 0.3s;
+  }
+
+  .module-header.collapsed .module-toggle {
+    transform: rotate(-90deg);
+  }
+
+  .lesson-list {
+    display: none;
+  }
+
+  .lesson-list.expanded {
+    display: block;
+  }
+
+  .lesson-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px 12px 48px;
+    text-decoration: none;
+    color: var(--an-text);
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .lesson-item:hover {
+    background: #f8f9fa;
+  }
+
+  .lesson-item.active {
+    background: linear-gradient(to right, #f3f4ff, transparent);
+    color: var(--an-primary);
+  }
+
+  .lesson-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--an-primary);
+  }
+
+  .lesson-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .lesson-item.completed .lesson-check {
+    background: var(--an-success);
+    border-color: var(--an-success);
+  }
+
+  .lesson-item.completed .lesson-check::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+  }
+
+  /* Main Content */
+  .an-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Top Bar */
+  .an-topbar {
+    background: white;
+    border-bottom: 1px solid var(--an-border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .sidebar-toggle {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--an-border);
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .sidebar-toggle:hover {
+    background: #f8f9fa;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .breadcrumb-nav a {
+    color: var(--an-primary);
+    text-decoration: none;
+  }
+
+  /* Video Section */
+  .video-container {
+    background: #000;
+    position: relative;
+  }
+
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+  }
+
+  .video-wrapper iframe,
+  .video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Video Carousel */
+  .video-carousel {
+    background: #1a1a1a;
+    padding: 24px;
+    overflow: hidden;
+  }
+
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .carousel-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .carousel-nav {
+    display: flex;
+    gap: 8px;
+  }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .carousel-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .carousel-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .carousel-item {
+    flex: 0 0 240px;
+    cursor: pointer;
+  }
+
+  .carousel-thumbnail {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .carousel-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .carousel-item.active .carousel-thumbnail {
+    border: 2px solid var(--an-primary);
+  }
+
+  .carousel-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .carousel-item:hover .carousel-play {
+    background: var(--an-primary);
+  }
+
+  .carousel-lesson-title {
+    color: white;
+    font-size: 14px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Content Area */
+  .content-area {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .lesson-header {
+    margin-bottom: 32px;
+  }
+
+  .lesson-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--an-text);
+    margin: 0 0 16px 0;
+  }
+
+  .lesson-meta {
+    display: flex;
+    gap: 24px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  /* Content Grid */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+  }
+
+  .content-main {
+    min-width: 0;
+  }
+
+  .content-card {
+    background: white;
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .content-card h2 {
+    font-size: 24px;
+    margin: 0 0 24px 0;
+  }
+
+  /* Sidebar Cards */
+  .sidebar-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--an-border);
+    background: white;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .action-btn:hover {
+    background: #f8f9fa;
+  }
+
+  .action-btn.primary {
+    background: var(--an-gradient);
+    color: white;
+    border: none;
+  }
+
+  .action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  .action-btn.completed {
+    background: #e6f4ea;
+    color: var(--an-success);
+    border-color: var(--an-success);
+  }
+
+  /* Mobile */
+  @media (max-width: 1024px) {
+    .an-sidebar { position: fixed; z-index: 100; height: 100vh; }
+    .sidebar-toggle { display: flex; }
+    .content-grid { grid-template-columns: 1fr; }
+    .content-area { padding: 24px; }
+    .lesson-title { font-size: 28px; }
+  }
+</style>
+
+<div class="an-post-layout">
+  <!-- Sidebar -->
+  <aside class="an-sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2 class="course-title">{{ product.title }}</h2>
+      <div class="course-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ product.completion.percent }}%"></div>
+        </div>
+        <div class="progress-text">
+          <span>Progress</span>
+          <span>{{ product.completion.percent }}%</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="module-list">
+      {% for category in product.categories %}
+        <div class="module-item">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-title">{{ category.title }}</span>
+            <svg class="module-toggle" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="lesson-list expanded">
+            {% for lesson in category.posts %}
+              <a href="{{ lesson.url }}" class="lesson-item {% if lesson.id == post.id %}active{% endif %} {% if lesson.completed %}completed{% endif %}">
+                <div class="lesson-check"></div>
+                <span>{{ lesson.title }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </aside>
+  
+  <!-- Main Content -->
+  <main class="an-main">
+    <!-- Top Bar -->
+    <div class="an-topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <nav class="breadcrumb-nav">
+          <a href="{{ current_site.library_url }}">Library</a>
+          <span>›</span>
+          <a href="{{ product.url }}">{{ product.title }}</a>
+          <span>›</span>
+          <span>{{ post.title }}</span>
+        </nav>
+      </div>
+    </div>
+    
+    <!-- Video Player -->
+    <div class="video-container">
+      <div class="video-wrapper">
+        {% if post.video %}
+          {{ post.video | wistia_video: player_color: '#667eea', still_url: post.poster_image_url, playerPreference: "html5" }}
+        {% elsif post.audio %}
+          {{ post.audio | wistia_audio: player_color: '#667eea', still_url: post.poster_image_url }}
+        {% elsif post.assessment %}
+          {{ post.assessment | assessment: color: '#667eea' }}
+        {% else %}
+          <div style="display: flex; align-items: center; justify-content: center; height: 400px; color: white;">
+            <p>No video content available</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Video Carousel -->
+    <div class="video-carousel">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Course Lessons</h3>
+        <div class="carousel-nav">
+          <button class="carousel-btn" onclick="scrollCarousel(-1)" id="prevBtn">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+          <button class="carousel-btn" onclick="scrollCarousel(1)" id="nextBtn">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="carousel-track" id="carouselTrack">
+        {% assign all_posts = "" | split: "" %}
+        {% for category in product.categories %}
+          {% for lesson in category.posts %}
+            {% assign all_posts = all_posts | push: lesson %}
+          {% endfor %}
+        {% endfor %}
+        
+        {% for lesson in all_posts %}
+          <div class="carousel-item {% if lesson.id == post.id %}active{% endif %}" onclick="window.location.href='{{ lesson.url }}'">
+            <div class="carousel-thumbnail">
+              {% if lesson.poster_image_url %}
+                <img src="{{ lesson.poster_image_url }}" alt="{{ lesson.title }}">
+              {% else %}
+                <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+              {% endif %}
+              {% unless lesson.id == post.id %}
+                <div class="carousel-play">
+                  <svg width="20" height="20" fill="white" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+                  </svg>
+                </div>
+              {% endunless %}
+            </div>
+            <p class="carousel-lesson-title">{{ lesson.title }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Content Area -->
+    <div class="content-area">
+      <header class="lesson-header">
+        <h1 class="lesson-title">{{ post.title }}</h1>
+        <div class="lesson-meta">
+          <span>{{ post.category.title }}</span>
+          <span>•</span>
+          <span>Lesson {{ forloop.index }}</span>
+        </div>
+      </header>
+      
+      <div class="content-grid">
+        <div class="content-main">
+          {% if post.body %}
+            <div class="content-card">
+              <h2>Lesson Overview</h2>
+              <div class="lesson-content">
+                {{ post.body }}
+              </div>
+            </div>
+          {% endif %}
+          
+          {% if post.comments.size > 0 or post.commenting_enabled %}
+            <div class="content-card">
+              <h2>Discussion</h2>
+              {% for comment in post.comments %}
+                <div class="comment">
+                  <strong>{{ comment.author }}</strong>
+                  <p>{{ comment.body }}</p>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <aside class="content-sidebar">
+          <div class="sidebar-card">
+            {% if post.completed %}
+              <button class="action-btn completed">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                Lesson Completed
+              </button>
+            {% else %}
+              <button class="action-btn primary" onclick="markComplete()">
+                Mark as Complete
+              </button>
+            {% endif %}
+            
+            <button class="action-btn">Add to Favorites</button>
+          </div>
+          
+          {% if post.downloads.size > 0 %}
+            <div class="sidebar-card">
+              <h3>Downloads</h3>
+              {% for download in post.downloads %}
+                <a href="{{ download.url }}" class="download-item" download>
+                  {{ download.display_name }}
+                </a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </aside>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Include completion popup -->
+{% section 'an_post_completion' %}
+
+<script>
+// Sidebar toggle
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+// Module toggle
+function toggleModule(header) {
+  header.classList.toggle('collapsed');
+  header.nextElementSibling.classList.toggle('expanded');
+}
+
+// Carousel navigation
+let carouselPosition = 0;
+const itemWidth = 256; // 240px + 16px gap
+
+function scrollCarousel(direction) {
+  const track = document.getElementById('carouselTrack');
+  const trackWidth = track.scrollWidth;
+  const containerWidth = track.parentElement.offsetWidth;
+  const maxScroll = trackWidth - containerWidth;
+  
+  carouselPosition += direction * itemWidth * 3;
+  carouselPosition = Math.max(0, Math.min(carouselPosition, maxScroll));
+  
+  track.style.transform = `translateX(-${carouselPosition}px)`;
+  
+  // Update button states
+  document.getElementById('prevBtn').disabled = carouselPosition === 0;
+  document.getElementById('nextBtn').disabled = carouselPosition >= maxScroll;
+}
+
+// Mark complete
+function markComplete() {
+  // Trigger the completion popup
+  const completionPopup = document.querySelector('.post-completion');
+  if (completionPopup) {
+    completionPopup.style.display = 'block';
+  }
+  
+  // Update button state
+  const btn = event.target;
+  btn.classList.add('completed');
+  btn.innerHTML = '<svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>Lesson Completed';
+}
+
+// Initialize carousel buttons
+window.addEventListener('load', function() {
+  scrollCarousel(0); // Initialize button states
+});
+</script>
+
+{% schema %}
+{
+  "name": "AN Post Integrated",
+  "elements": [],
+  "presets": [
+    {
+      "name": "AN Post Integrated",
+      "category": "Content",
+      "description": "Integrated lesson layout with AN branding"
+    }
+  ]
+}
+{% endschema %}

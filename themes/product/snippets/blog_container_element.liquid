@@ -1,0 +1,46 @@
+{% if section.type == "blog_swiper" %} 
+
+	{% for post in current_site.blog.posts_published limit: 1 offset:blog_swiper_i %}
+
+        {% if block.settings[link_type] == "Link to Blog Post" or section.settings.link_to_post == "true" or section.settings.link_to_post == true%}
+            <a href="{{post.url}}" >
+        {% endif %}
+   
+            {% if this_element_type == "post_title" %} 
+                <p>{{post.title}}</p>
+            {% endif %} 
+
+            {% if this_element_type == "post_content" %} 
+                {% assign truncate_at = block.settings.truncate_content | default: 1000 %}
+                {% assign truncate_at_number = truncate_at | times: 1 %}
+                <p>{{ post.content  | strip_html | truncate_html: truncate_at_number }}</p>
+            {% endif %}
+    
+            {% if this_element_type == "post_image" %} 
+                <img class="nimage" src="{{ post.image_url }}">
+            {% endif %} 
+            
+            {% if this_element_type == "post_tags" or this_element_type == "post_first_tag" %} 
+                {% for tag in post.tags %}
+                    <a href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+                    {% if this_element_type == "post_first_tag" %}
+                         {% break %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% if this_element_type == "post_date" %} 
+                {{ post.created_at | date: "<span class='bp_month'>%b</span> <span class='bp_day'>%d</span> <span class='bp_year'>,20%y</span>" }}
+            {% endif %} 
+        
+            {% if this_element_type == "post_button" %}  
+                {% include "container_button" post_href: post.url %}
+            {% endif %}
+
+        {% if block.settings[link_type] == "Link to Blog Post" or section.settings.link_to_post == "true" or section.settings.link_to_post == true  %}
+            </a>
+        {% endif %}
+
+    {% endfor %}
+
+{% endif %}

@@ -1,0 +1,187 @@
+{%- assign button = 'button' -%}
+{%- assign cta_action = 'action' -%}
+{%- assign slider_index_postfix = '' -%}
+{%- if is_hero_slider -%} 
+   {%- assign button = button |  append: "_" | append: slider_index  -%}
+   {%- assign cta_action = cta_action |  append: "_" | append: slider_index  -%}
+   {%- assign slider_index_postfix = "_" | append: slider_cta_hide_icon -%}
+{%- endif -%} 
+{%- assign in_new_tab = 'in_new_tab' -%}
+
+{%- assign  v_cta_hide_icon = true -%}
+{%- if settings.p1_cta_hide_icon == false -%} 
+   {%- assign  v_cta_hide_icon = false -%}
+   {%- assign  v_cta_icon = settings.p1_cta_icon -%}
+   {%- assign  v_icon_position = settings.p1_icon_position -%}
+{%- endif -%} 
+
+{%- assign  v_inherit_defaults = true -%}
+{%- assign preset_num =  block.settings.button_preset -%} 
+{%- if preset_num != 'p1_' -%}
+   {%- assign cta_hide_icon = preset_num | append: "cta_hide_icon"  -%}
+   {%- if settings[cta_hide_icon] != 'Use Default' -%}
+      {%- assign  v_cta_hide_icon = settings[cta_hide_icon] -%}
+   {%- endif -%} 
+   {%- assign cta_icon = preset_num | append: "cta_icon"  -%}
+   {%- if settings[cta_icon] != blank -%} 
+      {%- assign v_cta_icon = settings[cta_icon] -%}
+   {%- endif -%}
+   {%- assign icon_position = preset_num | append: "icon_position"  -%}
+    {%- if settings[icon_position] != blank -%} 
+      {%- assign  v_icon_position = settings[icon_position] -%}
+   {%- endif -%}  
+
+   {%- assign inherit_defaults = preset_num | append: "inherit_defaults"  -%}
+   {%- if settings[inherit_defaults] == false -%}  
+      {%- assign  v_inherit_defaults = false -%}
+   {%- endif -%} 
+
+{%- endif -%}
+
+{%- if block.settings.cta_hide_icon != 'Use Default' -%}
+   {%- assign  v_cta_hide_icon = block.settings.cta_hide_icon -%}
+{%- endif -%} 
+{%- if block.settings.cta_icon != blank -%} 
+   {%- assign v_cta_icon = block.settings.cta_icon -%}
+{%- endif -%}
+   {%- if block.settings.icon_position != blank -%} 
+   {%- assign  v_icon_position = block.settings.icon_position -%}
+{%- endif -%}
+
+{%- if  block.settings.inherit_defaults == false-%}
+   {%- assign  v_inherit_defaults = false -%}
+{%- endif -%}
+
+
+{%- assign v_cta_bg_color= block.settings.cta_bg_color -%}
+{%- assign v_cta_outline= block.settings.cta_outline -%}
+{%- assign v_cta_color = block.settings.cta_color -%}
+{%- assign v_cta_min_width = block.settings.cta_min_width -%}
+{%- assign v_cta_min_height = block.settings.cta_min_height -%}
+{%- assign v_cta_font_size = block.settings.cta_font_size -%}
+{%- assign v_cta_min_width_mobile  = block.settings.cta_min_width_mobile -%}
+{%- assign v_cta_min_height_mobile = block.settings.cta_min_height_mobile -%}
+{%- assign v_cta_font_size_mobile = block.settings.cta_font_size_mobile -%}
+{%- assign v_cta_border_width = block.settings.cta_border_width -%}
+{%- assign v_cta_border_radius = block.settings.cta_border_radius -%}
+{%- assign v_cta_border_color =block.settings.cta_border_color -%}
+
+{%- assign button_tag = "a" -%}
+{%- if isForm -%}
+      {%- assign button_tag = "button" -%}
+{%- endif -%}
+
+{% if section.settings.link_to_post == true or section.settings.link_to_post == "true" or section.settings.link_to_category == true or section.settings.link_to_category == "true" %}  
+    {%- assign button_tag = "div" -%}
+{%- endif -%}
+
+<style>
+
+
+    #{{p}}block-{{ block.id }} {{button_tag}}{
+        {%- unless v_cta_outline -%}
+            background-color: {{v_cta_bg_color}}; 
+        {%- else -%} 
+            border: 2px solid {{v_cta_bg_color}};
+            background-color: unset;
+        {%- endunless -%}   
+
+        {%- if v_cta_min_width != blank -%} 
+            min-width: {{v_cta_min_width}}; 
+        {%- endif -%} 
+        {%- if v_cta_min_height != blank and v_cta_min_height != "0"  and v_cta_min_height != "1" -%}
+            min-height: {{v_cta_min_height}}; 
+        {%- endif -%} 
+
+        {%- if v_cta_border_width != blank -%} 
+                border-width:{{v_cta_border_width}};
+        {%- endif -%} 
+        {%- if v_cta_border_radius != blank -%} 
+                border-radius:{{v_cta_border_radius}};
+        {%- endif -%} 
+        {%- if v_cta_border_color != blank -%} 
+                border-color:{{v_cta_border_color}};
+        {%- endif -%} 
+    }
+    #{{p}}block-{{ block.id }} {{button_tag}} span{
+        color:  {{v_cta_color}};
+        {%- if v_cta_font_size != blank -%} 
+            font-size:{{v_cta_font_size}};
+        {%- endif -%} 
+
+        {%- if button_text_style != "" -%} 
+                {{button_text_style}}
+        {%- endif -%} 
+
+        
+    }
+    #{{p}}block-{{ block.id }} {{button_tag}} i{
+        color:  {{v_cta_color}};
+        {%- if v_cta_font_size != blank -%} 
+            font-size:{{v_cta_font_size}};
+        {%- endif -%} 
+    }
+
+    @media(max-width:786px){
+        
+        #{{p}}block-{{ block.id }} {{button_tag}}{
+            {%- if v_cta_min_width_mobile != blank -%} 
+                min-width: {{v_cta_min_width_mobile}}; 
+            {%- endif -%} 
+            {%- if v_cta_min_height_mobile != blank -%} 
+                min-height: {{v_cta_min_height_mobile}}; 
+            {%- endif -%} 
+        }
+
+        #{{p}}block-{{ block.id }} {{button_tag}} span{
+            {%- if v_cta_font_size_mobile != blank -%} 
+                font-size:{{v_cta_font_size_mobile}};
+            {%- endif -%} 
+        }
+
+        #{{p}}block-{{ block.id }} {{button_tag}} i{
+            {%- if v_cta_font_size_mobile != blank -%} 
+                font-size:{{v_cta_font_size_mobile}};
+            {%- endif -%} 
+        } 
+
+
+    }
+</style>
+    {%- assign the_cta_action = block.settings[cta_action] -%}
+    {% if section.type == 'blog_posts' %}  
+        {%- assign the_cta_action = blog_post.url -%}
+    {%- endif -%}
+    {% if section.type == 'p_lessons' or section.type == 'p_related_posts'%}  
+        {%- assign the_cta_action = post.url -%}
+    {%- endif -%}
+    {% if section.type == 'p_categories' %}  
+        {%- assign the_cta_action = category.url -%}
+    {%- endif -%}
+    {% if section.type == 'p_resume' %}  
+        {%- assign the_cta_action = current_product.completion.next_post.url -%}
+    {%- endif -%}
+    {%- assign btn_text = block.settings[button] -%}
+
+    {%- include "pn_resume_button" -%}
+    {%- include "post_next_button" -%}
+
+    
+
+    <{%- if isForm -%}{{button_tag}} type="submit" {%- else -%}{{button_tag}} {%- endif %} href="{{the_cta_action}}"
+        {%- if block.settings[in_new_tab] %} target="_blank" {%- endif -%} 
+        class="a_button hide-{{v_hide_cta}} {% if v_inherit_defaults -%} p1_btn {%- endif %} {{preset_num}}btn ">
+    {% if v_icon_position == 'left' %}
+      <i class="{{v_cta_icon}} hide-{{v_cta_hide_icon}} m-r-12"></i>
+    {%- endif -%} 
+       <span >{{btn_text}}</span>
+    {% if v_icon_position == 'right' %}
+       <i class="{{v_cta_icon}} hide-{{v_cta_hide_icon}} m-l-12"></i>
+    {%- endif -%}
+    </{{button_tag}}>
+
+
+
+
+
+

@@ -1,35 +1,28 @@
-{% assign padding_exception_list = "assessment, audio, blog, card, external_widget, image, offer, video, video_embed" | split: ", " %}
-{% assign exception_list = "assessment, audio, external_widget, image, video, video_embed" | split: ", " %}
-{% assign mobile_padding = "20px" %}
-{% assign desktop_padding = "30px" %}
+   
+<!-- removes default padding from card elements -->
+{% assign padding_exception_list = "card, offer, blog" | split: ", " %}
+<!-- removes default padding when box-shadow is enabled -->
+{% assign exception_list = "assessment, video, image, video_embed" | split: ", " %}
+<!-- default padding values -->
+{% assign mobile_padding = '20px' %}
+{% assign desktop_padding = '30px' %}
 
 <style>
   /* flush setting */
   {% if block.settings.make_flush %}
-    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] { padding: 0; }
-  {% endif %}
-  {% if carousel and section.settings.full_width %}
-    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
-      padding: 0;
-      /* Slick carousel width fix - https://stackoverflow.com/questions/48254835/slick-slider-width-0-on-initial-page-load  */
-      width: 100vw;
-    }
+    #block-{{ block.id }} { padding: 0; }
   {% endif %}
   /* margin settings */
-  #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
+  #block-{{ block.id }} {
     margin-top: {{ block.settings.margin_mobile.top | default: 0 | append: "px" }};
     margin-right: {{ block.settings.margin_mobile.right | default: 0 | append: "px" }};
     margin-bottom: {{ block.settings.margin_mobile.bottom | default: 0 | append: "px" }};
     margin-left: {{ block.settings.margin_mobile.left | default: 0 | append: "px" }};
   }
-  #block-{{ block.id }} .block, [data-slick-id="{{ block.id }}"] .block {
+  #block-{{ block.id }} .block {
     /* border settings */
     border: {{ block.settings.border_width | default: 4 | append: "px" }} {{ block.settings.border_type }} {{ block.settings.border_color | default: "black" }};
     border-radius: {{ block.settings.border_radius | default: 4 | append: "px" }};
-    {% if carousel and section.settings.full_width %}
-      border-radius: 0;
-    {% endif %}
-
     /* background color */
     {% if block.settings.background_color != "" %}
       background-color: {{ block.settings.background_color }};
@@ -64,15 +57,15 @@
     {% endif %}
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     /* desktop margin settings */
-    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
+    #block-{{ block.id }} {
       margin-top: {{ block.settings.margin_desktop.top | default: 0 | append: "px" }};
       margin-right: {{ block.settings.margin_desktop.right | default: 0 | append: "px" }};
       margin-bottom: {{ block.settings.margin_desktop.bottom | default: 0 | append: "px" }};
       margin-left: {{ block.settings.margin_desktop.left | default: 0 | append: "px" }};
     }
-    #block-{{ block.id }} .block, [data-slick-id="{{ block.id }}"] .block {
+    #block-{{ block.id }} .block {
       /* default padding for desktop  */
       {% if block.settings.background_color != "" %}
         padding: {{ desktop_padding }};
@@ -102,7 +95,7 @@
   }
   /* mobile text align */
   @media (max-width: 767px) {
-    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
+    #block-{{ block.id }} {
       text-align: {{ block.settings.mobile_text_align }};
     }
   }

@@ -1,0 +1,14 @@
+{% if alert_messages.success %} 
+  <div class="alert alert--success alert--flush">
+    <div class="container">
+      <span class="fa fa-lg fa-check"></span>{{ alert_messages.success }} <i class="fa fa-times close"></i>
+    </div>
+  </div>
+{% endif %}
+{% if alert_messages.error %}
+  <div class="alert alert--error alert--flush">
+    <div class="container">
+      <span class="fa fa-exclamation-triangle"></span>{{ alert_messages.error }} <i class="fa fa-times close"></i>
+    </div>
+  </div> 
+{% endif %}

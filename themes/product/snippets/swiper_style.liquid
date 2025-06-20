@@ -1,0 +1,52 @@
+{%- assign s_style_code = section.settings.swiper_style  -%}  
+
+{%- assign s_container_style = ""   -%}
+{%- assign s_wraper_style = ""   -%}
+{%- assign s_container_style_mobile = ""   -%}
+{%- assign s_wrapper_style_mobile = ""   -%}
+
+{%- unless s_style_code contains "/*"  -%}
+    {%- assign s_container_style = s_style_code | strip  -%}
+{%- else  -%}
+    {%- assign r1 = s_style_code | split:"/*"  -%}
+    {%- for item in r1  -%}
+        {%- if item contains "Container Style Desktop"  -%}
+            {%- assign s_container_style = item | split:"*/" | last | strip   -%}
+        {%- endif  -%}
+        {%- if item contains "Wrapper Style Desktop"  -%}
+            {%- assign s_wraper_style = item | split:"*/" | last | strip   -%}
+        {%- endif  -%}
+        {%- if item contains "Container Style Mobile"  -%}
+            {%- assign s_container_style_mobile = item | split:"*/" | last | strip   -%}
+        {%- endif  -%}
+        {%- if item contains "Wrapper Style Mobile"  -%}
+            {%- assign s_wraper_style_mobile = item | split:"*/" | last | strip   -%}
+        {%- endif  -%}
+    {%- endfor  -%}
+{%- endunless  -%}
+
+{% if s_container_style != "" %}
+    .swiper-container-{{section.id}}{
+        {{s_container_style}}
+    }
+{%- endif  -%}
+{% if s_wraper_style != "" %}
+    .swiper-container-{{section.id}} > .swiper-wrapper{
+        {{s_wraper_style}}
+    }
+{% endif  %}
+
+{%- if s_container_style_mobile != "" and  s_wraper_style_mobile != ""  -%}
+    @media(max-width:786px){
+        {% if s_container_style_mobile != "" %}
+            .swiper-container-{{section.id}}{
+                {{s_container_style_mobile}}
+            }
+        {% endif  %}
+        {%- if s_wraper_style_mobile != "" -%}
+            .swiper-container-{{section.id}} > .swiper-wrapper{
+                {{s_wraper_style_mobile}}
+            }
+        {% endif  %}
+    }
+{%- endif  -%}

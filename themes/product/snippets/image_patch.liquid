@@ -1,0 +1,11 @@
+{%- if block.settings.image_copy_url != blank and  block.settings.image_copy_url != "" -%}
+    {{block.settings.image_copy_url}}
+{%- elsif img contains "mc1a/"  -%}  
+    {{img | asset_url }}  
+{%- elsif  img contains "localhost/" or img contains "kajabi-themes.s3.amazonaws.com/" or img contains "https://robust-themes.com/aws/"  or img contains "https://robust-themes.com/" -%} 
+    {{img }}
+{%- elsif img contains "kajabi-storefronts-production"  -%}  
+   {{img }}
+{%- else -%} 
+    {{img  | image_picker_url: 'placeholder.png' }} 
+{%- endif -%} 

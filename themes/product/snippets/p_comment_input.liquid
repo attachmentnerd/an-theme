@@ -1,0 +1,30 @@
+{% if post.comments_mode_locked? %}
+  <h4 class="comments-locked" kjb-settings-id="{{'language_comment_locked' | settings_id: section: section,block: block}}">
+    <i class="fa fa-lock"></i>
+    {{ block.settings.language_comment_locked }}
+  </h4>
+{% elsif current_site_user.muted? != true %}
+  <div class="form-wrapper">
+    <h3 class="comment-form-title">Type your comment</h3>
+    {% form "comment", post %}
+      <div class="media">
+        <div class="media-body">
+          <textarea
+            class="form-control"
+            id="comment_body"
+            kjb-settings-id="{{'language_comment_placeholder' | settings_id: section: section,block: block}}"
+            name="comment[body]"
+            placeholder="{{ block.settings.language_comment_placeholder }}"
+            rows="1"></textarea>
+          <img class="comment-img" src="{{ user_avatar }}" />
+          <button
+            class="btn comments-btn"
+            data-disable-with="{{ block.settings.language_comment_submitting }}"
+            kjb-settings-id="{{'language_comment_add' | settings_id: section: section,block: block}}"
+            name="commit"
+            type="submit">{{ block.settings.language_comment_add }}</button>
+        </div>
+      </div>
+    {% endform %}
+  </div>
+{% endif %}

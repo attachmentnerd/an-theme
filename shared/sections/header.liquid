@@ -1,98 +1,17 @@
-<!-- AN Theme Scripts and CSS Variables Loader -->
-<!-- This section loads essential scripts and CSS variables without any visual elements -->
-
-<!-- Google Tag Manager -->
-{% if section.settings.gtm_id %}
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','{{ section.settings.gtm_id }}');</script>
-{% endif %}
-
-<!-- Google Analytics -->
-{% if section.settings.ga_id %}
-  <script async src="https://www.googletagmanager.com/gtag/js?id={{ section.settings.ga_id }}"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '{{ section.settings.ga_id }}');
-  </script>
-{% endif %}
-
-<!-- Facebook Pixel -->
-{% if section.settings.fb_pixel_id %}
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '{{ section.settings.fb_pixel_id }}');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id={{ section.settings.fb_pixel_id }}&ev=PageView&noscript=1"
-  /></noscript>
-{% endif %}
-
-<!-- Custom Scripts -->
-{% if section.settings.custom_scripts %}
-  {{ section.settings.custom_scripts }}
-{% endif %}
-
-<!-- Google Tag Manager (noscript) -->
-{% if section.settings.gtm_id %}
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ section.settings.gtm_id }}"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-{% endif %}
+<!-- AN Theme Header - Minimal loader with no visual elements -->
+<!-- Visual navigation is handled by the navigation.liquid section -->
+<!-- Scripts are now loaded via theme.liquid global_head and global_scripts -->
 
 {% schema %}
 {
-  "name": "Header (SEO & Scripts)",
-  "elements": [
-    {
-      "type": "header",
-      "content": "Analytics & Tracking"
-    },
-    {
-      "type": "text",
-      "id": "gtm_id",
-      "label": "Google Tag Manager ID",
-      "info": "Format: GTM-XXXXXX"
-    },
-    {
-      "type": "text",
-      "id": "ga_id",
-      "label": "Google Analytics ID",
-      "info": "Format: G-XXXXXXXXXX or UA-XXXXXX-X"
-    },
-    {
-      "type": "text",
-      "id": "fb_pixel_id",
-      "label": "Facebook Pixel ID",
-      "info": "Your Facebook Pixel ID"
-    },
-    {
-      "type": "header",
-      "content": "Custom Scripts"
-    },
-    {
-      "type": "textarea",
-      "id": "custom_scripts",
-      "label": "Custom Scripts",
-      "info": "Additional scripts to load on the page"
-    }
-  ],
+  "name": "Header (Hidden)",
+  "elements": [],
+  "blocks": [],
   "presets": [
     {
-      "name": "Scripts & Analytics",
-      "category": "Setup",
-      "description": "Load analytics, tracking pixels, and custom scripts (no visual elements)"
+      "name": "Header (Hidden)",
+      "category": "Headers",
+      "description": "Required section for theme compatibility. No visual output."
     }
   ]
 }

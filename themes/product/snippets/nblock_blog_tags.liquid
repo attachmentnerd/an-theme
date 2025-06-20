@@ -1,0 +1,7 @@
+  {% for tag in tags limit:30 %}
+    {% if tags.current == tag %}
+      <a  href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}" class="active">{{ tag }}</a>
+    {% else %}
+      <a href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+    {% endif %}
+  {% endfor %}

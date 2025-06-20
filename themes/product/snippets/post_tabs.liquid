@@ -1,0 +1,117 @@
+<div class="tabs-wrapper">
+  {% for block in section.blocks %}
+    {% for section in settings.sections %}
+      {% assign section_name = section | split: "{" | first | remove: '["' | remove: '",' | remove: ' ' %}
+      {% if settings.sections[section_name].name == block.settings.tab_section %}
+        <div class="post-tab{%if block.settings.mobile_only == true or block.settings.mobile_only == "true"%} mobile_only{%endif%}{%if block.settings.is_active == true or block.settings.is_active == "true"%} active{%endif%}" data-for="{{section_name}}">
+          <span>
+            <i class="{{block.settings.tab_icon}}"></i>
+            {{ block.settings.tab_name }}</span>
+        </div>
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</div>
+<script>
+  jQuery(document).ready(function() {
+    addClasstoTabs()
+    toggleTabs()
+    tabsStickyOnMobile()
+    $(".post-tab").on("click", function() {
+      $(".post-tab").removeClass("active")
+      var sectionId = $(this).data("for")
+      $(this).addClass("active")
+      toggleTabs()
+      if ($(window).width() < 768) {
+        $(".p_contant_out").animate({
+          scrollTop: $(`#section-${sectionId} section`).position().top
+        }, 500)
+      }
+    })
+    function addClasstoTabs() {
+      $(".post-tab:not(.mobile_only)").each(function() {
+        var sectionId = $(this).data("for")
+        $(`#section-${sectionId} section`).addClass("r2-tab-data")
+      })
+      if ($(window).width() < 768) {
+        $(".mobile_only").each(function() {
+          var sectionId = $(this).data("for")
+          $(`#section-${sectionId} section`).addClass("r2-tab-data")
+        })
+      }
+    }
+    function toggleTabs() {
+      $(".post-tab:not(.mobile_only)").each(function() {
+        var sectionId = $(this).data("for")
+        if ($(this).hasClass("active")) {
+          $(`#section-${sectionId} section`).removeClass("tab-data-hidden").addClass("active-tab-data")
+          if ($(`#section-${sectionId} section`).find(".swiper-container").length) {
+            window[`swiper_${sectionId}_function`]()
+          }
+        } else {
+          $(`#section-${sectionId} section`).addClass("tab-data-hidden")
+        }
+      })
+    }
+
+
+    function tabsStickyOnMobile() {
+
+      var width = $(window).width()
+      if (width < 768) {
+        const tabs = document.querySelectorAll(".post-tab")
+        const tabSections = document.querySelectorAll(".r2-tab-data")
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              console.log(entry)
+              const index = Array.from(tabSections).indexOf(entry.target)
+              tabs.forEach(tab => {
+                tab.classList.remove("active")
+              })
+              tabs[index].classList.add("active")
+              $(".post-tab.active")[0].scrollIntoView({
+                behavior: 'auto',
+                block: 'nearest',
+                inline: 'center'
+              })
+
+            }
+          })
+        }, {
+          threshold: 0.1
+        })
+
+        tabSections.forEach(sections => {
+          observer.observe(sections)
+        })
+        $(`#section-{{section.id}}`).addClass("tab-sticky").css("top", `calc(${
+          $("#section-p_header section").height()
+        }px - 40px)`)
+
+      }
+    }
+    function activeTabOnScroll() {
+      var scrollPos = $(".p_contant_out").scrollTop() + $("#section-p_header section").height()
+      $('.post-tab').each(function() {
+        var currLink = $(this)
+        var sectionId = $(this).data("for")
+        var refElement = $(`#section-${sectionId} section`)
+        if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+          $('.post-tab.active').removeClass("active")
+          currLink.addClass("active")
+          $(".post-tab.active")[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          })
+        } else {
+          currLink.removeClass("active")
+        }
+      })
+
+    }
+  })
+</script>

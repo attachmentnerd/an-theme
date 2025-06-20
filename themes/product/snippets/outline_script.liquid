@@ -1,0 +1,22 @@
+<script class="ouline_script">
+
+  {% if block.settings.collapse == "Collapse All But Active" %}
+    (function(){
+        var active_post = document.querySelector('#section-{{ section.id }} .b-{{ block.id }} .outline-post-wrap.active')
+        if (active_post != undefined){  
+            var posts_wrap = active_post.closest('.category_posts_wrap')
+            posts_wrap.classList.remove('collapsed')
+            posts_wrap_parent =  posts_wrap.parentElement.closest('.category_posts_wrap')
+            if (posts_wrap_parent != undefined){
+                posts_wrap_parent.classList.remove('collapsed')
+            } 
+        } else {
+            active_post = document.querySelector('.b-{{ block.id }} .outline-post-wrap')
+            var posts_wrap = active_post.closest('.category_posts_wrap')
+            posts_wrap.classList.remove('collapsed')
+        }
+    })();
+                                
+//{% endif %}
+
+</script>

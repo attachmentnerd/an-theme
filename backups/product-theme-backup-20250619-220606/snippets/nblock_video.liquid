@@ -1,0 +1,156 @@
+
+
+<style>
+    #{{p}}block-{{ block.id }} .w-video-wrapper, #{{p}}block-{{ block.id }} .kjb-video-responsive{
+        border-radius:{{block.settings.radius}};
+        overflow: hidden;
+    }
+</style>
+
+{% assign placeholder_png = "placeholder.png" | asset_url %}
+
+{% if block.type == "video" %}
+    {% assign video = current_site.find_video[block.settings.video]  %}
+    {% assign img = block.settings.thumbnail  | default:placeholder_png %}
+    {%- if img contains "robust-themes.com" or img contains "kajabi-themes.s3.amazonaws.com/" or img contains "kajabi-storefronts-production" -%}
+        {% assign thumbnail = img %}
+    {%- else -%} 
+        {%  assign thumbnail = img  | image_picker_url: '' %} 
+    {%- endif -%}
+
+{% endif %}
+{% if block.type == "post_media" %}
+    {% assign video = post.video  %}
+    {% if video %}
+       {% assign thumbnail = post.poster_image_url %}
+    {% else %}
+        {% assign thumbnail = post.poster_image_url  | default:placeholder_png  %}
+    {% endif %}
+{% endif %}
+
+{% if video %}
+  <div class="main-content-video">
+
+  {% assign autoPlay = block.settings.auto_play %}
+  {% assign playButton = false %}
+  {% if block.settings.play_icon_style == 'Default' %}
+    {% assign playButton = true %}
+  {% endif %}
+
+  {% assign playerColor = block.settings.video_color | default: settings.accent_color_1 %}
+  {% assign smallPlayButton = block.settings.small_play_button %}
+  {% assign fullScreen = block.settings.full_screen %}
+  {% assign playbar = block.settings.playbar %}
+  {% assign videoSettings = block.settings.video_settings %}
+  {% assign controlsOnLoad = block.settings.controls_on_load %}
+  {% if block.settings.loop %}
+    {% assign loop = "loop" %}
+  {% endif %}
+
+    {{ video | wistia_video:
+      playerPreference: "html5",
+      player_color: playerColor,
+      still_url: thumbnail,
+      auto_play: autoPlay,
+      controls_visible_on_load: controlsOnLoad,
+      playbar: playbar,
+      fullscreen_button: fullScreen,
+      playback_rate_control: videoSettings,
+      quality_control: videoSettings,
+      settings_control: videoSettings,
+      small_play_button: smallPlayButton,
+      endVideoBehavior: loop,
+      play_button: playButton  }}
+
+  </div>
+
+  {% else %}
+    <img src="{{ thumbnail }}" alt="Video Poster Image" />
+  {% endif %}
+
+
+{% if video %}
+
+    {% if block.settings.play_icon_style == "Animated 2" %}
+        <a class="ripple-block">
+            <i class="fa fa-play-circle #{{p}}block-{{ block.id }} " aria-hidden="true"></i>
+            <div class="ripple ripple-1"></div>
+            <div class="ripple ripple-2"></div>
+            <div class="ripple ripple-3"></div>
+        </a>
+    {% endif %}
+
+    {% assign play_icon_style = block.settings.play_icon_style %}
+    {% if play_icon_style contains  "Circle" or play_icon_style contains  "With Backgrond" %}
+        {% assign circle_class = "white"  %}
+        {% if play_icon_style contains "Black" %}
+            {% assign circle_class = "black"  %}
+        {% endif %}     
+        {% if play_icon_style contains "With Backgrond" %}
+        {% assign circle_class = circle_class | append:" accent_bg"  %}
+        <style>
+            #{{p}}block-{{ block.id }} .custom_play_icon.accent_bg svg{
+            background-color: {{playerColor}} ;
+            }
+        </style>
+        {% endif %}
+
+    <div class="custom_play_icon {{circle_class}}">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+        <g>
+            <path class="st0566" d="M33.6,24.1V75c0,2.1,2.4,3.3,4.1,2.2l37-25.4c1.5-1,1.5-3.3,0-4.3L37.7,22C36,20.8,33.6,22,33.6,24.1z"/>
+            <path class="st0566" d="M50,99.1c-6.7,0-13.2-1.3-19.4-3.9c-5.9-2.5-11.2-6.1-15.8-10.6C10.3,80,6.7,74.7,4.2,68.8   c-2.6-6.1-3.9-12.6-3.9-19.3c0-6.7,1.3-13.2,3.9-19.3c2.5-5.9,6.1-11.2,10.7-15.7c4.6-4.5,9.9-8.1,15.8-10.6C36.8,1.3,43.3,0,50,0   c6.7,0,13.2,1.3,19.4,3.9c5.9,2.5,11.2,6.1,15.8,10.6c4.6,4.5,8.2,9.8,10.7,15.7c2.6,6.1,3.9,12.6,3.9,19.3   c0,6.7-1.3,13.2-3.9,19.3c-2.5,5.9-6.1,11.2-10.7,15.7c-4.6,4.5-9.9,8.1-15.8,10.6C63.2,97.8,56.7,99.1,50,99.1z M50,5.7   C25.7,5.7,6,25.4,6,49.6c0,24.2,19.7,43.8,44,43.8c24.3,0,44-19.7,44-43.8C94,25.4,74.3,5.7,50,5.7z"/>
+        </g>
+        </svg>
+    </div>
+    {% endif %}
+
+
+    {% if block.settings.play_icon_style contains  "Animated 1" %}
+
+    <div class="custom_play_icon">
+
+    <a class="play-btn" href="#" style="background: radial-gradient( {{playerColor}} 60%, rgba(255, 255, 255, 1) 62%);
+    box-shadow: 0px 0px 25px 3px {{playerColor}};"></a>
+    </div>
+    {% endif %}
+
+
+        <script>
+            jQuery(document).ready(function(){
+                run_once_{{ section.id }} = true;
+                run_once_{{ section.id }}_fs = true;
+                $('body').on('click','#section-{{ section.id }} .ripple-block,#section-{{ section.id }} .kjb-video-responsive,#section-{{ section.id }} .video_triger,#section-{{ section.id }} .video_triger_full_screen,#section-{{ section.id }} .custom_play_icon',function(){
+                    if ($('#section-{{ section.id }} .ripple-block').css('display') == 'none') { return }
+                    let video_id =  $('#section-{{ section.id }}').find('.wistia_embed').attr('id')
+                    var video = Wistia.api(video_id);
+                    let $this_section = $('#section-{{ section.id }}').find('section')
+                    if (!($this_section).hasClass('playing')){
+                        video.play()
+                        if ($(this).hasClass('video_triger_full_screen')){
+                        video.requestFullscreen()
+                        $this_section.find('.nblock-video').show()
+                            if (run_once_{{ section.id }}){
+                                run_once_{{ section.id }} = false
+                                video.bind("cancelfullscreen", function() {
+                                $this_section.find('.nblock-video').hide()
+                                $('#section-{{ section.id }}').find('section').addClass('paused').removeClass('playing')
+                                });
+                            }
+                        }
+
+                        $this_section.addClass('playing').removeClass('paused')
+                    }
+                    if (run_once_{{ section.id }}){
+                        run_once_{{ section.id }} = false
+                        video.bind("pause", function() {
+                            $('#section-{{ section.id }}').find('section').addClass('paused').removeClass('playing')
+                        });
+                    }
+    
+                })
+
+            })
+        </script>
+
+{% endif %}

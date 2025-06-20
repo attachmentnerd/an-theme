@@ -1,29 +1,73 @@
+{% if comment.body contains "#Question Submission" %}
+  {% continue %}
+{% endif %}
+{% if comment.body contains "#Private Message: " %}
+  {% if block.type != "post_comments" %}
+    {% include "chat" %}
+  {% endif %}
+  {% continue %}
+{% endif %}
+
 {% assign section = settings.sections.post_comments %}
-<div class="comment" data-comment="{{ comment.id }}">
-  <div class="media">
-    <div class="media-left media-middle">
-      <img class="comment__avatar" src="{{ comment.author | avatar_url: 40 }}"/>
+
+{% assign comment_author = comment.author.name | downcase %}
+{% assign admins = settings.admin_names | downcase | split: "," %}
+
+{% assign is_admin = false %}
+{% if admins contains comment_author %}
+  {% assign is_admin = true %}
+{% endif %}
+
+{% assign is_author = false %}
+{% if comment.author.id == current_site_user.id %}
+  {% assign is_author = true %}
+{% endif %}
+
+{% assign is_author_or_admin = false %}
+{% if is_admin or is_author %}
+  {% assign is_author_or_admin = true %}
+{% endif %}
+
+{% unless private_comments and is_author_or_admin == false %}
+  <div class="comment is_admin_{{is_admin}} is_author_{{is_author}} comment-block" data-comment="{{ comment.id }}">
+    <div class="media">
+      <div class="comment-avatar">
+        <img class="comment-img" src="{{ comment.author | avatar_url: 40 }}" />
+      </div>
+      <div class="media-body">
+        <div class="comment-wrap">
+          <div class="commented">
+            <div class="comment-name">{{ comment.author.name }}</div>
+            <div class="comment-date">{{ comment.created_at | local_time_ago }}</div>
+            <div class="comment-body" data-comment-body>{{ comment.body | simple_format }}</div>
+            {% unless current_site_user.muted? %}
+              {% if post.comments_mode_visible? %}
+                <a
+                  class="reply-to-comment"
+                  data-remote="true"
+                  href="{{ post.comment_new_url }}?parent_comment={{ comment.id }}"
+                  kjb-settings-id="{{'language_comment_reply' | settings_id: section: section,block: block}}">{{ block.settings.language_comment_reply }}</a>
+              {% endif %}
+              {% if comment.author.id == current_site_user.id and comment.author.type == current_site_user.type %}
+                <a
+                  class="comment-edit"
+                  data-remote="true"
+                  href="{{ comment.edit_url }}"
+                  kjb-settings-id="{{'language_comment_edit' | settings_id: section: section,block: block}}">{{ block.settings.language_comment_edit }}</a>
+              {% endif %}
+            {% endunless %}
+
+          </div>
+
+        </div>
+
+      </div>
     </div>
-    <div class="media-body media-middle">
-      <p class="comment__name">{{ comment.author.name }}</p>
+    <div class="comment-reply" data-comment-replies="{{ comment.id }}">
+      {% for comment in comment.comments %}
+        {% include "comment" %}
+      {% endfor %}
     </div>
-    <div class="media-right media-middle">
-      <p class="comment__date">{{ comment.created_at | local_time_ago }}</p>
-    </div>
+    <div data-comment-reply="{{ comment.id }}"></div>
   </div>
-  <div class="comment__body" data-comment-body>{{ comment.body | simple_format }}</div>
-  {% unless current_site_user.muted? %}
-    {% if post.comments_mode_visible? %}
-      <a kjb-settings-id="{{ 'language_comment_reply' | settings_id: section: section }}" class="comment__reply" data-remote="true" href="{{ post.comment_new_url }}?parent_comment={{ comment.id }}">{{ section.settings.language_comment_reply }}</a>
-    {% endif %}
-    {% if comment.author.id == current_site_user.id and comment.author.type == current_site_user.type %}
-      <a kjb-settings-id="{{ 'language_comment_edit' | settings_id: section: section }}" class="comment__edit" data-remote="true" href="{{ comment.edit_url }}">{{ section.settings.language_comment_edit }}</a>
-    {% endif %}
-  {% endunless %}
-  <div class="comment--reply" data-comment-replies="{{ comment.id }}">
-    {% for comment in comment.comments %}
-      {% include "comment" %}
-    {% endfor %}
-  </div>
-  <div data-comment-reply="{{ comment.id }}"></div>
-</div>
+{% endunless %}

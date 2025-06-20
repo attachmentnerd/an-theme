@@ -1,0 +1,95 @@
+{% for block in section.blocks %}
+  {% if block.type == "next_lesson" %}
+    {% assign next_text = block.settings.next_text %}
+    {% if post_next %}
+      <a class="btn post-completion-box-btn" href="{{ post_next_url }}">
+        {{ next_text }}
+      </a>
+    {% endif %}
+  {% elsif block.type == "text" %}
+    {% assign text1 = block.settings.text %}
+    {% assign text1 = text1 | replace: "{user}", current_site_user.name | replace: "{lesson_name}", post.title %}
+
+    <div class="nblock nblock_text completion_message">
+      {{ text1 }}
+    </div>
+    {% if post.body contains "<!--lesson_completion" %}
+
+      {% assign custom_text = post.body | split: '<!--lesson_completion' %}
+      {% assign custom_text = custom_text[1] | split: '-->' %}
+      {% assign text1 = custom_text[0] | split: '"message":"' %}
+      {% assign text1 = text1[1] | split: '","' %}
+      {% assign text1 = text1[0] | split: '"}' %}
+      {% assign text1 = text1[0] | replace: "{user}", current_site_user.name | replace: "{lesson_name}", post.title %}
+
+      <script>
+        var text = `{{text1 }}`
+        if (text.includes("#image:")) {
+          var image = text.match(/#image:.*&lt;&#x2F;p&gt;/gm)
+          var imageHtml = `<img class="completion-badge" src="${
+            image[0].replace("#image:", "").replace("&lt;&#x2F;p&gt;", "")
+          }"/>`
+          text = text.replace(image[0], imageHtml)
+        }
+        var html1 = unescapeHtml(text)
+        jQuery(".completion_message").html(html1)
+        function unescapeHtml(unsafe) {
+          return unsafe
+            .replace(/&amp;/g, "&")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, "\"")
+            .replace(/&#039;/g, "'")
+            .replace(/&#x2F;/g, "/")
+        }
+      </script>
+    {% endif %}
+  {% else %}
+    {% include "base_block" type: block.type %}
+  {% endif %}
+
+{% endfor %}
+
+{% if post.body contains "<!--lesson_completion" %}
+  {% assign comp_audio = post.body | split: '<!--lesson_completion' %}
+  {% assign comp_audio = comp_audio[1] | split: '-->' %}
+{% endif %}
+<script>
+  jQuery(document).ready(function() {
+    var audio_link = '' // 
+    {% if section.settings.completion_audio != "none" %} // 
+      audio_link = `https://dev.robust-themes.com/audio/{{section.settings.completion_audio}}.mp3` // 
+      {% if section.settings.completion_audio == "custom_audio" %} // 
+        audio_link = `{{section.settings.custom_audio_track}}` // 
+      {% endif %} // 
+    {% endif %} // 
+    console.log('sdadedef')
+    var completionObj = `{{comp_audio[0]}}`
+    console.log(completionObj)
+    if (completionObj != "") {
+      completionObj = completionObj.replaceAll("\n", "\\n")
+      completionObj = JSON.parse(completionObj)
+      if (completionObj.audio_track == "default") {
+        audio_link = audio_link
+      } else if (completionObj.audio_track == "none") {
+        audio_link = ""
+      } else {
+        var audio_track = completionObj.custom_audio_link
+        if (audio_track) {
+          console.log(audio_track)
+          audio_link = audio_track
+        }
+      }
+    }
+    var audio = `
+    <audio
+    class="completion_audio"
+    controls
+    style="display: none">
+    <source src="${audio_link}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+    `
+    $(".post-completion").append(audio)
+  })
+</script>

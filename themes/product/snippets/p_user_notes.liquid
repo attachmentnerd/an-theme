@@ -1,0 +1,26 @@
+<div class="my-notes-heading">
+  <h3>{{ section.settings.heading }}</h3>
+  <p>{{ section.settings.description }}</p>
+</div>
+<div class="user_notes_wrapper">
+  <div class="notes_tiny">
+    <textarea class="user-note-input" id="user_notes_input"></textarea>
+  </div>
+  <div class="save-notes-btn">
+    <button class="save-user-note disabled" type="submit">Save</button>
+  </div>
+</div>
+
+<script
+  crossorigin="anonymous"
+  integrity="sha512-0hADhKU8eEFSmp3+f9Yh8QmWpr6nTYLpN9Br7k2GTUQOT6reI2kdEOwkOORcaRZ+xW5ZL8W24OpBlsCOCqNaNQ=="
+  referrerpolicy="no-referrer"
+  src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.3.2/tinymce.min.js"></script>
+
+<script>
+  USER_INFO = {
+    "user_id": {{current_site_user.id}}
+  }
+</script>
+
+{% include "user_notes_script" %}

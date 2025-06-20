@@ -1,0 +1,21 @@
+{% assign b-video = current_site.find_video[block.settings.video] %}
+{% assign b-img = block.settings.image | image_picker_url: 'placeholder.png' %}
+{% assign b-id = block.id %}
+{% assign b-auto = block.settings.autoplay %}
+{% assign b-color = settings.accent_color %}
+
+{% assign KJB_video = 'video' | settings_id: section: section,block: block %}
+
+{% unless b-auto %}
+  <style>
+    .video-{{ b-id }} .video__wrapper {
+      background-image: url({{ b-img }});
+    }
+  </style>
+{% endunless %}
+
+<div class="dashboard-video video-{{ b-id }}" kjb-settings-id="{{ KJB_video }}">
+  <div class="video__wrapper">
+    {{ b-video | wistia_video: player_color: b-color, auto_play: b-auto, still_url: b-img, playerPreference: "html5" }}
+  </div>
+</div>

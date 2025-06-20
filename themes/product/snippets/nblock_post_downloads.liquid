@@ -1,0 +1,46 @@
+
+{% assign post_downloads_count = post.downloads.count %}
+
+
+
+{% if post_downloads_count > 0 %}
+
+{% assign downloads_text = "Downloads" %}
+
+  <div class="downloads dropdown">
+    <a class="downloads-trigger" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" kjb-settings-id="{{ KJB_downloads_text }}">
+      {% include "p_icon_download" %} {{ post_downloads_count }} <span class="downloads-trigger-text">{{ downloads_text }}</span>
+    </a>
+  
+      {% for download in post.downloads %}
+        <a class="downloads-link media" href="{{ download.url }}">
+          <div class="media-body">{{ download.display_name }}</div>
+
+          {% assign file_icon = "<svg>file</svg>" %}
+          {% if download.display_name contains ".jpg" or ".JPG"  %}
+            {% assign file_icon = '<i class="fas fa-file-image"></i>' %}
+          {% endif %}
+          {% if download.display_name contains ".pdf"  %}
+            {% assign file_icon = '<i class="fas fa-file-alt"></i>' %}
+          {% endif %}
+          {% if download.display_name contains ".doc" %}
+            {% assign file_icon = '<i class="fas fa-file-word"></i>' %}
+          {% endif %}
+          {% if download.display_name contains ".ppt"  %}
+            {% assign file_icon = '<i class="fas fa-file-powerpoint"></i>' %}
+          {% endif %}
+         {% if download.display_name contains ".xls"  %}
+            {% assign file_icon = '<i class="fas fa-file-excel"></i>' %}
+          {% endif %}
+          {% if download.display_name contains ".mp3"  %}
+          {% assign file_icon = '<i class="fas fa-file-audio"></i>' %}
+        {% endif %}
+          
+          <div class="file-icon">{{file_icon}}</div>
+        </a>
+      {% endfor %}
+
+  </div>
+  {% else %}
+  <div class="no-download"><p>No Downloads</p></div>
+{% endif %}

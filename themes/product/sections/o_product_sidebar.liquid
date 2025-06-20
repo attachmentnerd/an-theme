@@ -1,0 +1,152 @@
+{% assign alignment = section.settings.alignment %}
+{% assign show_dashboard = settings.show_dashboard %}
+
+{% assign KJB-alignment = 'alignment' | settings_id: section: section %}
+{% assign KJB_show_dashboard = 'show_dashboard' %}
+
+{% if show_dashboard %}
+  {% if section.blocks.size > 0 %}
+    <div style="text-align: {{ alignment }}"  kjb-settings-id="{{ KJB-alignment }}">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'product_video' %}
+            {% include "p_product_video" %}
+          {% when 'product_text' %}
+            {% include "p_product_text" %}
+          {% when 'product_img' %}
+            {% include "p_product_img" %}
+          {% when 'product_card' %}
+            {% include "p_product_card" %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Dashboard Sidebar",
+    "blocks": [
+      {
+        "type": "product_card",
+        "name": "Card",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Card"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Suggested dimensions: 1856 × 1044"
+          },
+          {
+            "type": "action",
+            "id": "img_action",
+            "label": "Image Action",
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "link_target",
+            "label": "Open In New Window",
+            "default": "false"
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "Content",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui."
+          }
+        ]
+      },
+      {
+        "type": "product_video",
+        "name": "Video",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Video"
+          },
+          {
+            "type": "checkbox",
+            "label": "Autoplay",
+            "id": "autoplay",
+            "default": "false"
+          },
+          {
+            "type": "video",
+            "id": "video",
+            "label": "Video"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Suggested dimensions: 1856 × 1044"
+          }
+        ]
+      },
+      {
+        "type": "product_text",
+        "name": "Text",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Text"
+          },
+          {
+            "type": "rich_text",
+            "id": "content",
+            "label": "Content",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui."
+          }
+        ]
+      },
+      {
+        "type": "product_img",
+        "name": "Image",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "width": 2300,
+            "height": 2300,
+            "info": "Suggested dimensions: 1856 × 1044"
+          },
+          {
+            "type": "action",
+            "id": "img_action",
+            "label": "Image Action",
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "link_target",
+            "label": "Open In New Window",
+            "default": "false"
+          }
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "type": "radio",
+        "id": "alignment",
+        "label": "Text Alignment",
+        "default": "left",
+        "options": [
+          { "label": "Left", "value": "left" },
+          { "label": "Center", "value": "center" },
+          { "label": "Right", "value": "right" }
+        ]
+      }
+    ]
+  }
+{% endschema %}

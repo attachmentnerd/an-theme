@@ -1,0 +1,25 @@
+
+<div class="blog_categories_wrap">
+ {% assign tags_st = "" %}
+
+   {% for uniq_tag in tags %}
+       {% assign cnt = 0 %}
+       {% for blog_post in current_site.blog.posts_published  %}
+            {% for post_tag in blog_post.tags %}
+                {% if uniq_tag ==  post_tag %}
+                    {% assign cnt = cnt | plus:1 %}
+                {% endif %}
+            {% endfor %}
+       {% endfor %}
+       
+   
+         <a href="{{ current_site.url }}/blog?tag={{ uniq_tag | url_encode }}" 
+                  class="blog_categories_row  {% if tags.current == uniq_tag %} blog_categories_row_active {% endif %}">
+             <span class="blog_categories_tag">{{uniq_tag}}</span>
+             <span class="blog_categories_count">{{cnt}}</span>
+         </a>
+   
+
+
+  {% endfor %}
+  </div>

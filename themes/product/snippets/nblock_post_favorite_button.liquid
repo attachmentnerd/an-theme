@@ -1,0 +1,4 @@
+<a href="#" data-favorite-toggle="true" data-favorited="{{ post.favorited? }}" data-favorite-token="{{ post.favorite_token }}" class="post-actions-favorite {% if post.favorited? %}favorited{% endif %}">
+        <span class="post_favotive_true">{{block.settings.is_favorite_text}}</span>
+        <span class="post_favotive_false">{{block.settings.add_to_favorite_text}}</span> 
+</a>

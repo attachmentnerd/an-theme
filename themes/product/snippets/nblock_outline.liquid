@@ -1,0 +1,30 @@
+<style>
+  .category_posts_wrap.collapsed {
+    display: none;
+  }
+</style>
+{% assign collapse = true %}
+{% if block.settings.collapse == "Collapse None" %}
+  {% assign collapse = false %}
+{% endif %}
+
+{% assign next_post = current_product.completion.next_post %}
+
+
+<div class="main-sidebar col flex-fill">
+  {% assign show_posts = true %}
+  {% assign current_post_id = post.id %}
+
+  <div class="product-outline b-{{block.id}}">
+    {% for category in current_product.categories %}
+      {% include "outline1" %}
+    {% endfor %}
+  </div>
+</div>
+{% include "outline_script" %}
+
+<!--
+
+
+
+-->

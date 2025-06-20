@@ -1,0 +1,138 @@
+{% assign show_dashboard = settings.show_dashboard %}
+
+{% assign KJB_show_dashboard = 'show_dashboard' %}
+{% if page != "post" %}
+  <style>
+    .show_only_on_post {
+      display: none;
+    }
+  </style>
+{% endif %}
+{% if page == "post" %}
+  <style>
+    .hide_on_post {
+      display: none;
+    }
+
+    .main-content .sidebar.ssbar-Right {
+      margin-left: 10px;
+    }
+
+    .main-content .sidebar.ssbar-Left {
+      margin-right: 10px;
+    }
+  </style>
+  {% assign show_main_sidebar = settings.sections.p_main_sidebar.settings.show_sidebar_post %}
+{% else %}
+  {% assign show_main_sidebar = settings.sections.p_main_sidebar.settings.show_sidebar_dashboard %}
+{% endif %}
+{% assign main_sidebar_position = settings.sections.p_main_sidebar.settings.position %}
+{% assign main_sidebar_post_position = settings.sections.p_main_sidebar.settings.post_position %}
+{% assign secondary_sidebar_position = settings.sections.p_secondary_sidebar.settings.position %}
+
+{% if page == "search" %}
+  {% assign show_main_sidebar = false %}
+{% endif %}
+<style class="background_images-style">
+
+
+  .background-theme-image-top{
+  top: 0;
+                height: {{ settings.top_image_height }};
+  }
+            
+              .background-theme-image-bottom{
+                bottom: 0;
+                height: {{ settings.bottom_image_height }};
+  }
+  {%- assign style_code = settings.background_images_style -%}
+  {% include "style2vars" %}
+
+  {%- unless custom_selectors == "" -%}
+    {{ custom_selectors }}
+  {%- endunless -%}
+  {%- unless custom_selectors_mobile == "" -%}
+    @media(max-width:768px){
+    {{ custom_selectors_mobile }}
+    }
+  {%- endunless -%}
+  {%- unless custom_selectors_tablet == "" -%}
+    @media(min-width:586px) and (max-width:786px){
+    {{ custom_selectors_tablet }}
+    }
+  {%- endunless -%}
+
+
+</style>
+
+{%- if show_dashboard -%}
+  {% assign active_tab = "dashboard" -%}
+{%- else -%}
+  {% assign active_tab = "modules" -%}
+{%- endif -%}
+
+{%- assign is_fixed_header = "" -%}
+{%- if settings.sections.p_header.settings.is_fixed_header == "true" or settings.sections.p_header.settings.is_fixed_header == true -%}
+  {%- assign is_fixed_header = "is_fixed_header" -%}
+{%- endif -%}
+
+{%- assign theme_type = "" -%}
+{% if settings.theme_type == "discovery" %}
+  {%- assign theme_type = "discovery" -%}
+{% elsif settings.theme_type == "explorer" %}
+  {%- assign theme_type = "explorer" -%}
+{% elsif settings.theme_type == "curiosity" %}
+  {%- assign theme_type = "curiosity" -%}
+{% elsif settings.theme_type == "evolution" %}
+  {%- assign theme_type = "evolution" -%}
+{% endif %}
+
+<div class="p_wrap_out clmn_show_grids-true  {{theme_type}} {{page}} {%if show_main_sidebar == "true" or show_main_sidebar == true %} show_main_sidebar {% endif %} {%if page != "post"%} main_sidebar_position-{{main_sidebar_position}} {%endif%} secondary_sidebar_position-{{secondary_sidebar_position}} main_sidebar_post_position-{{main_sidebar_post_position}} {{is_fixed_header}} mp-{{main_sidebar_position}}" style="display: flex; width: 100%;">
+  {% if show_main_sidebar == "true" or show_main_sidebar == true %}
+    <button class="toggle-sidebar">
+      <i class="far fa-exchange"></i>
+    </button>
+  {% endif %}
+  <div class="p_outline_out">
+    <div class="main_sidebar_wrap show-{{show_main_sidebar}}">
+      {% section "p_main_sidebar" %}
+    </div>
+  </div>
+  <div class="p_contant_out" style="flex:1;">
+    {% section "p_header" %}
+
+    {% include "p_content" %}
+  </div>
+</div>
+<script
+  crossorigin="anonymous"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $('.toggle-sidebar').click(function() {
+    $('.p_outline_out').toggleClass('close-sidebar')
+
+    if ($('.p_outline_out').hasClass('close-sidebar')) {
+      $('#section-p_header .section').addClass('main-sidebar-opened')
+      $('.p_contant_out').addClass('main-sidebar-opened')
+      $('.toggle-sidebar').addClass('sidebar-button-position')
+    } else {
+      $('.p_contant_out').removeClass('main-sidebar-opened')
+      $('.toggle-sidebar').removeClass('sidebar-button-position')
+      $('#section-p_header .section').removeClass('main-sidebar-opened')
+    }
+  })
+  jQuery('.product-outline-category').click(function() {
+    var $posts_wrap = $(this).siblings('.category_posts_wrap')
+    var $chevron = $posts_wrap.siblings('.product-outline-category').find('i')
+    if ($posts_wrap.hasClass('collapsed')) {
+      $posts_wrap.slideDown(200)
+      $posts_wrap.removeClass('collapsed')
+      $chevron.removeClass('fa-chevron-right').addClass('fa-chevron-down')
+    } else {
+      $posts_wrap.slideUp(200)
+      $posts_wrap.addClass('collapsed')
+      $chevron.removeClass('fa-chevron-down').addClass('fa-chevron-right')
+    }
+  })
+</script>

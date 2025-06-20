@@ -1,0 +1,32 @@
+<div class="lesson_sort_wrapper">
+    <select name="lesson sort" id="lesson_sort">
+        <option selected disabled>{{section.settings.sort_text}}</option>
+        <option value="category">Category</option>
+        <option value="name_asc">Title (A - Z)</option>
+        <option value="name_dsc">Title (Z - A)</option>
+        <option value="duration">Duration</option>
+    </select>
+</div>
+
+<script>
+    jQuery(document).ready(function(){
+        var section = $("#section-{{section.id}} section")
+        var lesson_data = create_lesson_object(section, false)
+        var sortSyntax = `{{section.settings.sorting_syntax}}`
+        var custom_sort = []
+        if(sortSyntax != "" && {{section.settings.sort_by_custom}}){
+            custom_sort = customSort(sortSyntax)
+        }
+        $('body').on('change',"#section-{{section.id}} .lesson_sort_wrapper select", function () {
+            console.log('cliccc')
+            sortLesson($(this),lesson_data.lesson_object, lesson_data.lessonHtml, custom_sort)
+        })
+
+        if(custom_sort.length){
+            for(sort of custom_sort){
+                var option = Object.keys(sort)[0]
+                $('#section-{{section.id}} .lesson_sort_wrapper select').append(`<option value="${option.toLowerCase()}">${option}</option>`)
+            }
+        }
+    })
+</script>

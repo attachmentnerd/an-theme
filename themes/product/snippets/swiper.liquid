@@ -1,0 +1,140 @@
+</div>
+           <div class="swiper-but swiper-button-prev"></div>
+           <div class="swiper-but swiper-button-next"></div>
+  </div>
+  
+  <div class="swiper-pagination swiper-pagination-{{section.id}}"></div>
+
+  
+  <style class="tmp-style-{{ section.id}}">
+
+    #section-{{ section.id}} .swiper-wrapper {
+        gap: 20px;
+    }
+
+
+      #section-{{ section.id}} .swiper-slide {
+
+          {% assign clm_precent = 100 | divided_by: section.settings.num_of_clmns_desktop | round  %}
+          width: calc({{clm_precent}}% - 20px)
+
+      }
+
+      @media(max-width:768px) {
+        #section-{{ section.id}} .swiper-slide {
+
+            {% assign clm_precent = 100 | divided_by: section.settings.num_of_clmns_mobile | round  %}
+            width: calc({{clm_precent}}% - 20px)
+
+        }
+      }
+
+      {%- unless tablet_style == "" -%}
+        @media(min-width:586px) and (max-width:786px) {
+          #section-{{ section.id}} .swiper-slide {
+ 
+              {% assign clm_precent = 100 | divided_by: section.settings.num_of_clmns_tablet| round  %}
+              width: calc({{clm_precent}}% - 20px)
+
+          }
+        }
+      {%- endunless -%}
+
+  </style>
+
+ <style>
+    {%- if section.settings.pagination == "No Pagination" -%}
+        .swiper-pagination-{{section.id}}{display:none;}
+    {%- endif -%}
+    {%- if section.settings.pagination == "Desktop Only" -%}
+       @media(max-width:768px) { .swiper-pagination-{{section.id}}{display:none;} }
+    {%- endif -%}
+    {%- if section.settings.pagination == "Mobile Only" -%}
+       @media(min-width:768px) { .swiper-pagination-{{section.id}}{display:none;} }
+    {%- endif -%}
+
+    {%- if section.settings.arrows == "No Arrows" -%}
+        .swiper-container-{{section.id}} .swiper-but{display:none;}
+    {%- endif -%}
+    {%- if section.settings.arrows == "Desktop Only" -%}
+       @media(max-width:768px) { .swiper-container-{{section.id}} .swiper-but{display:none;} }
+    {%- endif -%}
+    {%- if section.settings.arrows == "Mobile Only" -%}
+       @media(min-width:768px) { .swiper-container-{{section.id}} .swiper-but{display:none;} }
+    {%- endif -%}
+ 
+    {%- include "swiper_style" -%}
+
+
+  </style>
+
+  <script>
+  jQuery(document).ready(function(){
+    swiper_{{section.id}}_function();
+  })
+
+  function swiper_{{section.id}}_function(){
+
+  
+
+    $('.swiper-container-{{section.id}} .swiper-button-next').click(function(e){
+        e.stopPropagation();
+        var mySwiper = document.querySelector('.swiper-container-{{section.id}}').swiper;
+        mySwiper.slideNext();
+    });
+
+    $('.swiper-container-{{section.id}} .swiper-button-prev').click(function(e){
+        e.stopPropagation();
+            var mySwiper = document.querySelector('.swiper-container-{{section.id}}').swiper;
+        mySwiper.slidePrev();
+    }); 
+
+   
+    
+    var swiper_{{section.id}} = new Swiper('.swiper-container-{{section.id}}', {
+      effect: '{{section.settings.effect}}' , 
+      speed: {{section.settings.speed}},
+      spaceBetween: {{section.settings.sapce_between_desktop}},
+      {%- if section.settings.centered -%}
+         centeredSlides: true,
+      {% endif %}
+      pagination: {
+        el: '.swiper-pagination-{{section.id}}',
+        clickable: true
+      },
+      {% unless editor  %}
+        {% if section.settings.auto_play %}  
+          autoplay: {
+            delay: {{section.settings.delay}}, 
+          }, 
+        {% endif %}
+      {% endunless %}
+       {% unless editor  %} 
+        loop: {{section.settings.loop}},
+       {% endunless %}
+        breakpoints: {
+            1: {
+                slidesPerView: {{section.settings.num_of_clmns_mobile}},
+                spaceBetween: {{section.settings.sapce_between_mobile}}
+            },
+            760: {
+                slidesPerView: {{section.settings.num_of_clmns_tablet}},
+                spaceBetween: {{section.settings.sapce_between_tablet}} 
+            },
+            1100: {
+                  {%- if section.settings.slide_auto_width -%}
+                    slidesPerView: "auto",
+                  {%- else -%}
+                    slidesPerView: {{section.settings.num_of_clmns_desktop}},      
+                  {%- endif -%}
+                
+                spaceBetween: {{section.settings.sapce_between_desktop}} 
+            }
+        }
+    });
+
+      $('.tmp-style-{{ section.id}}').remove()
+    
+  }
+
+  </script>

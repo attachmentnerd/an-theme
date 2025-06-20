@@ -1,0 +1,57 @@
+{% if card_target %}
+  {% assign card_target = "_blank" %}
+{% else %}
+  {% assign card_target = "" %}
+{% endif %}  
+ 
+<div class="course-item grid-item post-9 lp_course type-lp_course status-publish has-post-thumbnail hentry course_category-computer-science course_tag-general course_tag-programming pmpro-has-access course">
+	<div class="course-wrapper rbst-box fs">
+		<div class="course-thumbnail-wrapper fs   rbst-image">
+			<a href="{{block.settings.card_action}}" class="course-permalink link-secret" target="{{card_target}}">
+				<div class="course-thumbnail">
+					      {% if block.settings.image %} 
+        <img src="{% include "image_patch", img:  block.settings.image %}" width="480"/>
+      {% else %}
+        <img src="{{ "placeholder.png" | asset_url }}" width="480"/>
+      {% endif %}
+					<div class="course-overlay-bg"></div>
+				</div>
+			</a>
+		</div>
+		<div class="course-info fs f1">
+
+			<div class="course-price hide-{{block.settings.hide_price_f45}}">
+				<span class="price">
+					{{ block.settings.price }}
+				</span>
+			</div>
+
+			<h3 class="course-title">
+				<a href="{{block.settings.card_action}}}"  target="{{card_target}}"
+				
+		kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">
+		{{block.settings.title}}
+</a>
+			</h3>
+
+			{% if block.settings.description != "" %}
+				<div class="m_product_desc">
+				<p>{{ block.settings.description | strip_html | truncate: 160 }}</p>
+			</div>
+			{% endif %}
+
+		<div class="tm-button-wrapper m-top-a cta_button1 hide-{{block.settings.hide_cta_p24}}"
+		kjb-settings-id="{{ 'btn_text' | settings_id: section: section, block: block }}" >
+			<a href="{{block.settings.card_action}}}"  target="{{card_target}}"  class="tm-button-link tm-button style-flat tm-button-nm icon-left" role="button">
+				<div class="button-content-wrapper">
+					<span class="button-text"> 
+						{{block.settings.btn_text}}
+					</span> 
+				</div>
+			</a>
+		</div>
+
+
+		</div>
+	</div>
+</div>

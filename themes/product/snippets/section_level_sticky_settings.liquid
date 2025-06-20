@@ -1,0 +1,92 @@
+{%- if section.type == "header" -%}
+    {%- if section.settings.use_sticky_menu == false -%}
+        <script>NO_STICKY_MENU = true;</script> 
+    {%- else -%} 
+        <style>
+
+        :root{
+            --content-width: {{section.settings.content_width}};
+        }
+
+        {%- assign style_code =  section.settings.sticky_menu_style -%}   
+        {% include "style2vars" %}
+
+        .sticky-header{
+            {%- if section.settings.sticky_background_color == blank -%}
+                {% assign bg_preset = section.settings.sticky_background_color_preset %}
+                {% assign t_bg_color = settings[bg_preset] %}
+                {%- if bg_preset != "No Background Color" -%}
+                    background-color: var({{bg_preset}}) !important;
+                {%- endif -%}
+                    {%- else -%}
+            {% assign t_bg_color = section.settings.sticky_background_color %}
+                        background-color: {{section.settings.sticky_background_color}} !important;
+            {%- endif -%}
+
+            {{desktop_style}}
+            
+        }
+
+       {%- unless style_child == "" -%}  
+            .sticky-header > button, .sticky-header > div, .sticky-header > img, .sticky-header > a{ 
+                {{style_child}}
+            } 
+      {%- endunless -%}
+
+
+      {%- unless mobile_style == "" -%}
+      @media(max-width:768px){
+        .sticky-header{
+            {{mobile_style}}
+        }
+      }  
+      {%- endunless -%}
+      {%- unless custom_selectors == "" -%}
+          {{custom_selectors}}
+      {%- endunless -%}
+
+      {%- unless custom_selectors_mobile == "" -%}
+         @media(max-width:768px){
+            {{custom_selectors_mobile}}
+         }
+      {%- endunless -%}
+
+     {%- unless tablet_style == "" and custom_selectors_tablet == ""-%} 
+      @media(min-width:586px) and (max-width:786px){
+        .sticky-header{
+            {{tablet_style}}
+        }
+        {%- unless custom_selectors_tablet == "" -%}
+          {{custom_selectors_tablet}}
+        {%- endunless -%}
+      }
+      {%- endunless -%}
+
+      {% if setion.settings.overlay_opacity != 0 %} 
+            {% assign overlay_bg = section.settings.overlay_color %}
+            
+            .header-top:before{
+                content:"";
+                position:absolute;
+                width:100%;
+                height:100%;
+                left:0;
+                top:0; 
+                {% if section.settings.overlay_gradient %}
+                    {% if overlay_bg contains "rgba" %}
+                      {% assign overlay_bg_zero_r = overlay_bg | split:"," %}
+                      {% assign overlay_bg_zero = overlay_bg | replace:overlay_bg_zero_r[3],"0)"  %}
+                      background:linear-gradient(180deg, {{overlay_bg}} 0%,  {{overlay_bg_zero}} 95%)
+                    {%- else -%}
+                      background:linear-gradient(180deg, rgba(2,0,36,1) 0%,  rgb(0 0 0 / 0%) 95%)
+                    {%- endif -%}
+                {%- else -%}
+                    opacity:{{section.settings.overlay_opacity}}%;
+                    background-color:{{overlay_bg}};
+                {%- endif -%}
+            }
+      {%- endif -%}
+
+        </style>
+    {%- endif -%}
+{%- endif -%}

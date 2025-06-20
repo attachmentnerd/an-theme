@@ -1,0 +1,59 @@
+{% if comment.body contains "#Question Submission" %}
+  {% continue %}
+{% endif %}
+{% assign section = settings.sections.post_comments %}
+
+{% assign comment_author = comment.author.name | downcase %}
+{% assign admins = settings.admin_names | downcase | split: "," %}
+
+{% assign is_admin = false %}
+{% if admins contains comment_author %}
+  {% assign is_admin = true %}
+{% endif %}
+
+{% assign is_author = false %}
+{% if comment.author.id == current_site_user.id %}
+  {% assign is_author = true %}
+{% endif %}
+
+{% assign is_author_or_admin = false %}
+{% if is_admin or is_author %}
+  {% assign is_author_or_admin = true %}
+{% endif %}
+{% if is_author == true or is_reply == true %}
+  {% if comment.body contains "#Private Message: " or is_reply == true %}
+    <div class="comment is_admin_{{is_admin}} is_author_{{is_author}} private-chat" data-comment="{{ comment.id }}">
+      <div class="media">
+        <div class="media-body">
+          <div class="comment-wrap">
+            <div class="commented">
+              <div class="comment_author_details">
+                <div class="comment-avatar">
+                  <img class="comment-img" src="{{ comment.author | avatar_url: 40 }}" />
+                </div>
+                <div class="comment-author">
+                  <div class="comment-name">{{ comment.author.name }}</div>
+                  <div class="comment-date">{{ comment.created_at | local_time_ago }}</div>
+                </div>
+              </div>
+              <div class="comment-body-wrapper">
+                <div class="comment-body" data-comment-body>{{ comment.body | simple_format | replace: '#Private Message: ', '' }}</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comment-reply" data-comment-replies="{{ comment.id }}">
+        {% for comment in comment.comments %}
+          {% include "chat" is_reply: true %}
+        {% endfor %}
+      </div>
+      <div data-comment-reply="{{ comment.id }}"></div>
+    </div>
+  {% else %}
+    {% continue %}
+  {% endif %}
+{% else %}
+  {% continue %}
+{% endif %}

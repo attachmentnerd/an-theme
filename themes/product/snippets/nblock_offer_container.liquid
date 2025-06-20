@@ -1,0 +1,16 @@
+{% assign offer = current_site.find_offer[block.settings.offer_container] %}
+{% if offer %} 
+    {% if block.settings.container_link %}
+        <a href="{{offer.checkout_url}}"  {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>
+    {% endif %}
+        {% include "container_main_loop" %}
+    {% if block.settings.container_link %}
+        </a>
+    {% endif %}
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'offer_container' | settings_id: section: section, block: block }}">
+      Click here to select an offer to display.
+    </div>
+  {% endif %}
+{% endif %}

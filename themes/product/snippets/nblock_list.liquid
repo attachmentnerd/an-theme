@@ -1,0 +1,5 @@
+{% assign text = "text" %}
+{% if is_hero_slider %} 
+   {% assign text = "text_" | append: slider_index  %}
+{% endif  %}
+{{block.settings[text]}} 

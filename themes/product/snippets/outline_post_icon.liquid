@@ -1,0 +1,8 @@
+
+{% if p.video %}
+{% include "p_icon_video" icon_video:"set2" %}
+{% elsif p.assessment %}
+{% include "p_icon_assessment" icon_video:"set2" %}
+{% else %}
+{% include "p_icon_text" icon_video:"set2" %}
+{% endif %}

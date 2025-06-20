@@ -1,0 +1,34 @@
+{%- assign this_clmn_width = "clmn_width_" | append :index  -%}  
+{%- assign this_clmn_width_mobile = "clmn_mobile_width_" | append :index  -%} 
+
+{%- include "clmn_style" level: block, level_str: "block" -%}
+
+    <div class="section-clmn-{{ index }}   container-clmn   clmn-width-{{block.settings[this_clmn_width]}}  clmn-width-{{block.settings[this_clmn_width]}} clmn-width-sm-{{block.settings[this_clmn_width_mobile]}}">
+        {%- if editor -%}   
+          <div class="sub-clmn_label" kjb-settings-id="{{ this_clmn_width | settings_id: section: section,block: block }}">Sub-Wrapper {{ index }}</div>
+        {%- endif -%}
+           
+            {%- for p in prefixes -%}
+                {%- assign blocks_clmn_id = 'clmn' | prepend:p -%}
+                {%- assign block_clmn = block.settings[blocks_clmn_id] | plus:0 -%}
+                {%- assign element_type_id = 'element_type' | prepend:p -%}
+                {%- assign element_type = block.settings[element_type_id] -%}
+               
+                {%- if  block_clmn == index and element_type != "hide"   -%}
+                    {%- include "container_block" prefix: p -%}
+                {%- endif -%}
+            {%- endfor -%}
+
+            {%- unless skip_inner_loop -%}
+                {%- for x in (1..6) -%}
+                    {%- assign position_clmn = 'position_clmn_' | append:x -%}
+                    {%- assign clmn_position = block.settings[position_clmn] | plus:0 -%}
+                    {%- if clmn_position == index  -%}
+                        {%- assign skip_clmns_block = skip_clmns_block | append: "," | append: x -%}
+                        {%- include "create_subclmn" skip_inner_loop: true, index: x -%}
+                    {%- endif -%}
+                {%-  endfor -%}
+            {%- endunless -%}
+
+
+    </div>

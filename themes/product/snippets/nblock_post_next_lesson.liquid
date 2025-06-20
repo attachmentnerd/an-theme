@@ -1,0 +1,113 @@
+<div class="post_next_wrap">
+
+
+  {% if post.next == nil and block.settings.direction == "Next" %}
+    <div class="completed-message" kjb-settings-id="last_post_text">
+      {{ block.settings.last_post_text }}
+    </div>
+  {% endif %}
+
+  {% assign d_post = post.next %}
+  {% if block.settings.direction == "Previous" %}
+    {% assign d_post = post.previous %}
+  {% endif %}
+
+
+  <p class="title">{{ d_post.title }}</p>
+  {% if d_post.poster_image_url %}
+    {% assign post_img = d_post.poster_image_url %}
+  {% else %}
+    {% assign post_img = "placeholder.png" | asset_url %}
+  {% endif %}
+  <img class="img-responsive" src="{{ post_img }}" />
+
+  <p class="side-post-body">{{ d_post.body | strip_html | truncate: 100 }}...</p>
+
+  {% if block.settings.direction == "Next" %}
+    {% if post.next %}
+      <p
+        class="btn btn-default next-lesson-trigger"
+        href="{{ post.next.url }}"
+        kjb-settings-id="{{"next_text" | settings_id: section: section, block: block}}">{{ block.settings.next_text }}</p>
+    {% else %}
+      <a
+        class="btn btn-default"
+        disabled
+        href="#"
+        kjb-settings-id="{{"next_text" | settings_id: section: section, block: block}}">{{ block.settings.next_text }}</a>
+    {% endif %}
+  {% endif %}
+
+
+  {% if block.settings.direction == "Previous" %}
+    {% if post.previous %}
+      <a
+        class="btn btn-default"
+        href="{{ post.previous.url }}"
+        kjb-settings-id="language_next">{{ block.settings.previous_text }}</a>
+    {% else %}
+      <a
+        class="btn btn-default"
+        disabled
+        href="#"
+        kjb-settings-id="language_next">{{ block.settings.previous_text }}</a>
+    {% endif %}
+  {% endif %}
+
+  <script>
+    jQuery(document).ready(function() {
+      var firstTime = true
+      $("body").on("click", ".close-question", function() {
+        $(this).parent().remove()
+      })
+      $("body").on("click", ".next-lesson-trigger", function() {
+        if ($(".questions-wrapper").length) {
+          if ($(".under_media").css("display") == "block" && $(".under_media textarea").val() == "" && firstTime) {
+            var section = $(".under_media")
+              .closest("section")
+              .parent()
+              .attr("id")
+              .split("section-")[1]
+            $(`.post-tab[data-for="${section}"]`).click()
+            var elm = document.querySelector('.p_contant_out')
+            elm.scrollTo({
+              top: $(`#section-${section}`).position().top,
+              left: 0,
+              behavior: "smooth"
+            })
+            firstTime = false
+            var st = `
+            <div class="question-waring">
+              <div class="close-question">
+                <i class="fal fa-times"></i>
+                </div>
+                <span>
+                  You Haven't answered the questions
+                </span>
+            </div>
+            `
+            $("body").append(st)
+
+            $('#section-post_questions').css('border','6px solid var(--accent-color-1)')
+            setTimeout(function() {
+               $('#section-post_questions').css('border','0px solid var(--accent-color-1)')
+            }, 2000)
+            setTimeout(function() {
+              $(".question-waring").remove()
+            }, 5000)
+            return
+          } else if ($(".completion_popup").css("display") == "block" && $(".completion_popup textarea").val() == "" && firstTime) {
+            $(".post-completion").show()
+            firstTime = false
+            return
+          } else {
+            window.location.href = `{{ post.next.url }}`
+          }
+        } else {
+          window.location.href = `{{ post.next.url }}`
+        }
+      })
+    })
+  </script>
+
+</div>

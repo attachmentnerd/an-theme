@@ -1,0 +1,26 @@
+{%- assign icons = block.settings.social_icons | newline_to_br | split: '<br />' -%}
+{%- if is_mobile_menu -%}
+    {%- assign icons = section.settings.mobile_m_social_icons | newline_to_br | split: '<br />' -%}
+{%- endif -%}
+{%- for row in icons -%}
+    {%- assign sIcon = row | split:',' | first | strip -%}
+    {%- assign sUrl = row | split:',' | last  | strip  -%}
+
+    {%- if sIcon contains "doodle " -%}
+        {%- include "social_icons_svgs" -%}
+    {%- else -%}
+
+        {%- if sIcon == "facebook-01" -%}
+            {%- assign sIcon = "fab fa-facebook"  -%}  
+        {%- elsif sIcon == "twitter-01" -%}
+            {%- assign sIcon = "fab fa-twitter"  -%}  
+        {%- elsif sIcon == "instagram-01" -%}
+            {%- assign sIcon = "fab fa-instagram"  -%}
+        {%- elsif sIcon == "linkedin-01" -%}
+            {%- assign sIcon = "fab fa-linkedin"  -%}
+        {% endif  %}
+
+        <a href="{{sUrl}}" class="social-icon {{block.settings.hover_effect}} {{sIcon}}"></a>
+
+    {%- endif -%}
+{%- endfor -%}

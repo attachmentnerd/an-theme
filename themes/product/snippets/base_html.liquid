@@ -1,0 +1,117 @@
+{% include "section_level_sticky_settings" %}
+{% include "base_section_styles" %}
+{%- assign style_code =  section.settings.section_style -%}   
+{% include "style2vars" %} 
+
+{%- assign powered_by_flag = true -%} 
+{%- assign mobile_menu_items = "" -%} 
+{%- if editor and section.name != 'Header'  and section.name != 'Footer'-%}
+  <div class="section_label" kjb-settings-id="{{ "clmn_width_1" | settings_id: section: section}}"><i class="fas fa-cog"></i> {{ section.name }}</div>
+{%- endif -%}
+<section data-iname="{{section.settings.section_name}}"  data-type="{{section.type}}"
+  class="section encore nsection n_{{section.type}} {{a_class}} {% if section.settings.background_fixed %} jarallax {% endif %} {% if section.name == "Sidebar" %} post_sidebar {% endif %}
+  {% include "header_section_class" %}
+  {%- if section.settings.hide_on_desktop == true %}hidden--desktop{% endif -%}
+  {%- if section.settings.hide_on_mobile == true %}hidden--mobile{% endif -%}
+  {%- if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %} {% if section.settings.reveal_event != blank or section.settings.reveal_offset != blank %} reveal {% endif -%}"
+  data-reveal-event="{{ current_site.find_event[section.settings.reveal_event].occurs_at | date: '%Y-%jT%T%:z' }}"
+  data-reveal-offset="{{ section.settings.reveal_offset }}"
+  data-reveal-units="{{ section.settings.reveal_units }}">
+  <div class="sizer {% if section.settings.full_height == true %}sizer--full{% endif %}">
+    {% include "background_video" %}
+    <div class="container {% if section.settings.full_width == true %}container--full{% endif %}">
+      <div class="row nblock_row  clmn_with_auto-false align-items-{{ section.settings.vertical }} justify-content-{{ section.settings.horizontal }} clmns-container">
+        {%- assign number_of_clmns = section.settings.number_of_clmns | plus:1  -%}
+        {%- assign combined_clm_styles = "" -%}
+        {%- assign skip_clmns = "" -%}
+        {%- assign is_hero_slider =  false -%}
+        {%- if section.type == 'hero_slider' -%}
+          {%- assign is_hero_slider =  true -%}
+          {%- assign number_of_slides =  section.settings.number_of_slides | plus:0 -%}
+            <div class="swiper-container-{{section.id}} swiper-container" style="width:100%;" number-of-slides="{{section.settings.number_of_slides}}">
+              <div class="swiper-wrapper {% if section.settings.full_height == true %}sizer--full{% endif %}"> 
+                 {%- for i in (1..number_of_slides) -%}
+                  <div class="hero_slide nblock_row swiper-slide slide_{{i}} {% if section.settings.bg_overlay %}hero_slide_overlay{% endif %} ">
+                    {%-  include "hero_slider_slide" slider_index: i  -%}
+                    {%-  include "base_html_helper" slider_index: i -%}
+                  </div> 
+                {%- endfor -%}  
+              </div>
+           {%-  include "hero_slider_inc" -%}
+        {%- elsif section.type == 'blog_posts' -%}  
+           {%-  include "blog_posts_loop" -%}  
+           
+        {%- elsif section.type == 'p_lessons' -%}   
+           {%-  include "p_lessons_loop" -%} 
+        {%- elsif section.type == 'p_categories' -%}   
+           {%-  include "p_categories_loop" -%} 
+        {%- elsif section.type == 'image_gallery' -%}  
+           {%-  include "image_gallery" -%}  
+           {%- elsif section.type == 'p_user_notes' -%}  
+            {%-  include "p_user_notes" -%} 
+            {%- elsif section.type == 'p_related_posts' -%}  
+              {%-  include "p_related_posts" -%}   
+            {%- elsif section.type == 'p_lesson_search' -%}  
+              {%-  include "p_lesson_search" -%} 
+              {%- elsif section.type == 'post_tabs' -%}  
+                {%-  include "post_tabs" -%} 
+        {% else %}
+           {%-  include "base_html_helper" -%}
+       {%- endif -%}      
+      {%- assign style_code =  section.settings.section_style -%}   
+      {%- include "style2vars" -%}
+      <style>
+      #section-{{section.id}} section{
+          {{desktop_style}}
+      }
+
+      {%- unless mobile_style == "" -%}
+      @media(max-width:768px){
+        #section-{{section.id}} section{
+            {{mobile_style}}
+        }
+      }  
+      {%- endunless -%}
+
+      {%- unless tablet_style == "" -%}
+      @media(min-width:586px) and (max-width:786px){
+        #section-{{section.id}} section{
+            {{tablet_style}}
+        }
+      }
+      {%- endunless -%}
+
+
+      {%- unless custom_selectors == "" -%} 
+          {{custom_selectors}}
+      {%- endunless -%}
+
+      {%- unless custom_selectors_mobile == "" -%} 
+         @media(max-width:768px){
+           {{custom_selectors_mobile}}
+         }
+      {%- endunless -%}    
+
+    {%- unless tablet_style == "" and custom_selectors_tablet == ""-%} 
+     @media(min-width:586px) and (max-width:786px){
+        {{block_selector}}{ {{tablet_style}} }
+
+        {%- unless custom_selectors_tablet == "" -%}
+          {{custom_selectors_tablet}}
+        {%- endunless -%}
+      }
+    {%- endunless -%}
+
+      {{combined_clm_styles}}
+     </style>
+      {%- include "background_shape_inc" -%}
+
+      </div>
+    </div>
+  </div>
+    
+    {%- if section.type == "header" or section.type == "p_header" -%}
+    	{%- include "mobile_menu" -%}
+    {%- endif -%}
+
+</section>

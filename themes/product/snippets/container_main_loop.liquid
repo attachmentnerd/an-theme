@@ -1,0 +1,24 @@
+ 
+     
+{% assign prefixes = "e1_,e2_,e3_,e4_,e5_,e6_,e7_,e8_" | split:"," %}
+
+{% assign number_of_clmns_block = block.settings.number_of_clmns | plus:1  %}
+{% assign combined_block_clm_styles = "" %}
+{% assign skip_clmns_block = "" %}
+
+{% for i in (1..8) %}
+    {% if i == number_of_clmns_block %}
+        {% break %}
+    {% endif %}
+    {% if skip_clmns_block contains i %} {% continue %} {% endif %}
+    {% include "create_subclmn" skip_inner_loop: false, index: i %}
+
+{% endfor %}
+
+
+
+<style>
+    {{combined_block_clm_styles}}
+</style>
+
+

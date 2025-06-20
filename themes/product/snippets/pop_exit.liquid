@@ -1,0 +1,39 @@
+<div id="exit-pop" class="pop pop--{{ color | color_scheme_class }}" style="display: {{ display }};" data-timed-reveal="{{ section.settings.popup_reveal }}" data-cookie-expire="{{ section.settings.frequency }}">
+  <div class="pop__content">
+    <div class="pop__inner">  
+      <div class="pop__body" style="background: {{ color }}">
+        <a class="pop__close">
+          Close
+        </a>
+        {% if section.settings.show_img %}
+          <img src="{{ section.settings.image | image_picker_url: 'exit_pop.jpg'}}" class="img-fluid" kjb-settings-id="{{ 'image' | settings_id: section: section }}"/>
+        {% endif %}
+        <div class="pop__body--inner">
+          <div kjb-settings-id="{{ 'text' | settings_id: section: section }}">
+            {{ section.settings.text }}
+          </div> 
+
+												<div class="elementor-element hide-{{section.settings.hide_cta_na1}} elementor-element-fbd8008 elementor-align-center elementor-tablet-align-center elementor-widget elementor-widget-tm-button" data-id="fbd8008" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;rbstFadeInUp&quot;}" data-widget_type="tm-button.default">
+													<div class="elementor-widget-container">
+														<div class="tm-button-wrapper">
+															<a href="{{section.settings.cta_action_5cf}}" class="tm-button-link tm-button style-flat tm-button-nm icon-left" role="button">
+																<div class="button-content-wrapper">
+																	<span class="button-icon">
+																		<i class="{{section.settings.cta_icon_pj2}}"></i>
+																	</span>
+																	<span class="button-text"
+                                      kjb-settings-id="{{ 'cta_text_edv' | settings_id: section: section }}">
+                                      {{section.settings.cta_text_edv}}
+                                  </span>
+																</div>
+															</a>
+														</div>
+													</div>
+												</div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

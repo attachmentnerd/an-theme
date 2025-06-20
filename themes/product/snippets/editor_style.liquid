@@ -1,0 +1,52 @@
+<style class="editor_style"> 
+    .content-wrapper .encore:not(.nsection) [class*=col-], .content-wrapper .nblock,
+    .p_wrap_out.clmn_show_grids-true .encore:not(.nsection) [class*=col-], .p_wrap_out.clmn_show_grids-true .nblock{
+        /*position: relative;*/
+        outline: 1px solid rgba(83,95,215,.4);
+    }
+  
+    .content-wrapper .encore:not(.nsection) [class*=col-]::before,.content-wrapper .nblock::before,
+    .p_wrap_out.clmn_show_grids-true .encore:not(.nsection) [class*=col-]::before,.p_wrap_out.clmn_show_grids-true .nblock::before {
+        font-size: 12px;
+        position: absolute;
+        top: -20px;
+        left: 0;
+        content: "Block";
+    }
+
+    .content-wrapper .section.encore, .content-wrapper div[data-section-id] > section {
+        position: relative;
+        margin-top: -1px;
+        border: 1px solid rgba(83,95,215,.4);
+    }
+
+     .clmn_show_grids-true .section-clmn:not(.container-clmn){
+        border: 1px dashed #8df591;
+        
+    }
+
+    .clmn_show_grids-true .container-clmn{
+        border: 1px dashed #a9f99f;
+        
+    }
+
+    .clmn_show_grids-true .clmn_label, .clmn_show_grids-true .sub-clmn_label  {
+        display:block !important;
+    }
+
+    .clmn_show_grids-true .content-wrapper .container_block {
+        outline: 1px dashed #c4c4c436 !important ;
+    }
+
+    .addS_sections  .container-clmn {
+        border: unset !important;
+    }
+
+
+    .addS_layover_wrap .section-clmn,.page_preview_wrap  .section-clmn,.page_preview_wrap .container-clmn, .addS_layover_wrap .container-clmn  {
+        border: unset !important;
+    }
+
+
+    
+</style>

@@ -1,0 +1,1364 @@
+
+{% include "base_html" %}
+
+{% schema %}
+{
+  "name": "Category Header",
+ 
+  "elements": [
+    {
+      "type": "text",
+      "id": "section_name",
+      "label": "Section Name",
+      "default": ""
+     },
+      {
+          "type": "grid",
+          "id": "width",
+          "label": "Container Width",
+          "default": "6"
+      },
+      {
+          "type": "grid",
+          "id": "mobile_width",
+          "label": "Container Width Mobile",
+          "default": "12"
+      },
+      {
+       "type": "textarea",
+       "id": "section_style",
+       "label": "Section Style",
+       "default": "/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n"
+     }    
+  ],   
+ 
+  "groups": [
+    {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "select",
+        "label": "Background Color",
+        "id": "background_color_preset",
+        "options": [
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },     
+          {
+            "value": "No Background Color",
+            "label": "No Background Color"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "label": "Custom Background Color",
+        "id": "background_color",
+        "allow_blank": true,
+        "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+      },
+      {
+        "type": "select",
+        "id": "bg_type",
+        "label": "Background Media Type",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "image",
+            "label": "Image"
+          },
+          {
+            "value": "video",
+            "label": "Video"
+          }
+        ]
+      },
+      {
+        "type": "video",
+        "id": "bg_video",
+        "label": "Background Video"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background Image",
+        "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+        "fit": "max",
+        "width": 3000,
+        "height": 3000
+      },
+      {
+        "type": "select",
+        "id": "bg_position",
+        "label": "Background Image Position",
+        "default": "center center",
+        "info": "Positioning of the background image.",
+        "options": [
+          {"value": "left top", "label": "Left Top"},
+          {"value": "left center", "label": "Left Center"},
+          {"value": "left bottom", "label": "Left Bottom"},
+          {"value": "right top", "label": "Right Top"},
+          {"value": "right center", "label": "Right Center"},
+          {"value": "right bottom", "label": "Right Bottom"},
+          {"value": "center top", "label": "Center Top"},
+          {"value": "center center", "label": "Center Center"},
+          {"value": "center bottom", "label": "Center Bottom"}
+        ]
+      },
+
+      {
+        "type": "radio",
+        "id": "bg_size",
+        "label": "Background Size",
+        "default": "cover",
+        "options": [
+          {"value": "contain", "label": "Contain"},
+          {"value": "cover", "label": "Cover"}
+        ]
+      },
+      
+      {
+        "type": "checkbox",
+        "id": "bg_repeat",
+        "label": "Repeat Background",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "id": "bg_precise_position",
+        "label": "Precise Background position - exmp:30% 50%",
+        "default": ""
+      },
+      {
+        "type": "checkbox",
+        "id": "bg_mobie_hide",
+        "label": "Hide Background on mobile",
+        "default": "false"
+      },
+      { 
+        "type": "checkbox",
+        "id": "background_fixed",
+        "label": "Fixed Background Image (Parallax)",
+        "default": "true",
+        "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+      }
+    ]
+  },
+    {
+    "name": "Desktop Layout",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "hide_on_desktop",
+        "label": "Hide Section",
+        "default": "false",
+        "info": "This will hide this section on desktop."
+      },
+      {
+        "type": "spacer",
+        "id": "padding_desktop",
+        "label": "Desktop Section Padding",
+        "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+        "placeholder": {
+          "top": "100",
+          "right": "40",
+          "bottom": "100",
+          "left": "40"
+        }
+      },
+      {
+        "type": "text",
+        "id": "content_width",
+        "label": "Content Width",
+        "default": "",
+        "info": "Leave blank to use theme default."
+      },
+      {
+        "type": "checkbox",
+        "id": "equal_height",
+        "label": "Equal Height Blocks",
+        "default": "false",
+        "info": "Make this section's blocks equal height."
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make Section Full Width",
+        "default": "false",
+        "info": "This section will fill the full width of the browser window."
+      },
+      {
+        "type": "checkbox",
+        "id": "full_height",
+        "label": "Make Section Full Height",
+        "default": "false",
+        "info": "This section will fill the full height of the browser window."
+      }
+    ]
+  },
+    {
+      "name": "Image Placeholders",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "image_placeholders",
+          "label": "Image Placeholders",
+          "default": ""
+        }
+      ]
+    }
+  ],
+  
+  "blocks": [
+    { 
+    "type": "clmn",
+    "name": "Column",
+    "groups": [
+    ],
+    "elements": [
+        {
+            "type": "grid",
+            "id": "clmn_width",
+            "label": "Width",
+            "default": "6"
+          },
+          {
+            "type": "grid",
+            "id": "clmn_mobile_width",
+            "label": "Mobile Width",
+            "default": "12"
+          },
+          {
+            "type": "select",
+            "id": "position_clmn",
+            "label": "Position (container)",
+            "default": "0",
+            "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+          },
+          {
+            "type": "textarea",
+            "id": "clmn_style",
+            "label": "Style",
+            "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+          }
+    ]
+  },
+    { 
+    "type": "text",
+    "name": "Text",
+    "groups": [
+      {
+    "name": "Text Animation",
+    "elements": [
+      {
+        "type": "select",
+        "id": "animation_effect",
+        "label": "Animation Effect",
+        "default": "none",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Count Up", "value": "Count Up" },
+          { "label": "Effect 1", "value": "1" },
+          { "label": "Effect 2", "value": "2" },
+          { "label": "Effect 3", "value": "3" },
+          { "label": "Effect 6", "value": "6" },
+          { "label": "Effect 7", "value": "7" },
+          { "label": "Effect 9", "value": "9" },
+          { "label": "Effect 10", "value": "10" },
+          { "label": "Effect 11", "value": "11" },
+          { "label": "Effect 12", "value": "12" },
+          { "label": "Effect 13", "value": "13" },
+          { "label": "Effect 14", "value": "14" },
+          { "label": "Effect 16", "value": "16" }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_animation_loop",
+        "label": "Run in loop",
+        "default": "false"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "select",
+        "id": "text_source",
+        "label": "Text Source",
+        "default": "category_title",
+        "options":[
+            { 
+                "value":"text",
+                "label":"Custom Text"
+            },
+            { 
+                "value":"category_title",
+                "label":"Category Title"
+            },
+            { 
+                "value":"category_description",
+                "label":"Category Description"
+            },
+            { 
+                "value":"number_of_lessons",
+                "label":"Number of Lessons"
+            },
+            { 
+                "value":"total_duration",
+                "label":"Total Duration"
+            }
+        ]
+      }, 
+      {
+        "type": "text",
+        "label": "Truncate Content (Characters Limit)",
+        "id": "truncate_content",
+        "default": "500"
+      },
+      {
+        "type": "rich_text",
+        "label": "Custom Text",
+        "id": "text",
+        "default": "Lorem ipsum dolor sit amet"
+      },
+      {
+        "type": "checkbox",
+        "id": "link_to_category",
+        "label": "Link To Category",
+        "default":  false
+    },
+
+    {
+        "type": "text",
+        "label": "Postfix",
+        "id": "postfix",
+        "default": ""
+      }, 
+    
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\ncolor:#444;\nfont-size:18px; \n\n\n/* -- Mobile Style --*/\n\n  "
+      }
+    ]
+  },
+    { 
+    "type": "image",
+    "name": "Image / Icon",
+    "groups": [
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "select",
+        "id": "image_source",
+        "label": "Image Source",
+        "default": "Post Image",
+        "options":[
+            { 
+                "value":"Custom Image",
+                "label":"Custom Image"
+            },
+            { 
+                "value":"Post Image",
+                "label":"Post Image"
+            }
+        ]
+      },
+      
+      {
+        "type": "image_picker",
+        "label": "Image",
+        "id": "image",
+        "default": "https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png"
+      },
+      {
+        "type": "checkbox",
+        "id": "link_to_post",
+        "label": "Link To Post",
+        "default":  false
+     },
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+    "type": "text",
+    "label": "Alt tag",
+    "id": "image_alt",
+    "default": ""
+},
+{
+    "type": "range",
+    "id": "image_radius",
+    "label": "Image Radius",
+    "default": "0",
+    "min": "0",
+    "max": "1000"
+},    
+{
+    "type": "header",
+    "content": "Icon"
+},
+{
+    "type": "checkbox",
+    "label": "Use Icon instead",
+    "id": "use_icon",
+    "default": ""
+},
+{
+    "type": "text",
+    "label": "Icon ID / SVG code / URL",
+    "id": "icon_id",
+    "default": "fas fa-chalkboard-teacher"
+},
+{
+    "type": "color",
+    "label": "Icon Color",
+    "id": "icon_color",
+    "allow_blank":"true",
+    "default": ""
+},
+{
+    "type": "range",
+    "id": "icon_size",
+    "label": "Icon Size",
+    "default": "30",
+    "min": "5",
+    "max": "200"
+}, 
+{
+    "type": "checkbox",
+    "label": "Mask Image",
+    "id": "mask_image",
+    "default": "false"
+},  
+{
+    "type": "text",
+    "label": "Mask - Preset Shape / SVG Code ",
+    "id": "mask_preset_shape",
+    "default": ""
+},
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/ \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+
+    ]
+  }, 
+    { 
+    "type": "custom_code",
+    "name": "Custom Code",
+    "groups": [
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Custom Code"
+      },
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "textarea",
+        "id": "custom_code",
+        "label": "Custom Code",
+        "default": ""
+      },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/ \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+    ]
+  }, 
+    { 
+    "type": "button",
+    "name": "Button",
+    "groups": [
+      
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+    "type": "select",
+    "id": "button_preset",
+    "label": "Button preset",
+    "default": "p1_",
+    "options":[
+        { 
+            "value":"p1_",
+            "label":"Preset 1"
+        },
+        { 
+            "value":"p2_",
+            "label":"Preset 2"
+        },
+        { 
+            "value":"p3_",
+            "label":"Preset 3"
+        },
+        { 
+            "value":"p4_",
+            "label":"Preset 4"
+        }
+    ]
+  },
+  {
+    "type": "checkbox",
+    "id": "inherit_defaults",
+    "label": "Inherit Defaults",
+    "default": true
+    },
+ {
+    "type": "text",
+    "id": "button",
+    "label": "text",
+    "default": "Sign Up"
+   },
+   
+   {
+    "type": "action",
+    "id": "cta_action",
+    "label": "Action",
+    "default": "#"
+   },
+   {
+    "type": "checkbox",
+    "id": "in_new_tab",
+    "label": "Open in new tab",
+    "default": "false"
+   }, 
+   
+  {
+    "type": "checkbox",
+    "id": "inherit_defaults",
+    "label": "Inherit Defaults",
+    "default": true
+    },
+   {
+    "type": "header",
+    "content": "Overwrite defaults."   
+  },
+   {
+    "type": "checkbox",
+    "id": "cta_outline",
+    "label": "Outline Only",
+   "default": "false"
+   },
+   {
+    "type": "color",
+    "id": "cta_bg_color",
+    "label": "Background color",
+     "allow_blank": true
+   },
+   {
+    "type": "color",
+    "id": "cta_color",
+    "label": "Color",
+     "allow_blank": true
+   },
+
+   {
+    "type": "text",
+    "id": "cta_min_width",
+    "label": "Minimum width",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_min_height",
+    "label": "Minimum height",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_font_size",
+    "label": "Font size",
+    "default": ""
+   },
+
+   {
+    "type": "text",
+    "id": "cta_min_width_mobile",
+    "label": "Minimum width - Mobile",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_min_height_mobile",
+    "label": "Minimum height - Mobile",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_font_size_mobile",
+    "label": "Font size - Mobile",
+    "default": ""
+   },
+
+   
+   {
+    "type": "text",
+    "id": "cta_border_width",
+    "label": "Border width (outine) ",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_border_radius",
+    "label": "Button radius",
+    "default": ""
+   },
+   
+   {
+    "type": "select",
+    "id": "cta_hide_icon",
+    "label": "Hide Icon",
+    "default": "Use Default",
+    "options":[
+        { 
+        "value":"Use Default",
+        "label":"Use Default"
+        },
+        { 
+            "value":"true",
+            "label":"Hide"
+        },
+        { 
+            "value":"false",
+            "label":"Show"
+        }
+    ]
+  },
+   {
+    "type": "select",
+    "id": "icon_position",
+    "label": "Icon Position",
+    "default": "default",
+    "options":[
+        { 
+            "value":"default",
+            "label":"Default"
+        },
+        { 
+            "value":"left",
+            "label":"Left"
+        },
+        { 
+            "value":"right",
+            "label":"Right"
+        }
+    ]
+  },
+   {
+    "type": "text",
+    "id": "cta_icon",
+    "label": "Icon ID",
+    "default": ""
+   } ,
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\nmargin-left:5px; \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+
+    ]
+  },
+    { 
+    "type": "text_n_icon",
+    "name": "Text and Icon",
+    "groups": [
+      {
+    "name": "Text Animation",
+    "elements": [
+      {
+        "type": "select",
+        "id": "animation_effect",
+        "label": "Animation Effect",
+        "default": "none",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Count Up", "value": "Count Up" },
+          { "label": "Effect 1", "value": "1" },
+          { "label": "Effect 2", "value": "2" },
+          { "label": "Effect 3", "value": "3" },
+          { "label": "Effect 6", "value": "6" },
+          { "label": "Effect 7", "value": "7" },
+          { "label": "Effect 9", "value": "9" },
+          { "label": "Effect 10", "value": "10" },
+          { "label": "Effect 11", "value": "11" },
+          { "label": "Effect 12", "value": "12" },
+          { "label": "Effect 13", "value": "13" },
+          { "label": "Effect 14", "value": "14" },
+          { "label": "Effect 16", "value": "16" }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_animation_loop",
+        "label": "Run in loop",
+        "default": "false"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "select",
+        "id": "text_source",
+        "label": "Text Source",
+        "default": "category_title",
+        "options":[
+          { 
+              "value":"text",
+              "label":"Custom Text"
+          },
+          { 
+              "value":"category_title",
+              "label":"Category Title"
+          },
+          { 
+              "value":"category_description",
+              "label":"Category Description"
+          },
+          { 
+              "value":"number_of_lessons",
+              "label":"Number of Lessons"
+          },
+          { 
+              "value":"total_duration",
+              "label":"Total Duration"
+          }
+        ]
+      }, 
+      {
+        "type": "text",
+        "label": "Truncate Content (Characters Limit)",
+        "id": "truncate_content",
+        "default": "500"
+      },
+      {
+        "type": "rich_text",
+        "label": "Text",
+        "id": "text",
+        "default": "Lorem ipsum dolor sit amet"
+      },
+      {
+        "type": "checkbox",
+        "id": "link_to_category",
+        "label": "Link To Category",
+        "default":  false
+     },
+     {
+        "type": "text",
+        "label": "Postfix",
+        "id": "postfix",
+        "default": ""
+      }, 
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  }, 
+      {  
+          "type": "text",
+          "label": "Icon ID / SVG code / URL",
+          "id": "icon",
+          "default": "far fa-sign-in-alt"
+      },      
+      {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon Position",
+          "default": "Left",
+          "options":[
+              { 
+                  "value":"left",
+                  "label":"Left"
+              },
+              { 
+                  "value":"right",
+                  "label":"Right"
+              }
+          ]
+      },   
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\ncolor:#444;\nfont-size:18px; \n\n\n/* -- Mobile Style --*/\n\n   "
+      }
+    ]
+  },
+    { 
+    "type": "course_progress",
+    "name": "Progress",
+    "groups": [   
+        {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+    ], 
+    
+    "elements": [
+        
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+        {
+            "type": "select",
+            "id": "progress_type",
+            "label": "Progress Type",
+            "default": "None",
+            "options": [
+                {"value": "None", "label": "None"},
+                {"value": "Bar", "label": "Bar"}
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "show_percent",
+            "label": "Show Percent",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "percent_text",
+            "label": "Percent Text",
+            "default": "Completed"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_completed_count",
+            "label": "Show Completed Posts Count",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "posts_count_text",
+            "label": "Posts Count Text",
+            "default": "Posts Completed"
+        },
+        
+
+
+
+        {
+            "type": "textarea",
+            "id": "style",
+            "label": "Style",
+            "default": "/* -- Desktop Style --*/\n"
+        }
+    ]
+  }
+  ], 
+
+    "presets": [
+      {"name":"Category List Curiosity 2","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"100","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"4","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"Mobile and Desktop","arrows":"Desktop Only","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"category list curiosity 2","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"6","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 40px;\nbackground: var(--bg-color-2);\n/* -- Mobile Style --*/\norder: 2;\npadding: 20px 10px;\n","clmn_width_2":"6","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"10034807"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 40px;\nbackground: var(--bg-color-2);\n/* -- Mobile Style --*/\norder: 2;\npadding: 20px 10px;\n"}},{"hidden":"true","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#fff;\nfont-size:12px; \npadding: 3px 15px;\nbackground: var(--accent-color-2);\nborder-radius: 25px;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"text","truncate_content":"500","text":"<p>Completed</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-check","icon_position":"left","style":"<image-hover>undefined</image-hover>\n/* -- Desktop Style --*/\ndisplay: none;\nmargin:0 0 10px 0px;\nborder-radius: 25px;\nbackground: var(--accent-color-1);\npadding:3px 15px 3px 15px;\nfont-size:12px;\ncolor:#fff;\n/* -- Custom Selectors --*/\n.completed #this-block{\ndisplay:block;\n}\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:28px; \nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\nfont-size: 22px;\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"200","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\n\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-clock","icon_position":"left","style":"/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\ncolor:#fff;\nfont-size:14px; \npadding: 5px 20px;\nbackground: rgb(0 0 0 / 70%);\nborder-radius: 25px;\nposition: absolute;\ntop: 10px;\nright: 10px;\n/* -- Mobile Style --*/\n\n   ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n#this-block .progress-bar{\nmargin: 0;\nborder-radius: 0;\n}\n#this-block .progress-bar:before, #this-block .progress-bar:after{\nborder-radius: 0;\n}","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:0;\nleft: 0;\nfont-size:16px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n[Favorite]\n#this-block .fav{\nposition: absolute;\ntop: 10px;\nleft: 10px;\nwidth: 35px;\nheight: 35px;\nborder-radius: 50px;\nbackground: var(--accent-color-1);\ndisplay: none;\nalign-items: center;\njustify-content: center;\n}\n.favorited #this-block .fav{\ndisplay: flex;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"far fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+      {"name":"Category List Curiosity 1","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"100","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n\n/* -- Custom Selectors --*/\n#this-section .locked{\nopacity: 0.8;\n}","section_style":"/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"4","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"Mobile and Desktop","arrows":"Desktop Only","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"category list curiosity 1","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"6","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\npadding: 0;\nmargin: 20px 0;\norder: 2;\n","clmn_width_2":"6","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nalign-content: center;\nborder-radius: 15px;\noverflow: hidden;\n\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"--bg-color-1","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"22385676"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\npadding: 0;\nmargin: 20px 0;\norder: 2;\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor:var(--text-color-1);\nfont-size:25px; \nfont-weight: 500;\nmargin-bottom: 15px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"200","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:14px;\nmargin-bottom: 15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor: #000;\nfont-size:13px;\nbackground-color: var(--accent-color-2);\ntext-align: center;\npadding: 4px 18px 4px 18px;\nborder-radius:15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-clock","icon_position":"left","style":"/* -- Desktop Style --*/\nfont-size:12px;\ncolor: var(--text-color-1);\nopacity: 0.6;\nmargin:0px 0px 0px 25px;\n/* -- Mobile Style --*/\nmargin:0px 0px 0px 10px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nalign-content: center;\nborder-radius: 15px;\noverflow: hidden;\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"image","settings":{"image_source":"Custom Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"6","mobile_width":"12","auto_width":true,"image_radius":"0","icon_id":"fas fa-play","icon_size":"12","mask_image":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\nbottom:0px;\nleft:0px;\nfont-size:12px;\ncolor: #FFF;\nbackground: #000;\nwidth: 50px;\nheight: 50px;\nborder-radius: 0px 10px 0px 0;\ndisplay: flex;\nalign-items: center;\njustify-content: center;\n/* -- Mobile Style --*/\nwidth: 50px;\nheight: 50px;\n/* -- Custom Selectors --*/\n","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":true,"icon_color":"#ffffff","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"text","truncate_content":"500","text":"<p>Completed</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-check","icon_position":"left","style":"/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\nposition: absolute;\ntop: 0;\nright: 0;\npadding: 10px 20px;\nbackground: var(--accent-color-1);\nborder-radius: 0 0 0 15px;\ncolor: #fff;\ndisplay: none;\n/* -- Mobile Style --*/\n\n/* -- Custom Selectors --*/\n.completed #this-block{\ndisplay: block;\n}","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Custom Selectors --*/\n#this-block .progress-bar{\nmargin: 0;\nmargin-left: 50px;\n}\n\n#this-block .progress-bar:before, #this-block .progress-bar:after{\nborder-radius: 0;\n}","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:10px;\nleft:10px;\nfont-size:25px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n.favorited #this-block .fav-icon{\ncolor:#FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"fas fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+      {"name":"Category List Curiosity 3","type":"p_lessons","category":"Content","settings":{"width":"6","mobile_width":"12","posts_limit":"100","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 10px 0 0;\nflex-direction: column;\n/* -- Custom Selectors --*/\n#this-section .subcategory_title{\nmax-width: 100%;\nflex: 100%;\n}","section_style":"/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"2","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"No Arrows","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"category list curiosity 3","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"12","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n","clmn_width_2":"12","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"49796611"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nheight: 100%;\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\nfont-size:12px;\ncolor: #000;\npadding: 2px 5px;\nposition: absolute;\ntop: 10px;\nleft: 10px;\nbackground: #fff;\nwidth: auto;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#FFFFFF;\nfont-size:12px;\nbackground-color: var(--accent-color-2);\ntext-align: center;\npadding:3px 10px 3px;\nposition: absolute;\nbottom: 10px;\nleft: 5px;\ntext-transform: uppercase;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"text","truncate_content":"500","text":"<p>Completed</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-check","icon_position":"left","style":"/* -- Desktop Style --*/\nfont-size:12px;\ncolor: #000;\npadding: 2px 5px;\nposition: absolute;\ntop: 10px;\nright: 10px;\nbackground: #fff;\ndisplay: none;\n/* -- Custom Selectors --*/\n.completed #this-block{\ndisplay: block\n}\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n[Progress bar]\n#this-block .progress-bar, #this-block .progress-bar-fill{\nmargin: 0;\nheight: 2px;\n}\n#this-block .progress-bar:before, #this-block .progress-bar:after{\nborder-radius: 0;\n}\n#this-block .progress-bar:before{\nbackground: rgb(0 0 0 / 10%)\n}\n#this-block .progress-bar:after{\nbackground: var(--accent-color-1)\n}\n[Locked]\n.locked #this-block{\ndisplay: none;\n}","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"progress-bar\"></div>\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:22px;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"200","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:14px;\nmargin-bottom: 15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":true,"button":"Watch Lesson","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":"Use Default","icon_position":"default","style":"/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\nmargin-top: auto;\n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","clmn":"2","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+      {"name":"Category List Curiosity 4","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"100","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"4","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"Mobile and Desktop","arrows":"Desktop Only","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"category list curiosity 4","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"6","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 0;\n/* -- Mobile Style --*/\npadding: 20px 10px;\norder: 2;\n","clmn_width_2":"6","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: center;\nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"83496963"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center;\nalign-content: center;\nposition: relative;\npadding: 20px 40px 20px 0;\n/* -- Mobile Style --*/\npadding: 20px 10px;\norder: 2;\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:12px; \npadding: 2px 10px;\nbackground: var(--bg-color-2);\nborder-radius: 25px;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:28px; \nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"200","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nborder-bottom: 1px solid #ccc;\npadding-bottom: 15px;\nmargin-bottom: 15px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":true,"button":"Watch Lesson","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":"Use Default","icon_position":"default","style":"/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\nmargin-left:5px; \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","clmn":"1","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-clock","icon_position":"left","style":"/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nopacity: 0.6;\nfont-size:12px; \nmargin-left: 20px;\n\n\n/* -- Mobile Style --*/\n\n   ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"6","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-content: center;\nposition: relative;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/\nheight: 100%;\n/* -- Custom Selectors --*/\n#this-block img{\nheight:100%;\nobject-fit:cover;\n}\n.completed #this-block img {\nfilter:grayscale(1);\n}\n","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\nposition: relative;\nz-index: 4;\n/* -- Custom Selectors --*/\n[Favorite]\n#this-block .fav{\nposition: absolute;\ntop: 10px;\nright: 10px;\nwidth: 35px;\nheight: 35px;\nborder-radius: 50px;\ncolor: #fff;\nbackground: var(--accent-color-1);\ndisplay: flex;\nalign-items: center;\njustify-content: center;\n}\n.favorited #this-block .fav{\nbackground: #FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"far fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\nz-index: 4\n/* -- Custom Selectors --*/\n#this-block .progress-bar{\nmargin: 0;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-check","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nwidth: 100%;\ntop: 0;\nheight: 100%;\nbackground-color:rgba(0, 0, 0, 0.34);\ndisplay: none;\nalign-items: center;\njustify-content: center;\nz-index: 3;\n/* -- Custom Selectors --*/\n.completed #this-block{\ndisplay:flex;\n}\n#this-block i{\nbackground-color:#fff;\npadding:32px 32px 32px 32px;\nborder-radius:100%;\ncolor:#000 !important;\nopacity:0.7;\nposition:relative;\n}\n#this-block i:before{\ncontent:\"\\f00c\";\nposition:absolute;\nleft:18px;\ntop:20px;\n}\n","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":true,"icon_color":"#ffffff","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+      {"name":"Category List Discovery 1","type":"p_lessons","category":"Content","settings":{"width":"12","mobile_width":"12","posts_limit":"1000","offset":"0","link_to_post":true,"container_style":"<image-hover>undefined</image-hover>\n/* -- Desktop Style --*/\nmargin:20px 0px 0px 0px;\n","section_style":"<image-hover>undefined</image-hover>\n/* -- Custom Selectors --*/\n[Category Wrapper]\n#this-section .blog_post_container{\npadding:30px 30px 30px 30px;\nbackground:var(--bg-color-2);\nmargin-bottom:10px;\nborder-radius:10px;\nflex-wrap:wrap;\n}\n[Category Heading]\n#this-section .blog_section_heading{\nfont-size:32px;\n}\n/* -- Custom-Selectors Mobile --*/\n#this-section .blog_post_container{\npadding:20px 20px 20px 20px;\n}\n","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"1","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"Mobile and Desktop","arrows":"Desktop Only","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"category list discovery 1","section_heading":"<h3 style=\"font-weight: 500; font-size: 32px;\">Class Categories</h3>","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"8","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\norder: 2;\nmargin-top: 20px;\npadding-right: 0;","clmn_width_2":"4","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 10px;\noverflow: hidden;\norder: 1;\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"84585650"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"8","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \npadding-right: 40px;\nalign-content: center;\n/* -- Mobile Style --*/\norder: 2;\nmargin-top: 20px;\npadding-right: 0;"}},{"hidden":"false","type":"image","settings":{"image_source":"Custom Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"6","mobile_width":"12","auto_width":true,"image_radius":"0","icon_id":"<svg class=\"complete-check\" version=\"1.1\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 500 500\">     <circle id=\"XMLID_1_\" cx=\"250\" cy=\"250\" r=\"244.3\" style=\"fill:#62b020;\"></circle>     <path id=\"path54\" style=\"fill:#fff;\" d=\"M216,348.4l-90.9-90.8l28.7-28.7l61.3,61.2l130.2-138.5l29.6,27.8L216,348.4\" fill=\"var(--text-color-1)\"></path>   </svg>","icon_size":"15","mask_image":false,"style":"/* -- Desktop Style --*/\nmargin:0px 10px 15px 0px;\nwidth:25px;\ndisplay:none;\n/* -- Custom Selectors --*/\n.progress-100 #this-block ,.progress-90 #this-block,.progress-80 #this-block  {\ndisplay:block;\n}\n.completed #this-block {\ndisplay:block;\n}\n","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":true,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>LESSONS 1</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor: #000;\n\nfont-size:12px;\nbackground-color:var(--accent-color-2);\ntext-align: center;\npadding: 3px 15px 3px 15px;\nborder-radius:15px;\nmargin-bottom: 15px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor:var(--text-color-1);\nfont-size:32px;\nmargin-bottom: 10px;\n/* -- Mobile Style --*/\nfont-size: 24px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"100","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:16px;\nmargin-bottom: 15px;\n\n/* -- Mobile Style --*/\nfont-size: 14px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":true,"button":"Watch Video","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":"Use Default","icon_position":"default","style":"/* -- Button Text --*/\n\n/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","clmn":"1","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"4","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \nborder-radius: 10px;\noverflow: hidden;\norder: 1;\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"font-size:12px;\ncolor: #fff;\npadding: 2px 10px;\nbackground: rgb(0 0 0 / 80%);\nwidth: auto;\nborder-radius: 50px;\nposition: absolute;\ntop: 10px;\nright: 10px;\nfont-weight: 600;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nz-index:9;\ntop:10px;\nleft:20px;\nfont-size:25px;\ncolor: #FFF;\n/* -- Custom Selectors --*/\n.favorited .fav-icon{\ncolor:#FF2A2A;\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"fav\">\n<i class=\"fas fa-heart fav-icon\"></i>\n</div>","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"<image-hover>undefined</image-hover>\n/* -- Desktop Style --*/\nposition:absolute;\nbottom:-5px;\n/* -- Custom Selectors --*/\n#this-section .progress-bar{\nbackground-color:#D3D3D3;\n}\n#this-section .progress-bar:after{\nbackground:var(--accent-color-1);\n}\n","link_type":"no link","action":"#","clmn":"2","custom_code":"<div class=\"progress-bar\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+      {"name":"Category List Discovery 4","type":"p_lessons","category":"Content","settings":{"width":"6","mobile_width":"12","posts_limit":"100","offset":"0","link_to_post":true,"container_style":"/* -- Desktop Style --*/\nmargin:20px 10px 0 0;\nflex-direction: column;\n/* -- Custom Selectors --*/\n#this-section .subcategory_title{\nmax-width: 100%;\nflex: 100%;\n}","section_style":"/* -- Desktop Style --*/\n\n/* -- Mobile Style --*/\n/* -- Custom Selectors --*/\n[Category Wrapper]\n#this-section .blog_post_container{\npadding: 20px;\nbackground: var(--bg-color-2);\nmargin-bottom: 10px;\nborder-radius: 10px;\nflex-wrap: wrap;\n}","swiper_clmn":"1","auto_play":true,"delay":"5000","speed":"500","loop":true,"strip_margin":true,"num_of_clmns_desktop":"2","sapce_between_desktop":"20","num_of_clmns_tablet":"2","sapce_between_tablet":"10","num_of_clmns_mobile":"1","sapce_between_mobile":"0","pagination":"No Pagination","arrows":"No Arrows","effect":"slide","swiper_style":"/* -- Container Style Desktop -- */\n\n\n/* -- Wrapper Style Desktop -- */\n\n\n/* -- Container Style Mobile -- */\n\n\n/* -- Wrapper Style Mobile -- */\n\n\n","view_all_text":"<p>View All</p>","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":true,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"hide_on_mobile":false,"section_name":"category list discovery 4","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"12","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nborder-radius: 10px;\noverflow: hidden;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n","clmn_width_2":"12","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: flex-start; \nflex: 1;\ndisplay: flex;\n\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"No Background Color","padding_desktop":{"top":"50","left":"30","right":"30","bottom":"50"},"reveal_units":"seconds","kjbid":"20606808"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: center;\nalign-items: center; \nalign-content: center;\nposition: relative;\nborder-radius: 10px;\noverflow: hidden;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":false,"clmn":"1","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"video_duration","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\nfont-size:12px;\ncolor: #fff;\npadding: 2px 8px;\nborder-radius: 25px;\nposition: absolute;\ntop: 10px;\nright: 10px;\nbackground: rgb(0 0 0 / 80%);\nwidth: auto;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\nposition: absolute;\nbottom: 0;\n/* -- Custom Selectors --*/\n[Progress Bar]\n#this-block .progress-bar, #this-block .progress-bar-fill{\nmargin: 0;\nheight: 4px;\n}\n#this-block .progress-bar:before, #this-block .progress-bar:after{\nborder-radius: 0;\n}\n#this-block .progress-bar:before{\nbackground: rgb(0 0 0 / 10%)\n}\n#this-block .progress-bar:after{\nbackground: var(--accent-color-1)\n}\n[Locked]\n.locked #this-block{\ndisplay: none;\n}","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"progress-bar\"></div>\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"12","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: flex-start; \nflex: 1;\ndisplay: flex;\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"text","settings":{"text_source":"post_category","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"style":"/* -- Desktop Style --*/\ncolor:#FFFFFF;\nfont-size:12px;\nbackground-color: var(--accent-color-2);\ntext-align: center;\npadding:3px 10px 3px;\nborder-radius: 25px;\nmargin-bottom: 10px;","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"text","truncate_content":"500","text":"<p>Completed</p>","video_duration_postfix":" Min","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-check","icon_position":"left","style":"/* -- Icon Style --*/\nmargin-right: 5px;\n/* -- Desktop Style --*/\ncolor:#FFFFFF;\nfont-size:12px;\nbackground-color: var(--accent-color-1);\npadding:3px 10px 3px;\nborder-radius: 25px;\nmargin: 0 0 10px 10px;\ndisplay: none;\n/* -- Custom Selectors --*/\n.completed #this-block{\ndisplay: block;\n}","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_title","truncate_content":"500","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:22px;\nmargin-bottom: 10px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"post_body","truncate_content":"200","text":"<p>Lorem ipsum dolor sit amet</p>","video_duration_postfix":" Min","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor: var(--text-color-1);\nfont-size:14px;\nmargin-bottom: 15px;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_post":false,"clmn":"2","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"button","settings":{"width":"6","mobile_width":"12","auto_width":true,"button_preset":"p1_","inherit_defaults":true,"button":"Watch Lesson","cta_action":"#","in_new_tab":false,"cta_outline":false,"cta_hide_icon":"Use Default","icon_position":"default","style":"/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\nmargin-top: auto;\n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n ","link_type":"no link","action":"#","clmn":"2","cta_bg_color":"","cta_color":"","cta_min_width":"","cta_min_height":"","cta_font_size":"","cta_min_width_mobile":"","cta_min_height_mobile":"","cta_font_size_mobile":"","cta_border_width":"","cta_border_radius":"","cta_icon":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]},
+      {"name":"Category Hero Discovery 1","type":"p_category_header","category":"Content","settings":{"width":"10","mobile_width":"12","section_style":"<class>product-banner</class>\n/* -- Desktop Style --*/\n/* -- Mobile Style --*/\n/* -- Custom Selectors --*/\n[Background Overlay]\n#this-section .section:before{\nbackground: rgb(0 0 0 / 50%);\ncontent: '';\nposition: absolute;\ntop: 0;\nleft: 0;\nwidth: 100%;\nheight: 100%;\n}","bg_type":"image","bg_repeat":false,"bg_mobie_hide":false,"background_fixed":false,"hide_on_desktop":false,"equal_height":false,"full_width":false,"full_height":false,"section_name":"category hero discovery 1","clmn_borders":true,"number_of_clmns":"2","clmn_width_1":"7","clmn_mobile_width_1":"12","position_clmn_1":"0","clmn_style_1":"<image-hover>undefined</image-hover>\n<animation>fade-up-center,1000,0</animation>\n/* -- Desktop Style --*/\nflex-direction:column;\njustify-content:center;\npadding:0 50px 0 20px;\n/* -- Mobile Style --*/\nmargin-top: 20px;\npadding:0 0 0 0;\norder: 2;","clmn_width_2":"5","clmn_mobile_width_2":"12","position_clmn_2":"0","clmn_style_2":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_3":"12","clmn_mobile_width_3":"12","position_clmn_3":"0","clmn_style_3":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_4":"12","clmn_mobile_width_4":"12","position_clmn_4":"0","clmn_style_4":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_5":"12","clmn_mobile_width_5":"12","position_clmn_5":"0","clmn_style_5":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","clmn_width_6":"12","clmn_mobile_width_6":"12","position_clmn_6":"0","clmn_style_6":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n","background_color_preset":"--bg-color-1","bg_image":"themes/2150046592/settings_images/s1PfT3CQqWwhVmgG6l7Z_file.jpg","padding_desktop":{"top":"50","left":"40","right":"40","bottom":"50"},"hide_on_mobile":false,"reveal_units":"seconds","kjbid":"66784733"},"blocks":[{"hidden":"false","type":"clmn","settings":{"clmn_width":"7","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"<image-hover>undefined</image-hover>\n<animation>fade-up-center,1000,0</animation>\n/* -- Desktop Style --*/\nflex-direction:column;\njustify-content:center;\npadding:0 50px 0 20px;\n/* -- Mobile Style --*/\nmargin-top: 20px;\npadding:0 0 0 0;\norder: 2;"}},{"hidden":"false","type":"text","settings":{"text_source":"category_title","truncate_content":"500","text":"","width":"12","mobile_width":"12","auto_width":false,"style":"<image-hover>undefined</image-hover>\n/* -- Desktop Style --*/\nmargin-bottom: 10px;\nborder-left:2px solid initial;\ntext-transform: uppercase;\nfont-size:24px;\ncolor:#fff;\n","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_category":false,"postfix":"","clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"course_progress","settings":{"width":"12","mobile_width":"12","auto_width":false,"progress_type":"None","show_percent":false,"percent_text":"Completed","show_completed_count":true,"posts_count_text":"Lessons Completed","style":"<image-hover>undefined</image-hover>\n/* -- Desktop Style --*/\ncolor:#fff;\nmargin:0px 0px -10px 0px;\n","link_type":"no link","action":"#","clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"custom_code","settings":{"width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/ \nmargin-bottom: 15px;\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n.progress-white:before{\nbackground: rgb(255 255 255 / 20%);\n}\n.progress-white:after{\nbackground: #fff;\n}","link_type":"no link","action":"#","clmn":"1","custom_code":"<div class=\"progress-bar progress-white\">\n    <span class=\"progress-bar-fill\" ></span>\n</div>\n\n","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text","settings":{"text_source":"category_description","truncate_content":"100","text":"","width":"12","mobile_width":"12","auto_width":false,"style":"/* -- Desktop Style --*/\ncolor:#fff;\nfont-size:16px; \nmargin-bottom: 20px;\n\n/* -- Mobile Style --*/\n\n  ","animation_effect":"none","text_animation_loop":false,"link_type":"no link","action":"#","link_to_category":false,"postfix":"","clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"text_n_icon","settings":{"text_source":"text","truncate_content":"500","text":"<p><span>Back To All Categories</span></p>","width":"6","mobile_width":"12","auto_width":true,"icon":"far fa-chevron-left","icon_position":"left","style":"<image-hover>undefined</image-hover>\n/* -- Desktop Style --*/\nborder-radius: 3px;\npadding:5px 10px 5px 10px;\nbackground-color:#00000040;\n/* -- Custom Selectors --*/\n#this-block a{\ncolor:#FFFFFF;\n}\n","animation_effect":"none","text_animation_loop":false,"link_type":"Open in same window","action":"../categories","link_to_category":false,"postfix":"","clmn":"1","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}},{"hidden":"false","type":"clmn","settings":{"clmn_width":"5","clmn_mobile_width":"12","position_clmn":"0","clmn_style":"/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"}},{"hidden":"false","type":"image","settings":{"image_source":"Post Image","image":"https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png","width":"12","mobile_width":"12","auto_width":false,"image_radius":"0","icon_id":"fas fa-chalkboard-teacher","icon_size":"30","mask_image":false,"style":"/* -- Desktop Style --*/ \nborder-radius: 5px;\nheight: 100%;\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n /* -- Custom Selectors --*/\n#this-block img{\nheight: 100%;\nobject-fit: cover;\n}","link_type":"no link","action":"#","link_to_post":true,"clmn":"2","image_alt":"","use_icon":false,"icon_color":"","mask_preset_shape":"","use_image":false,"bg_image":"","reveal_event":"","reveal_offset":"","reveal_units":"seconds"}}]}
+  ]
+}
+
+
+{% endschema %}

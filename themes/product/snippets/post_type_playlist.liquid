@@ -1,0 +1,21 @@
+<script>
+  var postBody = `{{ post.body }}`
+  var post_type = "lesson"
+  if (postBody.includes("post-type-body")) {
+    var postTypeData = postBody.match(/(?<=\<!--post_type_data)(.*?)(?=-->)/gm)
+    postTypeData = JSON.parse(postTypeData)
+    post_type = postTypeData.postType
+
+  }
+  if (post_type == "playlist") {
+    var url = new URL(window.location.href)
+    url = `${
+      url.origin
+    }{{current_product.url}}`
+
+    var searchUrl = `${url}/search?q=&${
+      postTypeData.params
+    }`
+    window.location.replace(searchUrl)
+  }
+</script>

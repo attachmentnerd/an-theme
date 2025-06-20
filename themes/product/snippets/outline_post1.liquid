@@ -1,0 +1,82 @@
+{% assign percent_complete = post.progress_percent | divided_by:10 | round | times:10 %}
+{% assign is_completed = post.completed?%}
+{% assign mark_complete_afer = block.settings.mark_complete_after  | plus: 0%}
+{%if percent_complete >  mark_complete_after%}
+{% assign is_completed = true %}
+{%endif%}
+
+{%- assign active = "" -%}
+{%- if post.id == current_post_id and page == "post" -%}
+{%- assign active = "active" -%}
+{%- endif -%}
+
+{%- if post.id == next_post.id and page != "post" -%}
+{%- assign active = "active" -%}
+{%- endif -%}
+<a href="{{ post.url }}"
+  class="outline-post-wrap {{active}}  {% if is_completed %} completed {% endif %}  progress-{{percent_complete}}">
+  <div class="product-outline-post">
+    <div class="outline-column flex-2">
+      {%if block.settings.completion_icon != "none"%}
+      <div class="complete-icon">
+        {%include "outline_completed_icons"%}
+      </div>
+
+      {%endif%}
+
+      {%if block.settings.show_icons%}
+      <div class="outline-post-icon">
+        {% include "outline_post_icon" p:post %}
+      </div>
+      {%endif%}
+      {%if block.settings.version == "v1.2"%}
+      <div class="outline-image">
+        <img src="{{ post.poster_image_url }}" alt="" class="outline-image">
+        {% include "outline_post_type" %}
+      </div>
+      {%endif%}
+      <div class="outline-title">
+        <span>{{post.title}}</span>
+      </div>
+      {%if block.settings.version == "v1.1"%}
+      {% include "outline_post_type" %}
+      {%endif%}
+    </div>
+    <div class="outline-column">
+      {%if block.settings.version == "v1"%}
+      {% include "outline_post_type" %}
+      {%endif%}
+
+      <div href="#" data-favorited="{{ post.favorited? }}" data-favorite-token="{{ post.favorite_token }}"
+        class="product-outline-favorite {% if post.favorited? %}favorited{% endif %}" {%if
+        block.settings.version=="v1.1" %} style="display: block;" {%endif%}>
+        {% if post.favorited? %}
+        <i class="fas fa-heart"></i>
+        {%else%}
+        <i class="far fa-heart"></i>
+        {% endif %}
+      </div>
+    </div>
+    {%if block.settings.progress_type == "progress_bar" and block.settings.completion_icon == "none"%}
+    <div class="outline-post-progress">
+      <span class="progress-bar-fill"></span>
+    </div>
+    {%elsif block.settings.progress_type == "circle" and block.settings.completion_icon == "none"%}
+
+    {% assign pct = 100 | minus:percent_complete | times:0.628 %}
+    <div id="progress-bar-circle" data-pct="{{percent_complete}}">
+      <svg id="progress-circle-svg" width="25" height="25" viewPort="0 0 50 50" version="1.1"
+        xmlns="http://www.w3.org/2000/svg">
+        <circle r="10" cx="12.5" cy="12.5" fill="transparent" stroke-dasharray="62.8319px" stroke-dashoffset="0">
+        </circle>
+        <circle id="bar" r="10" cx="12.5" cy="12.5" fill="transparent" stroke-dasharray="62.8319px"
+          stroke-dashoffset="0" style="stroke-dashoffset: {{pct}}px;"></circle>
+      </svg>
+    </div>
+    {%elsif block.settings.progress_type == "bullets" and block.settings.completion_icon == "none"%}
+    <div class="outline-bullets">
+      <span></span>
+    </div>
+    {%endif%}
+  </div>
+</a>

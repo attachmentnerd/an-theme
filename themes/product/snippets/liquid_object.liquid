@@ -1,0 +1,128 @@
+var post_obj = {}
+post_obj["title"] = `{{ post.title }}`
+post_obj["body"] = `{{ post.body | replace: "`", "'" }}`
+post_obj["category"] = `{{ post.category.title }}`
+post_obj["image"] = `{{ post.poster_image_url }}`
+post_obj["id"] = `{{ post.id }}`
+post_obj["url"] = `{{ post.url }}`
+post_obj["isFavorited"] = `{{post.favorited?}}`
+post_obj["isCompleted"] = `{{post.completed?}}`
+post_obj["progress"] = `{%- if post.progress_percent > 0 %}{{progress}}{% endif %}`
+post_obj["isVideo"] = `{{post.video}}`
+post_obj["isAssessment"] = `{{post.assessment}}`
+post_obj["duration"] = `{{duration}}`
+if (post_obj.body && post_obj.body.includes("tags-d-body")) {
+    var tagsObj = post_obj["body"].match(/(?<=\<!--tag)(.*?)(?=-->)/gm)
+    if (tagsObj) {
+        tagsObj = tagsObj[0].trim()
+        tagsObj = JSON.parse(tagsObj)
+        post_obj["tags"] = tagsObj.tags
+    }
+}
+if (post_obj.body && post_obj.body.includes("related-d-body")) {
+    var relatedObj = post_obj["body"].match(/(?<=\<!--related_data)(.*?)(?=-->)/gm)
+    if (relatedObj) {
+        relatedObj = relatedObj[0].trim()
+        relatedObj = JSON.parse(relatedObj)
+        post_obj["related_posts"] = relatedObj
+    }
+}
+post_obj["custom_fields"] = {}
+if (post_obj.body && post_obj.body.includes("feature-d-body")) {
+    var customFieldObj = post_obj["body"].match(/(?<=\<!--custom_field)(.*?)(?=-->)/gm)
+    if (customFieldObj) {
+        customFieldObj = customFieldObj[0].trim()
+        customFieldObj = JSON.parse(customFieldObj)
+        customFieldObj = customFieldObj.custom_field
+        for (obj of customFieldObj) {
+            post_obj["custom_fields"][unescapeHtml(Object.keys(obj)[0].toLowerCase())] = unescapeHtml(Object.values(obj)[0].toLowerCase())
+        }
+    }
+}
+post_obj["custom_fields"]["category"] = `{{ post.category.title }}`.toLowerCase()
+var this_dom = $(DOM)
+{% assign duration = "0" %}
+{% if post.video %}
+{% assign duration = post.video.duration_in_seconds | duration | replace: "minutes", "" | replace: "minute", "" | replace: "Less than", "" | strip %}
+{% endif %}
+this_dom.removeClass().addClass(`blog_post_container {% if post.favorited? %} favorited {% endif %} {% if post.completed? %} completed {% endif %} 
+{%- if post.progress_percent > 0 %} progress-{{progress}}{% endif %} 
+{%- if post.video %} video {% endif %} {%- if post.assessment %} assessment {% endif %}`)
+this_dom.attr("href", `{{post.url}}`)
+this_dom.attr("style", ``)
+this_dom.attr("post-id", `{{post.id}}`)
+this_dom.attr("duration", `{{duration}}`)
+this_dom.find(".elm_type_post_category span").html(`{{ post.category.title }}`)
+this_dom.find(".elm_type_post_title span").html(`{{ post.title }}`)
+if (`{{ duration }}` > 0) {
+    this_dom.find(".elm_type_video_duration").html(`{{ duration }} min`)
+}
+this_dom.find(".elm_type_post_body").html(`<p>{{ post.body | strip_html |truncate: 200}}</p><div style="display: none;">{{ post.body | replace:"`","'" | replace:"<a","<b" | replace:"</a","</b"  }}</div>`)
+this_dom.find(".elm_type_.nblock-button > div").attr("href", `{{ post.url }}`)
+var post_image = `{{ post.poster_image_url }}`
+if(post_image == ""){
+    post_image = `{{ 'placeholder.png' | asset_url }}`
+}
+this_dom.find(".elm_type_.nblock-image > img").attr("src", post_image)
+this_dom.find(".lesson_custom_tags_wrapper").removeClass().addClass("lesson_custom_tags_wrapper").addClass(`post-{{post.id}}`)
+//this_dom.find(".lesson_custom_field_wrapper").removeClass().addClass("lesson_custom_field_wrapper").addClass(`post-{{post.id}}`)
+if (post_obj.tags) {
+    for (tag of post_obj.tags) {
+        var st = `
+                <div class="lesson_tag">${decodeURIComponent(tag)}</div>
+            `
+        this_dom.find(".lesson_custom_tags_wrapper").append(st)
+    }
+}
+    this_dom.find(".lesson_custom_field_wrapper").each(function(){
+        $(this).find(".custom_field_value").html("")
+        var customTitle = $(this).attr('class').split("field_for_")[1]
+        customTitle = customTitle.toLowerCase()
+        $(this).removeClass().addClass("lesson_custom_field_wrapper").addClass(`post-{{post.id}}`).addClass(`field_for_${customTitle}`)
+        if (post_obj.custom_fields) {
+            var customFieldObj = post_obj.custom_fields
+            if (customTitle != '') {
+                var key = customFieldObj && customFieldObj[customTitle]
+                if (key) {
+                    var st = `
+            <div class="lesson_field_wrapper">
+              <div class="custom_field_title">${customTitle}
+                        }</div>
+              <div class="custom_field_value">${key
+                        }</div>
+            </div>
+           `
+           $(this).html(st)
+                } else {
+                    var st = `
+                        <div class="lesson_field_wrapper">
+                          <div class="custom_field_title">${customTitle}</div>
+                          <div class="custom_field_value">--</div>
+                        </div>
+                        `
+                        $(this).html(st)
+                }
+            } else {
+                var st = `
+        <div class="lesson_field_wrapper">
+          <div class="custom_field_title">${customTitle}</div>
+          <div class="custom_field_value">--</div>
+        </div>
+        `
+            $(this).html(st)
+            }
+    
+        } else {
+            var st = `
+        <div class="lesson_field_wrapper">
+          <div class="custom_field_title">${customTitle}</div>
+          <div class="custom_field_value">--</div>
+        </div>
+        `
+        $(this).html(st)
+        }
+    
+    })
+
+post_obj["DOM"] = this_dom[0].outerHTML
+allLessons.push(post_obj)

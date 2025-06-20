@@ -1,0 +1,9 @@
+<div class="post-body">
+  <div class="main-content-container">
+    {% include "p_post_audio" %}
+    <h1 class="post-body-title">{{ post.title }}</h1>
+    {% assign body = post.body | split: "[split]" %}
+    {{ body[0] }}
+    <hr/>
+  </div>
+</div>

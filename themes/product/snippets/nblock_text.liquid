@@ -1,0 +1,22 @@
+{% assign text = "text" %}    
+{% if is_hero_slider %} 
+   {% assign text = "text_" | append: slider_index  %} 
+{%- endif  -%}
+{% assign the_text = block.settings[text] %} 
+{% if section.type == 'blog_posts' %} 
+   {% include "blog_posts_text" %} 
+{% elsif section.type == 'p_lessons' or section.type == 'p_resume' or section.type == 'p_related_posts'%}   
+   {% include "p_lessons_text" %} 
+{% elsif section.type == 'p_categories' or section.type == 'p_category_header'  %}   
+   {% include "p_categories_text" %} 
+{% else  %}
+ {{the_text}} 
+{%- endif  -%}
+
+{%- if block.settings.animation_effect == 'Count Up' -%}
+   <input type="hidden" class="data-countUp"/>
+ {%- endif -%}
+ {%- if block.settings.animation_effect != 'none' -%}
+    {%- assign effect_snipp = "anime_" | append: block.settings.animation_effect -%}
+    {%- include effect_snipp -%}
+ {%- endif %}

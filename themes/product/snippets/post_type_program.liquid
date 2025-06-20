@@ -1,0 +1,293 @@
+<div class="post-image-program">
+    <img src="{{post.poster_image_url}}" alt="">
+</div>
+<section class="program-section">
+  <div class="program-page container"></div>
+</section>
+
+
+<script>
+  function lessonLoader() {
+    var st = `
+    <div class="lesson_loader_wrapper">
+        <div class="lesson_loader"></div>
+    </div>
+`
+    return st
+}
+  var loader = lessonLoader()
+  jQuery(".program-page").html(loader)
+  var postBody = `{{ post.body | replace: "`", "'" }}`;
+  var post_type = "lesson";
+  if (postBody.includes("post-type-body")) {
+    var postTypeData = postBody.match(/(?<=\<!--post_type_data)(.*?)(?=-->)/gm)
+    postTypeData = JSON.parse(postTypeData);
+    post_type = postTypeData.postType;
+  }
+  if (post_type == "program") {
+    var all_posts = [];
+
+    // loop
+    {% for category in current_product.categories %}
+      {% for post in category.posts %}
+        var post_obj = {};
+        post_obj["title"] = `{{ post.title }}`;
+        post_obj["body"] = `{{ post.body | replace: "`", "'" }}`;
+        post_obj["category_id"] = `{{ post.category.id }}`;
+        post_obj["category"] = `{{ post.category.title }}`;
+        post_obj["image"] = `{{ post.poster_image_url }}`;
+        post_obj["id"] = `{{ post.id }}`;
+        post_obj["url"] = `{{ post.url }}`;
+        if (post_obj.body && post_obj.body.includes("tags-d-body")) {
+          var tagsObj = post_obj["body"].match(/(?<=\<!--tag)(.*?)(?=-->)/gm);
+          if (tagsObj) {
+            tagsObj = tagsObj[0].trim();
+            tagsObj = JSON.parse(tagsObj);
+            post_obj["tags"] = tagsObj.tags;
+          }
+        }
+        if (post_obj.body && post_obj.body.includes("feature-d-body")) {
+          var tagsObj = post_obj["body"].match(/(?<=\<!--custom_field)(.*?)(?=-->)/gm);
+          if (tagsObj) {
+            tagsObj = tagsObj[0].trim();
+            tagsObj = JSON.parse(tagsObj);
+            post_obj["custom_fields"] = tagsObj.custom_field;
+          }
+        }
+        all_posts.push(post_obj)
+
+        // loopend
+      {% endfor %}
+      {%if category.children?%}
+      {%for sub_category in category.subcategories%}
+        {%for post in sub_category.posts%}
+          var post_obj = {};
+          post_obj["title"] = `{{ post.title }}`;
+          post_obj["body"] = `{{ post.body | replace: "`", "'" }}`;
+          post_obj["category"] = `{{ post.category.title }}`;
+          post_obj["category_id"] = `{{ post.category.id }}`;
+          post_obj["image"] = `{{ post.poster_image_url }}`;
+          post_obj["id"] = `{{ post.id }}`;
+          post_obj["url"] = `{{ post.url }}`;
+          if (post_obj.body && post_obj.body.includes("tags-d-body")) {
+            var tagsObj = post_obj["body"].match(/(?<=\<!--tag)(.*?)(?=-->)/gm);
+            if (tagsObj) {
+              tagsObj = tagsObj[0].trim();
+              tagsObj = JSON.parse(tagsObj);
+              post_obj["tags"] = tagsObj.tags;
+            }
+          }
+          if (post_obj.body && post_obj.body.includes("feature-d-body")) {
+            var tagsObj = post_obj["body"].match(/(?<=\<!--custom_field)(.*?)(?=-->)/gm);
+            if (tagsObj) {
+              tagsObj = tagsObj[0].trim();
+              tagsObj = JSON.parse(tagsObj);
+              post_obj["custom_fields"] = tagsObj.custom_field;
+            }
+        }
+          all_posts.push(post_obj)
+  
+          // loopend
+          {%endfor%}
+        {%endfor%}
+      {%endif%}
+    {% endfor %}
+    console.log('rrrr',all_posts);
+    if(postTypeData.heroImage){
+      jQuery(".post-image-program img").attr("src", postTypeData.heroImage)
+    }
+    if(postTypeData.tabs){
+      jQuery(".program-section").before("<div class='program-tabs'></div>")
+      for(tab of postTypeData.tabs){
+        var st = `
+          <a href="${tab.url}" class="program-tab">
+            <span>${tab.title}</span>
+          </a>
+        `
+        jQuery(".program-tabs").append(st)
+      }
+    }
+    for (row of postTypeData.rows) {
+      var section_type = row.sectionType;
+      var title = row.title;
+      if(row.matches.includes(",")){
+        var matches_array = row.matches.split(",");
+      } else{
+        var matches_array = [row.matches];
+      }
+      
+
+      var matched_posts = [];
+
+      for (post of all_posts) {
+        for (match of matches_array) {
+          var trimMatch = match.trim().toLowerCase()
+          var lowerCaseTags = post.tags && post.tags.map((tag) => tag.toLowerCase())
+          if (post.custom_fields && trimMatch.includes('=')) {
+              for (custom_field of post.custom_fields){
+                  let match_cf_key = match.trim().split('=')[0]
+                  let match_cf_val = match.trim().split('=')[1]
+                  let post_cf_key = Object.keys(custom_field)[0].trim()
+                  let post_cf_val = custom_field[post_cf_key].trim()
+                  if (match_cf_key == post_cf_key && match_cf_val == post_cf_val){
+                      matched_posts.push(post);
+                  }
+              }
+          }
+          else if (post.tags && lowerCaseTags.includes(trimMatch)) {
+            matched_posts.push(post);
+          }
+          else if (post.title.toLowerCase() == trimMatch) {
+            matched_posts.push(post);
+          }
+          else if (post.id == trimMatch) {
+            matched_posts.push(post);
+          }
+        }
+      }
+
+      console.log(matched_posts);
+
+
+      const combinedMatches = (arr = []) => {
+        const res = arr.reduce((acc, obj) => {
+            let found = false
+            for (i in acc) {
+                if (acc[i].id === obj.id) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                acc.push(obj)
+            }
+            return acc
+        }, [])
+        return res;
+    }
+    var filteredMatches = combinedMatches(matched_posts)
+
+    var playlist_r = []
+    var st = ''
+    var img_short = ''
+    var img_short_r = []
+    for (post of filteredMatches){
+       img_short_r = post.image.split('/')
+       img_short = img_short_r[img_short_r.length - 1]
+
+       st =  post.title + '|' + post.id + '|' + post.category_id + '|' + img_short
+       playlist_r.push(st)
+    }
+    var playlist = playlist_r.join('||')
+    playlist = encodeURI(playlist)
+    console.log(playlist)
+
+
+      var st = `
+        ${filteredMatches.map((post) => (
+            `<a href="${post.url}?program={{post.title}}|{{post.category.id}}|{{post.id}}&slider=${title}&playlist=${playlist}" class="blog_post_container swiper-slide" post-url="${post.url}">
+                <div class="section-clmn-1 section-clmn clmn-width-12 clmn-width-sm-12" data-aos="fade-up-center"
+                  data-aos-duration="1000">
+                  <div class="nblock nblock-image program-image">
+                    <img src="${post.image}" />
+                  </div>
+                </div>
+                <div class="section-clmn-2 section-clmn clmn-width-12 clmn-width-sm-12" data-aos="fade-up-center"
+                  data-aos-duration="1000">
+                  <div class="nblock nblock-text">
+                    <h3 class='program-lesson-title'>${post.title}</h3>
+                  </div>
+                </div>
+              </a>`
+          )).join("")}
+      `
+      var bodyTemplate = getProgramTemplate(section_type, st)
+      
+      var template = `
+        <div class="program-wrapper" style="opacity: 0">
+            <div class="section-clmn-1 section-clmn clmn-width-12 clmn-width-sm-12">
+                <h3 class="program-row-heading">${title}</h3>
+            </div>
+            ${bodyTemplate}
+        </div>
+      `
+      jQuery(".program-page").append(template)
+      jQuery(document).ready(function(){
+        setTimeout(function(){
+          jQuery(".lesson_loader_wrapper").remove()
+          jQuery(".program-wrapper").css("opacity", "1")
+        }, 1000)
+      })
+    }
+
+    function getProgramTemplate(sectionType, body){
+        var isSwiper = false
+        if(sectionType.toLowerCase().includes("slider")){
+            isSwiper = true
+        }
+        var randNum = Math.floor(Math.random() * 10000)
+        var st = ""
+        if(isSwiper){
+            st =  `
+            <div class="swiper-container-${randNum} swiper-container" style="width:100%;">
+                <div class="swiper-wrapper">
+                    ${body}
+                </div>
+                <div class="swiper-but swiper-button-prev"></div>
+                <div class="swiper-but swiper-button-next"></div>
+            </div>
+            `
+            jQuery(document).ready(function(){
+                swiper_program(randNum, sectionType)
+            })
+        }  else if(sectionType.toLowerCase().includes("list")){
+            st = `
+                <div class="program-lessons program-list">
+                    ${body}
+                </div>
+            `
+        } else{
+            var number_col = sectionType.split("-")[1]
+            st = `
+                <div class="program-lessons program-md-${12/Number(number_col.split("_")[0])} program-sm-${12/Number(number_col.split("_")[1])}">
+                    ${body}
+                </div>
+            `
+        }
+        return st
+        
+    }
+    function swiper_program(id, type){
+
+        $(`.swiper-container-${id} .swiper-button-next`).click(function(e){
+            e.stopPropagation();
+            var mySwiper = document.querySelector(`.swiper-container-${id}`).swiper;
+            mySwiper.slideNext();
+        });
+    
+        $(`.swiper-container-${id} .swiper-button-prev`).click(function(e){
+            e.stopPropagation();
+                var mySwiper = document.querySelector(`.swiper-container-${id}`).swiper;
+            mySwiper.slidePrev();
+        }); 
+
+   
+        var slideToShow = type.split("-")[1]
+        var programSlider = new Swiper(`.swiper-container-${id}`, {
+            effect: "slide",
+            speed: 500,
+            spaceBetween: 20,
+            slidesPerView: slideToShow.split("_")[0],
+            breakpoints: {
+                1: {
+                    spaceBetween: 20,
+                    slidesPerView: slideToShow.split("_")[1],
+                },
+                1100:{
+                    spaceBetween: 20,
+                    slidesPerView: slideToShow.split("_")[0],
+                }
+            }
+        })
+    }
+  }
+</script>

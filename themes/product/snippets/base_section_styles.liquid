@@ -1,0 +1,139 @@
+<style>
+ 
+
+ 
+ 
+  #section-{{ section.id }} .section {
+
+      {% if section.settings.bg_type == "image" %}
+          background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
+          background-size: {{ section.settings.bg_size }};;
+          {% if section.settings.bg_repeat %}
+              background-repeat: repeat;
+          {% endif %}
+          {% if section.settings.bg_precise_position != blank %}
+              background-position: {{ section.settings.bg_precise_position }};
+          {% else %}
+              background-position: {{ section.settings.bg_position }};
+          {% endif %}
+      {% endif %}
+
+				{%- if section.settings.background_color == blank -%}
+            {% assign bg_preset = section.settings.background_color_preset %}
+            {% assign t_bg_color = settings[bg_preset] %}
+            {%- if bg_preset != "No Background Color" and bg_preset != blank -%}
+						   background-color: var({{bg_preset}}) !important;  
+             {%- endif -%}
+				{%- else -%}
+           {% assign t_bg_color = section.settings.background_color %}
+					  background-color: {{section.settings.background_color}} !important;
+				{%- endif -%}
+  }
+
+   #section-{{ section.id }} *{
+      --this-section-bg-color:  {{t_bg_color}};
+  }
+
+
+  @media(max-width:768px){
+    {%- if section.settings.bg_mobie_hide -%}
+     #section-{{ section.id }} .section {
+         Background-image:none;
+     }
+    {%- endif -%}
+  }
+
+
+
+  #section-{{ section.id }} .sizer {
+    padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
+    padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
+  }
+
+  {%- if page == 'post' -%}
+    {%- assign content_width = settings.content_width_post -%}
+  {%- else -%}
+      {%- assign content_width = settings.content_width -%}
+  {%- endif -%}
+
+
+  {% if section.settings.content_width != blank and  section.settings.content_width != "" %}
+       {%- assign content_width = section.settings.content_width -%}
+  {%- endif -%}
+   {%- unless content_width contains "%" or content_width contains "px" -%}
+    {%- if content_width contains "px" -%}
+      {%- assign content_width = content_width | replace:"px" | minus: 80 -%}
+    {%- endif -%}
+  {%- endunless -%}
+
+  {%- assign content_width_contain_none = true -%}
+  {%- if content_width contains "px" -%}
+    {%- assign content_width = content_width | replace:"px" | minus: 80 -%}
+    {%- assign content_width = content_width | append:"px" -%}
+    {%- assign content_width_contain_none = false -%}
+  {%- endif -%}
+
+  {%- if content_width contains "%" -%}
+    {%- assign content_width_contain_none = false -%}
+  {%- endif -%}
+
+   {%- if content_width_contain_none -%}
+      {%- assign content_width = content_width | minus: 80 -%}
+      {%- assign content_width = content_width | append:"px" -%}
+   {%- endif -%}
+
+  
+  #section-{{ section.id }} .container {
+    max-width: calc({{content_width}} + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+    padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
+    padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
+    {% if section.settings.full_width == true %}
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    {% endif %}
+  }
+  #section-{{ section.id }} .row {
+    {% if section.settings.full_width == true %}
+      margin: 0 !important
+    {% endif %}
+  }
+  #section-{{ section.id }} .container--full {
+    max-width: calc(100% + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+  }
+  @media (min-width: 769px) {
+    {% if section.settings.bg_type == "image" %}
+      #section-{{ section.id }} {
+        {% if section.settings.background_fixed %}
+          background-attachment: fixed;
+        {% endif %}
+      }
+    {% endif %}
+    #section-{{ section.id }} .sizer {
+      padding-top: {{ section.settings.padding_desktop.top | default: 100 | append: "px" }};
+      padding-bottom: {{ section.settings.padding_desktop.bottom | default: 100 | append: "px" }};
+    }
+
+    
+
+    
+    #section-{{ section.id }} .container {
+      max-width: calc({{content_width}} + {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} + {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+      padding-right: {{ section.settings.padding_desktop.right | default: 40 | append: "px" }};
+      padding-left: {{ section.settings.padding_desktop.left | default: 40 | append: "px" }};
+    }
+    #section-{{ section.id }} .container--full {  
+      {%- if section.type == "hero_slider" -%}  
+           max-width: 100%; 
+      {% else %}   
+          max-width: calc(100% - {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} - {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+      {% endif %}
+    }
+  }
+  {% if section.settings.equal_height %}
+    #section-{{ section.id }} .row {
+      -webkit-box-align: stretch !important;
+      -ms-flex-align: stretch !important;
+      align-items: stretch !important;
+    }
+  {% endif %}
+</style>

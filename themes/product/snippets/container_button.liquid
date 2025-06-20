@@ -1,0 +1,72 @@
+
+{%- assign  v_cta_hide_icon = true -%}
+{%- if settings.p1_cta_hide_icon == false -%} 
+   {%- assign  v_cta_icon = settings.p1_cta_icon -%}
+   {%- assign  v_icon_position = settings.p1_icon_position -%}
+{%- endif -%} 
+
+{% assign button_preset = 'button_preset' | prepend:p %}
+{% assign preset_num =  block.settings[button_preset] %}
+{%- if preset_num != 'p1_' -%}
+   {%- assign cta_icon = preset_num | append: "cta_icon"  -%}
+   {%- if settings[cta_icon] != blank -%} 
+      {%- assign v_cta_icon = settings[cta_icon] -%}
+   {%- endif -%}
+   {%- assign icon_position = preset_num | append: "icon_position"  -%}
+    {%- if settings[icon_position] != blank -%} 
+      {%- assign  v_icon_position = settings[icon_position] -%}
+   {%- endif -%}  
+{%- endif -%}
+
+{%- assign  v_inherit_defaults = true -%}
+   {%- assign inherit_defaults = preset_num | append: "inherit_defaults"  -%}
+   {%- if settings[inherit_defaults] == false -%}  
+      {%- assign  v_inherit_defaults = false -%}
+   {%- endif -%} 
+
+
+{% assign use_icon = 'use_icon' | prepend:p %}
+{% assign icon = 'icon' | prepend:p %}
+{% assign icon_position = 'icon_position' | prepend:p %}
+
+{%- if block.settings[use_icon] == true or block.settings[use_icon] == "true" -%}  
+   {%- assign v_cta_hide_icon = false -%}
+{%- else -%}
+   {%- assign v_cta_hide_icon = true -%}
+{%- endif -%}
+{%- if block.settings[icon] != blank -%} 
+   {%- assign v_cta_icon = block.settings[icon] -%}
+{%- endif -%}
+   {%- if block.settings[icon_position] != blank -%} 
+   {%- assign  v_icon_position = block.settings[icon_position] -%}
+{%- endif -%}
+
+
+{% assign button = 'text' | prepend:p %}
+{% assign cta_action = 'action' | prepend:p  %}
+{% assign in_new_tab = 'in_new_tab' | prepend:p  %}
+
+{% assign href = block.settings[cta_action] %}  
+{% if this_element_type == "post_button" %}
+   {% assign href = post_href %}
+{%- endif -%}
+{% if this_element_type == "offer_button" %}  
+   {% assign href = offer.checkout_url %}
+{% endif %}
+
+   <a href="{{href}}"  {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}
+      {%- if block.settings[in_new_tab] %} target="_blank" {%- endif -%} 
+      class="a_button  {% if v_inherit_defaults -%} p1_btn {%- endif %} {{preset_num}}btn ">
+   {% if v_icon_position == 'left' %}
+   <i class="{{v_cta_icon}} hide-{{v_cta_hide_icon}} m-r-12"></i>
+   {%- endif -%}
+      <span >{{block.settings[button]}}</span>
+   {% if v_icon_position == 'right' %}
+      <i class="{{v_cta_icon}} hide-{{v_cta_hide_icon}} m-l-12"></i>
+   {%- endif -%}
+   </a>
+
+
+
+
+

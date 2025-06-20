@@ -1,0 +1,121 @@
+{%- assign style_code =  block.settings[style] -%}
+
+ 
+{%- if isStickyStyle -%} 
+    {%- assign style_code =  block.settings.sticky_menu_style -%} 
+    {%- assign block_selector = ".sticky-header " | append: block_selector  -%} 
+{%- endif  -%}
+
+
+{%- if is_swiper and section.settings.strip_margin -%}
+    {%- assign style_code = style_code | replace:"margin","mar_gin" -%}  
+{%- endif  -%}
+
+{% include "style2vars" check_internal_elements:true, p:"", eType:block.type %}
+
+{% include "nblock_width" p:"" %}
+
+  
+<style>
+ 
+     @media(min-width:768px){
+         {{block_selector}}{
+          width:{{width_calc}};
+         }
+      }
+      
+      {{block_selector}}{
+         {{desktop_style}}
+
+      {% if block.settings.use_image == "true" or block.settings.use_image == true  %}
+              background-image: url({{ block.settings.bg_image | image_picker_url: "background.jpg" }});  
+      {% endif %}
+   
+      }
+ 
+
+    {%- unless atag_style == "" -%}
+      {{block_selector}} a{ 
+        {{atag_style}}
+      }
+    {%- endunless -%}
+
+    {%- unless img_style == "" -%}
+      {{block_selector}} img{ 
+        {{img_style}}
+      }
+    {%- endunless -%}
+   {%- unless image_style == "" -%}
+      {{block_selector}} img, {{block_selector}} svg, {{block_selector}} i{ 
+        {{image_style}}
+      }
+    {%- endunless -%}
+
+    {%- unless astrix_style == "" -%}
+      {{block_selector}} *{ 
+        {{astrix_style}}
+      }
+    {%- endunless -%}
+
+
+    {%- unless style_child == "" -%}  
+      {{block_selector}} > button, {{block_selector}} > div, {{block_selector}} > img, {{block_selector}} > a{ 
+        {{style_child}}
+      } 
+    {%- endunless -%}
+
+
+    {%- unless icon_style == "" -%}
+      {{block_selector}}  i{ 
+        {{icon_style}}
+      } 
+    {%- endunless -%}
+
+    {%- unless custom_selectors == "" -%}
+       {{custom_selectors}}
+    {%- endunless -%}
+
+  
+    
+
+  
+     @media(max-width:768px){
+        {%- unless astrix_style_mobile == "" -%}
+          {{block_selector}} *{ 
+            {{astrix_style_mobile}}
+          }
+        {%- endunless -%}
+ 
+        {{block_selector}}{
+            width:{{width_calc_mobile}};
+            {{mobile_style}}
+        }
+        {%- unless style_child_mobile == "" -%}
+          {{block_selector}} > button, {{block_selector}} > div, {{block_selector}} > img , {{block_selector}} > a{ 
+            {{style_child_mobile}}
+          }
+        {%- endunless -%}
+
+        {%- unless custom_selectors_mobile == "" -%}
+          {{custom_selectors_mobile}}
+        {%- endunless -%}
+    } 
+
+    {%- unless tablet_style == "" and custom_selectors_tablet == ""-%}   
+     @media(min-width:586px) and (max-width:786px){
+        {%- unless astrix_style_tablet == "" -%}
+          {{block_selector}} *{ 
+            {{astrix_style_tablet}}
+          }
+        {%- endunless -%}
+
+        {{block_selector}}{ {{tablet_style}} }
+
+        {%- unless custom_selectors_tablet == "" -%}
+          {{custom_selectors_tablet}}
+        {%- endunless -%}
+      }
+    {%- endunless -%}
+     
+
+</style>

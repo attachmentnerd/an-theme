@@ -11,3 +11,14 @@
 <!-- Optional Bootstrap Javascript - Remove the liquid comment tags to enable -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 {% endcomment %}
+
+<!-- Google Tag Manager (noscript) -->
+{% if settings.gtm_id and settings.gtm_id != '' %}
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.gtm_id }}"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+{% endif %}
+
+<!-- Custom Body Scripts -->
+{% if settings.body_scripts and settings.body_scripts != '' %}
+  {{ settings.body_scripts }}
+{% endif %}
