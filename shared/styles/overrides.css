@@ -40,6 +40,14 @@
   --g-warm-sunset: linear-gradient(135deg, #FF8BCB 0%, #FFE86B 100%);
   --g-deep-ocean: linear-gradient(135deg, #1B1B29 0%, #323346 100%);
   
+  /* Modern Typography Scale */
+  --fs-display: 3rem;          /* 48px - Hero H1 */
+  --fs-h1: 2.5rem;            /* 40px - Section titles */
+  --fs-h2: 1.875rem;          /* 30px - Feature headings */
+  --fs-body-lg: 1.125rem;     /* 18px - Sub-heads */
+  --fs-body: 1rem;            /* 16px - Paragraphs */
+  --fs-caption: 0.875rem;     /* 14px - Fine print */
+  
   /* Legacy mappings for compatibility */
   --an-navy: var(--c-brand-600);
   --an-teal: var(--c-accent-teal);
@@ -926,11 +934,44 @@ a:hover {
   text-decoration: none !important;
   display: inline-block;
   background: none !important;
+  border: none !important;
+  border-bottom: none !important;
 }
 
-.header .link-list__link:hover {
-  color: #666666 !important;
+/* Remove any potential Kajabi default underlines */
+.header .link-list__link,
+.header__content--desktop .link-list__link,
+.header .link-list__link span,
+.header__content--desktop .link-list__link span {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  background-image: none !important; /* Remove any gradient underlines */
+}
+
+/* Remove any default underlines and add custom hover effect */
+.header .link-list__link::after,
+.header__content--desktop .link-list__link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--c-brand-600);
+  transition: width 0.3s ease;
+}
+
+.header .link-list__link:hover,
+.header__content--desktop .link-list__link:hover {
+  color: var(--c-brand-600) !important;
   background: none !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.header .link-list__link:hover::after,
+.header__content--desktop .link-list__link:hover::after {
+  width: 100%;
 }
 
 /* Dropdown trigger styling */
@@ -947,11 +988,29 @@ a:hover {
   gap: 6px;
   transition: color 0.2s ease;
   text-decoration: none !important;
+  position: relative;
+}
+
+/* Dropdown hover effect */
+.header .dropdown__trigger::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--c-brand-600);
+  transition: width 0.3s ease;
 }
 
 .header .dropdown__trigger:hover {
-  color: #666666 !important;
+  color: var(--c-brand-600) !important;
   background: none !important;
+  text-decoration: none !important;
+}
+
+.header .dropdown__trigger:hover::before {
+  width: calc(100% - 16px); /* Account for the arrow */
 }
 
 .header .dropdown__trigger::after {
@@ -2038,6 +2097,539 @@ label {
   top: 1rem;
 }
 
+/* ==========================================================================
+   Book Testimonial Showcase Section
+   Added: 2025-01-21
+   ========================================================================== */
+
+/* Enhanced styles for book testimonial showcase section */
+.book-testimonial-showcase {
+  min-height: 600px;
+  position: relative;
+}
+
+.book-testimonial-showcase__wrapper {
+  display: flex;
+  min-height: inherit;
+}
+
+.book-testimonial-showcase__left {
+  background-color: var(--an-gold, #FFE86B);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.book-testimonial-showcase__right {
+  background-color: var(--an-grey, #F5F5F0);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+/* Book showcase specific styles */
+.book-testimonial-showcase__book {
+  position: relative;
+  margin-bottom: 40px;
+  display: inline-block;
+}
+
+.book-testimonial-showcase__book img {
+  display: block;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+.book-testimonial-showcase__book:hover img {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* Bestseller badge */
+.book-testimonial-showcase__badge {
+  position: absolute;
+  bottom: 20px;
+  right: -20px;
+  background: #000;
+  color: #fff;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.2;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.badge-number {
+  font-size: 24px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.badge-text {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 10px;
+}
+
+/* Book content styles */
+.book-testimonial-showcase__title {
+  font-size: var(--fs-display, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--an-text-dark, #000);
+}
+
+.book-testimonial-showcase__subtitle {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  color: var(--an-text-dark, #000);
+}
+
+.book-testimonial-showcase__description {
+  font-size: var(--fs-body-lg, 18px);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: var(--an-text-dark, #000);
+}
+
+.book-testimonial-showcase__availability {
+  font-size: 16px;
+  font-style: italic;
+  margin-bottom: 30px;
+  color: var(--an-text-dark, #000);
+}
+
+.book-testimonial-showcase__availability em {
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* CTA Button */
+.book-testimonial-showcase__cta {
+  background: #000;
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: 2px solid #000;
+}
+
+.book-testimonial-showcase__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  color: #000;
+}
+
+/* Testimonial styles */
+.book-testimonial-showcase__testimonials {
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+
+.testimonial-logo {
+  margin-bottom: 40px;
+}
+
+.testimonial-logo img {
+  height: 30px;
+  width: auto;
+  opacity: 0.8;
+}
+
+.testimonial-slider {
+  position: relative;
+  min-height: 300px;
+}
+
+.testimonial-slide {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.testimonial-slide.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.testimonial-quote {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 40px;
+  quotes: none;
+  color: var(--an-text-dark, #000);
+}
+
+/* Author styles */
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.testimonial-author__info {
+  text-align: right;
+}
+
+.testimonial-author__name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--an-text-dark, #000);
+}
+
+.testimonial-author__title {
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.testimonial-author__avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-author__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slider dots */
+.testimonial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.testimonial-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.testimonial-dot.active {
+  background: #333;
+  transform: scale(1.2);
+}
+
+.testimonial-dot:hover {
+  background: #666;
+}
+
+/* Responsive styles */
+@media (max-width: 991px) {
+  .book-testimonial-showcase__wrapper {
+    flex-direction: column;
+  }
+  
+  .book-testimonial-showcase__left,
+  .book-testimonial-showcase__right {
+    padding: 40px;
+    min-height: 500px;
+  }
+  
+  .book-testimonial-showcase__title {
+    font-size: 36px;
+  }
+  
+  .testimonial-quote {
+    font-size: 20px;
+  }
+  
+  .book-testimonial-showcase__content {
+    text-align: center;
+  }
+  
+  .book-testimonial-showcase__book {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 767px) {
+  .book-testimonial-showcase__left,
+  .book-testimonial-showcase__right {
+    padding: 30px 20px;
+    min-height: 400px;
+  }
+  
+  .book-testimonial-showcase__title {
+    font-size: 28px;
+  }
+  
+  .book-testimonial-showcase__book img {
+    max-width: 200px;
+  }
+  
+  .book-testimonial-showcase__badge {
+    width: 90px;
+    height: 90px;
+    font-size: 9px;
+    padding: 10px;
+    right: -10px;
+    bottom: 10px;
+  }
+  
+  .badge-number {
+    font-size: 18px;
+  }
+  
+  .badge-text {
+    font-size: 8px;
+  }
+  
+  .testimonial-author {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  
+  .testimonial-author__info {
+    text-align: center;
+  }
+  
+  .testimonial-quote {
+    font-size: 18px;
+  }
+  
+  .testimonial-author__avatar {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* ==========================================================================
+   Modern Brand Components
+   Added: 2025-01-20
+   ========================================================================== */
+
+/* Modern Button Styles */
+.btn-primary-modern {
+  background: var(--g-brand, linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%));
+  color: var(--c-white);
+  border-radius: 9999px;
+  padding: 12px 32px;
+  font-weight: 500;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset,
+              0 4px 8px rgba(94,59,255,.35);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-primary-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset,
+              0 8px 16px rgba(94,59,255,.45);
+  color: var(--c-white);
+}
+
+.btn-secondary-modern {
+  background: var(--c-white) !important;
+  color: var(--c-brand-600) !important;
+  border: 1px solid var(--c-brand-100) !important;
+  border-radius: 12px;
+  padding: 10px 24px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: all .15s ease;
+}
+
+.btn-secondary-modern:hover {
+  background: var(--c-brand-100) !important;
+  transform: translateY(-1px);
+  color: var(--c-brand-600) !important;
+}
+
+/* Fix for any dark/black secondary buttons */
+.btn-secondary, 
+.btn-outline-dark,
+.btn-dark,
+.kjb-button--secondary,
+.kjb-button--outline {
+  background: var(--c-white) !important;
+  color: var(--c-ink-900) !important;
+  border: 1px solid var(--c-ink-900) !important;
+}
+
+.btn-secondary:hover,
+.btn-outline-dark:hover,
+.btn-dark:hover,
+.kjb-button--secondary:hover,
+.kjb-button--outline:hover {
+  background: var(--c-ink-900) !important;
+  color: var(--c-white) !important;
+}
+
+/* Ensure all buttons have readable text */
+.btn,
+.kjb-button,
+[class*="btn-"] {
+  text-decoration: none !important;
+}
+
+/* Specific fix for buttons that might have black background */
+.btn:not(.btn-primary):not(.btn-primary-modern):not([class*="btn-outline"]) {
+  color: var(--c-ink-900) !important;
+}
+
+/* If button has dark background, ensure white text */
+.btn[style*="background-color: #000"],
+.btn[style*="background-color: black"],
+.btn[style*="background: #000"],
+.btn[style*="background: black"],
+.kjb-button[style*="background-color: #000"],
+.kjb-button[style*="background: black"] {
+  color: var(--c-white) !important;
+}
+
+/* Global button text color fix for readability */
+a.btn:not(.btn-primary):not(.btn-primary-modern):not(.btn-navy):not(.btn-coral):not([class*="btn-outline"]),
+a.kjb-button:not(.kjb-button--primary) {
+  color: var(--c-ink-900) !important;
+}
+
+/* Ensure outline buttons always have readable text */
+[class*="btn-outline"] {
+  background: transparent !important;
+}
+
+/* Fix Kajabi's default button styles that might cause issues */
+.kjb-button {
+  text-decoration: none !important;
+}
+
+.kjb-button--secondary,
+.kjb-button:not(.kjb-button--primary) {
+  background: var(--c-white) !important;
+  color: var(--c-ink-900) !important;
+  border: 1px solid var(--c-ink-200) !important;
+}
+
+.kjb-button--secondary:hover,
+.kjb-button:not(.kjb-button--primary):hover {
+  background: var(--c-ink-100) !important;
+  color: var(--c-ink-900) !important;
+}
+
+/* Modern Card Styles */
+.card-modern {
+  background: var(--c-white);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  transition: all 0.3s ease;
+}
+
+.card-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+
+/* Modern Effects */
+.glow-brand {
+  box-shadow: 0 0 48px rgba(94,59,255,.15);
+}
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.1);
+}
+
+/* Entrance Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleFade {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.animate-scale-fade {
+  animation: scaleFade 0.6s ease-out;
+}
+
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .progress__inner,
@@ -2890,6 +3482,362 @@ select:focus {
   .cta-footer {
     padding: var(--space-lg);
   }
+}
+
+/* ==========================================================================
+   18. Sidebar Hover Effects
+   Added: 2025-01-19
+   ========================================================================== */
+
+/* Sidebar title hover effects */
+.sidebar-recent-posts__title,
+.sidebar-categories__category,
+.sidebar-search h3,
+.sidebar-social h3,
+.sidebar-cta h3,
+.sidebar-instructor h3,
+.blog-sidebar h2,
+.blog-sidebar h3,
+.blog-sidebar h4,
+.newsletter-sidebar h2,
+.newsletter-sidebar h3,
+.newsletter-sidebar h4 {
+  transition: color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  position: relative;
+}
+
+/* Hover effect for sidebar titles and links */
+.sidebar-recent-posts__title:hover,
+.sidebar-categories__category:hover,
+.blog-sidebar a:hover,
+.newsletter-sidebar a:hover {
+  color: var(--c-brand-600) !important;
+  transform: translateX(4px);
+}
+
+/* Sidebar section titles hover effect */
+.sidebar-recent-posts__heading,
+.sidebar-categories h3,
+.sidebar-search h3,
+.sidebar-social h3,
+.sidebar-cta h3,
+.sidebar-instructor h3,
+.blog-sidebar h2,
+.blog-sidebar h3,
+.newsletter-sidebar h2,
+.newsletter-sidebar h3 {
+  transition: color 0.3s ease;
+  cursor: default;
+  position: relative;
+}
+
+/* Add underline animation on hover for section titles */
+.sidebar-recent-posts__heading::after,
+.sidebar-categories h3::after,
+.sidebar-search h3::after,
+.sidebar-social h3::after,
+.sidebar-cta h3::after,
+.sidebar-instructor h3::after,
+.blog-sidebar h2::after,
+.blog-sidebar h3::after,
+.newsletter-sidebar h2::after,
+.newsletter-sidebar h3::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--c-accent-teal);
+  transition: width 0.4s ease;
+}
+
+.sidebar-recent-posts__heading:hover::after,
+.sidebar-categories h3:hover::after,
+.sidebar-search h3:hover::after,
+.sidebar-social h3:hover::after,
+.sidebar-cta h3:hover::after,
+.sidebar-instructor h3:hover::after,
+.blog-sidebar h2:hover::after,
+.blog-sidebar h3:hover::after,
+.newsletter-sidebar h2:hover::after,
+.newsletter-sidebar h3:hover::after {
+  width: 100%;
+}
+
+/* Tag hover effects */
+.sidebar-recent-posts__tag,
+.tag {
+  transition: all 0.3s ease;
+  text-decoration: none !important;
+}
+
+.sidebar-recent-posts__tag:hover,
+.tag:hover {
+  background-color: var(--c-brand-600) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(94, 59, 255, 0.2);
+}
+
+/* Category links hover effect */
+.sidebar-categories a {
+  transition: all 0.3s ease;
+  text-decoration: none !important;
+  position: relative;
+  display: block;
+  padding: 8px 0;
+}
+
+.sidebar-categories a:hover {
+  color: var(--c-brand-600) !important;
+  padding-left: 8px;
+}
+
+/* Social icons hover effect */
+.sidebar-social a,
+.sidebar-social-share a {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar-social a:hover,
+.sidebar-social-share a:hover {
+  transform: translateY(-3px) scale(1.1);
+  opacity: 0.8;
+}
+
+/* CTA button hover effect in sidebar */
+.sidebar-cta .btn {
+  transition: all 0.3s ease !important;
+}
+
+.sidebar-cta .btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(94, 59, 255, 0.3) !important;
+}
+
+/* Search input focus effect */
+.sidebar-search input[type="search"],
+.sidebar-search input[type="text"] {
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.sidebar-search input[type="search"]:focus,
+.sidebar-search input[type="text"]:focus {
+  border-color: var(--c-brand-600);
+  box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.1);
+  outline: none;
+}
+
+/* Instructor info hover effect */
+.sidebar-instructor img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar-instructor:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   Section: Pay What You Can (PWYC) Pricing
+   Added: 2025-01-20
+   ========================================================================== */
+
+/* PWYC Card Utilities */
+.pwyc-card-grid-2 { grid-template-columns: repeat(2, 1fr) !important; }
+.pwyc-card-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
+.pwyc-card-grid-4 { grid-template-columns: repeat(4, 1fr) !important; }
+
+/* PWYC Animation Utilities */
+.pwyc-hover-lift:hover { transform: translateY(-8px) !important; }
+.pwyc-hover-scale:hover { transform: scale(1.05) !important; }
+.pwyc-selected-glow { box-shadow: 0 0 0 4px rgba(94, 59, 255, 0.2) !important; }
+
+/* PWYC Badge Positions */
+.pwyc-badge-top-left { top: var(--an-space-md) !important; left: var(--an-space-md) !important; right: auto !important; }
+.pwyc-badge-top-right { top: var(--an-space-md) !important; right: var(--an-space-md) !important; left: auto !important; }
+.pwyc-badge-top-center { top: -12px !important; left: 50% !important; transform: translateX(-50%) !important; }
+
+/* PWYC Price Sizes */
+.pwyc-price-small { font-size: var(--an-font-2xl) !important; }
+.pwyc-price-medium { font-size: var(--an-font-3xl) !important; }
+.pwyc-price-large { font-size: var(--an-font-4xl) !important; }
+
+/* PWYC Card States */
+.pwyc-disabled { 
+  opacity: 0.5 !important; 
+  cursor: not-allowed !important; 
+  pointer-events: none !important; 
+}
+
+.pwyc-recommended {
+  border-width: 3px !important;
+  border-color: var(--c-brand-600) !important;
+  background: linear-gradient(135deg, transparent 0%, var(--c-brand-100) 100%) !important;
+}
+
+/* PWYC Responsive Overrides */
+@media (max-width: 767px) {
+  .pwyc-mobile-stack { grid-template-columns: 1fr !important; }
+  .pwyc-mobile-scroll { 
+    display: flex !important; 
+    overflow-x: auto !important; 
+    scroll-snap-type: x mandatory !important; 
+  }
+  .pwyc-mobile-scroll > * { 
+    flex: 0 0 280px !important; 
+    scroll-snap-align: center !important; 
+  }
+}
+
+/* ==========================================================================
+   Section: Testimonials
+   Added: 2025-01-20
+   ========================================================================== */
+
+/* Testimonial Card Utilities */
+.testimonial-masonry { 
+  column-count: 3 !important; 
+  column-gap: var(--an-space-xl) !important; 
+}
+
+.testimonial-masonry .testimonial-card { 
+  break-inside: avoid !important; 
+  margin-bottom: var(--an-space-xl) !important; 
+}
+
+@media (max-width: 991px) {
+  .testimonial-masonry { column-count: 2 !important; }
+}
+
+@media (max-width: 767px) {
+  .testimonial-masonry { column-count: 1 !important; }
+}
+
+/* Testimonial Variations */
+.testimonial-minimal .testimonial-card__author { display: none !important; }
+.testimonial-minimal .testimonial-card__rating { text-align: center !important; }
+
+.testimonial-compact { padding: var(--an-space-lg) !important; }
+.testimonial-compact .testimonial-card__quote { font-size: var(--an-font-sm) !important; }
+
+/* Testimonial Themes */
+.testimonial-dark {
+  background: var(--an-text-dark) !important;
+  color: var(--an-white) !important;
+}
+
+.testimonial-dark .testimonial-card__quote,
+.testimonial-dark .testimonial-card__details { 
+  color: rgba(255, 255, 255, 0.8) !important; 
+}
+
+.testimonial-dark .testimonial-card__name { 
+  color: var(--an-white) !important; 
+}
+
+/* Testimonial Animations */
+.testimonial-hover-quote:hover .testimonial-card__quote {
+  transform: scale(1.02) !important;
+  transition: transform var(--an-transition-base) !important;
+}
+
+.testimonial-hover-shadow:hover {
+  box-shadow: 0 12px 40px rgba(94, 59, 255, 0.15) !important;
+}
+
+/* Star Rating Variations */
+.stars-large .star { font-size: 24px !important; }
+.stars-small .star { font-size: 16px !important; }
+.stars-brand .star--filled { color: var(--c-brand-600) !important; }
+.stars-teal .star--filled { color: var(--c-accent-teal) !important; }
+
+/* ==========================================================================
+   Section: Securely Attached Book Pages
+   Added: 2025-01-20
+   ========================================================================== */
+
+/* SA Hero Section */
+.sa-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* SA Book Showcase */
+.sa-book-showcase .book-showcase-visual {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* SA Workbook Preview */
+.sa-workbook-preview {
+  position: relative;
+}
+
+/* Float animation for elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s var(--ease-out) forwards;
+  opacity: 0;
+}
+
+/* SA Free Chapter CTA */
+.sa-free-chapter-cta form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(24, 213, 228, 0.3);
+}
+
+.sa-free-chapter-cta input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(24, 213, 228, 0.2);
+}
+
+/* SA Purchase CTA */
+.sa-purchase-cta .card-modern {
+  transition: all 0.3s var(--ease-out);
+}
+
+.sa-purchase-cta .card-modern:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* SA User Reviews */
+.sa-user-reviews .card-modern {
+  transition: all 0.3s var(--ease-out);
+}
+
+.sa-user-reviews .card-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* ==========================================================================

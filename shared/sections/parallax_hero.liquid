@@ -222,7 +222,12 @@
   <!-- Background with Parallax -->
   <div class="parallax-hero__bg" data-parallax-speed="{{ section.settings.parallax_speed | default: 0.5 }}">
     {% if section.settings.background_image != blank %}
-      <img src="{{ section.settings.background_image | image_picker_url: 'hero-bg.jpg' }}" 
+      <img src="{{ section.settings.background_image | image_picker_url: 'placeholder.png' }}" 
+           alt="{{ section.settings.image_alt | default: 'Hero background' }}"
+           class="parallax-hero__image"
+           loading="eager">
+    {% else %}
+      <img src="https://picsum.photos/id/1015/1920/600?blur=2" 
            alt="{{ section.settings.image_alt | default: 'Hero background' }}"
            class="parallax-hero__image"
            loading="eager">

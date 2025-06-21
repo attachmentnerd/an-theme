@@ -601,11 +601,15 @@ Remember: The CSS in these themes is tightly integrated with Kajabi's platform. 
 The project uses a Node.js build system to manage shared components:
 
 ### Available Commands:
+
 ```bash
-# Export a specific theme
-npm run export website    # Exports website theme
-npm run export landing    # Exports landing theme  
-npm run export product    # Exports product theme
+# Export themes with version control (recommended)
+npm run theme:export website patch "Fixed navigation styles"
+npm run theme:export landing minor "Added new hero section"
+npm run theme:export product major "Complete redesign"
+
+# Generate demo page with all sections
+npm run demo:generate
 
 # Export all themes at once
 npm run export:all
@@ -614,14 +618,51 @@ npm run export:all
 npm run clean
 ```
 
+#### Version Bump Types:
+- `patch`: Bug fixes, small changes (1.0.0 → 1.0.1)
+- `minor`: New features, backwards compatible (1.0.0 → 1.1.0)  
+- `major`: Breaking changes (1.0.0 → 2.0.0)
+
+#### Legacy Export Commands:
+```bash
+# Auto-increments patch version (deprecated - use theme:export instead)
+npm run export website    # Exports website theme
+npm run export landing    # Exports landing theme  
+npm run export product    # Exports product theme
+```
+
+**Note**: Always use `npm run theme:export` with version type and message for better version tracking.
+
 ### What happens during build:
 1. Creates temporary build directory
-2. Copies theme files to build directory
-3. Copies shared snippets (overwrites if exists)
-4. Copies shared sections (doesn't overwrite existing)
-5. Merges shared CSS + theme CSS into final overrides.css
-6. Creates versioned ZIP file in `/exports/releases/`
-7. Cleans up temporary files
+2. Generates demo page for website theme (auto-updates section list)
+3. Copies theme files to build directory
+4. Copies shared snippets (overwrites if exists)
+5. Copies shared sections (doesn't overwrite existing)
+6. Merges shared CSS + theme CSS into final overrides.css
+7. Creates versioned ZIP file in `/exports/releases/`
+8. Cleans up temporary files
+
+### Demo Page Feature
+
+The website theme includes an auto-generated demo page that displays all shared sections:
+
+1. **Access**: Navigate to `/pages/demo` in your Kajabi site after uploading the theme
+2. **Auto-generation**: The demo page is automatically updated during website theme builds
+3. **Manual generation**: Run `npm run demo:generate` to update the demo page
+4. **Features**:
+   - Displays all 66+ shared sections organized by category
+   - Quick navigation menu to jump to section types
+   - Shows total section count and last generated timestamp
+   - Excludes context-specific sections (like blog post body, login, etc.)
+   - Each section is labeled for easy identification
+   - Alternating backgrounds for better visual separation
+
+This is incredibly useful for:
+- Testing all sections after CSS changes
+- Showcasing available sections to clients
+- Quick visual QA during development
+- Finding the right section for a specific need
 
 ### Build Configuration:
 - Edit `scripts/theme-manager.js` to modify build process
@@ -769,9 +810,20 @@ The AN themes now use a modern, modular JavaScript approach replacing the legacy
 
 When creating new sections for Kajabi themes, follow these requirements:
 
-1. **File Location**: Place section files in `/themes/[theme-name]/sections/`
+1. **File Location**: Place section files in `/shared/sections/` for website/landing themes
 
-2. **Schema Structure**: Kajabi uses `"elements"` instead of `"settings"`:
+2. **Section Types - Static vs Dynamic**:
+   
+   **Static Sections**: Pre-loaded on specific pages, not moveable
+   - No `"presets"` in schema
+   - Added to templates with `{% section 'section_name' %}`
+   - User can edit content but not location
+   
+   **Dynamic Sections**: User can add/remove/reorder
+   - MUST have `"presets"` array with `"category"` field
+   - Appear in Kajabi's section picker
+   - Added by users through the editor
+   
    ```liquid
    {% schema %}
    {
@@ -799,7 +851,8 @@ When creating new sections for Kajabi themes, follow these requirements:
      "presets": [
        {
          "name": "Section Name",
-         "category": "Content",  // REQUIRED for section to appear in editor!
+         "category": "Content",  // REQUIRED for dynamic sections!
+         "description": "Brief description",
          "settings": {}
        }
      ]
@@ -807,14 +860,22 @@ When creating new sections for Kajabi themes, follow these requirements:
    {% endschema %}
    ```
 
-3. **Required Fields for Visibility**:
+3. **Making Sections Dynamic (Building Blocks)**:
+   - **MUST** include `"presets"` array in schema
+   - **MUST** include `"category"` in each preset
+   - Valid categories: "Content", "Hero", "Features", "Media", "Commerce", etc.
+   - Without presets = static section only
+
+4. **Required Fields for Dynamic Sections**:
    - `"presets"` array must exist
    - Each preset MUST have a `"category"` field
-   - Valid categories: "Content", "Hero", "Features", etc.
+   - Each preset should have a `"name"` field
+   - Optional but recommended: `"description"` field
 
-4. **Common Gotchas**:
-   - Missing `"category"` = section won't appear in editor
-   - Using `"settings"` instead of `"elements"` = incompatible section
+5. **Common Gotchas**:
+   - Missing `"category"` = section won't appear in picker
+   - No `"presets"` = static section only (not pickable)
+   - Using `"settings"` instead of `"elements"` = incompatible
    - Not including section in theme export = section missing
 
 ### Section Compatibility
@@ -989,7 +1050,312 @@ The AN themes include comprehensive accessibility features to ensure an inclusiv
 - High contrast mode adjustments
 - Reduced motion preferences respected
 
+## Creating Modern Website & Landing Pages
+
+### Overview
+When creating new pages for Website or Landing themes, follow these best practices to maintain consistency and leverage our existing shared components.
+
+### 1. Page Template Structure
+
+#### Static + Dynamic Hybrid Approach
+For the best user experience, use a hybrid approach that provides structure while allowing customization:
+
+```liquid
+<!-- Example: books.liquid template -->
+<main>
+  <!-- Pre-configured sections for template structure -->
+  {% section 'books_hero' %}
+  {% section 'book_showcase_modern' %}
+  {% section 'book_testimonials_modern' %}
+  {% section 'author_bio_modern' %}
+  {% section 'newsletter_cta_modern' %}
+  
+  <!-- Allow additional dynamic sections -->
+  {{ content_for_index }}
+</main>
+```
+
+**Benefits:**
+- Users see a complete, professional layout immediately
+- All content remains editable through Kajabi's editor
+- Users can add more sections below the template
+- Provides guidance while maintaining flexibility
+
+### 2. Leverage Existing Shared Sections
+
+Before creating new sections, check our extensive library of shared sections:
+
+#### Hero Sections
+- `hero.liquid` - General purpose hero with CTA
+- `books_hero.liquid` - Modern hero with brand colors
+- `parallax_hero.liquid` - Hero with parallax effect
+- `utility_hero.liquid` - Simple hero for utility pages
+- `newsletter_hero.liquid` - Hero optimized for newsletter signup
+
+#### Content Sections
+- `book_showcase_modern.liquid` - Z-pattern product showcase
+- `feature_showcase.liquid` - Feature highlights
+- `feature_highlight.liquid` - Single feature focus
+- `colored_highlight.liquid` - Content with background colors
+- `testimonials.liquid` - Customer testimonials
+- `book_testimonials_modern.liquid` - Modern card-style testimonials
+
+#### CTA Sections
+- `cta_section.liquid` - General call-to-action
+- `full_width_cta.liquid` - Full-width CTA block
+- `newsletter_cta_modern.liquid` - Modern newsletter signup
+- `two_step.liquid` - Two-step opt-in
+
+#### E-commerce Sections
+- `products.liquid` - Product grid
+- `pwyc_pricing_slider.liquid` - Pay-what-you-can pricing
+- `book.liquid` - Book details
+- `book_buy.liquid` - Purchase options
+
+#### About/Team Sections
+- `author_bio_modern.liquid` - Modern author/team bio
+- `about_hero.liquid` - About page hero
+
+### 3. Modern Design System Integration
+
+When creating new sections, follow our modern brand guidelines:
+
+#### Color Usage
+```css
+/* Use CSS variables for all colors */
+background: var(--c-brand-100);    /* Lavender backgrounds */
+color: var(--c-ink-900);           /* Dark text */
+background: var(--g-brand);        /* Gradient for primary CTAs */
+```
+
+#### Typography Scale
+```css
+/* Use typography variables */
+font-size: var(--fs-display);      /* 48px - Hero headings */
+font-size: var(--fs-h1);          /* 40px - Section titles */
+font-size: var(--fs-body-lg);     /* 18px - Subheadings */
+```
+
+#### Component Classes
+```html
+<!-- Modern buttons -->
+<a href="#" class="btn btn-primary-modern">Primary CTA</a>
+<a href="#" class="btn btn-secondary-modern">Secondary</a>
+
+<!-- Cards -->
+<div class="card-modern">Content</div>
+
+<!-- Animations -->
+<div class="animate-fade-up">Animated content</div>
+```
+
+### 4. Section Design Patterns
+
+#### Hero Pattern
+```liquid
+<section class="hero-section position-relative overflow-hidden" style="background: var(--c-brand-100); padding: 80px 0;">
+  <div class="container">
+    <div class="text-center animate-fade-up">
+      <h1 style="font-size: var(--fs-display); color: var(--c-ink-900);">
+        {{ section.settings.heading }}
+      </h1>
+      <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700);">
+        {{ section.settings.subheading }}
+      </p>
+      <div class="mt-4">
+        <a href="#" class="btn btn-primary-modern">CTA</a>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+#### Z-Pattern Content
+```liquid
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center {% if alternate %}flex-lg-row-reverse{% endif %}">
+      <div class="col-lg-6">
+        <!-- Visual with glow effect -->
+        <div style="border-radius: 16px; box-shadow: 0 0 48px rgba(94,59,255,.15);">
+          <img src="{{ image }}" class="img-fluid">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <!-- Content with max-width -->
+        <div style="max-width: 560px;">
+          <h2 style="font-size: var(--fs-h1);">{{ heading }}</h2>
+          <p style="font-size: var(--fs-body-lg);">{{ content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+#### Card Grid Pattern
+```liquid
+<section class="py-5" style="background: #FAFAFA;">
+  <div class="container">
+    <div class="row g-4">
+      {% for item in items %}
+        <div class="col-lg-4">
+          <div class="card-modern h-100">
+            <!-- Card content -->
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+```
+
+### 5. Best Practices for New Pages
+
+1. **Always check shared sections first** - We likely already have what you need
+2. **Use the hybrid approach** - Combine static sections for structure with dynamic capability
+3. **Follow the design system** - Use CSS variables and utility classes
+4. **Think mobile-first** - All sections should be responsive
+5. **Include entrance animations** - Use animate-fade-up, animate-fade-in classes
+6. **One primary CTA per viewport** - Follow the brand guidelines
+7. **Test in Kajabi** - Always preview in the actual environment
+
+### 6. Creating New Page Templates
+
+When creating new page templates, use simple static sections without dynamic insertion points, as Kajabi's `{% dynamic_sections_for %}` doesn't work as expected in practice.
+
+**Recommended Template Pattern:**
+```liquid
+<!-- template_name.liquid -->
+<main>
+  {% section 'hero' %}
+  {% section 'features' %}
+  {% section 'testimonials' %}
+  {% section 'cta' %}
+  
+  <!-- Optional: Allow dynamic sections at the end only -->
+  {{ content_for_index }}
+</main>
+```
+
+This pattern:
+- Provides a structured default layout
+- Keeps templates simple and predictable
+- Allows additional sections at the end if needed
+- Works reliably with Kajabi's platform
+
+### 7. Common Page Types & Recommended Sections
+
+#### Books/Products Page
+- `books_hero.liquid`
+- `book_showcase_modern.liquid` (multiple instances)
+- `book_testimonials_modern.liquid`
+- `author_bio_modern.liquid`
+- `newsletter_cta_modern.liquid`
+
+#### About Page
+- `about_hero.liquid`
+- `feature_showcase.liquid`
+- `author_bio_modern.liquid`
+- `testimonials.liquid`
+- `full_width_cta.liquid`
+
+#### Landing Page
+- `hero.liquid` or `parallax_hero.liquid`
+- `feature_highlight.liquid`
+- `colored_highlight.liquid`
+- `testimonials.liquid`
+- `pwyc_pricing_slider.liquid`
+- `newsletter_cta_modern.liquid`
+
+#### Blog/Content Page
+- `utility_hero.liquid`
+- `blog_listings.liquid`
+- `newsletter_hero.liquid`
+- `cta_section.liquid`
+
+### 8. Performance Considerations
+
+- **Lazy load images** - Use loading="lazy" attribute
+- **Minimize custom CSS** - Leverage utility classes
+- **Use shared components** - Don't duplicate code
+- **Optimize animations** - Use CSS transforms over position changes
+
+### 9. Template Best Practices
+
+For Kajabi templates, keep it simple with static sections and optional dynamic content at the end:
+
+#### Recommended Approach: Static Sections + content_for_index
+
+```liquid
+<!-- template_name.liquid -->
+<main>
+  <!-- Pre-configured sections provide structure -->
+  {% section 'hero' %}
+  {% section 'features' %}
+  {% section 'testimonials' %}
+  {% section 'cta' %}
+  
+  <!-- Allow additional sections at the end -->
+  {{ content_for_index }}
+</main>
+```
+
+**Benefits:**
+- Simple and reliable
+- Works consistently across Kajabi
+- Provides default structure
+- Users can add sections at the end
+- No complex dynamic zone management
+
+#### Important Note on dynamic_sections_for
+
+While Kajabi documents `{% dynamic_sections_for %}`, in practice it doesn't work as expected. Avoid using it in templates as it can cause issues or simply not function.
+
+#### Best Practices:
+1. Use static sections for core page structure
+2. Include `{{ content_for_index }}` at the end for flexibility
+3. Keep templates simple and predictable
+4. Test thoroughly in Kajabi's environment
+5. Document which sections are included by default
+
 ## Version History
+
+### v16.0.0 (2025-01-20)
+- **MAJOR CONTENT SECTIONS**: Added PWYC pricing and testimonials
+- Created Pay What You Can (PWYC) pricing slider section
+  - Flexible 2-4 tier pricing with visual selection
+  - Supports Stripe/Kajabi checkout URLs
+  - Auto-select suggested tier option
+  - Integrated scholarship link
+  - Mobile-optimized with scroll-snap
+  - Analytics tracking (GA4 compatible)
+- Created modern testimonials section
+  - Grid layout with 2-3 column options
+  - Star ratings and customer photos
+  - Category badges for organization
+  - Featured testimonial highlighting
+  - Statistics bar with success metrics
+  - Smooth entrance animations
+- Added comprehensive CSS utilities for both sections
+- Updated shared components to 31 sections total
+- Synchronized all theme versions to v16.0.0
+
+### v15.0.6 (2025-01-19)
+- **NAVIGATION & SIDEBAR HOVER EFFECTS**: Enhanced UI interactions
+- Fixed double underline issue on navigation hover
+- Added smooth underline animation on nav links using ::after pseudo-element
+- Implemented purple brand color (#5E3BFF) for navigation hover states
+- Added comprehensive sidebar hover effects:
+  - Title slide animation (translateX) on hover
+  - Teal underline animation for section headings
+  - Tag hover with elevation and shadow effects
+  - Category link indent animation
+  - Social icon scale and lift effects
+  - Enhanced search input focus states
+  - Instructor image zoom on hover
+- Prevented Kajabi default underlines with more specific CSS selectors
+- All hover effects use modern CSS transitions for smooth animations
 
 ### v15.0.0 (2025-01-18)
 - **CLEAN MODULAR HEADER ARCHITECTURE**: Complete redesign with separated components

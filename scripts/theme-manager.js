@@ -2,8 +2,9 @@ const fs = require('fs-extra');
 const path = require('path');
 const archiver = require('archiver');
 const { execSync } = require('child_process');
+const generateDemoPage = require('./generate-demo-page');
 
-const THEME_TYPES = ['website', 'landing', 'product', 'email'];
+const THEME_TYPES = ['website', 'landing', 'product'];
 const VERSION_FILE = path.join(__dirname, '..', 'versions.json');
 
 // Load or initialize versions
@@ -32,6 +33,13 @@ async function buildTheme(type) {
   const sharedDir = path.join(__dirname, '..', 'shared');
 
   console.log(`Building ${type} theme...`);
+
+  // Generate demo page for website theme
+  if (type === 'website') {
+    console.log('Generating demo page...');
+    const stats = generateDemoPage();
+    console.log(`✓ Demo page generated with ${stats.total} sections`);
+  }
 
   // Clean build directory
   await fs.remove(buildDir);

@@ -46,7 +46,7 @@ As of v10.0.6+, the AN Kajabi themes use a unified shared component architecture
 - **Purpose**: Course/product delivery
 - **Uses**: Only shared CSS, maintains separate components
 
-## Shared Sections (29 total)
+## Shared Sections (31 total)
 
 ### Core Sections
 - `header.liquid` - Main site header (used by both website and landing)
@@ -58,6 +58,7 @@ As of v10.0.6+, the AN Kajabi themes use a unified shared component architecture
 - `section.liquid` - Generic content section
 - `page_content.liquid` - Page body content
 - `carousel.liquid` - Testimonial/content carousel
+- `testimonials.liquid` - Modern testimonial cards grid
 - `book.liquid` - Book showcase
 - `book_buy.liquid` - Book purchase links
 
@@ -81,6 +82,7 @@ As of v10.0.6+, the AN Kajabi themes use a unified shared component architecture
 - `store_builder.liquid` - Store layout
 - `sales_page_body.liquid` - Sales page content
 - `sales_page_sidebar.liquid` - Sales page sidebar
+- `pwyc_pricing_slider.liquid` - Pay What You Can pricing selector
 
 ### Utility
 - `announcements.liquid` - Site announcements
@@ -155,8 +157,95 @@ For Website/Landing differences:
 4. **Testing**: Always test in both Website and Landing contexts
 5. **Versioning**: Update version numbers when making changes
 
+## Component Documentation
+
+### Pay What You Can (PWYC) Pricing Slider
+
+**File**: `shared/sections/pwyc_pricing_slider.liquid`  
+**Added**: v16.0.0 (2025-01-20)  
+**Purpose**: Flexible pricing selector for course sales pages
+
+#### Features
+- 2-4 price tiers with visual selection
+- Customizable price cards with icons and badges
+- Auto-select suggested tier option
+- Integrated scholarship link
+- Mobile-optimized with scroll-snap
+- Analytics tracking (GA4 compatible)
+- Accessibility compliant (ARIA labels, keyboard nav)
+
+#### Settings
+- Heading and subheading text
+- CTA button text
+- Background style (default, white, or brand lavender)
+- Auto-select suggested price toggle
+- Scholarship link configuration
+
+#### Block Settings (Price Cards)
+- Price display (e.g., "$49")
+- Label (e.g., "Budget", "Suggested")
+- Description text
+- Checkout URL (Stripe or Kajabi)
+- Optional badge text
+- Optional icon image
+
+#### Usage
+1. Add section: "Pay What You Can Pricing"
+2. Configure 2-4 price cards
+3. Set checkout URLs for each price point
+4. Customize text and styling
+5. Enable scholarship link if needed
+
+#### CSS Utilities
+- `.pwyc-card-grid-2/3/4` - Control grid columns
+- `.pwyc-hover-lift/scale` - Hover animations
+- `.pwyc-selected-glow` - Selection effect
+- `.pwyc-badge-*` - Badge positioning
+- `.pwyc-price-small/medium/large` - Price sizing
+- `.pwyc-mobile-stack/scroll` - Mobile layouts
+
+### Testimonials Section
+
+**File**: `shared/sections/testimonials.liquid`  
+**Added**: v16.0.0 (2025-01-20)  
+**Purpose**: Display customer testimonials in a modern card grid layout
+
+#### Features
+- Grid layout (2 or 3 columns)
+- Star ratings (0-5 stars)
+- Customer photos with fallback avatars
+- Category badges (Sleep, Behavior, Connection, etc.)
+- Featured testimonial highlighting
+- Statistics bar (families helped, success rate, etc.)
+- Animated card entrance effects
+- Optional CTA button
+
+#### Settings
+- Heading and subheading text
+- Background style (default, white, or lavender)
+- Column count (2 or 3)
+- Statistics display toggle
+- CTA button configuration
+
+#### Block Settings (Testimonial Cards)
+- Quote text
+- Customer name and details
+- Optional photo
+- Star rating (0-5)
+- Category selection
+- Featured flag
+
+#### CSS Utilities
+- `.testimonial-masonry` - Pinterest-style masonry layout
+- `.testimonial-minimal` - Hide author info
+- `.testimonial-compact` - Smaller card padding
+- `.testimonial-dark` - Dark theme variant
+- `.testimonial-hover-quote/shadow` - Hover effects
+- `.stars-large/small/brand/teal` - Star rating variations
+
 ## Version History
 
+- **v16.0.0**: Added PWYC pricing slider and testimonials components
 - **v10.0.6+**: Full unification of Website/Landing components
 - **v10.0.3-10.0.5**: Initial shared component system
 - **Pre-v10.0.3**: Separate components per theme

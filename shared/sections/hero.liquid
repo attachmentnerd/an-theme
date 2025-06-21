@@ -1,6 +1,11 @@
 <section class="hero-section hero-section--{{ section.settings.layout_style }}" 
-         style="{% if section.settings.background_image %}background-image: url('{{ section.settings.background_image | image_picker_url: 'hero-bg.jpg' }}');{% endif %}
-                {% if section.settings.background_color %}background-color: {{ section.settings.background_color }};{% endif %}
+         style="{% if section.settings.background_image != blank %}
+                  background-image: url('{{ section.settings.background_image | image_picker_url: 'hero-bg.jpg' }}');
+                {% elsif section.settings.background_color %}
+                  background-color: {{ section.settings.background_color }};
+                {% else %}
+                  background-image: url('https://picsum.photos/id/1015/1920/600?blur=2');
+                {% endif %}
                 {% if section.settings.text_color %}color: {{ section.settings.text_color }};{% endif %}">
   
   {% if section.settings.background_overlay %}
@@ -46,7 +51,7 @@
             {% case block.type %}
               {% when 'button' %}
                 <a href="{{ block.settings.button_link }}" 
-                   class="btn btn--{{ block.settings.button_style }} hero-btn" 
+                   class="btn {% if block.settings.button_style == 'primary' or block.settings.button_style == 'coral' %}btn-primary-modern{% elsif block.settings.button_style == 'secondary' or block.settings.button_style == 'outline' %}btn-secondary-modern{% endif %} hero-btn" 
                    kjb-settings-id="{{ 'button_text' | settings_id: section: section, block: block }}">
                   {{ block.settings.button_text }}
                 </a>
@@ -58,7 +63,7 @@
                          placeholder="{{ block.settings.placeholder_text }}" 
                          class="hero-form-input" 
                          required>
-                  <button type="submit" class="btn btn--primary hero-form-submit">
+                  <button type="submit" class="btn btn-primary-modern hero-form-submit">
                     {{ block.settings.submit_text }}
                   </button>
                 </form>
@@ -68,9 +73,15 @@
       {% endif %}
       
       {% comment %} Optional image {% endcomment %}
-      {% if section.settings.content_image %}
+      {% if section.settings.content_image != blank %}
         <div class="hero-image">
           <img src="{{ section.settings.content_image | image_picker_url: 'hero-content.jpg' }}" 
+               alt="{{ section.settings.content_image_alt }}"
+               class="hero-image-img">
+        </div>
+      {% else %}
+        <div class="hero-image">
+          <img src="https://picsum.photos/id/1074/800/600" 
                alt="{{ section.settings.content_image_alt }}"
                class="hero-image-img">
         </div>

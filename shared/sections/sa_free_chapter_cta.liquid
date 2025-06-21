@@ -1,0 +1,151 @@
+<section class="sa-free-chapter-cta py-5" style="background: var(--c-ink-900);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="text-center animate-fade-up">
+          <!-- Icon -->
+          <div class="mb-4">
+            <div style="width: 80px; height: 80px; background: var(--c-accent-teal); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </div>
+          </div>
+          
+          <h2 class="mb-3" style="font-size: var(--fs-h1); color: white; font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+            {{ section.settings.heading | default: 'Start Your Journey Today' }}
+          </h2>
+          
+          <p class="mb-4" style="font-size: var(--fs-body-lg); color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+            {{ section.settings.subheading | default: 'Download a free chapter and discover how Securely Attached can transform your relationships' }}
+          </p>
+          
+          <!-- Form -->
+          <div class="mt-4" style="max-width: 500px; margin: 0 auto;">
+            <form action="{{ section.settings.form_action }}" method="post" class="d-flex flex-column flex-sm-row gap-3">
+              <input type="email" 
+                     name="email" 
+                     placeholder="{{ section.settings.email_placeholder | default: 'Enter your email' }}"
+                     required
+                     class="form-control"
+                     style="background: white; border: none; padding: 16px 24px; border-radius: 100px; font-size: 16px;">
+              
+              <button type="submit" 
+                      class="btn"
+                      style="background: var(--c-accent-teal); color: white; padding: 16px 32px; border-radius: 100px; font-weight: 600; white-space: nowrap; border: none; transition: all 0.3s ease;">
+                {{ section.settings.button_text | default: 'Get Free Chapter' }}
+              </button>
+            </form>
+            
+            <p class="mt-3 mb-0" style="font-size: 14px; color: rgba(255,255,255,0.6);">
+              {{ section.settings.privacy_text | default: 'We respect your privacy. Unsubscribe at any time.' }}
+            </p>
+          </div>
+          
+          <!-- Benefits -->
+          <div class="mt-5 pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
+            <div class="row g-4 text-center">
+              {% for block in section.blocks %}
+                {% if block.type == 'benefit' %}
+                  <div class="col-md-4 animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--c-accent-teal)">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                      </svg>
+                    </div>
+                    <p class="mb-0" style="color: rgba(255,255,255,0.8); font-size: 14px;" kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}">
+                      {{ block.settings.text }}
+                    </p>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Free Chapter CTA",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Start Your Journey Today"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "form_action",
+      "label": "Form Action URL"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Get Free Chapter"
+    },
+    {
+      "type": "text",
+      "id": "privacy_text",
+      "label": "Privacy Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "elements": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA Free Chapter CTA",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "text": "Instant download"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "text": "Sample prompts included"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "text": "No credit card required"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

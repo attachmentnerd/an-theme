@@ -1,4 +1,8 @@
-<section class="about-hero-section" style="background-image: url('{{ section.settings.background_image | image_picker_url: 'background.jpg' }}');">
+<section class="about-hero-section" style="{% if section.settings.background_image != blank %}
+    background-image: url('{{ section.settings.background_image | image_picker_url: 'placeholder.png' }}');
+  {% else %}
+    background-image: url('https://picsum.photos/id/1015/1920/600?blur=2');
+  {% endif %}">
   <div class="about-hero-overlay"></div>
   <div class="container">
     <div class="about-hero-content">
@@ -26,7 +30,7 @@
           {% case block.type %}
             {% when 'button' %}
               <a href="{{ block.settings.button_link }}" 
-                 class="btn {% if block.settings.button_style == 'primary' %}btn-primary about-hero-btn{% else %}btn-outline about-hero-btn-secondary{% endif %}" 
+                 class="btn {% if block.settings.button_style == 'primary' %}btn-primary-modern about-hero-btn{% else %}btn-secondary-modern about-hero-btn-secondary{% endif %}" 
                  kjb-settings-id="{{ 'button_text' | settings_id: section: section, block: block }}">
                 {{ block.settings.button_text }}
               </a>

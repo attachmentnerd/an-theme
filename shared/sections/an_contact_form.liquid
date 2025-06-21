@@ -1,0 +1,653 @@
+{% comment %}
+  AN Professional Contact Form Section
+  - Multi-purpose contact form
+  - Inquiry type selector
+  - Professional fields
+  - Two-column layout option
+  - Form validation
+{% endcomment %}
+
+<section class="an-contact-form py-5" style="background: {{ section.settings.background_color }};">
+  <div class="container">
+    <div class="row">
+      <!-- Form Column -->
+      <div class="{% if section.settings.show_sidebar %}col-lg-8{% else %}col-lg-8 mx-auto{% endif %}">
+        <!-- Section Header -->
+        {% if section.settings.heading != blank or section.settings.subheading != blank %}
+          <div class="mb-4 animate-fade-up">
+            {% if section.settings.heading != blank %}
+              <h2 style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500; margin-bottom: 1rem;">
+                {{ section.settings.heading }}
+              </h2>
+            {% endif %}
+            {% if section.settings.subheading != blank %}
+              <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700);">
+                {{ section.settings.subheading }}
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <!-- Contact Form -->
+        <form class="an-contact-form__form animate-fade-up" 
+              action="{{ section.settings.form_action }}" 
+              method="post"
+              data-form-type="contact"
+              style="animation-delay: 0.1s;">
+          
+          {% if section.settings.show_inquiry_type %}
+            <!-- Inquiry Type -->
+            <div class="an-contact-form__field mb-4">
+              <label for="inquiry-type-{{ section.id }}" class="an-contact-form__label">
+                Type of Inquiry <span class="required">*</span>
+              </label>
+              <select id="inquiry-type-{{ section.id }}" 
+                      name="inquiry_type" 
+                      class="an-contact-form__select" 
+                      required>
+                <option value="">Select inquiry type...</option>
+                <option value="speaking">Speaking Engagement</option>
+                <option value="media">Media/Press Inquiry</option>
+                <option value="coaching">Coaching Services</option>
+                <option value="partnership">Partnership Opportunity</option>
+                <option value="general">General Question</option>
+              </select>
+            </div>
+          {% endif %}
+
+          <!-- Name Fields -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="an-contact-form__field mb-4">
+                <label for="first-name-{{ section.id }}" class="an-contact-form__label">
+                  First Name <span class="required">*</span>
+                </label>
+                <input type="text" 
+                       id="first-name-{{ section.id }}" 
+                       name="first_name" 
+                       class="an-contact-form__input" 
+                       required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="an-contact-form__field mb-4">
+                <label for="last-name-{{ section.id }}" class="an-contact-form__label">
+                  Last Name <span class="required">*</span>
+                </label>
+                <input type="text" 
+                       id="last-name-{{ section.id }}" 
+                       name="last_name" 
+                       class="an-contact-form__input" 
+                       required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Fields -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="an-contact-form__field mb-4">
+                <label for="email-{{ section.id }}" class="an-contact-form__label">
+                  Email Address <span class="required">*</span>
+                </label>
+                <input type="email" 
+                       id="email-{{ section.id }}" 
+                       name="email" 
+                       class="an-contact-form__input" 
+                       required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="an-contact-form__field mb-4">
+                <label for="phone-{{ section.id }}" class="an-contact-form__label">
+                  Phone Number
+                </label>
+                <input type="tel" 
+                       id="phone-{{ section.id }}" 
+                       name="phone" 
+                       class="an-contact-form__input">
+              </div>
+            </div>
+          </div>
+
+          {% if section.settings.show_organization %}
+            <!-- Organization Fields -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="an-contact-form__field mb-4">
+                  <label for="organization-{{ section.id }}" class="an-contact-form__label">
+                    Organization
+                  </label>
+                  <input type="text" 
+                         id="organization-{{ section.id }}" 
+                         name="organization" 
+                         class="an-contact-form__input">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="an-contact-form__field mb-4">
+                  <label for="role-{{ section.id }}" class="an-contact-form__label">
+                    Your Role
+                  </label>
+                  <input type="text" 
+                         id="role-{{ section.id }}" 
+                         name="role" 
+                         class="an-contact-form__input">
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if section.settings.show_event_details %}
+            <!-- Event Details (for speaking) -->
+            <div class="an-contact-form__event-details" style="display: none;">
+              <h3 class="an-contact-form__section-title">Event Details</h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="an-contact-form__field mb-4">
+                    <label for="event-date-{{ section.id }}" class="an-contact-form__label">
+                      Event Date
+                    </label>
+                    <input type="date" 
+                           id="event-date-{{ section.id }}" 
+                           name="event_date" 
+                           class="an-contact-form__input">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="an-contact-form__field mb-4">
+                    <label for="event-location-{{ section.id }}" class="an-contact-form__label">
+                      Event Location
+                    </label>
+                    <input type="text" 
+                           id="event-location-{{ section.id }}" 
+                           name="event_location" 
+                           class="an-contact-form__input">
+                  </div>
+                </div>
+              </div>
+              <div class="an-contact-form__field mb-4">
+                <label for="audience-size-{{ section.id }}" class="an-contact-form__label">
+                  Expected Audience Size
+                </label>
+                <input type="text" 
+                       id="audience-size-{{ section.id }}" 
+                       name="audience_size" 
+                       class="an-contact-form__input">
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Message -->
+          <div class="an-contact-form__field mb-4">
+            <label for="message-{{ section.id }}" class="an-contact-form__label">
+              Message <span class="required">*</span>
+            </label>
+            <textarea id="message-{{ section.id }}" 
+                      name="message" 
+                      class="an-contact-form__textarea" 
+                      rows="6" 
+                      required></textarea>
+          </div>
+
+          {% if section.settings.show_budget %}
+            <!-- Budget Range -->
+            <div class="an-contact-form__field mb-4">
+              <label for="budget-{{ section.id }}" class="an-contact-form__label">
+                Budget Range
+              </label>
+              <select id="budget-{{ section.id }}" 
+                      name="budget" 
+                      class="an-contact-form__select">
+                <option value="">Prefer not to say</option>
+                <option value="under-5k">Under $5,000</option>
+                <option value="5k-10k">$5,000 - $10,000</option>
+                <option value="10k-25k">$10,000 - $25,000</option>
+                <option value="25k-plus">$25,000+</option>
+              </select>
+            </div>
+          {% endif %}
+
+          <!-- Newsletter Opt-in -->
+          {% if section.settings.show_newsletter %}
+            <div class="an-contact-form__field mb-4">
+              <label class="an-contact-form__checkbox">
+                <input type="checkbox" name="newsletter_signup" value="yes">
+                <span>{{ section.settings.newsletter_text }}</span>
+              </label>
+            </div>
+          {% endif %}
+
+          <!-- Submit Button -->
+          <div class="an-contact-form__submit">
+            <button type="submit" class="btn btn-primary-modern btn-lg">
+              {{ section.settings.submit_text }}
+            </button>
+          </div>
+
+          <!-- Form Messages -->
+          <div class="an-contact-form__messages mt-3">
+            <div class="an-contact-form__success" style="display: none;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10" cy="10" r="9" fill="var(--c-accent-teal)"/>
+                <path d="M14 7L8.5 12.5L6 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ section.settings.success_message }}</span>
+            </div>
+            <div class="an-contact-form__error" style="display: none;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10" cy="10" r="9" fill="#FF6B6B"/>
+                <path d="M10 6V10M10 14H10.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>There was an error submitting your form. Please try again.</span>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sidebar (optional) -->
+      {% if section.settings.show_sidebar %}
+        <div class="col-lg-4">
+          <div class="an-contact-form__sidebar animate-fade-up" style="animation-delay: 0.2s;">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'info_block' %}
+                  <div class="an-contact-form__info-block" {{ block.shopify_attributes }}>
+                    {% if block.settings.icon != blank %}
+                      <div class="an-contact-form__info-icon">
+                        <img src="{{ block.settings.icon | img_url: '48x48' }}" alt="" width="24" height="24">
+                      </div>
+                    {% endif %}
+                    <h3 class="an-contact-form__info-title">{{ block.settings.title }}</h3>
+                    <p class="an-contact-form__info-text">{{ block.settings.text }}</p>
+                    {% if block.settings.link_text != blank %}
+                      <a href="{{ block.settings.link_url }}" class="an-contact-form__info-link">
+                        {{ block.settings.link_text }} →
+                      </a>
+                    {% endif %}
+                  </div>
+              {% endcase %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .an-contact-form__form {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(26, 45, 78, 0.08);
+  }
+
+  .an-contact-form__section-title {
+    font-size: var(--fs-body-lg);
+    font-weight: 600;
+    color: var(--c-ink-900);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--c-ink-100);
+  }
+
+  .an-contact-form__label {
+    display: block;
+    font-size: var(--fs-body);
+    font-weight: 500;
+    color: var(--c-ink-800);
+    margin-bottom: 0.5rem;
+  }
+
+  .an-contact-form__label .required {
+    color: var(--c-accent-peach);
+  }
+
+  .an-contact-form__input,
+  .an-contact-form__select,
+  .an-contact-form__textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: var(--fs-body);
+    color: var(--c-ink-900);
+    background: white;
+    border: 1px solid var(--c-ink-200);
+    border-radius: 8px;
+    transition: all var(--an-transition-base);
+  }
+
+  .an-contact-form__input:focus,
+  .an-contact-form__select:focus,
+  .an-contact-form__textarea:focus {
+    outline: none;
+    border-color: var(--c-brand-600);
+    box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.1);
+  }
+
+  .an-contact-form__textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .an-contact-form__checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: var(--fs-body);
+    color: var(--c-ink-700);
+  }
+
+  .an-contact-form__checkbox input[type="checkbox"] {
+    margin-top: 0.25rem;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--c-brand-600);
+    cursor: pointer;
+  }
+
+  .an-contact-form__submit {
+    margin-top: 2rem;
+  }
+
+  .an-contact-form__messages > div {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: var(--fs-body);
+  }
+
+  .an-contact-form__success {
+    background: rgba(24, 213, 228, 0.1);
+    color: var(--c-ink-700);
+  }
+
+  .an-contact-form__error {
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--c-ink-700);
+  }
+
+  /* Sidebar Styles */
+  .an-contact-form__sidebar {
+    padding-left: 2rem;
+  }
+
+  .an-contact-form__info-block {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(26, 45, 78, 0.06);
+    margin-bottom: 1.5rem;
+  }
+
+  .an-contact-form__info-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--c-brand-100);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .an-contact-form__info-title {
+    font-size: var(--fs-body-lg);
+    font-weight: 600;
+    color: var(--c-ink-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .an-contact-form__info-text {
+    font-size: var(--fs-body);
+    color: var(--c-ink-700);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .an-contact-form__info-link {
+    font-size: var(--fs-body);
+    color: var(--c-brand-600);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--an-transition-base);
+  }
+
+  .an-contact-form__info-link:hover {
+    color: var(--c-brand-800);
+    transform: translateX(4px);
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 991px) {
+    .an-contact-form__sidebar {
+      padding-left: 0;
+      margin-top: 2rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .an-contact-form__form {
+      padding: 1.5rem;
+    }
+
+    .an-contact-form__info-block {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('#shopify-section-{{ section.id }}');
+    const form = section.querySelector('.an-contact-form__form');
+    const inquirySelect = section.querySelector('select[name="inquiry_type"]');
+    const eventDetails = section.querySelector('.an-contact-form__event-details');
+    const successMsg = section.querySelector('.an-contact-form__success');
+    const errorMsg = section.querySelector('.an-contact-form__error');
+
+    // Show/hide event details based on inquiry type
+    if (inquirySelect && eventDetails) {
+      inquirySelect.addEventListener('change', function() {
+        if (this.value === 'speaking') {
+          eventDetails.style.display = 'block';
+        } else {
+          eventDetails.style.display = 'none';
+        }
+      });
+    }
+
+    // Form submission handling
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Hide any existing messages
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      
+      // Get form data
+      const formData = new FormData(form);
+      
+      // Here you would normally send the form data to your server
+      // For now, we'll just show a success message
+      
+      // Simulate API call
+      setTimeout(function() {
+        // Show success message
+        successMsg.style.display = 'flex';
+        
+        // Reset form
+        form.reset();
+        
+        // Hide event details if shown
+        if (eventDetails) {
+          eventDetails.style.display = 'none';
+        }
+        
+        // Scroll to success message
+        successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 1000);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Whether you're interested in speaking engagements, media opportunities, or have questions about our programs, we'd love to hear from you."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "text",
+      "id": "form_action",
+      "label": "Form Action URL",
+      "default": "/contact/submit",
+      "info": "Where the form data should be sent"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show Sidebar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_inquiry_type",
+      "label": "Show Inquiry Type Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_organization",
+      "label": "Show Organization Fields",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_event_details",
+      "label": "Show Event Details (for speaking)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_budget",
+      "label": "Show Budget Range",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter Opt-in",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Newsletter Opt-in Text",
+      "default": "Yes, I'd like to receive the Attachment Nerd newsletter with parenting tips and resources"
+    },
+    {
+      "type": "text",
+      "id": "submit_text",
+      "label": "Submit Button Text",
+      "default": "Send Message"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thank you for your message! We'll get back to you within 48 hours."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info_block",
+      "name": "Sidebar Info Block",
+      "elements": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Speaking Inquiries"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Eli is available for keynotes, workshops, and panel discussions on attachment science and secure parenting."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "View Speaking Topics"
+        },
+        {
+          "type": "action",
+          "id": "link_url",
+          "label": "Link URL",
+          "default": "/speaking"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form",
+      "category": "Forms",
+      "description": "Professional contact form with inquiry types",
+      "blocks": [
+        {
+          "type": "info_block",
+          "settings": {
+            "title": "Speaking Inquiries",
+            "text": "Eli is available for keynotes, workshops, and panel discussions on attachment science and secure parenting.",
+            "link_text": "View Speaking Topics",
+            "link_url": "/speaking"
+          }
+        },
+        {
+          "type": "info_block",
+          "settings": {
+            "title": "Media & Press",
+            "text": "For media inquiries, podcast interviews, or press opportunities, please include your publication and deadline.",
+            "link_text": "Download Media Kit",
+            "link_url": "/media-kit"
+          }
+        },
+        {
+          "type": "info_block",
+          "settings": {
+            "title": "Response Time",
+            "text": "We typically respond within 48 hours during business days. For urgent matters, please indicate in your message."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

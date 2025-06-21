@@ -1,0 +1,180 @@
+<section class="sa-key-benefits py-5" style="background: #FAFAFA;">
+  <div class="container">
+    <div class="text-center mb-5 animate-fade-up">
+      <h2 class="mb-3" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+        {{ section.settings.heading | default: 'What You'll Discover Inside' }}
+      </h2>
+      <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 600px; margin: 0 auto;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+        {{ section.settings.subheading | default: 'This workbook combines clinical expertise with practical exercises to guide your transformation' }}
+      </p>
+    </div>
+    
+    <div class="row g-4">
+      {% for block in section.blocks %}
+        {% if block.type == 'benefit' %}
+          <div class="col-lg-4 col-md-6">
+            <div class="card-modern h-100 p-4 animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;">
+              <!-- Icon -->
+              <div class="mb-3">
+                <div style="width: 56px; height: 56px; background: {{ block.settings.icon_background | default: 'var(--c-brand-100)' }}; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  {% case block.settings.icon %}
+                    {% when 'heart' %}
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="{{ block.settings.icon_color | default: 'var(--c-brand-600)' }}">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                      </svg>
+                    {% when 'book' %}
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="{{ block.settings.icon_color | default: 'var(--c-brand-600)' }}">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                      </svg>
+                    {% when 'users' %}
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="{{ block.settings.icon_color | default: 'var(--c-brand-600)' }}">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                    {% when 'lightbulb' %}
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="{{ block.settings.icon_color | default: 'var(--c-brand-600)' }}">
+                        <path d="M9 21h6"/>
+                        <path d="M9 18h6a7 7 0 1 0-6 0z"/>
+                      </svg>
+                    {% when 'target' %}
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="{{ block.settings.icon_color | default: 'var(--c-brand-600)' }}">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                        <circle cx="12" cy="12" r="2"/>
+                      </svg>
+                    {% when 'sparkles' %}
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="{{ block.settings.icon_color | default: 'var(--c-brand-600)' }}">
+                        <path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7l2-7z"/>
+                      </svg>
+                  {% endcase %}
+                </div>
+              </div>
+              
+              <h3 class="mb-2" style="font-size: var(--fs-h3); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">
+                {{ block.settings.title }}
+              </h3>
+              
+              <p style="color: var(--c-ink-600); line-height: 1.6;" kjb-settings-id="{{ 'description' | settings_id: section: section, block: block }}">
+                {{ block.settings.description }}
+              </p>
+              
+              {% if block.settings.highlight != blank %}
+                <div class="mt-3 pt-3" style="border-top: 1px solid var(--c-ink-100);">
+                  <p class="mb-0" style="font-size: 14px; color: var(--c-brand-600); font-weight: 500;" kjb-settings-id="{{ 'highlight' | settings_id: section: section, block: block }}">
+                    {{ block.settings.highlight }}
+                  </p>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Key Benefits",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What You'll Discover Inside"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "elements": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "heart", "label": "Heart" },
+            { "value": "book", "label": "Book" },
+            { "value": "users", "label": "Users" },
+            { "value": "lightbulb", "label": "Lightbulb" },
+            { "value": "target", "label": "Target" },
+            { "value": "sparkles", "label": "Sparkles" }
+          ],
+          "default": "heart"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon Color",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "id": "icon_background",
+          "label": "Icon Background",
+          "default": "#E9E6FF"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "highlight",
+          "label": "Highlight Text (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA Key Benefits",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "book",
+            "title": "140 Insightful Prompts",
+            "description": "Carefully crafted questions and exercises designed to help you explore your attachment patterns and relationship dynamics.",
+            "highlight": "Includes quizzes and assessments"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "lightbulb",
+            "title": "Nerd Alerts",
+            "description": "Get the science behind attachment in digestible bits. Understand the 'why' behind your patterns with research-backed insights.",
+            "highlight": "Evidence-based approach"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "target",
+            "title": "Practical Skills",
+            "description": "The final section provides concrete relational skills and strategies you can immediately apply to build secure relationships.",
+            "highlight": "Ready-to-use tools"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

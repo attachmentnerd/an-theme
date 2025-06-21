@@ -49,7 +49,7 @@
         {% if section.settings.button_text != blank %}
           <div class="feature-showcase__cta">
             <a href="{{ section.settings.button_link }}" 
-               class="btn btn-primary feature-showcase__button">
+               class="btn btn-primary-modern feature-showcase__button">
               {{ section.settings.button_text }}
             </a>
             {% if section.settings.secondary_text != blank %}
@@ -77,12 +77,17 @@
 
       {% comment %} Right UI showcase area {% endcomment %}
       <div class="feature-showcase__ui">
-        {% if section.settings.ui_image != blank %}
-          <div class="ui-card">
-            <div class="ui-card__inner">
-              <img src="{{ section.settings.ui_image | image_picker_url: 'ui-showcase.jpg' }}" 
+        <div class="ui-card">
+          <div class="ui-card__inner">
+            {% if section.settings.ui_image != blank %}
+              <img src="{{ section.settings.ui_image | image_picker_url: 'placeholder.png' }}" 
                    alt="{{ section.settings.ui_image_alt }}"
                    class="ui-card__image">
+            {% else %}
+              <img src="https://picsum.photos/id/1074/800/600" 
+                   alt="{{ section.settings.ui_image_alt }}"
+                   class="ui-card__image">
+            {% endif %}
               
               {% comment %} Floating UI elements {% endcomment %}
               {% for block in section.blocks %}
@@ -92,19 +97,21 @@
                               --element-left: {{ block.settings.left }}%;"
                        {{ block.shopify_attributes }}>
                     {% if block.settings.element_image != blank %}
-                      <img src="{{ block.settings.element_image | image_picker_url: 'element.png' }}" 
+                      <img src="{{ block.settings.element_image | image_picker_url: 'placeholder.png' }}" 
                            alt="{{ block.settings.element_alt }}">
                     {% elsif block.settings.element_content != blank %}
                       <div class="ui-element__content">
                         {{ block.settings.element_content }}
                       </div>
+                    {% else %}
+                      <img src="https://picsum.photos/id/{{ forloop.index | plus: 100 }}/100/100" 
+                           alt="{{ block.settings.element_alt }}">
                     {% endif %}
                   </div>
                 {% endif %}
               {% endfor %}
             </div>
           </div>
-        {% endif %}
       </div>
     </div>
   </div>

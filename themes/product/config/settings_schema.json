@@ -2,10 +2,11 @@
   {
     "name": "theme_info",
     "theme_name": "AN Product Theme",
-    "theme_version": "12.4.3",
+    "theme_version": "16.0.2",
     "theme_author": "Attachment Nerd",
     "theme_documentation_url": "https://attachmentnerd.com",
-    "theme_support_url": "https://attachmentnerd.com"
+    "theme_support_url": "https://attachmentnerd.com",
+    "settings_validatable": true
   },
   {
     "name": "Theme Background Images",

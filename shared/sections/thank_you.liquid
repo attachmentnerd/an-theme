@@ -1,7 +1,11 @@
 <style>
   {% if section.settings.bg_type == "image" %}
     #section-{{ section.id }} {
-      background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
+      {% if section.settings.bg_image != blank %}
+        background-image: url({{ section.settings.bg_image | image_picker_url: "placeholder.png" }});
+      {% else %}
+        background-image: url("https://picsum.photos/id/1039/1920/600?blur=2");
+      {% endif %}
       background-position: {{ section.settings.bg_position }};
     }
   {% endif %}

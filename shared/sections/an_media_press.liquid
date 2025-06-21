@@ -1,0 +1,565 @@
+{% comment %}
+  AN Media Mentions/Press Logos Section
+  - Logo carousel/grid
+  - Featured press quotes
+  - Responsive layout
+  - Grayscale to color hover effect
+  - Optional testimonial quotes
+{% endcomment %}
+
+<section class="an-media-press py-5" style="background: {{ section.settings.background_color }};">
+  <div class="container">
+    <!-- Section Header -->
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="text-center mb-5 animate-fade-up">
+        {% if section.settings.heading != blank %}
+          <h2 style="font-size: var(--fs-h2); color: var(--c-ink-900); font-weight: 500; margin-bottom: 1rem;">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 600px; margin: 0 auto;">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Featured Quote (optional) -->
+    {% if section.settings.show_featured_quote %}
+      {% for block in section.blocks %}
+        {% if block.type == 'press_quote' and block.settings.featured %}
+          <div class="an-media-press__featured-quote animate-fade-up">
+            <blockquote>
+              <p>"{{ block.settings.quote }}"</p>
+              <cite>
+                <strong>{{ block.settings.publication }}</strong>
+                {% if block.settings.author != blank %}
+                  <span>— {{ block.settings.author }}</span>
+                {% endif %}
+              </cite>
+            </blockquote>
+          </div>
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <!-- Logo Grid -->
+    <div class="an-media-press__logos animate-fade-up">
+      <div class="an-media-press__logos-track">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'media_logo' %}
+              <div class="an-media-press__logo-wrapper" {{ block.shopify_attributes }}>
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" 
+                     target="_blank" 
+                     rel="noopener"
+                     class="an-media-press__logo-link"
+                     aria-label="{{ block.settings.name }}">
+                {% endif %}
+                  
+                {% if block.settings.logo != blank %}
+                  <img src="{{ block.settings.logo | image_picker_url: 'placeholder.png' }}" 
+                       alt="{{ block.settings.name }}" 
+                       class="an-media-press__logo"
+                       loading="lazy">
+                {% else %}
+                  <img src="https://picsum.photos/id/{{ forloop.index | plus: 200 }}/200/100?grayscale" 
+                       alt="{{ block.settings.name }}" 
+                       class="an-media-press__logo"
+                       loading="lazy">
+                {% endif %}
+                
+                {% if block.settings.link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+          {% endcase %}
+        {% endfor %}
+
+        <!-- Duplicate for seamless loop if scrolling -->
+        {% if section.settings.enable_scroll %}
+          {% for block in section.blocks %}
+            {% if block.type == 'media_logo' %}
+              <div class="an-media-press__logo-wrapper">
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" 
+                     target="_blank" 
+                     rel="noopener"
+                     class="an-media-press__logo-link"
+                     aria-label="{{ block.settings.name }}">
+                {% endif %}
+                  
+                {% if block.settings.logo != blank %}
+                  <img src="{{ block.settings.logo | image_picker_url: 'placeholder.png' }}" 
+                       alt="{{ block.settings.name }}" 
+                       class="an-media-press__logo"
+                       loading="lazy">
+                {% else %}
+                  <img src="https://picsum.photos/id/{{ forloop.index | plus: 200 }}/200/100?grayscale" 
+                       alt="{{ block.settings.name }}" 
+                       class="an-media-press__logo"
+                       loading="lazy">
+                {% endif %}
+                
+                {% if block.settings.link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Press Quotes Grid -->
+    {% assign has_quotes = false %}
+    {% for block in section.blocks %}
+      {% if block.type == 'press_quote' and block.settings.featured == false %}
+        {% assign has_quotes = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_quotes and section.settings.show_quotes %}
+      <div class="an-media-press__quotes-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'press_quote' and block.settings.featured == false %}
+            <div class="an-media-press__quote-card animate-fade-up" {{ block.shopify_attributes }}>
+              <div class="an-media-press__quote-content">
+                <p>"{{ block.settings.quote }}"</p>
+              </div>
+              <div class="an-media-press__quote-source">
+                <strong>{{ block.settings.publication }}</strong>
+                {% if block.settings.date != blank %}
+                  <span class="an-media-press__quote-date">{{ block.settings.date }}</span>
+                {% endif %}
+              </div>
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" 
+                   target="_blank" 
+                   rel="noopener"
+                   class="an-media-press__quote-link">
+                  Read Full Article →
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Bottom CTA -->
+    {% if section.settings.show_cta %}
+      <div class="text-center mt-5 animate-fade-up">
+        <a href="{{ section.settings.cta_link }}" class="btn btn-secondary-modern">
+          {{ section.settings.cta_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  /* Featured Quote */
+  .an-media-press__featured-quote {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    text-align: center;
+  }
+
+  .an-media-press__featured-quote blockquote {
+    margin: 0;
+    padding: 2rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(26, 45, 78, 0.08);
+    position: relative;
+  }
+
+  .an-media-press__featured-quote blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 80px;
+    color: var(--c-brand-100);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .an-media-press__featured-quote p {
+    font-size: var(--fs-h3);
+    color: var(--c-ink-900);
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .an-media-press__featured-quote cite {
+    font-style: normal;
+    font-size: var(--fs-body);
+    color: var(--c-ink-600);
+  }
+
+  .an-media-press__featured-quote cite strong {
+    color: var(--c-brand-600);
+  }
+
+  /* Logo Grid */
+  .an-media-press__logos {
+    margin-bottom: 3rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .an-media-press__logos-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+    padding: 2rem 0;
+  }
+
+  /* Scrolling animation */
+  {% if section.settings.enable_scroll %}
+  .an-media-press__logos-track {
+    flex-wrap: nowrap;
+    animation: scroll-logos 30s linear infinite;
+  }
+
+  @keyframes scroll-logos {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .an-media-press__logos:hover .an-media-press__logos-track {
+    animation-play-state: paused;
+  }
+  {% endif %}
+
+  .an-media-press__logo-wrapper {
+    flex-shrink: 0;
+  }
+
+  .an-media-press__logo {
+    height: {{ section.settings.logo_height }}px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: all var(--an-transition-base);
+  }
+
+  .an-media-press__logo-link:hover .an-media-press__logo {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .an-media-press__logo-text {
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    color: var(--c-ink-400);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all var(--an-transition-base);
+  }
+
+  .an-media-press__logo-link:hover .an-media-press__logo-text {
+    color: var(--c-brand-600);
+  }
+
+  .an-media-press__logo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: {{ section.settings.logo_height }}px;
+    transition: all var(--an-transition-base);
+  }
+
+  .an-media-press__logo-link:hover .an-media-press__logo-placeholder svg {
+    transform: scale(1.05);
+  }
+
+  .an-media-press__logo-link:hover .an-media-press__logo-placeholder rect {
+    stroke: var(--c-brand-600);
+  }
+
+  .an-media-press__logo-link:hover .an-media-press__logo-placeholder text {
+    fill: var(--c-brand-600);
+  }
+
+  /* Quotes Grid */
+  .an-media-press__quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .an-media-press__quote-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(26, 45, 78, 0.06);
+    transition: all var(--an-transition-base);
+  }
+
+  .an-media-press__quote-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(26, 45, 78, 0.1);
+  }
+
+  .an-media-press__quote-content {
+    margin-bottom: 1rem;
+  }
+
+  .an-media-press__quote-content p {
+    font-size: var(--fs-body);
+    color: var(--c-ink-800);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .an-media-press__quote-source {
+    font-size: var(--fs-body-sm);
+    color: var(--c-ink-600);
+    margin-bottom: 0.5rem;
+  }
+
+  .an-media-press__quote-source strong {
+    color: var(--c-brand-600);
+    display: block;
+  }
+
+  .an-media-press__quote-date {
+    opacity: 0.7;
+  }
+
+  .an-media-press__quote-link {
+    font-size: var(--fs-body-sm);
+    color: var(--c-brand-600);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--an-transition-base);
+  }
+
+  .an-media-press__quote-link:hover {
+    color: var(--c-brand-800);
+    transform: translateX(4px);
+    display: inline-block;
+  }
+
+  /* Mobile styles */
+  @media (max-width: 767px) {
+    .an-media-press__logos-track {
+      gap: 2rem;
+    }
+
+    .an-media-press__logo {
+      height: 40px;
+    }
+
+    .an-media-press__featured-quote p {
+      font-size: var(--fs-body-lg);
+    }
+
+    .an-media-press__quotes-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Media & Press",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "As Featured In"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Trusted by leading publications and media outlets"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo Height (px)",
+      "min": 30,
+      "max": 100,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_scroll",
+      "label": "Enable Logo Scrolling",
+      "default": false,
+      "info": "Continuously scroll logos (good for many logos)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_quote",
+      "label": "Show Featured Quote",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quotes",
+      "label": "Show Quote Cards",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "View Media Kit"
+    },
+    {
+      "type": "text",
+      "id": "cta_link",
+      "label": "CTA Link",
+      "default": "/media-kit"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "media_logo",
+      "name": "Media Logo",
+      "elements": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Publication Name",
+          "default": "The New York Times"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image",
+          "info": "PNG with transparency recommended"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Article Link (optional)"
+        }
+      ]
+    },
+    {
+      "type": "press_quote",
+      "name": "Press Quote",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Eli Harwood's approach to attachment science is both revolutionary and deeply practical."
+        },
+        {
+          "type": "text",
+          "id": "publication",
+          "label": "Publication",
+          "default": "Psychology Today"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author (optional)"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date (optional)",
+          "default": "March 2024"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Article Link (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured Quote",
+          "default": false,
+          "info": "Shows as large quote above logos"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Media & Press",
+      "category": "Content",
+      "description": "Showcase media mentions and press coverage",
+      "blocks": [
+        {
+          "type": "press_quote",
+          "settings": {
+            "quote": "Attachment Nerd is revolutionizing how parents understand and connect with their children through evidence-based practices.",
+            "publication": "Forbes",
+            "date": "January 2024",
+            "featured": true
+          }
+        },
+        {
+          "type": "media_logo",
+          "settings": {
+            "name": "The Today Show"
+          }
+        },
+        {
+          "type": "media_logo",
+          "settings": {
+            "name": "NPR"
+          }
+        },
+        {
+          "type": "media_logo",
+          "settings": {
+            "name": "Parents Magazine"
+          }
+        },
+        {
+          "type": "media_logo",
+          "settings": {
+            "name": "Psychology Today"
+          }
+        },
+        {
+          "type": "media_logo",
+          "settings": {
+            "name": "Good Morning America"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

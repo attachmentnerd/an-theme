@@ -1,0 +1,174 @@
+<section class="sa-workbook-preview py-5" style="background: linear-gradient(180deg, #FFFFFF 0%, var(--c-brand-100) 100%);">
+  <div class="container">
+    <div class="text-center mb-5 animate-fade-up">
+      <h2 class="mb-3" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;">
+        {{ section.settings.heading | default: 'A Guided Journey, Not Just a Book' }}
+      </h2>
+      <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 600px; margin: 0 auto;">
+        {{ section.settings.subheading | default: 'This informative guided journal combines education with self-discovery' }}
+      </p>
+    </div>
+    
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <div class="animate-fade-up">
+          <!-- Preview mockup -->
+          <div class="position-relative">
+            <!-- Browser-like frame -->
+            <div style="background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden;">
+              <!-- Browser top bar -->
+              <div style="background: #F5F5F5; padding: 12px 16px; display: flex; align-items: center; gap: 8px;">
+                <div style="width: 12px; height: 12px; background: #FF5F57; border-radius: 50%;"></div>
+                <div style="width: 12px; height: 12px; background: #FFBD2E; border-radius: 50%;"></div>
+                <div style="width: 12px; height: 12px; background: #28CA42; border-radius: 50%;"></div>
+              </div>
+              
+              <!-- Preview content -->
+              <div style="padding: 40px;">
+                <h3 class="mb-3" style="font-size: 24px; color: var(--c-ink-900); font-weight: 500;">
+                  Sample Prompt #47
+                </h3>
+                <div style="background: var(--c-brand-100); padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+                  <p style="color: var(--c-ink-800); font-style: italic; margin-bottom: 0;">
+                    "Think about a time when you felt truly safe and connected in a relationship. What made that moment special? How did your body feel? What thoughts went through your mind?"
+                  </p>
+                </div>
+                <div style="border-left: 3px solid var(--c-accent-teal); padding-left: 20px;">
+                  <p style="color: var(--c-ink-600); line-height: 2;">
+                    <span style="opacity: 0.4;">Write your reflection here...</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Floating elements -->
+            <div class="position-absolute animate-float" style="top: -20px; right: -20px; background: white; padding: 16px 24px; border-radius: 100px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+              <span style="font-size: 14px; font-weight: 600; color: var(--c-ink-800);">Interactive</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="animate-fade-up" style="animation-delay: 0.1s;">
+          <h3 class="mb-4" style="font-size: var(--fs-h2); color: var(--c-ink-900); font-weight: 500;">
+            {{ section.settings.content_heading | default: 'How This Workbook Works' }}
+          </h3>
+          
+          <!-- Process steps -->
+          {% for block in section.blocks %}
+            {% if block.type == 'step' %}
+              <div class="d-flex align-items-start mb-4 animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 | plus: 0.2 }}s;">
+                <div class="flex-shrink-0 me-3">
+                  <div style="width: 40px; height: 40px; background: var(--g-brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                    {{ forloop.index }}
+                  </div>
+                </div>
+                <div>
+                  <h4 class="mb-2" style="font-size: 18px; color: var(--c-ink-900); font-weight: 500;">
+                    {{ block.settings.title }}
+                  </h4>
+                  <p style="color: var(--c-ink-600); line-height: 1.6;">
+                    {{ block.settings.description }}
+                  </p>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+          
+          <!-- Nerd Alert callout -->
+          <div class="mt-4 p-4" style="background: var(--c-accent-lemon); background-opacity: 0.2; border-radius: 12px; border: 2px dashed var(--c-accent-lemon);">
+            <div class="d-flex align-items-start">
+              <div class="me-3">
+                <span style="font-size: 24px;">🤓</span>
+              </div>
+              <div>
+                <p class="mb-0" style="font-weight: 600; color: var(--c-ink-900);">Nerd Alert!</p>
+                <p class="mb-0 mt-1" style="font-size: 14px; color: var(--c-ink-700);">
+                  {{ section.settings.nerd_alert_text | default: 'Throughout the book, I share "Nerd Alerts" to help you understand the rich data behind attachment research and how it applies to your life.' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Workbook Preview",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A Guided Journey, Not Just a Book"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "content_heading",
+      "label": "Content Heading",
+      "default": "How This Workbook Works"
+    },
+    {
+      "type": "textarea",
+      "id": "nerd_alert_text",
+      "label": "Nerd Alert Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Process Step",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Step Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA Workbook Preview",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Learn & Reflect",
+            "description": "Discover attachment theory concepts through clear explanations, then use the 140 prompts to explore your own patterns and experiences."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Process & Grieve",
+            "description": "Allow yourself to feel and process past experiences. The research shows that reflection and grieving lead to freedom in present relationships."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Practice & Grow",
+            "description": "Apply practical relational skills from the final section to build secure, lasting connections in your life."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

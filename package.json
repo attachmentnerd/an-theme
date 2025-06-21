@@ -8,6 +8,7 @@
     "theme:build": "node scripts/theme-manager.js build",
     "theme:export": "node scripts/theme-manager.js export",
     "theme:version": "node scripts/theme-manager.js version",
+    "demo:generate": "node scripts/generate-demo-page.js",
     "test": "node scripts/test-themes.js"
   },
   "devDependencies": {
