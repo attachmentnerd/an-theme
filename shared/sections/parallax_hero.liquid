@@ -1,3 +1,5 @@
+{% include 'svg_placeholders' %}
+
 <style>
   /* Parallax Hero Section */
   .parallax-hero {
@@ -227,10 +229,9 @@
            class="parallax-hero__image"
            loading="eager">
     {% else %}
-      <img src="https://picsum.photos/id/1015/1920/600?blur=2" 
-           alt="{{ section.settings.image_alt | default: 'Hero background' }}"
-           class="parallax-hero__image"
-           loading="eager">
+      <div class="parallax-hero__image" style="width: 100%; height: 100%;">
+        {{ svg_placeholder_hero }}
+      </div>
     {% endif %}
   </div>
   

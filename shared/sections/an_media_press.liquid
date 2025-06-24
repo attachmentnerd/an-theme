@@ -7,6 +7,8 @@
   - Optional testimonial quotes
 {% endcomment %}
 
+{% include 'svg_placeholders' %}
+
 <section class="an-media-press py-5" style="background: {{ section.settings.background_color }};">
   <div class="container">
     <!-- Section Header -->
@@ -66,10 +68,9 @@
                        class="an-media-press__logo"
                        loading="lazy">
                 {% else %}
-                  <img src="https://picsum.photos/id/{{ forloop.index | plus: 200 }}/200/100?grayscale" 
-                       alt="{{ block.settings.name }}" 
-                       class="an-media-press__logo"
-                       loading="lazy">
+                  <div class="an-media-press__logo-placeholder">
+                    {{ svg_placeholder_logo }}
+                  </div>
                 {% endif %}
                 
                 {% if block.settings.link != blank %}
@@ -98,10 +99,9 @@
                        class="an-media-press__logo"
                        loading="lazy">
                 {% else %}
-                  <img src="https://picsum.photos/id/{{ forloop.index | plus: 200 }}/200/100?grayscale" 
-                       alt="{{ block.settings.name }}" 
-                       class="an-media-press__logo"
-                       loading="lazy">
+                  <div class="an-media-press__logo-placeholder">
+                    {{ svg_placeholder_logo }}
+                  </div>
                 {% endif %}
                 
                 {% if block.settings.link != blank %}

@@ -1,4 +1,6 @@
 <!-- Author Bio Section - Modern Design -->
+{% include 'svg_placeholders' %}
+
 <section class="author-bio-modern py-5 position-relative overflow-hidden" style="background: linear-gradient(180deg, #FFFFFF 0%, var(--c-brand-100) 100%);">
   <div class="container">
     <div class="row align-items-center g-5">
@@ -13,10 +15,9 @@
                    style="width: 320px; height: 320px; border-radius: 24px; object-fit: cover; box-shadow: 0 12px 24px rgba(0,0,0,.08);"
                    kjb-settings-id="{{ 'author_image' | settings_id: section: section }}">
             {% else %}
-              <img src="https://picsum.photos/id/91/300/300" 
-                   alt="{{ section.settings.author_name }}" 
-                   class="author-image"
-                   style="width: 320px; height: 320px; border-radius: 24px; object-fit: cover; box-shadow: 0 12px 24px rgba(0,0,0,.08);">
+              <div style="width: 320px; height: 320px; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,.08);">
+                {{ svg_placeholder_avatar }}
+              </div>
             {% endif %}
             
             <!-- Decorative badge -->

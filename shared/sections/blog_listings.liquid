@@ -1,10 +1,12 @@
+{% include 'svg_placeholders' %}
+
 <style>
   {% if section.settings.bg_type == "image" %}
     #section-{{ section.id }} {
       {% if section.settings.bg_image != blank %}
         background-image: url({{ section.settings.bg_image | image_picker_url: "placeholder.png" }});
       {% else %}
-        background-image: url("https://picsum.photos/id/1073/1920/600?blur=2");
+        background-image: url("data:image/svg+xml;base64,{{ svg_placeholder_hero | strip | escape | base64_encode }}");
       {% endif %}
       background-position: {{ section.settings.bg_position }};
       background-size: cover;
