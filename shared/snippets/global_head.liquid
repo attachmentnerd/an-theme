@@ -21,27 +21,44 @@
     {% endif %}
     <link rel="canonical" href="{{ canonical_url }}" />
 
-    <!-- Google Fonts ====================================================== -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    {{ settings | settings_google_font_url | async_style_link }}
+    <!-- Performance Optimizations ========================================= -->
+    {% if settings.enable_performance_mode %}
+      <!-- Use optimized loading strategy -->
+      {% include 'performance_head' %}
+      
+      <!-- Kajabi CSS - Load async -->
+      <link rel="stylesheet" 
+            href="{{ 'core.css' | kajabi_asset_url }}" 
+            media="print" 
+            onload="this.media='all'; this.onload=null;">
+      <noscript>
+        <link rel="stylesheet" href="{{ 'core.css' | kajabi_asset_url }}">
+      </noscript>
+    {% else %}
+      <!-- Original loading strategy (fallback) -->
+      <!-- Google Fonts ====================================================== -->
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      {{ settings | settings_google_font_url | async_style_link }}
 
-    <!-- Kajabi CSS ======================================================== -->
-    {{ "core.css" | kajabi_asset_url | async_style_link }}
+      <!-- Kajabi CSS ======================================================== -->
+      {{ "core.css" | kajabi_asset_url | async_style_link }}
 
-    {% comment %}
-    <!-- Optional Bootstrap CSS - Remove the liquid comment tags to enable -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    {% endcomment %}
+      {% comment %}
+      <!-- Optional Bootstrap CSS - Remove the liquid comment tags to enable -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      {% endcomment %}
 
-    <!-- Font Awesome Icons -->
-    {{ "https://use.fontawesome.com/releases/v5.15.2/css/all.css" | async_style_link: crossorigin: "anonymous" }}
+      <!-- Font Awesome Icons -->
+      {{ "https://use.fontawesome.com/releases/v5.15.2/css/all.css" | async_style_link: crossorigin: "anonymous" }}
 
-    {{ "styles.css" | asset_url | stylesheet_tag }}
+      {{ "styles.css" | asset_url | stylesheet_tag }}
 
-    <!-- Customer CSS ====================================================== -->
-    <!-- If you're using custom css that affects the first render of the page, replace async_style_link below with styesheet_tag -->
-    {{ "overrides.css" | asset_url | stylesheet_tag }}
-    {% include "animation_utilities" %}
+      <!-- Customer CSS ====================================================== -->
+      <!-- If you're using custom css that affects the first render of the page, replace async_style_link below with styesheet_tag -->
+      {{ "overrides.css" | asset_url | stylesheet_tag }}
+      {% include "animation_utilities" %}
+    {% endif %}
+    
     {% include "global_custom_css" %}
 
     <!-- Kajabi Editor Only CSS ============================================ -->

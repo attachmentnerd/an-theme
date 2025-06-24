@@ -1,0 +1,85 @@
+{% comment %}
+  Performance-optimized head implementation
+  - Inlines critical CSS
+  - Defers non-critical CSS with print media trick
+  - Preloads hero images
+  - Optimizes font loading
+{% endcomment %}
+
+<!-- Preconnect to external domains -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://use.fontawesome.com" crossorigin>
+
+<!-- Critical CSS - Inline for immediate render -->
+{% include 'critical_css' %}
+
+<!-- Preload hero image if exists -->
+{% if section.settings.background_image %}
+  <link rel="preload" 
+        as="image" 
+        href="{{ section.settings.background_image | image_picker_url: 'hero-bg-1200.webp' }}"
+        type="image/webp">
+{% elsif section.settings.hero_image %}
+  <link rel="preload" 
+        as="image" 
+        href="{{ section.settings.hero_image | image_picker_url: 'hero-1200.webp' }}"
+        type="image/webp">
+{% endif %}
+
+<!-- Preload critical fonts -->
+<link rel="preload" 
+      href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hjp-Ek-_EeA.woff2" 
+      as="font" 
+      type="font/woff2" 
+      crossorigin>
+
+<!-- Non-critical CSS - Load with print media trick -->
+<link rel="stylesheet" 
+      href="{{ 'styles.css' | asset_url }}" 
+      media="print" 
+      onload="this.media='all'; this.onload=null;">
+
+<link rel="stylesheet" 
+      href="{{ 'overrides.css' | asset_url }}" 
+      media="print" 
+      onload="this.media='all'; this.onload=null;">
+
+<!-- Fallback for browsers without JS -->
+<noscript>
+  <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+  <link rel="stylesheet" href="{{ 'overrides.css' | asset_url }}">
+</noscript>
+
+<!-- Load non-critical animation utilities async -->
+<style media="print" onload="this.media='all'; this.onload=null;">
+  {% include 'animation_utilities' %}
+</style>
+
+<!-- Font Awesome - Already async -->
+{{ "https://use.fontawesome.com/releases/v5.15.2/css/all.css" | async_style_link: crossorigin: "anonymous" }}
+
+<!-- Google Fonts - Optimized loading -->
+<link rel="preload" 
+      href="{{ settings | settings_google_font_url }}" 
+      as="style" 
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="{{ settings | settings_google_font_url }}">
+</noscript>
+
+<!-- Resource hints for faster subsequent navigation -->
+<link rel="prefetch" href="{{ 'an-core.js' | asset_url }}">
+<link rel="prefetch" href="{{ 'an-modules.js' | asset_url }}">
+
+<!-- Early hint for LCP image loading -->
+<script>
+  // Eagerly load hero images visible in viewport
+  if ('loading' in HTMLImageElement.prototype) {
+    const heroImages = document.querySelectorAll('.hero-section img, .hero-image img');
+    heroImages.forEach(img => {
+      if (img.getBoundingClientRect().top < window.innerHeight * 1.5) {
+        img.loading = 'eager';
+      }
+    });
+  }
+</script>

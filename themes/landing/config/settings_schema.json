@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "AN Landing Theme",
-    "theme_version": "16.2.0",
+    "theme_version": "16.3.0",
     "theme_author": "AN Themes",
     "theme_documentation_url": "https://anthemes.com/docs",
     "theme_support_url": "https://anthemes.com/support"
@@ -488,6 +488,22 @@
         "id": "body_scripts",
         "label": "Body Scripts",
         "info": "Scripts to add before closing </body> tag. Do not include <script> tags."
+      }
+    ]
+  },
+  {
+    "name": "Performance",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Performance Optimization"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_performance_mode",
+        "label": "Enable Performance Mode",
+        "default": false,
+        "info": "Enable optimized CSS loading for faster page loads. This loads the theme CSS asynchronously and preconnects to external resources. Note: May cause a brief flash of unstyled content on initial load."
       }
     ]
   }
