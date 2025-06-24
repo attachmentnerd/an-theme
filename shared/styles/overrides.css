@@ -1,204 +1,25 @@
 /* ==========================================================================
    AN Theme Shared Styles
-   Version: 1.0.0
+   Version: 1.1.0
    Description: Shared CSS variables and common styles for all AN Kajabi themes
    ========================================================================== */
 
+/* Import Design Tokens - All colors, spacing, and typography variables */
+@import url('_tokens.css');
+
 /* Table of Contents
-   1. CSS Variables (Brand Design System)
-   2. Typography Base
-   3. Common Button Styles
-   4. Shared Navigation Styles
-   5. Shared Footer Styles
-   6. Utility Classes
-   7. Responsive Helpers
+   1. Typography Base
+   2. Common Button Styles
+   3. Shared Navigation Styles
+   4. Shared Footer Styles
+   5. Utility Classes
+   6. Responsive Helpers
 */
 
-/* ==========================================================================
-   1. CSS Variables - New Brand Design System
-   ========================================================================== */
-:root {
-  /* Core Brand Colors */
-  --c-brand-600: #5E3BFF;      /* Brand Primary - Buttons, links, icon fills */
-  --c-brand-800: #4025E0;      /* Brand Dark - Hover states, active states */
-  --c-brand-100: #E9E6FF;      /* Brand Light - Hero & card backgrounds */
-  --c-accent-teal: #18D5E4;    /* Accent Teal - Small sparks, gradient stops */
-  --c-accent-peach: #FF8BCB;   /* Accent Peach - Emoji marks, button halos */
-  --c-accent-lemon: #FFE86B;   /* Accent Lemon - New badges, confetti dots */
-  --c-ink-900: #1B1B29;        /* Ink 900 - Headings */
-  --c-ink-700: #323346;        /* Ink 700 - Body copy */
-  --c-ink-500: #6E6F7B;        /* Ink 500 - Secondary text, captions */
-  --c-white: #FFFFFF;          /* White - Cards / surfaces */
-  
-  /* Signature Gradient */
-  --g-brand: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
-  
-  /* Additional Gradient Presets */
-  --g-purple-dark: linear-gradient(135deg, #5E3BFF 0%, #4025E0 100%);
-  --g-purple-pink: linear-gradient(135deg, #5E3BFF 0%, #FF8BCB 100%);
-  --g-teal-blue: linear-gradient(135deg, #18D5E4 0%, #5E3BFF 100%);
-  --g-warm-sunset: linear-gradient(135deg, #FF8BCB 0%, #FFE86B 100%);
-  --g-deep-ocean: linear-gradient(135deg, #1B1B29 0%, #323346 100%);
-  
-  /* Modern Typography Scale */
-  --fs-display: 3rem;          /* 48px - Hero H1 */
-  --fs-h1: 2.5rem;            /* 40px - Section titles */
-  --fs-h2: 1.875rem;          /* 30px - Feature headings */
-  --fs-body-lg: 1.125rem;     /* 18px - Sub-heads */
-  --fs-body: 1rem;            /* 16px - Paragraphs */
-  --fs-caption: 0.875rem;     /* 14px - Fine print */
-  
-  /* Legacy mappings for compatibility */
-  --an-navy: var(--c-brand-600);
-  --an-teal: var(--c-accent-teal);
-  --an-coral: var(--c-accent-peach);
-  --an-gold: var(--c-accent-lemon);
-  --an-plum: var(--c-brand-800);
-  --an-peach: var(--c-brand-100);
-  --an-white: var(--c-white);
-  --an-grey: #F8F9FA;
-  --an-slate: var(--c-ink-700);
-  --an-primary: var(--c-brand-600);
-  --an-secondary: var(--c-accent-teal);
-  --an-text-dark: var(--c-ink-900);
-  --an-text-medium: var(--c-ink-500);
-  --an-bg-light: var(--c-brand-100);
-  
-  /* Spacing System - 8-point grid */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 64px;
-  
-  /* Legacy spacing mappings */
-  --an-space-xs: var(--space-xs);
-  --an-space-sm: var(--space-sm);
-  --an-space-md: var(--space-md);
-  --an-space-lg: var(--space-lg);
-  --an-space-xl: var(--space-xl);
-  --an-space-2xl: 48px;
-  --an-space-3xl: var(--space-2xl);
-  
-  /* Typography Scale */
-  --fs-display: 3rem;          /* 48px - Hero H1 */
-  --fs-h1: 2.5rem;            /* 40px - Section titles */
-  --fs-h2: 1.875rem;          /* 30px - Feature block headings */
-  --fs-body-lg: 1.125rem;     /* 18px - Sub-heads */
-  --fs-body: 1rem;            /* 16px - Paragraphs */
-  --fs-caption: 0.875rem;     /* 14px - Fine print */
-  
-  /* Legacy font mappings */
-  --an-font-xs: 0.75rem;
-  --an-font-sm: var(--fs-caption);
-  --an-font-base: var(--fs-body);
-  --an-font-lg: var(--fs-body-lg);
-  --an-font-xl: 1.25rem;
-  --an-font-2xl: 1.5rem;
-  --an-font-3xl: var(--fs-h2);
-  --an-font-4xl: var(--fs-h1);
-  
-  /* Border & Radius */
-  --radius-sm: 8px;           /* Small controls */
-  --radius-md: 16px;          /* Cards/video frames */
-  --radius-lg: 24px;          /* Hero/CTA panels */
-  --radius-pill: 9999px;      /* Pill buttons */
-  
-  /* Legacy radius mappings */
-  --an-border: rgba(0, 0, 0, 0.04);
-  --an-radius-sm: var(--radius-sm);
-  --an-radius-md: var(--radius-md);
-  --an-radius-lg: var(--radius-lg);
-  --an-radius-full: var(--radius-pill);
-  
-  /* Shadows & Elevation */
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --shadow-media: 0 12px 24px rgba(0, 0, 0, 0.08);
-  --glow-brand: 0 0 12px rgba(105, 78, 255, 0.25);
-  
-  /* Legacy shadow mappings */
-  --an-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --an-shadow-md: var(--shadow-card);
-  --an-shadow-lg: var(--shadow-media);
-  --an-shadow-xl: 0 20px 25px -5px rgba(26, 45, 78, 0.1);
-  --an-shadow-2xl: 0 25px 50px -12px rgba(26, 45, 78, 0.25);
-  
-  /* Motion & Timing */
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  
-  /* Legacy transition mappings */
-  --an-transition-fast: 150ms var(--ease-out);
-  --an-transition-base: 200ms var(--ease-out);
-  --an-transition-slow: 300ms var(--ease-out);
-  
-  /* Modern Brand Update - Additional Variables */
-  --an-primary-gradient: linear-gradient(135deg, #5E3BFF 0%, #8B7BFF 100%);
-  --an-accent-teal: #18D5E4;
-  --an-accent-peach: #FF8BCB;
-  --an-accent-lemon: #FFE86B;
-  --an-muted: #D4D4D8;
-  --an-ink-normal: #0A0A0B;
-  --an-ink-light: #71717A;
-  --an-ink-lighter: #A1A1AA;
-  --an-border-light: #F4F4F5;
-  --an-lavender: #E9E6FF;
-  
-  /* Additional Text Colors */
-  --an-text-light: var(--an-ink-lighter);
-  --an-text-white: var(--an-white);
-  
-  /* Additional Background Colors */
-  --an-bg-white: var(--an-white);
-  --an-bg-lighter: var(--an-lavender);
-  
-  /* Additional Typography */
-  --an-font-display: 3rem;
-  --an-space-4xl: 96px;
-  
-  /* Font Weights */
-  --an-font-normal: 400;
-  --an-font-medium: 500;
-  --an-font-semibold: 600;
-  --an-font-bold: 700;
-  
-  /* Line Heights */
-  --an-leading-tight: 1.25;
-  --an-leading-normal: 1.5;
-  --an-leading-relaxed: 1.75;
-  
-  /* Container Widths */
-  --an-container-sm: 640px;
-  --an-container-md: 768px;
-  --an-container-lg: 1024px;
-  --an-container-xl: 1280px;
-  --an-container-2xl: 1536px;
-  
-  /* Z-index System */
-  --an-z-dropdown: 50;
-  --an-z-header: 100;
-  --an-z-sticky: 200;
-  --an-z-overlay: 300;
-  --an-z-modal: 1000;
-  
-  /* Additional Radius Variables */
-  --an-radius-xl: 24px;
-  --an-radius-2xl: 32px;
-  
-  /* Blur Effects */
-  --an-blur-sm: 4px;
-  --an-blur-md: 8px;
-  --an-blur-lg: 16px;
-  --an-blur-xl: 24px;
-  
-  /* Additional Transition Variables */
-  --an-ease-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --an-ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
+/* Note: All CSS variables have been moved to _tokens.css for easier marketing team access */
 
 /* ==========================================================================
-   2. Typography Base
+   1. Typography Base
    ========================================================================== */
 body {
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;

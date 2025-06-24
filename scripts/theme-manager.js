@@ -98,14 +98,30 @@ async function buildTheme(type) {
   if (fs.existsSync(path.join(sharedDir, 'styles'))) {
     const styles = await fs.readdir(path.join(sharedDir, 'styles'));
     for (const style of styles) {
+      // Skip _tokens.css and README files - tokens are inlined into overrides.css
+      if (style === '_tokens.css' || style.endsWith('.md')) continue;
+      
       if (style.endsWith('.css') || style.endsWith('.scss')) {
         // For CSS files, we need to handle merging
         if (style === 'overrides.css') {
           // Read shared CSS
-          const sharedCSS = await fs.readFile(
+          let sharedCSS = await fs.readFile(
             path.join(sharedDir, 'styles', style),
             'utf8'
           );
+          
+          // Handle @import of _tokens.css by inlining it
+          if (sharedCSS.includes("@import url('_tokens.css')")) {
+            const tokensPath = path.join(sharedDir, 'styles', '_tokens.css');
+            if (fs.existsSync(tokensPath)) {
+              const tokensCSS = await fs.readFile(tokensPath, 'utf8');
+              // Replace the @import with the actual tokens CSS content
+              sharedCSS = sharedCSS.replace(
+                "@import url('_tokens.css');",
+                `/* Inlined from _tokens.css */\n${tokensCSS}\n/* End of _tokens.css */`
+              );
+            }
+          }
           
           // Check if theme has its own overrides.css with theme-specific styles
           const themeOverridesPath = path.join(sourceDir, 'assets', style);

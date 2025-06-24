@@ -1,0 +1,273 @@
+/* ==========================================================================
+   AN Theme Design Tokens
+   Version: 1.0.0
+   
+   This file contains all design tokens (colors, spacing, typography, etc.)
+   for the AN Kajabi themes. Marketing teams can update these values without
+   touching any other CSS files.
+   
+   HOW TO USE:
+   1. Update color values under "Brand Colors" section
+   2. Adjust spacing values under "Spacing System" section
+   3. Modify typography sizes under "Typography Scale" section
+   4. Save and re-export themes
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     BRAND COLORS
+     Update these to change colors across the entire theme
+     ========================================================================== */
+  
+  /* Primary Brand Colors */
+  --c-brand-600: #5E3BFF;      /* Primary purple - Main CTAs, links, buttons */
+  --c-brand-800: #4025E0;      /* Dark purple - Hover states, active elements */
+  --c-brand-100: #E9E6FF;      /* Light purple - Backgrounds, subtle fills */
+  
+  /* Accent Colors */
+  --c-accent-teal: #18D5E4;    /* Teal - Success states, highlights */
+  --c-accent-peach: #FF8BCB;   /* Peach/Pink - Emotional CTAs, alerts */
+  --c-accent-lemon: #FFE86B;   /* Yellow - Badges, special offers */
+  
+  /* Text Colors */
+  --c-ink-900: #1B1B29;        /* Darkest - Main headings */
+  --c-ink-700: #323346;        /* Dark - Body text */
+  --c-ink-500: #6E6F7B;        /* Medium - Secondary text, captions */
+  --c-white: #FFFFFF;          /* White - Reversed text, backgrounds */
+  
+  /* Background Colors */
+  --c-bg-light: #FAFAFA;       /* Light gray - Section backgrounds */
+  --c-bg-lavender: #E9E6FF;    /* Lavender - Hero backgrounds */
+  
+  /* Gradients */
+  --g-brand: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
+  --g-purple-dark: linear-gradient(135deg, #5E3BFF 0%, #4025E0 100%);
+  --g-purple-pink: linear-gradient(135deg, #5E3BFF 0%, #FF8BCB 100%);
+  --g-teal-blue: linear-gradient(135deg, #18D5E4 0%, #5E3BFF 100%);
+  --g-warm-sunset: linear-gradient(135deg, #FF8BCB 0%, #FFE86B 100%);
+  
+  /* ==========================================================================
+     SPACING SYSTEM
+     Based on 8-point grid - Update these to change spacing across the theme
+     ========================================================================== */
+  
+  --space-xs: 4px;    /* Extra small - Tight spacing */
+  --space-sm: 8px;    /* Small - Compact elements */
+  --space-md: 16px;   /* Medium - Default spacing */
+  --space-lg: 24px;   /* Large - Section padding */
+  --space-xl: 32px;   /* Extra large - Major sections */
+  --space-2xl: 64px;  /* 2X large - Hero sections */
+  --space-3xl: 96px;  /* 3X large - Page sections */
+  --space-4xl: 128px; /* 4X large - Major breaks */
+  
+  /* ==========================================================================
+     TYPOGRAPHY SCALE
+     Font sizes for consistent hierarchy
+     ========================================================================== */
+  
+  --fs-display: 3rem;      /* 48px - Hero headlines */
+  --fs-h1: 2.5rem;        /* 40px - Page titles */
+  --fs-h2: 1.875rem;      /* 30px - Section headings */
+  --fs-h3: 1.5rem;        /* 24px - Sub-sections */
+  --fs-body-lg: 1.125rem; /* 18px - Lead paragraphs */
+  --fs-body: 1rem;        /* 16px - Regular text */
+  --fs-caption: 0.875rem; /* 14px - Small text */
+  --fs-tiny: 0.75rem;     /* 12px - Fine print */
+  
+  /* Font Weights */
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  
+  /* Line Heights */
+  --lh-tight: 1.25;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.75;
+  
+  /* ==========================================================================
+     BORDERS & RADIUS
+     Corner radius values for consistency
+     ========================================================================== */
+  
+  --radius-sm: 8px;      /* Small elements - inputs, tags */
+  --radius-md: 16px;     /* Medium - cards, containers */
+  --radius-lg: 24px;     /* Large - hero sections */
+  --radius-xl: 32px;     /* Extra large - special sections */
+  --radius-pill: 9999px; /* Full round - buttons, pills */
+  
+  /* Border Colors */
+  --border-light: rgba(0, 0, 0, 0.04);
+  --border-medium: rgba(0, 0, 0, 0.08);
+  --border-dark: rgba(0, 0, 0, 0.12);
+  
+  /* ==========================================================================
+     SHADOWS & EFFECTS
+     Elevation and depth effects
+     ========================================================================== */
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-media: 0 12px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+  
+  /* Glow Effects */
+  --glow-brand: 0 0 12px rgba(105, 78, 255, 0.25);
+  --glow-brand-lg: 0 0 24px rgba(105, 78, 255, 0.35);
+  
+  /* Blur Effects */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  
+  /* ==========================================================================
+     ANIMATION & TIMING
+     Easing curves and durations
+     ========================================================================== */
+  
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+  
+  /* ==========================================================================
+     LAYOUT
+     Container widths and breakpoints
+     ========================================================================== */
+  
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+  
+  /* Z-index Scale */
+  --z-dropdown: 50;
+  --z-header: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 1000;
+  --z-toast: 1100;
+  
+  /* ==========================================================================
+     LEGACY MAPPINGS
+     These maintain compatibility with existing code
+     DO NOT EDIT unless updating throughout the codebase
+     ========================================================================== */
+  
+  /* Legacy Color Mappings */
+  --an-navy: var(--c-brand-600);
+  --an-teal: var(--c-accent-teal);
+  --an-coral: var(--c-accent-peach);
+  --an-gold: var(--c-accent-lemon);
+  --an-plum: var(--c-brand-800);
+  --an-peach: var(--c-brand-100);
+  --an-white: var(--c-white);
+  --an-grey: #F8F9FA;
+  --an-slate: var(--c-ink-700);
+  --an-primary: var(--c-brand-600);
+  --an-secondary: var(--c-accent-teal);
+  --an-text-dark: var(--c-ink-900);
+  --an-text-medium: var(--c-ink-500);
+  --an-bg-light: var(--c-brand-100);
+  
+  /* Legacy Spacing Mappings */
+  --an-space-xs: var(--space-xs);
+  --an-space-sm: var(--space-sm);
+  --an-space-md: var(--space-md);
+  --an-space-lg: var(--space-lg);
+  --an-space-xl: var(--space-xl);
+  --an-space-2xl: 48px;
+  --an-space-3xl: var(--space-2xl);
+  
+  /* Legacy Typography Mappings */
+  --an-font-xs: 0.75rem;
+  --an-font-sm: var(--fs-caption);
+  --an-font-base: var(--fs-body);
+  --an-font-lg: var(--fs-body-lg);
+  --an-font-xl: 1.25rem;
+  --an-font-2xl: 1.5rem;
+  --an-font-3xl: var(--fs-h2);
+  --an-font-4xl: var(--fs-h1);
+  --an-font-display: var(--fs-display);
+  
+  /* Legacy Border Mappings */
+  --an-border: var(--border-light);
+  --an-radius-sm: var(--radius-sm);
+  --an-radius-md: var(--radius-md);
+  --an-radius-lg: var(--radius-lg);
+  --an-radius-full: var(--radius-pill);
+  
+  /* Legacy Shadow Mappings */
+  --an-shadow-sm: var(--shadow-sm);
+  --an-shadow-md: var(--shadow-card);
+  --an-shadow-lg: var(--shadow-media);
+  --an-shadow-xl: 0 20px 25px -5px rgba(26, 45, 78, 0.1);
+  --an-shadow-2xl: 0 25px 50px -12px rgba(26, 45, 78, 0.25);
+  
+  /* Legacy Transition Mappings */
+  --an-transition-fast: var(--duration-fast) var(--ease-out);
+  --an-transition-base: var(--duration-base) var(--ease-out);
+  --an-transition-slow: var(--duration-slow) var(--ease-out);
+  
+  /* Additional Legacy Variables */
+  --an-primary-gradient: linear-gradient(135deg, #5E3BFF 0%, #8B7BFF 100%);
+  --an-muted: #D4D4D8;
+  --an-ink-normal: #0A0A0B;
+  --an-ink-light: #71717A;
+  --an-ink-lighter: #A1A1AA;
+  --an-border-light: #F4F4F5;
+  --an-lavender: #E9E6FF;
+  --an-text-light: var(--c-ink-500);
+  --an-text-white: var(--c-white);
+  --an-bg-white: var(--c-white);
+  --an-bg-lighter: var(--an-lavender);
+  --an-font-display: 3rem;
+  --an-space-4xl: 96px;
+  --an-font-normal: 400;
+  --an-font-medium: 500;
+  --an-font-semibold: 600;
+  --an-font-bold: 700;
+  --an-leading-tight: 1.25;
+  --an-leading-normal: 1.5;
+  --an-leading-relaxed: 1.75;
+  --an-container-sm: 640px;
+  --an-container-md: 768px;
+  --an-container-lg: 1024px;
+  --an-container-xl: 1280px;
+  --an-container-2xl: 1536px;
+  --an-z-dropdown: 50;
+  --an-z-header: 100;
+  --an-z-sticky: 200;
+  --an-z-overlay: 300;
+  --an-z-modal: 1000;
+  --an-radius-xl: 24px;
+  --an-radius-2xl: 32px;
+  --an-blur-sm: 4px;
+  --an-blur-md: 8px;
+  --an-blur-lg: 16px;
+  --an-blur-xl: 24px;
+  --an-ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --an-ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ==========================================================================
+   DARK MODE TOKENS (Optional - uncomment to enable)
+   ========================================================================== */
+/*
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-ink-900: #FFFFFF;
+    --c-ink-700: #E4E4E7;
+    --c-ink-500: #A1A1AA;
+    --c-bg-light: #1B1B29;
+    --c-white: #18181B;
+    --border-light: rgba(255, 255, 255, 0.1);
+    --border-medium: rgba(255, 255, 255, 0.2);
+  }
+}
+*/

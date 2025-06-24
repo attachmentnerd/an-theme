@@ -14,6 +14,7 @@
           <img src="{{ section.settings.book_image | image_picker_url: 'rsak-book-cover.png' }}" 
                alt="Raising Securely Attached Kids" 
                class="img-fluid rounded-lg shadow-lg hover-lift"
+               loading="lazy"
                kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
           
           {% if section.settings.show_award_badge %}

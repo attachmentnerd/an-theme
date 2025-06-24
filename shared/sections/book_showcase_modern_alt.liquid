@@ -10,6 +10,7 @@
             <img src="{{ section.settings.book_image | image_picker_url: 'sa-book-cover.png' }}" 
                  alt="Securely Attached" 
                  class="img-fluid book-cover"
+                 loading="lazy"
                  style="width: 100%; height: auto; display: block;"
                  kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
           </div>
@@ -65,6 +66,7 @@
                   <img src="{{ section.settings.testimonial_author_image | image_picker_url: 'avatar-placeholder.png' }}" 
                        alt="{{ section.settings.testimonial_author }}" 
                        class="rounded-circle me-3"
+                       loading="lazy"
                        style="width: 48px; height: 48px; object-fit: cover;"
                        kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}">
                 {% endif %}
