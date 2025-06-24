@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raising Securely Attached Kids - Eli Harwood</title>
+    <style>
+        :root {
+            /* Brand Colors */
+            --primary: #5E3BFF;
+            --teal: #18D5E4;
+            --coral: #FF8BCB;
+            --lemon: #FFE86B;
+            --lavender: #E9E6FF;
+            --ink-900: #1A1A1A;
+            --ink-700: #4A4A4A;
+            --ink-500: #7A7A7A;
+            --white: #FFFFFF;
+            --gradient: linear-gradient(135deg, #5E3BFF 0%, #8B5CF6 100%);
+            
+            /* Font Sizes */
+            --fs-display: 56px;
+            --fs-h1: 48px;
+            --fs-h2: 36px;
+            --fs-h3: 24px;
+            --fs-body-lg: 20px;
+            --fs-body: 18px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Inter, -apple-system, sans-serif;
+            color: var(--ink-900);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(180deg, #FFF9F3 0%, rgba(255, 249, 243, 0) 100%);
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .award-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--lavender);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 24px;
+            margin-left: 12px;
+            animation: badge-bounce 0.6s ease-out 0.5s;
+            animation-fill-mode: both;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--coral) 0%, transparent 70%);
+            opacity: 0.08;
+            animation: float-slow 25s infinite ease-in-out;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            right: -10%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--teal) 0%, transparent 70%);
+            opacity: 0.06;
+            animation: float-reverse 30s infinite ease-in-out;
+        }
+        
+        @keyframes float-slow {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        @keyframes float-reverse {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-40px, -40px) scale(1.1); }
+        }
+        
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-text {
+            animation: fade-in-up 0.8s ease-out;
+        }
+        
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .bestseller-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--lemon);
+            color: var(--ink-900);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 24px;
+            animation: badge-bounce 0.6s ease-out 0.3s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes badge-bounce {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .hero h1 {
+            font-size: var(--fs-display);
+            font-weight: 700;
+            color: var(--ink-900);
+            margin-bottom: 24px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--fs-body-lg);
+            color: var(--ink-700);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .author-intro {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .author-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-details h3 {
+            font-size: 18px;
+            color: var(--ink-900);
+            margin-bottom: 4px;
+        }
+        
+        .author-details p {
+            font-size: 14px;
+            color: var(--ink-700);
+        }
+        
+        .social-proof {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 18px 40px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, .25) inset,
+                        0 8px 32px rgba(94, 59, 255, .25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, .25) inset,
+                        0 12px 40px rgba(94, 59, 255, .35);
+        }
+        
+        .btn-secondary {
+            color: var(--primary);
+            padding: 18px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--lavender);
+            border-radius: 100px;
+            background: white;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--lavender);
+            gap: 12px;
+        }
+        
+        .hero-visual {
+            position: relative;
+            animation: fade-in-scale 1s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fade-in-scale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .book-showcase {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .book-main {
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.15));
+            animation: book-float 8s infinite ease-in-out;
+        }
+        
+        @keyframes book-float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+        
+        .book-main img {
+            width: 100%;
+            border-radius: 12px;
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            animation: heart-float 15s infinite ease-in-out;
+            opacity: 0.6;
+        }
+        
+        .heart:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            color: var(--coral);
+        }
+        
+        .heart:nth-child(2) {
+            top: 30%;
+            right: 15%;
+            animation-delay: 5s;
+            color: var(--teal);
+            font-size: 20px;
+        }
+        
+        .heart:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        @keyframes heart-float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+            10% { opacity: 0.6; }
+            50% { transform: translate(20px, -30px) scale(1.2); opacity: 0.8; }
+            90% { opacity: 0.6; }
+        }
+        
+        /* Trust Bar */
+        .trust-bar {
+            background: white;
+            padding: 40px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .trust-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .trust-stat {
+            position: relative;
+        }
+        
+        .trust-stat::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .trust-stat:last-child::after {
+            display: none;
+        }
+        
+        .trust-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+            display: block;
+        }
+        
+        .trust-label {
+            font-size: 14px;
+            color: var(--ink-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* What's Inside Section */
+        .whats-inside {
+            padding: 100px 0;
+            background: #FAFAFA;
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+        
+        .section-header h2 {
+            font-size: var(--fs-h1);
+            color: var(--ink-900);
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .section-subtitle {
+            font-size: var(--fs-body-lg);
+            color: var(--ink-700);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+        
+        .features-content h3 {
+            font-size: 32px;
+            color: var(--ink-900);
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .feature-list li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--ink-700);
+            line-height: 1.6;
+        }
+        
+        .feature-list li::before {
+            content: '💚';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 24px;
+        }
+        
+        .features-visual {
+            position: relative;
+        }
+        
+        .chapter-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.6s ease;
+        }
+        
+        .chapter-preview:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+        
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .chapter-number {
+            width: 40px;
+            height: 40px;
+            background: var(--lavender);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .chapter-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink-900);
+        }
+        
+        .chapter-content {
+            color: var(--ink-700);
+            margin-bottom: 20px;
+        }
+        
+        .try-it-box {
+            background: #FFF9F3;
+            border-left: 4px solid var(--coral);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .try-it-box h4 {
+            color: var(--coral);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        /* Core Concepts */
+        .core-concepts {
+            background: white;
+            padding: 100px 0;
+        }
+        
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+        }
+        
+        .concept-card {
+            text-align: center;
+            padding: 32px 20px;
+            border-radius: 20px;
+            background: white;
+            border: 2px solid var(--lavender);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--lavender);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+        
+        .concept-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(94, 59, 255, 0.1);
+        }
+        
+        .concept-card:hover::before {
+            opacity: 0.3;
+        }
+        
+        .concept-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .concept-title {
+            font-size: 22px;
+            color: var(--ink-900);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .concept-description {
+            font-size: 16px;
+            color: var(--ink-700);
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background: linear-gradient(180deg, var(--lavender) 0%, rgba(233, 230, 255, 0) 100%);
+            padding: 100px 0;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-bottom: 60px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 80px;
+            color: var(--coral);
+            font-family: Georgia, serif;
+            line-height: 1;
+            opacity: 0.2;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial-text {
+            font-size: 18px;
+            color: var(--ink-700);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .author-image {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-size: 18px;
+            color: var(--ink-900);
+            margin-bottom: 4px;
+        }
+        
+        .author-info p {
+            font-size: 14px;
+            color: var(--ink-500);
+        }
+        
+        /* Parent Reviews */
+        .parent-reviews {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .reviews-carousel {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .review-track {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            padding: 20px 0;
+        }
+        
+        .review-track::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .review-card {
+            flex: 0 0 320px;
+            scroll-snap-align: center;
+            background: #FAFAFA;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .review-card:hover {
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transform: scale(1.02);
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--ink-900);
+        }
+        
+        .review-stars {
+            color: var(--lemon);
+        }
+        
+        .review-text {
+            font-size: 16px;
+            color: var(--ink-700);
+            line-height: 1.6;
+        }
+        
+        .review-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--teal);
+        }
+        
+        /* About Eli */
+        .about-eli {
+            background: #FAFAFA;
+            padding: 100px 0;
+        }
+        
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 80px;
+            align-items: center;
+        }
+        
+        .eli-visual {
+            position: relative;
+        }
+        
+        .eli-image {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .eli-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .eli-stats {
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            background: white;
+            padding: 24px 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .about-content h2 {
+            font-size: var(--fs-h1);
+            color: var(--ink-900);
+            margin-bottom: 16px;
+        }
+        
+        .tagline {
+            font-size: 20px;
+            color: var(--coral);
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+        
+        .about-bio {
+            font-size: 18px;
+            color: var(--ink-700);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        
+        .credential {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .credential-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--lavender);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            background: var(--ink-900);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: rotate 30s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-content h2 {
+            font-size: var(--fs-h1);
+            margin-bottom: 24px;
+        }
+        
+        .cta-content p {
+            font-size: var(--fs-body-lg);
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .guarantee-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 100px;
+            margin-top: 32px;
+            font-size: 16px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 991px) {
+            .hero-content,
+            .features-grid,
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .trust-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .concepts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            :root {
+                --fs-display: 40px;
+                --fs-h1: 36px;
+                --fs-h2: 28px;
+            }
+            
+            .hero {
+                padding: 80px 0 60px;
+            }
+            
+            .trust-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .concepts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-raising-securely-attached-kids">
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <div class="bestseller-badge">
+                            <span>⭐</span>
+                            <span>USA TODAY BESTSELLER</span>
+                        </div>
+                        <div class="award-badge">
+                            <span>🏆</span>
+                            <span>Winner: Child Psychology Award for Literary Excellence</span>
+                        </div>
+                        <h1>The First Book to Reframe Attachment for Parents</h1>
+                        <p class="hero-subtitle">
+                            Learn how to create a lifetime of connection, trust, and open communication with your children through connection-focused parenting—the only approach proven to have a lasting impact.
+                        </p>
+                        <div class="author-intro">
+                            <div class="author-avatar">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200" alt="Eli Harwood">
+                            </div>
+                            <div class="author-details">
+                                <h3>Eli Harwood, LPC</h3>
+                                <p>Therapist, Mother of 3, and "Attachment Nerd"</p>
+                                <div class="social-proof">
+                                    <span>💜</span>
+                                    <span>1M+ followers trust her guidance</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-cta">
+                            <a href="#purchase" class="btn-primary">Get Your Copy Today</a>
+                            <a href="#inside" class="btn-secondary">See What's Inside →</a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="book-showcase">
+                            <div class="book-main">
+                                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800" alt="Raising Securely Attached Kids book cover">
+                            </div>
+                            <div class="floating-hearts">
+                                <span class="heart">💝</span>
+                                <span class="heart">💚</span>
+                                <span class="heart">💜</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Trust Bar -->
+        <section class="trust-bar">
+            <div class="container">
+                <div class="trust-stats">
+                    <div class="trust-stat">
+                        <span class="trust-number">288</span>
+                        <span class="trust-label">Pages of Wisdom</span>
+                    </div>
+                    <div class="trust-stat">
+                        <span class="trust-number">4.9★</span>
+                        <span class="trust-label">Average Rating</span>
+                    </div>
+                    <div class="trust-stat">
+                        <span class="trust-number">17+</span>
+                        <span class="trust-label">Years Experience</span>
+                    </div>
+                    <div class="trust-stat">
+                        <span class="trust-number">50K+</span>
+                        <span class="trust-label">Families Helped</span>
+                    </div>
+                    <div class="trust-stat">
+                        <span class="trust-number">#1</span>
+                        <span class="trust-label">Parenting Award</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- What's Inside Section -->
+        <section class="whats-inside" id="inside">
+            <div class="container">
+                <div class="section-header">
+                    <h2>The First Book to Reframe Attachment for Caregivers</h2>
+                    <p class="section-subtitle">
+                        Though there have been countless studies on how attachment affects romantic relationships, this is the first book to illuminate the science for parents and children
+                    </p>
+                </div>
+                <div class="features-grid">
+                    <div class="features-content">
+                        <h3>Simple, Real-Life Strategies From Newborns to Adults</h3>
+                        <ul class="feature-list">
+                            <li>Move past old patterns from your childhood to become the parent you yearn to be</li>
+                            <li>Resolve past attachment traumas so you can offer a calm, connected base</li>
+                            <li>Create secure attachment by choosing connection over control</li>
+                            <li>Build trust with practical scripts and tools for every situation</li>
+                            <li>Understand it's never too late to create a stronger bond</li>
+                            <li>Harness the science of human bonding for lasting impact</li>
+                        </ul>
+                    </div>
+                    <div class="features-visual">
+                        <div class="chapter-preview">
+                            <div class="chapter-header">
+                                <div class="chapter-number">7</div>
+                                <div class="chapter-title">The Magic of Co-Regulation</div>
+                            </div>
+                            <p class="chapter-content">
+                                "When your child is melting down, your nervous system is their GPS. Here's how to stay calm and guide them home..."
+                            </p>
+                            <div class="try-it-box">
+                                <h4>Try This Tonight:</h4>
+                                <p>The PEACE method for bedtime battles</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Core Concepts -->
+        <section class="core-concepts">
+            <div class="container">
+                <div class="section-header">
+                    <h2>The 4 Pillars of Connection-Focused Parenting</h2>
+                    <p class="section-subtitle">Build secure attachment through these evidence-based principles</p>
+                </div>
+                <div class="concepts-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon">🫂</div>
+                        <h3 class="concept-title">Attunement</h3>
+                        <p class="concept-description">Learn to read your child's emotional cues and respond with empathy</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🛡️</div>
+                        <h3 class="concept-title">Safe Haven</h3>
+                        <p class="concept-description">Become the secure base your child needs to explore the world</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🌱</div>
+                        <h3 class="concept-title">Co-Regulation</h3>
+                        <p class="concept-description">Master the art of calming your child by first calming yourself</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🔄</div>
+                        <h3 class="concept-title">Repair</h3>
+                        <p class="concept-description">Transform mistakes into opportunities for deeper connection</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Trusted by Experts, Loved by Parents</h2>
+                </div>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "Eli Harwood brings infectious-fun energy, vulnerability, and fresh perspectives without shaming or blaming. Not only is Raising Securely Attached Kids a practical and actionable guide, it's grounded in science and entertaining to read."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200" alt="Hilary Swank">
+                            </div>
+                            <div class="author-info">
+                                <h4>Hilary Swank</h4>
+                                <p>Actress, Storyteller, Mom of Twins</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "Provides a compelling invitation...teaching the essentials of attachment which can help us as parents 'show up' in ways that enable our children to become securely attached to us [and] develop resilience."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200" alt="Dr. Daniel Siegel">
+                            </div>
+                            <div class="author-info">
+                                <h4>Dr. Daniel J. Siegel</h4>
+                                <p>NYT Bestselling Co-author of The Whole-Brain Child</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "A comprehensive roadmap for parents who want to raise securely attached, emotionally healthy children. Eli breaks down the science to offer practical insights. A parenting must-read."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=200" alt="Alyssa Blask Campbell">
+                            </div>
+                            <div class="author-info">
+                                <h4>Alyssa Blask Campbell, M.Ed.</h4>
+                                <p>Author of Tiny Humans, Big Emotions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Second row of testimonials -->
+                <div class="testimonial-grid" style="margin-top: 32px;">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "Eli uses her charm, humor, and compelling storytelling ability to weave together a narrative that will guide parents toward a deep and transformative relationship with their children."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200" alt="Tammy Schamuhn">
+                            </div>
+                            <div class="author-info">
+                                <h4>Tammy Schamuhn</h4>
+                                <p>Author of The Parenting Handbook</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "Insightful, profound, poignant...a must-read for parents committed to building a secure foundation that lasts a lifetime. An outstanding fusion of knowledge and heart."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200" alt="Dr. Galit Atlas">
+                            </div>
+                            <div class="author-info">
+                                <h4>Dr. Galit Atlas</h4>
+                                <p>Author of Emotional Inheritance</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "This book is the parenting guide we all need. Raising Securely Attached Kids will guide you in creating the foundation upon which healthy families can be built."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=200" alt="Rachel Samson">
+                            </div>
+                            <div class="author-info">
+                                <h4>Rachel Samson</h4>
+                                <p>Clinical Psychologist</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Parent Reviews -->
+        <section class="parent-reviews">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Real Parents, Real Transformations</h2>
+                </div>
+                <div class="reviews-carousel">
+                    <div class="review-track">
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="reviewer-name">Sarah M.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">
+                                "This book saved my relationship with my daughter. The scripts for handling tantrums actually work! I feel like I finally understand what she needs from me."
+                            </p>
+                            <span class="review-verified">✓ Verified Purchase</span>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="reviewer-name">Michael T.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">
+                                "As a dad who never learned healthy emotional expression, this book is teaching me how to break cycles. My kids are getting the father I wish I'd had."
+                            </p>
+                            <span class="review-verified">✓ Verified Purchase</span>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="reviewer-name">Jennifer K.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">
+                                "Hands down the best parenting book I've read. Eli's approach is so warm and practical. I've bought copies for all my mom friends!"
+                            </p>
+                            <span class="review-verified">✓ Verified Purchase</span>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="reviewer-name">David L.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">
+                                "The bedtime chapter alone was worth the price. We went from 2-hour battles to peaceful nights in just one week using her methods."
+                            </p>
+                            <span class="review-verified">✓ Verified Purchase</span>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="reviewer-name">Maria G.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">
+                                "Finally, a parenting book that doesn't make me feel guilty! Eli's compassionate approach helped me heal my own childhood wounds."
+                            </p>
+                            <span class="review-verified">✓ Verified Purchase</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About Eli -->
+        <section class="about-eli">
+            <div class="container">
+                <div class="about-container">
+                    <div class="eli-visual">
+                        <div class="eli-image">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600" alt="Eli Harwood">
+                        </div>
+                        <div class="eli-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-value">1M+</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">❤️</span>
+                                <span class="stat-value">50K+</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🎓</span>
+                                <span class="stat-value">17 Years</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-content">
+                        <h2>Meet Your Guide to Secure Attachment</h2>
+                        <p class="tagline">Therapist. Mother. Attachment Nerd.</p>
+                        <p class="about-bio">
+                            Hi, I'm Eli. As a licensed therapist and highly sought-after attachment research expert, I've spent over 17 years helping families understand our innate human need to bond with other humans—and how to harness it as the only parenting approach proven to have a lasting impact.
+                        </p>
+                        <p class="about-bio">
+                            My accessible approach helps everyone form secure and close relationships with their kids, which helps them develop resilience, confidence, and form close relationships in the future. As a mother of three (including twins!), every strategy in this book has been tested in real homes.
+                        </p>
+                        <div class="credentials">
+                            <div class="credential">
+                                <div class="credential-icon">🎓</div>
+                                <div>
+                                    <h4>Licensed Therapist</h4>
+                                    <p>MA in Counseling Psychology</p>
+                                </div>
+                            </div>
+                            <div class="credential">
+                                <div class="credential-icon">🏆</div>
+                                <div>
+                                    <h4>Award Winner</h4>
+                                    <p>Child Psychology Literary Excellence</p>
+                                </div>
+                            </div>
+                            <div class="credential">
+                                <div class="credential-icon">💜</div>
+                                <div>
+                                    <h4>Attachment Expert</h4>
+                                    <p>Specialized in secure bonds</p>
+                                </div>
+                            </div>
+                            <div class="credential">
+                                <div class="credential-icon">🌟</div>
+                                <div>
+                                    <h4>Viral Educator</h4>
+                                    <p>100M+ views on parenting content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Final CTA -->
+        <section class="final-cta" id="purchase">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>You're Not Alone in This Journey</h2>
+                    <p>
+                        Hopeful and inspiring, this essential evidence-based guide shows parents, educators, and anyone with children in their lives that they are not alone in the questions and concerns they may have about raising confident, capable, and caring kids.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="https://www.amazon.com/dp/1632175465" class="btn-primary">Buy on Amazon</a>
+                        <a href="https://sasquatchbooks.com/books/raising-securely-attached-kids/" class="btn-secondary">Other Retailers</a>
+                    </div>
+                    <div class="guarantee-badge">
+                        <span>🛡️</span>
+                        <span>100% Science-Backed • Therapist Approved • Parent Tested</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+</body>
+</html>

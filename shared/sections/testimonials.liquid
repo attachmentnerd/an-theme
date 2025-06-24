@@ -94,8 +94,8 @@
 <style>
   /* Testimonials Section - Using AN Design System */
   .testimonials-section {
-    padding: var(--an-space-3xl) 0;
-    background: var(--an-bg-light);
+    padding: var(--space-2xl) 0;
+    background: #FAFAFA;
   }
   
   .testimonials-section.section-white {
@@ -113,16 +113,17 @@
   }
   
   .testimonials__heading {
-    font-size: var(--an-font-4xl);
-    font-weight: 700;
-    color: var(--an-text-dark);
-    margin-bottom: var(--an-space-md);
+    font-size: var(--fs-h1);
+    font-weight: 500;
+    color: var(--c-ink-900);
+    margin-bottom: var(--space-md);
   }
   
   .testimonials__subheading {
-    font-size: var(--an-font-lg);
-    color: var(--an-slate);
-    margin-bottom: var(--an-space-xl);
+    font-size: var(--fs-body-lg);
+    color: var(--c-ink-700);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
   }
   
   /* Stats Bar */
@@ -183,11 +184,11 @@
   
   /* Testimonial Card */
   .testimonial-card {
-    background: var(--an-white);
-    border-radius: var(--an-radius-lg);
-    padding: var(--an-space-2xl);
-    box-shadow: var(--an-shadow-md);
-    transition: all var(--an-transition-base);
+    background: var(--c-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s var(--ease-out);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -195,7 +196,7 @@
   
   .testimonial-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--an-shadow-lg);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
   }
   
   .testimonial-card--featured {
@@ -243,14 +244,15 @@
   }
   
   .testimonial-card__quote::before {
-    content: '"';
+    content: '“';
     position: absolute;
-    top: -10px;
-    left: -10px;
-    font-size: 60px;
+    top: -20px;
+    left: -20px;
+    font-size: 80px;
     color: var(--c-brand-100);
     font-family: Georgia, serif;
     line-height: 1;
+    opacity: 0.5;
   }
   
   /* Author Info */
@@ -332,7 +334,7 @@
   }
   
   .testimonial-card {
-    animation: fadeInUp 0.6s ease-out backwards;
+    animation: fadeInUp 0.6s var(--ease-spring) backwards;
   }
   
   .testimonial-card:nth-child(1) { animation-delay: 0.1s; }
@@ -351,13 +353,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "What Parents Are Saying"
+      "default": "Real Families, Real Transformations"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Real stories from real families who've transformed their parenting journey"
+      "default": "These aren't just reviews – they're glimpses into the secure connections being built every day."
     },
     {
       "type": "select",
@@ -394,19 +396,19 @@
       "type": "text",
       "id": "families_helped",
       "label": "Families Helped",
-      "default": "10,000+"
+      "default": "100,000+"
     },
     {
       "type": "text",
       "id": "success_rate",
       "label": "Success Rate",
-      "default": "97%"
+      "default": "95%"
     },
     {
       "type": "text",
       "id": "years_experience",
       "label": "Years Experience",
-      "default": "15+"
+      "default": "17+"
     },
     {
       "type": "header",
@@ -422,7 +424,7 @@
       "type": "text",
       "id": "cta_text",
       "label": "CTA Button Text",
-      "default": "Join Thousands of Happy Families"
+      "default": "Start Your Connection Journey"
     },
     {
       "type": "action",
@@ -440,7 +442,7 @@
           "type": "textarea",
           "id": "quote",
           "label": "Quote",
-          "default": "This program changed our family's life. The strategies are practical and actually work!"
+          "default": "This isn't just another parenting book – it's a roadmap to actually understanding my child's emotional world."
         },
         {
           "type": "text",
@@ -479,11 +481,13 @@
           "options": [
             { "value": "", "label": "None" },
             { "value": "Sleep", "label": "Sleep" },
-            { "value": "Behavior", "label": "Behavior" },
+            { "value": "Big Feelings", "label": "Big Feelings" },
             { "value": "Connection", "label": "Connection" },
-            { "value": "Development", "label": "Development" },
+            { "value": "Healing", "label": "Healing" },
             { "value": "Toddlers", "label": "Toddlers" },
-            { "value": "Teens", "label": "Teens" }
+            { "value": "Teens", "label": "Teens" },
+            { "value": "Verified Parent", "label": "Verified Parent" },
+            { "value": "Therapist Approved", "label": "Therapist Approved" }
           ]
         },
         {
@@ -507,7 +511,7 @@
           "settings": {
             "quote": "The Attachment Nerd approach completely transformed how I connect with my toddler. Tantrums are down 80% and we actually enjoy bedtime now!",
             "name": "Jessica P.",
-            "details": "Mom of 3-year-old",
+            "details": "Parent of spirited 3-year-old",
             "rating": 5,
             "category": "Toddlers"
           }
@@ -517,7 +521,7 @@
           "settings": {
             "quote": "Finally, parenting advice backed by real science! The secure attachment strategies helped us break generational patterns.",
             "name": "Michael R.",
-            "details": "Dad of 2",
+            "details": "Father healing generational patterns",
             "rating": 5,
             "category": "Connection",
             "featured": true
@@ -528,7 +532,7 @@
           "settings": {
             "quote": "Sleep training was destroying me until I found this program. We now have peaceful nights without any crying it out.",
             "name": "Amanda L.",
-            "details": "First-time mom",
+            "details": "Exhausted mama turned rested",
             "rating": 5,
             "category": "Sleep"
           }

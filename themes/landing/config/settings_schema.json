@@ -2,11 +2,10 @@
   {
     "name": "theme_info",
     "theme_name": "AN Landing Theme",
-    "theme_version": "16.0.2",
+    "theme_version": "16.1.0",
     "theme_author": "AN Themes",
     "theme_documentation_url": "https://anthemes.com/docs",
-    "theme_support_url": "https://anthemes.com/support",
-    "settings_validatable": true
+    "theme_support_url": "https://anthemes.com/support"
   },
   {
     "name": "Favicon",

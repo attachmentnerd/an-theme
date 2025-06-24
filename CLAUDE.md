@@ -1484,3 +1484,88 @@ While Kajabi documents `{% dynamic_sections_for %}`, in practice it doesn't work
 - CSS variables now load automatically with the theme (no manual section needed)
 - Fixed footer heading color overrides with more specific CSS selectors
 - Enables page-specific control over visual elements while maintaining consistent script loading
+
+## AI Page Generation Workflow
+
+### Overview
+The AN theme includes an automated workflow for converting AI-generated HTML pages into editable Kajabi sections. This allows LLMs to create complete page designs while maintaining Kajabi's image picker functionality.
+
+### How It Works
+
+1. **AI Creates HTML** → Save to `/llm-drafts/pagename.html`
+   - Complete HTML page with inline CSS
+   - Use descriptive alt text for images
+   - Add `<!--@id=custom_id-->` comments above images for custom IDs
+
+2. **Run Conversion Script** → `npm run inject:drafts`
+   - Converts HTML to Kajabi section in `/shared/sections/page-pagename.liquid`
+   - Extracts and scopes all CSS to prevent conflicts
+   - Replaces `<img>` tags with Kajabi image pickers
+   - Adds schema with image settings
+
+3. **Use in Kajabi** → Add section from "Pages" category
+   - NO template files needed - users create pages and add sections
+   - All images editable through Kajabi interface
+   - CSS properly scoped to section class
+
+### Example Workflow
+
+```bash
+# 1. AI generates page
+# Save output to: llm-drafts/coaching.html
+
+# 2. Convert to Kajabi section
+npm run inject:drafts
+
+# 3. Export theme
+npm run theme:export website patch "Added coaching page section"
+
+# 4. In Kajabi:
+# - Create new page
+# - Add "Coaching Page" section from Pages category
+# - Upload images through section settings
+```
+
+### File Structure
+```
+/llm-drafts/           # AI-generated HTML files
+  coaching.html        # Complete HTML page with CSS
+  
+/shared/sections/      # Converted Kajabi sections
+  page-coaching.liquid # Auto-generated section with image pickers
+  
+/scripts/
+  inject-schema.js     # Conversion script
+```
+
+### Script Features
+- **CSS Optimizer** - Removes redundant styles and minifies output
+  - Strips :root variables (already in theme)
+  - Removes common resets (* {}, body {}, .container {})
+  - Detects patterns that could use utility classes
+  - Minifies CSS while preserving readability
+  - Adds helpful comments about available utilities
+- Extracts and scopes CSS to `.page-{name}` class
+- Preserves media queries and animations
+- Groups images by section (Hero, Features, etc.)
+- Supports custom image IDs via HTML comments
+- Adds SEO settings if meta tags present
+- Uses proper `image_picker_url` filter for Kajabi
+
+### Best Practices for AI-Generated Pages
+1. Use semantic HTML structure with sections
+2. Include all CSS in `<style>` tags
+3. Use descriptive alt text for accessibility
+4. Add `<!--@id=hero_bg-->` above images for readable IDs
+5. Keep image IDs under 30 characters
+6. Use CSS variables for consistent theming
+
+### Important Notes
+- **No template files needed** - Users will create pages in Kajabi
+- Sections appear in "Pages" category automatically
+- All shared sections available to both Website and Landing themes
+- Images use Kajabi's CDN with proper responsive sizing
+- CSS is scoped to prevent conflicts with other sections
+
+### Example: Working Section
+See `/shared/sections/page-coaching.liquid` for a complete example of an AI-generated page converted to a Kajabi section.

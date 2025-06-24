@@ -46,11 +46,12 @@
                       class="an-contact-form__select" 
                       required>
                 <option value="">Select inquiry type...</option>
-                <option value="speaking">Speaking Engagement</option>
-                <option value="media">Media/Press Inquiry</option>
-                <option value="coaching">Coaching Services</option>
-                <option value="partnership">Partnership Opportunity</option>
-                <option value="general">General Question</option>
+                <option value="parenting">Parenting Support</option>
+                <option value="speaking">Speaking & Workshops</option>
+                <option value="media">Media & Press</option>
+                <option value="coaching">1:1 Coaching</option>
+                <option value="courses">Course Questions</option>
+                <option value="general">Just Want to Connect</option>
               </select>
             </div>
           {% endif %}
@@ -60,7 +61,7 @@
             <div class="col-md-6">
               <div class="an-contact-form__field mb-4">
                 <label for="first-name-{{ section.id }}" class="an-contact-form__label">
-                  First Name <span class="required">*</span>
+                  What should we call you? <span class="required">*</span>
                 </label>
                 <input type="text" 
                        id="first-name-{{ section.id }}" 
@@ -72,7 +73,7 @@
             <div class="col-md-6">
               <div class="an-contact-form__field mb-4">
                 <label for="last-name-{{ section.id }}" class="an-contact-form__label">
-                  Last Name <span class="required">*</span>
+                  Family name <span class="required">*</span>
                 </label>
                 <input type="text" 
                        id="last-name-{{ section.id }}" 
@@ -88,7 +89,7 @@
             <div class="col-md-6">
               <div class="an-contact-form__field mb-4">
                 <label for="email-{{ section.id }}" class="an-contact-form__label">
-                  Email Address <span class="required">*</span>
+                  Your email (we'll guard it carefully) <span class="required">*</span>
                 </label>
                 <input type="email" 
                        id="email-{{ section.id }}" 
@@ -100,7 +101,7 @@
             <div class="col-md-6">
               <div class="an-contact-form__field mb-4">
                 <label for="phone-{{ section.id }}" class="an-contact-form__label">
-                  Phone Number
+                  Phone (optional, but helpful for urgent matters)
                 </label>
                 <input type="tel" 
                        id="phone-{{ section.id }}" 
@@ -181,7 +182,7 @@
           <!-- Message -->
           <div class="an-contact-form__field mb-4">
             <label for="message-{{ section.id }}" class="an-contact-form__label">
-              Message <span class="required">*</span>
+              Share what's on your heart... <span class="required">*</span>
             </label>
             <textarea id="message-{{ section.id }}" 
                       name="message" 
@@ -239,7 +240,7 @@
                 <circle cx="10" cy="10" r="9" fill="#FF6B6B"/>
                 <path d="M10 6V10M10 14H10.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <span>There was an error submitting your form. Please try again.</span>
+              <span>Oh no! Technology hiccup. Please try again, or email us directly at hello@attachmentnerd.com</span>
             </div>
           </div>
         </form>
@@ -314,7 +315,7 @@
     background: white;
     border: 1px solid var(--c-ink-200);
     border-radius: 8px;
-    transition: all var(--an-transition-base);
+    transition: all 0.3s var(--ease-spring);
   }
 
   .an-contact-form__input:focus,
@@ -322,7 +323,15 @@
   .an-contact-form__textarea:focus {
     outline: none;
     border-color: var(--c-brand-600);
-    box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(94, 59, 255, 0.12);
+    background: rgba(94, 59, 255, 0.02);
+  }
+
+  .an-contact-form__input.error,
+  .an-contact-form__select.error,
+  .an-contact-form__textarea.error {
+    border-color: var(--c-accent-peach);
+    background: rgba(255, 139, 203, 0.05);
   }
 
   .an-contact-form__textarea {
@@ -370,6 +379,20 @@
     color: var(--c-ink-700);
   }
 
+  /* Animation Classes */
+  .animate-fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 0.8s var(--ease-spring) forwards;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Sidebar Styles */
   .an-contact-form__sidebar {
     padding-left: 2rem;
@@ -413,12 +436,34 @@
     color: var(--c-brand-600);
     font-weight: 500;
     text-decoration: none;
-    transition: all var(--an-transition-base);
+    transition: all 0.3s var(--ease-spring);
   }
 
   .an-contact-form__info-link:hover {
     color: var(--c-brand-800);
     transform: translateX(4px);
+  }
+
+  /* Hover Effects */
+  .an-contact-form__info-block {
+    transition: all 0.3s var(--ease-spring);
+  }
+
+  .an-contact-form__info-block:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(26, 45, 78, 0.12);
+  }
+
+  /* Custom Focus Styles */
+  .an-contact-form__checkbox input[type="checkbox"]:focus {
+    outline: 2px solid var(--c-brand-600);
+    outline-offset: 2px;
+  }
+
+  /* Button Hover Effect */
+  .btn-primary-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(94, 59, 255, 0.3);
   }
 
   /* Mobile Styles */
@@ -454,11 +499,43 @@
       inquirySelect.addEventListener('change', function() {
         if (this.value === 'speaking') {
           eventDetails.style.display = 'block';
+          // Smooth scroll to event details
+          setTimeout(() => {
+            eventDetails.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 100);
         } else {
           eventDetails.style.display = 'none';
         }
       });
     }
+
+    // Enhanced form validation
+    const validateField = (field) => {
+      const value = field.value.trim();
+      const fieldName = field.getAttribute('name');
+      
+      if (field.hasAttribute('required') && !value) {
+        field.classList.add('error');
+        return false;
+      }
+      
+      // Email validation
+      if (field.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          field.classList.add('error');
+          return false;
+        }
+      }
+      
+      field.classList.remove('error');
+      return true;
+    };
+
+    // Real-time validation
+    form.querySelectorAll('input, textarea, select').forEach(field => {
+      field.addEventListener('blur', () => validateField(field));
+    });
 
     // Form submission handling
     form.addEventListener('submit', function(e) {
@@ -468,11 +545,33 @@
       successMsg.style.display = 'none';
       errorMsg.style.display = 'none';
       
+      // Validate all fields
+      const fields = form.querySelectorAll('input[required], textarea[required], select[required]');
+      let isValid = true;
+      
+      fields.forEach(field => {
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+      
+      if (!isValid) {
+        errorMsg.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="9" fill="#FF6B6B"/><path d="M10 6V10M10 14H10.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Please fill in all required fields with care 💜</span>';
+        errorMsg.style.display = 'flex';
+        return;
+      }
+      
       // Get form data
       const formData = new FormData(form);
       
       // Here you would normally send the form data to your server
       // For now, we'll just show a success message
+      
+      // Show loading state
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending with love...';
+      submitBtn.disabled = true;
       
       // Simulate API call
       setTimeout(function() {
@@ -487,9 +586,13 @@
           eventDetails.style.display = 'none';
         }
         
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        
         // Scroll to success message
         successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 1000);
+      }, 1500);
     });
   });
 </script>
@@ -502,13 +605,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Get in Touch"
+      "default": "Let's Connect – Your Journey Matters"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Whether you're interested in speaking engagements, media opportunities, or have questions about our programs, we'd love to hear from you."
+      "default": "Whether you're feeling stuck, curious, or ready to transform your family's emotional landscape – we're here to walk alongside you."
     },
     {
       "type": "color",
@@ -563,19 +666,19 @@
       "type": "text",
       "id": "newsletter_text",
       "label": "Newsletter Opt-in Text",
-      "default": "Yes, I'd like to receive the Attachment Nerd newsletter with parenting tips and resources"
+      "default": "Yes! I'd love weekly connection tips and attachment insights in my inbox 💌"
     },
     {
       "type": "text",
       "id": "submit_text",
       "label": "Submit Button Text",
-      "default": "Send Message"
+      "default": "Send My Message 💜"
     },
     {
       "type": "text",
       "id": "success_message",
       "label": "Success Message",
-      "default": "Thank you for your message! We'll get back to you within 48 hours."
+      "default": "Your message landed safely! We'll respond within 24-48 hours with the care your story deserves."
     }
   ],
   "blocks": [
@@ -624,8 +727,8 @@
         {
           "type": "info_block",
           "settings": {
-            "title": "Speaking Inquiries",
-            "text": "Eli is available for keynotes, workshops, and panel discussions on attachment science and secure parenting.",
+            "title": "Ready to Transform Your Event?",
+            "text": "Eli brings 17+ years of clinical wisdom to every speaking engagement, making attachment science accessible and actionable.",
             "link_text": "View Speaking Topics",
             "link_url": "/speaking"
           }
@@ -633,8 +736,8 @@
         {
           "type": "info_block",
           "settings": {
-            "title": "Media & Press",
-            "text": "For media inquiries, podcast interviews, or press opportunities, please include your publication and deadline.",
+            "title": "Media Love",
+            "text": "Featured in Parents Magazine, The Therapist Parent Podcast, and more. We love sharing attachment wisdom with your audience!",
             "link_text": "Download Media Kit",
             "link_url": "/media-kit"
           }
@@ -642,8 +745,8 @@
         {
           "type": "info_block",
           "settings": {
-            "title": "Response Time",
-            "text": "We typically respond within 48 hours during business days. For urgent matters, please indicate in your message."
+            "title": "When You'll Hear Back",
+            "text": "We read every message with care and respond within 48 hours. Your story matters, and we'll honor it with a thoughtful reply."
           }
         }
       ]

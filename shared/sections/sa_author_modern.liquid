@@ -1,0 +1,163 @@
+<section class="sa-author-modern py-5" style="background: var(--c-brand-100);">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-4">
+        <div class="position-relative animate-fade-up">
+          <!-- Author image with decorative elements -->
+          <div class="position-relative" style="max-width: 350px; margin: 0 auto;">
+            <!-- Background circle -->
+            <div class="position-absolute" style="top: -20px; left: -20px; width: 100%; height: 100%; background: var(--c-accent-teal); opacity: 0.1; border-radius: 50%; filter: blur(40px);"></div>
+            
+            <img src="{{ section.settings.author_image | image_picker_url: 'master' }}" 
+                 alt="{{ section.settings.author_alt }}"
+                 class="img-fluid position-relative"
+                 style="border-radius: 24px; box-shadow: 0 16px 32px rgba(0,0,0,0.1);"
+                 loading="lazy"
+                 kjb-settings-id="{{ 'author_image' | settings_id: section: section }}">
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-8">
+        <div class="animate-fade-up" style="animation-delay: 0.1s;">
+          {% if section.settings.badge_text != blank %}
+            <div class="d-inline-flex align-items-center mb-3" style="background: white; padding: 8px 20px; border-radius: 100px;">
+              <span style="color: var(--c-brand-600); font-weight: 600; font-size: 14px;" kjb-settings-id="{{ 'badge_text' | settings_id: section: section }}">
+                {{ section.settings.badge_text }}
+              </span>
+            </div>
+          {% endif %}
+          
+          <h2 class="mb-4" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+            {{ section.settings.heading }}
+          </h2>
+          
+          {% if section.settings.quote != blank %}
+            <p class="mb-4" style="font-size: 20px; color: var(--c-ink-800); font-style: italic; line-height: 1.6;" kjb-settings-id="{{ 'quote' | settings_id: section: section }}">
+              "{{ section.settings.quote }}"
+            </p>
+          {% endif %}
+          
+          <p class="mb-4" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); line-height: 1.7;" kjb-settings-id="{{ 'bio' | settings_id: section: section }}">
+            {{ section.settings.bio }}
+          </p>
+          
+          <!-- Stats/Credentials -->
+          <div class="row g-4 mt-4">
+            {% for block in section.blocks %}
+              {% if block.type == 'stat' %}
+                <div class="col-auto">
+                  <div class="text-center" style="background: white; padding: 20px 32px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <div style="font-size: 32px; font-weight: 600; color: var(--c-brand-600); line-height: 1;" kjb-settings-id="{{ 'stat_number' | settings_id: section: section, block: block }}">
+                      {{ block.settings.stat_number }}
+                    </div>
+                    <div style="font-size: 14px; color: var(--c-ink-600); margin-top: 4px;" kjb-settings-id="{{ 'stat_label' | settings_id: section: section, block: block }}">
+                      {{ block.settings.stat_label }}
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Author Modern",
+  "elements": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Meet Your Guide"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Meet Eli Harwood, \"The Attachment Nerd\""
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote (Optional)",
+      "default": "Eli's knowledgeable big-sister energy: licensed-therapist brains, favorite-friend heart."
+    },
+    {
+      "type": "textarea",
+      "id": "bio",
+      "label": "Bio Text",
+      "default": "Known for her warm, accessible approach, Eli Harwood has spent over 17 years helping people process relational traumas and develop secure connections. She translates complex attachment science into bite-sized, practical wisdom you can actually use."
+    },
+    {
+      "type": "image_picker",
+      "id": "author_image",
+      "label": "Author Image"
+    },
+    {
+      "type": "text",
+      "id": "author_alt",
+      "label": "Author Image Alt Text",
+      "default": "Eli Harwood, The Attachment Nerd"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat/Credential",
+      "elements": [
+        {
+          "type": "text",
+          "id": "stat_number",
+          "label": "Number/Value"
+        },
+        {
+          "type": "text",
+          "id": "stat_label",
+          "label": "Label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA Author Modern",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "17+",
+            "stat_label": "Years Experience"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "1M+",
+            "stat_label": "Social Followers"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "266K+",
+            "stat_label": "Families Helped"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "stat_number": "140",
+            "stat_label": "Healing Prompts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

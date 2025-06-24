@@ -1,5 +1,5 @@
 <!-- Newsletter CTA Section - Modern Full-Width Footer Style -->
-<section class="newsletter-cta-modern py-5 position-relative">
+<section class="newsletter-cta-modern py-5 position-relative" style="background-color: #FAFAFA;">
   <div class="container">
     <div class="cta-wrapper position-relative" style="background: var(--c-white); border-radius: 24px; padding: 64px 48px; box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset, 0 8px 32px rgba(0,0,0,.04); overflow: hidden;">
       <!-- Background gradient decoration -->
@@ -8,7 +8,7 @@
       
       <div class="row justify-content-center position-relative">
         <div class="col-lg-8 text-center">
-          <div class="cta-content animate-scale-fade">
+          <div class="cta-content animate-scale-fade" style="animation-delay: 0.1s;">
             <!-- Icon or emoji -->
             <div class="mb-3">
               <span style="font-size: 3rem;">{{ section.settings.icon }}</span>
@@ -30,7 +30,7 @@
                        placeholder="{{ section.settings.email_placeholder }}"
                        name="email"
                        required
-                       style="min-height: 44px; padding: 12px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease;"
+                       style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease; background: var(--c-white);"
                        kjb-settings-id="{{ 'email_placeholder' | settings_id: section: section }}">
                 
                 <button type="submit" 
@@ -49,7 +49,7 @@
                   {% case block.type %}
                     {% when 'benefit' %}
                       <div class="benefit-item d-flex align-items-center">
-                        <span style="color: var(--c-brand-600); margin-right: 8px;">✓</span>
+                        <span style="color: var(--c-accent-teal); margin-right: 8px; font-weight: 600;">✓</span>
                         <span style="font-size: var(--fs-caption); color: var(--c-ink-500);" kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}">
                           {{ block.settings.text }}
                         </span>
@@ -81,18 +81,25 @@
 
 /* Scale and fade animation */
 .animate-scale-fade {
-  animation: scaleFade 0.6s ease-out;
+  animation: scaleFade 0.6s var(--ease-spring) forwards;
+  animation-fill-mode: both;
 }
 
 @keyframes scaleFade {
   from {
     opacity: 0;
-    transform: scale(0.97);
+    transform: scale(0.97) translateY(20px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
+}
+
+/* Button hover state */
+.btn-primary-modern:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--c-white), 0 0 0 4px var(--c-brand-600);
 }
 
 /* CTA wrapper hover effect */
@@ -125,37 +132,37 @@
       "type": "text",
       "id": "icon",
       "label": "Icon/Emoji",
-      "default": "📚"
+      "default": "💌"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Join 50,000+ Parents Getting Weekly Tips"
+      "default": "Join Our Circle of Connected Parents"
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Science-backed insights delivered to your inbox every Friday. Unsubscribe anytime."
+      "default": "Weekly wisdom drops: bite-sized attachment science + real-life scripts for those 'what do I say?' moments."
     },
     {
       "type": "text",
       "id": "email_placeholder",
       "label": "Email Placeholder",
-      "default": "Enter your email"
+      "default": "Your email (we protect it like family)"
     },
     {
       "type": "text",
       "id": "button_text",
       "label": "Button Text",
-      "default": "Join Free"
+      "default": "Count Me In"
     },
     {
       "type": "text",
       "id": "disclaimer",
       "label": "Disclaimer Text",
-      "default": "We respect your privacy. No spam, ever."
+      "default": "100% science. 0% spam. Unsubscribe with love anytime."
     },
     {
       "type": "action",
@@ -179,7 +186,7 @@
           "type": "text",
           "id": "text",
           "label": "Benefit Text",
-          "default": "Free chapter download"
+          "default": "Free secure attachment guide"
         }
       ]
     }
@@ -192,29 +199,29 @@
         {
           "type": "benefit",
           "settings": {
-            "text": "Free chapter download"
+            "text": "Free secure attachment guide"
           }
         },
         {
           "type": "benefit",
           "settings": {
-            "text": "Weekly parenting tips"
+            "text": "Real-life connection scripts"
           }
         },
         {
           "type": "benefit",
           "settings": {
-            "text": "Exclusive discounts"
+            "text": "Early access to new resources"
           }
         }
       ],
       "settings": {
-        "icon": "📚",
-        "heading": "Join 50,000+ Parents Getting Weekly Tips",
-        "subheading": "Science-backed insights delivered to your inbox every Friday. Unsubscribe anytime.",
-        "email_placeholder": "Enter your email",
-        "button_text": "Join Free",
-        "disclaimer": "We respect your privacy. No spam, ever.",
+        "icon": "💌",
+        "heading": "Join Our Circle of Connected Parents",
+        "subheading": "Weekly wisdom drops: bite-sized attachment science + real-life scripts for those 'what do I say?' moments.",
+        "email_placeholder": "Your email (we protect it like family)",
+        "button_text": "Count Me In",
+        "disclaimer": "100% science. 0% spam. Unsubscribe with love anytime.",
         "show_benefits": true
       }
     }

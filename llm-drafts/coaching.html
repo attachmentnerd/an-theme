@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parenting Coaching - Transform Your Family Dynamics</title>
+    <meta name="description" content="Get personalized parenting support from certified attachment specialists. Build secure, lasting bonds with your children.">
+    
+    <style>
+        :root {
+            --primary: #5E3BFF;
+            --teal: #18D5E4;
+            --peach: #FF8BCB;
+            --lemon: #FFE86B;
+            --lavender: #E9E6FF;
+            --ink: #1A1A1A;
+            --ink-light: #6B7280;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--ink);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: var(--lavender);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text p {
+            font-size: 20px;
+            color: var(--ink-light);
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--primary), #4025E0);
+            color: white;
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(94, 59, 255, 0.3);
+        }
+        
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+        }
+        
+        .services h2 {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        /* Coach Section */
+        .coach {
+            background: #FAFAFA;
+            padding: 80px 0;
+        }
+        
+        .coach-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .coach-image img {
+            width: 100%;
+            border-radius: 16px;
+        }
+        
+        .coach-text h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .credentials {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border-radius: 100px;
+            font-size: 14px;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), #4025E0);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            padding: 16px 32px;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content,
+            .services-grid,
+            .coach-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-text h1 {
+                font-size: 36px;
+            }
+            
+            .services h2,
+            .cta h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Transform Your Parenting Journey</h1>
+                    <p>Get personalized coaching to build secure, lasting bonds with your children using science-backed attachment strategies.</p>
+                    <a href="#book" class="btn-primary">Book Your Session</a>
+                </div>
+                <div class="hero-image">
+                    <!--@id=hero_coaching-->
+                    <img src="https://images.unsplash.com/photo-1543342384-1f1350e27861?w=800" alt="Parent and child playing together happily">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <h2>How I Can Help You</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <!--@id=service_1_icon-->
+                    <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=200" alt="One-on-one coaching icon">
+                    <h3>1:1 Coaching</h3>
+                    <p>Personalized sessions tailored to your family's unique needs and challenges.</p>
+                </div>
+                <div class="service-card">
+                    <!--@id=service_2_icon-->
+                    <img src="https://images.unsplash.com/photo-1573495627361-d9b87960b12d?w=200" alt="Group coaching icon">
+                    <h3>Group Programs</h3>
+                    <p>Join a supportive community of parents on the same journey as you.</p>
+                </div>
+                <div class="service-card">
+                    <!--@id=service_3_icon-->
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200" alt="Emergency support icon">
+                    <h3>Crisis Support</h3>
+                    <p>Get immediate guidance when you need it most with on-demand sessions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Coach Section -->
+    <section class="coach">
+        <div class="container">
+            <div class="coach-content">
+                <div class="coach-image">
+                    <!--@id=coach_photo-->
+                    <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600" alt="Dr. Sarah Mitchell, Certified Parenting Coach">
+                </div>
+                <div class="coach-text">
+                    <h2>Meet Your Coach</h2>
+                    <p>Hi, I'm Dr. Sarah Mitchell. As a mother of three and certified attachment specialist, I understand the daily challenges of modern parenting.</p>
+                    <p>My approach combines the latest neuroscience research with practical, real-world strategies that actually work in the chaos of family life.</p>
+                    <p>I've helped over 500 families build stronger connections and create more peaceful homes. Let me help you transform your parenting journey too.</p>
+                    <div class="credentials">
+                        <span class="badge">Ph.D. Child Psychology</span>
+                        <span class="badge">Certified Attachment Specialist</span>
+                        <span class="badge">15+ Years Experience</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta" id="book">
+        <div class="container">
+            <h2>Ready to Transform Your Family?</h2>
+            <p>Book a free 30-minute discovery call to see how coaching can help you.</p>
+            <a href="#" class="btn-secondary">Schedule Your Call</a>
+        </div>
+    </section>
+</body>
+</html>

@@ -91,6 +91,27 @@ Each theme type has specific requirements:
 - Requires `sales_page.liquid` and `thank_you.liquid`
 - Course/product focused
 
+## 🤖 AI Page Generation
+
+Convert AI-generated HTML pages into Kajabi sections:
+
+```bash
+# 1. Save AI HTML to llm-drafts/pagename.html
+# 2. Convert to Kajabi section
+npm run inject:drafts
+
+# 3. Export theme
+npm run theme:export website patch "Added new page section"
+```
+
+Features:
+- Converts images to Kajabi image pickers
+- Scopes CSS to prevent conflicts
+- Groups images by section type
+- No template files needed
+
+See `CLAUDE.md` for detailed workflow documentation.
+
 ## 📝 Important Notes
 
 1. **ZIP Structure**: Files must be in a subdirectory, not at root level

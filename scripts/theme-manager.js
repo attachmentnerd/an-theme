@@ -1,8 +1,11 @@
-const fs = require('fs-extra');
-const path = require('path');
-const archiver = require('archiver');
-const { execSync } = require('child_process');
-const generateDemoPage = require('./generate-demo-page');
+import fs from 'fs-extra';
+import path from 'path';
+import archiver from 'archiver';
+import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
+import { generateDemoPage } from './generate-demo-page.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const THEME_TYPES = ['website', 'landing', 'product'];
 const VERSION_FILE = path.join(__dirname, '..', 'versions.json');

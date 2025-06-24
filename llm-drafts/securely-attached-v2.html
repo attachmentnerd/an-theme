@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Securely Attached - Transform Your Attachment Patterns | Eli Harwood</title>
+    <meta name="description" content="Unlock deeply satisfying relationships with this practical workbook from Eli Harwood. Based on attachment theory research, learn to identify patterns, heal wounds, and love securely.">
+    
+    <style>
+        :root {
+            --primary: #5E3BFF;
+            --primary-dark: #4025E0;
+            --lavender: #E9E6FF;
+            --teal: #18D5E4;
+            --peach: #FF8BCB;
+            --lemon: #FFE86B;
+            --ink-900: #1B1B29;
+            --ink-700: #323346;
+            --ink-500: #6E6F7B;
+            --white: #FFFFFF;
+            --gradient: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
+        }
+        
+        /* Hero Section - Full Width */
+        .hero {
+            background: linear-gradient(180deg, var(--lavender) 0%, rgba(233, 230, 255, 0) 100%);
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--peach) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 30px) scale(1.1); }
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .bestseller-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--lemon);
+            color: var(--ink-900);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 24px;
+            animation: badge-entrance 0.6s ease-out;
+        }
+        
+        @keyframes badge-entrance {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--ink-900);
+            margin-bottom: 24px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-subtitle {
+            font-size: 22px;
+            color: var(--ink-700);
+            margin-bottom: 40px;
+            line-height: 1.5;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 18px 40px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset, 0 8px 32px rgba(94,59,255,.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset, 0 12px 40px rgba(94,59,255,.35);
+        }
+        
+        .btn-secondary {
+            color: var(--primary);
+            padding: 18px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .btn-secondary::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            gap: 12px;
+        }
+        
+        .btn-secondary:hover::after {
+            transform: translateX(4px);
+        }
+        
+        /* Book Showcase */
+        .book-showcase {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .book-main {
+            position: relative;
+            z-index: 2;
+            animation: book-float 6s infinite ease-in-out;
+        }
+        
+        @keyframes book-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        
+        .book-main img {
+            width: 100%;
+            max-width: 400px;
+            filter: drop-shadow(0 40px 80px rgba(0,0,0,0.15));
+            border-radius: 8px;
+        }
+        
+        .book-pages {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .page-float {
+            position: absolute;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 20px;
+            font-size: 14px;
+            color: var(--ink-700);
+            animation: page-float 10s infinite ease-in-out;
+        }
+        
+        .page-float:nth-child(1) {
+            top: 10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .page-float:nth-child(2) {
+            top: 20%;
+            right: -10%;
+            animation-delay: 3s;
+        }
+        
+        .page-float:nth-child(3) {
+            bottom: 20%;
+            left: -5%;
+            animation-delay: 6s;
+        }
+        
+        @keyframes page-float {
+            0%, 100% { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+            50% { opacity: 0.3; transform: scale(1) rotate(5deg); }
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--white);
+            padding: 40px 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .stat {
+            position: relative;
+        }
+        
+        .stat::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 30px;
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .stat:last-child::after {
+            display: none;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--ink-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Journey Section */
+        .journey {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .journey-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+        
+        .journey h2 {
+            font-size: 48px;
+            color: var(--ink-900);
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .journey-subtitle {
+            font-size: 20px;
+            color: var(--ink-700);
+            line-height: 1.6;
+        }
+        
+        .journey-path {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            position: relative;
+        }
+        
+        .journey-path::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--lavender) 0%, var(--primary) 50%, var(--lavender) 100%);
+            z-index: 0;
+        }
+        
+        .journey-step {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .journey-step:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border: 3px solid var(--lavender);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+            transition: all 0.3s ease;
+        }
+        
+        .journey-step:hover .step-icon {
+            background: var(--lavender);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .journey-step h3 {
+            font-size: 22px;
+            color: var(--ink-900);
+            margin-bottom: 12px;
+        }
+        
+        .journey-step p {
+            font-size: 16px;
+            color: var(--ink-700);
+            line-height: 1.5;
+        }
+        
+        /* Inside Look Section */
+        .inside-look {
+            background: #FAFAFA;
+            padding: 100px 0;
+        }
+        
+        .inside-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .inside-header h2 {
+            font-size: 48px;
+            color: var(--ink-900);
+            margin-bottom: 16px;
+        }
+        
+        .inside-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        
+        .inside-content h3 {
+            font-size: 32px;
+            color: var(--ink-900);
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .feature-list li {
+            position: relative;
+            padding-left: 36px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--ink-700);
+            line-height: 1.6;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            background: var(--teal);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .inside-preview {
+            position: relative;
+        }
+        
+        .preview-stack {
+            position: relative;
+            transform: perspective(1000px) rotateY(-15deg);
+            transition: transform 0.6s ease;
+        }
+        
+        .preview-stack:hover {
+            transform: perspective(1000px) rotateY(-5deg);
+        }
+        
+        .preview-page {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            padding: 40px;
+            position: relative;
+            margin-bottom: -60px;
+        }
+        
+        .preview-page:nth-child(2) {
+            transform: translateX(30px) scale(0.95);
+            opacity: 0.8;
+        }
+        
+        .preview-page:nth-child(3) {
+            transform: translateX(60px) scale(0.9);
+            opacity: 0.6;
+        }
+        
+        .preview-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+        
+        .preview-prompt {
+            font-size: 16px;
+            color: var(--ink-700);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .preview-lines {
+            border: 1px solid var(--lavender);
+            border-radius: 8px;
+            height: 60px;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 19px,
+                var(--lavender) 19px,
+                var(--lavender) 20px
+            );
+        }
+        
+        /* Social Proof Section */
+        .social-proof {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .proof-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .proof-header h2 {
+            font-size: 48px;
+            color: var(--ink-900);
+            margin-bottom: 16px;
+        }
+        
+        .expert-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .expert-card {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .expert-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 120px;
+            color: var(--lavender);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .expert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
+        
+        .expert-quote {
+            font-size: 18px;
+            color: var(--ink-700);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .expert-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+        
+        .expert-author img {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .expert-info h4 {
+            font-size: 18px;
+            color: var(--ink-900);
+            margin-bottom: 4px;
+            text-align: left;
+        }
+        
+        .expert-info p {
+            font-size: 14px;
+            color: var(--ink-500);
+            text-align: left;
+        }
+        
+        /* Review Carousel */
+        .review-carousel {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .review-track {
+            display: flex;
+            gap: 32px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px 0;
+        }
+        
+        .review-track::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .review-slide {
+            flex: 0 0 300px;
+            scroll-snap-align: center;
+            background: #FAFAFA;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .review-slide:hover {
+            transform: scale(1.02);
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .review-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .review-meta h4 {
+            font-size: 16px;
+            color: var(--ink-900);
+            margin-bottom: 4px;
+        }
+        
+        .review-stars {
+            color: var(--lemon);
+            font-size: 14px;
+        }
+        
+        .review-text {
+            font-size: 16px;
+            color: var(--ink-700);
+            line-height: 1.6;
+        }
+        
+        /* Author Section */
+        .author-section {
+            background: linear-gradient(180deg, var(--lavender) 0%, white 100%);
+            padding: 100px 0;
+        }
+        
+        .author-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .author-visual {
+            position: relative;
+        }
+        
+        .author-image {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .author-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+        }
+        
+        .author-stats {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: white;
+            padding: 20px 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            z-index: 3;
+        }
+        
+        .author-stats .stat-number {
+            font-size: 36px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .author-stats .stat-label {
+            font-size: 14px;
+            color: var(--ink-500);
+        }
+        
+        .author-content h2 {
+            font-size: 48px;
+            color: var(--ink-900);
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+        
+        .author-tagline {
+            font-size: 20px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+        
+        .author-bio {
+            font-size: 18px;
+            color: var(--ink-700);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        
+        .author-credentials {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        
+        .credential-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .credential-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--lavender);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .credential-text h4 {
+            font-size: 16px;
+            color: var(--ink-900);
+            margin-bottom: 2px;
+        }
+        
+        .credential-text p {
+            font-size: 14px;
+            color: var(--ink-500);
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            background: var(--ink-900);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: rotate 30s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-content h2 {
+            font-size: 48px;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .cta-content p {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .cta-guarantee {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        .guarantee-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .journey-path {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+            
+            .journey-path::before {
+                display: none;
+            }
+            
+            .inside-grid,
+            .author-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .expert-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-stack {
+                transform: none;
+            }
+            
+            .author-stats {
+                position: static;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="bestseller-badge">
+                    <span>⭐</span>
+                    <span>USA TODAY BESTSELLER</span>
+                </div>
+                <h1>The Workbook That's Transforming How We Love</h1>
+                <p class="hero-subtitle">Join thousands discovering their attachment style and creating the secure, lasting relationships they've always wanted—with licensed therapist and viral sensation Eli Harwood.</p>
+                <div class="hero-cta">
+                    <a href="#purchase" class="btn-primary">Get Your Copy Today</a>
+                    <a href="#inside" class="btn-secondary">Look Inside</a>
+                </div>
+                <div class="book-showcase">
+                    <div class="book-pages">
+                        <div class="page-float">Q: How did your caregivers respond when you were upset?</div>
+                        <div class="page-float">Exercise: Map your attachment triggers</div>
+                        <div class="page-float">Tool: The secure response formula</div>
+                    </div>
+                    <div class="book-main">
+                        <!--@id=book_hero-->
+                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800" alt="Securely Attached book cover showing workbook with attachment theory exercises">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat">
+                    <div class="stat-number">140+</div>
+                    <div class="stat-label">Transformative Prompts</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">4.8★</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">17+</div>
+                    <div class="stat-label">Years Clinical Experience</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Social Followers</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Journey Section -->
+    <section class="journey">
+        <div class="container">
+            <div class="journey-header">
+                <h2>Your Path to Earned Secure Attachment</h2>
+                <p class="journey-subtitle">Transform insecure patterns into loving connections through a proven, research-backed process that thousands have used to heal their relationships.</p>
+            </div>
+            <div class="journey-path">
+                <div class="journey-step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">🔍</div>
+                    <h3>Identify Your Pattern</h3>
+                    <p>Discover which of the four attachment styles shapes your relationships and why.</p>
+                </div>
+                <div class="journey-step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">💭</div>
+                    <h3>Process Your Story</h3>
+                    <p>Work through 140 prompts designed to unlock insights about your attachment history.</p>
+                </div>
+                <div class="journey-step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">🛠️</div>
+                    <h3>Build New Skills</h3>
+                    <p>Learn practical tools and scripts for creating secure patterns in real-life situations.</p>
+                </div>
+                <div class="journey-step">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">❤️</div>
+                    <h3>Love Securely</h3>
+                    <p>Apply your insights to create deeper, more satisfying connections with those you love.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Inside Look Section -->
+    <section class="inside-look" id="inside">
+        <div class="container">
+            <div class="inside-header">
+                <h2>A Glimpse Inside Your Journey</h2>
+            </div>
+            <div class="inside-grid">
+                <div class="inside-content">
+                    <h3>More Than a Book—It's Your Personal Attachment Therapist</h3>
+                    <ul class="feature-list">
+                        <li>Identify your unique attachment style through revealing assessments</li>
+                        <li>Understand how your childhood shaped your adult relationships</li>
+                        <li>Learn the 8 behaviors that create secure bonds</li>
+                        <li>Get practical scripts for difficult conversations</li>
+                        <li>Discover your triggers and learn to self-soothe</li>
+                        <li>Create lasting change with evidence-based exercises</li>
+                    </ul>
+                </div>
+                <div class="inside-preview">
+                    <div class="preview-stack">
+                        <div class="preview-page">
+                            <div class="preview-title">Exercise 23: Attachment Memories</div>
+                            <div class="preview-prompt">Think back to a time when you were upset as a child. How did your caregivers respond? Write about this memory and what you needed in that moment...</div>
+                            <div class="preview-lines"></div>
+                        </div>
+                        <div class="preview-page">
+                            <div class="preview-title">Tool: The CALM Method</div>
+                            <div class="preview-prompt">When triggered in relationships, use this 4-step process...</div>
+                        </div>
+                        <div class="preview-page">
+                            <div class="preview-title">Reflection: Your Attachment Map</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Social Proof Section -->
+    <section class="social-proof">
+        <div class="container">
+            <div class="proof-header">
+                <h2>Trusted by Therapists, Loved by Readers</h2>
+            </div>
+            
+            <!-- Expert Testimonials -->
+            <div class="expert-grid">
+                <div class="expert-card">
+                    <p class="expert-quote">Eli hands us clear knowledge of attachment research in a way that is engaging, concise, and hopeful towards healing attachment wounds.</p>
+                    <div class="expert-author">
+                        <!--@id=expert_lepera-->
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200" alt="Dr. Nicole LePera">
+                        <div class="expert-info">
+                            <h4>Dr. Nicole LePera</h4>
+                            <p>NYT Bestselling Author</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="expert-card">
+                    <p class="expert-quote">An important, user-friendly guide to understanding and transforming attachment patterns.</p>
+                    <div class="expert-author">
+                        <!--@id=expert_sroufe-->
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200" alt="Alan Sroufe">
+                        <div class="expert-info">
+                            <h4>Alan Sroufe</h4>
+                            <p>Professor Emeritus, U of M</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="expert-card">
+                    <p class="expert-quote">This visually engaging, humor-infused workbook guides readers on a journey of self-discovery with thought-provoking exercises.</p>
+                    <div class="expert-author">
+                        <!--@id=expert_becker-->
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200" alt="Leslie Becker-Phelps">
+                        <div class="expert-info">
+                            <h4>Leslie Becker-Phelps, PhD</h4>
+                            <p>Author of Insecure in Love</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reader Reviews -->
+            <div class="review-carousel">
+                <div class="review-track">
+                    <div class="review-slide">
+                        <div class="review-header">
+                            <div class="review-avatar">D</div>
+                            <div class="review-meta">
+                                <h4>Diana</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Like therapy in book form. Not going to lie, it felt like hard work but one worth doing. I'm so glad this exists so more people can understand themselves."</p>
+                    </div>
+                    <div class="review-slide">
+                        <div class="review-header">
+                            <div class="review-avatar">M</div>
+                            <div class="review-meta">
+                                <h4>Mary E.</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"AMAZING! As an EMDR-trained trauma therapist, I've already recommended it to clients. It gives you the path to earned secure attachment."</p>
+                    </div>
+                    <div class="review-slide">
+                        <div class="review-header">
+                            <div class="review-avatar">C</div>
+                            <div class="review-meta">
+                                <h4>Christina</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"This book helped us make more positive strides in our marriage than years of therapy. The process of sharing exercises has been incredibly healing."</p>
+                    </div>
+                    <div class="review-slide">
+                        <div class="review-header">
+                            <div class="review-avatar">M</div>
+                            <div class="review-meta">
+                                <h4>Matt</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"A warm bundle of sunshine! Eli has a gift for making complex topics simple. Perfect amount of humor mixed with serious transformation work."</p>
+                    </div>
+                    <div class="review-slide">
+                        <div class="review-header">
+                            <div class="review-avatar">J</div>
+                            <div class="review-meta">
+                                <h4>Jennifer</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"I expected theory and instead learned more about myself than I realized I was carrying. This workbook helps you write your own healing story."</p>
+                    </div>
+                    <div class="review-slide">
+                        <div class="review-header">
+                            <div class="review-avatar">A</div>
+                            <div class="review-meta">
+                                <h4>Andrea</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"If you found Eli on social media, you'll be thrilled! She distills mountains of research into what you need to make real changes in your life."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Author Section -->
+    <section class="author-section">
+        <div class="container">
+            <div class="author-container">
+                <div class="author-visual">
+                    <div class="author-image">
+                        <!--@id=eli_author-->
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600" alt="Eli Harwood, The Attachment Nerd, licensed therapist and author">
+                    </div>
+                    <div class="author-stats">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Families Transformed</div>
+                    </div>
+                </div>
+                <div class="author-content">
+                    <h2>Meet Eli Harwood</h2>
+                    <p class="author-tagline">The Attachment Nerd</p>
+                    <p class="author-bio">For over 17 years, I've been in the trenches with people just like you—helping them understand their patterns, heal their wounds, and create the relationships they've always wanted. My approach? Take the brilliant research on attachment and make it actually useful for your real life.</p>
+                    <p class="author-bio">Through my viral videos and now this workbook, I'm on a mission to help you break generational cycles and create secure bonds. Because everyone deserves to love and be loved well.</p>
+                    <div class="author-credentials">
+                        <div class="credential-item">
+                            <div class="credential-icon">🎓</div>
+                            <div class="credential-text">
+                                <h4>Licensed Therapist</h4>
+                                <p>17+ years clinical practice</p>
+                            </div>
+                        </div>
+                        <div class="credential-item">
+                            <div class="credential-icon">📱</div>
+                            <div class="credential-text">
+                                <h4>Social Media Educator</h4>
+                                <p>1M+ followers across platforms</p>
+                            </div>
+                        </div>
+                        <div class="credential-item">
+                            <div class="credential-icon">📚</div>
+                            <div class="credential-text">
+                                <h4>Bestselling Author</h4>
+                                <p>USA Today Bestseller</p>
+                            </div>
+                        </div>
+                        <div class="credential-item">
+                            <div class="credential-icon">🏆</div>
+                            <div class="credential-text">
+                                <h4>Award Winner</h4>
+                                <p>Child Psychology Literary Excellence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section class="final-cta" id="purchase">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Your Secure Relationship Awaits</h2>
+                <p>Join thousands who are transforming their attachment patterns and creating the love they deserve.</p>
+                <div class="hero-cta">
+                    <a href="https://www.amazon.com/Securely-Attached-Transform-Attachment-Relationships/dp/1632174898" class="btn-primary">Buy on Amazon</a>
+                    <a href="https://sasquatchbooks.com/books/securely-attached/" class="btn-secondary" style="color: white;">Other Retailers</a>
+                </div>
+                <div class="cta-guarantee">
+                    <div class="guarantee-icon">✓</div>
+                    <span>Join thousands creating secure, lasting love</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

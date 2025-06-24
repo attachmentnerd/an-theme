@@ -2517,6 +2517,47 @@ label {
   color: var(--c-ink-900) !important;
 }
 
+/* Brand Voice Typography */
+.text-therapist {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--c-ink-700);
+}
+
+.text-emotional {
+  font-style: italic;
+  color: var(--c-accent-peach);
+  font-weight: 500;
+}
+
+/* Micro-labels */
+.micro-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-caption);
+  color: var(--c-ink-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.micro-label::before {
+  content: "✨";
+  margin-right: 6px;
+  color: var(--c-accent-peach);
+}
+
+/* Card Hover States */
+.card-hover {
+  transition: all 0.3s var(--ease-spring);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(94, 59, 255, 0.08);
+}
+
 /* If button has dark background, ensure white text */
 .btn[style*="background-color: #000"],
 .btn[style*="background-color: black"],

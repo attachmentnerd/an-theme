@@ -1,11 +1,13 @@
 <section class="about-hero-section" style="{% if section.settings.background_image != blank %}
     background-image: url('{{ section.settings.background_image | image_picker_url: 'placeholder.png' }}');
   {% else %}
-    background-image: url('https://picsum.photos/id/1015/1920/600?blur=2');
+    background-color: var(--c-brand-100);
   {% endif %}">
-  <div class="about-hero-overlay"></div>
+  {% if section.settings.background_image != blank and section.settings.use_overlay %}
+    <div class="about-hero-overlay"></div>
+  {% endif %}
   <div class="container">
-    <div class="about-hero-content">
+    <div class="about-hero-content animate-fade-up">
       {% if section.settings.tagline != blank %}
         <p class="about-hero-tagline" kjb-settings-id="{{ 'tagline' | settings_id: section: section }}">
           {{ section.settings.tagline }}
@@ -66,13 +68,13 @@
       "type": "text",
       "id": "tagline",
       "label": "Tagline",
-      "default": "Announcing our next round of funding."
+      "default": "LICENSED THERAPIST + ATTACHMENT NERD"
     },
     {
       "type": "text",
       "id": "cta_text",
       "label": "Tagline Link Text",
-      "default": "Read more →"
+      "default": "Learn my story →"
     },
     {
       "type": "action",
@@ -83,13 +85,20 @@
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Data to enrich your online business"
+      "default": "Hi, I'm Eli – Your Attachment Nerd"
     },
     {
       "type": "text",
       "id": "subtitle",
       "label": "Subtitle",
-      "default": "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat."
+      "default": "For 17 years, I've been helping families build the secure connections they crave. Now I'm here to share what actually works – backed by science, tested in real life, and delivered with the warmth of your favorite therapist-friend."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_overlay",
+      "label": "Use Dark Overlay",
+      "default": true,
+      "info": "Add overlay when using background image"
     }
   ],
   "blocks": [
@@ -101,7 +110,7 @@
           "type": "text",
           "id": "button_text",
           "label": "Button Text",
-          "default": "Click here"
+          "default": "Work With Me"
         },
         {
           "type": "action",
@@ -126,23 +135,23 @@
       "name": "About Hero",
       "category": "Hero",
       "settings": {
-        "tagline": "Announcing our next round of funding.",
-        "cta_text": "Read more →",
-        "title": "Data to enrich your online business",
-        "subtitle": "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat."
+        "tagline": "LICENSED THERAPIST + ATTACHMENT NERD",
+        "cta_text": "Learn my story →",
+        "title": "Hi, I'm Eli – Your Attachment Nerd",
+        "subtitle": "For 17 years, I've been helping families build the secure connections they crave. Now I'm here to share what actually works – backed by science, tested in real life, and delivered with the warmth of your favorite therapist-friend."
       },
       "blocks": [
         {
           "type": "button",
           "settings": {
-            "button_text": "Get started",
+            "button_text": "Work With Me",
             "button_style": "primary"
           }
         },
         {
           "type": "button",
           "settings": {
-            "button_text": "Learn more →",
+            "button_text": "Browse Resources",
             "button_style": "secondary"
           }
         }

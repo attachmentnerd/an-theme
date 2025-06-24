@@ -1,5 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Generates a demo page template that includes all shared sections
@@ -252,8 +255,8 @@ function generateDemoPage() {
 }
 
 // Run if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   generateDemoPage();
 }
 
-module.exports = generateDemoPage;
+export { generateDemoPage };

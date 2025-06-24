@@ -136,6 +136,20 @@
 </section>
 
 <style>
+  /* Animation Classes */
+  .animate-fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 0.8s var(--ease-spring) forwards;
+  }
+  
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
   .an-programs__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -150,24 +164,26 @@
     border-radius: 16px;
     padding: 2rem;
     box-shadow: 0 4px 12px rgba(26, 45, 78, 0.08);
-    transition: all var(--an-transition-base);
+    transition: all 0.3s var(--ease-spring);
     display: flex;
     flex-direction: column;
     height: 100%;
   }
 
   .an-programs__card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(26, 45, 78, 0.12);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(94, 59, 255, 0.15);
   }
 
   .an-programs__card--featured {
     border: 2px solid var(--c-brand-600);
     transform: scale(1.02);
+    background: linear-gradient(135deg, #FFFFFF 0%, var(--c-brand-100) 100%);
   }
 
   .an-programs__card--featured:hover {
-    transform: scale(1.02) translateY(-4px);
+    transform: scale(1.02) translateY(-6px);
+    box-shadow: 0 16px 40px rgba(94, 59, 255, 0.2);
   }
 
   .an-programs__badge {
@@ -233,7 +249,10 @@
   .an-programs__price-current {
     font-size: var(--fs-h2);
     font-weight: 700;
-    color: var(--c-brand-600);
+    background: var(--g-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .an-programs__price-plan {
@@ -259,6 +278,11 @@
     margin-bottom: 0.75rem;
     font-size: var(--fs-body);
     color: var(--c-ink-700);
+    transition: all 0.2s var(--ease-spring);
+  }
+  
+  .an-programs__card:hover .an-programs__features-list li {
+    transform: translateX(4px);
   }
 
   .an-programs__features-list svg {
@@ -338,13 +362,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Choose Your Path to Secure Parenting"
+      "default": "Choose Your Transformation Path"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Evidence-based programs designed to transform your parenting journey at every stage"
+      "default": "Join thousands of parents who've moved from surviving to thriving – pick the support level that feels right for you"
     },
     {
       "type": "color",
@@ -362,13 +386,13 @@
       "type": "text",
       "id": "bottom_cta_text",
       "label": "Bottom CTA Text",
-      "default": "Not sure which program is right for you?"
+      "default": "Still feeling unsure? That's totally normal."
     },
     {
       "type": "text",
       "id": "bottom_cta_link_text",
       "label": "Bottom CTA Link Text",
-      "default": "Take our quiz to find your perfect fit"
+      "default": "Let's find your perfect fit together →"
     },
     {
       "type": "text",
@@ -386,13 +410,13 @@
           "type": "text",
           "id": "title",
           "label": "Program Title",
-          "default": "SPP Foundation"
+          "default": "Self-Paced Journey"
         },
         {
           "type": "text",
           "id": "subtitle",
           "label": "Subtitle",
-          "default": "Self-Paced Learning"
+          "default": "Learn at Your Own Pace"
         },
         {
           "type": "image_picker",
@@ -409,7 +433,7 @@
           "type": "text",
           "id": "badge_text",
           "label": "Badge Text",
-          "default": "Most Popular",
+          "default": "Parent Favorite ✨",
           "info": "Shown on featured programs"
         },
         {
@@ -434,19 +458,19 @@
           "type": "textarea",
           "id": "features",
           "label": "Features (comma-separated)",
-          "default": "12 Core Modules, Lifetime Access, Downloadable Worksheets, Private Community Access, Mobile App Access"
+          "default": "12 Transformative Modules, Lifetime Access, Practical Worksheets, Supportive Community, Learn Anywhere App"
         },
         {
           "type": "textarea",
           "id": "includes",
           "label": "What's Included Description",
-          "default": "Complete attachment education + practical tools for ages 0-18"
+          "default": "Everything you need to build secure bonds from birth through teens"
         },
         {
           "type": "text",
           "id": "cta_text",
           "label": "Button Text",
-          "default": "Start Today"
+          "default": "Begin Your Journey 💜"
         },
         {
           "type": "text",
@@ -464,7 +488,7 @@
           "type": "text",
           "id": "guarantee_text",
           "label": "Guarantee Text",
-          "default": "30-Day Money Back Guarantee"
+          "default": "30 days to fall in love (or your money back)"
         }
       ]
     }
@@ -478,53 +502,53 @@
         {
           "type": "program",
           "settings": {
-            "title": "SPP Foundation",
-            "subtitle": "Self-Paced Learning",
+            "title": "Self-Paced Journey",
+            "subtitle": "Learn at Your Own Pace",
             "featured": false,
             "price": "197",
             "original_price": "",
             "payment_plan": "or 3 payments of $67",
-            "features": "12 Core Modules, Lifetime Access, Downloadable Worksheets, Private Community Access, Mobile App Access",
-            "includes": "Complete attachment education + practical tools for ages 0-18",
-            "cta_text": "Start Today",
+            "features": "12 Transformative Modules, Lifetime Access, Practical Worksheets, Supportive Community, Learn Anywhere App",
+            "includes": "Everything you need to build secure bonds from birth through teens",
+            "cta_text": "Begin Your Journey 💜",
             "cta_link": "/checkout/spp-foundation",
             "show_guarantee": true,
-            "guarantee_text": "30-Day Money Back Guarantee"
+            "guarantee_text": "30 days to fall in love (or your money back)"
           }
         },
         {
           "type": "program",
           "settings": {
-            "title": "SPP Guided",
-            "subtitle": "12-Week Cohort",
+            "title": "Guided Transformation",
+            "subtitle": "12 Weeks of Live Support",
             "featured": true,
-            "badge_text": "Most Popular",
+            "badge_text": "Parent Favorite ✨",
             "price": "497",
             "original_price": "697",
             "payment_plan": "or 4 payments of $127",
-            "features": "Everything in Foundation, Weekly Live Q&A with Eli, Small Group Support, Personal Progress Tracking, Bonus Masterclasses, Certificate of Completion",
-            "includes": "Live support + accountability for lasting transformation",
-            "cta_text": "Join Next Cohort",
+            "features": "Everything in Self-Paced, Weekly Live Calls with Eli, Intimate Group Support, Personal Progress Coach, Bonus Deep-Dives, Beautiful Certificate",
+            "includes": "Real-time support when you need it most + built-in accountability",
+            "cta_text": "Save My Spot 🌟",
             "cta_link": "/checkout/spp-guided",
             "show_guarantee": true,
-            "guarantee_text": "30-Day Money Back Guarantee"
+            "guarantee_text": "30 days to fall in love (or your money back)"
           }
         },
         {
           "type": "program",
           "settings": {
-            "title": "SPP Plus",
-            "subtitle": "VIP Experience",
+            "title": "VIP Experience",
+            "subtitle": "White-Glove Support",
             "featured": false,
             "price": "997",
             "original_price": "",
             "payment_plan": "or 6 payments of $170",
-            "features": "Everything in Guided, 1-on-1 Coaching Session, Priority Email Support, Advanced Workshops, Lifetime Alumni Access, Signed Book Bundle",
-            "includes": "Premium support + personalized guidance for deep healing",
-            "cta_text": "Apply Now",
+            "features": "Everything in Guided, Private 1:1 with Eli, VIP Email Access, Advanced Healing Workshops, Forever Alumni Family, Signed Book Collection",
+            "includes": "The deepest level of support for parents ready to break generational cycles",
+            "cta_text": "Apply for VIP 👑"
             "cta_link": "/apply/spp-plus",
             "show_guarantee": true,
-            "guarantee_text": "30-Day Money Back Guarantee"
+            "guarantee_text": "30 days to fall in love (or your money back)"
           }
         }
       ]

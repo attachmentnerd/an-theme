@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Securely Attached - Transform Your Relationships | Eli Harwood</title>
+    <meta name="description" content="Turn your attachment patterns into loving, lasting relationships with this practical workbook by licensed therapist Eli Harwood.">
+    
+    <style>
+        /* Page-specific styles */
+        .sa-page {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        /* Hero Section */
+        .sa-hero {
+            background: var(--lavender, #E9E6FF);
+            padding: 80px 0 100px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .sa-hero-content {
+            max-width: 600px;
+        }
+        
+        .sa-hero h1 {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1B1B29;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+        
+        .sa-hero-subtitle {
+            font-size: 20px;
+            color: #323346;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        
+        .sa-hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        
+        .sa-badge {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .sa-book-wrap {
+            position: relative;
+            text-align: center;
+        }
+        
+        .sa-book-glow {
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle at center, rgba(94,59,255,0.15) 0%, transparent 70%);
+            filter: blur(40px);
+        }
+        
+        .sa-book-img {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .sa-award-badge {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            background: #FFE86B;
+            color: #1B1B29;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: rotate(5deg);
+            z-index: 10;
+        }
+        
+        /* Patterns Section */
+        .sa-patterns {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .sa-pattern-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            border: 1px solid rgba(94,59,255,0.1);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .sa-pattern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .sa-pattern-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #1B1B29;
+            margin-bottom: 12px;
+        }
+        
+        .sa-pattern-accent {
+            width: 40px;
+            height: 3px;
+            border-radius: 2px;
+            margin-bottom: 20px;
+        }
+        
+        .sa-pattern-quote {
+            font-size: 16px;
+            color: #323346;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        /* Journey Section */
+        .sa-journey {
+            padding: 80px 0;
+            background: var(--lavender, #E9E6FF);
+        }
+        
+        .sa-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+        
+        .sa-step-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-right: 24px;
+            flex-shrink: 0;
+        }
+        
+        .sa-step-content h3 {
+            font-size: 22px;
+            font-weight: 500;
+            color: #1B1B29;
+            margin-bottom: 8px;
+        }
+        
+        .sa-step-content p {
+            color: #323346;
+            line-height: 1.6;
+        }
+        
+        /* Testimonials Section */
+        .sa-testimonials {
+            padding: 80px 0;
+            background: #FAFAFA;
+        }
+        
+        .sa-review-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .sa-review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .sa-stars {
+            color: #FFE86B;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+        
+        .sa-review-text {
+            color: #323346;
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+        
+        .sa-reviewer {
+            display: flex;
+            align-items: center;
+        }
+        
+        .sa-reviewer-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--primary, #5E3BFF);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        
+        /* Featured Quote */
+        .sa-featured {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.06);
+            border: 2px solid var(--lavender, #E9E6FF);
+            margin-top: 48px;
+            position: relative;
+        }
+        
+        .sa-quote-mark {
+            position: absolute;
+            top: -20px;
+            right: 40px;
+            font-size: 120px;
+            color: var(--lavender, #E9E6FF);
+            opacity: 0.5;
+            font-family: Georgia, serif;
+        }
+        
+        /* Author Section */
+        .sa-author {
+            padding: 80px 0;
+            background: var(--lavender, #E9E6FF);
+        }
+        
+        .sa-author-img {
+            max-width: 350px;
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+        }
+        
+        .sa-stat-box {
+            background: white;
+            padding: 24px 32px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .sa-stat-number {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--primary, #5E3BFF);
+            line-height: 1;
+        }
+        
+        .sa-stat-label {
+            font-size: 14px;
+            color: #6E6F7B;
+            margin-top: 4px;
+        }
+        
+        /* Bonuses Section */
+        .sa-bonuses {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .sa-bonus-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            border: 1px solid rgba(94,59,255,0.1);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .sa-bonus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .sa-bonus-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--lavender, #E9E6FF);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+            color: var(--primary, #5E3BFF);
+            font-weight: 600;
+        }
+        
+        /* CTA Section */
+        .sa-cta {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .sa-cta-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.05) inset, 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .sa-retailers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .sa-retailer-link {
+            background: #F8F8F8;
+            padding: 12px 24px;
+            border-radius: 12px;
+            color: #323346;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        
+        .sa-retailer-link:hover {
+            background: var(--lavender, #E9E6FF);
+            border-color: #D4CCFF;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sa-hero h1 {
+                font-size: 36px;
+            }
+            
+            .sa-hero-content {
+                margin-bottom: 40px;
+            }
+            
+            .sa-award-badge {
+                position: static;
+                display: inline-block;
+                margin: 20px auto;
+                transform: none;
+            }
+            
+            .sa-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .sa-step-icon {
+                margin: 0 auto 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sa-page">
+        <!-- Hero Section -->
+        <section class="sa-hero">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="sa-hero-content">
+                            <h1>Turn Your Attachment Patterns Into Loving, Lasting Relationships</h1>
+                            <p class="sa-hero-subtitle">A practical workbook by licensed therapist Eli Harwood, LPC — 140 prompts, zero judgment.</p>
+                            
+                            <div class="sa-hero-badges">
+                                <div class="sa-badge">USA TODAY Bestseller</div>
+                                <div class="sa-badge">Child Psychology Award Winner</div>
+                                <div class="sa-badge">⭐ 4.8 Amazon Rating</div>
+                            </div>
+                            
+                            <div class="d-flex gap-3 flex-wrap">
+                                <a href="#purchase" class="btn btn-primary-modern">Get Your Copy $18.99</a>
+                                <a href="#reviews" class="btn btn-secondary-modern">Read Reviews</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="sa-book-wrap">
+                            <div class="sa-award-badge">USA TODAY Bestseller</div>
+                            <div class="sa-book-glow"></div>
+                            <!--@id=sa_book_cover-->
+                            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&h=800&fit=crop" alt="Securely Attached book cover by Eli Harwood" class="sa-book-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Patterns Section -->
+        <section class="sa-patterns">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="mb-4" style="font-size: 40px; font-weight: 500;">Does This Sound Like You?</h2>
+                    <p style="font-size: 18px; color: #323346;">If you're experiencing any of these relationship patterns, you're not alone:</p>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="sa-pattern-card">
+                            <h3 class="sa-pattern-title">The Anxious Spiral</h3>
+                            <div class="sa-pattern-accent" style="background: #FF8BCB;"></div>
+                            <p class="sa-pattern-quote">"I constantly worry my partner will leave me. I need reassurance but it's never enough. The more I reach out, the more they pull away."</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sa-pattern-card">
+                            <h3 class="sa-pattern-title">The Avoidant Wall</h3>
+                            <div class="sa-pattern-accent" style="background: #18D5E4;"></div>
+                            <p class="sa-pattern-quote">"I want connection but when things get too close, I shut down. I pride myself on independence but feel lonely even in relationships."</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sa-pattern-card">
+                            <h3 class="sa-pattern-title">The Push-Pull Dance</h3>
+                            <div class="sa-pattern-accent" style="background: #FFE86B;"></div>
+                            <p class="sa-pattern-quote">"We keep having the same fights. One of us pursues, the other withdraws. We love each other but can't break this exhausting cycle."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Journey Section -->
+        <section class="sa-journey">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 style="font-size: 40px; font-weight: 500;">Your Journey to Secure Love in 4 Steps</h2>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="sa-step">
+                            <div class="sa-step-icon">🔍</div>
+                            <div class="sa-step-content">
+                                <h3>Identify Your Pattern</h3>
+                                <p>Understand which of the four attachment styles shapes your relationships and why (without the academic jargon).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="sa-step">
+                            <div class="sa-step-icon">💚</div>
+                            <div class="sa-step-content">
+                                <h3>Heal Past Wounds</h3>
+                                <p>Process your attachment story with compassion. No blame, no shame—just understanding and healing.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="sa-step">
+                            <div class="sa-step-icon">🛠️</div>
+                            <div class="sa-step-content">
+                                <h3>Build New Tools</h3>
+                                <p>Learn practical scripts and exercises you can actually use when emotions run high (in 15 minutes or less).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="sa-step">
+                            <div class="sa-step-icon">❤️</div>
+                            <div class="sa-step-content">
+                                <h3>Love Securely</h3>
+                                <p>Create the deeply satisfying connections you've always wanted—it's never too late to earn secure attachment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Testimonials Section -->
+        <section class="sa-testimonials" id="reviews">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 style="font-size: 40px; font-weight: 500;">Real People, Real Transformations</h2>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="sa-review-card">
+                            <div class="sa-stars">★★★★★</div>
+                            <p class="sa-review-text">"This book has helped us go deeper and make more positive strides in our attachment than years of therapy. My husband and I each have our own copy—incredibly healing for our marriage."</p>
+                            <div class="sa-reviewer">
+                                <div class="sa-reviewer-avatar">C</div>
+                                <div>
+                                    <div style="font-weight: 600;">Christina</div>
+                                    <div style="font-size: 14px; color: #6E6F7B;">Verified Purchase</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sa-review-card">
+                            <div class="sa-stars">★★★★★</div>
+                            <p class="sa-review-text">"Like therapy in book form. I'm an EMDR-trained trauma therapist and have already recommended it to clients. It directs you down the path of 'earned' secure attachment."</p>
+                            <div class="sa-reviewer">
+                                <div class="sa-reviewer-avatar">M</div>
+                                <div>
+                                    <div style="font-weight: 600;">Mary E.</div>
+                                    <div style="font-size: 14px; color: #6E6F7B;">Licensed Therapist</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sa-review-card">
+                            <div class="sa-stars">★★★★★</div>
+                            <p class="sa-review-text">"I expected to learn theory and instead learned more about myself than I realized I was carrying. This workbook is where you write your own story."</p>
+                            <div class="sa-reviewer">
+                                <div class="sa-reviewer-avatar">J</div>
+                                <div>
+                                    <div style="font-weight: 600;">Jennifer</div>
+                                    <div style="font-size: 14px; color: #6E6F7B;">Amazon Review</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Featured Quote -->
+                <div class="sa-featured">
+                    <div class="sa-quote-mark">"</div>
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <p style="font-size: 20px; color: #1B1B29; line-height: 1.7; font-style: italic; margin-bottom: 24px;">
+                                "A resource that every therapist, client, and person needs in their life. Eli hands us clear knowledge of attachment research in a way that is engaging, concise, and hopeful."
+                            </p>
+                            <div class="d-flex align-items-center">
+                                <!--@id=expert_lepera-->
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="Dr. Nicole LePera" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 16px;">
+                                <div>
+                                    <div style="font-weight: 600; font-size: 18px;">Dr. Nicole LePera</div>
+                                    <div style="color: #6E6F7B;">NYT Bestselling Author of How to Do the Work</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <div style="font-size: 60px; font-weight: 700; color: #5E3BFF;">★★★★★</div>
+                            <div style="font-size: 14px; color: #6E6F7B;">Expert Endorsement</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Author Section -->
+        <section class="sa-author">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-4">
+                        <div class="text-center">
+                            <!--@id=eli_harwood-->
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=800&fit=crop" alt="Eli Harwood, The Attachment Nerd" class="sa-author-img">
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div style="background: white; padding: 8px 20px; border-radius: 100px; display: inline-block; margin-bottom: 16px;">
+                            <span style="color: #5E3BFF; font-weight: 600; font-size: 14px;">Meet Your Guide</span>
+                        </div>
+                        
+                        <h2 style="font-size: 36px; font-weight: 500; margin-bottom: 20px;">Meet Eli Harwood, "The Attachment Nerd"</h2>
+                        
+                        <p style="font-size: 20px; font-style: italic; line-height: 1.6; margin-bottom: 24px;">
+                            "Eli's knowledgeable big-sister energy: licensed-therapist brains, favorite-friend heart."
+                        </p>
+                        
+                        <p style="font-size: 18px; line-height: 1.7; margin-bottom: 32px;">
+                            Known for her warm, accessible approach, Eli Harwood has spent over 17 years helping people process relational traumas and develop secure connections. She translates complex attachment science into bite-sized, practical wisdom you can actually use.
+                        </p>
+                        
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <div class="sa-stat-box">
+                                    <div class="sa-stat-number">17+</div>
+                                    <div class="sa-stat-label">Years Experience</div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="sa-stat-box">
+                                    <div class="sa-stat-number">1M+</div>
+                                    <div class="sa-stat-label">Social Followers</div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="sa-stat-box">
+                                    <div class="sa-stat-number">266K+</div>
+                                    <div class="sa-stat-label">Families Helped</div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="sa-stat-box">
+                                    <div class="sa-stat-number">140</div>
+                                    <div class="sa-stat-label">Healing Prompts</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Bonuses Section -->
+        <section class="sa-bonuses">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 style="font-size: 40px; font-weight: 500; margin-bottom: 16px;">Get These Free Bonuses With Your Purchase</h2>
+                    <p style="font-size: 18px; color: #323346;">Forward your receipt to hello@attachmentnerd.com to unlock:</p>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="sa-bonus-card">
+                            <div class="sa-bonus-icon">1</div>
+                            <h3 style="font-size: 24px; margin-bottom: 16px;">CALM Script PDF</h3>
+                            <p style="line-height: 1.6;">Eli's 3-line de-escalation tool for when emotions run high. The same script that's helped thousands navigate relationship conflicts with grace.</p>
+                            <div style="margin-top: 16px; color: #18D5E4; font-weight: 600;">Value: $19</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sa-bonus-card">
+                            <div class="sa-bonus-icon">2</div>
+                            <h3 style="font-size: 24px; margin-bottom: 16px;">Attachment Style Cheatsheet</h3>
+                            <p style="line-height: 1.6;">One-page visual guide to all four attachment patterns. Perfect for quick reference and sharing with your partner.</p>
+                            <div style="margin-top: 16px; color: #18D5E4; font-weight: 600;">Value: $9</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sa-bonus-card">
+                            <div class="sa-bonus-icon">3</div>
+                            <h3 style="font-size: 24px; margin-bottom: 16px;">"Secure Scripts" Email Series</h3>
+                            <p style="line-height: 1.6;">Three weekly emails with simple, memorable phrases for real-time repair. Because knowing what to say in the moment changes everything.</p>
+                            <div style="margin-top: 16px; color: #18D5E4; font-weight: 600;">Value: $27</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="sa-cta" id="purchase">
+            <div class="container">
+                <div class="sa-cta-box">
+                    <h2 style="font-size: 40px; font-weight: 500; margin-bottom: 20px;">Ready to Transform Your Relationships?</h2>
+                    <p style="font-size: 20px; color: #323346; margin-bottom: 32px;">Join thousands creating secure, lasting love with science-backed tools that actually work.</p>
+                    
+                    <a href="https://www.amazon.com/Securely-Attached" class="btn btn-primary-modern btn-lg mb-4">Get Your Copy on Amazon</a>
+                    
+                    <p style="color: #6E6F7B; margin-bottom: 16px;">Choose Your Retailer:</p>
+                    <div class="sa-retailers">
+                        <a href="#" class="sa-retailer-link">📚 Amazon - Paperback & Kindle</a>
+                        <a href="#" class="sa-retailer-link">📖 Barnes & Noble - Paperback</a>
+                        <a href="#" class="sa-retailer-link">🛒 Sasquatch Books - Direct Order</a>
+                        <a href="#" class="sa-retailer-link">🌍 PRH - Global Shipping</a>
+                    </div>
+                    
+                    <p style="font-size: 14px; color: #6E6F7B; margin-top: 32px;">
+                        30-Day Money-Back Guarantee • Lifetime Access to Updates • Join Our Supportive Community
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

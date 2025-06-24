@@ -1,40 +1,31 @@
-<!-- Securely Attached Book Page Template -->
 <main>
-  <!-- Hero with book introduction -->
-  {% section 'sa_hero' %}
-
-  <!-- Main book showcase -->
+  <!-- Modern Hero with Book Cover -->
+  {% section 'sa_hero_modern' %}
+  
+  <!-- Attachment Patterns Section -->
+  {% section 'sa_patterns' %}
+  
+  <!-- 4-Step Journey -->
+  {% section 'sa_journey' %}
+  
+  <!-- Enhanced Testimonials -->
+  {% section 'sa_testimonials_enhanced' %}
+  
+  <!-- Existing Book Showcase (Features) -->
   {% section 'sa_book_showcase' %}
-
-  <!-- Feature showcase for workbook highlights -->
-  {% section 'feature_showcase' %}
-
-  <!-- Key benefits/features -->
-  {% section 'sa_key_benefits' %}
-
-  <!-- Expert Testimonials -->
-  {% section 'sa_testimonials' %}
-
-  <!-- User Reviews - Using existing testimonials section -->
-  <!-- This is FULLY EDITABLE: Add/edit testimonials with quotes, names, ratings, photos -->
-  {% section 'testimonials' %}
-
-  <!-- How the workbook works - Using colored highlight -->
-  {% section 'colored_highlight' %}
-
-  <!-- Feature highlight for Nerd Alerts -->
-  {% section 'feature_highlight' %}
-
-  <!-- Author section -->
-  {% section 'author_bio_modern' %}
-
-  <!-- Free chapter download - Using free resource section -->
-  {% section 'free_resource' %}
-
-  <!-- Purchase options -->
-  {% section 'sa_purchase_cta' %}
-
-  <!-- Newsletter signup -->
-  {% section 'newsletter_cta_modern' %}
-
+  
+  <!-- Author Bio Modern -->
+  {% section 'sa_author_modern' %}
+  
+  <!-- Workbook Preview (if still needed) -->
+  {% section 'sa_workbook_preview' %}
+  
+  <!-- Free Bonuses -->
+  {% section 'sa_bonuses' %}
+  
+  <!-- Purchase Options -->
+  {% section 'sa_retailers' %}
+  
+  <!-- Allow additional dynamic sections -->
+  {{ content_for_index }}
 </main>

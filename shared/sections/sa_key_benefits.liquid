@@ -2,7 +2,7 @@
   <div class="container">
     <div class="text-center mb-5 animate-fade-up">
       <h2 class="mb-3" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
-        {{ section.settings.heading | default: 'What You'll Discover Inside' }}
+        {{ section.settings.heading | default: 'What You\'ll Discover Inside' }}
       </h2>
       <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 600px; margin: 0 auto;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
         {{ section.settings.subheading | default: 'This workbook combines clinical expertise with practical exercises to guide your transformation' }}
@@ -84,7 +84,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "What You'll Discover Inside"
+      "default": "What You\'ll Discover Inside"
     },
     {
       "type": "text",
