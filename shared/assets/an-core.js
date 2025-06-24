@@ -23,7 +23,6 @@
       header: null,
       hamburger: null,
       mobileMenu: null,
-      dropdowns: [],
       countdowns: []
     },
 
@@ -47,7 +46,6 @@
       this.elements.header = document.querySelector('.header');
       this.elements.hamburger = document.querySelector('.hamburger');
       this.elements.mobileMenu = document.querySelector('.header__content--mobile');
-      this.elements.dropdowns = Array.from(document.querySelectorAll('.dropdown'));
       this.elements.countdowns = Array.from(document.querySelectorAll('.countdown'));
     },
 
@@ -182,12 +180,9 @@
     },
 
     /**
-     * Dropdown Handler
+     * Dropdown Handler with Event Delegation
      */
     initDropdowns() {
-      const { dropdowns } = this.elements;
-      if (!dropdowns.length) return;
-
       let openDropdown = null;
 
       const closeDropdown = (dropdown) => {
@@ -213,6 +208,15 @@
         // Reset classes
         menu.className = 'dropdown__menu';
 
+        // Store original alignment if not already stored
+        if (!dropdown.dataset.originalClass) {
+          ['text-left', 'text-center', 'text-right'].forEach(align => {
+            if (menu.classList.contains(`dropdown__menu--${align}`)) {
+              dropdown.dataset.originalClass = `dropdown__menu--${align}`;
+            }
+          });
+        }
+
         // Check if menu would overflow viewport
         if (menuRect.right > window.innerWidth) {
           menu.classList.add('dropdown__menu--text-right');
@@ -229,48 +233,39 @@
         }
       };
 
-      // Handle dropdown triggers
-      dropdowns.forEach(dropdown => {
-        const trigger = dropdown.querySelector('.dropdown__trigger');
-        if (!trigger) return;
-
-        // Store original alignment
-        const menu = dropdown.querySelector('.dropdown__menu');
-        if (menu) {
-          ['text-left', 'text-center', 'text-right'].forEach(align => {
-            if (menu.classList.contains(`dropdown__menu--${align}`)) {
-              dropdown.dataset.originalClass = `dropdown__menu--${align}`;
-            }
-          });
-        }
-
-        trigger.addEventListener('click', (e) => {
-          e.stopPropagation();
-
-          // Close other dropdowns
-          if (openDropdown && openDropdown !== dropdown) {
+      // Single delegated event listener for all dropdowns
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.dropdown__trigger');
+        
+        if (!trigger) {
+          // If click is outside any dropdown, close the open one
+          if (openDropdown) {
             closeDropdown(openDropdown);
-          }
-
-          // Toggle current dropdown
-          if (dropdown.dataset.isOpen === 'true') {
-            closeDropdown(dropdown);
             openDropdown = null;
-          } else {
-            openDropdownMenu(dropdown, trigger);
-            openDropdown = dropdown;
           }
-        });
-      });
+          return;
+        }
 
-      // Close dropdowns on outside click or resize
-      document.addEventListener('click', () => {
-        if (openDropdown) {
+        e.stopPropagation();
+        const dropdown = trigger.closest('.dropdown');
+        if (!dropdown) return;
+
+        // Close other dropdowns
+        if (openDropdown && openDropdown !== dropdown) {
           closeDropdown(openDropdown);
+        }
+
+        // Toggle current dropdown
+        if (dropdown.dataset.isOpen === 'true') {
+          closeDropdown(dropdown);
           openDropdown = null;
+        } else {
+          openDropdownMenu(dropdown, trigger);
+          openDropdown = dropdown;
         }
       });
 
+      // Close dropdowns on resize
       window.addEventListener('resize', () => {
         if (openDropdown) {
           closeDropdown(openDropdown);

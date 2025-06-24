@@ -7,11 +7,13 @@
 <style>
   /* ============================================
      Core Animation Variables
+     Using standardized motion scale from _tokens.css
      ============================================ */
   :root {
-    --animation-duration-fast: 0.3s;
-    --animation-duration-base: 0.5s;
-    --animation-duration-slow: 0.8s;
+    /* Map to motion scale system */
+    --animation-duration-fast: var(--motion-duration-fast);
+    --animation-duration-base: var(--motion-duration-base);
+    --animation-duration-slow: var(--motion-duration-slow);
     --animation-distance: 40px;
     --animation-distance-sm: 20px;
     --animation-scale: 0.95;
@@ -162,61 +164,61 @@
      Base Animation Classes
      ============================================ */
   .animate-fade-up {
-    animation: fadeUp var(--animation-duration-base) var(--ease-spring) forwards;
+    animation: fadeUp var(--animation-duration-base) var(--motion-ease-spring) forwards;
     animation-fill-mode: both;
   }
   
   .animate-fade-down {
-    animation: fadeDown var(--animation-duration-base) var(--ease-spring) forwards;
+    animation: fadeDown var(--animation-duration-base) var(--motion-ease-spring) forwards;
     animation-fill-mode: both;
   }
   
   .animate-fade-in {
-    animation: fadeIn var(--animation-duration-fast) var(--ease-out) forwards;
+    animation: fadeIn var(--animation-duration-fast) var(--motion-ease-decelerate) forwards;
     animation-fill-mode: both;
   }
   
   .animate-fade-left {
-    animation: fadeLeft var(--animation-duration-base) var(--ease-out) forwards;
+    animation: fadeLeft var(--animation-duration-base) var(--motion-ease-decelerate) forwards;
     animation-fill-mode: both;
   }
   
   .animate-fade-right {
-    animation: fadeRight var(--animation-duration-base) var(--ease-out) forwards;
+    animation: fadeRight var(--animation-duration-base) var(--motion-ease-decelerate) forwards;
     animation-fill-mode: both;
   }
   
   .animate-scale-in {
-    animation: scaleIn var(--animation-duration-fast) var(--ease-spring) forwards;
+    animation: scaleIn var(--animation-duration-fast) var(--motion-ease-spring) forwards;
     animation-fill-mode: both;
   }
   
   .animate-bounce-in {
-    animation: bounceIn var(--animation-duration-slow) var(--ease-spring) forwards;
+    animation: bounceIn var(--animation-duration-slow) var(--motion-ease-spring) forwards;
     animation-fill-mode: both;
   }
   
   .animate-rotate-in {
-    animation: rotateIn var(--animation-duration-base) var(--ease-spring) forwards;
+    animation: rotateIn var(--animation-duration-base) var(--motion-ease-spring) forwards;
     animation-fill-mode: both;
   }
   
   .animate-slide-up {
-    animation: slideUp var(--animation-duration-base) var(--ease-out) forwards;
+    animation: slideUp var(--animation-duration-base) var(--motion-ease-decelerate) forwards;
     animation-fill-mode: both;
   }
   
   /* Continuous animations */
   .animate-float {
-    animation: float 3s ease-in-out infinite;
+    animation: float var(--motion-duration-deliberate) var(--motion-ease-standard) infinite;
   }
   
   .animate-pulse {
-    animation: pulse 2s ease-in-out infinite;
+    animation: pulse var(--motion-duration-deliberate) var(--motion-ease-standard) infinite;
   }
   
   .animate-shake {
-    animation: shake 0.5s ease-in-out;
+    animation: shake var(--motion-duration-slow) var(--motion-ease-standard);
   }
 
   /* ============================================
@@ -294,7 +296,7 @@
      Hover Effects
      ============================================ */
   .hover-lift {
-    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard), box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
   }
   
   .hover-lift:hover {
@@ -303,7 +305,7 @@
   }
   
   .hover-grow {
-    transition: transform 0.2s var(--ease-out);
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
   }
   
   .hover-grow:hover {
@@ -311,7 +313,7 @@
   }
   
   .hover-shrink {
-    transition: transform 0.2s var(--ease-out);
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
   }
   
   .hover-shrink:hover {
@@ -319,7 +321,7 @@
   }
   
   .hover-rotate {
-    transition: transform 0.3s var(--ease-out);
+    transition: transform var(--motion-duration-base) var(--motion-ease-standard);
   }
   
   .hover-rotate:hover {
@@ -327,7 +329,7 @@
   }
   
   .hover-shadow {
-    transition: box-shadow 0.3s var(--ease-out);
+    transition: box-shadow var(--motion-duration-base) var(--motion-ease-standard);
   }
   
   .hover-shadow:hover {
@@ -335,7 +337,7 @@
   }
   
   .hover-opacity {
-    transition: opacity 0.2s var(--ease-out);
+    transition: opacity var(--motion-duration-fast) var(--motion-ease-standard);
   }
   
   .hover-opacity:hover {

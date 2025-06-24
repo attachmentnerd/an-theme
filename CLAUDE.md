@@ -1569,3 +1569,196 @@ npm run theme:export website patch "Added coaching page section"
 
 ### Example: Working Section
 See `/shared/sections/page-coaching.liquid` for a complete example of an AI-generated page converted to a Kajabi section.
+
+## Section Consolidation Strategy
+
+### Unified Book Showcase Section
+
+The theme now includes `an_book_showcase.liquid` - a unified section that replaces multiple book showcase variants:
+
+#### Replaced Sections:
+- `book_showcase.liquid` → Use `layout_style: "classic"`
+- `book_showcase_modern.liquid` → Use `layout_style: "modern"`
+- `book_showcase_sa.liquid` → Use presets or saved sections
+- `book_showcase_rsak.liquid` → Use presets or saved sections
+- `book_showcase_modern_alt.liquid` → Use `layout_style: "modern"` + `image_position: "right"`
+
+#### Migration Guide:
+
+**Classic Layout (book_showcase.liquid)**:
+```liquid
+{% section 'an_book_showcase' %}
+Settings:
+- layout_style: "classic"
+- image_position: "left" or "right"
+- Enable top/bottom badges
+- feature_display: "list" with icon support
+```
+
+**Modern Layout (book_showcase_modern.liquid)**:
+```liquid
+{% section 'an_book_showcase' %}
+Settings:
+- layout_style: "modern"
+- enable_glow: true
+- micro_label: "17 YEARS OF CLINICAL WISDOM"
+- floating_badge_text: "BESTSELLER"
+- feature_display: "pills"
+- enable_animations: true
+```
+
+**With Testimonial Integration**:
+```liquid
+{% section 'an_book_showcase' %}
+Settings:
+- show_testimonial: true
+- testimonial_text, author, etc.
+```
+
+**Multiple Retailer Buttons**:
+Use the "Additional Button" blocks with icons:
+- Amazon: `icon: "fab fa-amazon"`
+- Barnes & Noble: `text: "B&N"`
+- Target: `icon: "fas fa-bullseye"`
+
+#### Benefits of Consolidation:
+1. **Single source of truth** - All book showcases use one section
+2. **Easier maintenance** - Update one file instead of five
+3. **More flexibility** - Mix and match features from all variants
+4. **Better performance** - Less code duplication
+5. **Simplified theme** - Fewer sections to manage
+
+#### Creating Presets for Common Configurations:
+
+For frequently used configurations (like specific books), create presets in the schema:
+
+```json
+"presets": [
+  {
+    "name": "Securely Attached Book",
+    "category": "Content",
+    "settings": {
+      "book_title": "Securely Attached",
+      "layout_style": "modern",
+      "image_position": "right",
+      "show_testimonial": true
+    }
+  }
+]
+```
+
+This consolidation approach should be applied to other duplicate sections in the theme for better maintainability.
+
+## Background Textures & SVG Shapes Library
+
+### Overview
+The AN theme includes a comprehensive library of SVG background shapes and textures that add visual depth without being distracting. These are implemented as utility classes in `shared/styles/overrides.css`.
+
+### Available Background Textures
+
+#### Organic Blob Shapes
+- `.bg-texture--blob-1` - Purple blob, top-right positioning
+- `.bg-texture--blob-2` - Teal blob, bottom-left positioning  
+- `.bg-texture--blob-3` - Peach blob, centered
+
+#### Geometric Patterns
+- `.bg-texture--circles` - Repeating cross pattern
+- `.bg-texture--dots` - Subtle dot grid
+- `.bg-texture--zigzag` - Zigzag pattern
+
+#### Gradient Overlays
+- `.bg-texture--gradient-1` - Radial gradient from top-right
+- `.bg-texture--gradient-2` - Radial gradient from bottom-left
+- `.bg-texture--gradient-mesh` - Multi-point mesh gradient
+
+#### Floating Shapes
+- `.bg-texture--float-1` - Animated star shape
+- `.bg-texture--float-2` - Animated concentric circles
+
+#### Wave Patterns
+- `.bg-texture--wave-top` - Wave shape at top of section
+- `.bg-texture--wave-bottom` - Wave shape at bottom
+
+#### Corner Decorations
+- `.bg-texture--corner-1` - Curved lines in top-right
+- `.bg-texture--corner-2` - Rotated squares in bottom-left
+
+### Usage Examples
+
+#### Basic Usage
+```html
+<section class="bg-texture bg-texture--blob-1">
+  <!-- Content -->
+</section>
+```
+
+#### Combining Multiple Textures
+```html
+<section class="bg-texture bg-texture--blob-1 bg-texture--gradient-mesh">
+  <!-- Combines blob shape with mesh gradient -->
+</section>
+```
+
+#### With Modifiers
+```html
+<!-- Subtle effect -->
+<section class="bg-texture bg-texture--dots bg-texture--subtle">
+
+<!-- Strong effect -->  
+<section class="bg-texture bg-texture--blob-2 bg-texture--strong">
+
+<!-- Animated -->
+<section class="bg-texture bg-texture--float-1 bg-texture--animated">
+
+<!-- Hide on mobile -->
+<section class="bg-texture bg-texture--corner-1 bg-texture--hide-mobile">
+```
+
+### Implementation in Sections
+
+#### FAQ Accordion Example
+```liquid
+<section class="an-faq-section py-5 bg-texture bg-texture--blob-1 bg-texture--gradient-mesh bg-texture--subtle">
+```
+- Uses subtle blob and gradient mesh for depth
+- FAQ items have hover-activated corner decorations
+
+#### Stats Bar Example  
+```liquid
+<section class="an-stats-bar py-5 bg-texture {% if gradient %}bg-texture--float-1 bg-texture--float-2{% else %}bg-texture--dots bg-texture--gradient-2{% endif %}">
+```
+- Gradient backgrounds use floating shapes
+- Solid backgrounds use dots pattern
+- Stats items have hover-activated decorative accents
+
+### Best Practices
+
+1. **Subtlety is Key**: Use low opacity (0.03-0.1) for backgrounds
+2. **Combine Thoughtfully**: Mix organic and geometric shapes
+3. **Consider Context**: Match texture style to section content
+4. **Performance**: SVGs are inline data URIs for fast loading
+5. **Accessibility**: All decorative elements use `pointer-events: none`
+
+### Technical Details
+
+- All SVG shapes use data URIs to avoid external requests
+- Colors use URL-encoded hex values (e.g., `%235E3BFF` for #5E3BFF)
+- Animations use CSS transforms for smooth performance
+- Z-index is managed to keep decorations behind content
+- Responsive hiding available with `.bg-texture--hide-mobile`
+
+### Creating Custom Shapes
+
+To add new SVG shapes:
+1. Create SVG with minimal markup
+2. URL-encode special characters
+3. Add as background-image in data URI format
+4. Use appropriate opacity (0.03-0.1 typical)
+5. Position with absolute positioning
+
+Example:
+```css
+.bg-texture--custom::before {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%235E3BFF' fill-opacity='0.05'/%3E%3C/svg%3E");
+}
+```

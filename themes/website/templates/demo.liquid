@@ -1,8 +1,8 @@
 {% comment %}
   AN Theme Demo Page - Auto-generated
   Displays all shared sections for testing
-  Generated: 2025-06-24T05:17:49.072Z
-  Total sections: 83
+  Generated: 2025-06-24T05:55:58.745Z
+  Total sections: 84
 {% endcomment %}
 
 <main class="an-demo-page">
@@ -13,7 +13,7 @@
         AN Theme Sections Demo
       </h1>
       <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 700px; margin: 0 auto;">
-        83 shared sections available
+        84 shared sections available
         <br>Last generated: {{ 'now' | date: '%B %d, %Y at %I:%M %p' }}
       </p>
     </div>
@@ -84,8 +84,9 @@
   <!-- Commerce -->
   <div id="commerce" class="an-demo-section">
     <div class="container py-3">
-      <h2 class="h3 text-muted">Commerce (16)</h2>
+      <h2 class="h3 text-muted">Commerce (17)</h2>
     </div>
+    {% section 'an_book_showcase' %}
     {% section 'an_comparison_table' %}
     {% section 'an_program_cards' %}
     {% section 'book' %}

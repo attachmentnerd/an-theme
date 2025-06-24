@@ -35,11 +35,12 @@
             </th>
             {% for block in section.blocks %}
               {% if block.type == 'plan' %}
-                <th class="an-comparison__plan-header {% if block.settings.recommended %}an-comparison__plan-header--recommended{% endif %}">
-                  {% if block.settings.recommended %}
-                    <div class="an-comparison__badge">{{ block.settings.badge_text }}</div>
-                  {% endif %}
-                  <h3 class="an-comparison__plan-name">{{ block.settings.name }}</h3>
+                <th class="an-comparison__plan-header {% if block.settings.recommended %}an-comparison__plan-header--recommended{% endif %}" data-column="{{ forloop.index }}">
+                  <button class="an-comparison__plan-button" aria-label="Select {{ block.settings.name }} plan" data-column="{{ forloop.index }}">
+                    {% if block.settings.recommended %}
+                      <div class="an-comparison__badge">{{ block.settings.badge_text }}</div>
+                    {% endif %}
+                    <h3 class="an-comparison__plan-name">{{ block.settings.name }}</h3>
                   <div class="an-comparison__plan-price">
                     <span class="an-comparison__price-amount">${{ block.settings.price }}</span>
                     {% if block.settings.price_period != blank %}
@@ -49,9 +50,10 @@
                   {% if block.settings.description != blank %}
                     <p class="an-comparison__plan-description">{{ block.settings.description }}</p>
                   {% endif %}
-                  <a href="{{ block.settings.cta_link }}" class="btn {% if block.settings.recommended %}btn-primary-modern{% else %}btn-secondary-modern{% endif %} btn-sm">
-                    {{ block.settings.cta_text }}
-                  </a>
+                    <a href="{{ block.settings.cta_link }}" class="btn {% if block.settings.recommended %}btn-primary-modern{% else %}btn-secondary-modern{% endif %} btn-sm">
+                      {{ block.settings.cta_text }}
+                    </a>
+                  </button>
                 </th>
               {% endif %}
             {% endfor %}
@@ -69,19 +71,35 @@
               <tr class="an-comparison__feature-row">
                 <td class="an-comparison__feature-name">
                   {{ feature_block.settings.feature_name }}
-                  {% if feature_block.settings.tooltip != blank %}
-                    <button class="an-comparison__tooltip" aria-label="More info">
+                  {% if feature_block.settings.tooltip != blank or feature_block.settings.tooltip_image != blank or feature_block.settings.tooltip_video != blank %}
+                    <button class="an-comparison__tooltip" aria-label="More info about {{ feature_block.settings.feature_name }}">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M8 11V8M8 5H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
-                      <span class="an-comparison__tooltip-content">{{ feature_block.settings.tooltip }}</span>
+                      <div class="an-comparison__tooltip-content">
+                        {% if feature_block.settings.tooltip_image != blank %}
+                          <img src="{{ feature_block.settings.tooltip_image | image_picker_url: '300x200' }}" alt="{{ feature_block.settings.feature_name }}" class="an-comparison__tooltip-image">
+                        {% endif %}
+                        {% if feature_block.settings.tooltip != blank %}
+                          <p class="an-comparison__tooltip-text">{{ feature_block.settings.tooltip }}</p>
+                        {% endif %}
+                        {% if feature_block.settings.tooltip_video != blank %}
+                          <a href="{{ feature_block.settings.tooltip_video }}" class="an-comparison__tooltip-video" target="_blank" rel="noopener">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                              <path d="M8 7L13 10L8 13V7Z" fill="currentColor"/>
+                            </svg>
+                            <span>Watch explanation</span>
+                          </a>
+                        {% endif %}
+                      </div>
                     </button>
                   {% endif %}
                 </td>
                 {% assign plan_features = feature_block.settings.plan_values | split: ',' %}
                 {% for value in plan_features %}
-                  <td class="an-comparison__feature-value">
+                  <td class="an-comparison__feature-value" data-column="{{ forloop.index }}">
                     {% if value contains 'check' %}
                       <svg class="an-comparison__check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="10" fill="var(--c-accent-teal)" opacity="0.2"/>
@@ -231,12 +249,45 @@
     background: var(--c-ink-50);
     position: relative;
     vertical-align: top;
+    transition: all 0.3s ease;
+    cursor: pointer;
   }
 
   .an-comparison__plan-header--recommended {
     background: var(--c-brand-100);
     transform: scale(1.02);
     box-shadow: 0 0 0 2px var(--c-brand-600);
+  }
+  
+  /* Plan Button */
+  .an-comparison__plan-button {
+    background: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .an-comparison__plan-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Column Highlighting */
+  .an-comparison__table--highlight .an-comparison__plan-header,
+  .an-comparison__table--highlight .an-comparison__feature-value {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+  
+  .an-comparison__table--highlight .an-comparison__plan-header.column-active,
+  .an-comparison__table--highlight .an-comparison__feature-value.column-active {
+    opacity: 1;
+    background: var(--c-brand-50);
+  }
+  
+  .an-comparison__table--highlight .an-comparison__plan-header--recommended.column-active {
+    background: var(--c-brand-100);
   }
 
   .an-comparison__badge {
@@ -320,7 +371,7 @@
     font-weight: 500;
   }
 
-  /* Tooltip */
+  /* Enhanced Tooltip */
   .an-comparison__tooltip {
     position: relative;
     background: none;
@@ -329,6 +380,7 @@
     cursor: help;
     padding: 0;
     margin-left: 0.25rem;
+    vertical-align: middle;
   }
 
   .an-comparison__tooltip:hover {
@@ -339,25 +391,27 @@
     position: absolute;
     bottom: 100%;
     left: 50%;
-    transform: translateX(-50%);
-    background: var(--c-ink-900);
-    color: white;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
+    transform: translateX(-50%) scale(0.95);
+    background: white;
+    color: var(--c-ink-900);
+    padding: 1rem;
+    border-radius: 12px;
     font-size: var(--fs-body-sm);
-    white-space: nowrap;
     opacity: 0;
     visibility: hidden;
     transition: all var(--an-transition-base);
-    z-index: 10;
-    margin-bottom: 0.5rem;
-    max-width: 200px;
-    white-space: normal;
+    z-index: 100;
+    margin-bottom: 0.75rem;
+    min-width: 250px;
+    max-width: 320px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
   }
 
-  .an-comparison__tooltip:hover .an-comparison__tooltip-content {
+  .an-comparison__tooltip:hover .an-comparison__tooltip-content,
+  .an-comparison__tooltip:focus .an-comparison__tooltip-content {
     opacity: 1;
     visibility: visible;
+    transform: translateX(-50%) scale(1);
   }
 
   .an-comparison__tooltip-content::after {
@@ -366,8 +420,56 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    border: 4px solid transparent;
-    border-top-color: var(--c-ink-900);
+    border: 6px solid transparent;
+    border-top-color: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
+  
+  /* Multimedia Tooltip Content */
+  .an-comparison__tooltip-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .an-comparison__tooltip-text {
+    line-height: 1.5;
+    margin: 0 0 0.75rem;
+    color: var(--c-ink-700);
+  }
+  
+  .an-comparison__tooltip-video {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--c-brand-100);
+    color: var(--c-brand-800);
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+  }
+  
+  .an-comparison__tooltip-video:hover {
+    background: var(--c-brand-600);
+    color: white;
+    transform: translateY(-1px);
+  }
+  
+  /* Position adjustments for edge cases */
+  @media (max-width: 768px) {
+    .an-comparison__tooltip-content {
+      left: 0;
+      transform: translateX(0) scale(0.95);
+    }
+    
+    .an-comparison__tooltip:hover .an-comparison__tooltip-content {
+      transform: translateX(0) scale(1);
+    }
   }
 
   /* Mobile Styles */
@@ -552,6 +654,19 @@
           "info": "Additional information shown on hover"
         },
         {
+          "type": "image_picker",
+          "id": "tooltip_image",
+          "label": "Tooltip Image (Optional)",
+          "info": "Add a thumbnail image to the tooltip"
+        },
+        {
+          "type": "text",
+          "id": "tooltip_video",
+          "label": "Tooltip Video URL (Optional)",
+          "placeholder": "https://youtube.com/watch?v=...",
+          "info": "Link to explanation video"
+        },
+        {
           "type": "text",
           "id": "plan_values",
           "label": "Plan Values (comma-separated)",
@@ -698,3 +813,115 @@
   ]
 }
 {% endschema %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Column Highlighting Feature
+    const comparisonTable = document.querySelector('.an-comparison__table');
+    const planButtons = document.querySelectorAll('.an-comparison__plan-button');
+    let activeColumn = null;
+    
+    if (comparisonTable && planButtons.length > 0) {
+      planButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          const columnIndex = this.getAttribute('data-column');
+          
+          // Toggle highlighting
+          if (activeColumn === columnIndex) {
+            // Remove highlighting
+            comparisonTable.classList.remove('an-comparison__table--highlight');
+            document.querySelectorAll('.column-active').forEach(el => {
+              el.classList.remove('column-active');
+            });
+            activeColumn = null;
+          } else {
+            // Add highlighting
+            comparisonTable.classList.add('an-comparison__table--highlight');
+            
+            // Remove previous active classes
+            document.querySelectorAll('.column-active').forEach(el => {
+              el.classList.remove('column-active');
+            });
+            
+            // Add active class to clicked column
+            document.querySelectorAll(`[data-column="${columnIndex}"]`).forEach(el => {
+              el.classList.add('column-active');
+            });
+            
+            activeColumn = columnIndex;
+          }
+        });
+      });
+    }
+    
+    // Enhanced Tooltip Interaction
+    const tooltips = document.querySelectorAll('.an-comparison__tooltip');
+    
+    tooltips.forEach(tooltip => {
+      // Make tooltips keyboard accessible
+      tooltip.setAttribute('tabindex', '0');
+      
+      // Show tooltip on focus for keyboard users
+      tooltip.addEventListener('focus', function() {
+        this.classList.add('tooltip-active');
+      });
+      
+      tooltip.addEventListener('blur', function() {
+        this.classList.remove('tooltip-active');
+      });
+      
+      // Prevent tooltip from closing when hovering over content
+      const content = tooltip.querySelector('.an-comparison__tooltip-content');
+      if (content) {
+        content.addEventListener('mouseenter', function() {
+          tooltip.classList.add('tooltip-active');
+        });
+        
+        content.addEventListener('mouseleave', function() {
+          tooltip.classList.remove('tooltip-active');
+        });
+      }
+    });
+    
+    // Mobile touch support for tooltips
+    if ('ontouchstart' in window) {
+      tooltips.forEach(tooltip => {
+        tooltip.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          
+          // Close other tooltips
+          tooltips.forEach(other => {
+            if (other !== tooltip) {
+              other.classList.remove('tooltip-active');
+            }
+          });
+          
+          // Toggle this tooltip
+          this.classList.toggle('tooltip-active');
+        });
+      });
+      
+      // Close tooltips when touching outside
+      document.addEventListener('touchstart', function(e) {
+        if (!e.target.closest('.an-comparison__tooltip')) {
+          tooltips.forEach(tooltip => {
+            tooltip.classList.remove('tooltip-active');
+          });
+        }
+      });
+    }
+  });
+  
+  // Add CSS for tooltip active state
+  const style = document.createElement('style');
+  style.textContent = `
+    .an-comparison__tooltip.tooltip-active .an-comparison__tooltip-content,
+    .an-comparison__tooltip:hover .an-comparison__tooltip-content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) scale(1);
+    }
+  `;
+  document.head.appendChild(style);
+</script>

@@ -74,7 +74,13 @@
   --fs-caption: 0.875rem; /* 14px - Small text */
   --fs-tiny: 0.75rem;     /* 12px - Fine print */
   
+  /* Font Families */
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: Merriweather, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  
   /* Font Weights */
+  --fw-light: 300;
   --fw-normal: 400;
   --fw-medium: 500;
   --fw-semibold: 600;

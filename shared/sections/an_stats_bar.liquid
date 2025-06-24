@@ -7,7 +7,7 @@
   - Background options
 {% endcomment %}
 
-<section class="an-stats-bar py-5" style="background: {{ section.settings.background_type == 'gradient' ? 'var(--g-brand)' : section.settings.background_color }};">
+<section class="an-stats-bar py-5 bg-texture {% if section.settings.background_type == 'gradient' %}bg-texture--float-1 bg-texture--float-2{% else %}bg-texture--dots bg-texture--gradient-2{% endif %}" style="background-color: {{ section.settings.background_type == 'gradient' ? '' : section.settings.background_color }}; {% if section.settings.background_type == 'gradient' %}background: var(--g-brand);{% endif %}">
   <div class="container">
     <!-- Section Header (optional) -->
     {% if section.settings.heading != blank %}
@@ -105,6 +105,29 @@
 
   .an-stats-bar__item {
     text-align: center;
+    position: relative;
+  }
+  
+  /* Decorative accent behind stat */
+  .an-stats-bar__item::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60,20 Q80,20 80,40 T60,60 T40,40 T60,20' fill='none' stroke='%235E3BFF' stroke-width='0.5' opacity='0.2'/%3E%3Cpath d='M60,30 Q70,30 70,40 T60,50 T50,40 T60,30' fill='%23FFE86B' fill-opacity='0.05'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .an-stats-bar__item:hover::before {
+    opacity: 1;
   }
 
   .an-stats-bar__icon {
@@ -117,6 +140,13 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+  }
+  
+  .an-stats-bar__item:hover .an-stats-bar__icon {
+    transform: scale(1.05);
   }
 
   .an-stats-bar__number {
