@@ -44,10 +44,10 @@
                          class="an-team__photo"
                          loading="lazy">
                   {% else %}
-                    <img src="https://picsum.photos/id/{{ forloop.index | plus: 430 }}/300/300" 
-                         alt="{{ block.settings.name }}" 
-                         class="an-team__photo"
-                         loading="lazy">
+                    {% include 'svg_placeholders' %}
+                    <div class="an-team__photo" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
+                      {{ svg_placeholder_avatar }}
+                    </div>
                   {% endif %}
                   
                   <!-- Featured Badge -->

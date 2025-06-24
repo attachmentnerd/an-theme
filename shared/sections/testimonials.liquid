@@ -58,10 +58,11 @@
                      class="testimonial-card__image"
                      loading="lazy">
               {%- else -%}
-                <img src="https://picsum.photos/id/{{ forloop.index | plus: 330 }}/200/200" 
-                     alt="{{ block.settings.name }}" 
-                     class="testimonial-card__image"
-                     loading="lazy">
+                {% comment %} Avatar placeholder instead of random photo {% endcomment %}
+                {% include 'svg_placeholders' %}
+                <div class="testimonial-card__image" style="background: #FAFAFA; border-radius: 50%; overflow: hidden;">
+                  {{ svg_placeholder_avatar }}
+                </div>
               {%- endif -%}
               
               <div class="testimonial-card__info">

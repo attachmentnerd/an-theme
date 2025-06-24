@@ -4,7 +4,7 @@
                 {% elsif section.settings.background_color %}
                   background-color: {{ section.settings.background_color }};
                 {% else %}
-                  background-image: url('https://picsum.photos/id/1015/1920/600?blur=2');
+                  background: linear-gradient(135deg, var(--c-brand-100) 0%, rgba(94, 59, 255, 0.05) 100%);
                 {% endif %}
                 {% if section.settings.text_color %}color: {{ section.settings.text_color }};{% endif %}">
   

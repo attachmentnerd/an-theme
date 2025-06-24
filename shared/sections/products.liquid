@@ -20,8 +20,6 @@
     #section-{{ section.id }} {
       {% if section.settings.bg_image != blank %}
         background-image: url({{ section.settings.bg_image | image_picker_url: "placeholder.png" }});
-      {% else %}
-        background-image: url("https://picsum.photos/id/1076/1920/600?blur=2");
       {% endif %}
       background-position: {{ section.settings.bg_position }};
       background-size: cover;

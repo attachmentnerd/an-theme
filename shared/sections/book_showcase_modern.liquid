@@ -25,7 +25,11 @@
                    style="width: 100%; height: auto; display: block;"
                    kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
             {% else %}
-              <img src="https://picsum.photos/id/24/400/600" 
+              {% include 'svg_placeholders' %}
+              <div style="width: 400px; height: 600px; background: #FAFAFA;">
+                {{ svg_placeholder_book }}
+              </div>
+              {% comment %} <img src="" 
                    alt="{{ section.settings.book_title }}" 
                    class="img-fluid book-cover"
                    style="width: 100%; height: auto; display: block;">
