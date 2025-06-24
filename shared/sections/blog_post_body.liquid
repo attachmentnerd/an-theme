@@ -73,14 +73,18 @@
         {% else %}
           <div class="col-lg-12">
         {% endif %}
-          {% if section.settings.blog_post_body_in_panel %}
-            <div class="blog-post-body__panel box-shadow-{{ section.settings.blog_post_body_box_shadow }} {% if section.settings.blog_post_body_background_color != blank %}background-{{ section.settings.blog_post_body_background_color | color_scheme_class }}{% endif %}">
-          {% endif %}
+          <article class="{% if section.settings.blog_post_body_in_panel %}blog-post-body__panel box-shadow-{{ section.settings.blog_post_body_box_shadow }} {% if section.settings.blog_post_body_background_color != blank %}background-{{ section.settings.blog_post_body_background_color | color_scheme_class }}{% endif %}{% endif %}"
+                   itemscope 
+                   itemtype="https://schema.org/BlogPosting">
+            <meta itemprop="headline" content="{{ blog_post.title }}">
+            <meta itemprop="datePublished" content="{{ blog_post.created_at | date: '%Y-%m-%d' }}">
+            <meta itemprop="author" content="{{ blog_post.author.name | default: current_site.title }}">
+            
             {% unless section.settings.header_on_top %}
               {% include "blog_post_body_media" %}
             {% endunless %}
-            <div class="blog-post-body__info">
-              <h1 class="blog-post-body__title">{{ blog_post.title }}</h1>
+            <header class="blog-post-body__info">
+              <h1 class="blog-post-body__title" itemprop="name">{{ blog_post.title }}</h1>
               {% if section.settings.show_tags %}
                 <span class="blog-post-body__tags" kjb-settings-id="{{ 'show_tags' | settings_id: section: section }}">
                   {% if blog_post.tags.size > 0 %}
@@ -96,7 +100,7 @@
               {% if settings.show_comments and settings.short_code != "" %}
                 <a class="blog-post-body__comment-count" href="{{ blog_post.url }}#disqus_thread" data-disqus-identifier="{{ blog_post.id }}"></a>
               {% endif %}
-            </div>
+            </header>
             {% if section.settings.header_on_top %}
               {% include "blog_post_body_media" %}
             {% endif %}

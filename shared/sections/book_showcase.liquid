@@ -17,6 +17,7 @@
             <img src="{{ section.settings.book_image | image_picker_url: 'placeholder.png' }}" 
                  alt="{{ section.settings.book_title }}" 
                  class="img-fluid rounded-lg shadow-lg hover-lift"
+                 loading="lazy"
                  kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
           {% else %}
             <div class="rounded-lg shadow-lg overflow-hidden" style="max-width: 400px;">

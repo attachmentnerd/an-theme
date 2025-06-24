@@ -1,4 +1,4 @@
-<div class="sidebar sidebar--sales-page">
+<aside class="sidebar sidebar--sales-page" role="complementary" aria-label="Course information and purchase options">
   {% include "offer_pricing" %}
   {% for block in section.blocks %}
     {% case block.type %}
@@ -10,7 +10,7 @@
         {% include "sidebar_image" %}
     {% endcase %}
   {% endfor %}
-</div>
+</aside>
 
 {% schema %}
   {

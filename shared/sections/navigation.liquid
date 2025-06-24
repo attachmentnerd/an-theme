@@ -635,7 +635,9 @@
 </style>
 
 <!-- Desktop Navigation Bar -->
-<nav class="unified-nav {% if section.settings.sticky %}unified-nav--sticky{% endif %}" 
+<nav class="unified-nav {% if section.settings.sticky %}unified-nav--sticky{% endif %}"
+     role="navigation"
+     aria-label="Main navigation" 
      id="section-{{ section.id }}"
      data-section-id="{{ section.id }}"
      kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
