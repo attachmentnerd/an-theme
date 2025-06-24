@@ -2050,6 +2050,133 @@ label {
 }
 
 /* ==========================================================================
+   Form Validation Styles
+   Added: 2025-01-20
+   ========================================================================== */
+
+/* Form field states */
+.form-field-error,
+input.error,
+select.error,
+textarea.error {
+  border-color: var(--c-accent-peach, #FF8BCB) !important;
+  background-color: rgba(255, 139, 203, 0.05) !important;
+}
+
+.form-field-error:focus,
+input.error:focus,
+select.error:focus,
+textarea.error:focus {
+  outline: none;
+  border-color: var(--c-accent-peach, #FF8BCB) !important;
+  box-shadow: 0 0 0 3px rgba(255, 139, 203, 0.15) !important;
+}
+
+/* Success and error messages */
+.form-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: var(--fs-body-sm, 0.875rem);
+  margin-top: 0.5rem;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.form-message--success {
+  background: rgba(24, 213, 228, 0.1);
+  color: var(--c-ink-700, #3A4A63);
+}
+
+.form-message--error {
+  background: rgba(255, 107, 107, 0.1);
+  color: var(--c-ink-700, #3A4A63);
+}
+
+.form-message svg {
+  flex-shrink: 0;
+}
+
+/* Form button states */
+.form-button--loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.form-button--loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Required field indicator */
+.required-indicator {
+  color: var(--c-accent-peach, #FF8BCB);
+  font-weight: normal;
+}
+
+/* Form help text */
+.form-help-text {
+  font-size: var(--fs-caption, 0.75rem);
+  color: var(--c-ink-500, #6B7280);
+  margin-top: 0.25rem;
+}
+
+/* Inline validation feedback */
+.validation-feedback {
+  font-size: var(--fs-caption, 0.75rem);
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.validation-feedback--error {
+  color: var(--c-accent-peach, #FF8BCB);
+}
+
+.validation-feedback--success {
+  color: var(--c-accent-teal, #18D5E4);
+}
+
+/* Form animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.form-shake {
+  animation: shake 0.5s ease-out;
+}
+
+/* ==========================================================================
    Accessibility Utilities
    Added: 2025-01-18
    ========================================================================== */
@@ -2275,16 +2402,7 @@ label {
   display: block;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* fadeIn animation moved to animation_utilities.liquid */
 
 .testimonial-quote {
   font-size: 24px;
@@ -2625,51 +2743,7 @@ a.kjb-button:not(.kjb-button--primary) {
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
 }
 
-/* Entrance Animations */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes scaleFade {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.6s ease-out;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out;
-}
-
-.animate-scale-fade {
-  animation: scaleFade 0.6s ease-out;
-}
+/* Animation classes now handled by animation_utilities.liquid */
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
@@ -3480,29 +3554,7 @@ select:focus {
   box-shadow: var(--shadow-media);
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.4s var(--ease-out);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.animate-slide-up {
-  animation: slideUp 0.4s var(--ease-out);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Animation classes moved to animation_utilities.liquid */
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -3833,22 +3885,7 @@ select:focus {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Fade up animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.6s var(--ease-out) forwards;
-  opacity: 0;
-}
+/* Animation classes moved to animation_utilities.liquid */
 
 /* SA Free Chapter CTA */
 .sa-free-chapter-cta form button:hover {
@@ -3879,6 +3916,152 @@ select:focus {
 .sa-user-reviews .card-modern:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   Section Utility Classes - For Common Section Patterns
+   Added: 2025-01-24
+   ========================================================================== */
+
+/* Section background presets with appropriate text colors */
+.section-light {
+  background-color: var(--c-brand-100) !important;
+  color: var(--c-ink-900) !important;
+}
+
+.section-dark {
+  background-color: var(--c-ink-900) !important;
+  color: var(--c-white) !important;
+}
+
+.section-dark h1, .section-dark h2, .section-dark h3, 
+.section-dark h4, .section-dark h5, .section-dark h6 {
+  color: var(--c-white) !important;
+}
+
+.section-accent {
+  background-color: var(--c-accent-teal) !important;
+  color: var(--c-ink-900) !important;
+}
+
+.section-white {
+  background-color: var(--c-white) !important;
+  color: var(--c-ink-700) !important;
+}
+
+.section-grey {
+  background-color: #FAFAFA !important;
+  color: var(--c-ink-700) !important;
+}
+
+/* Modern brand-specific sections */
+.section-brand {
+  background: var(--g-brand) !important;
+  color: var(--c-white) !important;
+}
+
+.section-brand h1, .section-brand h2, .section-brand h3, 
+.section-brand h4, .section-brand h5, .section-brand h6 {
+  color: var(--c-white) !important;
+}
+
+/* Legacy color mappings for older sections */
+.section-navy {
+  background-color: var(--an-navy) !important;
+  color: var(--an-white) !important;
+}
+
+.section-navy h1, .section-navy h2, .section-navy h3, 
+.section-navy h4, .section-navy h5, .section-navy h6 {
+  color: var(--an-white) !important;
+}
+
+.section-teal {
+  background-color: var(--an-teal) !important;
+  color: var(--an-text-dark) !important;
+}
+
+.section-coral {
+  background-color: var(--an-coral) !important;
+  color: var(--an-text-dark) !important;
+}
+
+.section-peach {
+  background-color: var(--an-peach) !important;
+  color: var(--an-text-dark) !important;
+}
+
+/* Common section padding utilities */
+.section-padding-sm { 
+  padding-top: 40px !important; 
+  padding-bottom: 40px !important; 
+}
+
+.section-padding-md { 
+  padding-top: 60px !important; 
+  padding-bottom: 60px !important; 
+}
+
+.section-padding-lg { 
+  padding-top: 80px !important; 
+  padding-bottom: 80px !important; 
+}
+
+.section-padding-xl { 
+  padding-top: 100px !important; 
+  padding-bottom: 100px !important; 
+}
+
+/* Responsive section padding */
+@media (max-width: 767px) {
+  .section-padding-sm { 
+    padding-top: 30px !important; 
+    padding-bottom: 30px !important; 
+  }
+  
+  .section-padding-md { 
+    padding-top: 40px !important; 
+    padding-bottom: 40px !important; 
+  }
+  
+  .section-padding-lg { 
+    padding-top: 50px !important; 
+    padding-bottom: 50px !important; 
+  }
+  
+  .section-padding-xl { 
+    padding-top: 60px !important; 
+    padding-bottom: 60px !important; 
+  }
+}
+
+/* Section overlay utilities */
+.section-overlay {
+  position: relative;
+}
+
+.section-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.section-overlay > * {
+  position: relative;
+  z-index: 2;
+}
+
+.section-overlay-light::before {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.section-overlay-dark::before {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 /* ==========================================================================

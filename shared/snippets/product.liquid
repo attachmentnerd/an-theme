@@ -4,9 +4,9 @@
   <a href="{{ product.url }}" {% if section.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>
     <div class="product__image">
       {% if product.thumbnail_url %}
-        {{ product.thumbnail_url | image_tag }}
+        {{ product.thumbnail_url | image_tag: loading: 'lazy', width: 400, height: 300 }}
       {% else %}
-        {{ 'placeholder.png' | asset_url | image_tag }}
+        {{ 'placeholder.png' | asset_url | image_tag: loading: 'lazy', width: 400, height: 300 }}
       {% endif %}
     </div>
   </a>

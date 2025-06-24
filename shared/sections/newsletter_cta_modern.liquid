@@ -23,22 +23,43 @@
             </p>
             
             <!-- Form -->
-            <form class="newsletter-form" action="{{ section.settings.form_action }}" method="post">
+            <form class="newsletter-form" action="{{ section.settings.form_action }}" method="post" data-form-type="newsletter">
               <div class="form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
                 <input type="email" 
-                       class="form-control-modern flex-grow-1" 
+                       class="form-control-modern flex-grow-1 newsletter-email-input" 
                        placeholder="{{ section.settings.email_placeholder }}"
                        name="email"
                        required
+                       aria-label="Email address"
+                       aria-required="true"
+                       aria-describedby="newsletter-error-{{ section.id }}"
                        style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease; background: var(--c-white);"
                        kjb-settings-id="{{ 'email_placeholder' | settings_id: section: section }}">
                 
                 <button type="submit" 
-                        class="btn btn-primary-modern btn-lg"
+                        class="btn btn-primary-modern btn-lg newsletter-submit-btn"
                         style="white-space: nowrap;"
                         kjb-settings-id="{{ 'button_text' | settings_id: section: section }}">
                   {{ section.settings.button_text }}
                 </button>
+              </div>
+              
+              <!-- Form Messages -->
+              <div class="newsletter-form__messages mt-3" style="max-width: 500px; margin: 0 auto;">
+                <div class="newsletter-form__success" style="display: none;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="9" fill="var(--c-accent-teal)"/>
+                    <path d="M14 7L8.5 12.5L6 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>{{ section.settings.success_message }}</span>
+                </div>
+                <div class="newsletter-form__error" id="newsletter-error-{{ section.id }}" style="display: none;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="9" fill="#FF6B6B"/>
+                    <path d="M10 6V10M10 14H10.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="error-message">Please enter a valid email address</span>
+                </div>
               </div>
             </form>
             
@@ -77,6 +98,55 @@
   outline: none;
   border-color: var(--c-brand-600);
   box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.1);
+}
+
+/* Form validation states */
+.form-control-modern.error {
+  border-color: var(--c-accent-peach);
+  background: rgba(255, 139, 203, 0.05);
+}
+
+.form-control-modern.error:focus {
+  border-color: var(--c-accent-peach);
+  box-shadow: 0 0 0 3px rgba(255, 139, 203, 0.1);
+}
+
+/* Form messages */
+.newsletter-form__messages > div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: var(--fs-body-sm);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.newsletter-form__success {
+  background: rgba(24, 213, 228, 0.1);
+  color: var(--c-ink-700);
+}
+
+.newsletter-form__error {
+  background: rgba(255, 107, 107, 0.1);
+  color: var(--c-ink-700);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button loading state */
+.newsletter-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Scale and fade animation */
@@ -123,6 +193,118 @@
   }
 }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('#shopify-section-{{ section.id }}');
+    const form = section.querySelector('.newsletter-form');
+    const emailInput = section.querySelector('.newsletter-email-input');
+    const submitBtn = section.querySelector('.newsletter-submit-btn');
+    const successMsg = section.querySelector('.newsletter-form__success');
+    const errorMsg = section.querySelector('.newsletter-form__error');
+    const errorText = errorMsg.querySelector('.error-message');
+    const originalBtnText = submitBtn.textContent;
+
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validate email field
+    const validateEmail = (email) => {
+      const value = email.trim();
+      if (!value) {
+        return { valid: false, message: 'Please enter your email address' };
+      }
+      if (!emailRegex.test(value)) {
+        return { valid: false, message: 'Please enter a valid email address' };
+      }
+      return { valid: true };
+    };
+
+    // Show error message
+    const showError = (message) => {
+      errorText.textContent = message;
+      errorMsg.style.display = 'flex';
+      successMsg.style.display = 'none';
+      emailInput.classList.add('error');
+      emailInput.setAttribute('aria-invalid', 'true');
+    };
+
+    // Hide messages
+    const hideMessages = () => {
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      emailInput.classList.remove('error');
+      emailInput.setAttribute('aria-invalid', 'false');
+    };
+
+    // Real-time validation on blur
+    emailInput.addEventListener('blur', function() {
+      const validation = validateEmail(this.value);
+      if (!validation.valid && this.value.trim() !== '') {
+        showError(validation.message);
+      } else {
+        hideMessages();
+      }
+    });
+
+    // Clear error on input
+    emailInput.addEventListener('input', function() {
+      if (this.classList.contains('error')) {
+        hideMessages();
+      }
+    });
+
+    // Form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Hide any existing messages
+      hideMessages();
+      
+      // Validate email
+      const validation = validateEmail(emailInput.value);
+      if (!validation.valid) {
+        showError(validation.message);
+        emailInput.focus();
+        return;
+      }
+      
+      // Show loading state
+      submitBtn.textContent = 'Joining the circle...';
+      submitBtn.disabled = true;
+      emailInput.disabled = true;
+      
+      // Get form data
+      const formData = new FormData(form);
+      
+      // Here you would normally submit to your server
+      // For now, we'll simulate a successful submission
+      
+      // Simulate API call
+      setTimeout(function() {
+        // Show success message
+        successMsg.style.display = 'flex';
+        errorMsg.style.display = 'none';
+        
+        // Reset form
+        form.reset();
+        
+        // Reset button
+        submitBtn.textContent = originalBtnText;
+        submitBtn.disabled = false;
+        emailInput.disabled = false;
+        
+        // Scroll to success message
+        successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          successMsg.style.display = 'none';
+        }, 5000);
+      }, 1500);
+    });
+  });
+</script>
 
 {% schema %}
 {
@@ -175,6 +357,12 @@
       "id": "show_benefits",
       "label": "Show Benefits",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Welcome to the circle! Check your inbox for your free attachment guide 💜"
     }
   ],
   "blocks": [

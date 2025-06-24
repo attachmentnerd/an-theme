@@ -1,3 +1,17 @@
+{% comment %} Determine section style class based on settings {% endcomment %}
+{% assign section_class = 'announcements' %}
+{% if section.settings.style_preset %}
+  {% assign section_class = section_class | append: ' section-' | append: section.settings.style_preset %}
+{% elsif section.settings.background_color == '#FFFFFF' or section.settings.background_color == blank %}
+  {% assign section_class = section_class | append: ' section-white' %}
+{% elsif section.settings.background_color == '#F8F7F5' or section.settings.background_color == '#FAFAFA' %}
+  {% assign section_class = section_class | append: ' section-grey' %}
+{% elsif section.settings.background_color == '#E9E6FF' %}
+  {% assign section_class = section_class | append: ' section-light' %}
+{% elsif section.settings.background_color == '#1B1B29' or section.settings.background_color == '#1A2D4E' %}
+  {% assign section_class = section_class | append: ' section-dark' %}
+{% endif %}
+
 <style>
   {% if section.settings.bg_type == "image" %}
     #section-{{ section.id }} {
@@ -5,9 +19,6 @@
       background-position: {{ section.settings.bg_position }};
     }
   {% endif %}
-  .announcements {
-    background-color: {{ section.settings.background_color }};
-  }
   .announcements .sizer {
     padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
     padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
@@ -17,9 +28,12 @@
     padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
     padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
   }
+  {% comment %} Only apply custom colors for 'custom' preset {% endcomment %}
+  {% if section.settings.style_preset == 'custom' and section.settings.color_heading_text %}
   .announcements__title {
     color: {{ section.settings.color_heading_text }} !important;
   }
+  {% endif %}
   {% if section.settings.equal_height %}
     .announcements__announcements {
       -webkit-box-align: stretch;
@@ -31,25 +45,54 @@
     }
   {% endif %}
   .announcement {
-    border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "black" }};
-    border-radius: {{ section.settings.border_radius | default: 4 | append: "px" }};
-    background-color: {{ section.settings.announcement_background_color }};
+    {% if section.settings.card_style == 'minimal' %}
+      border: 1px solid var(--an-border);
+      border-radius: var(--an-radius-md);
+      background-color: var(--an-white);
+    {% elsif section.settings.card_style == 'shadow' %}
+      border: none;
+      border-radius: var(--an-radius-lg);
+      background-color: var(--an-white);
+      box-shadow: var(--an-shadow-md);
+    {% else %}
+      border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "var(--an-border)" }};
+      border-radius: {{ section.settings.border_radius | default: 4 | append: "px" }};
+      {% if section.settings.announcement_background_color %}
+        background-color: {{ section.settings.announcement_background_color }};
+      {% else %}
+        background-color: var(--an-white);
+      {% endif %}
+    {% endif %}
   }
-  .announcement__product {
-    color: {{ section.settings.color_product_text }};
-  }
-  .announcement__title {
-    color: {{ section.settings.color_title_text }} !important;
-  }
-  .announcement__date {
-    color: {{ section.settings.color_date_text }};
-  }
-  .announcement__body {
-    color: {{ section.settings.color_body_text }};
-  }
-  .announcement__link {
-    color: {{ section.settings.color_read_more_text }};
-  }
+  
+  {% comment %} Apply custom colors only for 'custom' preset {% endcomment %}
+  {% if section.settings.style_preset == 'custom' %}
+    {% if section.settings.color_product_text %}
+    .announcement__product {
+      color: {{ section.settings.color_product_text }};
+    }
+    {% endif %}
+    {% if section.settings.color_title_text %}
+    .announcement__title {
+      color: {{ section.settings.color_title_text }} !important;
+    }
+    {% endif %}
+    {% if section.settings.color_date_text %}
+    .announcement__date {
+      color: {{ section.settings.color_date_text }};
+    }
+    {% endif %}
+    {% if section.settings.color_body_text %}
+    .announcement__body {
+      color: {{ section.settings.color_body_text }};
+    }
+    {% endif %}
+    {% if section.settings.color_read_more_text %}
+    .announcement__link {
+      color: {{ section.settings.color_read_more_text }};
+    }
+    {% endif %}
+  {% endif %}
   @media (min-width: 768px) {
     {% if section.settings.bg_type == "image" %}
       #section-{{ section.id }} {
@@ -77,9 +120,70 @@
   .pag__link--disabled {
     color: {{ section.settings.color_pagination_disabled }};
   }
+  
+  {% comment %} Default styles for announcement elements when not custom {% endcomment %}
+  {% unless section.settings.style_preset == 'custom' %}
+  .announcement__product {
+    color: var(--c-accent-teal);
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .announcement__title {
+    color: var(--c-ink-900) !important;
+    font-size: var(--fs-h2);
+    font-weight: 600;
+    margin: var(--space-sm) 0;
+  }
+  
+  .announcement__date {
+    color: var(--c-ink-500);
+    font-size: var(--fs-caption);
+  }
+  
+  .announcement__body {
+    color: var(--c-ink-700);
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+  
+  .announcement__link {
+    color: var(--c-brand-600);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  
+  .announcement__link:hover {
+    color: var(--c-brand-800);
+    text-decoration: underline;
+  }
+  
+  /* Card padding when using presets */
+  .announcement {
+    padding: var(--space-lg);
+  }
+  {% endunless %}
+  
+  /* Default pagination styles */
+  {% unless section.settings.style_preset == 'custom' %}
+  .pag__link {
+    color: var(--c-ink-700);
+  }
+  .pag__link--current {
+    color: var(--c-brand-600);
+    font-weight: 600;
+  }
+  .pag__link--disabled {
+    color: var(--c-ink-500);
+    opacity: 0.5;
+  }
+  {% endunless %}
 </style>
 
-<section class="announcements {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+<section class="{{ section_class }} {% if section.settings.padding_preset %}section-padding-{{ section.settings.padding_preset }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="sizer">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}
@@ -130,17 +234,68 @@
     "duplicatable": "false",
     "elements": [
       {
+        "type": "header",
+        "content": "Style Settings"
+      },
+      {
+        "type": "select",
+        "id": "style_preset",
+        "label": "Style Preset",
+        "default": "white",
+        "options": [
+          { "label": "White Background", "value": "white" },
+          { "label": "Grey Background", "value": "grey" },
+          { "label": "Light (Lavender)", "value": "light" },
+          { "label": "Dark (Navy)", "value": "dark" },
+          { "label": "Brand Gradient", "value": "brand" },
+          { "label": "Custom (Legacy)", "value": "custom" }
+        ],
+        "info": "Choose a preset style for consistent branding"
+      },
+      {
+        "type": "select",
+        "id": "padding_preset",
+        "label": "Section Padding",
+        "default": "md",
+        "options": [
+          { "label": "Small", "value": "sm" },
+          { "label": "Medium", "value": "md" },
+          { "label": "Large", "value": "lg" },
+          { "label": "Extra Large", "value": "xl" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "card_style",
+        "label": "Card Style",
+        "default": "minimal",
+        "options": [
+          { "label": "Minimal Border", "value": "minimal" },
+          { "label": "Shadow Card", "value": "shadow" },
+          { "label": "Custom (Legacy)", "value": "custom" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
         "type": "text",
         "id": "text_heading",
         "label": "Heading Text",
         "default": "Announcements"
       },
       {
+        "type": "header",
+        "content": "Legacy Color Settings"
+      },
+      {
         "type": "color",
         "id": "color_heading_text",
-        "label": "Heading Text Color",
+        "label": "Heading Text Color (Legacy)",
         "default": "",
-        "allow_blank": "true"
+        "allow_blank": "true",
+        "info": "Only used when Style Preset is 'Custom'"
       },
       {
         "type": "color",

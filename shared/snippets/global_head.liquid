@@ -41,6 +41,7 @@
     <!-- Customer CSS ====================================================== -->
     <!-- If you're using custom css that affects the first render of the page, replace async_style_link below with styesheet_tag -->
     {{ "overrides.css" | asset_url | stylesheet_tag }}
+    {% include "animation_utilities" %}
     {% include "global_custom_css" %}
 
     <!-- Kajabi Editor Only CSS ============================================ -->

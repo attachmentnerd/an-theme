@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "AN Website Theme",
-    "theme_version": "20.2.0",
+    "theme_version": "20.2.1",
     "theme_author": "AN Themes",
     "theme_documentation_url": "https://anthemes.com/docs",
     "theme_support_url": "https://anthemes.com/support"
@@ -600,6 +600,17 @@
         "id": "facebook_pixel_id",
         "label": "Facebook Pixel ID",
         "info": "Enter your Facebook Pixel ID"
+      },
+      {
+        "type": "header",
+        "content": "Script Libraries"
+      },
+      {
+        "type": "checkbox",
+        "id": "load_jquery",
+        "label": "Load jQuery Library",
+        "default": false,
+        "info": "Enable jQuery library (90KB) for legacy scripts. Disable for better performance - theme works natively without jQuery."
       },
       {
         "type": "header",

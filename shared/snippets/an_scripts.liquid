@@ -7,8 +7,8 @@
 {{ 'an-core.js' | asset_url | script_tag }}
 {{ 'an-modules.js' | asset_url | script_tag }}
 
-{% comment %} jQuery - Only if needed by Kajabi {% endcomment %}
-{% if settings.load_jquery != false %}
+{% comment %} jQuery - Only load if explicitly enabled (saves 90KB) {% endcomment %}
+{% if settings.load_jquery == true %}
   {% unless jquery_loaded %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCJHL/34SEsLJMC7m19Wz9zAGO/p7rJb/tYrBEvXjmv9pDkVNmVfqyyU" crossorigin="anonymous"></script>
     {% assign jquery_loaded = true %}

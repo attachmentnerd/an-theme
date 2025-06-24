@@ -22,6 +22,9 @@
               <img src="{{ section.settings.book_image | image_picker_url: 'placeholder.png' }}" 
                    alt="{{ section.settings.book_title }}" 
                    class="img-fluid book-cover"
+                   width="400"
+                   height="600"
+                   loading="lazy"
                    style="width: 100%; height: auto; display: block;"
                    kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
             {% else %}

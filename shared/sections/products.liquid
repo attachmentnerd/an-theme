@@ -5,7 +5,21 @@
 {% assign btn_size = section.settings.btn_size | default: settings.btn_size %}
 {% assign btn_width = section.settings.btn_width | default: settings.btn_width %}
 
+{% comment %} Determine section style class based on settings {% endcomment %}
+{% assign section_class = 'products' %}
+{% if section.settings.style_preset %}
+  {% assign section_class = section_class | append: ' section-' | append: section.settings.style_preset %}
+{% elsif section.settings.background_color == '#FFFFFF' or section.settings.background_color == blank %}
+  {% assign section_class = section_class | append: ' section-white' %}
+{% elsif section.settings.background_color == '#F8F7F5' or section.settings.background_color == '#FAFAFA' %}
+  {% assign section_class = section_class | append: ' section-grey' %}
+{% elsif section.settings.background_color == '#E9E6FF' %}
+  {% assign section_class = section_class | append: ' section-light' %}
+{% endif %}
+
 <style>
+  {% comment %} Button styles - use utility classes unless custom {% endcomment %}
+  {% if section.settings.style_preset == 'custom' %}
   .products .btn {
     color: {{ btn_text_color }} !important;
     border-color: {{ btn_background_color }};
@@ -16,6 +30,11 @@
     background: transparent;
     color: {{ btn_background_color }} !important;
   }
+  {% else %}
+  .products .btn {
+    /* Use existing button utility classes */
+  }
+  {% endif %}
   {% if section.settings.bg_type == "image" %}
     #section-{{ section.id }} {
       {% if section.settings.bg_image != blank %}
@@ -29,9 +48,12 @@
       {% endif %}
     }
   {% endif %}
+  {% comment %} Only apply custom background for 'custom' preset {% endcomment %}
+  {% if section.settings.style_preset == 'custom' and section.settings.background_color %}
   .products {
     background-color: {{ section.settings.background_color }};
   }
+  {% endif %}
   .products .sizer {
     padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
     padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};

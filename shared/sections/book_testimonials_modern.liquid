@@ -44,6 +44,9 @@
                       <img src="{{ block.settings.author_image | image_picker_url: 'avatar-placeholder.png' }}" 
                            alt="{{ block.settings.author_name }}" 
                            class="me-3"
+                           width="48"
+                           height="48"
+                           loading="lazy"
                            style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;"
                            kjb-settings-id="{{ 'author_image' | settings_id: section: section, block: block }}">
                     {% endif %}

@@ -438,6 +438,9 @@
      * Load AOS (Animate On Scroll)
      */
     loadAOS() {
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
       if (!window.AOS) {
         const script = document.createElement('script');
         script.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';
@@ -446,7 +449,8 @@
             duration: 800,
             once: true,
             offset: 100,
-            disable: window.innerWidth < 768 ? true : false
+            // Disable on mobile or when user prefers reduced motion
+            disable: window.innerWidth < 768 || prefersReducedMotion ? true : false
           });
         };
         document.head.appendChild(script);
@@ -560,5 +564,84 @@
     skipLink.textContent = 'Skip to main content';
     document.body.insertBefore(skipLink, document.body.firstChild);
   }
+
+  /**
+   * Custom Scroll Animation System (Fallback when AOS isn't used)
+   */
+  const initCustomScrollAnimations = () => {
+    if (!supports.intersectionObserver) return;
+    
+    // Check if AOS is already handling animations
+    if (window.AOS || document.querySelectorAll('[data-aos]').length > 0) return;
+    
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+    
+    // Find elements with animation classes
+    const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-in, .animate-fade-left, .animate-fade-right, .animate-scale-in, .animate-bounce-in, .animate-rotate-in, .animate-slide-up');
+    
+    if (animatedElements.length === 0) return;
+    
+    // Add initial state (invisible)
+    animatedElements.forEach(el => {
+      if (!el.classList.contains('animate-on-scroll')) {
+        el.classList.add('animate-on-scroll');
+      }
+    });
+    
+    // Create intersection observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          // Remove observer once animated
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Observe all animated elements
+    animatedElements.forEach(el => observer.observe(el));
+  };
+
+  /**
+   * Stagger Animation Helper
+   */
+  const initStaggerAnimations = () => {
+    document.querySelectorAll('.stagger-group').forEach(group => {
+      const children = Array.from(group.children);
+      children.forEach((child, index) => {
+        if (!child.style.animationDelay) {
+          child.style.animationDelay = `${(index + 1) * 0.05}s`;
+        }
+      });
+    });
+    
+    document.querySelectorAll('.stagger-group-reverse').forEach(group => {
+      const children = Array.from(group.children);
+      children.forEach((child, index) => {
+        if (!child.style.animationDelay) {
+          child.style.animationDelay = `${(children.length - index) * 0.05}s`;
+        }
+      });
+    });
+  };
+
+  // Initialize scroll animations and stagger on load
+  window.addEventListener('load', () => {
+    initCustomScrollAnimations();
+    initStaggerAnimations();
+  });
+
+  // Re-initialize on Kajabi section reloads
+  window.addEventListener('section:reload', () => {
+    setTimeout(() => {
+      initCustomScrollAnimations();
+      initStaggerAnimations();
+    }, 100);
+  });
 
 })();

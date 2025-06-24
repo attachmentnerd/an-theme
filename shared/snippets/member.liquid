@@ -2,7 +2,7 @@
 
 <div class="member box-shadow-{{ section.settings.box_shadow }} background-{{ section.settings.member_background_color | color_scheme_class }}">
   {% if section.settings.show_avatar %}
-    {{ member | avatar_url | image_tag: class: "member__avatar", kjb_settings_id: show_avatar_settings_id }}
+    {{ member | avatar_url | image_tag: class: "member__avatar", kjb_settings_id: show_avatar_settings_id, loading: "lazy", width: 80, height: 80 }}
   {% endif %}
   <h4 class="member__name" kjb-settings-id="{{ 'color_name_text' | settings_id: section: section }}">{{ member.name }}</h4>
   {% unless member.location == nil %}

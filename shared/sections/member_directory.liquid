@@ -1,3 +1,17 @@
+{% comment %} Determine section style class based on settings {% endcomment %}
+{% assign section_class = 'member-directory' %}
+{% if section.settings.style_preset %}
+  {% assign section_class = section_class | append: ' section-' | append: section.settings.style_preset %}
+{% elsif section.settings.background_color == '#FFFFFF' or section.settings.background_color == blank %}
+  {% assign section_class = section_class | append: ' section-white' %}
+{% elsif section.settings.background_color == '#F8F7F5' or section.settings.background_color == '#FAFAFA' %}
+  {% assign section_class = section_class | append: ' section-grey' %}
+{% elsif section.settings.background_color == '#E9E6FF' %}
+  {% assign section_class = section_class | append: ' section-light' %}
+{% elsif section.settings.background_color == '#1B1B29' or section.settings.background_color == '#1A2D4E' %}
+  {% assign section_class = section_class | append: ' section-dark' %}
+{% endif %}
+
 <style>
   {% if section.settings.bg_type == "image" %}
     #section-{{ section.id }} {
@@ -5,9 +19,12 @@
       background-position: {{ section.settings.bg_position }};
     }
   {% endif %}
+  {% comment %} Only apply custom background for 'custom' preset {% endcomment %}
+  {% if section.settings.style_preset == 'custom' and section.settings.background_color %}
   .member-directory {
     background-color: {{ section.settings.background_color }};
   }
+  {% endif %}
   .member-directory .sizer {
     padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
     padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
@@ -17,27 +34,63 @@
     padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
     padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
   }
-  .member-directory__opt-in a {
-    color: {{ section.settings.color_opt_in_text }};
-  }
-  .member-directory__title {
-    color: {{ section.settings.color_heading_text }} !important;
-  }
+  {% comment %} Apply custom colors only for 'custom' preset {% endcomment %}
+  {% if section.settings.style_preset == 'custom' %}
+    {% if section.settings.color_opt_in_text %}
+    .member-directory__opt-in a {
+      color: {{ section.settings.color_opt_in_text }};
+    }
+    {% endif %}
+    {% if section.settings.color_heading_text %}
+    .member-directory__title {
+      color: {{ section.settings.color_heading_text }} !important;
+    }
+    {% endif %}
+  {% endif %}
   .member {
-    border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "black" }};
-    border-radius: {{ section.settings.border_radius | default: 4 | append: "px" }};
-    background-color: {{ section.settings.member_background_color }};
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    {% case section.settings.box_shadow %}
-      {% when 'small' %}
-        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
-      {% when 'medium' %}
-        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.075);
-      {% when 'large' %}
-        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.1);
-    {% endcase %}
+    {% if section.settings.card_style == 'minimal' %}
+      background-color: var(--c-white);
+      border: 1px solid var(--an-border);
+      border-radius: var(--an-radius-md);
+      transition: all 0.3s ease;
+    {% elsif section.settings.card_style == 'shadow' %}
+      background-color: var(--c-white);
+      border: none;
+      border-radius: var(--an-radius-lg);
+      box-shadow: var(--an-shadow-md);
+      transition: all 0.3s ease;
+    {% elsif section.settings.card_style == 'modern' %}
+      background-color: var(--c-white);
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s var(--ease-out);
+    {% else %}
+      border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "var(--an-border)" }};
+      border-radius: {{ section.settings.border_radius | default: 4 | append: "px" }};
+      background-color: {{ section.settings.member_background_color | default: 'var(--c-white)' }};
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      {% case section.settings.box_shadow %}
+        {% when 'small' %}
+          box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+        {% when 'medium' %}
+          box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.075);
+        {% when 'large' %}
+          box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.1);
+      {% endcase %}
+    {% endif %}
   }
-  {% if section.settings.box_shadow != 'none' %}
+  {% if section.settings.card_style == 'minimal' or section.settings.card_style == 'shadow' %}
+  .member:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+  {% elsif section.settings.card_style == 'modern' %}
+  .member:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+  }
+  {% elsif section.settings.box_shadow != 'none' %}
   .member:hover {
     {% case section.settings.box_shadow %}
       {% when 'small' %}
@@ -52,18 +105,28 @@
     {% endcase %}
   }
   {% endif %}
-  .member__name {
-    color: {{ section.settings.color_name_text }} !important;
-  }
-  .member__bio {
-    color: {{ section.settings.color_bio_text }};
-  }
-  .member__location {
-    color: {{ section.settings.color_location_text }};
-  }
-  .member__social-icon {
-    color: {{ section.settings.color_social_icon }};
-  }
+  {% if section.settings.style_preset == 'custom' %}
+    {% if section.settings.color_name_text %}
+    .member__name {
+      color: {{ section.settings.color_name_text }} !important;
+    }
+    {% endif %}
+    {% if section.settings.color_bio_text %}
+    .member__bio {
+      color: {{ section.settings.color_bio_text }};
+    }
+    {% endif %}
+    {% if section.settings.color_location_text %}
+    .member__location {
+      color: {{ section.settings.color_location_text }};
+    }
+    {% endif %}
+    {% if section.settings.color_social_icon %}
+    .member__social-icon {
+      color: {{ section.settings.color_social_icon }};
+    }
+    {% endif %}
+  {% endif %}
   @media (min-width: 768px) {
     {% if section.settings.bg_type == "image" %}
       #section-{{ section.id }} {
@@ -88,9 +151,88 @@
   .pag__link--disabled {
     color: {{ section.settings.color_pagination_disabled }};
   }
+  
+  {% comment %} Default styles for member elements when not custom {% endcomment %}
+  {% unless section.settings.style_preset == 'custom' %}
+  .member-directory__opt-in a {
+    color: var(--c-brand-600);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  
+  .member-directory__title {
+    color: var(--c-ink-900) !important;
+    font-size: var(--fs-h1);
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+  }
+  
+  .member__name {
+    color: var(--c-ink-900) !important;
+    font-size: var(--fs-h2);
+    font-weight: 600;
+    margin: var(--space-sm) 0;
+  }
+  
+  .member__bio {
+    color: var(--c-ink-700);
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    margin: var(--space-md) 0;
+  }
+  
+  .member__location {
+    color: var(--c-ink-500);
+    font-size: var(--fs-caption);
+    font-weight: 500;
+    margin: var(--space-sm) 0;
+  }
+  
+  .member__social-icon {
+    color: var(--c-brand-600);
+    font-size: 20px;
+    margin: 0 var(--space-sm) 0 0;
+    transition: all var(--transition-fast);
+  }
+  
+  .member__social-icon:hover {
+    color: var(--c-brand-800);
+    transform: translateY(-2px);
+  }
+  
+  /* Default card padding and layout */
+  .member {
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+  }
+  
+  .member__avatar {
+    margin-bottom: var(--space-md);
+  }
+  
+  .member__avatar img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 3px solid var(--c-brand-100);
+  }
+  {% endunless %}
+  
+  /* Default pagination styles */
+  {% unless section.settings.style_preset == 'custom' %}
+  .pag__link {
+    color: var(--c-ink-700);
+  }
+  .pag__link--disabled {
+    color: var(--c-ink-500);
+    opacity: 0.5;
+  }
+  {% endunless %}
 </style>
 
-<section class="member-directory {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+<section class="{{ section_class }} {% if section.settings.padding_preset %}section-padding-{{ section.settings.padding_preset }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="sizer">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}

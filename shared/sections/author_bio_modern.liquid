@@ -12,6 +12,9 @@
               <img src="{{ section.settings.author_image | image_picker_url: 'placeholder.png' }}" 
                    alt="{{ section.settings.author_name }}" 
                    class="author-image"
+                   width="320"
+                   height="320"
+                   loading="lazy"
                    style="width: 320px; height: 320px; border-radius: 24px; object-fit: cover; box-shadow: 0 12px 24px rgba(0,0,0,.08);"
                    kjb-settings-id="{{ 'author_image' | settings_id: section: section }}">
             {% else %}

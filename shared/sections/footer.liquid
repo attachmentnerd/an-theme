@@ -16,10 +16,24 @@
   </style>
 {% endif %}
 
+{% comment %} Determine footer style class based on settings {% endcomment %}
+{% assign footer_class = 'footer' %}
+{% if section.settings.style_preset %}
+  {% assign footer_class = footer_class | append: ' section-' | append: section.settings.style_preset %}
+{% elsif section.settings.background_color == '#1B1B29' or section.settings.background_color == '#1A2D4E' %}
+  {% assign footer_class = footer_class | append: ' section-dark' %}
+{% elsif section.settings.background_color == '#FFFFFF' %}
+  {% assign footer_class = footer_class | append: ' section-white' %}
+{% elsif section.settings.background_color == '#F8F7F5' or section.settings.background_color == '#FAFAFA' %}
+  {% assign footer_class = footer_class | append: ' section-grey' %}
+{% endif %}
+
 <style>
   /* Base Footer Styles - Updated with new brand */
   .footer {
-    background-color: {{ section.settings.background_color | default: '#1B1B29' }};
+    {% if section.settings.style_preset == 'custom' %}
+      background-color: {{ section.settings.background_color | default: '#1B1B29' }};
+    {% endif %}
     padding: {{ section.settings.padding_top | default: 64 }}px 0 {{ section.settings.padding_bottom | default: 64 }}px;
   }
   
@@ -46,7 +60,9 @@
   .footer h3.footer__column-title {
     font-size: {{ section.settings.title_font_size }}px;
     font-weight: {{ section.settings.title_font_weight | default: 500 }};
-    color: {{ section.settings.title_color }} !important;
+    {% if section.settings.style_preset == 'custom' %}
+      color: {{ section.settings.title_color }} !important;
+    {% endif %}
     margin-bottom: {{ section.settings.title_margin_bottom }}px;
     text-transform: {{ section.settings.title_text_transform }};
     letter-spacing: {{ section.settings.title_letter_spacing }}px;

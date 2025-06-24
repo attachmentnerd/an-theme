@@ -5,11 +5,36 @@
 {% endcomment %}
 
 <style>
-  /* Entrance Animations */
+  /* ============================================
+     Core Animation Variables
+     ============================================ */
+  :root {
+    --animation-duration-fast: 0.3s;
+    --animation-duration-base: 0.5s;
+    --animation-duration-slow: 0.8s;
+    --animation-distance: 40px;
+    --animation-distance-sm: 20px;
+    --animation-scale: 0.95;
+  }
+
+  /* ============================================
+     Entrance Animations
+     ============================================ */
   @keyframes fadeUp {
     from {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(var(--animation-distance));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeDown {
+    from {
+      opacity: 0;
+      transform: translateY(calc(var(--animation-distance) * -1));
     }
     to {
       opacity: 1;
@@ -20,7 +45,7 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: scale(0.88);
+      transform: scale(var(--animation-scale));
     }
     to {
       opacity: 1;
@@ -28,10 +53,21 @@
     }
   }
   
-  @keyframes slideIn {
+  @keyframes fadeLeft {
     from {
       opacity: 0;
-      transform: translateX(-20px);
+      transform: translateX(var(--animation-distance));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeRight {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--animation-distance) * -1));
     }
     to {
       opacity: 1;
@@ -42,7 +78,7 @@
   @keyframes scaleIn {
     from {
       opacity: 0;
-      transform: scale(0.9);
+      transform: scale(0.8);
     }
     to {
       opacity: 1;
@@ -50,35 +86,213 @@
     }
   }
   
-  /* Animation Classes */
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes rotateIn {
+    from {
+      opacity: 0;
+      transform: rotate(-180deg) scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ============================================
+     Float and Pulse Animations
+     ============================================ */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
+  }
+
+  /* ============================================
+     Base Animation Classes
+     ============================================ */
   .animate-fade-up {
-    animation: fadeUp 0.6s var(--ease-spring) forwards;
+    animation: fadeUp var(--animation-duration-base) var(--ease-spring) forwards;
+    animation-fill-mode: both;
+  }
+  
+  .animate-fade-down {
+    animation: fadeDown var(--animation-duration-base) var(--ease-spring) forwards;
     animation-fill-mode: both;
   }
   
   .animate-fade-in {
-    animation: fadeIn 0.4s var(--ease-out) forwards;
+    animation: fadeIn var(--animation-duration-fast) var(--ease-out) forwards;
     animation-fill-mode: both;
   }
   
-  .animate-slide-in {
-    animation: slideIn 0.5s var(--ease-out) forwards;
+  .animate-fade-left {
+    animation: fadeLeft var(--animation-duration-base) var(--ease-out) forwards;
+    animation-fill-mode: both;
+  }
+  
+  .animate-fade-right {
+    animation: fadeRight var(--animation-duration-base) var(--ease-out) forwards;
     animation-fill-mode: both;
   }
   
   .animate-scale-in {
-    animation: scaleIn 0.4s var(--ease-spring) forwards;
+    animation: scaleIn var(--animation-duration-fast) var(--ease-spring) forwards;
     animation-fill-mode: both;
   }
   
-  /* Delay Classes */
+  .animate-bounce-in {
+    animation: bounceIn var(--animation-duration-slow) var(--ease-spring) forwards;
+    animation-fill-mode: both;
+  }
+  
+  .animate-rotate-in {
+    animation: rotateIn var(--animation-duration-base) var(--ease-spring) forwards;
+    animation-fill-mode: both;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp var(--animation-duration-base) var(--ease-out) forwards;
+    animation-fill-mode: both;
+  }
+  
+  /* Continuous animations */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  /* ============================================
+     Animation Speed Modifiers
+     ============================================ */
+  .animation-fast {
+    animation-duration: var(--animation-duration-fast) !important;
+  }
+  
+  .animation-slow {
+    animation-duration: var(--animation-duration-slow) !important;
+  }
+
+  /* ============================================
+     Stagger Delay Classes
+     ============================================ */
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.3s; }
+  .stagger-7 { animation-delay: 0.35s; }
+  .stagger-8 { animation-delay: 0.4s; }
+  .stagger-9 { animation-delay: 0.45s; }
+  .stagger-10 { animation-delay: 0.5s; }
+  .stagger-11 { animation-delay: 0.55s; }
+  .stagger-12 { animation-delay: 0.6s; }
+  
+  /* Legacy delay classes for compatibility */
   .animation-delay-100 { animation-delay: 0.1s; }
   .animation-delay-200 { animation-delay: 0.2s; }
   .animation-delay-300 { animation-delay: 0.3s; }
   .animation-delay-400 { animation-delay: 0.4s; }
   .animation-delay-500 { animation-delay: 0.5s; }
+  .animation-delay-600 { animation-delay: 0.6s; }
+  .animation-delay-700 { animation-delay: 0.7s; }
+  .animation-delay-800 { animation-delay: 0.8s; }
+
+  /* ============================================
+     Stagger Groups (Auto-delay children)
+     ============================================ */
+  .stagger-group > * {
+    animation-fill-mode: both;
+  }
   
-  /* Hover Lift Effect */
+  .stagger-group > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-group > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-group > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger-group > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger-group > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger-group > *:nth-child(6) { animation-delay: 0.3s; }
+  .stagger-group > *:nth-child(7) { animation-delay: 0.35s; }
+  .stagger-group > *:nth-child(8) { animation-delay: 0.4s; }
+  .stagger-group > *:nth-child(9) { animation-delay: 0.45s; }
+  .stagger-group > *:nth-child(10) { animation-delay: 0.5s; }
+  .stagger-group > *:nth-child(11) { animation-delay: 0.55s; }
+  .stagger-group > *:nth-child(12) { animation-delay: 0.6s; }
+  
+  /* Reverse stagger (bottom to top) */
+  .stagger-group-reverse > *:nth-child(12) { animation-delay: 0.05s; }
+  .stagger-group-reverse > *:nth-child(11) { animation-delay: 0.1s; }
+  .stagger-group-reverse > *:nth-child(10) { animation-delay: 0.15s; }
+  .stagger-group-reverse > *:nth-child(9) { animation-delay: 0.2s; }
+  .stagger-group-reverse > *:nth-child(8) { animation-delay: 0.25s; }
+  .stagger-group-reverse > *:nth-child(7) { animation-delay: 0.3s; }
+  .stagger-group-reverse > *:nth-child(6) { animation-delay: 0.35s; }
+  .stagger-group-reverse > *:nth-child(5) { animation-delay: 0.4s; }
+  .stagger-group-reverse > *:nth-child(4) { animation-delay: 0.45s; }
+  .stagger-group-reverse > *:nth-child(3) { animation-delay: 0.5s; }
+  .stagger-group-reverse > *:nth-child(2) { animation-delay: 0.55s; }
+  .stagger-group-reverse > *:nth-child(1) { animation-delay: 0.6s; }
+
+  /* ============================================
+     Hover Effects
+     ============================================ */
   .hover-lift {
     transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
   }
@@ -88,21 +302,139 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
   }
   
-  /* Focus States */
+  .hover-grow {
+    transition: transform 0.2s var(--ease-out);
+  }
+  
+  .hover-grow:hover {
+    transform: scale(1.05);
+  }
+  
+  .hover-shrink {
+    transition: transform 0.2s var(--ease-out);
+  }
+  
+  .hover-shrink:hover {
+    transform: scale(0.95);
+  }
+  
+  .hover-rotate {
+    transition: transform 0.3s var(--ease-out);
+  }
+  
+  .hover-rotate:hover {
+    transform: rotate(5deg);
+  }
+  
+  .hover-shadow {
+    transition: box-shadow 0.3s var(--ease-out);
+  }
+  
+  .hover-shadow:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .hover-opacity {
+    transition: opacity 0.2s var(--ease-out);
+  }
+  
+  .hover-opacity:hover {
+    opacity: 0.8;
+  }
+
+  /* ============================================
+     Focus States
+     ============================================ */
   .focus-ring:focus {
     outline: none;
     box-shadow: 0 0 0 2px var(--c-white), 0 0 0 4px var(--c-brand-600);
   }
   
-  /* Reduced Motion Support */
+  .focus-ring-dark:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--c-ink-900), 0 0 0 4px var(--c-brand-600);
+  }
+
+  /* ============================================
+     Scroll-triggered Animation Classes
+     ============================================ */
+  .animate-on-scroll {
+    opacity: 0;
+  }
+  
+  .animate-on-scroll.is-visible {
+    opacity: 1;
+  }
+  
+  /* Will be activated by JS/AOS */
+  [data-aos] {
+    opacity: 0;
+    transition-property: transform, opacity;
+  }
+  
+  [data-aos].aos-animate {
+    opacity: 1;
+  }
+
+  /* ============================================
+     Performance Optimizations
+     ============================================ */
+  .will-animate {
+    will-change: transform, opacity;
+  }
+  
+  /* Prevent animation on page load */
+  .preload * {
+    animation-duration: 0s !important;
+    -webkit-animation-duration: 0s !important;
+    transition: none !important;
+  }
+
+  /* ============================================
+     Reduced Motion Support
+     ============================================ */
   @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    
     .animate-fade-up,
+    .animate-fade-down,
     .animate-fade-in,
-    .animate-slide-in,
-    .animate-scale-in {
+    .animate-fade-left,
+    .animate-fade-right,
+    .animate-scale-in,
+    .animate-bounce-in,
+    .animate-rotate-in,
+    .animate-slide-up,
+    .animate-float,
+    .animate-pulse,
+    .animate-shake {
       animation: none;
       opacity: 1;
       transform: none;
     }
+    
+    .hover-lift:hover,
+    .hover-grow:hover,
+    .hover-shrink:hover,
+    .hover-rotate:hover {
+      transform: none;
+    }
   }
 </style>
+
+<script>
+  // Add preload class to body to prevent animations on page load
+  document.body.classList.add('preload');
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      document.body.classList.remove('preload');
+    }, 100);
+  });
+</script>

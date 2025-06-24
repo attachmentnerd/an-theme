@@ -82,7 +82,10 @@
             {% if section.settings.ui_image != blank %}
               <img src="{{ section.settings.ui_image | image_picker_url: 'placeholder.png' }}" 
                    alt="{{ section.settings.ui_image_alt }}"
-                   class="ui-card__image">
+                   class="ui-card__image"
+                   width="600"
+                   height="400"
+                   loading="lazy">
             {% else %}
               {% comment %} On-brand placeholder instead of external image {% endcomment %}
               {% include 'svg_placeholders' %}
@@ -100,7 +103,10 @@
                        {{ block.shopify_attributes }}>
                     {% if block.settings.element_image != blank %}
                       <img src="{{ block.settings.element_image | image_picker_url: 'placeholder.png' }}" 
-                           alt="{{ block.settings.element_alt }}">
+                           alt="{{ block.settings.element_alt }}"
+                           width="120"
+                           height="120"
+                           loading="lazy">
                     {% elsif block.settings.element_content != blank %}
                       <div class="ui-element__content">
                         {{ block.settings.element_content }}
