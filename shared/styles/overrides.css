@@ -2888,6 +2888,17 @@ input[type="button"] {
 /* ==========================================================================
    17. Component-Specific Utilities
    ========================================================================== */
+   
+/* Sticky Mobile CTA Support */
+body.has-sticky-cta {
+  padding-bottom: 90px !important; /* Space for sticky footer on mobile */
+}
+
+@media (min-width: 992px) {
+  body.has-sticky-cta {
+    padding-bottom: 0 !important; /* No padding on desktop */
+  }
+}
 
 /* Section utilities */
 .section-navy { background-color: var(--an-navy) !important; color: var(--an-white) !important; }
