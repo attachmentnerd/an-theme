@@ -48,6 +48,15 @@
     pointer-events: none;
   }
   
+  /* Dynamic background support */
+  .parallax-hero .dynamic-bg {
+    z-index: 1;
+  }
+  
+  .parallax-hero .parallax-hero__content {
+    z-index: 2;
+  }
+  
   /* Additional Color Overlay */
   {% assign overlay_opacity = section.settings.overlay_opacity | default: 0 %}
   {% if section.settings.color_overlay != blank and overlay_opacity > 0 %}
@@ -237,6 +246,39 @@
   
   <!-- Gradient Overlay -->
   <div class="parallax-hero__overlay"></div>
+  
+  <!-- Dynamic Background Effects -->
+  {% if section.settings.dynamic_background != 'none' %}
+    <div class="dynamic-bg {{ section.settings.dynamic_background }}">
+      {% case section.settings.dynamic_background %}
+        {% when 'gradient-shift' %}
+          <!-- Animated gradient handled by CSS -->
+        {% when 'floating-orbs' %}
+          <div class="orb-container">
+            <div class="floating-orb orb-1"></div>
+            <div class="floating-orb orb-2"></div>
+            <div class="floating-orb orb-3"></div>
+          </div>
+        {% when 'morphing-blobs' %}
+          <div class="blob-container">
+            <div class="morphing-blob" style="width: 500px; height: 500px; top: -200px; left: -200px;"></div>
+            <div class="morphing-blob" style="width: 400px; height: 400px; bottom: -100px; right: -100px; animation-delay: -10s;"></div>
+          </div>
+        {% when 'mesh-gradient' %}
+          <div class="mesh-gradient"></div>
+        {% when 'aurora' %}
+          <div class="aurora-bg">
+            <div class="aurora"></div>
+          </div>
+        {% when 'particles' %}
+          <div class="particle-field" id="particles-{{ section.id }}"></div>
+      {% endcase %}
+      
+      {% if section.settings.add_noise %}
+        <div class="noise-overlay"></div>
+      {% endif %}
+    </div>
+  {% endif %}
   
   <!-- Color Overlay -->
   {% assign overlay_opacity = section.settings.overlay_opacity | default: 0 %}
@@ -491,6 +533,33 @@
       "max": 100,
       "step": 5,
       "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Background Effects"
+    },
+    {
+      "type": "select",
+      "id": "dynamic_background",
+      "label": "Background Animation",
+      "default": "none",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Gradient Shift", "value": "gradient-shift" },
+        { "label": "Floating Orbs", "value": "floating-orbs" },
+        { "label": "Morphing Blobs", "value": "morphing-blobs" },
+        { "label": "Mesh Gradient", "value": "mesh-gradient" },
+        { "label": "Aurora Effect", "value": "aurora" },
+        { "label": "Particles", "value": "particles" }
+      ],
+      "info": "Adds animated elements on top of parallax background"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_noise",
+      "label": "Add Noise Texture",
+      "default": false,
+      "info": "Adds subtle grain texture overlay"
     },
     {
       "type": "header",

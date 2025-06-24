@@ -15,11 +15,46 @@
 <section class="{{ section_class }}" 
          {% if section.settings.background_image != blank %}style="background-image: url('{{ section.settings.background_image | image_picker_url: 'hero-bg.jpg' }}');"{% endif %}>
   
+  {% comment %} Dynamic background effects {% endcomment %}
+  {% if section.settings.dynamic_background != 'none' %}
+    <div class="dynamic-bg {{ section.settings.dynamic_background }}">
+      {% case section.settings.dynamic_background %}
+        {% when 'gradient-shift' %}
+          <!-- Animated gradient handled by CSS -->
+        {% when 'floating-orbs' %}
+          <div class="orb-container">
+            <div class="floating-orb orb-1"></div>
+            <div class="floating-orb orb-2"></div>
+            <div class="floating-orb orb-3"></div>
+          </div>
+        {% when 'morphing-blobs' %}
+          <div class="blob-container">
+            <div class="morphing-blob" style="width: 400px; height: 400px; top: -100px; left: -100px;"></div>
+            <div class="morphing-blob" style="width: 300px; height: 300px; bottom: -50px; right: -50px; animation-delay: -10s;"></div>
+          </div>
+        {% when 'mesh-gradient' %}
+          <div class="mesh-gradient"></div>
+        {% when 'aurora' %}
+          <div class="aurora-bg">
+            <div class="aurora"></div>
+          </div>
+        {% when 'geo-pattern' %}
+          <div class="geo-pattern"></div>
+        {% when 'wave-bottom' %}
+          <div class="wave-bg"></div>
+      {% endcase %}
+      
+      {% if section.settings.add_noise %}
+        <div class="noise-overlay"></div>
+      {% endif %}
+    </div>
+  {% endif %}
+  
   {% if section.settings.background_overlay %}
     <div class="hero-overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
   {% endif %}
   
-  <div class="container">
+  <div class="container dynamic-bg-content">
     <div class="hero-content hero-content--{{ section.settings.text_alignment }} animate-fade-up">
       
       {% comment %} Optional badge/tagline {% endcomment %}
@@ -480,6 +515,34 @@
       "max": 100,
       "step": 10,
       "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Background Effects"
+    },
+    {
+      "type": "select",
+      "id": "dynamic_background",
+      "label": "Background Animation",
+      "default": "none",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Gradient Shift", "value": "gradient-shift" },
+        { "label": "Floating Orbs", "value": "floating-orbs" },
+        { "label": "Morphing Blobs", "value": "morphing-blobs" },
+        { "label": "Mesh Gradient", "value": "mesh-gradient" },
+        { "label": "Aurora Effect", "value": "aurora" },
+        { "label": "Geometric Pattern", "value": "geo-pattern" },
+        { "label": "Wave Bottom", "value": "wave-bottom" }
+      ],
+      "info": "Adds subtle animated backgrounds for a premium feel"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_noise",
+      "label": "Add Noise Texture",
+      "default": false,
+      "info": "Adds subtle grain texture overlay"
     },
     {
       "type": "header",
