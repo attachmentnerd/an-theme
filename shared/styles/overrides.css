@@ -2848,7 +2848,6 @@ textarea.error:focus {
 /* Fix for any dark/black secondary buttons */
 .btn-secondary, 
 .btn-outline-dark,
-.btn-dark,
 .kjb-button--secondary,
 .kjb-button--outline {
   background: var(--c-white) !important;
@@ -2858,10 +2857,33 @@ textarea.error:focus {
 
 .btn-secondary:hover,
 .btn-outline-dark:hover,
-.btn-dark:hover,
 .kjb-button--secondary:hover,
 .kjb-button--outline:hover {
   background: var(--c-ink-900) !important;
+  color: var(--c-white) !important;
+}
+
+/* Ensure dark/black buttons have white text */
+.btn-dark,
+.btn-black,
+.kjb-button--dark,
+.kjb-button--black,
+[class*="btn"][style*="background: #000"],
+[class*="btn"][style*="background: black"],
+[class*="btn"][style*="background-color: #000"],
+[class*="btn"][style*="background-color: black"],
+[class*="btn"][style*="background: var(--c-ink-900)"],
+[class*="btn"][style*="background-color: var(--c-ink-900)"] {
+  color: var(--c-white) !important;
+}
+
+/* Fix for primary buttons with dark backgrounds */
+.btn-primary[style*="background: #000"],
+.btn-primary[style*="background: black"],
+.btn-primary[style*="background-color: #000"],
+.btn-primary[style*="background-color: black"],
+.btn[style*="background: var(--c-ink-900)"],
+.btn[style*="background-color: var(--c-ink-900)"] {
   color: var(--c-white) !important;
 }
 
@@ -2872,10 +2894,69 @@ textarea.error:focus {
   text-decoration: none !important;
 }
 
-/* Specific fix for buttons that might have black background */
-.btn:not(.btn-primary):not(.btn-primary-modern):not([class*="btn-outline"]) {
-  color: var(--c-ink-900) !important;
+/* Button Color Utilities for Legacy Support */
+.btn-navy {
+  background-color: var(--an-navy) !important;
+  color: var(--c-white) !important;
+  border: none !important;
 }
+
+.btn-teal {
+  background-color: var(--an-teal) !important;
+  color: var(--c-white) !important;
+  border: none !important;
+}
+
+.btn-coral {
+  background-color: var(--an-coral) !important;
+  color: var(--c-white) !important;
+  border: none !important;
+}
+
+.btn-gold {
+  background-color: var(--an-gold) !important;
+  color: var(--c-ink-900) !important; /* Dark text on yellow background */
+  border: none !important;
+}
+
+.btn-plum {
+  background-color: var(--an-plum) !important;
+  color: var(--c-white) !important;
+  border: none !important;
+}
+
+/* Smart button text color based on background - More specific selectors */
+section[style*="background: #5E3BFF"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[style*="background: var(--g-brand)"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[style*="background: var(--c-brand-600)"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[style*="background-color: #5E3BFF"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[style*="background-color: var(--c-brand-600)"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[class*="bg-brand"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[class*="bg-navy"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[class*="bg-plum"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[class*="bg-dark"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[class*="bg-black"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+.bg-brand .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+.bg-navy .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+.bg-plum .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+.bg-dark .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+.bg-black .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern) {
+  color: var(--c-white) !important;
+}
+
+/* Also handle coral/teal dark backgrounds */
+section[style*="background: var(--an-coral)"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[style*="background: var(--an-teal)"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[style*="background-color: var(--an-coral)"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[style*="background-color: var(--an-teal)"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[class*="bg-coral"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+section[class*="bg-teal"] .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+.bg-coral .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern),
+.bg-teal .btn:not(.btn-secondary):not(.btn-light):not(.btn-secondary-modern) {
+  color: var(--c-white) !important;
+}
+
+/* Removed problematic button color override - let specific button classes handle their own colors */
 
 /* Brand Voice Typography */
 .text-therapist {
@@ -2928,10 +3009,62 @@ textarea.error:focus {
   color: var(--c-white) !important;
 }
 
-/* Global button text color fix for readability */
-a.btn:not(.btn-primary):not(.btn-primary-modern):not(.btn-navy):not(.btn-coral):not([class*="btn-outline"]),
-a.kjb-button:not(.kjb-button--primary) {
+/* Smart button text color based on background */
+/* Only apply dark text to buttons we know have light backgrounds */
+a.btn.btn-secondary,
+a.btn.btn-light,
+a.kjb-button--secondary {
   color: var(--c-ink-900) !important;
+}
+
+/* Ensure buttons on dark backgrounds have white text */
+section[style*="background: var(--g-brand)"] .btn:not(.btn-secondary):not(.btn-light),
+section[style*="background-color: #5E3BFF"] .btn:not(.btn-secondary):not(.btn-light),
+section[style*="background-color: #4025E0"] .btn:not(.btn-secondary):not(.btn-light),
+section[style*="background-color: #000"] .btn:not(.btn-secondary):not(.btn-light),
+section[style*="background: #000"] .btn:not(.btn-secondary):not(.btn-light),
+section[style*="background: linear-gradient"] .btn:not(.btn-secondary):not(.btn-light),
+.bg-dark .btn:not(.btn-secondary):not(.btn-light),
+.section-navy .btn:not(.btn-secondary):not(.btn-light),
+.section-purple .btn:not(.btn-secondary):not(.btn-light),
+.an-stats-bar[style*="--g-brand"] .btn:not(.btn-secondary):not(.btn-light) {
+  color: var(--c-white) !important;
+}
+
+/* Fix for buttons with inline dark backgrounds */
+.btn[style*="background-color: #5E3BFF"],
+.btn[style*="background: #5E3BFF"],
+.btn[style*="background-color: #4025E0"],
+.btn[style*="background: #4025E0"],
+.btn[style*="background: var(--c-brand-600)"],
+.btn[style*="background: var(--c-brand-800)"],
+.btn[style*="background: var(--g-brand)"] {
+  color: var(--c-white) !important;
+}
+
+/* Ensure secondary/light buttons always have dark text */
+.btn-secondary,
+.btn-light,
+.btn-secondary-modern {
+  color: var(--c-ink-900) !important;
+  background: var(--c-white) !important;
+}
+
+/* Fix outline buttons on dark backgrounds */
+section[style*="background: var(--g-brand)"] [class*="btn-outline"],
+section[style*="background-color: #5E3BFF"] [class*="btn-outline"],
+section[style*="background-color: #4025E0"] [class*="btn-outline"],
+section[style*="background: linear-gradient"] [class*="btn-outline"],
+.bg-dark [class*="btn-outline"],
+.section-navy [class*="btn-outline"],
+.section-purple [class*="btn-outline"] {
+  color: var(--c-white) !important;
+  border-color: var(--c-white) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover {
+  color: var(--c-white) !important;
 }
 
 /* Ensure outline buttons always have readable text */

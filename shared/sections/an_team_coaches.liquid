@@ -302,7 +302,7 @@
   /* Enhanced Hover Effects */
   .an-team__card {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
   
   .an-team__photo-wrapper {
@@ -323,23 +323,27 @@
     position: absolute;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%) translateY(60px);
+    transform: translateX(-50%) translateY(80px);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     padding: 0.75rem 1rem;
     border-radius: 30px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    z-index: 5;
     transition: transform 0.3s var(--ease-spring);
+    pointer-events: none;
   }
   
   .an-team__member:hover .an-team__social {
     transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
   }
   
   /* Adjust actions to not include social */
   .an-team__member .an-team__actions {
     justify-content: center;
+    position: relative;
+    z-index: 10;
   }
   
   /* Badge pulse on hover */
@@ -403,6 +407,12 @@
     position: relative;
     padding-right: 0;
     transition: padding-right 0.3s ease;
+    z-index: 15;
+    display: inline-block;
+    font-size: var(--fs-body);
+    color: var(--c-brand-600);
+    font-weight: 500;
+    text-decoration: none;
   }
   
   .an-team__member:hover .an-team__profile-link {

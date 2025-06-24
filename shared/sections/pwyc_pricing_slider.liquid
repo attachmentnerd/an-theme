@@ -131,23 +131,31 @@
     cursor: pointer;
     transition: all var(--an-transition-base);
     text-align: center;
+    opacity: 0.5;
   }
   
   .pwyc-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--an-shadow-lg);
     border-color: var(--c-brand-600);
+    opacity: 0.8;
   }
   
   .pwyc-card.is-active {
     border-color: var(--c-brand-600);
     background: var(--c-brand-100);
     box-shadow: 0 0 0 4px rgba(94, 59, 255, 0.1);
+    opacity: 1;
   }
   
   .pwyc-card--suggested {
     border-color: var(--c-brand-600);
     transform: scale(1.05);
+    opacity: 0.7;
+  }
+  
+  .pwyc-card--suggested.is-active {
+    opacity: 1;
   }
   
   .pwyc-card--suggested::before {
@@ -249,33 +257,45 @@
 </style>
 
 <script>
-  (function() {
+  document.addEventListener('DOMContentLoaded', function() {
     const sectionId = '{{ section.id }}';
     const cards = document.querySelectorAll(`#pwyc-${sectionId} .pwyc-card`);
     const ctaButton = document.getElementById(`pwyc-checkout-${sectionId}`);
     let selectedCard = null;
     
-    // Auto-select suggested card if exists
-    const suggestedCard = document.querySelector(`#pwyc-${sectionId} .pwyc-card--suggested`);
-    if (suggestedCard && {{ section.settings.auto_select_suggested }}) {
-      suggestedCard.click();
+    // Function to select a card
+    function selectCard(card) {
+      // Remove previous selection
+      if (selectedCard) {
+        selectedCard.classList.remove('is-active');
+      }
+      
+      // Add selection to clicked card
+      selectedCard = card;
+      selectedCard.classList.add('is-active');
+      
+      // Enable CTA button
+      ctaButton.disabled = false;
+      ctaButton.classList.add('is-ready');
+      ctaButton.dataset.url = card.dataset.url;
     }
     
+    // Auto-select middle card by default (or suggested if enabled)
+    const autoSelect = {% if section.settings.auto_select_suggested %}true{% else %}false{% endif %};
+    const suggestedCard = document.querySelector(`#pwyc-${sectionId} .pwyc-card--suggested`);
+    
+    if (autoSelect && suggestedCard) {
+      selectCard(suggestedCard);
+    } else if (cards.length > 0) {
+      // Select middle card by default
+      const middleIndex = Math.floor(cards.length / 2);
+      selectCard(cards[middleIndex]);
+    }
+    
+    // Add click handlers
     cards.forEach(card => {
       card.addEventListener('click', function() {
-        // Remove previous selection
-        if (selectedCard) {
-          selectedCard.classList.remove('is-active');
-        }
-        
-        // Add selection to clicked card
-        selectedCard = this;
-        selectedCard.classList.add('is-active');
-        
-        // Enable CTA button
-        ctaButton.disabled = false;
-        ctaButton.classList.add('is-ready');
-        ctaButton.dataset.url = this.dataset.url;
+        selectCard(this);
         
         // Analytics tracking if available
         if (typeof gtag !== 'undefined') {
@@ -314,7 +334,7 @@
         }
       });
     });
-  })();
+  });
 </script>
 
 {% schema %}
