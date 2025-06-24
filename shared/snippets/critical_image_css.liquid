@@ -1,35 +1,7 @@
 {% comment %}
-  Critical CSS for Images - Loaded in <head> to prevent render blocking
-  This should be included in global_head.liquid
+  Critical CSS for Images - Conservative approach
+  Only includes essential styles to prevent breaking existing functionality
 {% endcomment %}
-
-<style>
-  /* Critical image styles to prevent render delay */
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  /* Specific fix for the problematic LCP element */
-  #block-1614038893199_0 img,
-  .block:first-child img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-  
-  /* Prevent layout shift */
-  .image__image {
-    aspect-ratio: attr(width) / attr(height);
-  }
-  
-  /* Hero image optimization */
-  .hero img,
-  [class*="hero"] img {
-    priority: high;
-  }
-</style>
 
 <!-- Preconnect to Kajabi CDN for faster image loading -->
 <link rel="preconnect" href="https://kajabi-storefronts-production.kajabi-cdn.com" crossorigin>

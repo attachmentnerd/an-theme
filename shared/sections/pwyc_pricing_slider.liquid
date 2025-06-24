@@ -134,22 +134,48 @@
     opacity: 0.5;
   }
   
+  /* Color-coded pricing tiers */
+  .pwyc-card:nth-child(1) {
+    --card-color: var(--c-accent-teal);
+    --card-bg: #E6FCFD;
+    --card-bg-active: #B3F5F7;
+  }
+  
+  .pwyc-card:nth-child(2) {
+    --card-color: var(--c-brand-600);
+    --card-bg: var(--c-brand-100);
+    --card-bg-active: #D4CFFF;
+  }
+  
+  .pwyc-card:nth-child(3) {
+    --card-color: var(--c-accent-peach);
+    --card-bg: #FFE8F5;
+    --card-bg-active: #FFD4EC;
+  }
+  
+  .pwyc-card:nth-child(4) {
+    --card-color: var(--c-accent-lemon);
+    --card-bg: #FFF9E6;
+    --card-bg-active: #FFF3CC;
+  }
+  
   .pwyc-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--an-shadow-lg);
-    border-color: var(--c-brand-600);
+    border-color: var(--card-color);
+    background: var(--card-bg);
     opacity: 0.8;
   }
   
   .pwyc-card.is-active {
-    border-color: var(--c-brand-600);
-    background: var(--c-brand-100);
-    box-shadow: 0 0 0 4px rgba(94, 59, 255, 0.1);
+    border-color: var(--card-color);
+    background: var(--card-bg-active);
+    box-shadow: 0 0 0 4px var(--card-bg);
     opacity: 1;
   }
   
   .pwyc-card--suggested {
-    border-color: var(--c-brand-600);
+    border-color: var(--card-color);
     transform: scale(1.05);
     opacity: 0.7;
   }
@@ -164,13 +190,14 @@
     top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--c-brand-600);
+    background: var(--card-color, var(--c-brand-600));
     color: white;
     font-size: var(--an-font-xs);
     font-weight: 700;
     padding: 4px 12px;
     border-radius: var(--an-radius-full);
     letter-spacing: 0.05em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .pwyc-card__icon {
@@ -184,7 +211,7 @@
     display: block;
     font-size: var(--an-font-3xl);
     font-weight: 700;
-    color: var(--c-brand-600);
+    color: var(--card-color, var(--c-brand-600));
     margin-bottom: var(--an-space-sm);
   }
   
@@ -207,14 +234,19 @@
     position: absolute;
     top: var(--an-space-md);
     right: var(--an-space-md);
-    background: var(--c-accent-lemon);
-    color: var(--an-text-dark);
+    background: var(--card-color, var(--c-accent-lemon));
+    color: var(--c-white);
     font-size: var(--an-font-xs);
     font-weight: 700;
     padding: 4px 8px;
     border-radius: var(--an-radius-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+  }
+  
+  /* Special case for yellow badges - use dark text */
+  .pwyc-card:nth-child(4) .pwyc-card__badge {
+    color: var(--an-text-dark);
   }
   
   /* CTA Button */
