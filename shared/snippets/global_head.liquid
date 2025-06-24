@@ -21,6 +21,9 @@
     {% endif %}
     <link rel="canonical" href="{{ canonical_url }}" />
 
+    <!-- Critical Image CSS for LCP optimization -->
+    {% include 'critical_image_css' %}
+    
     <!-- Performance Optimizations ========================================= -->
     {% if settings.enable_performance_mode %}
       <!-- Use optimized loading strategy -->

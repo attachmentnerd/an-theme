@@ -1,0 +1,87 @@
+{% comment %}
+  Image Performance Optimization
+  Fixes LCP issues by optimizing image loading
+{% endcomment %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Fix hero/above-the-fold images that should load immediately
+  const heroImages = document.querySelectorAll('.hero img, .header img, [class*="hero"] img, img.image__image:first-of-type');
+  heroImages.forEach(img => {
+    // Remove lazy loading from hero images
+    img.loading = 'eager';
+    img.setAttribute('fetchpriority', 'high');
+    
+    // Add decoding async for better performance
+    img.decoding = 'async';
+  });
+
+  // Optimize all other images
+  const allImages = document.querySelectorAll('img');
+  allImages.forEach(img => {
+    // Skip if already processed or is a hero image
+    if (img.loading === 'eager') return;
+    
+    // Set proper lazy loading
+    if (!img.loading || img.loading === 'auto') {
+      img.loading = 'lazy';
+    }
+    
+    // Add decoding async
+    img.decoding = 'async';
+    
+    // Add aspect ratio to prevent layout shift if dimensions are known
+    if (img.width && img.height) {
+      img.style.aspectRatio = `${img.width} / ${img.height}`;
+    }
+  });
+
+  // Preload critical images
+  const firstImage = document.querySelector('img.image__image');
+  if (firstImage && firstImage.src) {
+    const preload = document.createElement('link');
+    preload.rel = 'preload';
+    preload.as = 'image';
+    preload.href = firstImage.src;
+    preload.setAttribute('fetchpriority', 'high');
+    document.head.appendChild(preload);
+  }
+});
+</script>
+
+<style>
+  /* Critical CSS for images to prevent render blocking */
+  img {
+    content-visibility: auto;
+    contain-intrinsic-size: 500px; /* Approximate size to prevent layout shift */
+  }
+  
+  /* Prevent layout shift for images */
+  img.image__image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Force GPU acceleration for hero images */
+  .hero img,
+  [class*="hero"] img,
+  .block:first-child img,
+  #block-1614038893199_0 img {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  /* Optimize render performance */
+  .image__image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Prevent FOUC (Flash of Unstyled Content) */
+  .block .image {
+    min-height: 200px;
+    background: #f5f5f5;
+  }
+</style>
