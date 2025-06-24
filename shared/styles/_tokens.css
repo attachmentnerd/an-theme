@@ -121,18 +121,33 @@
   --blur-lg: 16px;
   
   /* ==========================================================================
-     ANIMATION & TIMING
-     Easing curves and durations
+     MOTION SCALE SYSTEM
+     Standardized animation timing and easing functions
      ========================================================================== */
   
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Motion Durations - Single source of truth for all animations */
+  --motion-duration-instant: 100ms;    /* Micro-interactions, hover states */
+  --motion-duration-fast: 200ms;       /* Quick transitions, fades */
+  --motion-duration-base: 300ms;       /* Standard animations, slides */
+  --motion-duration-slow: 500ms;       /* Deliberate animations, reveals */
+  --motion-duration-deliberate: 800ms; /* Major transitions, page changes */
   
-  --duration-fast: 150ms;
-  --duration-base: 200ms;
-  --duration-slow: 300ms;
-  --duration-slower: 500ms;
+  /* Motion Easing Functions - Consistent across all animations */
+  --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);      /* Default for most animations */
+  --motion-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);      /* Enter/fade in animations */
+  --motion-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);      /* Exit/fade out animations */
+  --motion-ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Playful bounce effects */
+  --motion-ease-linear: linear;                               /* Continuous animations */
+  
+  /* Legacy Animation Variables (for backward compatibility) */
+  --ease-spring: var(--motion-ease-spring);
+  --ease-out: var(--motion-ease-decelerate);
+  --ease-in-out: var(--motion-ease-standard);
+  
+  --duration-fast: var(--motion-duration-fast);
+  --duration-base: var(--motion-duration-base);
+  --duration-slow: var(--motion-duration-slow);
+  --duration-slower: var(--motion-duration-deliberate);
   
   /* ==========================================================================
      LAYOUT
