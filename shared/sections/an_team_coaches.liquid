@@ -289,6 +289,130 @@
     color: var(--c-brand-600);
     transform: translateY(-2px);
   }
+  
+  /* Enhanced Hover Effects */
+  .an-team__card {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .an-team__photo-wrapper {
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  
+  .an-team__photo {
+    transition: transform 0.4s var(--ease-spring);
+  }
+  
+  .an-team__member:hover .an-team__photo {
+    transform: scale(1.1) rotate(2deg);
+  }
+  
+  /* Social icons slide up overlay */
+  .an-team__member .an-team__social {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 0.75rem 1rem;
+    border-radius: 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    transition: transform 0.3s var(--ease-spring);
+  }
+  
+  .an-team__member:hover .an-team__social {
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  /* Adjust actions to not include social */
+  .an-team__member .an-team__actions {
+    justify-content: center;
+  }
+  
+  /* Badge pulse on hover */
+  @keyframes badgePulse {
+    0%, 100% { transform: scale(1) rotate(-5deg); }
+    50% { transform: scale(1.1) rotate(0deg); }
+  }
+  
+  .an-team__member:hover .an-team__badge {
+    animation: badgePulse 0.6s ease;
+  }
+  
+  /* Specialty tags wave animation */
+  @keyframes tagWave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  
+  .an-team__member:hover .an-team__specialty-tag {
+    animation: tagWave 0.5s ease;
+  }
+  
+  .an-team__specialty-tag:nth-child(1) { animation-delay: 0s; }
+  .an-team__specialty-tag:nth-child(2) { animation-delay: 0.05s; }
+  .an-team__specialty-tag:nth-child(3) { animation-delay: 0.1s; }
+  .an-team__specialty-tag:nth-child(4) { animation-delay: 0.15s; }
+  
+  /* Name color change on hover */
+  .an-team__name {
+    transition: color 0.3s ease;
+  }
+  
+  .an-team__member:hover .an-team__name {
+    color: var(--c-brand-600);
+  }
+  
+  /* Bio fade gradient on hover */
+  .an-team__bio {
+    position: relative;
+    max-height: 100px;
+    overflow: hidden;
+  }
+  
+  .an-team__bio::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, white);
+    transition: opacity 0.3s ease;
+  }
+  
+  .an-team__member:hover .an-team__bio::after {
+    opacity: 0.7;
+  }
+  
+  /* Profile link slide animation */
+  .an-team__profile-link {
+    position: relative;
+    padding-right: 0;
+    transition: padding-right 0.3s ease;
+  }
+  
+  .an-team__member:hover .an-team__profile-link {
+    padding-right: 20px;
+  }
+  
+  .an-team__profile-link::after {
+    content: '→';
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(-10px);
+  }
+  
+  .an-team__member:hover .an-team__profile-link::after {
+    opacity: 1;
+    transform: translateX(0);
+  }
 
   /* 4-column layout on large screens */
   @media (min-width: 1200px) {

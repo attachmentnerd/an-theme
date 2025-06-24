@@ -33,11 +33,12 @@
       {%- endif -%}
     </div>
 
-    <div class="testimonials__grid testimonials__grid--{{ section.settings.columns }}">
+    <div class="testimonials__grid testimonials__grid--{{ section.settings.columns }} stagger-group">
       {%- for block in section.blocks -%}
         {%- if block.type == 'testimonial' -%}
-          <div class="testimonial-card {% if block.settings.featured %}testimonial-card--featured{% endif %}"
-               data-category="{{ block.settings.category }}">
+          <div class="testimonial-card {% if block.settings.featured %}testimonial-card--featured{% endif %} animate-fade-up hover-lift"
+               data-category="{{ block.settings.category }}"
+               style="animation-delay: {{ forloop.index | times: 0.08 }}s;">
             
             {%- if block.settings.rating > 0 -%}
               <div class="testimonial-card__rating" aria-label="{{ block.settings.rating }} out of 5 stars">
@@ -198,8 +199,67 @@
   }
   
   .testimonial-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(94, 59, 255, 0.12);
+  }
+  
+  /* Enhanced hover animations */
+  .testimonial-card {
+    transform-origin: center bottom;
+  }
+  
+  /* Rating stars cascade animation on hover */
+  .testimonial-card:hover .star--filled {
+    animation: starPulse 0.4s ease;
+  }
+  
+  .star--filled:nth-child(1) { animation-delay: 0s; }
+  .star--filled:nth-child(2) { animation-delay: 0.05s; }
+  .star--filled:nth-child(3) { animation-delay: 0.1s; }
+  .star--filled:nth-child(4) { animation-delay: 0.15s; }
+  .star--filled:nth-child(5) { animation-delay: 0.2s; }
+  
+  @keyframes starPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+  
+  /* Quote mark animation */
+  .testimonial-card__quote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    font-size: 60px;
+    color: var(--c-brand-100);
+    font-family: Georgia, serif;
+    line-height: 1;
+    transition: all 0.3s ease;
+  }
+  
+  .testimonial-card:hover .testimonial-card__quote::before {
+    color: var(--c-brand-600);
+    transform: scale(1.2) rotate(-10deg);
+  }
+  
+  /* Author image zoom on hover */
+  .testimonial-card__image {
+    transition: transform 0.3s var(--ease-spring);
+  }
+  
+  .testimonial-card:hover .testimonial-card__image {
+    transform: scale(1.1);
+  }
+  
+  /* Category badge animation */
+  .testimonial-card__category {
+    transition: all 0.3s ease;
+  }
+  
+  .testimonial-card:hover .testimonial-card__category {
+    background: var(--c-brand-600);
+    color: white;
+    transform: scale(1.05);
   }
   
   .testimonial-card--featured {

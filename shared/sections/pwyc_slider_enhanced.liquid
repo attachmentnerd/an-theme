@@ -1,0 +1,636 @@
+{%- comment -%}
+  Attachment Nerd – Enhanced Pay What You Can Slider
+  Interactive slider-based pricing selection with dynamic updates
+  Drop in any Kajabi page via "Add Section › Pay What You Can Slider"
+{%- endcomment -%}
+
+<section id="pwyc-slider-{{ section.id }}" class="pwyc-slider-section {{ section.settings.background_style }}">
+  <div class="container">
+    <div class="pwyc-slider__wrapper">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="pwyc-slider__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      
+      {%- if section.settings.subheading != blank -%}
+        <p class="pwyc-slider__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      <!-- Price Display -->
+      <div class="pwyc-slider__price-display">
+        <span class="price-amount" id="price-amount-{{ section.id }}">$297</span>
+        <span class="price-label" id="price-label-{{ section.id }}">Suggested</span>
+      </div>
+
+      <!-- Slider Container -->
+      <div class="pwyc-slider__container">
+        <input type="range" 
+               id="pwyc-range-{{ section.id }}" 
+               class="pwyc-slider__input"
+               min="0" 
+               max="{{ section.blocks.size | minus: 1 }}" 
+               value="1" 
+               step="1"
+               aria-label="Select your price tier">
+        
+        <!-- Tier Markers -->
+        <div class="pwyc-slider__markers">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'price_tier' -%}
+              <div class="marker" data-index="{{ forloop.index0 }}">
+                <span class="marker-label">{{ block.settings.label }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Description -->
+      <p class="pwyc-slider__description" id="price-desc-{{ section.id }}">
+        Keeps our mission thriving
+      </p>
+
+      <!-- Impact Message -->
+      <div class="pwyc-slider__impact" id="impact-{{ section.id }}" style="opacity: 0;">
+        <svg class="impact-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+        </svg>
+        <span class="impact-text">{{ section.settings.impact_message }}</span>
+      </div>
+
+      <!-- CTA Button -->
+      <button id="pwyc-checkout-{{ section.id }}" 
+              class="pwyc-slider__cta btn btn-primary-modern" 
+              data-url=""
+              aria-label="Continue to checkout with selected price">
+        {{ section.settings.cta_text }}
+      </button>
+      
+      {%- if section.settings.show_scholarship_link -%}
+        <p class="pwyc-slider__scholarship">
+          {{ section.settings.scholarship_text }}
+          <a href="{{ section.settings.scholarship_url }}" class="pwyc-slider__scholarship-link">
+            {{ section.settings.scholarship_link_text }}
+          </a>
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Enhanced PWYC Slider Styles */
+  .pwyc-slider-section {
+    padding: var(--an-space-3xl) 0;
+    background: var(--an-bg-light);
+  }
+  
+  .pwyc-slider-section.section-white {
+    background: var(--an-white);
+  }
+  
+  .pwyc-slider-section.section-peach {
+    background: var(--c-brand-100);
+  }
+  
+  .pwyc-slider__wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .pwyc-slider__heading {
+    font-size: var(--an-font-4xl);
+    font-weight: 700;
+    color: var(--an-text-dark);
+    margin-bottom: var(--an-space-md);
+  }
+  
+  .pwyc-slider__subheading {
+    font-size: var(--an-font-lg);
+    color: var(--an-slate);
+    margin-bottom: var(--an-space-3xl);
+  }
+  
+  /* Price Display */
+  .pwyc-slider__price-display {
+    margin-bottom: var(--an-space-2xl);
+    animation: slideInScale 0.6s ease-out;
+  }
+  
+  .price-amount {
+    display: block;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--c-brand-600);
+    line-height: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .price-label {
+    display: block;
+    font-size: var(--an-font-xl);
+    font-weight: 600;
+    color: var(--an-text-dark);
+    margin-top: var(--an-space-sm);
+    transition: all 0.3s ease;
+  }
+  
+  /* Slider Container */
+  .pwyc-slider__container {
+    position: relative;
+    padding: var(--an-space-2xl) 0;
+    margin-bottom: var(--an-space-xl);
+  }
+  
+  /* Custom Slider Track */
+  .pwyc-slider__input {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--an-border);
+    border-radius: var(--an-radius-full);
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  /* Slider Progress Fill */
+  .pwyc-slider__input::-webkit-slider-track {
+    height: 8px;
+    background: linear-gradient(to right, 
+      var(--c-brand-600) 0%, 
+      var(--c-brand-600) var(--progress, 50%), 
+      var(--an-border) var(--progress, 50%), 
+      var(--an-border) 100%);
+    border-radius: var(--an-radius-full);
+  }
+  
+  /* Slider Thumb */
+  .pwyc-slider__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    background: var(--c-brand-600);
+    border: 4px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .pwyc-slider__input::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.3);
+  }
+  
+  .pwyc-slider__input::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    background: var(--c-brand-600);
+    border: 4px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+  }
+  
+  /* Tier Markers */
+  .pwyc-slider__markers {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+  
+  .marker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--an-space-md);
+  }
+  
+  .marker::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: var(--an-white);
+    border: 2px solid var(--an-border);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .marker.active::before {
+    background: var(--c-brand-600);
+    border-color: var(--c-brand-600);
+    transform: scale(1.2);
+  }
+  
+  .marker-label {
+    position: absolute;
+    top: 100%;
+    margin-top: var(--an-space-xl);
+    font-size: var(--an-font-sm);
+    color: var(--an-slate);
+    white-space: nowrap;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+  
+  .marker.active .marker-label {
+    color: var(--c-brand-600);
+    font-weight: 600;
+    opacity: 1;
+  }
+  
+  /* Description */
+  .pwyc-slider__description {
+    font-size: var(--an-font-lg);
+    color: var(--an-slate);
+    margin-bottom: var(--an-space-lg);
+    min-height: 2em;
+    transition: all 0.3s ease;
+  }
+  
+  /* Impact Message */
+  .pwyc-slider__impact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--an-space-sm);
+    margin-bottom: var(--an-space-2xl);
+    padding: var(--an-space-md) var(--an-space-lg);
+    background: var(--c-accent-lemon);
+    color: var(--an-text-dark);
+    border-radius: var(--an-radius-full);
+    font-weight: 600;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .impact-icon {
+    color: var(--c-brand-600);
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+  
+  /* CTA Button */
+  .pwyc-slider__cta {
+    min-width: 280px;
+    padding: var(--an-space-md) var(--an-space-2xl);
+    font-size: var(--an-font-lg);
+    font-weight: 600;
+    transition: all var(--an-transition-base);
+  }
+  
+  /* Scholarship Link */
+  .pwyc-slider__scholarship {
+    margin-top: var(--an-space-lg);
+    font-size: var(--an-font-sm);
+    color: var(--an-slate);
+  }
+  
+  .pwyc-slider__scholarship-link {
+    color: var(--c-brand-600);
+    text-decoration: underline;
+    transition: color var(--an-transition-fast);
+  }
+  
+  .pwyc-slider__scholarship-link:hover {
+    color: var(--c-brand-800);
+  }
+  
+  /* Animations */
+  @keyframes slideInScale {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(180deg); }
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 767px) {
+    .price-amount {
+      font-size: 3rem;
+    }
+    
+    .marker-label {
+      font-size: var(--an-font-xs);
+    }
+    
+    .pwyc-slider__impact {
+      font-size: var(--an-font-sm);
+      padding: var(--an-space-sm) var(--an-space-md);
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const slider = document.getElementById(`pwyc-range-${sectionId}`);
+    const priceAmount = document.getElementById(`price-amount-${sectionId}`);
+    const priceLabel = document.getElementById(`price-label-${sectionId}`);
+    const priceDesc = document.getElementById(`price-desc-${sectionId}`);
+    const impactMsg = document.getElementById(`impact-${sectionId}`);
+    const ctaButton = document.getElementById(`pwyc-checkout-${sectionId}`);
+    const markers = document.querySelectorAll(`#pwyc-slider-${sectionId} .marker`);
+    
+    // Price tier data
+    const tiers = [
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'price_tier' -%}
+        {
+          price: '{{ block.settings.price }}',
+          label: '{{ block.settings.label }}',
+          description: '{{ block.settings.description }}',
+          url: '{{ block.settings.checkout_url }}',
+          isPayItForward: {{ block.settings.is_pay_it_forward | default: false }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ];
+    
+    // Initialize with default tier
+    const defaultIndex = {{ section.settings.default_tier | default: 1 }};
+    slider.value = defaultIndex;
+    updatePricing(defaultIndex);
+    
+    // Update pricing display
+    function updatePricing(index) {
+      const tier = tiers[index];
+      if (!tier) return;
+      
+      // Animate price change
+      priceAmount.style.transform = 'scale(0.9)';
+      priceAmount.style.opacity = '0.5';
+      
+      setTimeout(() => {
+        priceAmount.textContent = tier.price;
+        priceLabel.textContent = tier.label;
+        priceDesc.textContent = tier.description;
+        
+        priceAmount.style.transform = 'scale(1)';
+        priceAmount.style.opacity = '1';
+      }, 150);
+      
+      // Update CTA URL
+      ctaButton.dataset.url = tier.url;
+      
+      // Update markers
+      markers.forEach((marker, i) => {
+        if (i == index) {
+          marker.classList.add('active');
+        } else {
+          marker.classList.remove('active');
+        }
+      });
+      
+      // Show/hide impact message
+      if (tier.isPayItForward) {
+        impactMsg.style.opacity = '1';
+        impactMsg.style.transform = 'translateY(0)';
+      } else {
+        impactMsg.style.opacity = '0';
+        impactMsg.style.transform = 'translateY(10px)';
+      }
+      
+      // Update slider progress fill
+      const progress = (index / (tiers.length - 1)) * 100;
+      slider.style.setProperty('--progress', progress + '%');
+      
+      // Analytics tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'slider_change', {
+          'event_category': 'PWYC',
+          'event_label': tier.label,
+          'value': parseFloat(tier.price.replace('$', ''))
+        });
+      }
+    }
+    
+    // Handle slider input
+    slider.addEventListener('input', function() {
+      updatePricing(this.value);
+    });
+    
+    // Handle CTA click
+    ctaButton.addEventListener('click', function() {
+      const url = this.dataset.url;
+      if (url) {
+        // Track conversion
+        if (typeof gtag !== 'undefined') {
+          const tier = tiers[slider.value];
+          gtag('event', 'begin_checkout', {
+            'event_category': 'PWYC',
+            'event_label': tier.label,
+            'value': parseFloat(tier.price.replace('$', ''))
+          });
+        }
+        
+        window.location.href = url;
+      }
+    });
+    
+    // Touch support for mobile
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+    });
+    
+    slider.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+      const touchX = e.touches[0].clientX;
+      const deltaX = touchX - touchStartX;
+      const sliderWidth = this.offsetWidth;
+      const steps = tiers.length - 1;
+      const stepWidth = sliderWidth / steps;
+      
+      const currentStep = parseInt(this.value);
+      const deltaSteps = Math.round(deltaX / stepWidth);
+      const newValue = Math.max(0, Math.min(steps, currentStep + deltaSteps));
+      
+      if (newValue !== parseInt(this.value)) {
+        this.value = newValue;
+        updatePricing(newValue);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Pay What You Can Slider",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Choose Your Investment"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Move the slider to select the price that works for you"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Continue to Checkout"
+    },
+    {
+      "type": "text",
+      "id": "impact_message",
+      "label": "Pay It Forward Impact Message",
+      "default": "Your contribution funds a scholarship for another family"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background Style",
+      "default": "section-peach",
+      "options": [
+        { "value": "", "label": "Default (Light Grey)" },
+        { "value": "section-white", "label": "White" },
+        { "value": "section-peach", "label": "Brand Lavender" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "default_tier",
+      "label": "Default Selected Tier",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "",
+      "info": "0 = first tier, 1 = second tier, etc."
+    },
+    {
+      "type": "header",
+      "content": "Scholarship Option"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scholarship_link",
+      "label": "Show scholarship link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "scholarship_text",
+      "label": "Scholarship text",
+      "default": "Need financial assistance?"
+    },
+    {
+      "type": "text",
+      "id": "scholarship_link_text",
+      "label": "Scholarship link text",
+      "default": "Apply for a scholarship"
+    },
+    {
+      "type": "action",
+      "id": "scholarship_url",
+      "label": "Scholarship form URL",
+      "default": "/scholarship-application"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "price_tier",
+      "name": "Price Tier",
+      "elements": [
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$49"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Budget"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Covers our basic costs"
+        },
+        {
+          "type": "action",
+          "id": "checkout_url",
+          "label": "Checkout URL",
+          "info": "Stripe or Kajabi checkout URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_pay_it_forward",
+          "label": "Is Pay It Forward tier?",
+          "default": false,
+          "info": "Shows impact message when selected"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Pay What You Can Slider",
+      "category": "Content",
+      "description": "Interactive slider-based pricing with dynamic updates",
+      "blocks": [
+        {
+          "type": "price_tier",
+          "settings": {
+            "price": "$49",
+            "label": "Budget",
+            "description": "Covers hosting and basic costs",
+            "checkout_url": "",
+            "is_pay_it_forward": false
+          }
+        },
+        {
+          "type": "price_tier",
+          "settings": {
+            "price": "$297",
+            "label": "Suggested",
+            "description": "Keeps our mission thriving",
+            "checkout_url": "",
+            "is_pay_it_forward": false
+          }
+        },
+        {
+          "type": "price_tier",
+          "settings": {
+            "price": "$449",
+            "label": "Pay It Forward",
+            "description": "Funds a scholarship for another family",
+            "checkout_url": "",
+            "is_pay_it_forward": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
