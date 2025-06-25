@@ -9,14 +9,15 @@
     "theme:build": "node scripts/theme-manager.js build",
     "theme:export": "node scripts/theme-manager.js export",
     "theme:version": "node scripts/theme-manager.js version",
-    "demo:generate": "node scripts/generate-demo-page.js",
     "test": "node scripts/test-themes.js",
     "inject:drafts": "node scripts/inject-schema.js",
     "inject:watch": "npm-watch inject:drafts"
   },
   "watch": {
     "inject:drafts": {
-      "patterns": ["llm-drafts"],
+      "patterns": [
+        "llm-drafts"
+      ],
       "extensions": "html",
       "quiet": false
     }

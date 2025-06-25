@@ -3,7 +3,6 @@ import path from 'path';
 import archiver from 'archiver';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
-import { generateDemoPage } from './generate-demo-page.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -36,13 +35,6 @@ async function buildTheme(type) {
   const sharedDir = path.join(__dirname, '..', 'shared');
 
   console.log(`Building ${type} theme...`);
-
-  // Generate demo page for website theme
-  if (type === 'website') {
-    console.log('Generating demo page...');
-    const stats = generateDemoPage();
-    console.log(`✓ Demo page generated with ${stats.total} sections`);
-  }
 
   // Clean build directory
   await fs.remove(buildDir);
@@ -110,14 +102,15 @@ async function buildTheme(type) {
             'utf8'
           );
           
-          // Handle @import of _tokens.css by inlining it
-          if (sharedCSS.includes("@import url('_tokens.css')")) {
+          // Handle @import of _tokens.css by inlining it (support both single and double quotes)
+          const importRegex = /@import\s+url\(['"]_tokens\.css['"]\);/g;
+          if (importRegex.test(sharedCSS)) {
             const tokensPath = path.join(sharedDir, 'styles', '_tokens.css');
             if (fs.existsSync(tokensPath)) {
               const tokensCSS = await fs.readFile(tokensPath, 'utf8');
               // Replace the @import with the actual tokens CSS content
               sharedCSS = sharedCSS.replace(
-                "@import url('_tokens.css');",
+                importRegex,
                 `/* Inlined from _tokens.css */\n${tokensCSS}\n/* End of _tokens.css */`
               );
             }

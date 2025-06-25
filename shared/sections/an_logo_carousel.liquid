@@ -1,0 +1,547 @@
+{% comment %}
+  AN Logo Carousel Section
+  - Continuous marquee animation
+  - Supports logos and testimonial quotes
+  - Multiple rows with opposite scrolling
+  - Hover pause effect
+  - Smooth infinite scroll
+{% endcomment %}
+
+<section class="an-logo-carousel py-5" style="background: {{ section.settings.background_color }};">
+  <div class="container">
+    <!-- Section Header -->
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="text-center mb-5 animate-fade-up">
+        {% if section.settings.heading != blank %}
+          <h2 style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500; margin-bottom: 1rem;">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 700px; margin: 0 auto;">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Carousel Rows -->
+    <div class="an-logo-carousel__wrapper">
+      {% assign row_count = 0 %}
+      {% assign current_row_items = '' %}
+      {% assign items_in_row = 0 %}
+      {% assign total_items = section.blocks | size %}
+      {% assign items_per_row = section.settings.items_per_row | default: 6 %}
+      
+      {% for block in section.blocks %}
+        {% capture item_html %}
+          <div class="an-logo-carousel__item" data-block-id="{{ block.id }}">
+            {% if block.type == 'logo' %}
+              <!-- Logo Item -->
+              <div class="an-logo-carousel__logo">
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+                {% endif %}
+                
+                {% if block.settings.logo != blank %}
+                  <img src="{{ block.settings.logo | image_picker_url: 'x120' }}" 
+                       alt="{{ block.settings.name }}" 
+                       loading="lazy">
+                {% else %}
+                  <div class="an-logo-carousel__placeholder">
+                    {{ block.settings.name }}
+                  </div>
+                {% endif %}
+                
+                {% if block.settings.link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            {% elsif block.type == 'testimonial' %}
+              <!-- Testimonial Quote -->
+              <div class="an-logo-carousel__testimonial">
+                <blockquote>
+                  <p>"{{ block.settings.quote }}"</p>
+                  <footer>
+                    <cite>{{ block.settings.author }}</cite>
+                    {% if block.settings.company != blank %}
+                      <span>{{ block.settings.company }}</span>
+                    {% endif %}
+                  </footer>
+                </blockquote>
+              </div>
+            {% endif %}
+          </div>
+        {% endcapture %}
+        
+        {% assign current_row_items = current_row_items | append: item_html %}
+        {% assign items_in_row = items_in_row | plus: 1 %}
+        
+        <!-- Create new row when reaching items_per_row or at the end -->
+        {% if items_in_row == items_per_row or forloop.last %}
+          {% assign row_count = row_count | plus: 1 %}
+          {% assign row_direction = 'left' %}
+          {% assign row_mod = row_count | modulo: 2 %}
+          {% if row_mod == 0 %}
+            {% assign row_direction = 'right' %}
+          {% endif %}
+          
+          <div class="an-logo-carousel__row" data-direction="{{ row_direction }}">
+            <div class="an-logo-carousel__track">
+              <!-- Original set -->
+              <div class="an-logo-carousel__group">
+                {{ current_row_items }}
+              </div>
+              <!-- Duplicate for seamless loop -->
+              <div class="an-logo-carousel__group" aria-hidden="true">
+                {{ current_row_items }}
+              </div>
+            </div>
+          </div>
+          
+          {% assign current_row_items = '' %}
+          {% assign items_in_row = 0 %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .an-logo-carousel {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .an-logo-carousel__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .an-logo-carousel__row {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
+
+  .an-logo-carousel__track {
+    display: flex;
+    width: fit-content;
+    animation: scroll-left 30s linear infinite;
+  }
+
+  .an-logo-carousel__row[data-direction="right"] .an-logo-carousel__track {
+    animation: scroll-right 30s linear infinite;
+  }
+
+  /* Pause on hover */
+  .an-logo-carousel__row:hover .an-logo-carousel__track {
+    animation-play-state: paused;
+  }
+
+  .an-logo-carousel__group {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-right: 3rem;
+  }
+
+  .an-logo-carousel__item {
+    flex: 0 0 auto;
+    transition: all 0.3s ease;
+  }
+
+  .an-logo-carousel__item:hover {
+    transform: scale(1.05);
+  }
+
+  /* Logo Styles */
+  .an-logo-carousel__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    min-width: 150px;
+    padding: 1rem 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+  }
+
+  .an-logo-carousel__logo:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .an-logo-carousel__logo img {
+    max-height: 60px;
+    max-width: 120px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .an-logo-carousel__logo:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+
+  .an-logo-carousel__placeholder {
+    font-size: var(--fs-body);
+    color: var(--c-ink-600);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* Testimonial Styles */
+  .an-logo-carousel__testimonial {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    min-width: 320px;
+    max-width: 400px;
+    transition: all 0.3s ease;
+  }
+
+  .an-logo-carousel__testimonial:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .an-logo-carousel__testimonial blockquote {
+    margin: 0;
+  }
+
+  .an-logo-carousel__testimonial p {
+    font-size: var(--fs-body);
+    color: var(--c-ink-800);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    font-style: italic;
+  }
+
+  .an-logo-carousel__testimonial footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .an-logo-carousel__testimonial cite {
+    font-size: var(--fs-body-sm);
+    color: var(--c-ink-900);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .an-logo-carousel__testimonial span {
+    font-size: var(--fs-body-xs);
+    color: var(--c-ink-600);
+  }
+
+  /* Animations */
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes scroll-right {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  /* Speed Variations */
+  .an-logo-carousel__track[data-speed="slow"] {
+    animation-duration: 40s;
+  }
+
+  .an-logo-carousel__track[data-speed="fast"] {
+    animation-duration: 20s;
+  }
+
+  /* Mobile Adjustments */
+  @media (max-width: 768px) {
+    .an-logo-carousel__group {
+      gap: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .an-logo-carousel__logo {
+      min-width: 120px;
+      height: 60px;
+      padding: 0.75rem 1.5rem;
+    }
+
+    .an-logo-carousel__logo img {
+      max-height: 40px;
+      max-width: 100px;
+    }
+
+    .an-logo-carousel__testimonial {
+      min-width: 280px;
+      padding: 1.5rem;
+    }
+
+    .an-logo-carousel__track {
+      animation-duration: 25s;
+    }
+
+    .an-logo-carousel__row[data-direction="right"] .an-logo-carousel__track {
+      animation-duration: 25s;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .an-logo-carousel__track {
+      animation: none;
+    }
+    
+    .an-logo-carousel__item:hover {
+      transform: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Logo Carousel",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trusted by Leading Brands"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Join thousands of companies that trust us with their growth"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Items Per Row",
+      "min": 4,
+      "max": 8,
+      "step": 1,
+      "default": 6,
+      "unit": "items"
+    },
+    {
+      "type": "select",
+      "id": "animation_speed",
+      "label": "Animation Speed",
+      "default": "normal",
+      "options": [
+        {
+          "value": "slow",
+          "label": "Slow"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "fast",
+          "label": "Fast"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "elements": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Company Name",
+          "default": "Company"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image",
+          "info": "Recommended: 240x120px PNG with transparent background"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Link (optional)",
+          "placeholder": "https://example.com"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in new tab",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonial Quote",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "This product has transformed our business in ways we never imagined."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Jane Smith"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Company/Title",
+          "default": "CEO, Tech Corp"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo Carousel",
+      "category": "Social Proof",
+      "description": "Scrolling logos and testimonials",
+      "blocks": [
+        {
+          "type": "logo",
+          "settings": {
+            "name": "Google"
+          }
+        },
+        {
+          "type": "logo",
+          "settings": {
+            "name": "Microsoft"
+          }
+        },
+        {
+          "type": "logo",
+          "settings": {
+            "name": "Amazon"
+          }
+        },
+        {
+          "type": "logo",
+          "settings": {
+            "name": "Apple"
+          }
+        },
+        {
+          "type": "logo",
+          "settings": {
+            "name": "Meta"
+          }
+        },
+        {
+          "type": "logo",
+          "settings": {
+            "name": "Netflix"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The best investment we've made for our team's productivity.",
+            "author": "Sarah Johnson",
+            "company": "CTO, StartupX"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Incredible results from day one. Highly recommended!",
+            "author": "Michael Chen",
+            "company": "Founder, InnovateCo"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('.an-logo-carousel');
+    if (!carousel) return;
+
+    // Apply animation speed from settings
+    const speed = '{{ section.settings.animation_speed }}';
+    const tracks = carousel.querySelectorAll('.an-logo-carousel__track');
+    
+    tracks.forEach(track => {
+      track.setAttribute('data-speed', speed);
+    });
+
+    // Optional: Add intersection observer for performance
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const tracks = entry.target.querySelectorAll('.an-logo-carousel__track');
+        tracks.forEach(track => {
+          if (entry.isIntersecting) {
+            track.style.animationPlayState = 'running';
+          } else {
+            track.style.animationPlayState = 'paused';
+          }
+        });
+      });
+    });
+
+    observer.observe(carousel);
+
+    // Handle click events on links
+    const links = carousel.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        // Track analytics if needed
+        if (window.gtag) {
+          gtag('event', 'click', {
+            'event_category': 'Logo Carousel',
+            'event_label': this.href
+          });
+        }
+      });
+    });
+  });
+</script>
