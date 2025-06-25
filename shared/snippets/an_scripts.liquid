@@ -12,13 +12,7 @@
 {% include 'micro_interactions' %}
 {% include 'dynamic_backgrounds' %}
 
-{% comment %} jQuery - Only load if explicitly enabled (saves 90KB) {% endcomment %}
-{% if settings.load_jquery == true %}
-  {% unless jquery_loaded %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCJHL/34SEsLJMC7m19Wz9zAGO/p7rJb/tYrBEvXjmv9pDkVNmVfqyyU" crossorigin="anonymous"></script>
-    {% assign jquery_loaded = true %}
-  {% endunless %}
-{% endif %}
+{% comment %} jQuery removed - saves 90KB per page load! {% endcomment %}
 
 {% comment %} AOS - Animate On Scroll (load only if elements exist) {% endcomment %}
 {% if page.content contains 'data-aos' or section.settings.enable_animations %}
@@ -56,38 +50,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.40/moment-timezone-with-data-10-year-range.min.js" defer></script>
 {% endif %}
 
-{% comment %} Slick Carousel - Only if carousel elements exist {% endcomment %}
-{% if page.content contains 'carousel' %}
-  <script>
-    // Check if carousel elements exist before loading Slick
-    if (document.querySelector('.carousel:not(.reveal .carousel)')) {
-      // Only load if jQuery is available
-      const loadSlick = () => {
-        if (!window.jQuery.fn.slick) {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css';
-          document.head.appendChild(link);
-          
-          const script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js';
-          script.onload = () => {
-            if (window.ANTheme) {
-              window.ANTheme.initCarousels();
-            }
-          };
-          document.head.appendChild(script);
-        }
-      };
-      
-      if (window.jQuery) {
-        loadSlick();
-      } else {
-        window.addEventListener('load', loadSlick);
-      }
-    }
-  </script>
-{% endif %}
+{% comment %} Slick Carousel removed - no longer needed! {% endcomment %}
 
 {% comment %} Wistia - Only load API if Wistia videos exist {% endcomment %}
 {% if page.content contains 'wistia' %}

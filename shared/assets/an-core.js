@@ -26,19 +26,83 @@
       countdowns: []
     },
 
-    // Initialize all components
+    /**
+     * Initialize all components
+     * Modular initialization for better organization and maintainability
+     */
     init() {
       this.cacheElements();
-      this.initMobileMenu();
-      this.initStickyHeader();
-      this.initDropdowns();
-      this.initSmoothScroll();
-      this.initLazyComponents();
       
-      // Kajabi editor check
+      // Initialize major feature modules
+      this.initNavigation();     // Mobile menu and dropdowns
+      this.initAnimations();     // AOS and custom animations
+      this.initInteractions();   // Smooth scroll and sticky header
+      this.initDynamicContent(); // Countdowns and lazy loading
+      this.initAccessibility();  // Accessibility features
+      
+      // Initialize marketing features (only outside Kajabi editor)
       if (!window.Kajabi?.theme?.editor) {
-        this.initExitIntent();
+        this.initMarketing();    // Exit intent popups
       }
+    },
+
+    /**
+     * Navigation Module
+     * Handles mobile menu and dropdown interactions
+     */
+    initNavigation() {
+      this.initMobileMenu();
+      this.initDropdowns();
+    },
+
+    /**
+     * Animations Module
+     * Handles AOS library and custom scroll animations
+     */
+    initAnimations() {
+      // Check for AOS animations
+      const aosElements = document.querySelectorAll('[data-aos]');
+      if (aosElements.length) {
+        this.loadAOS();
+      }
+      
+      // Initialize custom animations if AOS not present
+      this.initCustomScrollAnimations();
+      this.initStaggerAnimations();
+    },
+
+    /**
+     * Interactions Module
+     * Handles user interactions like smooth scrolling and sticky header
+     */
+    initInteractions() {
+      this.initSmoothScroll();
+      this.initStickyHeader();
+    },
+
+    /**
+     * Dynamic Content Module
+     * Handles dynamic elements like countdowns and lazy loading
+     */
+    initDynamicContent() {
+      this.initLazyComponents();
+    },
+
+    /**
+     * Accessibility Module
+     * Enhances accessibility features across the theme
+     */
+    initAccessibility() {
+      this.initButtonRoles();
+      this.initSkipLinks();
+    },
+
+    /**
+     * Marketing Module
+     * Handles marketing features like exit intent popups
+     */
+    initMarketing() {
+      this.initExitIntent();
     },
 
     // Cache frequently used elements
@@ -514,6 +578,108 @@
       if (timedReveal > 0) {
         setTimeout(showModal, timedReveal * 1000);
       }
+    },
+
+    /**
+     * Custom Scroll Animation System (Fallback when AOS isn't used)
+     * Provides lightweight scroll-triggered animations
+     */
+    initCustomScrollAnimations() {
+      if (!supports.intersectionObserver) return;
+      
+      // Check if AOS is already handling animations
+      if (window.AOS || document.querySelectorAll('[data-aos]').length > 0) return;
+      
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+      
+      // Find elements with animation classes
+      const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-in, .animate-fade-left, .animate-fade-right, .animate-scale-in, .animate-bounce-in, .animate-rotate-in, .animate-slide-up');
+      
+      if (animatedElements.length === 0) return;
+      
+      // Add initial state (invisible)
+      animatedElements.forEach(el => {
+        if (!el.classList.contains('animate-on-scroll')) {
+          el.classList.add('animate-on-scroll');
+        }
+      });
+      
+      // Create intersection observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            // Remove observer once animated
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+      
+      // Observe all animated elements
+      animatedElements.forEach(el => observer.observe(el));
+    },
+
+    /**
+     * Stagger Animation Helper
+     * Adds animation delays to create staggered effect
+     */
+    initStaggerAnimations() {
+      document.querySelectorAll('.stagger-group').forEach(group => {
+        const children = Array.from(group.children);
+        children.forEach((child, index) => {
+          if (!child.style.animationDelay) {
+            child.style.animationDelay = `${(index + 1) * 0.05}s`;
+          }
+        });
+      });
+      
+      document.querySelectorAll('.stagger-group-reverse').forEach(group => {
+        const children = Array.from(group.children);
+        children.forEach((child, index) => {
+          if (!child.style.animationDelay) {
+            child.style.animationDelay = `${(children.length - index) * 0.05}s`;
+          }
+        });
+      });
+    },
+
+    /**
+     * Initialize button role accessibility
+     * Makes links with role="button" behave like buttons
+     */
+    initButtonRoles() {
+      document.querySelectorAll('a[role="button"]').forEach(link => {
+        // Add tabindex if not present
+        if (!link.hasAttribute('tabindex')) {
+          link.setAttribute('tabindex', '0');
+        }
+        
+        // Handle space key like a button
+        link.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault();
+            link.click();
+          }
+        });
+      });
+    },
+
+    /**
+     * Initialize skip links for accessibility
+     * Adds skip to content link if not present
+     */
+    initSkipLinks() {
+      if (!document.querySelector('.skip-to-content')) {
+        const skipLink = document.createElement('a');
+        skipLink.href = '#main-content';
+        skipLink.className = 'skip-to-content';
+        skipLink.textContent = 'Skip to main content';
+        document.body.insertBefore(skipLink, document.body.firstChild);
+      }
     }
   };
 
@@ -532,110 +698,15 @@
   // Export for use in other scripts
   window.ANTheme = ANTheme;
 
-  /**
-   * Accessibility Enhancements
-   */
-  // Make links with role="button" behave like buttons
-  document.querySelectorAll('a[role="button"]').forEach(link => {
-    // Add tabindex if not present
-    if (!link.hasAttribute('tabindex')) {
-      link.setAttribute('tabindex', '0');
-    }
-    
-    // Handle space key like a button
-    link.addEventListener('keydown', (e) => {
-      if (e.key === ' ' || e.key === 'Spacebar') {
-        e.preventDefault();
-        link.click();
-      }
-    });
-  });
-
-  // Add skip to content link if not present
-  if (!document.querySelector('.skip-to-content')) {
-    const skipLink = document.createElement('a');
-    skipLink.href = '#main-content';
-    skipLink.className = 'skip-to-content';
-    skipLink.textContent = 'Skip to main content';
-    document.body.insertBefore(skipLink, document.body.firstChild);
-  }
-
-  /**
-   * Custom Scroll Animation System (Fallback when AOS isn't used)
-   */
-  const initCustomScrollAnimations = () => {
-    if (!supports.intersectionObserver) return;
-    
-    // Check if AOS is already handling animations
-    if (window.AOS || document.querySelectorAll('[data-aos]').length > 0) return;
-    
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-    
-    // Find elements with animation classes
-    const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-in, .animate-fade-left, .animate-fade-right, .animate-scale-in, .animate-bounce-in, .animate-rotate-in, .animate-slide-up');
-    
-    if (animatedElements.length === 0) return;
-    
-    // Add initial state (invisible)
-    animatedElements.forEach(el => {
-      if (!el.classList.contains('animate-on-scroll')) {
-        el.classList.add('animate-on-scroll');
-      }
-    });
-    
-    // Create intersection observer
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          // Remove observer once animated
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-    
-    // Observe all animated elements
-    animatedElements.forEach(el => observer.observe(el));
-  };
-
-  /**
-   * Stagger Animation Helper
-   */
-  const initStaggerAnimations = () => {
-    document.querySelectorAll('.stagger-group').forEach(group => {
-      const children = Array.from(group.children);
-      children.forEach((child, index) => {
-        if (!child.style.animationDelay) {
-          child.style.animationDelay = `${(index + 1) * 0.05}s`;
-        }
-      });
-    });
-    
-    document.querySelectorAll('.stagger-group-reverse').forEach(group => {
-      const children = Array.from(group.children);
-      children.forEach((child, index) => {
-        if (!child.style.animationDelay) {
-          child.style.animationDelay = `${(children.length - index) * 0.05}s`;
-        }
-      });
-    });
-  };
-
-  // Initialize scroll animations and stagger on load
+  // Initialize animations on window load (for elements that might be added later)
   window.addEventListener('load', () => {
-    initCustomScrollAnimations();
-    initStaggerAnimations();
+    ANTheme.initAnimations();
   });
 
   // Re-initialize on Kajabi section reloads
   window.addEventListener('section:reload', () => {
     setTimeout(() => {
-      initCustomScrollAnimations();
-      initStaggerAnimations();
+      ANTheme.initAnimations();
     }, 100);
   });
 
