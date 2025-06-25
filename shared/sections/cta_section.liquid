@@ -1,20 +1,30 @@
 <!-- sections/cta_section.liquid -->
-<section class="cta-section" style="background: {{ section.settings.gradient_start }} linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_start }} 0%, {{ section.settings.gradient_end }} 100%);">
+<section class="an-cta-section {{ section.settings.background_style }}" 
+         style="background: {{ section.settings.background_type == 'gradient' ? section.settings.gradient_start : section.settings.background_color }}{% if section.settings.background_type == 'gradient' %} linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_start }} 0%, {{ section.settings.gradient_end }} 100%){% endif %};">
   <div class="container">
-    <div class="cta-wrapper">
-      <div class="cta-image">
-        <img src="{{ section.settings.image | image_picker_url: 'placeholder.png' }}" alt="{{ section.settings.image_alt }}" />
-      </div>
-      <div class="cta-content">
+    <div class="an-cta__wrapper animate-fade-up">
+      {% if section.settings.image != blank %}
+        <div class="an-cta__image">
+          <img src="{{ section.settings.image | image_picker_url: '400x400' }}" 
+               alt="{{ section.settings.image_alt }}" 
+               class="an-cta__img"
+               loading="lazy" />
+        </div>
+      {% endif %}
+      
+      <div class="an-cta__content">
         {% if section.settings.eyebrow_text != blank %}
-          <span class="cta-eyebrow" style="color: {{ section.settings.eyebrow_color }};">{{ section.settings.eyebrow_text }}</span>
+          <span class="an-cta__eyebrow">{{ section.settings.eyebrow_text }}</span>
         {% endif %}
-        <h2 class="cta-heading" style="color: {{ section.settings.heading_color }};">{{ section.settings.heading }}</h2>
+        
+        <h2 class="an-cta__heading">{{ section.settings.heading }}</h2>
+        
         {% if section.settings.subheading != blank %}
-          <p class="cta-subheading" style="color: {{ section.settings.subheading_color }};">{{ section.settings.subheading }}</p>
+          <p class="an-cta__subheading">{{ section.settings.subheading }}</p>
         {% endif %}
+        
         {% if section.settings.button_text != blank %}
-          <a href="{{ section.settings.button_link }}" class="cta-button" style="background-color: {{ section.settings.button_bg_color }}; color: {{ section.settings.button_text_color }};">
+          <a href="{{ section.settings.button_link }}" class="btn btn-primary-modern an-cta__button">
             {{ section.settings.button_text }}
           </a>
         {% endif %}
@@ -22,6 +32,164 @@
     </div>
   </div>
 </section>
+
+<style>
+  /* AN CTA Section - Modern Design */
+  .an-cta-section {
+    padding: var(--space-3xl) 0;
+    background: var(--g-brand);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .an-cta-section.section-white {
+    background: var(--c-white) !important;
+  }
+  
+  .an-cta-section.section-lavender {
+    background: var(--c-brand-100) !important;
+  }
+  
+  .an-cta__wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xl);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .an-cta__image {
+    flex: 0 0 auto;
+    width: 200px;
+  }
+  
+  .an-cta__img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .an-cta__content {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .an-cta__eyebrow {
+    display: inline-block;
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: var(--c-white);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+    backdrop-filter: blur(var(--blur-sm));
+  }
+  
+  .an-cta__heading {
+    font-size: var(--fs-h1);
+    font-weight: 600;
+    color: var(--c-white);
+    margin-bottom: var(--space-md);
+    line-height: 1.2;
+  }
+  
+  .an-cta__subheading {
+    font-size: var(--fs-body-lg);
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .an-cta__button {
+    background: var(--c-white) !important;
+    color: var(--c-brand-600) !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .an-cta__button:hover {
+    background: var(--c-brand-100) !important;
+    color: var(--c-brand-800) !important;
+    transform: translateY(-2px);
+  }
+  
+  /* White/Lavender background text colors */
+  .an-cta-section.section-white .an-cta__eyebrow {
+    color: var(--c-brand-600);
+    background: var(--c-brand-100);
+  }
+  
+  .an-cta-section.section-white .an-cta__heading {
+    color: var(--c-ink-900);
+  }
+  
+  .an-cta-section.section-white .an-cta__subheading {
+    color: var(--c-ink-700);
+  }
+  
+  .an-cta-section.section-white .an-cta__button {
+    background: var(--g-brand) !important;
+    color: var(--c-white) !important;
+  }
+  
+  .an-cta-section.section-lavender .an-cta__eyebrow {
+    color: var(--c-brand-600);
+    background: var(--c-white);
+  }
+  
+  .an-cta-section.section-lavender .an-cta__heading {
+    color: var(--c-ink-900);
+  }
+  
+  .an-cta-section.section-lavender .an-cta__subheading {
+    color: var(--c-ink-700);
+  }
+  
+  .an-cta-section.section-lavender .an-cta__button {
+    background: var(--g-brand) !important;
+    color: var(--c-white) !important;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 767px) {
+    .an-cta__wrapper {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--space-lg);
+    }
+    
+    .an-cta__image {
+      width: 150px;
+    }
+    
+    .an-cta__heading {
+      font-size: var(--fs-h2);
+    }
+  }
+  
+  /* Add subtle animation */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out;
+  }
+  
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
 
 {% schema %}
 {
@@ -35,25 +203,25 @@
       "type": "text",
       "id": "eyebrow_text",
       "label": "Eyebrow Text",
-      "default": "AUDIOBOOK MORE YOUR STYLE?"
+      "default": "Ready to Transform Your Parenting?"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Listen As I Narrate My Book!"
+      "default": "Start Building Secure Attachment Today"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "If you love my podcast, then you're going to love the audiobook! Listen to me read it to you!"
+      "default": "Join thousands of parents who've transformed their family relationships with science-backed attachment strategies."
     },
     {
       "type": "text",
       "id": "button_text",
       "label": "Button Text",
-      "default": "PURCHASE THE AUDIBLE VERSION"
+      "default": "Get Started Now"
     },
     {
       "type": "action",
@@ -68,63 +236,56 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image",
-      "info": "Recommended: Book cover or product image"
+      "info": "Optional: Book cover, product image, or author photo"
     },
     {
       "type": "text",
       "id": "image_alt",
       "label": "Image Alt Text",
-      "default": "Book cover"
+      "default": "Attachment parenting resource"
     },
     {
       "type": "header",
-      "content": "Text Colors"
+      "content": "Background Style"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background Style",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Brand Gradient (Default)" },
+        { "value": "section-white", "label": "White Background" },
+        { "value": "section-lavender", "label": "Lavender Background" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background Type",
+      "default": "gradient",
+      "options": [
+        { "value": "gradient", "label": "Gradient" },
+        { "value": "solid", "label": "Solid Color" }
+      ]
     },
     {
       "type": "color",
-      "id": "eyebrow_color",
-      "label": "Eyebrow Text Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "subheading_color",
-      "label": "Subheading Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color",
-      "label": "Button Background Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button Text Color",
-      "default": "#333333"
-    },
-    {
-      "type": "header",
-      "content": "Background"
+      "id": "background_color",
+      "label": "Background Color (if solid)",
+      "default": "#5E3BFF"
     },
     {
       "type": "color",
       "id": "gradient_start",
       "label": "Gradient Start Color",
-      "default": "#FFB366"
+      "default": "#5E3BFF"
     },
     {
       "type": "color",
       "id": "gradient_end",
       "label": "Gradient End Color",
-      "default": "#FFA85C"
+      "default": "#4025E0"
     },
     {
       "type": "range",
@@ -142,17 +303,15 @@
       "name": "CTA Section",
       "category": "CTA",
       "settings": {
-        "eyebrow_text": "AUDIOBOOK MORE YOUR STYLE?",
-        "heading": "Listen As I Narrate My Book!",
-        "subheading": "If you love my podcast, then you're going to love the audiobook! Listen to me read it to you!",
-        "button_text": "PURCHASE THE AUDIBLE VERSION",
-        "eyebrow_color": "#FFFFFF",
-        "heading_color": "#FFFFFF",
-        "subheading_color": "#FFFFFF",
-        "button_bg_color": "#FFFFFF",
-        "button_text_color": "#333333",
-        "gradient_start": "#FFB366",
-        "gradient_end": "#FFA85C",
+        "eyebrow_text": "Ready to Transform Your Parenting?",
+        "heading": "Start Building Secure Attachment Today",
+        "subheading": "Join thousands of parents who've transformed their family relationships with science-backed attachment strategies.",
+        "button_text": "Get Started Now",
+        "background_style": "",
+        "background_type": "gradient",
+        "background_color": "#5E3BFF",
+        "gradient_start": "#5E3BFF",
+        "gradient_end": "#4025E0",
         "gradient_angle": 135
       }
     }

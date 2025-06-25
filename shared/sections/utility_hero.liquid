@@ -6,17 +6,19 @@
 {% assign bg_class = '' %}
 {% assign text_class = '' %}
 
-{% comment %}Map common color settings to utility classes{% endcomment %}
-{% if section.settings.background_color == '#1A2D4E' %}
-  {% assign bg_class = 'section-navy' %}
-{% elsif section.settings.background_color == '#2AB3B1' %}
+{% comment %}Map modern brand color settings to utility classes{% endcomment %}
+{% if section.settings.background_color == '#5E3BFF' %}
+  {% assign bg_class = 'section-brand' %}
+{% elsif section.settings.background_color == '#E9E6FF' %}
+  {% assign bg_class = 'section-lavender' %}
+{% elsif section.settings.background_color == '#18D5E4' %}
   {% assign bg_class = 'section-teal' %}
-{% elsif section.settings.background_color == '#F57C6F' %}
-  {% assign bg_class = 'section-coral' %}
-{% elsif section.settings.background_color == '#FFF4F0' %}
+{% elsif section.settings.background_color == '#FF8BCB' %}
   {% assign bg_class = 'section-peach' %}
-{% elsif section.settings.background_color == '#F8F7F5' %}
-  {% assign bg_class = 'section-grey' %}
+{% elsif section.settings.background_color == '#FFE86B' %}
+  {% assign bg_class = 'section-lemon' %}
+{% elsif section.settings.background_color == '#FFFFFF' %}
+  {% assign bg_class = 'section-white' %}
 {% endif %}
 
 <section class="utility-hero {{ bg_class }} py-5 position-relative overflow-hidden"
@@ -75,7 +77,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#1A2D4E"
+      "default": "#E9E6FF"
     },
     {
       "type": "text",

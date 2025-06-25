@@ -2,7 +2,7 @@
   /* Colored Highlight Section */
   .colored-highlight {
     padding: {{ section.settings.padding_top | default: 80 }}px 0 {{ section.settings.padding_bottom | default: 80 }}px;
-    background-color: {{ section.settings.background_color | default: '#F5F5F7' }};
+    background-color: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};
   }
   
   .colored-highlight__container {
@@ -21,7 +21,7 @@
     font-size: {{ section.settings.title_size | default: 48 }}px;
     font-weight: {{ section.settings.title_weight | default: 700 }};
     line-height: {{ section.settings.title_line_height | default: 1.2 }};
-    color: {{ section.settings.title_color | default: '#1A1A1A' }};
+    color: {{ section.settings.title_color | default: 'var(--c-ink-900)' }};
     margin: 0 0 {{ section.settings.title_margin | default: 16 }}px;
   }
   
@@ -29,7 +29,7 @@
     font-size: {{ section.settings.subtitle_size | default: 20 }}px;
     font-weight: {{ section.settings.subtitle_weight | default: 400 }};
     line-height: {{ section.settings.subtitle_line_height | default: 1.6 }};
-    color: {{ section.settings.subtitle_color | default: '#666666' }};
+    color: {{ section.settings.subtitle_color | default: 'var(--c-ink-700)' }};
     margin: 0;
     max-width: {{ section.settings.subtitle_max_width | default: 800 }}px;
     {% if section.settings.header_align == 'center' %}
@@ -70,7 +70,7 @@
   .colored-highlight__icon-wrapper {
     width: {{ section.settings.icon_size | default: 80 }}px;
     height: {{ section.settings.icon_size | default: 80 }}px;
-    background-color: {{ section.settings.icon_bg | default: '#FFFFFF' }};
+    background-color: {{ section.settings.icon_bg | default: 'var(--c-white)' }};
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -242,7 +242,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#F8F8FB"
+      "default": "#E9E6FF"
     },
     {
       "type": "range",
@@ -347,7 +347,7 @@
       "type": "color",
       "id": "title_color",
       "label": "Title Color",
-      "default": "#1A1A1A"
+      "default": "#1B1B29"
     },
     {
       "type": "range",
@@ -419,7 +419,7 @@
       "type": "color",
       "id": "subtitle_color",
       "label": "Subtitle Color",
-      "default": "#666666"
+      "default": "#323346"
     },
     {
       "type": "range",
