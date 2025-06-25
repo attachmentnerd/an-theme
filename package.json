@@ -11,7 +11,8 @@
     "theme:version": "node scripts/theme-manager.js version",
     "test": "node scripts/test-themes.js",
     "inject:drafts": "node scripts/inject-schema.js",
-    "inject:watch": "npm-watch inject:drafts"
+    "inject:watch": "npm-watch inject:drafts",
+    "demo:generate": "node scripts/generate-demo-page.js"
   },
   "watch": {
     "inject:drafts": {

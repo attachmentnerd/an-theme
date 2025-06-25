@@ -1762,3 +1762,186 @@ Example:
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%235E3BFF' fill-opacity='0.05'/%3E%3C/svg%3E");
 }
 ```
+
+## Responsive Images System (v17.0.0+)
+
+### Overview
+The AN themes include a comprehensive responsive image system that automatically serves optimized images based on device size and screen density. This significantly improves performance, especially on mobile devices.
+
+### responsive-image.liquid Snippet
+
+The `responsive-image` snippet creates optimized `<img>` tags with:
+- **srcset**: Multiple image sizes for different screen densities
+- **sizes**: Instructions for browsers on which size to use
+- **Lazy loading**: Deferred loading for below-fold images
+- **Priority loading**: fetchpriority="high" for LCP images
+- **Aspect ratios**: Prevents layout shift during loading
+
+#### Basic Usage
+```liquid
+{% render 'responsive-image',
+  image: section.settings.hero_image,
+  alt: 'Hero image description',
+  class: 'hero-image',
+  sizes: '100vw',
+  priority: true
+%}
+```
+
+#### Parameters
+- `image` (required): Image URL from image_picker_url
+- `alt` (required): Alt text for accessibility
+- `class`: CSS classes (default: 'img-fluid')
+- `sizes`: Responsive sizes attribute
+- `loading`: 'lazy' or 'eager' (default: 'lazy')
+- `priority`: boolean - true for hero/LCP images
+- `widths`: Comma-separated string of widths (default: "400,600,800,1200,1600,2000")
+- `width`/`height`: Dimensions to prevent layout shift
+- `aspect_ratio`: CSS aspect-ratio (e.g., "16/9", "2/3")
+
+### Common Image Patterns
+
+#### Hero Images (Above-fold)
+```liquid
+{% render 'responsive-image',
+  image: section.settings.hero_image,
+  alt: 'Hero image',
+  sizes: '100vw',
+  priority: true,
+  aspect_ratio: '16/9'
+%}
+```
+
+#### Book Covers
+```liquid
+{% render 'responsive-image',
+  image: section.settings.book_image,
+  alt: book_title,
+  sizes: '(max-width: 767px) 280px, 400px',
+  aspect_ratio: '2/3',
+  widths: '280,400,600,800'
+%}
+```
+
+#### Avatar Images
+```liquid
+{% render 'responsive-image',
+  image: author_image,
+  alt: author_name,
+  class: 'avatar rounded-circle',
+  sizes: '60px',
+  aspect_ratio: '1/1',
+  widths: '60,120,180'
+%}
+```
+
+#### Content Images
+```liquid
+{% render 'responsive-image',
+  image: block.settings.image,
+  alt: block.settings.alt_text,
+  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
+  loading: 'lazy'
+%}
+```
+
+### Aspect Ratio CSS Utilities
+
+Use these classes to maintain consistent aspect ratios:
+
+- `.aspect-square` - 1:1 ratio (avatars, logos)
+- `.aspect-video` - 16:9 ratio (videos, hero images)
+- `.aspect-book` - 2:3 ratio (book covers)
+- `.aspect-landscape` - 4:3 ratio (general images)
+- `.aspect-portrait` - 3:4 ratio (portrait images)
+- `.aspect-wide` - 21:9 ratio (ultra-wide banners)
+- `.aspect-golden` - 1.618:1 ratio (golden ratio)
+
+#### Responsive Aspect Ratios
+- `.aspect-square--mobile` - Square on mobile only
+- `.aspect-video--tablet-up` - 16:9 on tablet and up
+
+#### Object-fit Utilities
+- `.object-cover` - Cover container (may crop)
+- `.object-contain` - Fit within container
+- `.object-center` - Center the focal point
+- `.object-top` - Align to top (for headshots)
+
+### Performance Best Practices
+
+1. **Use appropriate sizes attribute**:
+   - Full-width: `sizes="100vw"`
+   - Half on desktop: `sizes="(max-width: 767px) 100vw, 50vw"`
+   - Fixed size: `sizes="400px"`
+
+2. **Prioritize hero images**:
+   ```liquid
+   priority: true  # Adds fetchpriority="high"
+   ```
+
+3. **Specify dimensions**:
+   ```liquid
+   width: 800,
+   height: 600  # Prevents layout shift
+   ```
+
+4. **Use lazy loading** for below-fold images:
+   ```liquid
+   loading: 'lazy'  # Default behavior
+   ```
+
+5. **Optimize widths array** based on usage:
+   - Small images: "100,200,400"
+   - Medium images: "400,600,800,1200"
+   - Full-width: "400,600,800,1200,1600,2000"
+
+### Migration Guide
+
+To migrate existing images to responsive:
+
+1. **Replace img tags**:
+   ```liquid
+   <!-- Before -->
+   <img src="{{ image | image_picker_url: '800x' }}" 
+        alt="Description" 
+        class="img-fluid">
+   
+   <!-- After -->
+   {% render 'responsive-image',
+     image: image,
+     alt: 'Description',
+     sizes: '(max-width: 767px) 100vw, 800px'
+   %}
+   ```
+
+2. **Add aspect ratios** to prevent shift:
+   ```liquid
+   aspect_ratio: '16/9'  # or use CSS class
+   ```
+
+3. **Set priority** for LCP images:
+   ```liquid
+   priority: true  # For hero/above-fold images
+   ```
+
+### Browser Support
+- All modern browsers support srcset/sizes
+- Older browsers fall back to src attribute
+- aspect-ratio CSS has 96%+ browser support
+- object-fit has 98%+ browser support
+
+### Testing Responsive Images
+
+1. **Chrome DevTools**:
+   - Network tab shows which image size loaded
+   - Lighthouse reports image optimization score
+
+2. **Responsive Design Mode**:
+   - Test different viewport sizes
+   - Verify correct image loads
+
+3. **Performance Metrics**:
+   - Check Core Web Vitals (LCP)
+   - Monitor total image payload
+   - Verify no layout shift (CLS)
+```

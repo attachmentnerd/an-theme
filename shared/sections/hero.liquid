@@ -117,12 +117,16 @@
       {% comment %} Optional image {% endcomment %}
       {% if section.settings.content_image != blank %}
         <div class="hero-image animate-fade-up" style="animation-delay: 0.2s;">
-          <img src="{{ section.settings.content_image | image_picker_url: 'hero-content.jpg' }}" 
-               alt="{{ section.settings.content_image_alt }}"
-               class="hero-image-img"
-               width="600"
-               height="400"
-               loading="eager">
+          {% render 'responsive-image',
+            image: section.settings.content_image,
+            alt: section.settings.content_image_alt,
+            class: 'hero-image-img',
+            sizes: '(max-width: 767px) 100vw, (max-width: 991px) 600px, 600px',
+            priority: true,
+            width: 600,
+            height: 400,
+            widths: '400,600,800,1200'
+          %}
         </div>
       {% endif %}
     </div>

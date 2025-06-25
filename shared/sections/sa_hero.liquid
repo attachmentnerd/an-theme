@@ -70,12 +70,19 @@
               <div class="position-absolute" style="inset: -20px; background: var(--g-brand); opacity: 0.3; filter: blur(40px); border-radius: 16px;"></div>
               
               <!-- Book image -->
-              <img src="{{ section.settings.book_image | img_url: '600x' }}" 
-                   alt="Securely Attached Book Cover" 
-                   class="img-fluid position-relative"
-                   style="max-width: 400px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);"
-                   loading="lazy"
-                   kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
+              <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}" style="max-width: 400px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+                {% render 'responsive-image',
+                  image: section.settings.book_image,
+                  alt: 'Securely Attached Book Cover',
+                  class: 'img-fluid position-relative',
+                  sizes: '(max-width: 767px) 280px, 400px',
+                  priority: true,
+                  width: 400,
+                  height: 600,
+                  widths: '280,400,600,800',
+                  aspect_ratio: '2/3'
+                %}
+              </div>
             </div>
           </div>
           

@@ -39,10 +39,14 @@
           {% endif %}
           
           {% if section.settings.book_image %}
-            <img src="{{ section.settings.book_image | image_picker_url: 'master' }}" 
-                 alt="{{ section.settings.book_title | default: 'Book cover' }}" 
-                 class="book-showcase__image img-fluid"
-                 loading="lazy">
+            {% render 'responsive-image',
+              image: section.settings.book_image,
+              alt: section.settings.book_title | default: 'Book cover',
+              class: 'book-showcase__image img-fluid',
+              sizes: '(max-width: 575px) 90vw, (max-width: 991px) 50vw, 400px',
+              widths: '300,400,600,800',
+              aspect_ratio: '2/3'
+            %}
           {% else %}
             <div class="book-showcase__placeholder">
               <svg width="300" height="450" viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -123,9 +127,16 @@
                 <p>"{{ section.settings.testimonial_text }}"</p>
                 <footer>
                   {% if section.settings.testimonial_author_image %}
-                    <img src="{{ section.settings.testimonial_author_image | image_picker_url: '80x80' }}" 
-                         alt="{{ section.settings.testimonial_author }}"
-                         class="testimonial__avatar">
+                    {% render 'responsive-image',
+                      image: section.settings.testimonial_author_image,
+                      alt: section.settings.testimonial_author,
+                      class: 'testimonial__avatar',
+                      sizes: '80px',
+                      widths: '80,160',
+                      width: '80',
+                      height: '80',
+                      aspect_ratio: '1/1'
+                    %}
                   {% endif %}
                   <div>
                     <cite>{{ section.settings.testimonial_author }}</cite>

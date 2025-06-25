@@ -5440,5 +5440,127 @@ select:focus {
 }
 
 /* ==========================================================================
+   18. Image Aspect Ratio Utilities
+   Added: 2025-01-25
+   Purpose: Prevent layout shift by maintaining consistent aspect ratios
+   ========================================================================== */
+
+/* Common aspect ratios for images */
+.aspect-square {
+  aspect-ratio: 1 / 1 !important;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9 !important;
+}
+
+.aspect-book {
+  aspect-ratio: 2 / 3 !important;
+}
+
+.aspect-landscape {
+  aspect-ratio: 4 / 3 !important;
+}
+
+.aspect-portrait {
+  aspect-ratio: 3 / 4 !important;
+}
+
+.aspect-wide {
+  aspect-ratio: 21 / 9 !important;
+}
+
+.aspect-golden {
+  aspect-ratio: 1.618 / 1 !important;
+}
+
+/* Responsive aspect ratio utilities */
+@media (max-width: 767px) {
+  .aspect-square--mobile {
+    aspect-ratio: 1 / 1 !important;
+  }
+  
+  .aspect-video--mobile {
+    aspect-ratio: 16 / 9 !important;
+  }
+  
+  .aspect-book--mobile {
+    aspect-ratio: 2 / 3 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .aspect-square--tablet-up {
+    aspect-ratio: 1 / 1 !important;
+  }
+  
+  .aspect-video--tablet-up {
+    aspect-ratio: 16 / 9 !important;
+  }
+  
+  .aspect-book--tablet-up {
+    aspect-ratio: 2 / 3 !important;
+  }
+}
+
+/* Object-fit utilities for aspect ratio containers */
+.object-cover {
+  object-fit: cover !important;
+}
+
+.object-contain {
+  object-fit: contain !important;
+}
+
+.object-fill {
+  object-fit: fill !important;
+}
+
+.object-scale-down {
+  object-fit: scale-down !important;
+}
+
+/* Object position utilities */
+.object-center {
+  object-position: center center !important;
+}
+
+.object-top {
+  object-position: center top !important;
+}
+
+.object-bottom {
+  object-position: center bottom !important;
+}
+
+/* Image container utilities */
+.img-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Skeleton loading for images */
+.img-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================================================
    END OF SHARED STYLES
    ========================================================================== */
