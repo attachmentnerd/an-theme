@@ -32,6 +32,7 @@
             {% if section.settings.primary_cta_text != blank %}
               <a href="{{ section.settings.primary_cta_url }}" 
                  class="btn btn-primary-modern"
+                 style="color: var(--c-white) !important;"
                  kjb-settings-id="{{ 'primary_cta_text' | settings_id: section: section }}">
                 {{ section.settings.primary_cta_text }}
               </a>
@@ -40,6 +41,7 @@
             {% if section.settings.secondary_cta_text != blank %}
               <a href="{{ section.settings.secondary_cta_url }}" 
                  class="btn btn-secondary-modern"
+                 style="color: var(--c-brand-600) !important;"
                  kjb-settings-id="{{ 'secondary_cta_text' | settings_id: section: section }}">
                 {{ section.settings.secondary_cta_text }}
               </a>

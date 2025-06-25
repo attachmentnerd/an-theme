@@ -16,10 +16,10 @@
            class="sticky-bar-button {% if section.settings.button_style == 'outline' %}btn-outline{% endif %}"
            style="{% if section.settings.button_style == 'outline' %}
                     border-color: {{ section.settings.button_color | default: 'var(--c-white)' }};
-                    color: {{ section.settings.button_color | default: 'var(--c-white)' }};
+                    color: {{ section.settings.button_color | default: 'var(--c-white)' }} !important;
                   {% else %}
                     background: {{ section.settings.button_color | default: 'var(--c-white)' }};
-                    color: {{ section.settings.button_text_color | default: 'var(--c-brand-600)' }};
+                    color: {{ section.settings.button_text_color | default: 'var(--c-brand-600)' }} !important;
                   {% endif %}">
           {{ section.settings.button_text | default: 'Pay What You Can →' }}
         </a>

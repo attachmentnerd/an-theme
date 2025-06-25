@@ -201,7 +201,7 @@
     <div class="book-buy__wrapper">
       <!-- Order Today CTA -->
       {% if section.settings.show_cta %}
-        <a href="{{ section.settings.cta_link }}" class="book-buy__cta" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+        <a href="{{ section.settings.cta_link }}" class="book-buy__cta" style="color: var(--c-white) !important;" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
           {{ section.settings.cta_text }}
           <span class="book-buy__cta-arrow">→</span>
         </a>

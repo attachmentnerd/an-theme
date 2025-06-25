@@ -85,6 +85,7 @@
             {% if section.settings.primary_button_text %}
               <a href="{{ section.settings.primary_button_link }}" 
                  class="btn btn-primary-modern"
+                 style="color: var(--c-white) !important;"
                  kjb-settings-id="{{ 'primary_button_text' | settings_id: section: section }}">
                 {{ section.settings.primary_button_text }}
               </a>
@@ -93,6 +94,7 @@
             {% if section.settings.secondary_button_text %}
               <a href="{{ section.settings.secondary_button_link }}" 
                  class="btn btn-secondary-modern"
+                 style="color: var(--c-brand-600) !important;"
                  kjb-settings-id="{{ 'secondary_button_text' | settings_id: section: section }}">
                 {{ section.settings.secondary_button_text }}
               </a>

@@ -71,6 +71,7 @@
           {% if section.settings.cta_text != blank %}
             <a href="{{ section.settings.cta_url }}" 
                class="btn btn-primary-modern"
+               style="color: var(--c-white) !important;"
                kjb-settings-id="{{ 'cta_text' | settings_id: section: section }}">
               {{ section.settings.cta_text }}
             </a>

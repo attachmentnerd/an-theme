@@ -26,12 +26,16 @@
     {% endif %}
 
     <!-- Program Cards Grid -->
-    <div class="an-programs__grid">
+    <div class="an-programs__grid" data-active-card="1">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'program' %}
-            <div class="an-programs__card animate-fade-up {% if block.settings.featured %}an-programs__card--featured{% endif %}" 
+            <div class="an-programs__card animate-fade-up {% if block.settings.featured %}an-programs__card--featured{% endif %} {% if forloop.first %}an-programs__card--active{% endif %}" 
                  style="animation-delay: {{ forloop.index | times: 0.1 }}s;" 
+                 data-card-index="{{ forloop.index }}"
+                 role="button"
+                 tabindex="0"
+                 aria-label="Select {{ block.settings.title }} program"
                  {{ block.shopify_attributes }}>
               
               <!-- Featured Badge -->
@@ -40,6 +44,14 @@
                   <span>{{ block.settings.badge_text }}</span>
                 </div>
               {% endif %}
+              
+              <!-- Selection Indicator -->
+              <div class="an-programs__selection-indicator">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="11" fill="var(--c-brand-600)" stroke="white" stroke-width="2"/>
+                  <path d="M17 8L10 15L7 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
 
               <!-- Card Header -->
               <div class="an-programs__header">
@@ -103,7 +115,9 @@
 
               <!-- CTA Button -->
               <div class="an-programs__cta">
-                <a href="{{ block.settings.cta_link }}" class="btn {% if block.settings.featured %}btn-primary-modern{% else %}btn-secondary-modern{% endif %} w-100">
+                <a href="{{ block.settings.cta_link }}" 
+                   class="btn {% if block.settings.featured %}btn-primary-modern{% else %}btn-secondary-modern{% endif %} w-100"
+                   style="{% if block.settings.featured %}color: var(--c-white) !important;{% else %}color: var(--c-brand-600) !important;{% endif %}">
                   {{ block.settings.cta_text }}
                 </a>
               </div>
@@ -164,26 +178,65 @@
     border-radius: 16px;
     padding: 2rem;
     box-shadow: 0 4px 12px rgba(26, 45, 78, 0.08);
-    transition: all 0.3s var(--ease-spring);
+    transition: all 0.4s var(--ease-spring);
     display: flex;
     flex-direction: column;
     height: 100%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    opacity: 0.7;
+    transform: scale(0.98);
   }
 
   .an-programs__card:hover {
-    transform: translateY(-6px);
+    opacity: 0.85;
+    transform: scale(0.99) translateY(-2px);
+    box-shadow: 0 8px 24px rgba(94, 59, 255, 0.12);
+  }
+
+  .an-programs__card--active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    border-color: var(--c-brand-600);
     box-shadow: 0 12px 32px rgba(94, 59, 255, 0.15);
+    background: linear-gradient(135deg, #FFFFFF 0%, rgba(94, 59, 255, 0.03) 100%);
+  }
+
+  .an-programs__card--active:hover {
+    transform: scale(1) translateY(-6px);
+    box-shadow: 0 16px 40px rgba(94, 59, 255, 0.2);
   }
 
   .an-programs__card--featured {
-    border: 2px solid var(--c-brand-600);
-    transform: scale(1.02);
     background: linear-gradient(135deg, #FFFFFF 0%, var(--c-brand-100) 100%);
   }
 
-  .an-programs__card--featured:hover {
-    transform: scale(1.02) translateY(-6px);
-    box-shadow: 0 16px 40px rgba(94, 59, 255, 0.2);
+  .an-programs__card--featured.an-programs__card--active {
+    border-color: var(--c-brand-600);
+    box-shadow: 0 16px 40px rgba(94, 59, 255, 0.25);
+  }
+
+  /* Selection Indicator */
+  .an-programs__selection-indicator {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.5) rotate(-180deg);
+    transition: all 0.4s var(--ease-spring);
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.3);
+  }
+
+  .an-programs__card--active .an-programs__selection-indicator {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
 
   .an-programs__badge {
@@ -278,12 +331,21 @@
     margin-bottom: 0.75rem;
     font-size: var(--fs-body);
     color: var(--c-ink-700);
-    transition: all 0.2s var(--ease-spring);
+    transition: all 0.3s var(--ease-spring);
+    opacity: 0.6;
+    transform: translateX(-4px);
   }
   
-  .an-programs__card:hover .an-programs__features-list li {
-    transform: translateX(4px);
+  .an-programs__card--active .an-programs__features-list li {
+    opacity: 1;
+    transform: translateX(0);
   }
+  
+  .an-programs__card--active .an-programs__features-list li:nth-child(1) { transition-delay: 0.1s; }
+  .an-programs__card--active .an-programs__features-list li:nth-child(2) { transition-delay: 0.15s; }
+  .an-programs__card--active .an-programs__features-list li:nth-child(3) { transition-delay: 0.2s; }
+  .an-programs__card--active .an-programs__features-list li:nth-child(4) { transition-delay: 0.25s; }
+  .an-programs__card--active .an-programs__features-list li:nth-child(5) { transition-delay: 0.3s; }
 
   .an-programs__features-list svg {
     flex-shrink: 0;
@@ -352,7 +414,128 @@
       transform: translateY(-4px);
     }
   }
+
+  /* Interactive states */
+  .an-programs__card {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .an-programs__card:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.2);
+  }
+
+  .an-programs__card--active .an-programs__cta .btn {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(94, 59, 255, 0.3);
+  }
+
+  /* Comparison mode indicator */
+  .an-programs__comparison-hint {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: var(--fs-body-sm);
+    color: var(--c-ink-600);
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out 1.5s forwards;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .an-programs__card--active .an-programs__header {
+    background: linear-gradient(90deg, transparent, rgba(94, 59, 255, 0.03), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const programsGrid = document.querySelector('.an-programs__grid');
+  if (!programsGrid) return;
+
+  const cards = programsGrid.querySelectorAll('.an-programs__card');
+  let activeCard = programsGrid.querySelector('.an-programs__card--active') || cards[0];
+
+  // Function to activate a card
+  function activateCard(card) {
+    // Remove active state from all cards
+    cards.forEach(c => {
+      c.classList.remove('an-programs__card--active');
+      c.setAttribute('aria-pressed', 'false');
+    });
+
+    // Add active state to clicked card
+    card.classList.add('an-programs__card--active');
+    card.setAttribute('aria-pressed', 'true');
+    
+    // Update grid data attribute
+    programsGrid.setAttribute('data-active-card', card.getAttribute('data-card-index'));
+
+    // Smooth scroll to card on mobile
+    if (window.innerWidth < 768) {
+      setTimeout(() => {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 300);
+    }
+
+    // Announce to screen readers
+    const title = card.querySelector('.an-programs__title').textContent;
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.className = 'visually-hidden';
+    announcement.textContent = `Selected ${title} program`;
+    document.body.appendChild(announcement);
+    setTimeout(() => announcement.remove(), 1000);
+  }
+
+  // Click event for cards
+  cards.forEach(card => {
+    card.addEventListener('click', function() {
+      if (this !== activeCard) {
+        activateCard(this);
+        activeCard = this;
+      }
+    });
+
+    // Keyboard support
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (this !== activeCard) {
+          activateCard(this);
+          activeCard = this;
+        }
+      }
+    });
+  });
+
+  // Add comparison hint
+  const hint = document.createElement('p');
+  hint.className = 'an-programs__comparison-hint';
+  hint.textContent = '👆 Click any program to compare details';
+  programsGrid.after(hint);
+
+  // Intersection observer for entrance animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach(card => {
+    card.style.animationPlayState = 'paused';
+    observer.observe(card);
+  });
+});
+</script>
 
 {% schema %}
 {
@@ -545,7 +728,7 @@
             "payment_plan": "or 6 payments of $170",
             "features": "Everything in Guided, Private 1:1 with Eli, VIP Email Access, Advanced Healing Workshops, Forever Alumni Family, Signed Book Collection",
             "includes": "The deepest level of support for parents ready to break generational cycles",
-            "cta_text": "Apply for VIP 👑"
+            "cta_text": "Apply for VIP 👑",
             "cta_link": "/apply/spp-plus",
             "show_guarantee": true,
             "guarantee_text": "30 days to fall in love (or your money back)"

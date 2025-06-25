@@ -49,7 +49,8 @@
         {% if section.settings.button_text != blank %}
           <div class="feature-showcase__cta">
             <a href="{{ section.settings.button_link }}" 
-               class="btn btn-primary-modern feature-showcase__button">
+               class="btn btn-primary-modern feature-showcase__button"
+               style="color: var(--c-white) !important;">
               {{ section.settings.button_text }}
             </a>
             {% if section.settings.secondary_text != blank %}

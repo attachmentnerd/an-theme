@@ -17,7 +17,9 @@
                 background: var(--g-brand);
               {% endif %}
               {% if section.settings.button_text_color %}
-                color: {{ section.settings.button_text_color }};
+                color: {{ section.settings.button_text_color }} !important;
+              {% else %}
+                color: var(--c-white) !important;
               {% endif %}">
       {{ section.settings.button_text | default: 'Start Here - Pay What You Can' }}
     </a>

@@ -122,6 +122,7 @@
       <div class="book__cta-wrapper">
         <a href="{{ section.settings.cta_link | default: '#' }}" 
            class="book__cta {% if section.settings.use_gradient_button %}book__cta--gradient{% endif %}"
+           style="color: var(--c-white) !important;"
            {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
           {{ section.settings.cta_text }}
         </a>
