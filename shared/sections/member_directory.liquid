@@ -281,402 +281,417 @@
 </section>
 
 {% schema %}
-  {
-    "name": "Member Directory",
-    "deletable": "false",
-    "duplicatable": "false",
-    "elements": [
-      {
-        "type": "text",
-        "id": "text_heading",
-        "label": "Heading Text",
-        "default": "Member Directory"
-      },
-      {
-        "type": "color",
-        "id": "color_heading_text",
-        "label": "Heading Text Color",
-        "default": "",
-        "allow_blank": "true"
-      },
-      {
-        "type": "color",
-        "id": "color_filter_options",
-        "label": "Search Menu Text Color",
-        "default": "",
-        "allow_blank": "true"
-      },
-      {
-        "type": "text",
-        "id": "text_name",
-        "label": "Search Menu Name Text",
-        "default": "Name"
-      },
-      {
-        "type": "text",
-        "id": "text_location",
-        "label": "Search Menu Location Text",
-        "default": "Location"
-      },
-      {
-        "type": "text",
-        "id": "text_no_results",
-        "label": "No Results Text",
-        "default": "No Results",
-        "info": "Show this text when a search returns no results."
-      },
-      {
-        "type": "text",
-        "id": "text_search_placeholder",
-        "label": "Search Placeholder Text",
-        "default": "Search..."
-      },
-      {
-        "type": "text",
-        "id": "text_opt_in",
-        "label": "Opt In Text",
-        "default": "Don’t see any members? Please visit your member settings to opt-in to sharing your profile and see other members in the directory."
-      },
-      {
-        "type": "color",
-        "id": "color_opt_in_text",
-        "label": "Opt In Text Color",
-        "default": "",
-        "allow_blank": "true"
-      },
-      {
-        "type": "range",
-        "id": "pagination_amount",
-        "label": "Members Per Page",
-        "default": "24",
-        "min": "12",
-        "max": "48"
-      },
-      {
-        "type": "header",
-        "content": "Search Button Appearance",
-        "info": "This button shows on mobile devices only."
-      },
-      {
-        "type": "text",
-        "id": "btn_text",
-        "label": "Button Text",
-        "default": "Submit"
-      },
-      {
-        "type": "color",
-        "id": "btn_background_color",
-        "label": "Button Background Color",
-        "default": "",
-        "allow_blank": true
-      },
-      {
-        "type": "color",
-        "id": "btn_text_color",
-        "label": "Button Text Color",
-        "default": "",
-        "allow_blank": true,
-        "info": "For solid buttons only"
-      },
-      {
-        "type": "radio",
-        "id": "btn_width",
-        "label": "Button Width",
-        "default": "full",
-        "allow_blank": true,
-        "options": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "auto",
-            "label": "Auto"
-          }
-        ]
-      },
-      {
-        "type": "radio",
-        "id": "btn_style",
-        "label": "Button Style",
-        "default": "solid",
-        "allow_blank": true,
-        "options": [
-          { "label": "Solid", "value": "solid" },
-          { "label": "Outline", "value": "outline" }
-        ]
-      },
-      {
-        "type": "radio",
-        "id": "btn_size",
-        "label": "Button Size",
-        "default": "medium",
-        "allow_blank": true,
-        "options": [
-          { "label": "Small", "value": "small" },
-          { "label": "Medium", "value": "medium" },
-          { "label": "Large", "value": "large" }
-        ]
-      },
-      {
-        "type": "text",
-        "id": "btn_border_radius",
-        "label": "Border Radius",
-        "default": "",
-        "allow_blank": true
-      },
-      {
-        "type": "header",
-        "content": "Member Appearance"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_avatar",
-        "label": "Show Member Avatar",
-        "default": "true"
-      },
-      {
-        "type": "color",
-        "label": "Background Color",
-        "id": "member_background_color",
-        "allow_blank": true,
-        "default": "#fff"
-      },
-      {
-        "type": "color",
-        "label": "Name Text Color",
-        "id": "color_name_text",
-        "allow_blank": true,
-        "default": ""
-      },
-      {
-        "type": "color",
-        "label": "Location Text Color",
-        "id": "color_location_text",
-        "allow_blank": true,
-        "default": ""
-      },
-      {
-        "type": "color",
-        "label": "Social Icon Color",
-        "id": "color_social_icon",
-        "allow_blank": true,
-        "default": ""
-      },
-      {
-        "type": "checkbox",
-        "id": "new_tab",
-        "label": "Open Social Link in New Tab",
-        "default": "true"
-      },
-      {
-        "type": "select",
-        "id": "border_type",
-        "label": "Border Type",
-        "default": "",
-        "options": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "solid",
-            "label": "Solid"
-          },
-          {
-            "value": "dotted",
-            "label": "Dotted"
-          },
-          {
-            "value": "dashed",
-            "label": "Dashed"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "ridge",
-            "label": "Ridge"
-          }
-        ]
-      },
-      {
-        "type": "range",
-        "id": "border_width",
-        "label": "Border Width",
-        "default": "1",
-        "min": "0",
-        "max": "10"
-      },
-      {
-        "type": "color",
-        "id": "border_color",
-        "label": "Border Color",
-        "default": "",
-        "allow_blank": "true"
-      },
-      {
-        "type": "range",
-        "id": "border_radius",
-        "label": "Border Radius",
-        "default": "4",
-        "min": "0",
-        "max": "50"
-      },
-      {
-        "type": "select",
-        "id": "box_shadow",
-        "label": "Box Shadow",
-        "default": "medium",
-        "options": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "small",
-            "label": "Small"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "large",
-            "label": "Large"
-          }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "Pagination Appearance"
-      },
-      {
-        "type": "color",
-        "label": "Pagination Default Color",
-        "id": "color_pagination_default",
-        "allow_blank": true,
-        "default": ""
-      },
-      {
-        "type": "color",
-        "label": "Pagination Disabled Color",
-        "id": "color_pagination_disabled",
-        "allow_blank": true,
-        "default": ""
-      }
-    ],
-    "groups": [
-      {
-        "name": "Background",
-        "elements": [
-          {
-            "type": "select",
-            "id": "bg_type",
-            "label": "Background Media Type",
-            "default": "none",
-            "options": [
-              {
-                "value": "none",
-                "label": "None"
-              },
-              {
-                "value": "image",
-                "label": "Image"
-              },
-              {
-                "value": "video",
-                "label": "Video"
-              }
-            ]
-          },
-          {
-            "type": "video",
-            "id": "bg_video",
-            "label": "Background Video"
-          },
-          {
-            "type": "image_picker",
-            "id": "bg_image",
-            "label": "Background Image",
-            "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
-            "fit": "max",
-            "width": 3000,
-            "height": 3000
-          },
-          {
-            "type": "radio",
-            "id": "bg_position",
-            "label": "Background Image Position",
-            "default": "center",
-            "info": "Vertical positioning of the background image.",
-            "options": [
-              {
-                "value": "top",
-                "label": "Top"
-              },
-              {
-                "value": "center",
-                "label": "Center"
-              },
-              {
-                "value": "bottom",
-                "label": "Bottom"
-              }
-            ]
-          },
-          {
-            "type": "checkbox",
-            "id": "background_fixed",
-            "label": "Fixed Background Image",
-            "default": "false",
-            "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
-          },
-          {
-            "type": "color",
-            "label": "Background Color",
-            "id": "background_color",
-            "default": "",
-            "allow_blank": true,
-            "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
-          }
-        ]
-      },
-      {
-        "name": "Desktop Layout",
-        "elements": [
-          {
-            "type": "spacer",
-            "id": "padding_desktop",
-            "label": "Desktop Section Padding",
-            "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
-            "placeholder": {
-              "top": "100",
-              "right": "40",
-              "bottom": "100",
-              "left": "40"
+{
+  "name": "Forms - Member Directory",
+  "deletable": "false",
+  "duplicatable": "false",
+  "elements": [
+    {
+      "type": "text",
+      "id": "text_heading",
+      "label": "Heading Text",
+      "default": "Member Directory"
+    },
+    {
+      "type": "color",
+      "id": "color_heading_text",
+      "label": "Heading Text Color",
+      "default": "",
+      "allow_blank": "true"
+    },
+    {
+      "type": "color",
+      "id": "color_filter_options",
+      "label": "Search Menu Text Color",
+      "default": "",
+      "allow_blank": "true"
+    },
+    {
+      "type": "text",
+      "id": "text_name",
+      "label": "Search Menu Name Text",
+      "default": "Name"
+    },
+    {
+      "type": "text",
+      "id": "text_location",
+      "label": "Search Menu Location Text",
+      "default": "Location"
+    },
+    {
+      "type": "text",
+      "id": "text_no_results",
+      "label": "No Results Text",
+      "default": "No Results",
+      "info": "Show this text when a search returns no results."
+    },
+    {
+      "type": "text",
+      "id": "text_search_placeholder",
+      "label": "Search Placeholder Text",
+      "default": "Search..."
+    },
+    {
+      "type": "text",
+      "id": "text_opt_in",
+      "label": "Opt In Text",
+      "default": "Don’t see any members? Please visit your member settings to opt-in to sharing your profile and see other members in the directory."
+    },
+    {
+      "type": "color",
+      "id": "color_opt_in_text",
+      "label": "Opt In Text Color",
+      "default": "",
+      "allow_blank": "true"
+    },
+    {
+      "type": "range",
+      "id": "pagination_amount",
+      "label": "Members Per Page",
+      "default": "24",
+      "min": "12",
+      "max": "48"
+    },
+    {
+      "type": "header",
+      "content": "Search Button Appearance",
+      "info": "This button shows on mobile devices only."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Submit"
+    },
+    {
+      "type": "color",
+      "id": "btn_background_color",
+      "label": "Button Background Color",
+      "default": "",
+      "allow_blank": true
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button Text Color",
+      "default": "",
+      "allow_blank": true,
+      "info": "For solid buttons only"
+    },
+    {
+      "type": "radio",
+      "id": "btn_width",
+      "label": "Button Width",
+      "default": "full",
+      "allow_blank": true,
+      "options": [
+        {
+          "value": "full",
+          "label": "Full"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "btn_style",
+      "label": "Button Style",
+      "default": "solid",
+      "allow_blank": true,
+      "options": [
+        {
+          "label": "Solid",
+          "value": "solid"
+        },
+        {
+          "label": "Outline",
+          "value": "outline"
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "btn_size",
+      "label": "Button Size",
+      "default": "medium",
+      "allow_blank": true,
+      "options": [
+        {
+          "label": "Small",
+          "value": "small"
+        },
+        {
+          "label": "Medium",
+          "value": "medium"
+        },
+        {
+          "label": "Large",
+          "value": "large"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_border_radius",
+      "label": "Border Radius",
+      "default": "",
+      "allow_blank": true
+    },
+    {
+      "type": "header",
+      "content": "Member Appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_avatar",
+      "label": "Show Member Avatar",
+      "default": "true"
+    },
+    {
+      "type": "color",
+      "label": "Background Color",
+      "id": "member_background_color",
+      "allow_blank": true,
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "label": "Name Text Color",
+      "id": "color_name_text",
+      "allow_blank": true,
+      "default": ""
+    },
+    {
+      "type": "color",
+      "label": "Location Text Color",
+      "id": "color_location_text",
+      "allow_blank": true,
+      "default": ""
+    },
+    {
+      "type": "color",
+      "label": "Social Icon Color",
+      "id": "color_social_icon",
+      "allow_blank": true,
+      "default": ""
+    },
+    {
+      "type": "checkbox",
+      "id": "new_tab",
+      "label": "Open Social Link in New Tab",
+      "default": "true"
+    },
+    {
+      "type": "select",
+      "id": "border_type",
+      "label": "Border Type",
+      "default": "",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "dotted",
+          "label": "Dotted"
+        },
+        {
+          "value": "dashed",
+          "label": "Dashed"
+        },
+        {
+          "value": "double",
+          "label": "Double"
+        },
+        {
+          "value": "ridge",
+          "label": "Ridge"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border Width",
+      "default": "1",
+      "min": "0",
+      "max": "10"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "",
+      "allow_blank": "true"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius",
+      "default": "4",
+      "min": "0",
+      "max": "50"
+    },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Box Shadow",
+      "default": "medium",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Pagination Appearance"
+    },
+    {
+      "type": "color",
+      "label": "Pagination Default Color",
+      "id": "color_pagination_default",
+      "allow_blank": true,
+      "default": ""
+    },
+    {
+      "type": "color",
+      "label": "Pagination Disabled Color",
+      "id": "color_pagination_disabled",
+      "allow_blank": true,
+      "default": ""
+    }
+  ],
+  "groups": [
+    {
+      "name": "Background",
+      "elements": [
+        {
+          "type": "select",
+          "id": "bg_type",
+          "label": "Background Media Type",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
             }
-          }
-        ]
-      },
-      {
-        "name": "Mobile Layout",
-        "elements": [
-          {
-            "type": "spacer",
-            "id": "padding_mobile",
-            "label": "Mobile Section Padding",
-            "info": "Adjust padding inside of the section",
-            "placeholder": {
-              "top": "40",
-              "right": "10",
-              "bottom": "40",
-              "left": "10"
+          ]
+        },
+        {
+          "type": "video",
+          "id": "bg_video",
+          "label": "Background Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "Background Image",
+          "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+          "fit": "max",
+          "width": 3000,
+          "height": 3000
+        },
+        {
+          "type": "radio",
+          "id": "bg_position",
+          "label": "Background Image Position",
+          "default": "center",
+          "info": "Vertical positioning of the background image.",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
             }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "background_fixed",
+          "label": "Fixed Background Image",
+          "default": "false",
+          "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+        },
+        {
+          "type": "color",
+          "label": "Background Color",
+          "id": "background_color",
+          "default": "",
+          "allow_blank": true,
+          "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+        }
+      ]
+    },
+    {
+      "name": "Desktop Layout",
+      "elements": [
+        {
+          "type": "spacer",
+          "id": "padding_desktop",
+          "label": "Desktop Section Padding",
+          "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+          "placeholder": {
+            "top": "100",
+            "right": "40",
+            "bottom": "100",
+            "left": "40"
           }
-        ]
-      }
-    ]
-  }
+        }
+      ]
+    },
+    {
+      "name": "Mobile Layout",
+      "elements": [
+        {
+          "type": "spacer",
+          "id": "padding_mobile",
+          "label": "Mobile Section Padding",
+          "info": "Adjust padding inside of the section",
+          "placeholder": {
+            "top": "40",
+            "right": "10",
+            "bottom": "40",
+            "left": "10"
+          }
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}

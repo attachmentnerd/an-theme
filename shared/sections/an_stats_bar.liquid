@@ -290,7 +290,7 @@
 
 {% schema %}
 {
-  "name": "Stats Bar",
+  "name": "Content - Stats Bar",
   "elements": [
     {
       "type": "text",
@@ -303,8 +303,14 @@
       "id": "background_type",
       "label": "Background Type",
       "options": [
-        { "value": "solid", "label": "Solid Color" },
-        { "value": "gradient", "label": "Brand Gradient" }
+        {
+          "value": "solid",
+          "label": "Solid Color"
+        },
+        {
+          "value": "gradient",
+          "label": "Brand Gradient"
+        }
       ],
       "default": "gradient"
     },
@@ -363,12 +369,30 @@
           "id": "icon_type",
           "label": "Icon Type",
           "options": [
-            { "value": "users", "label": "Users" },
-            { "value": "heart", "label": "Heart" },
-            { "value": "book", "label": "Book" },
-            { "value": "star", "label": "Star" },
-            { "value": "clock", "label": "Clock" },
-            { "value": "custom", "label": "Custom Image" }
+            {
+              "value": "users",
+              "label": "Users"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "book",
+              "label": "Book"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "custom",
+              "label": "Custom Image"
+            }
           ],
           "default": "users"
         },

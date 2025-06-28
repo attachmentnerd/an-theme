@@ -53,16 +53,166 @@ const CATEGORIES = {
   'Page Templates': ['page-coaching', 'page-raising-securely-attached-kids', 'page-securely-attached']
 };
 
-// Image size mappings for different contexts
-const IMAGE_SIZES = {
-  hero: '1920x800',
-  book: '600x900',
-  author: '400x400',
-  feature: '800x600',
-  testimonial: '100x100',
-  logo: '200x100',
-  icon: '64x64',
-  default: '800x600'
+// Lorem Ipsum generators
+const LOREM = {
+  // Short phrases for headings
+  headings: [
+    'Transform Your Life Today',
+    'Discover the Science of Connection',
+    'Building Secure Futures Together',
+    'Evidence-Based Parenting Solutions',
+    'Nurturing Bonds That Last',
+    'The Path to Secure Attachment',
+    'Raising Resilient Children',
+    'Science Meets Heart',
+    'Empowering Parents Worldwide',
+    'Creating Lasting Change'
+  ],
+  
+  // Subheadings
+  subheadings: [
+    'Join thousands of parents who have transformed their relationships',
+    'Evidence-based strategies that actually work in real life',
+    'Simple tools for complex parenting challenges',
+    'Where neuroscience meets practical parenting',
+    'Building secure attachment one moment at a time',
+    'Transform challenging behaviors with compassion',
+    'The support you need for the family you want',
+    'Practical wisdom backed by decades of research'
+  ],
+  
+  // Button text variations
+  buttons: [
+    'Get Started', 'Learn More', 'Join Now', 'Start Today',
+    'Download Guide', 'Watch Free Video', 'Book a Call',
+    'Get Instant Access', 'Sign Me Up', 'Yes, I Want This'
+  ],
+  
+  // Paragraphs of varying lengths
+  paragraphs: {
+    short: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    medium: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    long: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  },
+  
+  // Names for testimonials
+  names: [
+    'Sarah Johnson', 'Michael Chen', 'Emily Rodriguez', 'David Kim',
+    'Jessica Martinez', 'Robert Taylor', 'Amanda Williams', 'Chris Lee',
+    'Maria Garcia', 'John Anderson', 'Rachel Brown', 'Alex Thompson'
+  ],
+  
+  // Titles/roles
+  titles: [
+    'Mother of Two', 'Parent Coach', 'Elementary Teacher', 'Child Psychologist',
+    'Father of Three', 'Pediatric Nurse', 'Family Therapist', 'School Counselor',
+    'CEO & Mom', 'Stay-at-Home Dad', 'Parenting Educator', 'Child Development Expert'
+  ],
+  
+  // Testimonials
+  testimonials: [
+    'This program completely transformed our family dynamics. My children are more confident and our home is more peaceful.',
+    'I wish I had found this resource years ago! The strategies are practical and actually work in real-life situations.',
+    'As a therapist, I recommend this to all my clients. The science-based approach combined with heart makes all the difference.',
+    'My anxious child is now thriving thanks to these attachment-focused techniques. We\'re all calmer and more connected.',
+    'The support from this community has been invaluable. I finally feel equipped to handle challenging behaviors with confidence.'
+  ],
+  
+  // Product/book titles
+  products: [
+    'The Attachment Workbook',
+    'Raising Securely Attached Kids',
+    'Circle of Security Parenting',
+    'The Connected Child Handbook',
+    'Emotional Regulation for Parents',
+    'Building Resilient Families'
+  ],
+  
+  // Email subjects for newsletter
+  emailSubjects: [
+    'How to Handle Tantrums with Compassion',
+    'Building Trust After Difficult Moments',
+    'The Science Behind Secure Attachment',
+    'Creating Calm in Chaos: 5 Strategies',
+    'Why Connection Matters More Than Correction'
+  ],
+  
+  // Resource titles
+  resources: [
+    'Attachment Theory Quick Guide',
+    'Daily Connection Activities',
+    'Emotional Regulation Toolkit',
+    'Secure Base Checklist',
+    'Repair & Reconnect Guide'
+  ],
+  
+  // FAQ questions
+  faqQuestions: [
+    'How long does it take to see results?',
+    'Is this approach evidence-based?',
+    'What age groups does this work for?',
+    'How is this different from other parenting methods?',
+    'Can I use this with neurodivergent children?'
+  ],
+  
+  // FAQ answers
+  faqAnswers: [
+    'Most parents report seeing positive changes within 2-3 weeks of consistent practice. The key is consistency and patience as you build new patterns of connection.',
+    'Yes! Our approach is grounded in over 50 years of attachment research and neuroscience. Every strategy we teach has been validated through rigorous scientific study.',
+    'The principles of secure attachment apply from infancy through adolescence. We provide age-appropriate strategies for children from birth to 18 years.',
+    'Unlike traditional behavior-focused methods, we address the root cause - the need for connection and safety. This creates lasting change rather than temporary compliance.',
+    'Absolutely. In fact, children with ADHD, autism, and other neurodivergent profiles often benefit greatly from attachment-focused approaches that prioritize connection over correction.'
+  ],
+  
+  // Features/benefits
+  features: [
+    'Science-based strategies',
+    'Weekly live coaching calls',
+    'Private community access',
+    'Downloadable resources',
+    'Certificate of completion',
+    'Lifetime access to materials',
+    'Mobile app included',
+    '30-day money-back guarantee'
+  ],
+  
+  // Stats
+  stats: {
+    labels: ['Happy Families', 'Years of Experience', 'Success Rate', 'Countries Reached', 'Active Members', 'Research Studies'],
+    values: ['10,000+', '25', '97%', '45+', '5,000+', '200+']
+  }
+};
+
+// Lorem Picsum configuration
+const PICSUM_CONFIG = {
+  // Base URL
+  baseUrl: 'https://picsum.photos',
+  
+  // Size mappings
+  sizes: {
+    hero: { width: 1920, height: 800 },
+    book: { width: 600, height: 900 },
+    author: { width: 400, height: 400 },
+    avatar: { width: 100, height: 100 },
+    feature: { width: 800, height: 600 },
+    testimonial: { width: 100, height: 100 },
+    logo: { width: 200, height: 100 },
+    icon: { width: 64, height: 64 },
+    card: { width: 400, height: 300 },
+    default: { width: 800, height: 600 }
+  },
+  
+  // Special image IDs for consistent themes
+  peopleIds: [64, 65, 91, 103, 177, 203, 334, 338, 342, 349, 433, 447, 473, 505, 548],
+  natureIds: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  abstractIds: [1, 48, 82, 99, 119, 145, 168, 184, 190, 237],
+  
+  // Style variations
+  styles: {
+    grayscale: '?grayscale',
+    blur: '?blur=2',
+    normal: ''
+  }
 };
 
 // Helper function to get category for a section
@@ -78,125 +228,362 @@ function getCategory(filename) {
   return 'Other Sections';
 }
 
-// Helper function to determine image size based on context
-function getImageSize(content, context = '') {
-  if (content.includes('hero') || context.includes('hero')) return IMAGE_SIZES.hero;
-  if (content.includes('book') || context.includes('book')) return IMAGE_SIZES.book;
-  if (content.includes('author') || content.includes('avatar')) return IMAGE_SIZES.author;
-  if (content.includes('testimonial')) return IMAGE_SIZES.testimonial;
-  if (content.includes('logo')) return IMAGE_SIZES.logo;
-  if (content.includes('icon')) return IMAGE_SIZES.icon;
-  if (content.includes('feature')) return IMAGE_SIZES.feature;
-  return IMAGE_SIZES.default;
+// Helper function to get random item from array
+function getRandom(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+// Helper function to get Lorem Picsum URL
+function getLoremPicsumUrl(context = '', imageNumber = 1, sectionName = '') {
+  // Determine image type and size
+  let sizeKey = 'default';
+  let imageId = null;
+  let style = PICSUM_CONFIG.styles.normal;
+  
+  // Match context to size
+  if (context.includes('hero') || sectionName.includes('hero')) {
+    sizeKey = 'hero';
+    imageId = getRandom(PICSUM_CONFIG.natureIds);
+  } else if (context.includes('book')) {
+    sizeKey = 'book';
+    imageId = getRandom(PICSUM_CONFIG.abstractIds);
+    style = imageNumber % 2 === 0 ? PICSUM_CONFIG.styles.grayscale : '';
+  } else if (context.includes('author') || context.includes('avatar') || context.includes('testimonial')) {
+    sizeKey = context.includes('testimonial') ? 'testimonial' : 'author';
+    imageId = getRandom(PICSUM_CONFIG.peopleIds);
+  } else if (context.includes('logo')) {
+    sizeKey = 'logo';
+    style = PICSUM_CONFIG.styles.grayscale;
+  } else if (context.includes('feature')) {
+    sizeKey = 'feature';
+  } else if (context.includes('card')) {
+    sizeKey = 'card';
+  }
+  
+  const size = PICSUM_CONFIG.sizes[sizeKey];
+  
+  // Build URL with optional ID
+  if (imageId) {
+    return `${PICSUM_CONFIG.baseUrl}/id/${imageId}/${size.width}/${size.height}${style}`;
+  } else {
+    // Use seed for consistency within a section
+    const seed = sectionName + imageNumber;
+    return `${PICSUM_CONFIG.baseUrl}/seed/${seed}/${size.width}/${size.height}${style}`;
+  }
+}
+
+// Generate contextual Lorem content
+function getLoremContent(key, context = '') {
+  switch(key) {
+    case 'heading':
+    case 'title':
+      return getRandom(LOREM.headings);
+    
+    case 'subheading':
+    case 'subtitle':
+      return getRandom(LOREM.subheadings);
+    
+    case 'description':
+    case 'text':
+      return getRandom([LOREM.paragraphs.short, LOREM.paragraphs.medium]);
+    
+    case 'content':
+      return `<p>${LOREM.paragraphs.medium}</p><p>${LOREM.paragraphs.short}</p>`;
+    
+    case 'button_text':
+    case 'cta_text':
+      return getRandom(LOREM.buttons);
+    
+    case 'name':
+    case 'author':
+    case 'author_name':
+      return getRandom(LOREM.names);
+    
+    case 'author_title':
+    case 'role':
+      return getRandom(LOREM.titles);
+    
+    case 'testimonial':
+    case 'quote':
+      return getRandom(LOREM.testimonials);
+    
+    case 'product_title':
+    case 'book_title':
+      return getRandom(LOREM.products);
+    
+    case 'bio':
+      return LOREM.paragraphs.medium;
+    
+    case 'email_placeholder':
+    case 'placeholder':
+      return 'your@email.com';
+    
+    case 'label':
+    case 'micro_label':
+      return getRandom(['NEW', 'FEATURED', 'BESTSELLER', 'LIMITED TIME', 'POPULAR']);
+    
+    case 'price':
+      return '$' + (Math.floor(Math.random() * 200) + 49);
+    
+    case 'original_price':
+      return '$' + (Math.floor(Math.random() * 100) + 149);
+    
+    case 'discount_text':
+      return 'Save ' + (Math.floor(Math.random() * 50) + 10) + '%';
+    
+    case 'question':
+    case 'faq_question':
+      return getRandom(LOREM.faqQuestions);
+    
+    case 'answer':
+    case 'faq_answer':
+      return getRandom(LOREM.faqAnswers);
+    
+    case 'resource_title':
+    case 'resource_name':
+      return getRandom(LOREM.resources);
+    
+    case 'email_subject':
+    case 'newsletter_title':
+      return getRandom(LOREM.emailSubjects);
+    
+    case 'video_url':
+    case 'youtube_url':
+      return 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+    
+    case 'embed_code':
+      return '<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>';
+    
+    default:
+      // For stats and other specific keys
+      if (key.includes('statistics') && key.includes('label')) {
+        return getRandom(LOREM.stats.labels);
+      }
+      if (key.includes('statistics') && key.includes('value')) {
+        return getRandom(LOREM.stats.values);
+      }
+      if (key === 'features') {
+        return LOREM.features.slice(0, 4).join('|');
+      }
+      if (key.includes('icon')) {
+        return getRandom(['fas fa-heart', 'fas fa-star', 'fas fa-check-circle', 'fas fa-shield-alt', 'fas fa-users']);
+      }
+      
+      // Default fallback
+      return `Sample ${key.replace(/_/g, ' ')}`;
+  }
 }
 
 // Helper function to replace Liquid variables with demo content
 function processLiquidContent(content, sectionName) {
   let processed = content;
+  let imageCounter = 1;
   
   // Remove Liquid schema blocks
   processed = processed.replace(/\{%\s*schema\s*%\}[\s\S]*?\{%\s*endschema\s*%\}/g, '');
   
-  // Replace section settings with demo values
-  const demoSettings = {
-    heading: `Demo ${sectionName} Heading`,
-    subheading: 'This is a demo subheading showing how this section looks with content.',
-    title: `${sectionName} Title`,
-    subtitle: 'Subtitle text for demonstration purposes',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    button_text: 'Learn More',
-    cta_text: 'Get Started',
-    link: '#',
-    url: '#',
-    text: 'Sample text content for this section.',
-    content: '<p>This is sample content demonstrating how rich text appears in this section. It can include <strong>bold text</strong>, <em>italic text</em>, and multiple paragraphs.</p><p>Second paragraph showing layout and spacing.</p>',
-    label: 'Featured',
-    name: 'John Doe',
-    bio: 'Professional in the field with years of experience.',
-    quote: 'This is an inspirational quote that demonstrates how testimonials appear in this section.',
-    testimonial: 'I absolutely love this product! It has transformed the way I work.',
-    author: 'Jane Smith',
-    author_title: 'CEO, Example Company',
-    email_placeholder: 'Enter your email',
-    placeholder: 'Your email address',
-    statistics_1_label: 'Happy Customers',
-    statistics_1_value: '10,000+',
-    statistics_2_label: 'Years of Experience', 
-    statistics_2_value: '15',
-    statistics_3_label: 'Success Rate',
-    statistics_3_value: '98%',
-    price: '$99',
-    original_price: '$149',
-    discount_text: 'Save 33%',
-    features: 'Feature 1|Feature 2|Feature 3|Feature 4'
-  };
-  
-  // Replace section.settings variables
-  Object.entries(demoSettings).forEach(([key, value]) => {
-    const patterns = [
-      new RegExp(`\\{\\{\\s*section\\.settings\\.${key}\\s*\\}\\}`, 'g'),
-      new RegExp(`\\{\\{\\s*section\\.settings\\.${key}\\s*\\|[^}]+\\}\\}`, 'g')
-    ];
+  // Replace section.settings variables with contextual Lorem content
+  processed = processed.replace(/\{\{\s*section\.settings\.(\w+)(?:\s*\|[^}]+)?\s*\}\}/g, (match, key) => {
+    const lowerKey = key.toLowerCase();
     
-    patterns.forEach(pattern => {
-      processed = processed.replace(pattern, value);
-    });
-  });
-  
-  // Replace block settings
-  processed = processed.replace(/\{\{\s*block\.settings\.(\w+)\s*\}\}/g, (match, key) => {
-    return demoSettings[key] || `Demo ${key}`;
-  });
-  
-  // Replace image URLs with Lorem Picsum
-  const imageSize = getImageSize(content, sectionName);
-  let imageCounter = 1;
-  processed = processed.replace(/\{\{\s*[^}]*image[^}]*\|\s*image_picker_url[^}]*\}\}/g, () => {
-    return `https://picsum.photos/${imageSize}?random=${imageCounter++}`;
-  });
-  processed = processed.replace(/\{\{\s*section\.settings\.\w*image\w*\s*\}\}/g, () => {
-    return `https://picsum.photos/${imageSize}?random=${imageCounter++}`;
-  });
-  processed = processed.replace(/\{\{\s*block\.settings\.\w*image\w*\s*\}\}/g, () => {
-    return `https://picsum.photos/${imageSize}?random=${imageCounter++}`;
-  });
-  
-  // Handle for loops - create demo blocks
-  processed = processed.replace(/\{%\s*for\s+(\w+)\s+in\s+section\.blocks\s*%\}/g, (match, varName) => {
-    let demoBlocks = '';
-    for (let i = 1; i <= 3; i++) {
-      demoBlocks += `<div class="demo-block-${i}">`;
+    // Special handling for specific keys
+    if (lowerKey.includes('image') || lowerKey.includes('logo') || lowerKey.includes('avatar')) {
+      return getLoremPicsumUrl(lowerKey, imageCounter++, sectionName);
     }
+    
+    if (lowerKey === 'link' || lowerKey === 'url' || lowerKey.includes('_url')) {
+      return '#';
+    }
+    
+    // Generate contextual content
+    return getLoremContent(lowerKey, sectionName);
+  });
+  
+  // Replace block.settings variables
+  processed = processed.replace(/\{\{\s*block\.settings\.(\w+)(?:\s*\|[^}]+)?\s*\}\}/g, (match, key) => {
+    const lowerKey = key.toLowerCase();
+    
+    if (lowerKey.includes('image') || lowerKey.includes('logo') || lowerKey.includes('avatar')) {
+      return getLoremPicsumUrl(lowerKey, imageCounter++, sectionName);
+    }
+    
+    if (lowerKey === 'link' || lowerKey === 'url' || lowerKey.includes('_url')) {
+      return '#';
+    }
+    
+    return getLoremContent(lowerKey, sectionName);
+  });
+  
+  // Replace standalone image variables
+  processed = processed.replace(/\{\{\s*[^}]*image[^}]*\|\s*image_picker_url[^}]*\}\}/g, (match) => {
+    const context = match.toLowerCase();
+    return getLoremPicsumUrl(context, imageCounter++, sectionName);
+  });
+  
+  // Handle for loops - create demo blocks with varied content
+  processed = processed.replace(/\{%\s*for\s+(\w+)\s+in\s+section\.blocks\s*%\}([\s\S]*?)\{%\s*endfor\s*%\}/g, (match, varName, loopContent) => {
+    let demoBlocks = '';
+    let numBlocks = 3;
+    
+    // Determine number of blocks based on section type
+    if (sectionName.includes('testimonial')) numBlocks = 4;
+    if (sectionName.includes('stats') || sectionName.includes('statistics')) numBlocks = 4;
+    if (sectionName.includes('feature')) numBlocks = 3;
+    if (sectionName.includes('faq')) numBlocks = 5;
+    if (sectionName.includes('team') || sectionName.includes('coach')) numBlocks = 3;
+    if (sectionName.includes('resource')) numBlocks = 4;
+    
+    for (let i = 1; i <= numBlocks; i++) {
+      let blockContent = loopContent;
+      
+      // Replace block variables with unique content for each iteration
+      blockContent = blockContent.replace(/\{\{\s*(?:block|item)\.settings\.(\w+)(?:\s*\|[^}]+)?\s*\}\}/g, (m, key) => {
+        const lowerKey = key.toLowerCase();
+        
+        if (lowerKey.includes('image') || lowerKey.includes('avatar')) {
+          return getLoremPicsumUrl(lowerKey, imageCounter++, sectionName);
+        }
+        
+        // Generate unique content for each block
+        if (lowerKey === 'heading' || lowerKey === 'title') {
+          return LOREM.headings[(i - 1) % LOREM.headings.length];
+        }
+        if (lowerKey === 'name' || lowerKey === 'author') {
+          return LOREM.names[(i - 1) % LOREM.names.length];
+        }
+        if (lowerKey === 'testimonial' || lowerKey === 'quote') {
+          return LOREM.testimonials[(i - 1) % LOREM.testimonials.length];
+        }
+        if (lowerKey === 'role' || lowerKey === 'author_title' || lowerKey === 'title') {
+          return LOREM.titles[(i - 1) % LOREM.titles.length];
+        }
+        if (lowerKey === 'question' || lowerKey === 'faq_question') {
+          return LOREM.faqQuestions[(i - 1) % LOREM.faqQuestions.length];
+        }
+        if (lowerKey === 'answer' || lowerKey === 'faq_answer') {
+          return LOREM.faqAnswers[(i - 1) % LOREM.faqAnswers.length];
+        }
+        if (lowerKey === 'stat_value' || lowerKey === 'value') {
+          return LOREM.stats.values[(i - 1) % LOREM.stats.values.length];
+        }
+        if (lowerKey === 'stat_label' || lowerKey === 'label') {
+          return LOREM.stats.labels[(i - 1) % LOREM.stats.labels.length];
+        }
+        
+        return getLoremContent(lowerKey, sectionName);
+      });
+      
+      // Also handle {{ block.variable }} pattern without settings
+      blockContent = blockContent.replace(/\{\{\s*(?:block|item)\.(\w+)(?:\s*\|[^}]+)?\s*\}\}/g, (m, key) => {
+        if (key === 'id') return `block-${i}`;
+        if (key === 'type') return 'content_block';
+        return '';
+      });
+      
+      // Replace forloop variables
+      blockContent = blockContent.replace(/\{\{\s*forloop\.index\s*\}\}/g, i.toString());
+      blockContent = blockContent.replace(/\{\{\s*forloop\.index0\s*\}\}/g, (i - 1).toString());
+      blockContent = blockContent.replace(/\{\{\s*forloop\.first\s*\}\}/g, i === 1 ? 'true' : '');
+      blockContent = blockContent.replace(/\{\{\s*forloop\.last\s*\}\}/g, i === numBlocks ? 'true' : '');
+      
+      demoBlocks += blockContent;
+    }
+    
     return demoBlocks;
   });
-  processed = processed.replace(/\{%\s*endfor\s*%\}/g, '</div></div></div>');
   
-  // Replace block.type checks with demo content
-  processed = processed.replace(/\{%\s*if\s+block\.type\s*==\s*['"](\w+)['"]\s*%\}/g, '<!-- Demo block type: $1 -->');
-  processed = processed.replace(/\{%\s*elsif\s+block\.type\s*==\s*['"](\w+)['"]\s*%\}/g, '<!-- Demo block type: $1 -->');
+  // Handle if/elsif/else statements more intelligently
+  processed = processed.replace(/\{%\s*if\s+([^%]+)\s*%\}([\s\S]*?)(?:\{%\s*else\s*%\}([\s\S]*?))?\{%\s*endif\s*%\}/g, (match, condition, ifContent, elseContent) => {
+    // For demo, usually show the if content unless it's checking for empty
+    if (condition.includes('blank') || condition.includes('empty') || condition.includes('nil')) {
+      return elseContent || '';
+    }
+    return ifContent;
+  });
   
   // Handle unless statements
-  processed = processed.replace(/\{%\s*unless[^%]*%\}/g, '<!-- unless -->');
-  processed = processed.replace(/\{%\s*endunless\s*%\}/g, '<!-- endunless -->');
-  
-  // Replace remaining Liquid variables with placeholders
-  processed = processed.replace(/\{\{\s*[^}]+\}\}/g, (match) => {
-    if (match.includes('forloop.index')) return '1';
-    if (match.includes('forloop.first')) return 'true';
-    if (match.includes('forloop.last')) return 'false';
-    if (match.includes('class') || match.includes('id')) return '';
-    if (match.includes('url') || match.includes('link')) return '#';
-    if (match.includes('size') || match.includes('length')) return '3';
+  processed = processed.replace(/\{%\s*unless\s+([^%]+)\s*%\}([\s\S]*?)\{%\s*endunless\s*%\}/g, (match, condition, content) => {
+    // Unless means "if not", so show content if condition would be false
+    if (condition.includes('blank') || condition.includes('empty')) {
+      return content;
+    }
     return '';
   });
   
-  // Clean up Liquid tags we don't need for demo
+  // Replace remaining Liquid variables with smart placeholders
+  processed = processed.replace(/\{\{\s*([^}]+)\s*\}\}/g, (match, variable) => {
+    const lowerVar = variable.toLowerCase();
+    
+    // Handle specific variable patterns
+    if (lowerVar.includes('image') && !match.includes('section.settings') && !match.includes('block.settings')) {
+      return getLoremPicsumUrl(lowerVar, imageCounter++, sectionName);
+    }
+    
+    if (lowerVar.includes('forloop.index')) return '1';
+    if (lowerVar.includes('forloop.first')) return 'true';
+    if (lowerVar.includes('forloop.last')) return 'false';
+    if (lowerVar.includes('class') || lowerVar.includes('id')) return '';
+    if (lowerVar.includes('url') || lowerVar.includes('link') || lowerVar.includes('href')) return '#';
+    if (lowerVar.includes('size') || lowerVar.includes('length') || lowerVar.includes('count')) return '3';
+    if (lowerVar.includes('price')) return '$99';
+    if (lowerVar.includes('date')) return new Date().toLocaleDateString();
+    if (lowerVar.includes('time')) return new Date().toLocaleTimeString();
+    if (lowerVar.includes('year')) return new Date().getFullYear().toString();
+    
+    // Handle filters
+    if (variable.includes('|')) {
+      const parts = variable.split('|');
+      const varName = parts[0].trim();
+      
+      // Try to generate appropriate content based on variable name
+      if (varName.includes('title') || varName.includes('heading')) {
+        return getRandom(LOREM.headings);
+      }
+      if (varName.includes('description') || varName.includes('text')) {
+        return LOREM.paragraphs.short;
+      }
+    }
+    
+    return '';
+  });
+  
+  // Handle include statements for snippets
+  processed = processed.replace(/\{%\s*(?:include|render)\s+['"]([^'"]+)['"]\s*(?:,\s*(.+?))?\s*%\}/g, (match, snippetName, params) => {
+    return `<!-- Snippet: ${snippetName} ${params ? 'with params' : ''} -->`;
+  });
+  
+  // Clean up remaining Liquid tags
   processed = processed.replace(/\{%\s*liquid[\s\S]*?%\}/g, '');
   processed = processed.replace(/\{%\s*comment\s*%\}[\s\S]*?\{%\s*endcomment\s*%\}/g, '');
   processed = processed.replace(/\{%\s*raw\s*%\}[\s\S]*?\{%\s*endraw\s*%\}/g, '');
+  processed = processed.replace(/\{%\s*capture\s+\w+\s*%\}[\s\S]*?\{%\s*endcapture\s*%\}/g, '');
   
-  // Convert remaining Liquid to HTML comments
-  processed = processed.replace(/\{%[^%]*%\}/g, (match) => `<!-- ${match} -->`);
+  // Handle assign statements
+  processed = processed.replace(/\{%\s*assign\s+\w+\s*=\s*[^%]+\s*%\}/g, '');
+  
+  // Convert remaining Liquid tags to HTML comments
+  processed = processed.replace(/\{%[^%]*%\}/g, (match) => {
+    // Skip already converted ones
+    if (match.includes('<!--')) return match;
+    return `<!-- ${match.trim()} -->`;
+  });
+  
+  // Add some demo-specific enhancements
+  // Ensure all buttons have hover effects
+  processed = processed.replace(/class="([^"]*btn[^"]*)"/g, (match, classes) => {
+    if (!classes.includes('btn-')) {
+      return `class="${classes} btn-primary"`;
+    }
+    return match;
+  });
+  
+  // Ensure images have alt text
+  processed = processed.replace(/<img([^>]+)>/g, (match, attrs) => {
+    if (!attrs.includes('alt=')) {
+      return `<img${attrs} alt="Demo image for ${sectionName}">`;
+    }
+    return match;
+  });
   
   return processed;
 }
@@ -237,29 +624,16 @@ function generateDemoPage() {
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="shared/styles/overrides.css">
+  
   <!-- Demo Styles -->
   <style>
-    :root {
-      /* AN Brand Colors */
-      --c-brand-600: #5E3BFF;
-      --c-brand-800: #4025E0;
-      --c-brand-100: #E9E6FF;
-      --c-accent-teal: #18D5E4;
-      --c-accent-peach: #FF8BCB;
-      --c-accent-lemon: #FFE86B;
-      --c-ink-900: #1A1A1A;
-      --c-ink-700: #4A4A4A;
-      --an-primary: #5E3BFF;
-      --an-teal: #18D5E4;
-      --an-coral: #FF8BCB;
-      --an-gold: #FFE86B;
-      --an-lavender: #E9E6FF;
-    }
-    
+    /* Demo-specific styles only */
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       line-height: 1.6;
-      color: #333;
+      color: var(--c-ink-900);
     }
     
     .demo-header {
@@ -475,8 +849,15 @@ ${content}
     </a>
   </div>
   
+  <!-- jQuery (if needed by legacy code) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Theme JavaScript -->
+  <script src="themes/website/assets/an-core.js"></script>
+  <script src="themes/website/assets/an-modules.js"></script>
   
   <!-- Demo Scripts -->
   <script>
