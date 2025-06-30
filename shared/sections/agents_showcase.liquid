@@ -5,6 +5,11 @@
       <h2 class="agents-showcase__title" style="font-size: var(--fs-display); color: var(--c-ink-900); font-weight: 500;">
         {{ section.settings.title | default: 'Agents that scale across every workflow' }}
       </h2>
+      {% if section.settings.subtitle %}
+        <p class="agents-showcase__subtitle" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+          {{ section.settings.subtitle }}
+        </p>
+      {% endif %}
     </div>
 
     <!-- Tabs and Content Container -->
@@ -55,13 +60,10 @@
                   <!-- Panel Image/Content -->
                   {% if block.settings.content_image %}
                     <div class="panel-image-container mt-4">
-                      {% render 'responsive-image',
-                        image: block.settings.content_image,
-                        alt: block.settings.image_alt,
-                        class: 'panel-image',
-                        sizes: '(max-width: 767px) 100vw, 66vw',
-                        aspect_ratio: '16/9'
-                      %}
+                      <img src="{{ block.settings.content_image | image_picker_url: 'master' }}" 
+                           alt="{{ block.settings.image_alt }}"
+                           class="panel-image img-fluid"
+                           loading="lazy">
                     </div>
                   {% endif %}
 
@@ -89,6 +91,11 @@
   .agents-showcase__title {
     margin-bottom: 0;
     line-height: 1.2;
+  }
+
+  .agents-showcase__subtitle {
+    line-height: 1.6;
+    opacity: 0.9;
   }
 
   /* Tabs Styling */
@@ -258,16 +265,29 @@
     bottom: 0;
     left: 0;
     width: 0;
-    height: 2px;
+    height: 3px;
     background: var(--c-brand-600);
     transition: width linear;
     opacity: 0;
+    transform-origin: left center;
   }
 
   .agents-showcase__tab.active.auto-scrolling::after {
     opacity: 1;
     width: 100%;
     transition-duration: var(--scroll-duration, 5s);
+  }
+
+  /* Scroll-snap for mobile */
+  @media (max-width: 991px) {
+    .agents-showcase__tabs {
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .agents-showcase__tab {
+      scroll-snap-align: start;
+    }
   }
 
   /* Mobile Responsive */
@@ -378,8 +398,23 @@
         
         // Add auto-scrolling class for progress indicator
         if (enableAutoScroll && !isPaused) {
+          // Force reflow to restart animation
+          tabs[index].offsetWidth;
           tabs[index].classList.add('auto-scrolling');
           tabs[index].style.setProperty('--scroll-duration', autoScrollDelay + 'ms');
+        }
+        
+        // Scroll tab into view on mobile
+        if (window.innerWidth <= 991) {
+          const tabsContainer = section.querySelector('.agents-showcase__tabs');
+          const activeTab = tabs[index];
+          if (tabsContainer && activeTab) {
+            const scrollLeft = activeTab.offsetLeft - (tabsContainer.offsetWidth / 2) + (activeTab.offsetWidth / 2);
+            tabsContainer.scrollTo({
+              left: scrollLeft,
+              behavior: 'smooth'
+            });
+          }
         }
       }
     }
@@ -484,6 +519,12 @@
       "id": "title",
       "label": "Section Title",
       "default": "Agents that scale across every workflow"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "placeholder": "Add a descriptive subtitle to provide more context"
     },
     {
       "type": "color",

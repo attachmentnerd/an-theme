@@ -7,7 +7,7 @@
   - Background options
 {% endcomment %}
 
-<section class="an-stats-bar py-5 bg-texture {% if section.settings.background_type == 'gradient' %}bg-texture--float-1 bg-texture--float-2{% else %}bg-texture--dots bg-texture--gradient-2{% endif %}" style="background-color: {{ section.settings.background_type == 'gradient' ? '' : section.settings.background_color }}; {% if section.settings.background_type == 'gradient' %}background: var(--g-brand);{% endif %}">
+<section class="an-stats-bar py-5 bg-texture {% if section.settings.background_type == 'gradient' %}bg-texture--float-1 bg-texture--float-2{% else %}bg-texture--dots bg-texture--gradient-2{% endif %}" style="{% if section.settings.background_type == 'gradient' %}background: var(--g-brand);{% else %}background-color: {{ section.settings.background_color }};{% endif %}">
   <div class="container">
     <!-- Section Header (optional) -->
     {% if section.settings.heading != blank %}
