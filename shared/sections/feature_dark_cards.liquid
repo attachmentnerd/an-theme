@@ -55,16 +55,12 @@
               <div class="featured-visual">
                 {% if block.settings.use_image and block.settings.image %}
                   <div class="featured-image" style="margin: -{{ section.settings.card_padding }}px -{{ section.settings.card_padding }}px {{ section.settings.card_padding }}px;">
-                    {% render 'responsive-image',
-  image: block.settings.image,
-  alt: '{{ block.settings.image_alt | default: block.settings.title }}',
-  class: 'featured-image__img',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                    <img 
+                      src="{{ block.settings.image | image_picker_url: '800x' }}"
+                      alt="{{ block.settings.image_alt | default: block.settings.title }}"
+                      class="featured-image__img"
+                      loading="lazy"
+                    >
                   </div>
                 {% else %}
                   <div class="featured-icon" 

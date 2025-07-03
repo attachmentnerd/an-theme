@@ -53,15 +53,7 @@
                       </svg>
                     {% when 'custom' %}
                       {% if block.settings.custom_icon != blank %}
-                        {% render 'responsive-image',
-  image: block.settings.custom_icon,
-  alt: '',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '4/3',
-  widths: '400,600,800,1200',
-  placeholder_type: 'feature',
-  blur_up: true
-%}
+                        <img src="{{ block.settings.custom_icon | image_picker_url: 'icon-placeholder.png' }}" alt="" width="48" height="48">
                       {% else %}
                         <!-- Placeholder custom icon -->
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">

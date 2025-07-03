@@ -1,0 +1,910 @@
+<style>
+  /* Book Buy Section Styles - Updated with new branding */
+  .book-buy {
+    background-color: {{ section.settings.background_color | default: '#FFFFFF' }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    {% if section.settings.enable_sticky %}
+      position: fixed;
+      top: -100%;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      transition: all 0.3s var(--ease-out);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    {% endif %}
+  }
+  
+  {% if section.settings.enable_sticky %}
+  .book-buy.is-visible {
+    top: 0;
+  }
+  {% endif %}
+  
+  {% if section.settings.enable_sticky %}
+  /* Sticky state styles */
+  .book-buy.is-sticky {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: {{ section.settings.sticky_padding_y | default: 10 }}px 0;
+  }
+  
+  .book-buy.is-sticky .book-buy__cta {
+    {% if section.settings.sticky_cta_smaller %}
+      font-size: {{ section.settings.cta_font_size | minus: 2 }}px;
+      padding: {{ section.settings.cta_padding_y | minus: 2 }}px {{ section.settings.cta_padding_x | minus: 4 }}px;
+    {% endif %}
+  }
+  
+  .book-buy.is-sticky .book-buy__retailer-logo {
+    {% if section.settings.sticky_logos_smaller %}
+      height: {{ section.settings.logo_height | minus: 10 }}px;
+    {% endif %}
+  }
+  
+  /* Add space at top to prevent content jump when sticky activates */
+  .book-buy-placeholder {
+    display: none;
+  }
+  
+  .book-buy-placeholder.active {
+    display: block;
+    height: var(--placeholder-height);
+  }
+  {% endif %}
+  
+  .book-buy__container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .book-buy__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: {{ section.settings.alignment }};
+    gap: {{ section.settings.gap }}px;
+    flex-wrap: wrap;
+  }
+  
+  /* Order Today Button - New brand style */
+  .book-buy__cta {
+    {% if section.settings.use_gradient_button %}
+      background: var(--g-brand);
+      color: var(--c-white);
+      border: none;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+                  0 4px 8px rgba(94, 59, 255, 0.35);
+    {% else %}
+      background-color: {{ section.settings.cta_bg_color | default: '#5E3BFF' }};
+      color: {{ section.settings.cta_text_color | default: '#FFFFFF' }};
+      border: none;
+    {% endif %}
+    padding: {{ section.settings.cta_padding_y | default: 12 }}px {{ section.settings.cta_padding_x | default: 32 }}px;
+    font-size: {{ section.settings.cta_font_size | default: 16 }}px;
+    font-weight: {{ section.settings.cta_font_weight | default: 500 }};
+    text-transform: {{ section.settings.cta_text_transform | default: 'none' }};
+    letter-spacing: {{ section.settings.cta_letter_spacing | default: 0 }}px;
+    border-radius: {{ section.settings.cta_border_radius | default: 9999 }}px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: all 0.15s var(--ease-out);
+    position: relative;
+  }
+  
+  .book-buy__cta:hover {
+    {% if section.settings.use_gradient_button %}
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+                  0 8px 16px rgba(94, 59, 255, 0.4);
+    {% else %}
+      background-color: {{ section.settings.cta_bg_hover | default: '#4025E0' }};
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    {% endif %}
+  }
+  
+  .book-buy__cta-arrow {
+    font-size: 1.2em;
+  }
+  
+  /* Divider */
+  .book-buy__divider {
+    width: 1px;
+    height: {{ section.settings.divider_height }}px;
+    background-color: {{ section.settings.divider_color }};
+    margin: 0 {{ section.settings.divider_margin }}px;
+  }
+  
+  /* Retailer Logos Container */
+  .book-buy__retailers {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.retailer_gap }}px;
+    flex-wrap: wrap;
+  }
+  
+  /* Individual Retailer */
+  .book-buy__retailer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .book-buy__retailer:hover {
+    transform: translateY(-3px);
+  }
+  
+  .book-buy__retailer:hover .book-buy__retailer-logo {
+    opacity: {{ section.settings.logo_hover_opacity }};
+  }
+  
+  /* Retailer Logo */
+  .book-buy__retailer-logo {
+    height: {{ section.settings.logo_height }}px;
+    width: auto;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+    filter: {{ section.settings.logo_filter }};
+  }
+  
+  /* Retailer Text */
+  .book-buy__retailer-text {
+    font-size: {{ section.settings.text_font_size }}px;
+    color: {{ section.settings.text_color }};
+    margin-top: {{ section.settings.text_margin_top }}px;
+    text-align: center;
+    line-height: 1.2;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 767px) {
+    .book-buy__wrapper {
+      justify-content: center;
+    }
+    
+    .book-buy__cta {
+      font-size: {{ section.settings.mobile_cta_font_size }}px;
+      padding: {{ section.settings.mobile_cta_padding_y }}px {{ section.settings.mobile_cta_padding_x }}px;
+    }
+    
+    .book-buy__divider {
+      display: {% if section.settings.hide_divider_mobile %}none{% else %}block{% endif %};
+    }
+    
+    .book-buy__retailers {
+      gap: {{ section.settings.mobile_retailer_gap }}px;
+      justify-content: center;
+      width: 100%;
+    }
+    
+    .book-buy__retailer-logo {
+      height: {{ section.settings.mobile_logo_height }}px;
+    }
+    
+    .book-buy__retailer-text {
+      font-size: {{ section.settings.mobile_text_font_size }}px;
+    }
+  }
+</style>
+
+{% if section.settings.enable_sticky %}
+  <div class="book-buy-placeholder" id="book-buy-placeholder-{{ section.id }}"></div>
+{% endif %}
+
+<section class="book-buy {% if section.settings.hide_on_desktop %}hidden--desktop{% endif %} {% if section.settings.hide_on_mobile %}hidden--mobile{% endif %}" 
+         id="book-buy-{{ section.id }}"
+         {% if section.settings.enable_sticky %}data-sticky="true"{% endif %}>
+  <div class="book-buy__container">
+    <div class="book-buy__wrapper">
+      <!-- Order Today CTA -->
+      {% if section.settings.show_cta %}
+        <a href="{{ section.settings.cta_link }}" class="book-buy__cta" style="color: var(--c-white) !important;" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+          {{ section.settings.cta_text }}
+          <span class="book-buy__cta-arrow">→</span>
+        </a>
+      {% endif %}
+      
+      <!-- Divider -->
+      {% if section.settings.show_cta and section.settings.show_divider %}
+        <div class="book-buy__divider"></div>
+      {% endif %}
+      
+      <!-- Retailer Logos -->
+      <div class="book-buy__retailers">
+        {% for block in section.blocks %}
+          {% if block.settings.logo != blank and block.settings.link != blank %}
+            <a href="{{ block.settings.link }}" class="book-buy__retailer" {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+              <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
+             alt="{{ block.settings.alt_text | default: '' }}" 
+             class="book-buy__retailer-logo"
+             loading="lazy"
+             style="object-fit: cover;">
+              {% if block.settings.show_text and block.settings.text != blank %}
+                <div class="book-buy__retailer-text">{{ block.settings.text }}</div>
+              {% endif %}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if section.settings.enable_sticky %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sectionId = 'book-buy-{{ section.id }}';
+    const section = document.getElementById(sectionId);
+    const placeholder = document.getElementById('book-buy-placeholder-{{ section.id }}');
+    
+    if (!section || !placeholder) return;
+    
+    let isSticky = false;
+    let originalOffset = 0;
+    let sectionHeight = 0;
+    const triggerOffset = {{ section.settings.sticky_trigger_offset | default: 100 }};
+    
+    // Initialize measurements
+    const initMeasurements = () => {
+      // Only measure when not sticky
+      if (!isSticky) {
+        const rect = section.getBoundingClientRect();
+        originalOffset = rect.top + window.pageYOffset;
+        sectionHeight = section.offsetHeight;
+        
+        // Set placeholder height
+        placeholder.style.height = sectionHeight + 'px';
+        placeholder.style.setProperty('--placeholder-height', sectionHeight + 'px');
+      }
+    };
+    
+    // Handle sticky behavior
+    const handleSticky = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const shouldStick = scrollTop > (originalOffset - triggerOffset);
+      
+      if (shouldStick && !isSticky) {
+        // Activate sticky
+        isSticky = true;
+        
+        // Set placeholder to maintain layout
+        placeholder.classList.add('active');
+        placeholder.style.height = sectionHeight + 'px';
+        
+        // Make section sticky
+        section.classList.add('is-visible', 'is-sticky');
+        
+      } else if (!shouldStick && isSticky) {
+        // Deactivate sticky
+        isSticky = false;
+        
+        // Hide placeholder
+        placeholder.classList.remove('active');
+        
+        // Remove sticky classes
+        section.classList.remove('is-visible', 'is-sticky');
+        
+        // Recalculate measurements after returning to normal position
+        setTimeout(initMeasurements, 50);
+      }
+    };
+    
+    // Throttled scroll handler
+    let scrollTimeout;
+    const onScroll = () => {
+      if (scrollTimeout) {
+        window.cancelAnimationFrame(scrollTimeout);
+      }
+      scrollTimeout = window.requestAnimationFrame(handleSticky);
+    };
+    
+    // Debounced resize handler
+    let resizeTimeout;
+    const onResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (!isSticky) {
+          initMeasurements();
+        }
+      }, 250);
+    };
+    
+    // Initialize
+    initMeasurements();
+    handleSticky();
+    
+    // Event listeners
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    
+    // Handle dynamic content changes
+    const observer = new MutationObserver(() => {
+      if (!isSticky) {
+        initMeasurements();
+      }
+    });
+    
+    observer.observe(section, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style']
+    });
+  });
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Book - Purchase",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum Width (px)",
+      "default": 1200,
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "default": 40,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "default": 40,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Content Alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap Between Elements (px)",
+      "default": 40,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Order Today Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show Order Today Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "ORDER TODAY!"
+    },
+    {
+      "type": "action",
+      "id": "cta_link",
+      "label": "Button Link",
+      "default": "#retailers",
+      "info": "Use # for same-page anchor or full URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open in New Tab",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_button",
+      "label": "Use Brand Gradient Button",
+      "default": true,
+      "info": "Use the brand purple gradient style"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "Button Background",
+      "default": "#5E3BFF",
+      "info": "Only used if gradient is disabled"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_hover",
+      "label": "Button Hover Background",
+      "default": "#4025E0",
+      "info": "Only used if gradient is disabled"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size",
+      "label": "Button Font Size (px)",
+      "default": 16,
+      "min": 10,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_cta_font_size",
+      "label": "Mobile Button Font Size (px)",
+      "default": 14,
+      "min": 10,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "cta_font_weight",
+      "label": "Button Font Weight",
+      "default": "700",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cta_text_transform",
+      "label": "Button Text Transform",
+      "default": "uppercase",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "lowercase",
+          "label": "lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "cta_letter_spacing",
+      "label": "Button Letter Spacing (px)",
+      "default": 1,
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_x",
+      "label": "Button Padding X (px)",
+      "default": 30,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_y",
+      "label": "Button Padding Y (px)",
+      "default": 12,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_cta_padding_x",
+      "label": "Mobile Button Padding X (px)",
+      "default": 20,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_cta_padding_y",
+      "label": "Mobile Button Padding Y (px)",
+      "default": 10,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "cta_border_radius",
+      "label": "Button Border Radius (px)",
+      "default": 0,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show Divider",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_divider_mobile",
+      "label": "Hide Divider on Mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "label": "Divider Height (px)",
+      "default": 60,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "range",
+      "id": "divider_margin",
+      "label": "Divider Side Margin (px)",
+      "default": 20,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Retailer Logos"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo Height (px)",
+      "default": 40,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_height",
+      "label": "Mobile Logo Height (px)",
+      "default": 30,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "retailer_gap",
+      "label": "Gap Between Retailers (px)",
+      "default": 30,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_retailer_gap",
+      "label": "Mobile Gap Between Retailers (px)",
+      "default": 20,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_hover_opacity",
+      "label": "Logo Hover Opacity",
+      "default": 0.7,
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "info": "0 = transparent, 1 = opaque"
+    },
+    {
+      "type": "select",
+      "id": "logo_filter",
+      "label": "Logo Filter",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "grayscale(100%)",
+          "label": "Grayscale"
+        },
+        {
+          "value": "brightness(0)",
+          "label": "Black"
+        },
+        {
+          "value": "brightness(0) invert(1)",
+          "label": "White"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Retailer Text"
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "label": "Text Font Size (px)",
+      "default": 12,
+      "min": 10,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_font_size",
+      "label": "Mobile Text Font Size (px)",
+      "default": 10,
+      "min": 10,
+      "max": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "text_margin_top",
+      "label": "Text Margin Top (px)",
+      "default": 8,
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Visibility"
+    },
+    {
+      "type": "header",
+      "content": "Sticky Behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Enable Sticky Positioning",
+      "default": false,
+      "info": "Keep this section at the top of the page when scrolling"
+    },
+    {
+      "type": "range",
+      "id": "sticky_trigger_offset",
+      "label": "Sticky Trigger Offset (px)",
+      "default": 100,
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "info": "How far to scroll before the section becomes sticky"
+    },
+    {
+      "type": "range",
+      "id": "sticky_padding_y",
+      "label": "Sticky State Padding (px)",
+      "default": 10,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "info": "Vertical padding when sticky"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_cta_smaller",
+      "label": "Smaller CTA Button When Sticky",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_logos_smaller",
+      "label": "Smaller Logos When Sticky",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_desktop",
+      "label": "Hide on Desktop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Hide on Mobile",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "retailer",
+      "name": "Book - Purchase",
+      "elements": [
+        {
+          "type": "text",
+          "id": "retailer_name",
+          "label": "Retailer Name",
+          "default": "Amazon",
+          "info": "For internal reference"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Retailer Logo",
+          "info": "Upload retailer logo (PNG or SVG recommended)"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Logo Alt Text",
+          "default": "Buy from Amazon",
+          "info": "For accessibility and SEO"
+        },
+        {
+          "type": "action",
+          "id": "link",
+          "label": "Purchase Link",
+          "default": "https://amazon.com",
+          "info": "Full URL to book on retailer site"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_text",
+          "label": "Show Text Below Logo",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text Below Logo",
+          "default": "Available Now",
+          "info": "Optional text to display below logo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Book - Purchase",
+      "description": "Display book retailer logos with purchase links",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "retailer"
+        },
+        {
+          "type": "retailer"
+        },
+        {
+          "type": "retailer"
+        },
+        {
+          "type": "retailer"
+        },
+        {
+          "type": "retailer"
+        },
+        {
+          "type": "retailer"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

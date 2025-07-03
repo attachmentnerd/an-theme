@@ -20,15 +20,11 @@
   - blur_up: boolean - enable blur-up effect (default: false)
   
   Usage:
-  {% render 'responsive-image',
-    image: section.settings.hero_image,
-    alt: 'Hero image',
-    sizes: '100vw',
-    priority: true,
-    aspect_ratio: '16/9',
-    placeholder_type: 'hero',
-    blur_up: true
-  %}
+  <img src="{{ section.settings.hero_image | image_picker_url: '800x450' }}" 
+             alt="{{ Hero image }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
 {% endcomment %}
 
 {%- liquid

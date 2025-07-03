@@ -58,15 +58,7 @@
                 <!-- Icon/Image -->
                 <div class="an-programs__icon">
                   {% if block.settings.icon != blank %}
-                    {% render 'responsive-image',
-  image: block.settings.icon,
-  alt: '{{ block.settings.title }}',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '4/3',
-  widths: '400,600,800,1200',
-  placeholder_type: 'feature',
-  blur_up: true
-%}
+                    <img src="{{ block.settings.icon | image_picker_url: 'placeholder.png' }}" alt="{{ block.settings.title }}" width="60" height="60">
                   {% else %}
                     <!-- Placeholder icon when no image selected -->
                     <div class="an-programs__icon-placeholder">

@@ -1,0 +1,176 @@
+<!-- Raising Securely Attached Kids Book Showcase (Static) -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Book Image Column -->
+      <div class="col-lg-5 mb-4 mb-lg-0">
+        <div class="position-relative">
+          {% if section.settings.show_bestseller_badge %}
+            <div class="badge badge-gold position-absolute top-0 start-0 m-3 text-lg">
+              USA TODAY BESTSELLER
+            </div>
+          {% endif %}
+          
+          <div>
+            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+             alt="{{ Raising Securely Attached Kids }}" 
+             class="img-fluid rounded-lg shadow-lg hover-lift"
+             loading="lazy"
+             style="object-fit: cover;">
+          </div>
+          
+          {% if section.settings.show_award_badge %}
+            <div class="badge badge-teal position-absolute bottom-0 end-0 m-3">
+              Award Winner
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Book Details Column -->
+      <div class="col-lg-7 ps-lg-5">
+        <h2 class="text-3xl font-bold text-navy mb-2">Raising Securely Attached Kids</h2>
+        <p class="text-lg text-coral font-medium mb-3">Using Connection-Focused Parenting to Create Confidence, Empathy, and Resilience</p>
+        
+        <p class="text-lg text-slate mb-4">
+          {{ section.settings.book_description }}
+        </p>
+        
+        <!-- Key Features -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <span class="text-teal me-2">✓</span>
+              <span class="text-slate">Practical scripts you can use today</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <span class="text-teal me-2">✓</span>
+              <span class="text-slate">"Nerd Alert" science explanations</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <span class="text-teal me-2">✓</span>
+              <span class="text-slate">Real parent stories & examples</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <span class="text-teal me-2">✓</span>
+              <span class="text-slate">Charts & visual guides</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Buy Buttons -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <a href="{{ section.settings.amazon_link }}" 
+             class="btn btn-primary-modern hover-lift"
+             style="color: var(--c-white) !important;"
+            >
+            Buy on Amazon
+          </a>
+          <a href="{{ section.settings.barnes_noble_link }}" 
+             class="btn btn-secondary-modern"
+             style="color: var(--c-brand-600) !important;"
+            >
+            Barnes & Noble
+          </a>
+          <a href="{{ section.settings.target_link }}" 
+             class="btn btn-secondary-modern"
+             style="color: var(--c-brand-600) !important;"
+            >
+            Target
+          </a>
+          <a href="{{ section.settings.indie_link }}" 
+             class="btn btn-secondary-modern"
+             style="color: var(--c-brand-600) !important;"
+            >
+            Indie Bookstores
+          </a>
+        </div>
+        
+        <!-- Free Chapter CTA -->
+        {% if section.settings.show_free_chapter %}
+          <div class="bg-peach rounded-lg p-4">
+            <p class="font-medium text-navy mb-2">Not sure yet? Start here:</p>
+            <a href="{{ section.settings.free_chapter_link }}" 
+               class="btn btn-primary-modern hover-lift"
+              >
+              Get a Free Chapter
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Book - Showcase RSAK",
+  "elements": [
+    {
+      "type": "textarea",
+      "id": "book_description",
+      "label": "Book Description",
+      "default": "The first book to reframe attachment theory specifically for caregivers and children. Get ready to transform your parenting with science-backed strategies that actually work in real life."
+    },
+    {
+      "type": "image_picker",
+      "id": "book_image",
+      "label": "Book Cover Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bestseller_badge",
+      "label": "Show Bestseller Badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_award_badge",
+      "label": "Show Award Winner Badge",
+      "default": true
+    },
+    {
+      "type": "action",
+      "id": "amazon_link",
+      "label": "Amazon Link",
+      "default": "#"
+    },
+    {
+      "type": "action",
+      "id": "barnes_noble_link",
+      "label": "Barnes & Noble Link",
+      "default": "#"
+    },
+    {
+      "type": "action",
+      "id": "target_link",
+      "label": "Target Link",
+      "default": "#"
+    },
+    {
+      "type": "action",
+      "id": "indie_link",
+      "label": "Indie Bookstores Link",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_free_chapter",
+      "label": "Show Free Chapter CTA",
+      "default": true
+    },
+    {
+      "type": "action",
+      "id": "free_chapter_link",
+      "label": "Free Chapter Link",
+      "default": "#"
+    }
+  ]
+}
+{% endschema %}

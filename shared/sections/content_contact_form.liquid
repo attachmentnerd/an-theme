@@ -33,7 +33,6 @@
               action="{{ section.settings.form_action }}" 
               method="post"
               data-form-type="contact"
-              data-ajax
               style="animation-delay: 0.1s;">
           
           {% if section.settings.show_inquiry_type %}
@@ -222,14 +221,8 @@
 
           <!-- Submit Button -->
           <div class="an-contact-form__submit">
-            <button type="submit" class="btn btn-primary-modern btn-lg btn-with-states" data-loading-text="Sending with love...">
-              <span class="btn-text">{{ section.settings.submit_text }}</span>
-              <span class="btn-spinner"></span>
-              <span class="btn-success-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
+            <button type="submit" class="btn btn-primary-modern btn-lg">
+              {{ section.settings.submit_text }}
             </button>
           </div>
 
@@ -263,15 +256,7 @@
                   <div class="an-contact-form__info-block" {{ block.shopify_attributes }}>
                     {% if block.settings.icon != blank %}
                       <div class="an-contact-form__info-icon">
-                        {% render 'responsive-image',
-  image: block.settings.icon,
-  alt: '',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '4/3',
-  widths: '400,600,800,1200',
-  placeholder_type: 'feature',
-  blur_up: true
-%}
+                        <img src="{{ block.settings.icon | img_url: '48x48' }}" alt="" width="24" height="24">
                       </div>
                     {% endif %}
                     <h3 class="an-contact-form__info-title">{{ block.settings.title }}</h3>
@@ -552,9 +537,63 @@
       field.addEventListener('blur', () => validateField(field));
     });
 
-    // Form submission is now handled by button_states.liquid
-    // which provides loading states, validation, and success/error messages
-    // Additional form-specific logic can be added here if needed
+    // Form submission handling
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Hide any existing messages
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      
+      // Validate all fields
+      const fields = form.querySelectorAll('input[required], textarea[required], select[required]');
+      let isValid = true;
+      
+      fields.forEach(field => {
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+      
+      if (!isValid) {
+        errorMsg.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="9" fill="#FF6B6B"/><path d="M10 6V10M10 14H10.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Please fill in all required fields with care 💜</span>';
+        errorMsg.style.display = 'flex';
+        return;
+      }
+      
+      // Get form data
+      const formData = new FormData(form);
+      
+      // Here you would normally send the form data to your server
+      // For now, we'll just show a success message
+      
+      // Show loading state
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending with love...';
+      submitBtn.disabled = true;
+      
+      // Simulate API call
+      setTimeout(function() {
+        // Show success message
+        successMsg.style.display = 'flex';
+        
+        // Reset form
+        form.reset();
+        
+        // Hide event details if shown
+        if (eventDetails) {
+          eventDetails.style.display = 'none';
+        }
+        
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        
+        // Scroll to success message
+        successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 1500);
+    });
   });
 </script>
 

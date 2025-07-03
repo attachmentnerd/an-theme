@@ -1,0 +1,1307 @@
+{% comment %}
+  AN Pay What You Can (PWYC) Pricing Section - Enhanced Version
+  - Interactive amount animations on hover
+  - Entire card is clickable with visual feedback
+  - Enhanced navigation with keyboard support
+  - Smooth transitions and micro-interactions
+  - Visual flow indicators
+{% endcomment %}
+
+<section class="an-pwyc-pricing py-5" style="background: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="text-center mb-5 animate-fade-up">
+      {% if section.settings.heading != blank %}
+        <h2 class="an-pwyc-pricing__heading" style="font-size: var(--fs-display); color: var(--c-ink-900); font-weight: 500;">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <div class="pwyc-pricing__subheading" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 700px; margin: 1.5rem auto 0;">
+          {{ section.settings.subheading }}
+        </div>
+      {% endif %}
+
+
+    </div>
+
+    <!-- Pricing Options -->
+    <div class="an-pwyc-pricing__options" style="overflow: visible;">
+      <div class="row justify-content-center" style="overflow: visible;">
+        {% for block in section.blocks %}
+          {% if block.type == 'pricing_tier' %}
+            <div class="col-lg-3 col-md-6 mb-4" style="padding-left: 20px; padding-right: 20px;">
+              <div class="an-pwyc-tier {% if block.settings.suggested %}an-pwyc-tier--suggested{% endif %} {% if block.settings.default_selected %}an-pwyc-tier--active{% endif %} animate-fade-up"
+                   style="animation-delay: {{ forloop.index | times: 0.1 }}s;"
+                   data-tier-name="{{ block.settings.tier_name }}"
+                   data-tier-amount="{{ block.settings.amount }}"
+                   data-tier-index="{{ forloop.index0 }}"
+                   tabindex="0"
+                   role="button"
+                   aria-label="Select {{ block.settings.tier_name }} tier for {{ section.settings.currency_symbol }}{{ block.settings.amount }}"
+                   {{ block.shopify_attributes }}>
+
+                <!-- Selection Indicator -->
+                <div class="an-pwyc-tier__check">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 12.5L10.5 15L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+
+                <!-- Hover Indicator -->
+                <div class="an-pwyc-tier__hover-indicator">
+                  <div class="hover-pulse"></div>
+                </div>
+
+                {% if block.settings.suggested %}
+                  <div class="an-pwyc-tier__badge">
+                    <span>{{ section.settings.suggested_text | default: 'SUGGESTED' }}</span>
+                    <div class="badge-glow"></div>
+                  </div>
+                {% endif %}
+
+                <div class="an-pwyc-tier__content">
+                  <h3 class="an-pwyc-tier__name">
+                    {{ block.settings.tier_name }}
+                  </h3>
+
+                  <div class="an-pwyc-tier__amount-wrapper">
+                    <div class="an-pwyc-tier__amount">
+                      {% if block.settings.amount == 0 %}
+                        <span class="an-pwyc-tier__free">
+                          <span class="free-text">{{ section.settings.free_text | default: 'FREE' }}</span>
+                          <span class="free-heart">❤️</span>
+                        </span>
+                      {% else %}
+                        <span class="an-pwyc-tier__price-group">
+                          <span class="an-pwyc-tier__currency">{{ section.settings.currency_symbol | default: '$' }}</span>
+                          <span class="an-pwyc-tier__number" data-amount="{{ block.settings.amount }}">{{ block.settings.amount }}</span>
+                        </span>
+                      {% endif %}
+                    </div>
+                    <!-- Amount Animation Container -->
+                    <div class="amount-animation-container">
+                      <div class="amount-particles"></div>
+                    </div>
+                  </div>
+
+                  {% if block.settings.description != blank %}
+                    <div class="an-pwyc-tier__description">
+                      {{ block.settings.description }}
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.features != blank %}
+                    <ul class="an-pwyc-tier__features">
+                      {% assign features = block.settings.features | split: ',' %}
+                      {% for feature in features %}
+                        <li class="feature-item">
+                          <svg class="feature-icon" width="16" height="16" viewBox="0 0 24 24" fill="#18D5E4">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                          </svg>
+                          <span>{{ feature | strip }}</span>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+
+                  <!-- CTA Text -->
+                  <div class="an-pwyc-tier__cta">
+                    <span class="cta-text">{{ block.settings.button_text | default: 'Select This Option' }}</span>
+                    <svg class="cta-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </div>
+
+                  <!-- Hidden button for form submission -->
+                  <button class="an-pwyc-tier__select sr-only"
+                          data-checkout-type="{{ block.settings.checkout_type }}"
+                          data-checkout-url="{{ block.settings.external_checkout_url }}"
+                          data-kajabi-offer="{{ block.settings.kajabi_offer }}"
+                          data-form-id="{{ block.settings.tier_form }}"
+                          aria-hidden="true">
+                    {{ block.settings.button_text | default: 'Select This Option' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Value Slider (Optional Enhancement) -->
+    {% if section.settings.show_custom_amount %}
+      <div class="an-pwyc-custom-amount animate-fade-up" style="animation-delay: 0.5s;">
+        <label for="custom-amount-{{ section.id }}">Or choose your own amount:</label>
+        <div class="custom-amount-wrapper">
+          <span class="currency">{{ section.settings.currency_symbol | default: '$' }}</span>
+          <input type="range"
+                 id="custom-amount-{{ section.id }}"
+                 min="0"
+                 max="200"
+                 step="5"
+                 value="25"
+                 class="amount-slider">
+          <span class="amount-display">25</span>
+          <button class="custom-select-btn">Select Custom Amount</button>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Scholarship Link -->
+    {% if section.settings.show_scholarship %}
+      <div class="pwyc-scholarship text-center mt-5 animate-fade-up" style="animation-delay: 0.6s;">
+        <p style="color: var(--c-ink-600); font-size: var(--fs-body);">
+          {{ section.settings.scholarship_text | default: 'Need financial assistance?' }}
+          <a href="{{ section.settings.scholarship_link }}"
+             class="scholarship-link"
+             style="color: var(--c-brand-600); text-decoration: underline; font-weight: 500;">
+            {{ section.settings.scholarship_link_text | default: 'Apply for a scholarship' }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-left: 4px;">
+              <path d="M7 17L17 7M17 7H7M17 7V17"/>
+            </svg>
+          </a>
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  /* Enhanced PWYC Pricing Styles */
+  .an-pwyc-pricing {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background decoration */
+  .an-pwyc-pricing::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(94, 59, 255, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Enhanced Tier Cards */
+  .an-pwyc-tier {
+    position: relative;
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(30, 20, 70, 0.08), 0 4px 16px rgba(30, 20, 70, 0.04);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    border: 2px solid transparent;
+    overflow: visible;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  /* Card Focus States */
+  .an-pwyc-tier:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.4);
+  }
+
+  .an-pwyc-tier:focus-visible {
+    box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.4), 0 20px 60px rgba(94, 59, 255, 0.25);
+  }
+
+  /* Hover Indicator */
+  .an-pwyc-tier__hover-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .hover-pulse {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(94, 59, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.2;
+    }
+    100% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+  }
+
+  /* Enhanced Hover Effects */
+  .an-pwyc-tier:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(94, 59, 255, 0.25), 0 0 0 2px rgba(94, 59, 255, 0.2);
+    border-color: rgba(94, 59, 255, 0.2);
+    z-index: 10;
+  }
+
+  .an-pwyc-tier:hover .an-pwyc-tier__hover-indicator {
+    opacity: 1;
+  }
+
+  /* Active/Pressed State */
+  .an-pwyc-tier:active {
+    transform: translateY(-8px) scale(1.01);
+    transition-duration: 0.1s;
+  }
+
+  /* Amount Wrapper for animations */
+  .an-pwyc-tier__amount-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .an-pwyc-tier__amount {
+    text-align: center;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px;
+    min-height: 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Interactive Amount Animations */
+  .an-pwyc-tier__price-group {
+    display: inline-flex;
+    align-items: baseline;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center center;
+  }
+
+  .an-pwyc-tier__currency {
+    font-size: 1.25rem;
+    color: #8B7AA6;
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-block;
+  }
+
+  .an-pwyc-tier__number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #1E1450;
+    line-height: 1;
+    font-family: var(--font-display, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-block;
+    position: relative;
+  }
+
+  /* Dramatic hover effects for amounts */
+  .an-pwyc-tier:hover .an-pwyc-tier__price-group {
+    transform: scale(1.15) translateY(-5px);
+  }
+
+  .an-pwyc-tier:hover .an-pwyc-tier__number {
+    color: #5E3BFF;
+    text-shadow: 0 8px 16px rgba(94, 59, 255, 0.3);
+    animation: amountBounce 0.6s ease-out;
+  }
+
+  @keyframes amountBounce {
+    0% {
+      transform: scale(1);
+    }
+    30% {
+      transform: scale(1.2);
+    }
+    60% {
+      transform: scale(0.95);
+    }
+    80% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .an-pwyc-tier:hover .an-pwyc-tier__currency {
+    color: #5E3BFF;
+    transform: translateY(-3px);
+  }
+
+  /* Free tier animations */
+  .an-pwyc-tier__free {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .free-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #18D5E4 0%, #4AC8D5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
+  }
+
+  .free-heart {
+    font-size: 1.5rem;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .an-pwyc-tier:hover .free-heart {
+    opacity: 1;
+    transform: scale(1);
+    animation: heartBeat 1.2s ease-in-out infinite;
+  }
+
+  @keyframes heartBeat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  .an-pwyc-tier:hover .free-text {
+    transform: scale(1.2) translateY(-5px);
+    filter: brightness(1.2) saturate(1.2);
+    text-shadow: 0 8px 16px rgba(24, 213, 228, 0.3);
+  }
+
+  /* Amount Animation Container */
+  .amount-animation-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Suggested tier enhancements */
+  .an-pwyc-tier--suggested {
+    border: 2px solid #5E3BFF;
+    background: linear-gradient(135deg, rgba(94, 59, 255, 0.02) 0%, rgba(123, 91, 255, 0.02) 100%);
+    transform: scale(1.05);
+  }
+
+  .an-pwyc-tier--suggested:hover {
+    transform: scale(1.08) translateY(-8px);
+    box-shadow: 0 24px 48px rgba(94, 59, 255, 0.3), 0 0 0 3px rgba(94, 59, 255, 0.3);
+  }
+
+  /* Badge with glow effect */
+  .an-pwyc-tier__badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 20px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.35);
+    z-index: 3;
+  }
+
+  .badge-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(94, 59, 255, 0.4) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+  }
+
+  /* Active Selection State */
+  .an-pwyc-tier--active {
+    transform: scale(1.08);
+    border: 3px solid #5E3BFF;
+    background: linear-gradient(135deg, rgba(94, 59, 255, 0.03) 0%, rgba(123, 91, 255, 0.05) 100%);
+    box-shadow: 0 12px 48px rgba(94, 59, 255, 0.2), 0 0 0 3px rgba(94, 59, 255, 0.1);
+  }
+
+  .an-pwyc-tier--active .an-pwyc-tier__check {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+
+  /* Selection Check Mark */
+  .an-pwyc-tier__check {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 32px;
+    height: 32px;
+    background: #5E3BFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    color: white;
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.4);
+    z-index: 3;
+  }
+
+  /* Features with animation */
+  .an-pwyc-tier__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    flex: 1;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.85rem;
+    font-size: 0.95rem;
+    color: #4A415C;
+    line-height: 1.5;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+  }
+
+  .an-pwyc-tier:hover .feature-item {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  .feature-item:nth-child(1) { transition-delay: 0.05s; }
+  .feature-item:nth-child(2) { transition-delay: 0.1s; }
+  .feature-item:nth-child(3) { transition-delay: 0.15s; }
+  .feature-item:nth-child(4) { transition-delay: 0.2s; }
+
+  .feature-icon {
+    flex-shrink: 0;
+    margin-right: 10px;
+    margin-top: 3px;
+    transition: transform 0.3s ease;
+  }
+
+  .an-pwyc-tier:hover .feature-icon {
+    transform: scale(1.2);
+  }
+
+  /* CTA Section */
+  .an-pwyc-tier__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%);
+    color: white;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 8px rgba(94, 59, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Add glow effect on card hover */
+  .an-pwyc-tier__cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    transition: width 0.4s ease, height 0.4s ease;
+  }
+
+  .an-pwyc-tier:hover .an-pwyc-tier__cta::before {
+    width: 120%;
+    height: 120%;
+  }
+
+  .cta-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-arrow {
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .an-pwyc-tier:hover .an-pwyc-tier__cta {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 12px 24px rgba(94, 59, 255, 0.4),
+                0 0 40px rgba(94, 59, 255, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #5332E6 0%, #6B4BF5 100%);
+  }
+
+  .an-pwyc-tier:hover .cta-arrow {
+    transform: translateX(6px);
+    animation: arrowPulse 1s ease-in-out infinite;
+  }
+
+  @keyframes arrowPulse {
+    0%, 100% {
+      transform: translateX(6px);
+    }
+    50% {
+      transform: translateX(10px);
+    }
+  }
+
+  /* Active tier CTA */
+  .an-pwyc-tier--active .an-pwyc-tier__cta {
+    background: linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(94, 59, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .an-pwyc-tier--active:hover .an-pwyc-tier__cta {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: 0 14px 32px rgba(94, 59, 255, 0.5), inset 0 3px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #4D2AE5 0%, #6040F0 100%);
+  }
+
+  .an-pwyc-tier--active .cta-arrow {
+    animation: arrowPulse 1s ease-in-out infinite;
+  }
+
+  /* Inactive tier CTA */
+  .an-pwyc-tier:not(.an-pwyc-tier--active) .an-pwyc-tier__cta {
+    background: white;
+    color: #5E3BFF;
+    border: 2px solid #E5E2ED;
+    box-shadow: none;
+  }
+
+  .an-pwyc-tier:not(.an-pwyc-tier--active):hover .an-pwyc-tier__cta {
+    background: linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 12px 24px rgba(94, 59, 255, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .an-pwyc-tier:not(.an-pwyc-tier--active):hover .cta-arrow {
+    animation: arrowPulse 1s ease-in-out infinite;
+  }
+
+  /* Custom Amount Slider */
+  .an-pwyc-custom-amount {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(30, 20, 70, 0.08);
+    text-align: center;
+  }
+
+  .custom-amount-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .amount-slider {
+    flex: 1;
+    appearance: none;
+    height: 8px;
+    background: #E5E2ED;
+    border-radius: 4px;
+    outline: none;
+  }
+
+  .amount-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #5E3BFF;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(94, 59, 255, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .amount-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.4);
+  }
+
+  .amount-display {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5E3BFF;
+    min-width: 80px;
+  }
+
+  .custom-select-btn {
+    padding: 12px 24px;
+    background: #5E3BFF;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .custom-select-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(94, 59, 255, 0.3);
+  }
+
+  /* Scholarship link enhancement */
+  .scholarship-link {
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .scholarship-link:hover {
+    transform: translateX(4px);
+  }
+
+  .scholarship-link svg {
+    transition: transform 0.3s ease;
+  }
+
+  .scholarship-link:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 991px) {
+    .an-pwyc-tier--suggested {
+      transform: none;
+    }
+
+    .an-pwyc-tier--suggested:hover {
+      transform: translateY(-8px);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .an-pwyc-tier {
+      padding: 2rem 1.5rem;
+    }
+
+    .an-pwyc-tier--active {
+      transform: scale(1.02);
+    }
+
+    .an-pwyc-tier__number {
+      font-size: 2.5rem;
+    }
+
+    .free-text {
+      font-size: 2rem;
+    }
+
+    .an-pwyc-tier__cta {
+      font-size: 0.875rem;
+      padding: 12px 20px;
+    }
+
+    .custom-amount-wrapper {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .amount-display {
+      font-size: 3rem;
+    }
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.6s var(--ease-out) forwards;
+    opacity: 0;
+  }
+
+  /* Screen reader only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('#shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const tierCards = section.querySelectorAll('.an-pwyc-tier');
+    const customAmountSection = section.querySelector('.an-pwyc-custom-amount');
+    let currentIndex = 0;
+
+    // Initialize
+    function init() {
+      // Set initial active card
+      const activeCard = section.querySelector('.an-pwyc-tier--active');
+      if (activeCard) {
+        currentIndex = parseInt(activeCard.dataset.tierIndex);
+      }
+
+      // Add number counting animation on hover
+      tierCards.forEach(card => {
+        const numberElement = card.querySelector('.an-pwyc-tier__number');
+        if (numberElement) {
+          const finalAmount = parseInt(numberElement.dataset.amount);
+
+          card.addEventListener('mouseenter', function() {
+            animateNumber(numberElement, 0, finalAmount, 500);
+            createParticles(card);
+          });
+        }
+      });
+    }
+
+    // Animate number counting
+    function animateNumber(element, start, end, duration) {
+      const startTime = performance.now();
+      const startValue = start;
+      const endValue = end;
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(startValue + (endValue - startValue) * easeOutQuart);
+
+        element.textContent = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // Create particle effects
+    function createParticles(card) {
+      const container = card.querySelector('.amount-particles');
+      if (!container) return;
+
+      // Clear existing particles
+      container.innerHTML = '';
+
+      // Create new particles
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'amount-particle';
+        particle.style.cssText = `
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          background: #5E3BFF;
+          border-radius: 50%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          opacity: 0;
+          animation: particleFloat ${0.8 + Math.random() * 0.4}s ease-out forwards;
+          animation-delay: ${i * 0.05}s;
+        `;
+        container.appendChild(particle);
+      }
+    }
+
+    // Set active card
+    function setActiveCard(card, index) {
+      // Remove active from all
+      tierCards.forEach(c => c.classList.remove('an-pwyc-tier--active'));
+
+      // Add active to selected
+      card.classList.add('an-pwyc-tier--active');
+      currentIndex = index;
+
+      // Smooth scroll on mobile
+      if (window.innerWidth < 768) {
+        setTimeout(() => {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+
+      // Trigger haptic feedback if available
+      if (navigator.vibrate) {
+        navigator.vibrate(10);
+      }
+    }
+
+    // Handle card selection
+    tierCards.forEach((card, index) => {
+      // Click handler
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        handleCardSelection(card, index);
+      });
+
+      // Keyboard handler
+      card.addEventListener('keydown', function(e) {
+        switch(e.key) {
+          case 'Enter':
+          case ' ':
+            e.preventDefault();
+            handleCardSelection(card, index);
+            break;
+          case 'ArrowRight':
+            e.preventDefault();
+            navigateCards(1);
+            break;
+          case 'ArrowLeft':
+            e.preventDefault();
+            navigateCards(-1);
+            break;
+        }
+      });
+    });
+
+    // Handle selection
+    function handleCardSelection(card, index) {
+      setActiveCard(card, index);
+
+      // Get checkout info
+      const selectButton = card.querySelector('.an-pwyc-tier__select');
+      const tierName = card.dataset.tierName;
+      const tierAmount = card.dataset.tierAmount;
+      const checkoutType = selectButton.dataset.checkoutType;
+      const checkoutUrl = selectButton.dataset.checkoutUrl;
+      const kajabiOffer = selectButton.dataset.kajabiOffer;
+      const formId = selectButton.dataset.formId;
+
+      // Visual feedback
+      card.style.transform = 'scale(0.98)';
+      setTimeout(() => {
+        card.style.transform = '';
+
+        // Track selection
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'select_tier', {
+            tier_name: tierName,
+            tier_amount: parseFloat(tierAmount),
+            currency: '{{ section.settings.currency_code | default: "USD" }}',
+            checkout_type: checkoutType
+          });
+        }
+
+        // Handle checkout based on type
+        switch(checkoutType) {
+          case 'kajabi':
+            if (kajabiOffer && typeof Kajabi !== 'undefined' && Kajabi.checkout) {
+              Kajabi.checkout.open({
+                offer_id: kajabiOffer
+              });
+            } else {
+              console.error('Kajabi checkout not available or offer not selected');
+            }
+            break;
+
+          case 'external':
+            if (checkoutUrl) {
+              window.location.href = checkoutUrl;
+            } else {
+              console.error('External checkout URL not provided');
+            }
+            break;
+
+          case 'form':
+            if (formId && typeof Kajabi !== 'undefined' && Kajabi.forms) {
+              // Open Kajabi form modal
+              const formElement = document.querySelector(`[data-form-id="${formId}"]`);
+              if (formElement) {
+                formElement.click();
+              } else {
+                console.error('Form not found');
+              }
+            }
+            break;
+
+          default:
+            console.error('Unknown checkout type:', checkoutType);
+        }
+      }, 200);
+    }
+
+    // Keyboard navigation
+    function navigateCards(direction) {
+      const newIndex = Math.max(0, Math.min(tierCards.length - 1, currentIndex + direction));
+      if (newIndex !== currentIndex) {
+        tierCards[newIndex].focus();
+        setActiveCard(tierCards[newIndex], newIndex);
+      }
+    }
+
+    // Custom amount slider
+    if (customAmountSection) {
+      const slider = customAmountSection.querySelector('.amount-slider');
+      const display = customAmountSection.querySelector('.amount-display');
+      const selectBtn = customAmountSection.querySelector('.custom-select-btn');
+
+      slider.addEventListener('input', function() {
+        display.textContent = this.value;
+      });
+
+      selectBtn.addEventListener('click', function() {
+        const amount = slider.value;
+        // Handle custom amount checkout
+        console.log('Custom amount selected:', amount);
+      });
+    }
+
+    // Add CSS for particle animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes particleFloat {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0);
+        }
+        20% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(calc(-50% + ${Math.random() * 60 - 30}px), calc(-50% - 40px)) scale(0.5);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize
+    init();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Pricing - Pay What You Can",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Choose What Works for You"
+    },
+    {
+      "type": "rich_text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>We believe everyone should have access to this resource. Pay what feels right for your situation.</p>"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#E9E6FF",
+      "allow_blank": false
+    },
+    {
+      "type": "text",
+      "id": "currency_symbol",
+      "label": "Currency Symbol",
+      "default": "$"
+    },
+    {
+      "type": "select",
+      "id": "currency_code",
+      "label": "Currency Code (for analytics)",
+      "default": "USD",
+      "options": [
+        { "value": "USD", "label": "USD - US Dollar" },
+        { "value": "EUR", "label": "EUR - Euro" },
+        { "value": "GBP", "label": "GBP - British Pound" },
+        { "value": "CAD", "label": "CAD - Canadian Dollar" },
+        { "value": "AUD", "label": "AUD - Australian Dollar" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "suggested_text",
+      "label": "Suggested Badge Text",
+      "default": "SUGGESTED"
+    },
+    {
+      "type": "text",
+      "id": "free_text",
+      "label": "Free Tier Text",
+      "default": "FREE"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_custom_amount",
+      "label": "Show Custom Amount Slider",
+      "default": false
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "Scholarship Option"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scholarship",
+      "label": "Show Scholarship Link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "scholarship_text",
+      "label": "Scholarship Text",
+      "default": "Need financial assistance?"
+    },
+    {
+      "type": "text",
+      "id": "scholarship_link_text",
+      "label": "Scholarship Link Text",
+      "default": "Apply for a scholarship"
+    },
+    {
+      "type": "action",
+      "id": "scholarship_link",
+      "label": "Scholarship Link Action",
+      "default": "/scholarship"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pricing_tier",
+      "name": "Pricing Tier",
+      "elements": [
+        {
+          "type": "text",
+          "id": "tier_name",
+          "label": "Tier Name",
+          "default": "Supporter"
+        },
+        {
+          "type": "range",
+          "id": "amount",
+          "label": "Amount",
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "default": 25,
+          "info": "Set to 0 for free tier"
+        },
+        {
+          "type": "rich_text",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Great for individuals just starting their journey</p>"
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features (comma-separated)",
+          "default": "Full access to all content, Email support, Community access",
+          "info": "Separate features with commas"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "header",
+          "content": "Tier Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "suggested",
+          "label": "Mark as Suggested",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "default_selected",
+          "label": "Selected by Default",
+          "default": false,
+          "info": "This tier will be pre-selected when the page loads"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Select This Option"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "header",
+          "content": "Checkout Configuration"
+        },
+        {
+          "type": "radio",
+          "id": "checkout_type",
+          "label": "Checkout Type",
+          "default": "kajabi",
+          "options": [
+            { "label": "Kajabi Offer", "value": "kajabi" },
+            { "label": "External URL", "value": "external" },
+            { "label": "Form", "value": "form" }
+          ]
+        },
+        {
+          "type": "offer",
+          "id": "kajabi_offer",
+          "label": "Select Kajabi Offer",
+          "info": "Choose the offer to use for this pricing tier"
+        },
+        {
+          "type": "action",
+          "id": "external_checkout_url",
+          "label": "External Checkout Action",
+          "info": "Used when 'External URL' is selected"
+        },
+        {
+          "type": "form",
+          "id": "tier_form",
+          "label": "Select Form",
+          "default": "default",
+          "allow_blank": true,
+          "info": "Used when 'Form' is selected"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pricing - Pay What You Can",
+      "category": "Offers & Pricing",
+      "blocks": [
+        {
+          "type": "pricing_tier",
+          "settings": {
+            "tier_name": "Community",
+            "amount": 0,
+            "description": "<p>For those facing financial hardship</p>",
+            "features": "Full access to all content, Community support",
+            "button_text": "Get Started Free",
+            "checkout_type": "kajabi"
+          }
+        },
+        {
+          "type": "pricing_tier",
+          "settings": {
+            "tier_name": "Supporter",
+            "amount": 25,
+            "description": "<p>Help us maintain and improve this resource</p>",
+            "features": "Everything in Community, Priority email support, Bonus resources",
+            "suggested": true,
+            "default_selected": true,
+            "button_text": "Select Supporter",
+            "checkout_type": "kajabi"
+          }
+        },
+        {
+          "type": "pricing_tier",
+          "settings": {
+            "tier_name": "Sustainer",
+            "amount": 50,
+            "description": "<p>Your contribution helps others access this resource</p>",
+            "features": "Everything in Supporter, Monthly group calls, Early access to new content",
+            "button_text": "Select Sustainer",
+            "checkout_type": "kajabi"
+          }
+        },
+        {
+          "type": "pricing_tier",
+          "settings": {
+            "tier_name": "Champion",
+            "amount": 100,
+            "description": "<p>Maximum impact for our community</p>",
+            "features": "Everything in Sustainer, 1-on-1 consultation, Lifetime updates, Support 2 scholarships",
+            "button_text": "Become a Champion",
+            "checkout_type": "kajabi"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

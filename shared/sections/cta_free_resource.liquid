@@ -349,7 +349,7 @@
       {% assign f = current_site.find_form[section.settings.form] %}
       {% if f %}
         <div class="free-resource__form">
-          {% form f data-ajax data-form-type="free-resource" %}
+          {% form f %}
             <input type="hidden" name="thank_you_url" value="{{ section.settings.thank_you_url }}">
             {% for field in f.fields %}
               {% if field.input_type == 'email' %}
@@ -358,44 +358,26 @@
                 {{ field | form_input: class: "form-group", input_class: "form-control free-resource__input", placeholder: field.label }}
               {% endif %}
             {% endfor %}
-            <button type="submit" class="free-resource__submit btn-with-states" name="commit" data-loading-text="Processing...">
-              <span class="btn-text">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
-                </svg>
-                {{ section.settings.button_text | default: 'Get Free Chapter' }}
-              </span>
-              <span class="btn-spinner"></span>
-              <span class="btn-success-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
+            <button type="submit" class="free-resource__submit" name="commit">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
+              </svg>
+              {{ section.settings.button_text | default: 'Get Free Chapter' }}
             </button>
           {% endform %}
         </div>
       {% else %}
         <!-- Fallback form -->
-        <form class="free-resource__form" action="#" method="post" data-ajax data-form-type="free-resource">
+        <form class="free-resource__form" action="#" method="post">
           <input type="email"
                  class="free-resource__input"
                  placeholder="{{ section.settings.input_placeholder | default: 'Enter your email address' }}"
-                 required
-                 aria-label="Email address"
-                 aria-required="true">
-          <button type="submit" class="free-resource__submit btn-with-states" data-loading-text="Processing...">
-            <span class="btn-text">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
-              </svg>
-              {{ section.settings.button_text | default: 'Get Free Chapter' }}
-            </span>
-            <span class="btn-spinner"></span>
-            <span class="btn-success-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
+                 required>
+          <button type="submit" class="free-resource__submit">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
+            </svg>
+            {{ section.settings.button_text | default: 'Get Free Chapter' }}
           </button>
         </form>
       {% endif %}
@@ -419,33 +401,6 @@
     </div>
   </div>
 </section>
-
-<script>
-  // Enhanced form handling for free resource section
-  document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('#shopify-section-{{ section.id }}');
-    const forms = section.querySelectorAll('.free-resource__form form');
-    
-    forms.forEach(form => {
-      if (!form.hasAttribute('data-enhanced')) {
-        form.setAttribute('data-enhanced', 'true');
-        
-        // Add form message containers
-        const successMsg = document.createElement('div');
-        successMsg.className = 'form-feedback success';
-        successMsg.innerHTML = '<span>{{ section.settings.success_message | default: "Success! Check your email for the download link." }}</span>';
-        successMsg.style.display = 'none';
-        form.appendChild(successMsg);
-        
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'form-feedback error';
-        errorMsg.innerHTML = '<span>Please enter a valid email address.</span>';
-        errorMsg.style.display = 'none';
-        form.appendChild(errorMsg);
-      }
-    });
-  });
-</script>
 
 {% schema %}
 {

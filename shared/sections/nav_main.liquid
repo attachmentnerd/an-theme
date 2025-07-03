@@ -1,1003 +1,1791 @@
 <style>
-  /* CSS Custom Properties for Kajabi Theme Integration */
-  :root {
-    --kajabi-nav-height: 80px;
-    --kajabi-nav-mobile-height: 60px;
-    --kajabi-nav-padding-y: 1rem;
-    --kajabi-nav-bg: {{ section.settings.background_color | default: "#FFFFFF" }};
-    --kajabi-nav-bg-blur: {{ section.settings.background_color | default: "#FFFFFF" }}f2;
-    --kajabi-nav-text: {{ section.settings.text_color | default: "#2D3748" }};
-    --kajabi-nav-text-hover: {{ section.settings.text_color_hover | default: "#5A67D8" }};
-    --kajabi-nav-border: {{ section.settings.border_color | default: "#E2E8F0" }};
-    --kajabi-nav-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --kajabi-nav-transition: all 0.2s ease-in-out;
-    --kajabi-nav-radius: 0.375rem;
-  }
-
-  /* Kajabi Navigation Base Styles */
-  .kajabi-nav {
-    background-color: var(--kajabi-nav-bg);
-    box-shadow: var(--kajabi-nav-shadow);
+  /* Unified Navigation Section Styles */
+  .unified-nav {
+    background-color: {{ section.settings.background_color | default: "#FFFFFF" }};
+    font-size: {{ section.settings.font_size_desktop | default: "16px" }};
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.08);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
     position: relative;
-    z-index: 100;
-    min-height: var(--kajabi-nav-height);
-    transition: var(--kajabi-nav-transition);
+    z-index: var(--an-z-header, 100);
   }
-
-  /* Container following Kajabi standards */
-  .kajabi-nav .container {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-  }
-
-  @media (min-width: 768px) {
-    .kajabi-nav .container {
-      max-width: 750px;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .kajabi-nav .container {
-      max-width: 970px;
-    }
-  }
-
-  @media (min-width: 1200px) {
-    .kajabi-nav .container {
-      max-width: 1170px;
-    }
-  }
-
-  /* Navigation Content using Kajabi's media pattern */
-  .kajabi-nav__content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--kajabi-nav-padding-y) 0;
-    min-height: var(--kajabi-nav-height);
-  }
-
-  /* Logo Section */
-  .kajabi-nav__logo {
-    flex-shrink: 0;
-    margin-right: 2rem;
-  }
-
-  .kajabi-nav__logo a {
-    display: inline-block;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__logo a:hover {
-    transform: translateY(-1px);
-    opacity: 0.9;
-  }
-
-  .kajabi-nav__logo img {
-    height: {{ section.settings.logo_height | default: "40px" }};
-    width: auto;
-    display: block;
-  }
-
-  .kajabi-nav__logo-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--kajabi-nav-text);
-    text-decoration: none;
-  }
-
-  /* Navigation Links following Kajabi patterns */
-  .kajabi-nav__menu {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    flex: 1;
-  }
-
-  .kajabi-nav__menu-item {
-    position: relative;
-  }
-
-  .kajabi-nav__menu-link {
-    color: var(--kajabi-nav-text);
+  
+  /* Navigation Link Styles */
+  .unified-nav a,
+  .unified-nav a.link-list__link {
+    color: {{ section.settings.text_color | default: "#1F2937" }};
     text-decoration: none;
     font-weight: 500;
-    font-size: 1rem;
-    padding: 0.5rem 0;
-    display: inline-block;
-    position: relative;
-    transition: var(--kajabi-nav-transition);
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
-
-  .kajabi-nav__menu-link:hover {
-    color: var(--kajabi-nav-text-hover);
+  
+  .unified-nav a:hover,
+  .unified-nav a.link-list__link:hover {
+    color: {{ section.settings.text_color_hover | default: "var(--an-primary)" }};
   }
-
-  .kajabi-nav__menu-link::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background-color: var(--kajabi-nav-text-hover);
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.25s ease-out;
-  }
-
-  .kajabi-nav__menu-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
-
-  /* Actions Section */
-  .kajabi-nav__actions {
+  
+  /* Desktop Navigation Content */
+  .unified-nav__content {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    margin-left: 2rem;
+    gap: {{ section.settings.gap | default: 24 }}px;
+    {% if section.settings.horizontal == "center" %}
+      justify-content: center;
+    {% elsif section.settings.horizontal == "right" %}
+      justify-content: flex-end;
+    {% else %}
+      justify-content: flex-start;
+    {% endif %}
   }
-
-  /* Kajabi Button Styles */
-  .kajabi-nav__button {
-    display: inline-block;
-    padding: 0.625rem 1.5rem;
-    background-color: {{ section.settings.button_bg_color | default: "#5A67D8" }};
-    color: {{ section.settings.button_text_color | default: "#FFFFFF" }};
-    border-radius: var(--kajabi-nav-radius);
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-decoration: none;
-    transition: var(--kajabi-nav-transition);
-    border: 2px solid transparent;
+  
+  /* Mobile styles */
+  @media (max-width: 767px) {
+    .unified-nav {
+      {% if section.settings.hide_on_mobile %}
+        display: none;
+      {% else %}
+        padding: {{ section.settings.mobile_padding_top }}px 0 {{ section.settings.mobile_padding_bottom }}px 0;
+        font-size: {{ section.settings.font_size_mobile | default: "14px" }};
+      {% endif %}
+    }
+    
+    .unified-nav__content {
+      flex-wrap: nowrap;
+      gap: {{ section.settings.mobile_gap | default: 16 }}px;
+      {% if section.settings.mobile_horizontal == "center" %}
+        justify-content: center;
+      {% elsif section.settings.mobile_horizontal == "right" %}
+        justify-content: flex-end;
+      {% else %}
+        justify-content: space-between;
+      {% endif %}
+    }
+    
+    /* Show logo on mobile */
+    .unified-nav__block:has(.logo) {
+      display: block !important;
+    }
   }
-
-  .kajabi-nav__button:hover {
-    background-color: {{ section.settings.button_hover_bg_color | default: "#4C51BF" }};
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  /* Desktop Hidden */
+  @media (min-width: 768px) {
+    .unified-nav {
+      {% if section.settings.hide_on_desktop %}
+        display: none;
+      {% endif %}
+    }
   }
-
-  .kajabi-nav__button--outline {
-    background-color: transparent;
-    color: var(--kajabi-nav-text);
-    border-color: var(--kajabi-nav-border);
-  }
-
-  .kajabi-nav__button--outline:hover {
-    background-color: var(--kajabi-nav-bg);
-    border-color: var(--kajabi-nav-text);
-  }
-
-  /* User Account Dropdown */
-  .kajabi-nav__user {
-    position: relative;
-  }
-
-  .kajabi-nav__user-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.375rem;
+  
+  /* Mobile Hamburger */
+  .unified-nav__hamburger {
+    display: none;
+    cursor: pointer;
     background: none;
     border: none;
-    cursor: pointer;
-    transition: var(--kajabi-nav-transition);
+    padding: 8px;
+    margin-left: auto;
   }
-
-  .kajabi-nav__user-avatar {
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--kajabi-nav-border);
+  
+  @media (max-width: 767px) {
+    .unified-nav__hamburger {
+      display: block;
+      order: 2;
+    }
+    
+    /* Hide all blocks except hamburger and logo on mobile */
+    .unified-nav__content > .unified-nav__block:not(.unified-nav__hamburger):not(.unified-nav__block--logo) {
+      display: none;
+    }
+    
+    /* Logo block specific mobile styles */
+    .unified-nav__content > .unified-nav__block--logo {
+      display: flex !important;
+      order: 1;
+      margin-right: auto;
+    }
   }
-
-  .kajabi-nav__user-dropdown {
+  
+  /* Progressive hiding for responsive design */
+  @media (max-width: 991px) {
+    .unified-nav__block:has(.hello-bar),
+    .unified-nav__block:has(.social-icons) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 850px) {
+    .unified-nav__block--spacer,
+    .unified-nav__block:has(.user),
+    .unified-nav__block:has(.cart) {
+      display: none;
+    }
+  }
+  
+  /* Hamburger Icon */
+  .hamburger {
+    width: 24px;
+    height: 20px;
+    position: relative;
+  }
+  
+  .hamburger__slices {
+    position: relative;
+    height: 100%;
+  }
+  
+  .hamburger__slice {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: {{ section.settings.hamburger_color | default: section.settings.text_color | default: "#1F2937" }};
+    transition: all 0.3s ease;
+  }
+  
+  .hamburger--slice-1 { top: 0; }
+  .hamburger--slice-2 { top: 6px; }
+  .hamburger--slice-3 { top: 12px; }
+  .hamburger--slice-4 { top: 18px; }
+  
+  /* When menu is open, transform hamburger to X */
+  .mobile-menu-open .hamburger--slice-1 {
+    transform: rotate(45deg);
+    top: 9px;
+  }
+  
+  .mobile-menu-open .hamburger--slice-2,
+  .mobile-menu-open .hamburger--slice-3 {
+    opacity: 0;
+  }
+  
+  .mobile-menu-open .hamburger--slice-4 {
+    transform: rotate(-45deg);
+    top: 9px;
+  }
+  
+  /* Stretch support for navigation blocks */
+  .unified-nav__block--stretch {
+    flex: 1;
+  }
+  
+  /* Logo block styles */
+  .unified-nav .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .unified-nav .logo__link {
+    display: flex;
+    align-items: center;
+  }
+  
+  .unified-nav .logo__image {
+    height: auto;
+    width: auto;
+    max-height: 100%;
+    display: block;
+  }
+  
+  .unified-nav .logo__text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: {{ section.settings.text_color | default: "#1F2937" }};
+    text-decoration: none;
+  }
+  
+  /* Maintain logo size on mobile */
+  @media (max-width: 767px) {
+    .unified-nav__block--logo {
+      flex-shrink: 0;
+    }
+    
+    .unified-nav__block--logo .logo__image {
+      max-height: 40px;
+    }
+  }
+  
+  /* Hello bar styles */
+  .unified-nav .hello-bar {
+    padding: 8px 16px;
+    border-radius: var(--an-radius-md);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .unified-nav .hello-bar a {
+    text-decoration: underline;
+  }
+  
+  /* Dropdown styles */
+  .unified-nav .dropdown {
+    position: relative;
+  }
+  
+  .unified-nav .dropdown__menu {
     position: absolute;
     top: 100%;
-    right: 0;
-    margin-top: 0.5rem;
-    background-color: var(--kajabi-nav-bg);
-    border: 1px solid var(--kajabi-nav-border);
-    border-radius: var(--kajabi-nav-radius);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    left: 0;
+    background: {{ section.settings.dropdown_background | default: "#FFFFFF" }};
+    border: 1px solid {{ section.settings.dropdown_border | default: "var(--an-border)" }};
+    border-radius: var(--an-radius-md);
+    box-shadow: var(--an-shadow-lg);
     min-width: 200px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-0.5rem);
-    transition: var(--kajabi-nav-transition);
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: var(--an-z-dropdown, 50);
   }
-
-  .kajabi-nav__user.active .kajabi-nav__user-dropdown,
-  .kajabi-nav__user:hover .kajabi-nav__user-dropdown {
+  
+  .unified-nav .dropdown.active .dropdown__menu,
+  .unified-nav .dropdown:hover .dropdown__menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
   }
-
-  .kajabi-nav__user-dropdown a {
+  
+  .unified-nav .dropdown__menu a {
     display: block;
-    padding: 0.75rem 1rem;
-    color: var(--kajabi-nav-text);
-    text-decoration: none;
-    transition: var(--kajabi-nav-transition);
+    padding: 8px 16px;
+    color: {{ section.settings.dropdown_text_color | default: "var(--an-text-dark)" }};
+  }
+  
+  .unified-nav .dropdown__menu a:hover {
+    background-color: {{ section.settings.dropdown_hover_bg | default: "var(--an-bg-light)" }};
   }
 
-  .kajabi-nav__user-dropdown a:hover {
-    background-color: {{ section.settings.dropdown_hover_bg | default: "#F7FAFC" }};
-  }
-
-  /* Mobile Hamburger */
-  .kajabi-nav__hamburger {
-    display: none;
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .kajabi-nav__hamburger-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    position: relative;
-  }
-
-  .kajabi-nav__hamburger-line {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: var(--kajabi-nav-text);
-    margin: 5px 0;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  /* Mobile Styles */
-  @media (max-width: 991px) {
-    .kajabi-nav {
-      min-height: var(--kajabi-nav-mobile-height);
-    }
-
-    .kajabi-nav__content {
-      min-height: var(--kajabi-nav-mobile-height);
-      padding: 0.75rem 0;
-    }
-
-    .kajabi-nav__menu {
-      display: none;
-    }
-
-    .kajabi-nav__actions > *:not(.kajabi-nav__hamburger) {
-      display: none;
-    }
-
-    .kajabi-nav__hamburger {
-      display: block;
-    }
-
-    .kajabi-nav__logo img {
-      height: {{ section.settings.mobile_logo_height | default: "32px" }};
-    }
-  }
-
-  /* Mobile Menu Overlay */
-  .kajabi-nav__mobile-menu {
+  /* ==========================================================================
+     Mobile Menu Overlay Styles
+     ========================================================================== */
+  
+  /* Mobile Menu */
+  .unified-nav__mobile-menu {
     position: fixed;
     top: 0;
     right: 0;
     width: 100%;
     max-width: {{ section.settings.mobile_menu_width | default: 320 }}px;
     height: 100vh;
-    background-color: var(--kajabi-nav-bg);
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+    background-color: {{ section.settings.mobile_background_color | default: "#FFFFFF" }};
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
     transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
-
-  .kajabi-nav__mobile-menu.active {
+  
+  .unified-nav__mobile-menu.active {
     transform: translateX(0);
   }
-
-  .kajabi-nav__mobile-backdrop {
+  
+  /* Mobile Menu Backdrop */
+  .unified-nav__mobile-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: {{ section.settings.mobile_backdrop_color | default: "rgba(0, 0, 0, 0.4)" }};
+    z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: var(--kajabi-nav-transition);
-    z-index: 999;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
-
-  .kajabi-nav__mobile-backdrop.active {
+  
+  .unified-nav__mobile-backdrop.active {
     opacity: 1;
     visibility: visible;
   }
-
-  /* Mobile Menu Header */
-  .kajabi-nav__mobile-header {
+  
+  /* Header with Close Button */
+  .unified-nav__mobile-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid var(--kajabi-nav-border);
+    padding: 20px 24px;
+    border-bottom: 1px solid {{ section.settings.mobile_divider_color | default: "#E5E7EB" }};
+    position: sticky;
+    top: 0;
+    background-color: {{ section.settings.mobile_background_color | default: "#FFFFFF" }};
+    z-index: 10;
   }
-
-  .kajabi-nav__mobile-close {
-    padding: 0.5rem;
-    background: none;
-    border: none;
+  
+  .unified-nav__mobile-close {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    color: var(--kajabi-nav-text);
+    background: {{ section.settings.mobile_close_bg | default: "#F3F4F6" }};
+    border: none;
+    border-radius: 50%;
+    transition: all 0.2s ease;
   }
-
+  
+  .unified-nav__mobile-close:hover {
+    background: {{ section.settings.mobile_close_hover_bg | default: "#E5E7EB" }};
+    transform: scale(1.05);
+  }
+  
+  .unified-nav__mobile-close svg {
+    width: 20px;
+    height: 20px;
+    stroke: {{ section.settings.mobile_close_color | default: "#374151" }};
+    stroke-width: 2;
+  }
+  
   /* Mobile Menu Content */
-  .kajabi-nav__mobile-content {
-    padding: 1.5rem 1rem;
+  .unified-nav__mobile-content {
+    padding: 0;
   }
-
-  .kajabi-nav__mobile-nav {
+  
+  /* Mobile Menu Logo */
+  .unified-nav__mobile-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .unified-nav__mobile-logo img {
+    max-height: 32px;
+    width: auto;
+  }
+  
+  .unified-nav__mobile-logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: {{ section.settings.mobile_text_color | default: "#1F2937" }};
+    text-decoration: none;
+  }
+  
+  /* Mobile Menu Navigation */
+  .unified-nav__mobile-nav {
+    padding: 24px 0;
+  }
+  
+  .unified-nav__mobile-nav ul {
     list-style: none;
     padding: 0;
-    margin: 0 0 2rem 0;
+    margin: 0;
   }
-
-  .kajabi-nav__mobile-nav li {
-    margin-bottom: 0.5rem;
+  
+  .unified-nav__mobile-nav li {
+    margin: 0;
   }
-
-  .kajabi-nav__mobile-nav a {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: var(--kajabi-nav-text);
+  
+  .unified-nav__mobile-nav > ul > li {
+    border-bottom: 1px solid {{ section.settings.mobile_divider_color | default: "#E5E7EB" }};
+  }
+  
+  .unified-nav__mobile-nav > ul > li:last-child {
+    border-bottom: none;
+  }
+  
+  .unified-nav__mobile-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    color: {{ section.settings.mobile_text_color | default: "#1F2937" }};
     text-decoration: none;
-    font-size: 1rem;
+    font-size: {{ section.settings.mobile_font_size | default: "16" }}px;
     font-weight: 500;
-    border-radius: var(--kajabi-nav-radius);
-    transition: var(--kajabi-nav-transition);
+    transition: all 0.2s ease;
+    position: relative;
   }
-
-  .kajabi-nav__mobile-nav a:hover {
-    background-color: {{ section.settings.mobile_hover_bg | default: "#F7FAFC" }};
+  
+  .unified-nav__mobile-nav a:hover,
+  .unified-nav__mobile-nav a:active {
+    background-color: {{ section.settings.mobile_hover_bg | default: "#F9FAFB" }};
+    color: {{ section.settings.mobile_text_hover_color | default: "var(--an-primary)" }};
   }
-
-  .kajabi-nav__mobile-nav a.active {
-    background-color: {{ section.settings.mobile_active_bg | default: "#EBF4FF" }};
-    color: var(--kajabi-nav-text-hover);
+  
+  /* Active menu item indicator */
+  .unified-nav__mobile-nav a.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    background-color: {{ section.settings.mobile_active_indicator | default: "var(--an-primary)" }};
+    border-radius: 0 2px 2px 0;
   }
-
-  /* Mobile CTA */
-  .kajabi-nav__mobile-cta {
+  
+  /* Mobile Menu Dropdown */
+  .unified-nav__mobile-dropdown {
+    position: relative;
+  }
+  
+  .unified-nav__mobile-dropdown-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px 24px;
+    background: none;
+    border: none;
+    color: {{ section.settings.mobile_text_color | default: "#1F2937" }};
+    font-size: {{ section.settings.mobile_font_size | default: "16" }}px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .unified-nav__mobile-dropdown-toggle:hover {
+    background-color: {{ section.settings.mobile_hover_bg | default: "#F9FAFB" }};
+  }
+  
+  .unified-nav__mobile-dropdown-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .unified-nav__mobile-dropdown-icon svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+  
+  .unified-nav__mobile-dropdown.active .unified-nav__mobile-dropdown-icon {
+    transform: rotate(180deg);
+  }
+  
+  .unified-nav__mobile-dropdown-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: {{ section.settings.mobile_dropdown_bg | default: "#F9FAFB" }};
+  }
+  
+  .unified-nav__mobile-dropdown.active .unified-nav__mobile-dropdown-menu {
+    max-height: 400px;
+  }
+  
+  .unified-nav__mobile-dropdown-menu a {
+    padding-left: 48px;
+    font-size: {{ section.settings.mobile_font_size | default: 16 | minus: 1 }}px;
+    color: {{ section.settings.mobile_dropdown_text_color | default: "#6B7280" }};
+  }
+  
+  .unified-nav__mobile-dropdown-menu a:hover {
+    color: {{ section.settings.mobile_text_hover_color | default: "var(--an-primary)" }};
+    background-color: {{ section.settings.mobile_dropdown_hover_bg | default: "#F3F4F6" }};
+  }
+  
+  /* Mobile Menu CTA Section */
+  .unified-nav__mobile-cta-section {
+    padding: 24px;
+    background-color: {{ section.settings.mobile_cta_section_bg | default: "#F9FAFB" }};
+    border-top: 1px solid {{ section.settings.mobile_divider_color | default: "#E5E7EB" }};
+  }
+  
+  .unified-nav__mobile-cta-button {
     display: block;
     width: 100%;
-    padding: 0.875rem 1.5rem;
-    background-color: {{ section.settings.mobile_cta_bg | default: "#5A67D8" }};
-    color: white;
+    padding: 14px 24px;
+    background: {{ section.settings.mobile_cta_background | default: "var(--an-primary)" }};
+    color: {{ section.settings.mobile_cta_text_color | default: "#FFFFFF" }};
     text-align: center;
     text-decoration: none;
     font-weight: 600;
-    border-radius: var(--kajabi-nav-radius);
-    transition: var(--kajabi-nav-transition);
+    font-size: 16px;
+    border-radius: var(--an-radius-md, 8px);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
-
-  .kajabi-nav__mobile-cta:hover {
-    background-color: {{ section.settings.mobile_cta_hover_bg | default: "#4C51BF" }};
+  
+  .unified-nav__mobile-cta-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-
-  /* Sticky Navigation */
-  .kajabi-nav--sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    animation: slideDown 0.3s ease-in-out;
-  }
-
-  .kajabi-nav--sticky.kajabi-nav--hidden {
-    transform: translateY(-100%);
-  }
-
-  @keyframes slideDown {
-    from {
-      transform: translateY(-100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  /* Dropdown Support */
-  .kajabi-nav__dropdown {
-    position: relative;
-  }
-
-  .kajabi-nav__dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 0.5rem;
-    background-color: var(--kajabi-nav-bg);
-    border: 1px solid var(--kajabi-nav-border);
-    border-radius: var(--kajabi-nav-radius);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-0.5rem);
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__dropdown:hover .kajabi-nav__dropdown-menu {
-    opacity: 1;
-    visibility: visible;
+  
+  .unified-nav__mobile-cta-button:active {
     transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
-
-  /* Utility Classes */
-  .kajabi-nav__spacer {
-    flex: 1;
+  
+  /* Mobile Menu Footer */
+  .unified-nav__mobile-footer {
+    padding: 24px;
+    border-top: 1px solid {{ section.settings.mobile_divider_color | default: "#E5E7EB" }};
+    background-color: {{ section.settings.mobile_footer_bg | default: "#FFFFFF" }};
   }
-
-  .kajabi-nav__divider {
-    width: 1px;
-    height: 1.5rem;
-    background-color: var(--kajabi-nav-border);
-    margin: 0 1rem;
+  
+  .unified-nav__mobile-footer-content {
+    text-align: center;
+    color: {{ section.settings.mobile_footer_text_color | default: "#6B7280" }};
+    font-size: 14px;
+    line-height: 1.5;
   }
-
-  /* Accessibility */
-  .kajabi-nav a:focus,
-  .kajabi-nav button:focus {
-    outline: 2px solid var(--kajabi-nav-text-hover);
-    outline-offset: 2px;
+  
+  /* Social Icons in Footer */
+  .unified-nav__mobile-social {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 16px;
   }
-
-  /* Loading States */
-  .kajabi-nav__skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
+  
+  .unified-nav__mobile-social a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: {{ section.settings.mobile_social_bg | default: "#F3F4F6" }};
+    border-radius: 50%;
+    transition: all 0.2s ease;
   }
-
-  @keyframes loading {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
+  
+  .unified-nav__mobile-social a:hover {
+    background: {{ section.settings.mobile_social_hover_bg | default: "#E5E7EB" }};
+    transform: scale(1.1);
+  }
+  
+  .unified-nav__mobile-social svg {
+    width: 20px;
+    height: 20px;
+    fill: {{ section.settings.mobile_social_color | default: "#374151" }};
+  }
+  
+  /* User Account Section */
+  .unified-nav__mobile-user {
+    padding: 20px 24px;
+    background-color: {{ section.settings.mobile_user_section_bg | default: "#F9FAFB" }};
+    border-bottom: 1px solid {{ section.settings.mobile_divider_color | default: "#E5E7EB" }};
+  }
+  
+  .unified-nav__mobile-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .unified-nav__mobile-user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid {{ section.settings.mobile_avatar_border | default: "#E5E7EB" }};
+  }
+  
+  .unified-nav__mobile-user-details h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: {{ section.settings.mobile_text_color | default: "#1F2937" }};
+  }
+  
+  .unified-nav__mobile-user-details p {
+    margin: 0;
+    font-size: 14px;
+    color: {{ section.settings.mobile_muted_text | default: "#6B7280" }};
+  }
+  
+  .unified-nav__mobile-user-links {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+  }
+  
+  .unified-nav__mobile-user-links a {
+    color: {{ section.settings.mobile_link_color | default: "var(--an-primary)" }};
+    text-decoration: none;
+  }
+  
+  .unified-nav__mobile-user-links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Prevent body scroll when menu is open */
+  body.mobile-menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+  
+  /* Smooth transitions for all interactive elements */
+  .unified-nav__mobile-menu a,
+  .unified-nav__mobile-menu button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Desktop hide mobile menu */
+  @media (min-width: 768px) {
+    .unified-nav__mobile-menu,
+    .unified-nav__mobile-backdrop {
+      display: none;
     }
   }
 </style>
 
-<!-- Kajabi Navigation Section -->
-<nav class="kajabi-nav {% if section.settings.sticky %}kajabi-nav--sticky{% endif %}"
+<!-- Desktop Navigation Bar -->
+<nav class="unified-nav {% if section.settings.sticky %}unified-nav--sticky{% endif %}"
      role="navigation"
-     aria-label="{{ section.settings.aria_label | default: 'Main navigation' }}"
+     aria-label="Main navigation" 
      id="section-{{ section.id }}"
-     data-section-id="{{ section.id }}">
+     data-section-id="{{ section.id }}"
+     kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="container">
-    <div class="kajabi-nav__content">
-      <!-- Logo -->
-      <div class="kajabi-nav__logo" kjb-settings-id="{{ 'logo_group' | settings_id: section: section }}">
-        <a href="{{ current_site.root_url }}">
-          {% if section.settings.logo_type == 'image' and section.settings.logo %}
-            <div kjb-settings-id="{{ '>
-  {% render 'responsive-image',
-    image: section.settings.logo,
-    alt: '{{ section.settings.logo_alt | default: current_site.title }}',
-    sizes: '(max-width: 767px) 120px, 180px',
-    widths: '120,180,240,360',
-    placeholder_type: 'logo'
-  %}
-</div>
-          {% else %}
-            <span class="kajabi-nav__logo-text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section }}">
-              {{ section.settings.logo_text | default: current_site.title }}
-            </span>
-          {% endif %}
-        </a>
-      </div>
-
-      <!-- Navigation Menu -->
-      <nav class="kajabi-nav__menu" kjb-settings-id="{{ 'menu' | settings_id: section: section }}">
-        {% if section.settings.menu %}
-          {% for link in linklists[section.settings.menu].links %}
-            <div class="kajabi-nav__menu-item {% if link.links.size > 0 %}kajabi-nav__dropdown{% endif %}">
-              <a href="{{ link.url }}" class="kajabi-nav__menu-link">{{ link.title }}</a>
-
-              {% if link.links.size > 0 %}
-                <div class="kajabi-nav__dropdown-menu">
-                  {% for child_link in link.links %}
-                    <a href="{{ child_link.url }}">{{ child_link.title }}</a>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-          {% endfor %}
-        {% endif %}
-      </nav>
-
-      <!-- Spacer -->
-      <div class="kajabi-nav__spacer"></div>
-
-      <!-- Actions -->
-      <div class="kajabi-nav__actions">
-        {% for block in section.blocks %}
-          <div class="kajabi-nav__action-item" kjb-settings-id="{{ 'block' | settings_id: section: section, block: block }}">
+    <div class="unified-nav__content">
+      {% for block in section.blocks %}
+        {% if block.type != 'mobile_menu_item' and block.type != 'mobile_dropdown' and block.type != 'mobile_footer_content' %}
+          <div class="unified-nav__block {% if block.settings.stretch %}unified-nav__block--stretch{% endif %} {% if block.type == 'logo' %}unified-nav__block--logo{% endif %}" {{ block.shopify_attributes }}>
             {% case block.type %}
-              {% when 'button' %}
-                <a href="{{ block.settings.button_link }}"
-                   class="kajabi-nav__button {% if block.settings.button_style == 'outline' %}kajabi-nav__button--outline{% endif %}"
-                   {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
-                   kjb-settings-id="{{ 'button_text' | settings_id: block: block }}">
-                  {{ block.settings.button_text }}
-                </a>
-
-              {% when 'user' %}
-                {% if current_site_user %}
-                  <div class="kajabi-nav__user">
-                    <button class="kajabi-nav__user-toggle" aria-label="User menu" aria-expanded="false">
-                      {% if block.settings.show_avatar %}
-                        {{ current_site_user | avatar_url | image_tag: class: "kajabi-nav__user-avatar", alt: "User avatar" }}
-                      {% else %}
-                        <span>{{ current_site_user.name | default: current_site_user.email }}</span>
-                      {% endif %}
-                    </button>
-                    <div class="kajabi-nav__user-dropdown">
-                      <a href="/library">{{ block.settings.library_text | default: 'My Library' }}</a>
-                      {{ block.settings.settings_text | default: 'Settings' | member_settings_link }}
-                      <hr style="margin: 0.5rem 0; border-color: var(--kajabi-nav-border);">
-                      {{ block.settings.logout_text | default: 'Log Out' | member_logout_link }}
-                    </div>
-                  </div>
-                {% else %}
-                  <a href="/login" class="kajabi-nav__button kajabi-nav__button--outline"
-                     kjb-settings-id="{{ 'login_text' | settings_id: block: block }}">
-                    {{ block.settings.login_text | default: 'Log In' }}
-                  </a>
-                {% endif %}
-
-              {% when 'cart' %}
+              {% when "logo" %}
+                {% include "shared_block_logo_enhanced" %}
+              {% when "menu" %}
+                {% include "shared_block_menu_styled" %}
+              {% when "cta" %}
+                {% include "block_cta" %}
+              {% when "user" %}
+                {% include "header_block_user" %}
+              {% when "dropdown" %}
+                {% include "header_block_dropdown" %}
+              {% when "social_icons" %}
+                {% include "block_social_icons" %}
+              {% when "custom_link" %}
+                {% include "header_block_custom_link" %}
+              {% when "featured_button" %}
+                {% include "header_block_featured_button" %}
+              {% when "spacer" %}
+                {% include "header_block_spacer" %}
+              {% when "cart" %}
                 {% if section.settings.enable_cart %}
-                  <a href="/cart" class="kajabi-nav__button kajabi-nav__button--outline">
-                    Cart
-                    {% if cart.item_count > 0 %}
-                      <span class="kajabi-nav__badge">{{ cart.item_count }}</span>
-                    {% endif %}
-                  </a>
+                  {% include "header_block_cart" %}
                 {% endif %}
-
-              {% when 'link' %}
-                <a href="{{ block.settings.link_url }}"
-                   {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
-                   kjb-settings-id="{{ 'link_text' | settings_id: block: block }}">
-                  {{ block.settings.link_text }}
-                </a>
+              {% when "hello_bar" %}
+                {% include "header_block_hello_bar" %}
             {% endcase %}
           </div>
-        {% endfor %}
-
-        <!-- Mobile Hamburger -->
-        <button class="kajabi-nav__hamburger"
-                aria-label="Toggle mobile menu"
-                aria-expanded="false"
-                data-mobile-menu-trigger>
-          <span class="kajabi-nav__hamburger-icon">
-            <span class="kajabi-nav__hamburger-line"></span>
-            <span class="kajabi-nav__hamburger-line"></span>
-            <span class="kajabi-nav__hamburger-line"></span>
-          </span>
-        </button>
-      </div>
+        {% endif %}
+      {% endfor %}
+      
+      <!-- Mobile Hamburger -->
+      <button class="unified-nav__hamburger unified-nav__block" 
+              aria-label="Toggle mobile menu"
+              data-mobile-menu-trigger>
+        <div class="hamburger">
+          <div class="hamburger__slices">
+            <div class="hamburger__slice hamburger--slice-1"></div>
+            <div class="hamburger__slice hamburger--slice-2"></div>
+            <div class="hamburger__slice hamburger--slice-3"></div>
+            <div class="hamburger__slice hamburger--slice-4"></div>
+          </div>
+        </div>
+      </button>
     </div>
   </div>
 </nav>
 
 <!-- Mobile Menu Backdrop -->
-<div class="kajabi-nav__mobile-backdrop" id="mobile-backdrop-{{ section.id }}"></div>
+<div class="unified-nav__mobile-backdrop" id="mobile-menu-backdrop-{{ section.id }}"></div>
 
 <!-- Mobile Menu -->
-<div class="kajabi-nav__mobile-menu" id="mobile-menu-{{ section.id }}" aria-hidden="true">
-  <div class="kajabi-nav__mobile-header">
-    <div class="kajabi-nav__logo">
-      <a href="{{ current_site.root_url }}">
-        {% if section.settings.mobile_logo %}
-          {% render 'responsive-image',
-  image: section.settings.mobile_logo,
-  alt: '{{ section.settings.logo_alt | default: current_site.title }}',
-  sizes: '(max-width: 767px) 120px, 180px',
-  widths: '120,180,240,360',
-  placeholder_type: 'logo'
-%}
-        {% elsif section.settings.logo_type == 'image' and section.settings.logo %}
-          {% render 'responsive-image',
-  image: section.settings.logo,
-  alt: '{{ section.settings.logo_alt | default: current_site.title }}',
-  sizes: '(max-width: 767px) 120px, 180px',
-  widths: '120,180,240,360',
-  placeholder_type: 'logo'
-%}
-        {% else %}
-          <span class="kajabi-nav__logo-text">{{ section.settings.logo_text | default: current_site.title }}</span>
-        {% endif %}
-      </a>
+<nav class="unified-nav__mobile-menu" id="mobile-menu-{{ section.id }}" aria-label="Mobile navigation" role="dialog" aria-modal="true">
+  <!-- Header with Logo and Close -->
+  <div class="unified-nav__mobile-header">
+    <div class="unified-nav__mobile-logo">
+      {% if section.settings.show_mobile_logo %}
+        <a href="{{ current_site.root_url }}">
+          {% if section.settings.mobile_logo_type == 'image' and section.settings.mobile_logo_image %}
+            <img src="{{ section.settings.mobile_logo_image | image_url }}" 
+                 alt="{{ section.settings.mobile_logo_alt | default: current_site.title }}"
+                 loading="lazy">
+          {% else %}
+            <span class="unified-nav__mobile-logo-text">{{ section.settings.mobile_logo_text | default: current_site.title }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
     </div>
-    <button class="kajabi-nav__mobile-close" aria-label="Close menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M6 18L18 6M6 6l12 12"/>
+    
+    <button class="unified-nav__mobile-close" aria-label="Close mobile menu" type="button">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
   </div>
-
-  <div class="kajabi-nav__mobile-content">
+  
+  <div class="unified-nav__mobile-content">
+    <!-- User Account Section (if logged in) -->
+    {% if current_site_user and section.settings.show_mobile_user_info %}
+      <div class="unified-nav__mobile-user">
+        <div class="unified-nav__mobile-user-info">
+          {{ current_site_user | avatar_url | image_tag: class: "unified-nav__mobile-user-avatar", alt: "User Avatar" }}
+          <div class="unified-nav__mobile-user-details">
+            <h4>{{ current_site_user.name | default: current_site_user.email }}</h4>
+            <p>{{ current_site_user.email }}</p>
+          </div>
+        </div>
+        <div class="unified-nav__mobile-user-links">
+          <a href="/library">My Library</a>
+          <span>•</span>
+          {{ 'Settings' | member_settings_link }}
+          <span>•</span>
+          {{ 'Logout' | member_logout_link }}
+        </div>
+      </div>
+    {% endif %}
+    
     <!-- Mobile Navigation -->
-    <ul class="kajabi-nav__mobile-nav">
-      {% if section.settings.menu %}
-        {% for link in linklists[section.settings.menu].links %}
-          <li>
-            <a href="{{ link.url }}" {% if link.current %}class="active"{% endif %}>
-              {{ link.title }}
-            </a>
-          </li>
+    <nav class="unified-nav__mobile-nav">
+      <ul>
+        {% comment %} First, add any menu blocks that should appear in mobile {% endcomment %}
+        {% for block in section.blocks %}
+          {% if block.type == 'menu' and block.settings.show_in_mobile != false %}
+            {% if block.settings.menu %}
+              {% for link in menus[block.settings.menu].links %}
+                <li{% if link.links.size > 0 %} class="unified-nav__mobile-dropdown"{% endif %}>
+                  {% if link.links.size > 0 %}
+                    <button class="unified-nav__mobile-dropdown-toggle" type="button" aria-expanded="false">
+                      <span>{{ link.title }}</span>
+                      <span class="unified-nav__mobile-dropdown-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </span>
+                    </button>
+                    <div class="unified-nav__mobile-dropdown-menu">
+                      {% for child_link in link.links %}
+                        <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            {% endif %}
+          {% endif %}
         {% endfor %}
-      {% endif %}
-
-      <!-- Mobile-only menu items -->
-      {% for block in section.blocks %}
-        {% if block.type == 'mobile_menu_item' %}
-          <li>
-            <a href="{{ block.settings.link }}"
-               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-              {{ block.settings.title }}
-            </a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-
-    <!-- Mobile CTA -->
+        
+        {% comment %} Then add mobile-specific menu items {% endcomment %}
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'mobile_menu_item' %}
+              <li>
+                <a href="{{ block.settings.link }}" 
+                   {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+                  {{ block.settings.title }}
+                </a>
+              </li>
+            
+            {% when 'mobile_dropdown' %}
+              <li class="unified-nav__mobile-dropdown">
+                <button class="unified-nav__mobile-dropdown-toggle" type="button" aria-expanded="false">
+                  <span>{{ block.settings.title }}</span>
+                  <span class="unified-nav__mobile-dropdown-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </button>
+                <div class="unified-nav__mobile-dropdown-menu">
+                  {% if block.settings.menu %}
+                    {% for link in menus[block.settings.menu].links %}
+                      <a href="{{ link.url }}">{{ link.title }}</a>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </li>
+          {% endcase %}
+        {% endfor %}
+      </ul>
+    </nav>
+    
+    <!-- CTA Section -->
     {% if section.settings.show_mobile_cta %}
-      <a href="{{ section.settings.mobile_cta_link }}"
-         class="kajabi-nav__mobile-cta"
-         {% if section.settings.mobile_cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-        {{ section.settings.mobile_cta_text }}
-      </a>
+      <div class="unified-nav__mobile-cta-section">
+        <a href="{{ section.settings.mobile_cta_link }}" 
+           class="unified-nav__mobile-cta-button"
+           {% if section.settings.mobile_cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+          {{ section.settings.mobile_cta_text }}
+        </a>
+      </div>
+    {% endif %}
+    
+    <!-- Footer -->
+    {% if section.settings.show_mobile_social or section.blocks %}
+      {% assign footer_blocks = section.blocks | where: "type", "mobile_footer_content" %}
+      {% if section.settings.show_mobile_social or footer_blocks.size > 0 %}
+        <div class="unified-nav__mobile-footer">
+          {% if section.settings.show_mobile_social %}
+            <div class="unified-nav__mobile-social">
+              {% if section.settings.mobile_social_facebook %}
+                <a href="{{ section.settings.mobile_social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+              {% endif %}
+              {% if section.settings.mobile_social_twitter %}
+                <a href="{{ section.settings.mobile_social_twitter }}" target="_blank" rel="noopener" aria-label="Twitter">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                </a>
+              {% endif %}
+              {% if section.settings.mobile_social_instagram %}
+                <a href="{{ section.settings.mobile_social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
+                  </svg>
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+          
+          {% for block in footer_blocks %}
+            <div class="unified-nav__mobile-footer-content">
+              {{ block.settings.content }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     {% endif %}
   </div>
-</div>
+</nav>
 
 <script>
-// Kajabi Navigation JavaScript
+// Unified Navigation JavaScript
 (function() {
-  'use strict';
-
   const nav = document.getElementById('section-{{ section.id }}');
   const mobileMenu = document.getElementById('mobile-menu-{{ section.id }}');
-  const backdrop = document.getElementById('mobile-backdrop-{{ section.id }}');
+  const backdrop = document.getElementById('mobile-menu-backdrop-{{ section.id }}');
   const hamburger = nav.querySelector('[data-mobile-menu-trigger]');
-  const closeBtn = mobileMenu.querySelector('.kajabi-nav__mobile-close');
+  const closeBtn = mobileMenu.querySelector('.unified-nav__mobile-close');
+  const dropdowns = mobileMenu.querySelectorAll('.unified-nav__mobile-dropdown');
+  const links = mobileMenu.querySelectorAll('a[href]');
   const body = document.body;
-
+  
   let scrollPosition = 0;
-
+  
   // Mobile menu functions
   function openMenu() {
     scrollPosition = window.pageYOffset;
     mobileMenu.classList.add('active');
     backdrop.classList.add('active');
-    body.style.overflow = 'hidden';
+    body.classList.add('mobile-menu-open');
     mobileMenu.setAttribute('aria-hidden', 'false');
-    hamburger.setAttribute('aria-expanded', 'true');
+    closeBtn.focus();
   }
-
+  
   function closeMenu() {
     mobileMenu.classList.remove('active');
     backdrop.classList.remove('active');
-    body.style.overflow = '';
+    body.classList.remove('mobile-menu-open');
     mobileMenu.setAttribute('aria-hidden', 'true');
-    hamburger.setAttribute('aria-expanded', 'false');
     window.scrollTo(0, scrollPosition);
   }
-
+  
   // Event listeners
-  hamburger.addEventListener('click', openMenu);
+  if (hamburger) {
+    hamburger.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openMenu();
+    });
+  }
+  
   closeBtn.addEventListener('click', closeMenu);
   backdrop.addEventListener('click', closeMenu);
-
+  
   // Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
       closeMenu();
     }
   });
-
-  // User dropdown
-  const userDropdowns = nav.querySelectorAll('.kajabi-nav__user');
-  userDropdowns.forEach(dropdown => {
-    const toggle = dropdown.querySelector('.kajabi-nav__user-toggle');
-    if (toggle) {
-      toggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        dropdown.classList.toggle('active');
-        const expanded = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', !expanded);
+  
+  // Dropdown toggles
+  dropdowns.forEach(dropdown => {
+    const toggle = dropdown.querySelector('.unified-nav__mobile-dropdown-toggle');
+    const menu = dropdown.querySelector('.unified-nav__mobile-dropdown-menu');
+    
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const isOpen = dropdown.classList.contains('active');
+      
+      // Close all other dropdowns
+      dropdowns.forEach(other => {
+        if (other !== dropdown) {
+          other.classList.remove('active');
+          other.querySelector('.unified-nav__mobile-dropdown-toggle').setAttribute('aria-expanded', 'false');
+        }
       });
-    }
-  });
-
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', function() {
-    userDropdowns.forEach(dropdown => {
-      dropdown.classList.remove('active');
-      const toggle = dropdown.querySelector('.kajabi-nav__user-toggle');
-      if (toggle) {
-        toggle.setAttribute('aria-expanded', 'false');
+      
+      // Toggle current dropdown
+      dropdown.classList.toggle('active');
+      toggle.setAttribute('aria-expanded', !isOpen);
+      
+      // Smooth scroll to dropdown if opening
+      if (!isOpen) {
+        setTimeout(() => {
+          const rect = dropdown.getBoundingClientRect();
+          const menuRect = menu.getBoundingClientRect();
+          const scrollContainer = mobileMenu;
+          
+          if (menuRect.bottom > window.innerHeight) {
+            scrollContainer.scrollTop += menuRect.bottom - window.innerHeight + 20;
+          }
+        }, 100);
       }
     });
   });
-
-  // Sticky navigation
-  {% if section.settings.sticky %}
-  let lastScrollTop = 0;
-  const navHeight = nav.offsetHeight;
-
-  window.addEventListener('scroll', function() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (scrollTop > navHeight) {
-      nav.classList.add('kajabi-nav--sticky');
-
-      if (scrollTop > lastScrollTop && scrollTop > navHeight * 2) {
-        nav.classList.add('kajabi-nav--hidden');
-      } else {
-        nav.classList.remove('kajabi-nav--hidden');
-      }
-    } else {
-      nav.classList.remove('kajabi-nav--sticky', 'kajabi-nav--hidden');
+  
+  // Add active class to current page link
+  const currentPath = window.location.pathname;
+  links.forEach(link => {
+    if (link.pathname === currentPath) {
+      link.classList.add('active');
     }
-
-    lastScrollTop = scrollTop;
   });
-  {% endif %}
+  
+  // Swipe to close on mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  mobileMenu.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  
+  mobileMenu.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchEndX - touchStartX > 50) {
+      closeMenu();
+    }
+  }, { passive: true });
 })();
 </script>
 
+{% if section.settings.sticky %}
+<script>
+  // Sticky navigation functionality
+  (function() {
+    const nav = document.getElementById('section-{{ section.id }}');
+    const navOffset = nav.offsetTop;
+    let lastScrollTop = 0;
+    
+    function handleScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > navOffset + 100) {
+        nav.classList.add('unified-nav--fixed');
+        
+        // Hide/show on scroll direction
+        if (scrollTop > lastScrollTop && scrollTop > 200) {
+          nav.classList.add('unified-nav--hidden');
+        } else {
+          nav.classList.remove('unified-nav--hidden');
+        }
+      } else {
+        nav.classList.remove('unified-nav--fixed', 'unified-nav--hidden');
+      }
+      
+      lastScrollTop = scrollTop;
+    }
+    
+    window.addEventListener('scroll', handleScroll);
+  })();
+</script>
+
+<style>
+  .unified-nav--fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .unified-nav--fixed.unified-nav--hidden {
+    transform: translateY(-100%);
+  }
+</style>
+{% endif %}
+
 {% schema %}
 {
-  "name": "Navigation",
-  "settings": [
+  "name": "Nav - Main Menu",
+  "elements": [
     {
-      "type": "header",
-      "content": "Logo Settings"
-    },
-    {
-      "type": "radio",
-      "id": "logo_type",
-      "label": "Logo Type",
-      "default": "image",
-      "options": [
-        {
-          "label": "Image",
-          "value": "image"
-        },
-        {
-          "label": "Text",
-          "value": "text"
-        }
-      ]
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo Image",
-      "info": "Recommended: 180x40px"
-    },
-    {
-      "type": "text",
-      "id": "logo_alt",
-      "label": "Logo Alt Text",
-      "info": "Describes the logo for screen readers"
-    },
-    {
-      "type": "text",
-      "id": "logo_text",
-      "label": "Logo Text",
-      "default": "Your Brand"
-    },
-    {
-      "type": "text",
-      "id": "logo_height",
-      "label": "Logo Height",
-      "default": "40px",
-      "info": "Desktop logo height"
-    },
-    {
-      "type": "text",
-      "id": "mobile_logo_height",
-      "label": "Mobile Logo Height",
-      "default": "32px"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
-    },
-    {
-      "type": "header",
-      "content": "General Settings"
+      "type": "checkbox",
+      "id": "enable_cart",
+      "label": "Enable Cart",
+      "default": false
     },
     {
       "type": "checkbox",
       "id": "sticky",
       "label": "Enable Sticky Navigation",
-      "default": true,
-      "info": "Navigation sticks to top when scrolling"
+      "default": false,
+      "info": "Navigation will stick to top when scrolling"
+    }
+  ],
+  "groups": [
+    {
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Desktop Appearance"
+        },
+        {
+          "type": "color",
+          "label": "Background Color",
+          "id": "background_color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "label": "Text Color",
+          "id": "text_color",
+          "default": "#1F2937"
+        },
+        {
+          "type": "color",
+          "label": "Text Hover Color",
+          "id": "text_color_hover",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "label": "Hamburger Menu Color",
+          "id": "hamburger_color",
+          "info": "Mobile menu icon color"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "horizontal",
+          "label": "Horizontal Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "label": "Padding Top",
+          "default": 16,
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "label": "Padding Bottom",
+          "default": 16,
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "gap",
+          "label": "Gap Between Items",
+          "default": 24,
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "unit": "px"
+        },
+        {
+          "type": "text",
+          "id": "font_size_desktop",
+          "label": "Font Size",
+          "default": "16px"
+        },
+        {
+          "type": "header",
+          "content": "Dropdown Settings"
+        },
+        {
+          "type": "color",
+          "id": "dropdown_background",
+          "label": "Dropdown Background",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "dropdown_border",
+          "label": "Dropdown Border",
+          "default": "#E5E7EB"
+        },
+        {
+          "type": "color",
+          "id": "dropdown_text_color",
+          "label": "Dropdown Text Color",
+          "default": "#1F2937"
+        },
+        {
+          "type": "color",
+          "id": "dropdown_hover_bg",
+          "label": "Dropdown Hover Background",
+          "default": "#F8F7F5"
+        }
+      ]
     },
     {
-      "type": "checkbox",
-      "id": "enable_cart",
-      "label": "Enable Shopping Cart",
-      "default": false
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Mobile Bar Layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "mobile_horizontal",
+          "label": "Mobile Horizontal Alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "mobile_padding_top",
+          "label": "Mobile Padding Top",
+          "default": 12,
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "mobile_padding_bottom",
+          "label": "Mobile Padding Bottom",
+          "default": 12,
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "mobile_gap",
+          "label": "Mobile Gap Between Items",
+          "default": 16,
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px"
+        },
+        {
+          "type": "text",
+          "id": "font_size_mobile",
+          "label": "Mobile Font Size",
+          "default": "14px"
+        }
+      ]
     },
     {
-      "type": "text",
-      "id": "aria_label",
-      "label": "ARIA Label",
-      "default": "Main navigation",
-      "info": "Accessibility label for screen readers"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#2D3748"
-    },
-    {
-      "type": "color",
-      "id": "text_color_hover",
-      "label": "Text Hover Color",
-      "default": "#5A67D8"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border Color",
-      "default": "#E2E8F0"
-    },
-    {
-      "type": "header",
-      "content": "Button Colors"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color",
-      "label": "Button Background",
-      "default": "#5A67D8"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button Text Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "button_hover_bg_color",
-      "label": "Button Hover Background",
-      "default": "#4C51BF"
-    },
-    {
-      "type": "header",
-      "content": "Dropdown Settings"
-    },
-    {
-      "type": "color",
-      "id": "dropdown_hover_bg",
-      "label": "Dropdown Hover Background",
-      "default": "#F7FAFC"
-    },
-    {
-      "type": "header",
-      "content": "Mobile Menu"
-    },
-    {
-      "type": "image_picker",
-      "id": "mobile_logo",
-      "label": "Mobile Logo",
-      "info": "Optional: Different logo for mobile menu"
-    },
-    {
-      "type": "range",
-      "id": "mobile_menu_width",
-      "label": "Mobile Menu Width",
-      "default": 320,
-      "min": 280,
-      "max": 400,
-      "step": 20,
-      "unit": "px"
-    },
-    {
-      "type": "color",
-      "id": "mobile_hover_bg",
-      "label": "Mobile Menu Hover Background",
-      "default": "#F7FAFC"
-    },
-    {
-      "type": "color",
-      "id": "mobile_active_bg",
-      "label": "Mobile Active Page Background",
-      "default": "#EBF4FF"
-    },
-    {
-      "type": "header",
-      "content": "Mobile CTA"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mobile_cta",
-      "label": "Show Mobile CTA",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "mobile_cta_text",
-      "label": "Mobile CTA Text",
-      "default": "Get Started"
-    },
-    {
-      "type": "action",
-      "id": "mobile_cta_link",
-      "label": "Mobile CTA Link"
-    },
-    {
-      "type": "checkbox",
-      "id": "mobile_cta_new_tab",
-      "label": "Open CTA in New Tab",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "mobile_cta_bg",
-      "label": "Mobile CTA Background",
-      "default": "#5A67D8"
-    },
-    {
-      "type": "color",
-      "id": "mobile_cta_hover_bg",
-      "label": "Mobile CTA Hover Background",
-      "default": "#4C51BF"
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Mobile Menu Logo"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_mobile_logo",
+          "label": "Show Logo",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "mobile_logo_alt",
+          "label": "Logo Alt Text"
+        },
+        {
+          "type": "text",
+          "id": "mobile_logo_text",
+          "label": "Logo Text",
+          "default": "Your Brand",
+          "info": "Text to display if using text logo"
+        },
+        {
+          "type": "radio",
+          "id": "mobile_logo_type",
+          "label": "Logo Type",
+          "default": "image",
+          "options": [
+            {
+              "label": "Image",
+              "value": "image"
+            },
+            {
+              "label": "Text",
+              "value": "text"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile Menu CTA"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_mobile_cta",
+          "label": "Show CTA Button",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "mobile_cta_text",
+          "label": "CTA Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "action",
+          "id": "mobile_cta_link",
+          "label": "CTA Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_cta_new_tab",
+          "label": "Open CTA in New Tab",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Mobile Menu Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_menu_width",
+          "label": "Menu Width",
+          "default": 320,
+          "min": 280,
+          "max": 400,
+          "step": 20,
+          "unit": "px"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Menu Colors"
+        },
+        {
+          "type": "color",
+          "id": "mobile_background_color",
+          "label": "Background Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "mobile_backdrop_color",
+          "label": "Backdrop Color",
+          "default": "rgba(0, 0, 0, 0.4)"
+        },
+        {
+          "type": "color",
+          "id": "mobile_text_color",
+          "label": "Text Color",
+          "default": "#1F2937"
+        },
+        {
+          "type": "color",
+          "id": "mobile_text_hover_color",
+          "label": "Text Hover Color",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "id": "mobile_divider_color",
+          "label": "Divider Color",
+          "default": "#E5E7EB"
+        },
+        {
+          "type": "color",
+          "id": "mobile_hover_bg",
+          "label": "Menu Item Hover Background",
+          "default": "#F9FAFB"
+        },
+        {
+          "type": "color",
+          "id": "mobile_active_indicator",
+          "label": "Active Page Indicator",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Close Button"
+        },
+        {
+          "type": "color",
+          "id": "mobile_close_color",
+          "label": "Close Icon Color",
+          "default": "#374151"
+        },
+        {
+          "type": "color",
+          "id": "mobile_close_bg",
+          "label": "Close Button Background",
+          "default": "#F3F4F6"
+        },
+        {
+          "type": "color",
+          "id": "mobile_close_hover_bg",
+          "label": "Close Button Hover",
+          "default": "#E5E7EB"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Dropdown"
+        },
+        {
+          "type": "color",
+          "id": "mobile_dropdown_bg",
+          "label": "Dropdown Background",
+          "default": "#F9FAFB"
+        },
+        {
+          "type": "color",
+          "id": "mobile_dropdown_text_color",
+          "label": "Dropdown Text Color",
+          "default": "#6B7280"
+        },
+        {
+          "type": "color",
+          "id": "mobile_dropdown_hover_bg",
+          "label": "Dropdown Hover Background",
+          "default": "#F3F4F6"
+        },
+        {
+          "type": "header",
+          "content": "Mobile CTA Section"
+        },
+        {
+          "type": "color",
+          "id": "mobile_cta_section_bg",
+          "label": "CTA Section Background",
+          "default": "#F9FAFB"
+        },
+        {
+          "type": "color",
+          "id": "mobile_cta_background",
+          "label": "CTA Button Background",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "id": "mobile_cta_text_color",
+          "label": "CTA Button Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Mobile User Section"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_mobile_user_info",
+          "label": "Show User Info",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "mobile_user_section_bg",
+          "label": "User Section Background",
+          "default": "#F9FAFB"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Social Media"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_mobile_social",
+          "label": "Show Social Icons",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "mobile_social_facebook",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "text",
+          "id": "mobile_social_twitter",
+          "label": "Twitter URL"
+        },
+        {
+          "type": "text",
+          "id": "mobile_social_instagram",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "color",
+          "id": "mobile_social_bg",
+          "label": "Social Icon Background",
+          "default": "#F3F4F6"
+        },
+        {
+          "type": "color",
+          "id": "mobile_social_hover_bg",
+          "label": "Social Icon Hover",
+          "default": "#E5E7EB"
+        },
+        {
+          "type": "color",
+          "id": "mobile_social_color",
+          "label": "Social Icon Color",
+          "default": "#374151"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_font_size",
+          "label": "Font Size",
+          "default": 18,
+          "min": 14,
+          "max": 24,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
     }
   ],
   "blocks": [
     {
-      "type": "button",
-      "name": "Button",
-      "settings": [
+      "type": "logo",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "show_logo",
+          "label": "Show Logo",
+          "default": true
+        },
+        {
+          "type": "radio",
+          "id": "logo_type",
+          "label": "Logo Type",
+          "default": "image",
+          "options": [
+            {
+              "label": "Image",
+              "value": "image"
+            },
+            {
+              "label": "Text",
+              "value": "text"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image",
+          "info": "Suggested dimensions: 360x80"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text",
+          "default": "Your Brand"
+        },
+        {
+          "type": "text",
+          "id": "logo_width",
+          "label": "Logo Width",
+          "default": "150px",
+          "info": "e.g., 150px or 150"
+        },
+        {
+          "type": "text",
+          "id": "logo_height",
+          "label": "Logo Height",
+          "default": "auto",
+          "info": "e.g., 50px or auto"
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "main-menu"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_in_mobile",
+          "label": "Show in Mobile Menu",
+          "default": true,
+          "info": "Include this menu in the mobile navigation"
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": false,
+          "info": "Stretch to fill remaining space"
+        },
+        {
+          "type": "header",
+          "content": "Font Settings"
+        },
+        {
+          "type": "select",
+          "id": "font_size",
+          "label": "Font Size",
+          "default": "default",
+          "options": [
+            {
+              "label": "Small (14px)",
+              "value": "small"
+            },
+            {
+              "label": "Default (16px)",
+              "value": "default"
+            },
+            {
+              "label": "Medium (18px)",
+              "value": "medium"
+            },
+            {
+              "label": "Large (20px)",
+              "value": "large"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "default": "normal",
+          "options": [
+            {
+              "label": "Light (300)",
+              "value": "300"
+            },
+            {
+              "label": "Normal (400)",
+              "value": "normal"
+            },
+            {
+              "label": "Medium (500)",
+              "value": "500"
+            },
+            {
+              "label": "Semi-Bold (600)",
+              "value": "600"
+            },
+            {
+              "label": "Bold (700)",
+              "value": "700"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_transform",
+          "label": "Text Transform",
+          "default": "none",
+          "options": [
+            {
+              "label": "None",
+              "value": "none"
+            },
+            {
+              "label": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "label": "Lowercase",
+              "value": "lowercase"
+            },
+            {
+              "label": "Capitalize",
+              "value": "capitalize"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Colors & Effects"
+        },
+        {
+          "type": "color",
+          "id": "menu_text_color",
+          "label": "Menu Text Color",
+          "info": "Override default navigation text color"
+        },
+        {
+          "type": "color",
+          "id": "menu_hover_color",
+          "label": "Menu Hover Color"
+        },
+        {
+          "type": "select",
+          "id": "hover_effect",
+          "label": "Hover Effect",
+          "default": "color",
+          "options": [
+            {
+              "label": "Color Change Only",
+              "value": "color"
+            },
+            {
+              "label": "Underline",
+              "value": "underline"
+            },
+            {
+              "label": "Background Color",
+              "value": "background"
+            },
+            {
+              "label": "Scale Up",
+              "value": "scale"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "hover_background",
+          "label": "Hover Background Color",
+          "info": "For background hover effect"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "item_spacing",
+          "label": "Space Between Items",
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "item_padding_vertical",
+          "label": "Vertical Padding",
+          "min": 0,
+          "max": 20,
+          "step": 2,
+          "unit": "px",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "item_padding_horizontal",
+          "label": "Horizontal Padding",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "custom_link",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Link Text",
+          "default": "Custom Link"
+        },
+        {
+          "type": "action",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "featured_button",
+      "name": "Nav - Main Menu",
+      "elements": [
         {
           "type": "text",
           "id": "button_text",
@@ -1006,12 +1794,240 @@
         },
         {
           "type": "action",
-          "id": "button_link",
+          "id": "button_action",
           "label": "Button Link"
         },
         {
           "type": "select",
           "id": "button_style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            {
+              "label": "Primary",
+              "value": "primary"
+            },
+            {
+              "label": "Outline",
+              "value": "outline"
+            },
+            {
+              "label": "White",
+              "value": "white"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button Size",
+          "default": "medium",
+          "options": [
+            {
+              "label": "Small",
+              "value": "small"
+            },
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button Color",
+          "info": "Overrides default button color"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color",
+          "info": "Overrides default text color"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Dropdown Title",
+          "default": "Resources"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Dropdown Menu"
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "show_avatar",
+          "label": "Show Avatar",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "language_login",
+          "label": "Log In Text",
+          "default": "Log In"
+        },
+        {
+          "type": "text",
+          "id": "language_logout",
+          "label": "Logout Text",
+          "default": "Logout"
+        },
+        {
+          "type": "text",
+          "id": "language_settings",
+          "label": "Settings Text",
+          "default": "Settings"
+        },
+        {
+          "type": "text",
+          "id": "language_library",
+          "label": "Library Text",
+          "default": "My Library"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Dropdown Text Color",
+          "default": "#595959"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Dropdown Background Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "select",
+          "id": "user_dropdown_menu_alignment",
+          "label": "Dropdown Menu Alignment",
+          "default": "left",
+          "options": [
+            {
+              "label": "Left",
+              "value": "left"
+            },
+            {
+              "label": "Center",
+              "value": "center"
+            },
+            {
+              "label": "Right",
+              "value": "right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cart",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "info",
+          "info": "Cart must be enabled in section settings"
+        }
+      ]
+    },
+    {
+      "type": "social_icons",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "show_labels",
+          "label": "Show Labels",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "spacer",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Spacer",
+          "default": true,
+          "info": "Push other items apart"
+        }
+      ]
+    },
+    {
+      "type": "hello_bar",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Welcome to our store!"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color"
+        },
+        {
+          "type": "action",
+          "id": "action",
+          "label": "Link (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "cta",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "action",
+          "id": "btn_action",
+          "label": "Button Link"
+        },
+        {
+          "type": "select",
+          "id": "btn_style",
           "label": "Button Style",
           "default": "solid",
           "options": [
@@ -1026,72 +2042,34 @@
           ]
         },
         {
-          "type": "checkbox",
-          "id": "new_tab",
-          "label": "Open in New Tab",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "user",
-      "name": "User Account",
-      "settings": [
-        {
-          "type": "checkbox",
-          "id": "show_avatar",
-          "label": "Show Avatar",
-          "default": true
+          "type": "select",
+          "id": "btn_size",
+          "label": "Button Size",
+          "default": "medium",
+          "options": [
+            {
+              "label": "Small",
+              "value": "small"
+            },
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            }
+          ]
         },
         {
-          "type": "text",
-          "id": "login_text",
-          "label": "Login Text",
-          "default": "Log In"
+          "type": "color",
+          "id": "btn_background_color",
+          "label": "Background Color"
         },
         {
-          "type": "text",
-          "id": "logout_text",
-          "label": "Logout Text",
-          "default": "Log Out"
-        },
-        {
-          "type": "text",
-          "id": "settings_text",
-          "label": "Settings Text",
-          "default": "Settings"
-        },
-        {
-          "type": "text",
-          "id": "library_text",
-          "label": "Library Text",
-          "default": "My Library"
-        }
-      ]
-    },
-    {
-      "type": "cart",
-      "name": "Shopping Cart",
-      "settings": [
-        {
-          "type": "header",
-          "content": "Cart must be enabled in section settings"
-        }
-      ]
-    },
-    {
-      "type": "link",
-      "name": "Custom Link",
-      "settings": [
-        {
-          "type": "text",
-          "id": "link_text",
-          "label": "Link Text"
-        },
-        {
-          "type": "action",
-          "id": "link_url",
-          "label": "Link URL"
+          "type": "color",
+          "id": "btn_text_color",
+          "label": "Text Color"
         },
         {
           "type": "checkbox",
@@ -1103,12 +2081,13 @@
     },
     {
       "type": "mobile_menu_item",
-      "name": "Mobile Menu Item",
-      "settings": [
+      "name": "Nav - Main Menu",
+      "elements": [
         {
           "type": "text",
           "id": "title",
-          "label": "Title"
+          "label": "Title",
+          "default": "Menu Item"
         },
         {
           "type": "action",
@@ -1122,25 +2101,70 @@
           "default": false
         }
       ]
+    },
+    {
+      "type": "mobile_dropdown",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Dropdown Title",
+          "default": "Resources"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Dropdown Menu"
+        }
+      ]
+    },
+    {
+      "type": "mobile_footer_content",
+      "name": "Nav - Main Menu",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content",
+          "info": "Add additional content to mobile menu footer"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Navigation",
+      "name": "Nav - Main Menu",
       "category": "Navigation",
-      "description": "Modern navigation bar with mobile menu and user account support",
+      "description": "All-in-one navigation with integrated mobile menu",
       "blocks": [
         {
-          "type": "user",
+          "type": "logo"
+        },
+        {
+          "type": "spacer",
           "settings": {
-            "show_avatar": true
+            "stretch": true
           }
         },
         {
-          "type": "button",
+          "type": "menu",
+          "settings": {
+            "menu": "main-menu",
+            "show_in_mobile": true
+          }
+        },
+        {
+          "type": "spacer",
+          "settings": {
+            "stretch": true
+          }
+        },
+        {
+          "type": "featured_button",
           "settings": {
             "button_text": "Get Started",
-            "button_style": "solid"
+            "button_style": "primary"
           }
         }
       ]

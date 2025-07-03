@@ -7,7 +7,14 @@
 <section id="testimonials-{{ section.id }}" class="an-testimonials {{ section.settings.background_style }} {{ section.settings.layout_style }}-layout">
   <div class="container">
     <!-- Header Section -->
-    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+    {% if section.settings.heading != blank %}
+      {% assign show_header = true %}
+    {% elsif section.settings.subheading != blank %}
+      {% assign show_header = true %}
+    {% else %}
+      {% assign show_header = false %}
+    {% endif %}
+    {% if show_header %}
       <div class="an-testimonials__header text-center animate-fade-up">
         {% if section.settings.heading != blank %}
           <h2 class="an-testimonials__heading">{{ section.settings.heading }}</h2>
@@ -59,15 +66,10 @@
               <div class="quote-author">
                 {% if block.settings.author_image != blank %}
                   <div class="author-image">
-                    {% render 'responsive-image',
-                      image: block.settings.author_image,
-                      alt: block.settings.author_name,
-                      class: 'rounded-circle',
-                      sizes: '60px',
-                      aspect_ratio: '1/1',
-                      widths: '60,120,180',
-                      placeholder_type: 'avatar'
-                    %}
+                    <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
+                         alt="{{ block.settings.author_name }}" 
+                         class="rounded-circle img-fluid" 
+                         loading="lazy">
                   </div>
                 {% endif %}
                 <div class="author-info">
@@ -86,7 +88,14 @@
     <!-- Layout: Featured Testimonial -->
     {% elsif section.settings.layout_style == 'featured' %}
       {% for block in section.blocks %}
-        {% if block.type == 'featured' or (block.type == 'testimonial' and block.settings.featured) %}
+        {% if block.type == 'featured' %}
+          {% assign is_featured_block = true %}
+        {% elsif block.type == 'testimonial' and block.settings.featured %}
+          {% assign is_featured_block = true %}
+        {% else %}
+          {% assign is_featured_block = false %}
+        {% endif %}
+        {% if is_featured_block %}
           <div class="an-testimonials__featured animate-fade-up">
             <div class="featured-card">
               <!-- Quote Background -->
@@ -109,15 +118,10 @@
               <div class="featured-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    {% render 'responsive-image',
-                      image: block.settings.image,
-                      alt: block.settings.name,
-                      class: 'rounded-circle',
-                      sizes: '80px',
-                      aspect_ratio: '1/1',
-                      widths: '80,160,240',
-                      placeholder_type: 'avatar'
-                    %}
+                    <img src="{{ block.settings.image | image_picker_url: '160x160' }}" 
+                         alt="{{ block.settings.name }}" 
+                         class="rounded-circle img-fluid" 
+                         loading="lazy">
                   </div>
                 {% endif %}
                 <div class="author-info">
@@ -138,7 +142,14 @@
       <!-- Featured Testimonial (for mixed layout) -->
       {% if section.settings.layout_style == 'mixed' %}
         {% for block in section.blocks %}
-          {% if block.type == 'featured' or (block.type == 'testimonial' and block.settings.featured) %}
+          {% if block.type == 'featured' %}
+            {% assign is_featured_block = true %}
+          {% elsif block.type == 'testimonial' and block.settings.featured %}
+            {% assign is_featured_block = true %}
+          {% else %}
+            {% assign is_featured_block = false %}
+          {% endif %}
+          {% if is_featured_block %}
             <div class="an-testimonials__featured-mixed animate-fade-up">
               <div class="featured-card">
                 <div class="row align-items-center">
@@ -157,15 +168,10 @@
                     <div class="author d-flex align-items-center">
                       {% if block.settings.image != blank %}
                         <div class="author-image me-3">
-                          {% render 'responsive-image',
-                            image: block.settings.image,
-                            alt: block.settings.name,
-                            class: 'rounded-circle',
-                            sizes: '60px',
-                            aspect_ratio: '1/1',
-                            widths: '60,120,180',
-                            placeholder_type: 'avatar'
-                          %}
+                          <img src="{{ block.settings.image | image_picker_url: '120x120' }}" 
+                               alt="{{ block.settings.name }}" 
+                               class="rounded-circle img-fluid" 
+                               loading="lazy">
                         </div>
                       {% endif %}
                       <div>
@@ -219,15 +225,10 @@
               <div class="card-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    {% render 'responsive-image',
-                      image: block.settings.image,
-                      alt: block.settings.name,
-                      class: 'rounded-circle',
-                      sizes: '48px',
-                      aspect_ratio: '1/1',
-                      widths: '48,96,144',
-                      placeholder_type: 'avatar'
-                    %}
+                    <img src="{{ block.settings.image | image_picker_url: '96x96' }}" 
+                         alt="{{ block.settings.name }}" 
+                         class="rounded-circle img-fluid" 
+                         loading="lazy">
                   </div>
                 {% else %}
                   <div class="author-avatar">

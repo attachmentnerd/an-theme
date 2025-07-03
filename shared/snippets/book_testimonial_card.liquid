@@ -25,15 +25,11 @@
   <div class="testimonial-author">
     {% if testimonial.settings.author_image %}
       <div class="mb-2">
-        {% render 'responsive-image',
-          image: testimonial.settings.author_image,
-          alt: testimonial.settings.author,
-          sizes: '60px',
-          widths: '60,120',
-          aspect_ratio: '1/1',
-          class: 'rounded-circle mx-auto',
-          placeholder_type: 'avatar'
-        %}
+        <img src="{{ testimonial.settings.author_image | image_picker_url: '120x120' }}" 
+             alt="{{ testimonial.settings.author }}" 
+             class="rounded-circle mx-auto"
+             loading="lazy"
+             style="aspect-ratio: 1/1; object-fit: cover; width: 60px; height: 60px;">
       </div>
     {% endif %}
     

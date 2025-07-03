@@ -154,15 +154,10 @@
            title="{{ section.settings.logo_title | default: current_site.title }}"
            {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
           {% if section.settings.logo_image %}
-            {% render 'responsive-image',
-  image: section.settings.logo_image,
-  alt: '{{ section.settings.image_alt | default: current_site.title }}',
-  class: 'logo-section__image',
-  sizes: '(max-width: 767px) 120px, 180px',
-  priority: true,
-  widths: '120,180,240,360',
-  placeholder_type: 'logo'
-%}
+            <img src="{{ section.settings.logo_image | image_url }}" 
+                 alt="{{ section.settings.image_alt | default: current_site.title }}"
+                 class="logo-section__image"
+                 loading="eager">
           {% else %}
             <span class="logo-section__text">
               {{ section.settings.logo_text | default: current_site.title }}

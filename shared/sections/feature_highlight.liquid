@@ -73,16 +73,10 @@
           
           {% if section.settings.visual_type == 'image' %}
             {% if section.settings.main_image != blank %}
-              {% render 'responsive-image',
-  image: section.settings.main_image,
-  alt: '{{ section.settings.main_image_alt }}',
-  class: 'visual-container__image',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+              <img src="{{ section.settings.main_image | image_picker_url: 'placeholder.png' }}" 
+                   alt="{{ section.settings.main_image_alt }}"
+                   class="visual-container__image"
+                   loading="lazy">
             {% else %}
               <div class="visual-container__placeholder" style="width: 100%; height: 100%; min-height: 400px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 20px;">
                 <div style="text-align: center;">
@@ -116,15 +110,8 @@
                 {% elsif block.settings.element_type == 'icon' %}
                   <div class="floating-element__icon">{{ block.settings.icon_content }}</div>
                 {% elsif block.settings.element_type == 'image' and block.settings.element_image != blank %}
-                  {% render 'responsive-image',
-  image: block.settings.element_image,
-  alt: '{{ block.settings.element_alt }}',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                  <img src="{{ block.settings.element_image | image_picker_url: 'placeholder.png' }}" 
+                       alt="{{ block.settings.element_alt }}">
                 {% endif %}
               </div>
             {% endif %}

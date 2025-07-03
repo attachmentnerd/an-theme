@@ -81,16 +81,12 @@
         <div class="ui-card">
           <div class="ui-card__inner">
             {% if section.settings.ui_image != blank %}
-              {% render 'responsive-image',
-  image: section.settings.ui_image,
-  alt: '{{ section.settings.ui_image_alt }}',
-  class: 'ui-card__image',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+              <img src="{{ section.settings.ui_image | image_picker_url: 'placeholder.png' }}" 
+                   alt="{{ section.settings.ui_image_alt }}"
+                   class="ui-card__image"
+                   width="600"
+                   height="400"
+                   loading="lazy">
             {% else %}
               {% comment %} On-brand placeholder instead of external image {% endcomment %}
               <div class="ui-card__image" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
@@ -110,15 +106,11 @@
                               --element-left: {{ block.settings.left }}%;"
                        {{ block.shopify_attributes }}>
                     {% if block.settings.element_image != blank %}
-                      {% render 'responsive-image',
-  image: block.settings.element_image,
-  alt: '{{ block.settings.element_alt }}',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                      <img src="{{ block.settings.element_image | image_picker_url: '240x' }}" 
+                           alt="{{ block.settings.element_alt }}"
+                           width="120"
+                           height="120"
+                           loading="lazy">
                     {% elsif block.settings.element_content != blank %}
                       <div class="ui-element__content">
                         {{ block.settings.element_content }}

@@ -61,14 +61,12 @@
                 {% endif %}
 
                 {% if block.settings.logo != blank %}
-                  {% render 'responsive-image',
-  image: block.settings.logo,
-  alt: '{{ block.settings.name }}',
-  class: 'an-media-press__logo',
-  sizes: '(max-width: 767px) 120px, 180px',
-  widths: '120,180,240,360',
-  placeholder_type: 'logo'
-%}
+                  <img src="{{ block.settings.logo | image_picker_url: '400x' }}"
+                       alt="{{ block.settings.name }}"
+                       class="an-media-press__logo"
+                       loading="lazy"
+                       width="200"
+                       height="60">
                 {% else %}
                   <div class="an-media-press__logo-placeholder">
                     <svg width="160" height="48" viewBox="0 0 160 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,14 +98,12 @@
                 {% endif %}
 
                 {% if block.settings.logo != blank %}
-                  {% render 'responsive-image',
-  image: block.settings.logo,
-  alt: '{{ block.settings.name }}',
-  class: 'an-media-press__logo',
-  sizes: '(max-width: 767px) 120px, 180px',
-  widths: '120,180,240,360',
-  placeholder_type: 'logo'
-%}
+                  <img src="{{ block.settings.logo | image_picker_url: '400x' }}"
+                       alt="{{ block.settings.name }}"
+                       class="an-media-press__logo"
+                       loading="lazy"
+                       width="200"
+                       height="60">
                 {% else %}
                   <div class="an-media-press__logo-placeholder">
                     <svg width="160" height="48" viewBox="0 0 160 48" fill="none" xmlns="http://www.w3.org/2000/svg">

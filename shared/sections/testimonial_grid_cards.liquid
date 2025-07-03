@@ -55,16 +55,12 @@
             
             <div class="testimonial-card__author">
               {%- if block.settings.image != blank -%}
-                {% render 'responsive-image',
-  image: block.settings.image,
-  alt: '{{ block.settings.name }}',
-  class: 'testimonial-card__image',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                <img src="{{ block.settings.image | image_picker_url: 'placeholder.png' }}" 
+                     alt="{{ block.settings.name }}" 
+                     class="testimonial-card__image"
+                     width="60"
+                     height="60"
+                     loading="lazy">
               {%- else -%}
                 {% comment %} Avatar placeholder instead of random photo {% endcomment %}
                 <div class="testimonial-card__image" style="background: #FAFAFA; border-radius: 50%; overflow: hidden; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">

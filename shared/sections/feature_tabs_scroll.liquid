@@ -74,16 +74,10 @@
                   <!-- Panel Image/Content -->
                   {% if block.settings.content_image %}
                     <div class="panel-image-container mt-4">
-                      {% render 'responsive-image',
-  image: block.settings.content_image,
-  alt: '{{ block.settings.image_alt }}',
-  class: 'panel-image img-fluid',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                      <img src="{{ block.settings.content_image | image_picker_url: 'master' }}"
+                           alt="{{ block.settings.image_alt }}"
+                           class="panel-image img-fluid"
+                           loading="lazy">
                     </div>
                   {% endif %}
 

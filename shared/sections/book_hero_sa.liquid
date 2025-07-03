@@ -10,19 +10,12 @@
             
             <!-- Main image -->
             <div class="position-relative" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.08);">
-              <div kjb-settings-id="{{ 'showcase_image' | settings_id: section: section }}">
-                {% render 'responsive-image',
-                  image: section.settings.showcase_image,
-                  alt: section.settings.image_alt,
-                  class: 'img-fluid',
-                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 90vw, 45vw',
-                  priority: false,
-                  aspect_ratio: '4/3',
-                  widths: '400,600,800,1200',
-                  placeholder_type: 'feature',
-                  blur_up: true
-                %}
-              </div>
+              <img src="{{ section.settings.showcase_image | img_url: '800x' }}" 
+                   alt="{{ section.settings.image_alt }}" 
+                   class="img-fluid"
+                   style="border-radius: 8px;"
+                   loading="lazy"
+                   kjb-settings-id="{{ 'showcase_image' | settings_id: section: section }}">
             </div>
           </div>
         </div>

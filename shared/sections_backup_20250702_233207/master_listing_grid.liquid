@@ -387,7 +387,7 @@
   {% endunless %}
 </style>
 
-<section class="{{ section_class }} {% if section.settings.padding_preset %}section-padding-{{ section.settings.padding_preset }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}" id="section-{{ section.id }}">
+<section class="{{ section_class }} {% if section.settings.padding_preset %}section-padding-{{ section.settings.padding_preset }}{% endif %}" id="section-{{ section.id }}">
   <div class="sizer">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}
@@ -1325,7 +1325,8 @@
     {
       "name": "Master Listing Grid",
       "category": "Content",
-      "description": "Unified listing section for blog posts, newsletters, announcements, and members"
+      "description": "Unified listing section for blog posts, newsletters, announcements, and members",
+      "blocks": []
     }
   ]
 }

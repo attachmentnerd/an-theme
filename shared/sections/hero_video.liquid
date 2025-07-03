@@ -21,17 +21,12 @@
     <div class="an-video-hero__media position-relative">
       {% if section.settings.poster_image != blank %}
         <!-- Use responsive-image snippet for proper Kajabi image handling -->
-        {% render 'responsive-image',
-          image: section.settings.poster_image,
-          alt: section.settings.poster_alt_text | default: 'Video thumbnail',
-          class: 'an-video-hero__poster',
-          sizes: '(max-width: 767px) 100vw, (max-width: 1200px) 80vw, 1200px',
-          priority: true,
-          aspect_ratio: '16/9',
-          widths: '600,800,1200,1600',
-          placeholder_type: 'hero',
-          blur_up: true
-        %}
+        <img 
+          src="{{ section.settings.poster_image | image_picker_url: 'master' }}"
+          alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}"
+          class="an-video-hero__poster"
+          loading="lazy"
+        >
       {% elsif section.settings.video != blank and section.settings.video.thumbnail_url %}
         <!-- Use video thumbnail if no poster image specified -->
         <img

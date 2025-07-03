@@ -17,15 +17,11 @@
           {% for block in logo_blocks %}
             {% if block.settings.logo %}
               <div class="logo-item" style="opacity: 0.7; transition: opacity 0.2s;">
-                {% render 'responsive-image',
-                  image: block.settings.logo,
-                  alt: block.settings.alt_text | default: 'Partner logo',
-                  sizes: '120px',
-                  widths: '120,240',
-                  aspect_ratio: '16/9',
-                  class: 'logo-img',
-                  placeholder_type: 'logo'
-                %}
+                <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
+             alt="{{ block.settings.alt_text | default: 'Partner logo' }}" 
+             class="logo-img"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
             {% endif %}
           {% endfor %}
@@ -74,17 +70,11 @@
              style="{% if section.settings.layout_style == 'modern' and section.settings.enable_glow %}border-radius: 16px; box-shadow: 0 0 48px rgba(94,59,255,.15);{% endif %}">
           
           {% if section.settings.book_image %}
-            {% render 'responsive-image',
-              image: section.settings.book_image,
-              alt: section.settings.book_title | default: 'Book cover',
-              sizes: '(max-width: 767px) 280px, {% if section.settings.layout_style == 'testimonial' %}320px{% else %}400px{% endif %}',
-              widths: '280,400,600,800',
-              aspect_ratio: '2/3',
-              class: 'img-fluid {% if section.settings.enable_hover_effects %}hover-lift{% endif %}',
-              priority: section.settings.image_priority,
-              placeholder_type: 'book',
-              blur_up: true
-            %}
+            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+                 alt="{{ section.settings.book_title | default: 'Book cover' }}" 
+                 class="img-fluid {% if section.settings.enable_hover_effects %}hover-lift{% endif %}"
+                 loading="{% if section.settings.image_priority %}eager{% else %}lazy{% endif %}"
+                 style="aspect-ratio: 2/3; object-fit: cover;">
           {% else %}
             <!-- Fallback Placeholder -->
             <div class="book-placeholder d-flex align-items-center justify-content-center" 
@@ -109,14 +99,11 @@
         <!-- Award Badge (for RSAK style) -->
         {% if section.settings.award_badge_image %}
           <div class="award-badge position-absolute" style="bottom: 10px; right: 10px; z-index: 2;">
-            {% render 'responsive-image',
-              image: section.settings.award_badge_image,
-              alt: 'Award badge',
-              sizes: '80px',
-              widths: '80,160',
-              aspect_ratio: '1/1',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ section.settings.award_badge_image | image_picker_url: '240x80' }}" 
+             alt="{{ Award badge }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
           </div>
         {% endif %}
       </div>
@@ -216,15 +203,11 @@
                 {% if section.settings.testimonial_author %}
                   <footer class="blockquote-footer">
                     {% if section.settings.testimonial_author_image %}
-                      {% render 'responsive-image',
-                        image: section.settings.testimonial_author_image,
-                        alt: section.settings.testimonial_author,
-                        sizes: '40px',
-                        widths: '40,80',
-                        aspect_ratio: '1/1',
-                        class: 'rounded-circle me-2 d-inline-block',
-                        placeholder_type: 'avatar'
-                      %}
+                      <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
+             alt="{{ section.settings.testimonial_author }}" 
+             class="rounded-circle me-2 d-inline-block"
+             loading="lazy"
+             style="object-fit: cover;">
                     {% endif %}
                     <cite>{{ section.settings.testimonial_author }}</cite>
                     {% if section.settings.testimonial_author_title %}

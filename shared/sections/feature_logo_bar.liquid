@@ -44,13 +44,9 @@
                 {% endif %}
 
                 {% if block.settings.logo != blank %}
-                  {% render 'responsive-image',
-  image: block.settings.logo,
-  alt: '{{ block.settings.name }}',
-  sizes: '(max-width: 767px) 120px, 180px',
-  widths: '120,180,240,360',
-  placeholder_type: 'logo'
-%}
+                  <img src="{{ block.settings.logo | image_picker_url: 'x120' }}"
+                       alt="{{ block.settings.name }}"
+                       loading="lazy">
                 {% else %}
                   <div class="an-logo-carousel__placeholder">
                     {{ block.settings.name }}

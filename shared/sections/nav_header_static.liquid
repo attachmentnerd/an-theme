@@ -12,13 +12,7 @@
       <div class="header__logo">
         {% if section.settings.logo %}
           <a href="/">
-            {% render 'responsive-image',
-  image: section.settings.logo,
-  alt: '{{ site.name }}',
-  sizes: '(max-width: 767px) 120px, 180px',
-  widths: '120,180,240,360',
-  placeholder_type: 'logo'
-%}
+            <img src="{{ section.settings.logo | image_picker_url: 'logo.png' }}" alt="{{ site.name }}" />
           </a>
         {% else %}
           <a href="/" class="header__site-name">{{ site.name }}</a>

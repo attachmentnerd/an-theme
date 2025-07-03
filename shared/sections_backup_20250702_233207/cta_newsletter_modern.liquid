@@ -1,0 +1,418 @@
+<!-- Newsletter CTA Section - Modern Full-Width Footer Style -->
+<section class="newsletter-cta-modern py-5 position-relative" style="background-color: #FAFAFA;">
+  <div class="container">
+    <div class="cta-wrapper position-relative" style="background: var(--c-white); border-radius: 24px; padding: 64px 48px; box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset, 0 8px 32px rgba(0,0,0,.04); overflow: hidden;">
+      <!-- Background gradient decoration -->
+      <div class="position-absolute" style="top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, var(--c-accent-peach) 0%, transparent 70%); opacity: 0.1;"></div>
+      <div class="position-absolute" style="bottom: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, var(--c-accent-teal) 0%, transparent 70%); opacity: 0.1;"></div>
+      
+      <div class="row justify-content-center position-relative">
+        <div class="col-lg-8 text-center">
+          <div class="cta-content animate-scale-fade" style="animation-delay: 0.1s;">
+            <!-- Icon or emoji -->
+            <div class="mb-3">
+              <span style="font-size: 3rem;">{{ section.settings.icon }}</span>
+            </div>
+            
+            <h3 class="mb-3" style="font-size: var(--fs-h1); font-weight: 500; color: var(--c-ink-900);">
+              {{ section.settings.heading }}
+            </h3>
+            
+            <p class="mb-4" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 600px; margin: 0 auto;">
+              {{ section.settings.subheading }}
+            </p>
+            
+            <!-- Form -->
+            <form class="newsletter-form" action="{{ section.settings.form_action }}" method="post" data-form-type="newsletter">
+              <div class="form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
+                <input type="email" 
+                       class="form-control-modern flex-grow-1 newsletter-email-input" 
+                       placeholder="{{ section.settings.email_placeholder }}"
+                       name="email"
+                       required
+                       aria-label="Email address"
+                       aria-required="true"
+                       aria-describedby="newsletter-error-{{ section.id }}"
+                       style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease; background: var(--c-white);"
+                      >
+                
+                <button type="submit" 
+                        class="btn btn-primary-modern btn-lg newsletter-submit-btn"
+                        style="white-space: nowrap;"
+                       >
+                  {{ section.settings.button_text }}
+                </button>
+              </div>
+              
+              <!-- Form Messages -->
+              <div class="newsletter-form__messages mt-3" style="max-width: 500px; margin: 0 auto;">
+                <div class="newsletter-form__success" style="display: none;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="9" fill="var(--c-accent-teal)"/>
+                    <path d="M14 7L8.5 12.5L6 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>{{ section.settings.success_message }}</span>
+                </div>
+                <div class="newsletter-form__error" id="newsletter-error-{{ section.id }}" style="display: none;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="10" r="9" fill="#FF6B6B"/>
+                    <path d="M10 6V10M10 14H10.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="error-message">Please enter a valid email address</span>
+                </div>
+              </div>
+            </form>
+            
+            <!-- Benefits -->
+            {% if section.settings.show_benefits %}
+              <div class="benefits mt-4 d-flex flex-wrap justify-content-center gap-4">
+                {% for block in section.blocks %}
+                  {% case block.type %}
+                    {% when 'benefit' %}
+                      <div class="benefit-item d-flex align-items-center">
+                        <span style="color: var(--c-accent-teal); margin-right: 8px; font-weight: 600;">✓</span>
+                        <span style="font-size: var(--fs-caption); color: var(--c-ink-500);">
+                          {{ block.settings.text }}
+                        </span>
+                      </div>
+                  {% endcase %}
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            {% if section.settings.disclaimer %}
+              <p class="mt-3 mb-0" style="font-size: var(--fs-caption); color: var(--c-ink-500);">
+                {{ section.settings.disclaimer }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* Form input focus state */
+.form-control-modern:focus {
+  outline: none;
+  border-color: var(--c-brand-600);
+  box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.1);
+}
+
+/* Form validation states */
+.form-control-modern.error {
+  border-color: var(--c-accent-peach);
+  background: rgba(255, 139, 203, 0.05);
+}
+
+.form-control-modern.error:focus {
+  border-color: var(--c-accent-peach);
+  box-shadow: 0 0 0 3px rgba(255, 139, 203, 0.1);
+}
+
+/* Form messages */
+.newsletter-form__messages > div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: var(--fs-body-sm);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.newsletter-form__success {
+  background: rgba(24, 213, 228, 0.1);
+  color: var(--c-ink-700);
+}
+
+.newsletter-form__error {
+  background: rgba(255, 107, 107, 0.1);
+  color: var(--c-ink-700);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button loading state */
+.newsletter-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Scale and fade animation */
+.animate-scale-fade {
+  animation: scaleFade 0.6s var(--ease-spring) forwards;
+  animation-fill-mode: both;
+}
+
+@keyframes scaleFade {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Button hover state */
+.btn-primary-modern:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--c-white), 0 0 0 4px var(--c-brand-600);
+}
+
+/* CTA wrapper hover effect */
+.cta-wrapper {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.newsletter-cta-modern:hover .cta-wrapper {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset, 0 12px 48px rgba(0,0,0,.06);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .cta-wrapper {
+    padding: 48px 24px !important;
+  }
+  
+  .form-wrapper {
+    max-width: 100% !important;
+  }
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('#shopify-section-{{ section.id }}');
+    const form = section.querySelector('.newsletter-form');
+    const emailInput = section.querySelector('.newsletter-email-input');
+    const submitBtn = section.querySelector('.newsletter-submit-btn');
+    const successMsg = section.querySelector('.newsletter-form__success');
+    const errorMsg = section.querySelector('.newsletter-form__error');
+    const errorText = errorMsg.querySelector('.error-message');
+    const originalBtnText = submitBtn.textContent;
+
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validate email field
+    const validateEmail = (email) => {
+      const value = email.trim();
+      if (!value) {
+        return { valid: false, message: 'Please enter your email address' };
+      }
+      if (!emailRegex.test(value)) {
+        return { valid: false, message: 'Please enter a valid email address' };
+      }
+      return { valid: true };
+    };
+
+    // Show error message
+    const showError = (message) => {
+      errorText.textContent = message;
+      errorMsg.style.display = 'flex';
+      successMsg.style.display = 'none';
+      emailInput.classList.add('error');
+      emailInput.setAttribute('aria-invalid', 'true');
+    };
+
+    // Hide messages
+    const hideMessages = () => {
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      emailInput.classList.remove('error');
+      emailInput.setAttribute('aria-invalid', 'false');
+    };
+
+    // Real-time validation on blur
+    emailInput.addEventListener('blur', function() {
+      const validation = validateEmail(this.value);
+      if (!validation.valid && this.value.trim() !== '') {
+        showError(validation.message);
+      } else {
+        hideMessages();
+      }
+    });
+
+    // Clear error on input
+    emailInput.addEventListener('input', function() {
+      if (this.classList.contains('error')) {
+        hideMessages();
+      }
+    });
+
+    // Form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Hide any existing messages
+      hideMessages();
+      
+      // Validate email
+      const validation = validateEmail(emailInput.value);
+      if (!validation.valid) {
+        showError(validation.message);
+        emailInput.focus();
+        return;
+      }
+      
+      // Show loading state
+      submitBtn.textContent = 'Joining the circle...';
+      submitBtn.disabled = true;
+      emailInput.disabled = true;
+      
+      // Get form data
+      const formData = new FormData(form);
+      
+      // Here you would normally submit to your server
+      // For now, we'll simulate a successful submission
+      
+      // Simulate API call
+      setTimeout(function() {
+        // Show success message
+        successMsg.style.display = 'flex';
+        errorMsg.style.display = 'none';
+        
+        // Reset form
+        form.reset();
+        
+        // Reset button
+        submitBtn.textContent = originalBtnText;
+        submitBtn.disabled = false;
+        emailInput.disabled = false;
+        
+        // Scroll to success message
+        successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          successMsg.style.display = 'none';
+        }, 5000);
+      }, 1500);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "CTA - Newsletter Modern",
+  "elements": [
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Icon/Emoji",
+      "default": "💌"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join Our Circle of Connected Parents"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Weekly wisdom drops: bite-sized attachment science + real-life scripts for those 'what do I say?' moments."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "Your email (we protect it like family)"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Count Me In"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer Text",
+      "default": "100% science. 0% spam. Unsubscribe with love anytime."
+    },
+    {
+      "type": "action",
+      "id": "form_action",
+      "label": "Form Action URL",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits",
+      "label": "Show Benefits",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Welcome to the circle! Check your inbox for your free attachment guide 💜"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "CTA - Newsletter Modern",
+      "elements": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit Text",
+          "default": "Free secure attachment guide"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTA - Newsletter Modern",
+      "category": "Call to Action",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "text": "Free secure attachment guide"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "text": "Real-life connection scripts"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "text": "Early access to new resources"
+          }
+        }
+      ],
+      "settings": {
+        "icon": "💌",
+        "heading": "Join Our Circle of Connected Parents",
+        "subheading": "Weekly wisdom drops: bite-sized attachment science + real-life scripts for those 'what do I say?' moments.",
+        "email_placeholder": "Your email (we protect it like family)",
+        "button_text": "Count Me In",
+        "disclaimer": "100% science. 0% spam. Unsubscribe with love anytime.",
+        "show_benefits": true
+      }
+    }
+  ]
+}
+{% endschema %}

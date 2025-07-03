@@ -1,0 +1,643 @@
+{% comment %} Feature Showcase Section - Modern gradient design with floating UI {% endcomment %}
+<section class="feature-showcase" id="section-{{ section.id }}" 
+         style="--gradient-start: {{ section.settings.gradient_start }}; 
+                --gradient-end: {{ section.settings.gradient_end }};
+                --gradient-angle: {{ section.settings.gradient_angle }}deg;">
+  
+  <div class="feature-showcase__background">
+    {% comment %} Floating decorative elements {% endcomment %}
+    <div class="feature-showcase__shapes">
+      <div class="shape shape--1"></div>
+      <div class="shape shape--2"></div>
+      <div class="shape shape--3"></div>
+      <div class="shape shape--4"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="feature-showcase__content">
+      
+      {% comment %} Left content area {% endcomment %}
+      <div class="feature-showcase__info">
+        {% if section.settings.badge_text != blank %}
+          <div class="feature-showcase__badge">
+            {% if section.settings.badge_icon != blank %}
+              <span class="badge-icon">{{ section.settings.badge_icon }}</span>
+            {% endif %}
+            {{ section.settings.badge_text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="feature-showcase__heading">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.subheading != blank %}
+          <p class="feature-showcase__subheading">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="feature-showcase__description">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.button_text != blank %}
+          <div class="feature-showcase__cta">
+            <a href="{{ section.settings.button_link }}" 
+               class="btn btn-primary-modern feature-showcase__button"
+               style="color: var(--c-white) !important;">
+              {{ section.settings.button_text }}
+            </a>
+            {% if section.settings.secondary_text != blank %}
+              <span class="feature-showcase__secondary">{{ section.settings.secondary_text }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% comment %} Feature list {% endcomment %}
+        {% if section.blocks.size > 0 %}
+          <div class="feature-showcase__features">
+            {% for block in section.blocks %}
+              {% if block.type == 'feature_item' %}
+                <div class="feature-item" {{ block.shopify_attributes }}>
+                  {% if block.settings.icon != blank %}
+                    <span class="feature-item__icon">{{ block.settings.icon }}</span>
+                  {% endif %}
+                  <span class="feature-item__text">{{ block.settings.text }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% comment %} Right UI showcase area {% endcomment %}
+      <div class="feature-showcase__ui">
+        <div class="ui-card">
+          <div class="ui-card__inner">
+            {% if section.settings.ui_image != blank %}
+              <img src="{{ section.settings.ui_image | image_picker_url: '600x338' }}" 
+                   alt="{{ section.settings.ui_image_alt }}" 
+                   class="ui-card__image"
+                   loading="lazy"
+                   style="aspect-ratio: 16/9; object-fit: cover;">
+            {% else %}
+              {% comment %} On-brand placeholder instead of external image {% endcomment %}
+              <div class="ui-card__image" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
+                <svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="300" height="200" fill="#E0E0E0"/>
+                  <path d="M120 70L150 110L180 70" stroke="#BDBDBD" stroke-width="3" fill="none"/>
+                  <circle cx="150" cy="130" r="20" fill="#BDBDBD"/>
+                </svg>
+              </div>
+            {% endif %}
+              
+              {% comment %} Floating UI elements {% endcomment %}
+              {% for block in section.blocks %}
+                {% if block.type == 'ui_element' %}
+                  <div class="ui-element ui-element--{{ block.settings.position }}" 
+                       style="--element-top: {{ block.settings.top }}%; 
+                              --element-left: {{ block.settings.left }}%;"
+                       {{ block.shopify_attributes }}>
+                    {% if block.settings.element_image != blank %}
+                      <img src="{{ block.settings.element_image | image_picker_url: '200x113' }}" 
+                           alt="{{ block.settings.element_alt }}" 
+                           loading="lazy"
+                           style="aspect-ratio: 16/9; object-fit: cover; max-width: 100px; height: auto;">
+                    {% elsif block.settings.element_content != blank %}
+                      <div class="ui-element__content">
+                        {{ block.settings.element_content }}
+                      </div>
+                    {% else %}
+                      {% comment %} Small feature placeholder {% endcomment %}
+                      <div style="width: 100px; height: 100px; background: #FAFAFA; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="10" y="10" width="40" height="40" rx="8" fill="#BDBDBD"/>
+                          <circle cx="30" cy="30" r="10" fill="#E0E0E0"/>
+                        </svg>
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Feature Showcase Section Styles */
+  .feature-showcase {
+    position: relative;
+    padding: var(--space-2xl) 0;
+    background: linear-gradient(var(--gradient-angle), var(--gradient-start) 0%, var(--gradient-end) 100%);
+    overflow: hidden;
+    min-height: 600px;
+  }
+
+  /* Background decorative shapes */
+  .feature-showcase__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    filter: blur(60px);
+  }
+
+  .shape--1 {
+    width: 300px;
+    height: 300px;
+    background: var(--c-white);
+    top: -100px;
+    left: -100px;
+  }
+
+  .shape--2 {
+    width: 200px;
+    height: 200px;
+    background: var(--c-accent-teal);
+    top: 20%;
+    right: 10%;
+  }
+
+  .shape--3 {
+    width: 400px;
+    height: 400px;
+    background: var(--c-accent-peach);
+    bottom: -200px;
+    right: -200px;
+  }
+
+  .shape--4 {
+    width: 150px;
+    height: 150px;
+    background: var(--c-accent-lemon);
+    top: 50%;
+    left: 20%;
+  }
+
+  /* Content layout */
+  .feature-showcase__content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Info section */
+  .feature-showcase__info {
+    color: var(--c-white);
+  }
+
+  .feature-showcase__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-caption);
+    font-weight: 500;
+    margin-bottom: var(--space-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .badge-icon {
+    font-size: 16px;
+  }
+
+  .feature-showcase__heading {
+    font-size: var(--fs-display);
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    line-height: 1.1;
+  }
+
+  .feature-showcase__subheading {
+    font-size: var(--fs-h2);
+    font-weight: 300;
+    margin-bottom: var(--space-lg);
+    opacity: 0.9;
+  }
+
+  .feature-showcase__description {
+    font-size: var(--fs-body-lg);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    opacity: 0.8;
+    max-width: 500px;
+  }
+
+  /* CTA section */
+  .feature-showcase__cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+  }
+
+  .feature-showcase__button {
+    background: var(--c-white);
+    color: var(--c-brand-600);
+    padding: 14px 32px;
+    font-size: var(--fs-body);
+    font-weight: 500;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s var(--ease-out);
+  }
+
+  .feature-showcase__button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    background: var(--c-white);
+    color: var(--c-brand-800);
+  }
+
+  .feature-showcase__secondary {
+    font-size: var(--fs-caption);
+    opacity: 0.7;
+  }
+
+  /* Feature list */
+  .feature-showcase__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--fs-body);
+  }
+
+  .feature-item__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    font-size: 14px;
+  }
+
+  /* UI showcase area */
+  .feature-showcase__ui {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ui-card {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .ui-card__inner {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+
+  .ui-card__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  /* Floating UI elements */
+  .ui-element {
+    position: absolute;
+    top: var(--element-top);
+    left: var(--element-left);
+    transform: translate(-50%, -50%);
+    background: var(--c-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: float 6s ease-in-out infinite;
+    z-index: 10;
+  }
+
+  .ui-element img {
+    display: block;
+    max-width: 100px;
+    height: auto;
+  }
+
+  .ui-element__content {
+    font-size: var(--fs-caption);
+    color: var(--c-ink-700);
+    white-space: nowrap;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-10px); }
+  }
+
+  /* Position variants */
+  .ui-element--top-left { animation-delay: 0s; }
+  .ui-element--top-right { animation-delay: 1s; }
+  .ui-element--bottom-left { animation-delay: 2s; }
+  .ui-element--bottom-right { animation-delay: 3s; }
+
+  /* Responsive */
+  @media (max-width: 991px) {
+    .feature-showcase__content {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .feature-showcase__info {
+      order: 2;
+    }
+
+    .feature-showcase__ui {
+      order: 1;
+      margin-bottom: var(--space-xl);
+    }
+
+    .feature-showcase__description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .feature-showcase__cta {
+      justify-content: center;
+    }
+
+    .feature-showcase__features {
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .feature-showcase {
+      padding: var(--space-xl) 0;
+      min-height: auto;
+    }
+
+    .feature-showcase__heading {
+      font-size: var(--fs-h1);
+    }
+
+    .feature-showcase__subheading {
+      font-size: var(--fs-body-lg);
+    }
+
+    .ui-card {
+      max-width: 300px;
+    }
+
+    .ui-element {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Feature - Showcase",
+  "class": "feature-showcase-section",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient Start Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient End Color",
+      "default": "#4025E0"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "label": "Gradient Angle",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "unit": "deg",
+      "default": 135
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Quarterly market trends review ✨"
+    },
+    {
+      "type": "text",
+      "id": "badge_icon",
+      "label": "Badge Icon (emoji or symbol)",
+      "default": "📊"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Try for free"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Loom AI ✨"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Share flawless videos without lifting a finger. Loom AI auto-enhances your video and instantly transforms your script into a doc, message, or bug report. Try for free today."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Try now"
+    },
+    {
+      "type": "action",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "#"
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Secondary Text",
+      "default": "Record in a few clicks. Share anywhere. Collaborate better."
+    },
+    {
+      "type": "header",
+      "content": "UI Showcase"
+    },
+    {
+      "type": "image_picker",
+      "id": "ui_image",
+      "label": "Main UI Image"
+    },
+    {
+      "type": "text",
+      "id": "ui_image_alt",
+      "label": "UI Image Alt Text",
+      "default": "Product interface showcase"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature - Showcase",
+      "elements": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji or symbol)",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Evidence-based approach"
+        }
+      ]
+    },
+    {
+      "type": "ui_element",
+      "name": "Feature - Showcase",
+      "elements": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position Style",
+          "default": "top-left",
+          "options": [
+            {
+              "label": "Top Left",
+              "value": "top-left"
+            },
+            {
+              "label": "Top Right",
+              "value": "top-right"
+            },
+            {
+              "label": "Bottom Left",
+              "value": "bottom-left"
+            },
+            {
+              "label": "Bottom Right",
+              "value": "bottom-right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "top",
+          "label": "Top Position (%)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "left",
+          "label": "Left Position (%)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "default": 20
+        },
+        {
+          "type": "image_picker",
+          "id": "element_image",
+          "label": "Element Image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "element_alt",
+          "label": "Element Alt Text"
+        },
+        {
+          "type": "textarea",
+          "id": "element_content",
+          "label": "Element Content (if no image)",
+          "default": "95% report stronger connections"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature - Showcase",
+      "category": "Features",
+      "blocks": [
+        {
+          "type": "feature_item",
+          "settings": {
+            "icon": "🎯",
+            "text": "Lightning fast screen recording"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "icon": "🎬",
+            "text": "Record your screen and camera"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "icon": "✨",
+            "text": "AI-powered enhancements"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

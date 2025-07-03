@@ -1,0 +1,624 @@
+{% comment %}
+  AN Instagram Feed Integration Section
+  - Instagram posts grid
+  - Hover effects with engagement stats
+  - Link to Instagram profile
+  - Mobile-optimized
+  - Manual or API integration options
+{% endcomment %}
+
+<section class="an-instagram py-5" style="background: {{ section.settings.background_color }};">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="an-instagram__header animate-fade-up">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          {% if section.settings.heading != blank %}
+            <h2 style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500; margin-bottom: 0.5rem;">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); margin: 0;">
+              {{ section.settings.subheading }}
+            </p>
+          {% endif %}
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+          <a href="{{ section.settings.instagram_url }}" 
+             target="_blank" 
+             rel="noopener" 
+             class="an-instagram__follow-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="16" height="16" rx="5" stroke="currentColor" stroke-width="2"/>
+              <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+              <circle cx="14.5" cy="5.5" r="1.5" fill="currentColor"/>
+            </svg>
+            <span>{{ section.settings.follow_text }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instagram Grid -->
+    <div class="an-instagram__grid animate-fade-up">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'instagram_post' %}
+            <div class="an-instagram__post" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.post_url }}" 
+                 target="_blank" 
+                 rel="noopener"
+                 class="an-instagram__post-link">
+                
+                <!-- Post Image -->
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | image_picker_url: '800x450' }}" 
+             alt="{{ block.settings.caption | truncate: 100 }}" 
+             class="an-instagram__post-image"
+             loading="lazy"
+             style="object-fit: cover;">
+                {% else %}
+                  <div class="an-instagram__post-placeholder">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="10" y="10" width="40" height="40" rx="8" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="30" cy="30" r="8" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="42" cy="18" r="3" fill="currentColor"/>
+                    </svg>
+                  </div>
+                {% endif %}
+
+                <!-- Hover Overlay -->
+                <div class="an-instagram__post-overlay">
+                  <div class="an-instagram__post-stats">
+                    <!-- Likes -->
+                    <div class="an-instagram__stat">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.3667 3.84172C16.941 3.41589 16.4357 3.0781 15.8795 2.84763C15.3232 2.61716 14.7271 2.49854 14.125 2.49854C13.5229 2.49854 12.9268 2.61716 12.3705 2.84763C11.8143 3.0781 11.309 3.41589 10.8833 3.84172L10 4.72506L9.11666 3.84172C8.25692 2.98198 7.09086 2.49898 5.875 2.49898C4.65914 2.49898 3.49308 2.98198 2.63334 3.84172C1.7736 4.70147 1.29059 5.86753 1.29059 7.08339C1.29059 8.29925 1.7736 9.46531 2.63334 10.3251L3.51667 11.2084L10 17.6917L16.4833 11.2084L17.3667 10.3251C17.7925 9.89943 18.1303 9.39407 18.3608 8.83785C18.5912 8.28164 18.7099 7.68546 18.7099 7.08339C18.7099 6.48132 18.5912 5.88514 18.3608 5.32893C18.1303 4.77271 17.7925 4.26735 17.3667 3.84172Z" fill="white"/>
+                      </svg>
+                      <span>{{ block.settings.likes_count }}</span>
+                    </div>
+                    
+                    <!-- Comments -->
+                    <div class="an-instagram__stat">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 9.5C18.0034 10.8199 17.6951 12.1219 17.1 13.3C16.3944 14.7117 15.3098 15.8992 13.9674 16.7293C12.6251 17.5594 11.0782 17.9994 9.5 18C8.18013 18.0034 6.87812 17.6951 5.7 17.1L2 18L2.9 14.3C2.30493 13.1219 1.99656 11.8199 2 10.5C2.00061 8.92176 2.44061 7.37485 3.27072 6.03255C4.10083 4.69025 5.28825 3.60557 6.7 2.9C7.87812 2.30493 9.18013 1.99656 10.5 2H11C13.0843 2.11502 15.053 2.99479 16.5291 4.47089C18.0052 5.94699 18.885 7.91568 19 10V10.5H18Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>{{ block.settings.comments_count }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Caption Preview -->
+                  {% if block.settings.show_caption and block.settings.caption != blank %}
+                    <div class="an-instagram__caption">
+                      <p>{{ block.settings.caption | truncate: 100 }}</p>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <!-- Post Type Badge -->
+                {% if block.settings.post_type != 'image' %}
+                  <div class="an-instagram__type-badge">
+                    {% case block.settings.post_type %}
+                      {% when 'video' %}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M10.5 8L6 5V11L10.5 8Z" fill="white"/>
+                          <rect x="11" y="5" width="2" height="6" fill="white"/>
+                        </svg>
+                      {% when 'reel' %}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M2 4H14M2 12H14M6 8H10M4 2V14M12 2V14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                      {% when 'carousel' %}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="2" y="4" width="8" height="8" rx="1" fill="white"/>
+                          <rect x="6" y="2" width="8" height="8" rx="1" fill="white" opacity="0.7"/>
+                        </svg>
+                    {% endcase %}
+                  </div>
+                {% endif %}
+              </a>
+            </div>
+        {% endcase %}
+      {% endfor %}
+
+      <!-- API Integration Placeholder -->
+      {% if section.settings.use_api %}
+        <div class="an-instagram__api-notice">
+          <p>Instagram feed will load here via API integration</p>
+          <small>Configure your Instagram API token in theme settings</small>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Load More -->
+    {% if section.settings.show_load_more %}
+      <div class="text-center mt-4 animate-fade-up">
+        <a href="{{ section.settings.instagram_url }}" 
+           target="_blank" 
+           rel="noopener" 
+           class="btn btn-secondary-modern">
+          View More on Instagram
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .an-instagram__header {
+    margin-bottom: 3rem;
+  }
+
+  .an-instagram__follow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border: 2px solid var(--c-ink-200);
+    border-radius: 24px;
+    color: var(--c-ink-900);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--an-transition-base);
+  }
+
+  .an-instagram__follow-btn:hover {
+    border-color: var(--c-brand-600);
+    color: var(--c-brand-600);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.15);
+  }
+
+  /* Instagram Grid */
+  .an-instagram__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .an-instagram__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .an-instagram__grid {
+      grid-template-columns: repeat({{ section.settings.posts_per_row }}, 1fr);
+    }
+  }
+
+  .an-instagram__post {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    aspect-ratio: 1;
+    background: var(--c-ink-50);
+  }
+
+  .an-instagram__post-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .an-instagram__post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--an-transition-base);
+  }
+
+  .an-instagram__post-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-ink-300);
+  }
+
+  /* Hover Overlay */
+  .an-instagram__post-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--an-transition-base);
+    padding: 1rem;
+  }
+
+  .an-instagram__post:hover .an-instagram__post-overlay {
+    opacity: 1;
+  }
+
+  .an-instagram__post:hover .an-instagram__post-image {
+    transform: scale(1.05);
+  }
+
+  .an-instagram__post-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .an-instagram__stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-weight: 600;
+  }
+
+  .an-instagram__caption {
+    text-align: center;
+    color: white;
+    font-size: var(--fs-body-sm);
+    line-height: 1.4;
+  }
+
+  .an-instagram__caption p {
+    margin: 0;
+  }
+
+  /* Post Type Badge */
+  .an-instagram__type-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  /* API Notice */
+  .an-instagram__api-notice {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--c-ink-50);
+    border-radius: 12px;
+    color: var(--c-ink-600);
+  }
+
+  .an-instagram__api-notice p {
+    font-size: var(--fs-body-lg);
+    margin-bottom: 0.5rem;
+  }
+
+  .an-instagram__api-notice small {
+    font-size: var(--fs-body-sm);
+    opacity: 0.8;
+  }
+
+  /* Mobile Adjustments */
+  @media (max-width: 767px) {
+    .an-instagram__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+
+    .an-instagram__post-stats {
+      gap: 1rem;
+    }
+
+    .an-instagram__stat {
+      font-size: var(--fs-body-sm);
+    }
+
+    .an-instagram__caption {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Optional: Instagram API Integration
+  {% if section.settings.use_api and section.settings.api_token != blank %}
+    document.addEventListener('DOMContentLoaded', function() {
+      const grid = document.querySelector('#shopify-section-{{ section.id }} .an-instagram__grid');
+      const apiToken = '{{ section.settings.api_token }}';
+      const postCount = {{ section.settings.api_post_count }};
+      
+      // Instagram Basic Display API endpoint
+      const apiUrl = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${apiToken}&limit=${postCount}`;
+      
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.data && data.data.length > 0) {
+            // Clear the grid
+            grid.innerHTML = '';
+            
+            // Add posts
+            data.data.forEach(post => {
+              const postElement = createInstagramPost(post);
+              grid.appendChild(postElement);
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error loading Instagram feed:', error);
+        });
+      
+      function createInstagramPost(post) {
+        const div = document.createElement('div');
+        div.className = 'an-instagram__post';
+        
+        const mediaUrl = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+        const typeIcon = getTypeIcon(post.media_type);
+        
+        div.innerHTML = `
+          <a href="${post.permalink}" target="_blank" rel="noopener" class="an-instagram__post-link">
+            <img src="${mediaUrl}" alt="${post.caption ? post.caption.substring(0, 100) : 'Instagram post'}" class="an-instagram__post-image" loading="lazy" width="300" height="300">
+            <div class="an-instagram__post-overlay">
+              <div class="an-instagram__post-stats">
+                <div class="an-instagram__stat">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.3667 3.84172C16.941 3.41589 16.4357 3.0781 15.8795 2.84763C15.3232 2.61716 14.7271 2.49854 14.125 2.49854C13.5229 2.49854 12.9268 2.61716 12.3705 2.84763C11.8143 3.0781 11.309 3.41589 10.8833 3.84172L10 4.72506L9.11666 3.84172C8.25692 2.98198 7.09086 2.49898 5.875 2.49898C4.65914 2.49898 3.49308 2.98198 2.63334 3.84172C1.7736 4.70147 1.29059 5.86753 1.29059 7.08339C1.29059 8.29925 1.7736 9.46531 2.63334 10.3251L3.51667 11.2084L10 17.6917L16.4833 11.2084L17.3667 10.3251C17.7925 9.89943 18.1303 9.39407 18.3608 8.83785C18.5912 8.28164 18.7099 7.68546 18.7099 7.08339C18.7099 6.48132 18.5912 5.88514 18.3608 5.32893C18.1303 4.77271 17.7925 4.26735 17.3667 3.84172Z" fill="white"/>
+                  </svg>
+                  <span>View on Instagram</span>
+                </div>
+              </div>
+            </div>
+            ${typeIcon ? `<div class="an-instagram__type-badge">${typeIcon}</div>` : ''}
+          </a>
+        `;
+        
+        return div;
+      }
+      
+      function getTypeIcon(mediaType) {
+        switch(mediaType) {
+          case 'VIDEO':
+            return '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 8L6 5V11L10.5 8Z" fill="white"/><rect x="11" y="5" width="2" height="6" fill="white"/></svg>';
+          case 'CAROUSEL_ALBUM':
+            return '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="8" height="8" rx="1" fill="white"/><rect x="6" y="2" width="8" height="8" rx="1" fill="white" opacity="0.7"/></svg>';
+          default:
+            return null;
+        }
+      }
+    });
+  {% endif %}
+</script>
+
+{% schema %}
+{
+  "name": "Content - Instagram Feed",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Follow Along @attachmentnerd"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Join our community of 100K+ parents learning to build secure connections"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "action",
+      "id": "instagram_url",
+      "label": "Instagram Profile URL",
+      "default": "https://instagram.com/attachmentnerd"
+    },
+    {
+      "type": "text",
+      "id": "follow_text",
+      "label": "Follow Button Text",
+      "default": "Follow on Instagram"
+    },
+    {
+      "type": "range",
+      "id": "posts_per_row",
+      "label": "Posts Per Row (Desktop)",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "unit": "posts"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_load_more",
+      "label": "Show Load More Button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "use_api",
+      "label": "Use Instagram API",
+      "default": false,
+      "info": "Enable to load posts automatically via API"
+    },
+    {
+      "type": "text",
+      "id": "api_token",
+      "label": "Instagram API Token",
+      "info": "Required if using API integration"
+    },
+    {
+      "type": "range",
+      "id": "api_post_count",
+      "label": "Number of API Posts",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "unit": "posts"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram_post",
+      "name": "Content - Instagram Feed",
+      "elements": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Post Image"
+        },
+        {
+          "type": "action",
+          "id": "post_url",
+          "label": "Instagram Post URL",
+          "default": "https://instagram.com/p/ABC123"
+        },
+        {
+          "type": "select",
+          "id": "post_type",
+          "label": "Post Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            },
+            {
+              "value": "reel",
+              "label": "Reel"
+            },
+            {
+              "value": "carousel",
+              "label": "Carousel"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "textarea",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Your childhood doesn't have to become your child's story. When old wounds get triggered..."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_caption",
+          "label": "Show Caption on Hover",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "likes_count",
+          "label": "Likes Count",
+          "default": "5.2k"
+        },
+        {
+          "type": "text",
+          "id": "comments_count",
+          "label": "Comments Count",
+          "default": "342"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content - Instagram Feed",
+      "category": "Social",
+      "description": "Display Instagram posts to build social proof",
+      "blocks": [
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "reel",
+            "caption": "When your toddler has a meltdown in public and you stay calm... that's the work paying off 💪",
+            "likes_count": "12.4k",
+            "comments_count": "892"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "carousel",
+            "caption": "5 phrases to use when your child says 'I hate you!' Swipe for the full list →",
+            "likes_count": "8.7k",
+            "comments_count": "567"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "image",
+            "caption": "Your childhood doesn't have to become your child's story. Healing is possible.",
+            "likes_count": "15.2k",
+            "comments_count": "1.2k"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "video",
+            "caption": "Why connection before correction works every time. Watch till the end!",
+            "likes_count": "9.8k",
+            "comments_count": "445"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "image",
+            "caption": "Reminder: You're not failing. You're learning. And that's exactly what your kids need to see.",
+            "likes_count": "11.3k",
+            "comments_count": "823"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "reel",
+            "caption": "POV: You finally understand why your parents parented the way they did... and you choose differently",
+            "likes_count": "18.9k",
+            "comments_count": "2.1k"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "carousel",
+            "caption": "Teen pushing you away? Here's what they really need from you right now...",
+            "likes_count": "6.5k",
+            "comments_count": "298"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "post_type": "image",
+            "caption": "Today's affirmation: I am the parent my child needs, even when it doesn't feel like it.",
+            "likes_count": "7.2k",
+            "comments_count": "156"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

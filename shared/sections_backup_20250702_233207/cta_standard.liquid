@@ -1,0 +1,324 @@
+<!-- sections/cta_section.liquid -->
+<section class="an-cta-section {{ section.settings.background_style }}" 
+         style="background: {{ section.settings.background_type == 'gradient' ? section.settings.gradient_start : section.settings.background_color }}{% if section.settings.background_type == 'gradient' %} linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_start }} 0%, {{ section.settings.gradient_end }} 100%){% endif %};">
+  <div class="container">
+    <div class="an-cta__wrapper animate-fade-up">
+      {% if section.settings.image != blank %}
+        <div class="an-cta__image">
+          <img src="{{ section.settings.image | image_picker_url: '800x450' }}" 
+             alt="{{ section.settings.image_alt }}" 
+             class="an-cta__img"
+             loading="lazy"
+             style="object-fit: cover;">
+        </div>
+      {% endif %}
+      
+      <div class="an-cta__content">
+        {% if section.settings.eyebrow_text != blank %}
+          <span class="an-cta__eyebrow">{{ section.settings.eyebrow_text }}</span>
+        {% endif %}
+        
+        <h2 class="an-cta__heading">{{ section.settings.heading }}</h2>
+        
+        {% if section.settings.subheading != blank %}
+          <p class="an-cta__subheading">{{ section.settings.subheading }}</p>
+        {% endif %}
+        
+        {% if section.settings.button_text != blank %}
+          <a href="{{ section.settings.button_link }}" class="btn btn-primary-modern an-cta__button">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* AN CTA Section - Modern Design */
+  .an-cta-section {
+    padding: var(--space-3xl) 0;
+    background: var(--g-brand);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .an-cta-section.section-white {
+    background: var(--c-white) !important;
+  }
+  
+  .an-cta-section.section-lavender {
+    background: var(--c-brand-100) !important;
+  }
+  
+  .an-cta__wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xl);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .an-cta__image {
+    flex: 0 0 auto;
+    width: 200px;
+  }
+  
+  .an-cta__img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .an-cta__content {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .an-cta__eyebrow {
+    display: inline-block;
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: var(--c-white);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+    backdrop-filter: blur(var(--blur-sm));
+  }
+  
+  .an-cta__heading {
+    font-size: var(--fs-h1);
+    font-weight: 600;
+    color: var(--c-white);
+    margin-bottom: var(--space-md);
+    line-height: 1.2;
+  }
+  
+  .an-cta__subheading {
+    font-size: var(--fs-body-lg);
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Let the btn-primary-modern class handle the styling for proper contrast */
+  .an-cta__button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .an-cta__button:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* White/Lavender background text colors */
+  .an-cta-section.section-white .an-cta__eyebrow {
+    color: var(--c-brand-600);
+    background: var(--c-brand-100);
+  }
+  
+  .an-cta-section.section-white .an-cta__heading {
+    color: var(--c-ink-900);
+  }
+  
+  .an-cta-section.section-white .an-cta__subheading {
+    color: var(--c-ink-700);
+  }
+  
+  /* Button styles are handled by btn-primary-modern class */
+  
+  .an-cta-section.section-lavender .an-cta__eyebrow {
+    color: var(--c-brand-600);
+    background: var(--c-white);
+  }
+  
+  .an-cta-section.section-lavender .an-cta__heading {
+    color: var(--c-ink-900);
+  }
+  
+  .an-cta-section.section-lavender .an-cta__subheading {
+    color: var(--c-ink-700);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 767px) {
+    .an-cta__wrapper {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--space-lg);
+    }
+    
+    .an-cta__image {
+      width: 150px;
+    }
+    
+    .an-cta__heading {
+      font-size: var(--fs-h2);
+    }
+  }
+  
+  /* Add subtle animation */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out;
+  }
+  
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "CTA - Standard",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Text",
+      "default": "Ready to Transform Your Parenting?"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Start Building Secure Attachment Today"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Join thousands of parents who've transformed their family relationships with science-backed attachment strategies."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Get Started Now"
+    },
+    {
+      "type": "action",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Optional: Book cover, product image, or author photo"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image Alt Text",
+      "default": "Attachment parenting resource"
+    },
+    {
+      "type": "header",
+      "content": "Background Style"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background Style",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "Brand Gradient (Default)"
+        },
+        {
+          "value": "section-white",
+          "label": "White Background"
+        },
+        {
+          "value": "section-lavender",
+          "label": "Lavender Background"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background Type",
+      "default": "gradient",
+      "options": [
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        },
+        {
+          "value": "solid",
+          "label": "Solid Color"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color (if solid)",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient Start Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient End Color",
+      "default": "#4025E0"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "label": "Gradient Angle",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "unit": "deg",
+      "default": 135
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTA - Standard",
+      "category": "CTA",
+      "settings": {
+        "eyebrow_text": "Ready to Transform Your Parenting?",
+        "heading": "Start Building Secure Attachment Today",
+        "subheading": "Join thousands of parents who've transformed their family relationships with science-backed attachment strategies.",
+        "button_text": "Get Started Now",
+        "background_style": "",
+        "background_type": "gradient",
+        "background_color": "#5E3BFF",
+        "gradient_start": "#5E3BFF",
+        "gradient_end": "#4025E0",
+        "gradient_angle": 135
+      }
+    }
+  ]
+}
+{% endschema %}

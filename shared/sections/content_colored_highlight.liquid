@@ -196,16 +196,10 @@
             <!-- Icon -->
             {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
               <div class="colored-highlight__icon-wrapper">
-                {% render 'responsive-image',
-  image: block.settings.icon_image,
-  alt: '{{ block.settings.icon_alt | default: ',
-  class: 'colored-highlight__icon',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '4/3',
-  widths: '400,600,800,1200',
-  placeholder_type: 'feature',
-  blur_up: true
-%}
+                <img src="{{ block.settings.icon_image | image_picker_url: 'placeholder.png' }}" 
+                     alt="{{ block.settings.icon_alt | default: 'Icon' }}"
+                     class="colored-highlight__icon"
+                     loading="lazy">
               </div>
             {% elsif block.settings.icon_type == 'emoji' and block.settings.icon_emoji != blank %}
               <div class="colored-highlight__icon-wrapper">

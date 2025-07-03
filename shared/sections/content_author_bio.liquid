@@ -7,17 +7,14 @@
           <!-- Author image with decorative elements -->
           <div class="author-image-wrapper position-relative d-inline-block">
             {% if section.settings.author_image != blank %}
-              <div kjb-settings-id="{{ '>
-  {% render 'responsive-image',
-    image: section.settings.author_image,
-    alt: '{{ section.settings.author_name }}',
-    class: 'author-image',
-    sizes: '60px',
-    aspect_ratio: '1/1',
-    widths: '60,120,180',
-    placeholder_type: 'avatar'
-  %}
-</div>
+              <img src="{{ section.settings.author_image | image_picker_url: '640x' }}" 
+                   alt="{{ section.settings.author_name }}" 
+                   class="author-image"
+                   width="320"
+                   height="320"
+                   loading="lazy"
+                   style="width: 320px; height: 320px; border-radius: 24px; object-fit: cover; box-shadow: 0 12px 24px rgba(0,0,0,.08);"
+                   kjb-settings-id="{{ 'author_image' | settings_id: section: section }}">
             {% else %}
               <div style="width: 320px; height: 320px; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,.08); background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                 <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +140,7 @@
 {% schema %}
 {
   "name": "Content - Author Bio",
-  "elements": [
+  "settings": [
     {
       "type": "text",
       "id": "heading",
@@ -196,7 +193,7 @@
     {
       "type": "social_link",
       "name": "Content - Author Bio",
-      "elements": [
+      "settings": [
         {
           "type": "select",
           "id": "platform",
@@ -232,7 +229,7 @@
     {
       "type": "stat",
       "name": "Content - Author Bio",
-      "elements": [
+      "settings": [
         {
           "type": "text",
           "id": "number",
@@ -252,6 +249,7 @@
     {
       "name": "Content - Author Bio",
       "category": "Content",
+      "description": "Modern author bio with stats and social links",
       "blocks": [
         {
           "type": "social_link",

@@ -108,15 +108,7 @@
                 </div>
                 <div class="book-cover">
                     <!--@id=book_cover-->
-                    {% render 'responsive-image',
-  image: section.settings.img_1_securely_attached_book_c,
-  alt: 'Securely Attached book cover by Eli Harwood',
-  sizes: '(max-width: 767px) 280px, 400px',
-  aspect_ratio: '2/3',
-  widths: '280,400,600,800',
-  placeholder_type: 'book',
-  blur_up: true
-%}
+                    <img src="{{ section.settings.img_1_securely_attached_book_c | image_picker_url: '2000x' }}" alt="Securely Attached book cover by Eli Harwood" width="400" height="500">
                     <div class="award-badge">USA Today Bestseller!</div>
                 </div>
             </div>
@@ -161,15 +153,7 @@
                     <p class="testimonial-text">"Securely Attached is a resource that every therapist, client, and person needs in their life. Eli hands us her clear knowledge of the attachment research in a way that is engaging, concise, and hopeful."</p>
                     <div class="testimonial-author">
                         <!--@id=expert_1-->
-                        {% render 'responsive-image',
-  image: section.settings.img_2_dr_nicole_lepera,
-  alt: 'Dr. Nicole LePera',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                        <img src="{{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '2000x' }}" alt="Dr. Nicole LePera" loading="lazy" width="80" height="80">
                         <div class="testimonial-author-info">
                             <h4>Dr. Nicole LePera</h4>
                             <p>NYT Bestselling Author of How to Do the Work</p>
@@ -180,15 +164,7 @@
                     <p class="testimonial-text">"Eli empowers adults with insecure attachment styles to forge deeply satisfying and secure relationships. A guiding light on the path of self-discovery and growth."</p>
                     <div class="testimonial-author">
                         <!--@id=expert_2-->
-                        {% render 'responsive-image',
-  image: section.settings.img_3_jessica_baum,
-  alt: 'Jessica Baum',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                        <img src="{{ section.settings.img_3_jessica_baum | image_picker_url: '2000x' }}" alt="Jessica Baum" loading="lazy" width="80" height="80">
                         <div class="testimonial-author-info">
                             <h4>Jessica Baum, LMHC</h4>
                             <p>Author of Anxiously Attached</p>
@@ -262,15 +238,7 @@
             <div class="author-content">
                 <div class="author-image">
                     <!--@id=eli_photo-->
-                    {% render 'responsive-image',
-  image: section.settings.img_4_eli_harwood_the_attachme,
-  alt: 'Eli Harwood, The Attachment Nerd',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '16/9',
-  widths: '400,600,800,1200,1600',
-  placeholder_type: 'default',
-  blur_up: true
-%}
+                    <img src="{{ section.settings.img_4_eli_harwood_the_attachme | image_picker_url: '2000x' }}" alt="Eli Harwood, The Attachment Nerd" loading="lazy" width="400" height="400">
                 </div>
                 <div class="author-info">
                     <h2>{{ section.settings.h2_not__h3__4_meet_eli_harwood }}</h2>

@@ -1,0 +1,55 @@
+{% comment %}
+  Static Header Section
+  This is a non-draggable version of the header for structured pages.
+  Note: NO PRESETS in schema = cannot be moved or deleted
+{% endcomment %}
+
+<!-- Copy the header.liquid content here but remove the presets from schema -->
+<header class="header-static">
+  <div class="container">
+    <div class="header__content">
+      <!-- Logo -->
+      <div class="header__logo">
+        {% if section.settings.logo %}
+          <a href="/">
+            <img src="{{ section.settings.logo | image_picker_url: '240x80' }}" 
+             alt="{{ site.name }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+          </a>
+        {% else %}
+          <a href="/" class="header__site-name">{{ site.name }}</a>
+        {% endif %}
+      </div>
+      
+      <!-- Navigation -->
+      <nav class="header__nav">
+        {% if section.settings.menu %}
+          {% for link in section.settings.menu.links %}
+            <a href="{{ link.url }}" class="header__link">{{ link.name }}</a>
+          {% endfor %}
+        {% endif %}
+      </nav>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Nav - Header Static",
+  "elements": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

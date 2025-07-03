@@ -1,141 +1,102 @@
 {%- comment -%}
-  Attachment Nerd – Brand-Aligned Footer with Bio
-  Following the brand style guide with effortless power, human-first tech, and momentum
+  Attachment Nerd – Modern Footer with Bio
+  A contemporary footer design with bio section and organized navigation
   Drop in any Kajabi page via "Add Section › Footer Bio"
 {%- endcomment -%}
 
-<section id="footer-bio-{{ section.id }}" class="an-footer" data-theme="{{ section.settings.theme_mode | default: 'light' }}">
-  <!-- Momentum Background -->
-  <div class="an-footer__background">
-    <div class="an-footer__gradient-orb an-footer__gradient-orb--1"></div>
-    <div class="an-footer__gradient-orb an-footer__gradient-orb--2"></div>
-  </div>
-
+<section id="footer-bio-{{ section.id }}" class="footer-bio" style="background-color: {{ section.settings.background_color | default: '#FFF4F0' }};">
   <div class="container">
-    <!-- Brand Header -->
-    <div class="an-footer__header">
-      <div class="an-footer__brand-wrapper">
-        {% if section.settings.logo_image != blank %}
-          <div kjb-settings-id="{{ '>
-  {% render 'responsive-image',
-    image: section.settings.logo_image,
-    alt: '{{ section.settings.logo_alt | default: ',
-    class: 'an-footer__logo',
-    sizes: '(max-width: 767px) 120px, 180px',
-    widths: '120,180,240,360',
-    placeholder_type: 'logo'
-  %}
-</div>
-        {% else %}
-          <h2 class="an-footer__brand" kjb-settings-id="{{ 'brand_text' | settings_id: section: section }}">
-            <span class="an-footer__brand-icon">🔗</span>
-            <span class="an-footer__brand-text">{{ section.settings.brand_text | default: 'Attachment Nerd' }}</span>
-          </h2>
-        {% endif %}
-
-        {% if section.settings.tagline != blank %}
-          <p class="an-footer__tagline">{{ section.settings.tagline }}</p>
-        {% endif %}
-      </div>
+    <!-- Logo/Brand Name -->
+    <div class="footer-bio__header text-center">
+      {% if section.settings.logo_image != blank %}
+        <img src="{{ section.settings.logo_image | image_picker_url: 'logo-placeholder.png' }}" 
+             alt="{{ section.settings.logo_alt | default: 'Attachment Nerd' }}"
+             class="footer-bio__logo"
+             loading="lazy">
+      {% elsif section.settings.brand_text != blank %}
+        <h2 class="footer-bio__brand" style="font-family: var(--an-font-cursive, 'Georgia', serif); color: {{ section.settings.brand_color | default: '#F57C6F' }};">
+          {{ section.settings.brand_text }}
+        </h2>
+      {% endif %}
     </div>
 
-    <div class="an-footer__content">
-      <!-- Bio Section with Human-First Design -->
-      <div class="an-footer__bio-section">
-        <div class="an-footer__author">
-          <!-- Avatar with Soft Glow -->
-          <div class="an-footer__avatar-container">
-            <div class="an-footer__avatar-glow"></div>
-            <div class="an-footer__avatar-wrapper">
-              {% if section.settings.avatar_image != blank %}
-                {% render 'responsive-image',
-  image: section.settings.avatar_image,
-  alt: '{{ section.settings.author_name | default: ',
-  class: 'an-footer__avatar',
-  sizes: '60px',
-  aspect_ratio: '1/1',
-  widths: '60,120,180',
-  placeholder_type: 'avatar'
-%}
-              {% else %}
-                <div class="an-footer__avatar-placeholder">
-                  <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                  </svg>
-                </div>
-              {% endif %}
-              {% if section.settings.show_status %}
-                <div class="an-footer__status">
-                  <span class="an-footer__status-dot"></span>
-                </div>
-              {% endif %}
-            </div>
+    <div class="footer-bio__content">
+      <!-- Bio Section -->
+      <div class="footer-bio__about">
+        <div class="footer-bio__author">
+          <div class="footer-bio__avatar-wrapper">
+            {% if section.settings.avatar_image != blank %}
+              <img src="{{ section.settings.avatar_image | image_picker_url: 'avatar-placeholder.png' }}" 
+                   alt="{{ section.settings.author_name | default: 'Eli Harwood' }}"
+                   class="footer-bio__avatar"
+                   loading="lazy">
+            {% else %}
+              <div class="footer-bio__avatar-placeholder">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="white">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+            {% endif %}
           </div>
-
-          <!-- Bio Content -->
-          <div class="an-footer__bio-content">
-            {% if section.settings.author_name != blank %}
-              <h3 class="an-footer__author-name">{{ section.settings.author_name }}</h3>
-            {% endif %}
-
-            {% if section.settings.author_title != blank %}
-              <p class="an-footer__author-title">
-                <span class="an-footer__title-accent">✨</span>
-                {{ section.settings.author_title }}
-              </p>
-            {% endif %}
-
+          
+          <div class="footer-bio__bio-content">
             {% if section.settings.bio_text != blank %}
-              <p class="an-footer__bio-text">{{ section.settings.bio_text }}</p>
+              <p class="footer-bio__bio-text">{{ section.settings.bio_text }}</p>
             {% endif %}
-
-            <!-- Social Pills -->
-            <div class="an-footer__social">
+            
+            <!-- Social Follow Buttons -->
+            <div class="footer-bio__social">
               {% for block in section.blocks %}
                 {% if block.type == 'social_link' %}
-                  <a href="{{ block.settings.url }}"
-                     class="an-footer__social-pill"
-                     data-platform="{{ block.settings.platform }}"
+                  <a href="{{ block.settings.url }}" 
+                     class="footer-bio__social-btn footer-bio__social-btn--{{ block.settings.platform }}"
                      target="_blank"
                      rel="noopener"
-                     aria-label="{{ block.settings.label }}">
-                    <span class="an-footer__social-icon">
-                      {% case block.settings.platform %}
-                        {% when 'instagram' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
-                          </svg>
-                        {% when 'youtube' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                          </svg>
-                        {% when 'tiktok' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.77-.08 1.45-.54 2.89-1.42 4.05-.87 1.2-2.13 2.04-3.5 2.45-1.42.42-2.97.36-4.38-.18-1.59-.65-2.96-1.88-3.74-3.42-.6-1.18-.84-2.53-.68-3.85.18-1.52.88-2.98 1.98-4.02 1.03-.97 2.36-1.55 3.74-1.65.03 1.43-.02 2.85-.05 4.28-.61-.13-1.27-.08-1.85.24-.8.44-1.37 1.27-1.46 2.18-.07.73.14 1.49.61 2.05.57.69 1.46 1.05 2.34.94.92-.11 1.79-.66 2.25-1.46.41-.71.46-1.56.44-2.37-.01-5.2-.01-10.39 0-15.59z"/>
-                          </svg>
-                        {% when 'pinterest' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.627 0-12 5.372-12 12 0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
-                          </svg>
-                        {% when 'facebook' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                          </svg>
-                        {% when 'twitter' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                          </svg>
-                        {% when 'linkedin' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                          </svg>
-                        {% when 'podcast' %}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17 18.25v2.5a.75.75 0 01-.75.75h-8.5a.75.75 0 01-.75-.75v-2.5H17zM12 3a7 7 0 00-5 11.9v3.35h1.5V16.4l-.32-.13A5.5 5.5 0 1117.5 12a5.44 5.44 0 01-.82 2.87l-.32.13v1.85h1.5V14.9A7 7 0 0012 3zm0 9.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/>
-                          </svg>
-                      {% endcase %}
-                    </span>
-                    <span class="an-footer__social-label">{{ block.settings.label }}</span>
+                     aria-label="Follow on {{ block.settings.platform }}">
+                    {% case block.settings.platform %}
+                      {% when 'instagram' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: '1M FOLLOWERS!' }}</span>
+                      {% when 'podcast' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M5 3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2H5zm2.5 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM9 8.5h7a.5.5 0 010 1H9a.5.5 0 010-1zM9 13.5h7a.5.5 0 010 1H9a.5.5 0 010-1z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: 'LISTEN TO MY #1 PODCAST' }}</span>
+                      {% when 'facebook' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: 'I WANNA BE YOUR FRIEND' }}</span>
+                      {% when 'pinterest' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 0c-6.627 0-12 5.372-12 12 0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: 'I FREAKING LOVE PINTEREST' }}</span>
+                      {% when 'youtube' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: 'WATCH ON YOUTUBE' }}</span>
+                      {% when 'twitter' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: 'FOLLOW ON TWITTER' }}</span>
+                      {% when 'linkedin' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: 'CONNECT ON LINKEDIN' }}</span>
+                      {% when 'tiktok' %}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.77-.08 1.45-.54 2.89-1.42 4.05-.87 1.2-2.13 2.04-3.5 2.45-1.42.42-2.97.36-4.38-.18-1.59-.65-2.96-1.88-3.74-3.42-.6-1.18-.84-2.53-.68-3.85.18-1.52.88-2.98 1.98-4.02 1.03-.97 2.36-1.55 3.74-1.65.03 1.43-.02 2.85-.05 4.28-.61-.13-1.27-.08-1.85.24-.8.44-1.37 1.27-1.46 2.18-.07.73.14 1.49.61 2.05.57.69 1.46 1.05 2.34.94.92-.11 1.79-.66 2.25-1.46.41-.71.46-1.56.44-2.37-.01-5.2-.01-10.39 0-15.59z"/>
+                        </svg>
+                        <span>{{ block.settings.label | default: 'FOLLOW ON TIKTOK' }}</span>
+                      {% else %}
+                        <span>{{ block.settings.label }}</span>
+                    {% endcase %}
                   </a>
                 {% endif %}
               {% endfor %}
@@ -144,574 +105,322 @@
         </div>
       </div>
 
-      <!-- Navigation with Cards -->
-      <div class="an-footer__nav-section">
-        <h3 class="an-footer__nav-title">{{ section.settings.nav_title | default: 'Quick Links' }}</h3>
-
-        <div class="an-footer__nav-grid">
+      <!-- Navigation Section -->
+      <div class="footer-bio__nav">
+        <h3 class="footer-bio__nav-title">{{ section.settings.nav_title | default: 'GET AROUND' }}</h3>
+        <div class="footer-bio__nav-grid">
           {% for block in section.blocks %}
             {% if block.type == 'nav_link' %}
-              <a href="{{ block.settings.url }}"
-                 class="an-footer__nav-card"
+              <a href="{{ block.settings.url }}" 
+                 class="footer-bio__nav-link"
                  {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-                <span class="an-footer__nav-text">{{ block.settings.text }}</span>
-                {% if block.settings.is_new %}
-                  <span class="an-footer__nav-badge">New</span>
-                {% endif %}
+                {{ block.settings.text }}
               </a>
             {% endif %}
           {% endfor %}
         </div>
-
-        <!-- Primary CTA with Signature Gradient -->
-        {% if section.settings.show_cta %}
-          <div class="an-footer__cta-wrapper">
-            <a href="{{ section.settings.cta_url | default: '/contact' }}"
-               class="an-footer__cta-btn">
-              <span>{{ section.settings.cta_text | default: 'Get Started' }}</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-          </div>
-        {% endif %}
       </div>
     </div>
 
-    <!-- Bottom Bar -->
-    <div class="an-footer__bottom">
-      <div class="an-footer__bottom-content">
-        {% if section.settings.show_copyright %}
-          <p class="an-footer__copyright">
-            © {{ 'now' | date: '%Y' }} {{ section.settings.copyright_name | default: 'Attachment Nerd' }}.
-            {{ section.settings.copyright_text | default: 'All rights reserved.' }}
-          </p>
-        {% endif %}
-
-        {% if section.settings.show_legal_links %}
-          <nav class="an-footer__legal">
-            <a href="{{ section.settings.privacy_url | default: '/privacy' }}">Privacy</a>
-            <span class="an-footer__legal-dot">•</span>
-            <a href="{{ section.settings.terms_url | default: '/terms' }}">Terms</a>
-          </nav>
-        {% endif %}
+    <!-- Copyright -->
+    {% if section.settings.show_copyright %}
+      <div class="footer-bio__copyright text-center">
+        <p>{{ section.settings.copyright_text | default: '© 2024 Attachment Nerd. All rights reserved.' }}</p>
       </div>
-    </div>
+    {% endif %}
   </div>
 </section>
 
 <style>
-  /* Brand Color Tokens */
-  .an-footer {
-    /* Core Palette */
-    --c-brand-600: #5E3BFF;
-    --c-brand-800: #4025E0;
-    --c-brand-100: #E9E6FF;
-    --c-accent-teal: #18D5E4;
-    --c-accent-peach: #FF8BCB;
-    --c-accent-lemon: #FFE86B;
-    --c-ink-900: #1B1B29;
-    --c-ink-700: #323346;
-    --c-ink-500: #6E6F7B;
-    --c-white: #FFFFFF;
-
-    /* Signature Gradient */
-    --g-brand: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
-
-    /* Typography */
-    --fs-display: 3rem;
-    --fs-h1: 2.5rem;
-    --fs-h2: 1.875rem;
-    --fs-body-lg: 1.125rem;
-    --fs-body: 1rem;
-    --fs-caption: 0.875rem;
-
-    /* Spacing (8pt grid) */
-    --space-xs: 4px;
-    --space-sm: 8px;
-    --space-md: 16px;
-    --space-lg: 24px;
-    --space-xl: 32px;
-    --space-2xl: 48px;
-    --space-3xl: 64px;
-
-    /* Radius */
-    --radius-sm: 8px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    --radius-pill: 9999px;
-
-    /* Shadows */
-    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
-    --shadow-raised: 0 12px 24px rgba(0, 0, 0, 0.08);
-    --shadow-glow: 0 0 12px rgba(105, 78, 255, 0.25);
-
-    /* Transitions */
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Footer Bio Styles */
+  .footer-bio {
+    padding: var(--an-space-3xl) 0;
+    font-family: var(--an-font-family);
   }
 
-  /* Base Styles */
-  .an-footer {
-    position: relative;
-    padding: var(--space-3xl) 0 0;
-    background: var(--c-white);
-    color: var(--c-ink-900);
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    overflow: hidden;
+  .footer-bio__header {
+    margin-bottom: var(--an-space-3xl);
   }
 
-  /* Dark Theme */
-  .an-footer[data-theme="dark"] {
-    background: var(--c-ink-900);
-    color: var(--c-white);
+  .footer-bio__logo {
+    max-height: 80px;
+    width: auto;
   }
 
-  .an-footer[data-theme="dark"] .an-footer__nav-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  /* Background Animation */
-  .an-footer__background {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .an-footer__gradient-orb {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.15;
-    animation: float 20s ease-in-out infinite;
-  }
-
-  .an-footer__gradient-orb--1 {
-    background: var(--c-accent-teal);
-    top: -300px;
-    left: -300px;
-  }
-
-  .an-footer__gradient-orb--2 {
-    background: var(--c-accent-peach);
-    bottom: -300px;
-    right: -300px;
-    animation-delay: -10s;
-  }
-
-  /* Header */
-  .an-footer__header {
-    text-align: center;
-    margin-bottom: var(--space-3xl);
-    position: relative;
-    z-index: 1;
-  }
-
-  .an-footer__brand {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-md);
-    font-size: var(--fs-h1);
-    font-weight: 500;
-    margin: 0;
-  }
-
-  .an-footer__brand-icon {
-    font-size: var(--fs-display);
-    filter: grayscale(0);
-  }
-
-  .an-footer__tagline {
-    margin-top: var(--space-sm);
-    font-size: var(--fs-body-lg);
-    color: var(--c-ink-500);
+  .footer-bio__brand {
+    font-size: 3rem;
     font-weight: 400;
+    margin: 0;
+    font-style: italic;
   }
 
-  /* Content Grid */
-  .an-footer__content {
+  .footer-bio__content {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: var(--space-3xl);
+    grid-template-columns: 1fr auto;
+    gap: var(--an-space-3xl);
+    align-items: start;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--space-lg);
-    position: relative;
-    z-index: 1;
   }
 
   /* Bio Section */
-  .an-footer__author {
+  .footer-bio__author {
     display: flex;
-    gap: var(--space-xl);
+    gap: var(--an-space-xl);
     align-items: flex-start;
   }
 
-  /* Avatar */
-  .an-footer__avatar-container {
-    position: relative;
+  .footer-bio__avatar-wrapper {
     flex-shrink: 0;
-  }
-
-  .an-footer__avatar-glow {
-    position: absolute;
-    inset: -16px;
-    background: radial-gradient(circle, var(--c-brand-600), transparent);
-    opacity: 0.2;
-    filter: blur(24px);
-  }
-
-  .an-footer__avatar-wrapper {
-    position: relative;
-    width: 160px;
-    height: 160px;
-    border-radius: var(--radius-lg);
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
     overflow: hidden;
-    background: var(--c-brand-100);
-    box-shadow: var(--shadow-raised);
+    background: var(--c-brand-600);
+    padding: 5px;
   }
 
-  .an-footer__avatar {
+  .footer-bio__avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
   }
 
-  .an-footer__avatar-placeholder {
+  .footer-bio__avatar-placeholder {
     width: 100%;
     height: 100%;
-    background: var(--g-brand);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--c-white);
-  }
-
-  .an-footer__status {
-    position: absolute;
-    bottom: var(--space-sm);
-    right: var(--space-sm);
-    width: 24px;
-    height: 24px;
-    background: var(--c-white);
-    border: 3px solid var(--c-white);
+    background: linear-gradient(135deg, var(--c-brand-600) 0%, var(--c-brand-800) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-card);
   }
 
-  .an-footer__status-dot {
-    width: 12px;
-    height: 12px;
-    background: #22C55E;
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
+  .footer-bio__bio-content {
+    flex-grow: 1;
+    max-width: 400px;
   }
 
-  /* Bio Content */
-  .an-footer__bio-content {
-    flex: 1;
-  }
-
-  .an-footer__author-name {
-    font-size: var(--fs-h2);
-    font-weight: 500;
-    margin: 0 0 var(--space-xs);
-  }
-
-  .an-footer__author-title {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    font-size: var(--fs-body-lg);
-    color: var(--c-ink-500);
-    margin: 0 0 var(--space-lg);
-  }
-
-  .an-footer__title-accent {
-    color: var(--c-accent-peach);
-  }
-
-  .an-footer__bio-text {
-    font-size: var(--fs-body);
+  .footer-bio__bio-text {
+    font-size: var(--an-font-base);
     line-height: 1.6;
-    color: var(--c-ink-700);
-    margin: 0 0 var(--space-xl);
+    color: var(--an-text-dark);
+    margin-bottom: var(--an-space-lg);
   }
 
-  /* Social Pills */
-  .an-footer__social {
+  /* Social Buttons */
+  .footer-bio__social {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
+    flex-direction: column;
+    gap: var(--an-space-sm);
   }
 
-  .an-footer__social-pill {
+  .footer-bio__social-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
-    padding: var(--space-sm) var(--space-md);
-    background: var(--c-brand-100);
-    color: var(--c-brand-600);
+    gap: var(--an-space-sm);
+    padding: var(--an-space-sm) var(--an-space-md);
+    border: 2px solid;
+    border-radius: var(--an-radius-full);
     text-decoration: none;
-    font-size: var(--fs-caption);
-    font-weight: 500;
-    border-radius: var(--radius-pill);
-    transition: var(--transition);
-  }
-
-  .an-footer__social-pill:hover {
-    background: var(--c-brand-600);
-    color: var(--c-white);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-  }
-
-  .an-footer__social-label {
+    font-size: var(--an-font-xs);
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    transition: all var(--an-transition-base);
+  }
+
+  .footer-bio__social-btn svg {
+    flex-shrink: 0;
+  }
+
+  .footer-bio__social-btn--instagram {
+    color: #833AB4;
+    border-color: #833AB4;
+  }
+
+  .footer-bio__social-btn--instagram:hover {
+    background: #833AB4;
+    color: white;
+  }
+
+  .footer-bio__social-btn--podcast {
+    color: var(--c-accent-teal);
+    border-color: var(--c-accent-teal);
+  }
+
+  .footer-bio__social-btn--podcast:hover {
+    background: var(--c-accent-teal);
+    color: white;
+  }
+
+  .footer-bio__social-btn--facebook {
+    color: #1877F2;
+    border-color: #1877F2;
+  }
+
+  .footer-bio__social-btn--facebook:hover {
+    background: #1877F2;
+    color: white;
+  }
+
+  .footer-bio__social-btn--pinterest {
+    color: #E60023;
+    border-color: #E60023;
+  }
+
+  .footer-bio__social-btn--pinterest:hover {
+    background: #E60023;
+    color: white;
+  }
+
+  .footer-bio__social-btn--youtube {
+    color: #FF0000;
+    border-color: #FF0000;
+  }
+
+  .footer-bio__social-btn--youtube:hover {
+    background: #FF0000;
+    color: white;
+  }
+
+  .footer-bio__social-btn--twitter {
+    color: #1DA1F2;
+    border-color: #1DA1F2;
+  }
+
+  .footer-bio__social-btn--twitter:hover {
+    background: #1DA1F2;
+    color: white;
+  }
+
+  .footer-bio__social-btn--linkedin {
+    color: #0077B5;
+    border-color: #0077B5;
+  }
+
+  .footer-bio__social-btn--linkedin:hover {
+    background: #0077B5;
+    color: white;
+  }
+
+  .footer-bio__social-btn--tiktok {
+    color: #000000;
+    border-color: #000000;
+  }
+
+  .footer-bio__social-btn--tiktok:hover {
+    background: #000000;
+    color: white;
   }
 
   /* Navigation Section */
-  .an-footer__nav-section {
-    position: relative;
+  .footer-bio__nav {
+    text-align: right;
   }
 
-  .an-footer__nav-title {
-    font-size: var(--fs-h2);
-    font-weight: 500;
-    margin: 0 0 var(--space-xl);
+  .footer-bio__nav-title {
+    font-size: var(--an-font-2xl);
+    font-weight: 700;
+    color: var(--c-accent-peach);
+    margin-bottom: var(--an-space-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
-  .an-footer__nav-grid {
+  .footer-bio__nav-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
+    gap: var(--an-space-sm) var(--an-space-xl);
+    text-align: left;
   }
 
-  .an-footer__nav-card {
-    position: relative;
-    padding: var(--space-md) var(--space-lg);
-    background: var(--c-brand-100);
-    border: 2px solid transparent;
-    border-radius: var(--radius-md);
+  .footer-bio__nav-link {
+    color: var(--an-text-dark);
     text-decoration: none;
-    color: var(--c-ink-900);
-    font-weight: 400;
-    transition: var(--transition);
-    box-shadow: var(--shadow-card);
+    font-size: var(--an-font-base);
+    transition: color var(--an-transition-base);
   }
 
-  .an-footer__nav-card:hover {
-    background: var(--c-white);
-    border-color: var(--c-brand-600);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-raised);
-  }
-
-  .an-footer__nav-badge {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    padding: 2px var(--space-sm);
-    background: var(--c-accent-lemon);
-    color: var(--c-ink-900);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    border-radius: var(--radius-pill);
-    letter-spacing: 0.05em;
-  }
-
-  /* CTA Button */
-  .an-footer__cta-wrapper {
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  .an-footer__cta-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
-    background: var(--g-brand);
-    color: var(--c-white);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: var(--fs-body);
-    border-radius: var(--radius-pill);
-    transition: var(--transition);
-    box-shadow: var(--shadow-card);
-  }
-
-  .an-footer__cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-  }
-
-  .an-footer__cta-btn svg {
-    transition: transform 0.3s ease;
-  }
-
-  .an-footer__cta-btn:hover svg {
-    transform: translateX(4px);
-  }
-
-  /* Bottom Bar */
-  .an-footer__bottom {
-    margin-top: var(--space-3xl);
-    padding: var(--space-xl) 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-  }
-
-  .an-footer__bottom-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--space-lg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-lg);
-  }
-
-  .an-footer__copyright {
-    font-size: var(--fs-caption);
-    color: var(--c-ink-500);
-    margin: 0;
-  }
-
-  .an-footer__legal {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-  }
-
-  .an-footer__legal a {
-    font-size: var(--fs-caption);
-    color: var(--c-ink-500);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .an-footer__legal a:hover {
+  .footer-bio__nav-link:hover {
     color: var(--c-brand-600);
   }
 
-  .an-footer__legal-dot {
-    color: var(--c-ink-500);
-    opacity: 0.3;
+  /* Copyright */
+  .footer-bio__copyright {
+    margin-top: var(--an-space-3xl);
+    padding-top: var(--an-space-xl);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
-  /* Animations */
-  @keyframes float {
-    0%, 100% {
-      transform: translate(0, 0) rotate(0deg);
-    }
-    33% {
-      transform: translate(30px, -30px) rotate(120deg);
-    }
-    66% {
-      transform: translate(-20px, 20px) rotate(240deg);
-    }
+  .footer-bio__copyright p {
+    font-size: var(--an-font-sm);
+    color: var(--an-slate);
+    margin: 0;
   }
 
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.8;
-      transform: scale(0.8);
-    }
-  }
-
-  /* Responsive */
+  /* Mobile Responsive */
   @media (max-width: 991px) {
-    .an-footer__content {
+    .footer-bio__content {
       grid-template-columns: 1fr;
-      gap: var(--space-2xl);
-    }
-
-    .an-footer__author {
-      flex-direction: column;
-      align-items: center;
       text-align: center;
     }
 
-    .an-footer__bio-content {
-      display: flex;
+    .footer-bio__author {
       flex-direction: column;
       align-items: center;
     }
 
-    .an-footer__social {
-      justify-content: center;
+    .footer-bio__bio-content {
+      max-width: 100%;
     }
 
-    .an-footer__nav-section {
+    .footer-bio__social {
+      align-items: center;
+    }
+
+    .footer-bio__nav {
       text-align: center;
+      margin-top: var(--an-space-2xl);
     }
 
-    .an-footer__cta-wrapper {
+    .footer-bio__nav-grid {
       justify-content: center;
+      max-width: 400px;
+      margin: 0 auto;
     }
   }
 
   @media (max-width: 575px) {
-    .an-footer__brand {
-      font-size: var(--fs-h2);
+    .footer-bio__brand {
+      font-size: 2rem;
     }
 
-    .an-footer__avatar-wrapper {
-      width: 120px;
-      height: 120px;
+    .footer-bio__avatar-wrapper {
+      width: 150px;
+      height: 150px;
     }
 
-    .an-footer__nav-grid {
+    .footer-bio__nav-grid {
       grid-template-columns: 1fr;
+      text-align: center;
     }
 
-    .an-footer__bottom-content {
-      flex-direction: column;
-      text-align: center;
+    .footer-bio__social-btn {
+      font-size: 11px;
+      padding: 6px 12px;
     }
   }
 </style>
 
 {% schema %}
 {
-  "name": "Footer Bio - Brand Aligned",
-  "elements": [
+  "name": "Nav - Footer Bio",
+  "settings": [
     {
       "type": "header",
-      "content": "Theme Settings"
-    },
-    {
-      "type": "select",
-      "id": "theme_mode",
-      "label": "Theme Mode",
-      "default": "light",
-      "options": [
-        {
-          "value": "light",
-          "label": "Light"
-        },
-        {
-          "value": "dark",
-          "label": "Dark"
-        }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Brand Settings"
+      "content": "Logo/Brand"
     },
     {
       "type": "image_picker",
@@ -727,14 +436,14 @@
     {
       "type": "text",
       "id": "brand_text",
-      "label": "Brand Text",
+      "label": "Brand Text (if no logo)",
       "default": "Attachment Nerd"
     },
     {
-      "type": "text",
-      "id": "tagline",
-      "label": "Brand Tagline",
-      "default": "Building secure connections through science & heart"
+      "type": "color",
+      "id": "brand_color",
+      "label": "Brand Text Color",
+      "default": "#F57C6F"
     },
     {
       "type": "header",
@@ -749,25 +458,13 @@
       "type": "text",
       "id": "author_name",
       "label": "Author Name",
-      "default": "Dr. Sarah Mitchell"
-    },
-    {
-      "type": "text",
-      "id": "author_title",
-      "label": "Author Title",
-      "default": "Licensed Therapist & Attachment Expert"
+      "default": "Eli Harwood"
     },
     {
       "type": "textarea",
       "id": "bio_text",
       "label": "Bio Text",
-      "default": "Helping families build secure relationships through evidence-based attachment science. With over 15 years of experience, I've guided thousands of parents on their journey to deeper connection."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_status",
-      "label": "Show Online Status",
-      "default": true
+      "default": "I'm a licensed therapist, educator, and author specializing in attachment science. I've been helping families build secure relationships since 2006."
     },
     {
       "type": "header",
@@ -777,29 +474,17 @@
       "type": "text",
       "id": "nav_title",
       "label": "Navigation Title",
-      "default": "Quick Links"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cta",
-      "label": "Show CTA Button",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "cta_text",
-      "label": "CTA Button Text",
-      "default": "Get Started"
-    },
-    {
-      "type": "action",
-      "id": "cta_url",
-      "label": "CTA Button Link",
-      "default": "/contact"
+      "default": "GET AROUND"
     },
     {
       "type": "header",
       "content": "Footer Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFF4F0"
     },
     {
       "type": "checkbox",
@@ -809,40 +494,16 @@
     },
     {
       "type": "text",
-      "id": "copyright_name",
-      "label": "Copyright Name",
-      "default": "Attachment Nerd"
-    },
-    {
-      "type": "text",
       "id": "copyright_text",
       "label": "Copyright Text",
-      "default": "All rights reserved."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_legal_links",
-      "label": "Show Legal Links",
-      "default": true
-    },
-    {
-      "type": "action",
-      "id": "privacy_url",
-      "label": "Privacy Policy Link",
-      "default": "/privacy"
-    },
-    {
-      "type": "action",
-      "id": "terms_url",
-      "label": "Terms of Service Link",
-      "default": "/terms"
+      "default": "© 2024 Attachment Nerd. All rights reserved."
     }
   ],
   "blocks": [
     {
       "type": "social_link",
-      "name": "Social Link",
-      "elements": [
+      "name": "Nav - Footer Bio",
+      "settings": [
         {
           "type": "select",
           "id": "platform",
@@ -854,53 +515,53 @@
               "label": "Instagram"
             },
             {
-              "value": "youtube",
-              "label": "YouTube"
+              "value": "facebook",
+              "label": "Facebook"
             },
             {
-              "value": "tiktok",
-              "label": "TikTok"
+              "value": "podcast",
+              "label": "Podcast"
             },
             {
               "value": "pinterest",
               "label": "Pinterest"
             },
             {
-              "value": "facebook",
-              "label": "Facebook"
+              "value": "youtube",
+              "label": "YouTube"
             },
             {
               "value": "twitter",
-              "label": "Twitter/X"
+              "label": "Twitter"
             },
             {
               "value": "linkedin",
               "label": "LinkedIn"
             },
             {
-              "value": "podcast",
-              "label": "Podcast"
+              "value": "tiktok",
+              "label": "TikTok"
             }
           ]
         },
         {
-          "type": "action",
+          "type": "text",
           "id": "url",
-          "label": "Social Link",
+          "label": "URL",
           "default": "https://instagram.com/attachmentnerd"
         },
         {
           "type": "text",
           "id": "label",
           "label": "Button Label",
-          "default": "Follow"
+          "default": "FOLLOW ON INSTAGRAM"
         }
       ]
     },
     {
       "type": "nav_link",
-      "name": "Navigation Link",
-      "elements": [
+      "name": "Nav - Footer Bio",
+      "settings": [
         {
           "type": "text",
           "id": "text",
@@ -910,7 +571,7 @@
         {
           "type": "action",
           "id": "url",
-          "label": "Link",
+          "label": "Link URL",
           "default": "/"
         },
         {
@@ -918,127 +579,126 @@
           "id": "new_tab",
           "label": "Open in New Tab",
           "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "is_new",
-          "label": "Show 'New' Badge",
-          "default": false
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Footer Bio - Brand Aligned",
+      "name": "Nav - Footer Bio",
       "category": "Footer",
-      "settings": {
-        "theme_mode": "light",
-        "brand_text": "Attachment Nerd",
-        "tagline": "Building secure connections through science & heart",
-        "author_name": "Dr. Sarah Mitchell",
-        "author_title": "Licensed Therapist & Attachment Expert",
-        "bio_text": "Helping families build secure relationships through evidence-based attachment science. With over 15 years of experience, I've guided thousands of parents on their journey to deeper connection.",
-        "show_status": true,
-        "nav_title": "Quick Links",
-        "show_cta": true,
-        "cta_text": "Get Started",
-        "cta_url": "/contact",
-        "show_copyright": true,
-        "copyright_name": "Attachment Nerd",
-        "copyright_text": "All rights reserved.",
-        "show_legal_links": true,
-        "privacy_url": "/privacy",
-        "terms_url": "/terms"
-      },
+      "description": "Modern footer with bio and navigation",
       "blocks": [
         {
           "type": "social_link",
           "settings": {
             "platform": "instagram",
             "url": "https://instagram.com/attachmentnerd",
-            "label": "2M Followers"
-          }
-        },
-        {
-          "type": "social_link",
-          "settings": {
-            "platform": "youtube",
-            "url": "https://youtube.com/@attachmentnerd",
-            "label": "YouTube"
+            "label": "2M FOLLOWERS!"
           }
         },
         {
           "type": "social_link",
           "settings": {
             "platform": "podcast",
-            "url": "/podcast",
-            "label": "Podcast"
+            "url": "#",
+            "label": "LISTEN TO MY #1 PODCAST"
           }
         },
         {
           "type": "social_link",
           "settings": {
-            "platform": "tiktok",
-            "url": "https://tiktok.com/@attachmentnerd",
-            "label": "TikTok"
+            "platform": "facebook",
+            "url": "https://facebook.com/attachmentnerd",
+            "label": "I WANNA BE YOUR FRIEND"
+          }
+        },
+        {
+          "type": "social_link",
+          "settings": {
+            "platform": "pinterest",
+            "url": "https://pinterest.com/attachmentnerd",
+            "label": "I FREAKING LOVE PINTEREST"
           }
         },
         {
           "type": "nav_link",
           "settings": {
-            "text": "Online Courses",
-            "url": "/courses",
-            "is_new": true,
-            "new_tab": false
+            "text": "Home",
+            "url": "/"
           }
         },
         {
           "type": "nav_link",
           "settings": {
-            "text": "Free Resources",
-            "url": "/resources",
-            "is_new": false,
-            "new_tab": false
+            "text": "Courses",
+            "url": "/courses"
           }
         },
         {
           "type": "nav_link",
           "settings": {
             "text": "About",
-            "url": "/about",
-            "is_new": false,
-            "new_tab": false
-          }
-        },
-        {
-          "type": "nav_link",
-          "settings": {
-            "text": "Blog",
-            "url": "/blog",
-            "is_new": false,
-            "new_tab": false
+            "url": "/about"
           }
         },
         {
           "type": "nav_link",
           "settings": {
             "text": "Books",
-            "url": "/books",
-            "is_new": false,
-            "new_tab": false
+            "url": "/books"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "text": "Podcast",
+            "url": "/podcast"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "text": "The Shop",
+            "url": "/shop"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "text": "Blog",
+            "url": "/blog"
           }
         },
         {
           "type": "nav_link",
           "settings": {
             "text": "Speaking",
-            "url": "/speaking",
-            "is_new": false,
-            "new_tab": false
+            "url": "/speaking"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "text": "Contact",
+            "url": "/contact"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "text": "Partnerships",
+            "url": "/partnerships"
           }
         }
-      ]
+      ],
+      "settings": {
+        "brand_text": "Attachment Nerd",
+        "bio_text": "I'm a licensed therapist, educator, and author specializing in attachment science. I've been helping families build secure relationships since 2006.",
+        "nav_title": "GET AROUND",
+        "background_color": "#FFF4F0",
+        "show_copyright": true
+      }
     }
   ]
 }
