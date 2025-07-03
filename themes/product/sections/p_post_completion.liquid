@@ -30,7 +30,7 @@
   data-page="{{ post_next_url }}">
   <div class="post-completion-box">
     <div class="post-close-btn">
-      <i class="far fa-times"></i>
+      {% render 'icon', icon: 'close', size: 20 %}
     </div>
     <div class="avatar avatar-md avatar-grey avatar-{{ product_completion }}">
       <img class="avatar-img" src="{{ user_avatar }}" />

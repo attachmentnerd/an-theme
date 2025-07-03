@@ -1,11 +1,11 @@
 <div class="pag">
   {% if paginate.previous %}
     <a class="pag__link pag__link--prev" href="{{ paginate.previous.url }}">
-      <i class="fa fa-arrow-left"></i>
+      {% render 'icon', icon: 'arrow-left', size: 16 %}
     </a>
   {% else %}
     <p class="pag__link pagination__link--prev pag__link--disabled">
-      <i class="fa fa-arrow-left"></i>
+      {% render 'icon', icon: 'arrow-left', size: 16 %}
     </p>
   {% endif %}
   {% unless simple == true %}
@@ -19,11 +19,11 @@
   {% endunless %}
   {% if paginate.next %}
     <a class="pag__link pag__link--next" href="{{ paginate.next.url }}">
-      <i class="fa fa-arrow-right"></i>
+      {% render 'icon', icon: 'arrow-right', size: 16 %}
     </a>
   {% else %}
     <p class="pag__link pag__link--next pag__link--disabled">
-      <i class="fa fa-arrow-right"></i>
+      {% render 'icon', icon: 'arrow-right', size: 16 %}
     </p>
   {% endif %}
 </div>

@@ -1,0 +1,307 @@
+<!-- Sticky Mobile Bar - Compact CTA -->
+<section class="sticky-mobile-bar hidden--desktop {% if section.settings.style == 'minimal' %}sticky-bar-minimal{% endif %}" 
+         style="background: {{ section.settings.background_color | default: 'var(--c-brand-600)' }};">
+  <div class="container-fluid">
+    <div class="sticky-bar-inner">
+      {% if section.settings.show_text %}
+        <div class="sticky-bar-text">
+          <p class="sticky-bar-message" style="color: {{ section.settings.text_color | default: 'var(--c-white)' }};">
+            {{ section.settings.message_text | default: '🎯 Start your parenting journey today' }}
+          </p>
+        </div>
+      {% endif %}
+      
+      <div class="sticky-bar-action">
+        <a href="{{ section.settings.button_link | default: '/pricing' }}" 
+           class="sticky-bar-button {% if section.settings.button_style == 'outline' %}btn-outline{% endif %}"
+           style="{% if section.settings.button_style == 'outline' %}
+                    border-color: {{ section.settings.button_color | default: 'var(--c-white)' }};
+                    color: {{ section.settings.button_color | default: 'var(--c-white)' }} !important;
+                  {% else %}
+                    background: {{ section.settings.button_color | default: 'var(--c-white)' }};
+                    color: {{ section.settings.button_text_color | default: 'var(--c-brand-600)' }} !important;
+                  {% endif %}">
+          {{ section.settings.button_text | default: 'Pay What You Can →' }}
+        </a>
+      </div>
+      
+      {% if section.settings.dismissible %}
+        <button class="sticky-bar-dismiss" aria-label="Dismiss">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Sticky Mobile Bar - Compact Style */
+  .sticky-mobile-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 998;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .sticky-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+  }
+  
+  .sticky-bar-text {
+    flex: 1;
+  }
+  
+  .sticky-bar-message {
+    margin: 0;
+    font-size: var(--fs-caption);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  
+  .sticky-bar-button {
+    display: inline-block;
+    padding: 8px 20px;
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .sticky-bar-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .sticky-bar-button.btn-outline {
+    background: transparent !important;
+    border: 2px solid;
+  }
+  
+  .sticky-bar-button.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .sticky-bar-dismiss {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: currentColor;
+    opacity: 0.7;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+  }
+  
+  .sticky-bar-dismiss:hover {
+    opacity: 1;
+  }
+  
+  /* Minimal style variant */
+  .sticky-bar-minimal {
+    padding: 8px 0;
+    background: rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  .sticky-bar-minimal .sticky-bar-inner {
+    justify-content: center;
+  }
+  
+  .sticky-bar-minimal .sticky-bar-message {
+    font-size: 12px;
+  }
+  
+  .sticky-bar-minimal .sticky-bar-button {
+    padding: 6px 16px;
+    font-size: 12px;
+  }
+  
+  /* Hidden state */
+  .sticky-mobile-bar.bar-hidden {
+    transform: translateY(100%);
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 375px) {
+    .sticky-bar-message {
+      font-size: 11px;
+    }
+    
+    .sticky-bar-button {
+      padding: 6px 14px;
+      font-size: 11px;
+    }
+  }
+  
+  /* Landscape mobile */
+  @media (max-width: 767px) and (orientation: landscape) {
+    .sticky-mobile-bar {
+      padding: 6px 0;
+    }
+    
+    .sticky-bar-inner {
+      gap: 8px;
+    }
+  }
+</style>
+
+<script>
+  // Dismiss functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const bar = document.querySelector('.sticky-mobile-bar');
+    const dismissBtn = document.querySelector('.sticky-bar-dismiss');
+    
+    if (dismissBtn && bar) {
+      dismissBtn.addEventListener('click', function() {
+        bar.classList.add('bar-hidden');
+        // Remember dismissal for session
+        sessionStorage.setItem('sticky-bar-dismissed', 'true');
+      });
+    }
+    
+    // Check if previously dismissed
+    if (sessionStorage.getItem('sticky-bar-dismissed') === 'true' && bar) {
+      bar.style.display = 'none';
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Nav - Mobile Sticky Bar",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text",
+      "label": "Show Message Text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "message_text",
+      "label": "Message Text",
+      "default": "🎯 Start your parenting journey today"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Pay What You Can →"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "/pricing"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Bar Style",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "minimal",
+          "label": "Minimal"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "header",
+      "content": "Behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "dismissible",
+      "label": "Allow Dismiss",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nav - Mobile Sticky Bar",
+      "category": "Footer",
+      "description": "Compact sticky CTA bar for mobile"
+    }
+  ]
+}
+{% endschema %}

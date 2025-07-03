@@ -1,0 +1,161 @@
+<section class="sa-bonuses py-5">
+  <div class="container">
+    <div class="text-center mb-5 animate-fade-up">
+      <h2 class="mb-4" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+        {{ section.settings.heading }}
+      </h2>
+      <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700);" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+        {{ section.settings.subheading }}
+      </p>
+    </div>
+    
+    <div class="row g-4">
+      {% for block in section.blocks %}
+        {% if block.type == 'bonus' %}
+          <div class="col-lg-4 animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;">
+            <div class="h-100 text-center" style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 12px rgba(0,0,0,.05); border: 1px solid rgba(94,59,255,0.1); transition: all 0.3s ease;">
+              <!-- Number/Icon -->
+              <div class="mb-4">
+                <div style="width: 80px; height: 80px; background: var(--c-brand-100); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 40px; color: var(--c-brand-600); font-weight: 600;">
+                  {% if block.settings.icon != blank %}
+                    {{ block.settings.icon }}
+                  {% else %}
+                    {{ forloop.index }}
+                  {% endif %}
+                </div>
+              </div>
+              
+              <!-- Content -->
+              <h3 class="mb-3" style="font-size: 24px; color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'bonus_title' | settings_id: section: section, block: block }}">
+                {{ block.settings.bonus_title }}
+              </h3>
+              
+              <p style="color: var(--c-ink-700); line-height: 1.6;" kjb-settings-id="{{ 'bonus_description' | settings_id: section: section, block: block }}">
+                {{ block.settings.bonus_description }}
+              </p>
+              
+              {% if block.settings.value_text != blank %}
+                <div class="mt-3">
+                  <span style="color: var(--c-accent-teal); font-weight: 600;" kjb-settings-id="{{ 'value_text' | settings_id: section: section, block: block }}">
+                    {{ block.settings.value_text }}
+                  </span>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    {% if section.settings.cta_text != blank %}
+      <div class="text-center mt-5 animate-fade-up" style="animation-delay: 0.4s;">
+        <a href="{{ section.settings.cta_url }}" 
+           class="btn btn-primary-modern"
+           kjb-settings-id="{{ 'cta_text' | settings_id: section: section }}">
+          {{ section.settings.cta_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .sa-bonuses .col-lg-4:hover > div {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,.08);
+    border-color: var(--c-brand-200);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Book - Bonuses SA",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get These Free Bonuses With Your Purchase"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Forward your receipt to hello@attachmentnerd.com to unlock:"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Get Your Book + Bonuses"
+    },
+    {
+      "type": "text",
+      "id": "cta_url",
+      "label": "CTA URL",
+      "default": "#purchase"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bonus",
+      "name": "Book - Bonuses SA",
+      "elements": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon/Emoji (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "bonus_title",
+          "label": "Bonus Title"
+        },
+        {
+          "type": "textarea",
+          "id": "bonus_description",
+          "label": "Bonus Description"
+        },
+        {
+          "type": "text",
+          "id": "value_text",
+          "label": "Value Text (Optional)",
+          "default": "Value: $19"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Book - Bonuses SA",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "bonus",
+          "settings": {
+            "bonus_title": "CALM Script PDF",
+            "bonus_description": "Eli's 3-line de-escalation tool for when emotions run high. The same script that's helped thousands navigate relationship conflicts with grace.",
+            "value_text": "Value: $19"
+          }
+        },
+        {
+          "type": "bonus",
+          "settings": {
+            "bonus_title": "Attachment Style Cheatsheet",
+            "bonus_description": "One-page visual guide to all four attachment patterns. Perfect for quick reference and sharing with your partner.",
+            "value_text": "Value: $9"
+          }
+        },
+        {
+          "type": "bonus",
+          "settings": {
+            "bonus_title": "\"Secure Scripts\" Email Series",
+            "bonus_description": "Three weekly emails with simple, memorable phrases for real-time repair. Because knowing what to say in the moment changes everything.",
+            "value_text": "Value: $27"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

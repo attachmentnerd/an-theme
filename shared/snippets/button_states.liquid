@@ -133,7 +133,10 @@
   }
   
   /* Form feedback messages */
-  .form-feedback {
+  .form-feedback,
+  .form-error,
+  .success-message,
+  .error-message {
     margin-top: 1rem;
     padding: 12px 16px;
     border-radius: 8px;
@@ -141,9 +144,15 @@
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
   
-  .form-feedback.show {
+  .form-feedback.show,
+  .form-error.show,
+  .success-message.show,
+  .error-message.show {
     opacity: 1;
     transform: translateY(0);
   }
@@ -154,10 +163,50 @@
     border: 1px solid rgba(24, 213, 228, 0.2);
   }
   
-  .form-feedback.error {
+  .form-feedback.error,
+  .form-error,
+  .error-message {
     background: rgba(255, 139, 203, 0.1);
     color: #E53E3E;
     border: 1px solid rgba(255, 139, 203, 0.2);
+  }
+  
+  /* Form input validation states */
+  input.error,
+  textarea.error,
+  select.error,
+  .form-control.error {
+    border-color: var(--c-accent-peach) !important;
+    background: rgba(255, 139, 203, 0.05) !important;
+  }
+  
+  input.error:focus,
+  textarea.error:focus,
+  select.error:focus,
+  .form-control.error:focus {
+    border-color: var(--c-accent-peach) !important;
+    box-shadow: 0 0 0 3px rgba(255, 139, 203, 0.1) !important;
+  }
+  
+  /* Success icons for feedback messages */
+  .form-feedback.success::before,
+  .success-message::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='9' fill='%2318D5E4'/%3E%3Cpath d='M14 7L8.5 12.5L6 10' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+    flex-shrink: 0;
+  }
+  
+  /* Error icons for feedback messages */
+  .form-feedback.error::before,
+  .form-error::before,
+  .error-message::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='9' fill='%23FF6B6B'/%3E%3Cpath d='M10 6V10M10 14H10.01' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+    flex-shrink: 0;
   }
   
   /* Button group animations */
@@ -180,7 +229,7 @@
 </style>
 
 <script>
-  // Button state management
+  // Enhanced Button State Management with Form Validation
   document.addEventListener('DOMContentLoaded', function() {
     // Add button HTML structure
     function enhanceButton(button) {
@@ -218,38 +267,183 @@
       setTimeout(() => ripple.remove(), 600);
     }
     
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    // Enhanced validation function
+    function validateField(field) {
+      const value = field.value.trim();
+      
+      // Required field validation
+      if (field.hasAttribute('required') && !value) {
+        field.classList.add('error');
+        return { valid: false, message: 'This field is required' };
+      }
+      
+      // Email validation
+      if (field.type === 'email' && value) {
+        if (!emailRegex.test(value)) {
+          field.classList.add('error');
+          return { valid: false, message: 'Please enter a valid email address' };
+        }
+      }
+      
+      // Phone validation
+      if (field.type === 'tel' && value) {
+        const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+        if (!phoneRegex.test(value)) {
+          field.classList.add('error');
+          return { valid: false, message: 'Please enter a valid phone number' };
+        }
+      }
+      
+      field.classList.remove('error');
+      return { valid: true };
+    }
+    
+    // Show validation error
+    function showError(form, message) {
+      let errorMsg = form.querySelector('.form-feedback.error, .form-error, .error-message');
+      if (!errorMsg) {
+        errorMsg = document.createElement('div');
+        errorMsg.className = 'form-feedback error show';
+        errorMsg.innerHTML = `<span>${message}</span>`;
+        form.appendChild(errorMsg);
+      } else {
+        errorMsg.innerHTML = `<span>${message}</span>`;
+        errorMsg.classList.add('show');
+      }
+    }
+    
+    // Hide validation messages
+    function hideMessages(form) {
+      const messages = form.querySelectorAll('.form-feedback, .form-error, .success-message');
+      messages.forEach(msg => {
+        msg.classList.remove('show');
+        setTimeout(() => msg.style.display = 'none', 300);
+      });
+    }
+    
     // Handle form submissions
     document.querySelectorAll('form').forEach(form => {
       const submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
+      const fields = form.querySelectorAll('input, textarea, select');
+      
+      // Add real-time validation to all fields
+      fields.forEach(field => {
+        // Clear error on input
+        field.addEventListener('input', function() {
+          if (this.classList.contains('error')) {
+            this.classList.remove('error');
+            hideMessages(form);
+          }
+        });
+        
+        // Validate on blur
+        field.addEventListener('blur', function() {
+          const validation = validateField(this);
+          if (!validation.valid && this.value.trim() !== '') {
+            showError(form, validation.message);
+          }
+        });
+      });
+      
       if (submitBtn && submitBtn.tagName === 'BUTTON') {
         enhanceButton(submitBtn);
+        const originalText = submitBtn.textContent;
         
         // Add ripple on click
         submitBtn.addEventListener('click', createRipple);
         
         form.addEventListener('submit', function(e) {
-          // Don't prevent default - let Kajabi handle the form
-          submitBtn.classList.add('is-loading');
+          // Validate all required fields
+          let isValid = true;
+          const requiredFields = form.querySelectorAll('[required]');
           
-          // Simulate success after form processes (adjust timing as needed)
-          setTimeout(() => {
-            submitBtn.classList.remove('is-loading');
-            submitBtn.classList.add('is-success');
+          requiredFields.forEach(field => {
+            const validation = validateField(field);
+            if (!validation.valid) {
+              isValid = false;
+              field.focus();
+              showError(form, validation.message);
+            }
+          });
+          
+          if (!isValid) {
+            e.preventDefault();
+            return;
+          }
+          
+          // If using AJAX submission (check for data-ajax attribute)
+          if (form.hasAttribute('data-ajax') || form.hasAttribute('data-form-type')) {
+            e.preventDefault();
             
-            // Show feedback message if container exists
-            const feedback = form.querySelector('.form-feedback');
-            if (feedback) {
-              feedback.classList.add('show');
+            // Hide any existing messages
+            hideMessages(form);
+            
+            // Show loading state
+            submitBtn.classList.add('is-loading');
+            submitBtn.disabled = true;
+            
+            // Update button text if data-loading-text is present
+            const loadingText = submitBtn.getAttribute('data-loading-text') || 'Sending...';
+            if (submitBtn.querySelector('.btn-text')) {
+              submitBtn.querySelector('.btn-text').textContent = loadingText;
+            } else {
+              submitBtn.textContent = loadingText;
             }
             
-            // Reset after delay
+            // Disable form inputs
+            fields.forEach(field => field.disabled = true);
+            
+            // Get form data
+            const formData = new FormData(form);
+            
+            // Simulate form submission (replace with actual AJAX call)
             setTimeout(() => {
-              submitBtn.classList.remove('is-success');
-              if (feedback) {
-                feedback.classList.remove('show');
+              // Show success state
+              submitBtn.classList.remove('is-loading');
+              submitBtn.classList.add('is-success');
+              
+              // Show success message
+              let successMsg = form.querySelector('.form-feedback.success, .success-message');
+              if (!successMsg) {
+                successMsg = document.createElement('div');
+                successMsg.className = 'form-feedback success';
+                successMsg.innerHTML = '<span>Success! Your message has been sent.</span>';
+                form.appendChild(successMsg);
               }
-            }, 3000);
-          }, 2000);
+              successMsg.style.display = 'flex';
+              successMsg.classList.add('show');
+              
+              // Reset form
+              form.reset();
+              
+              // Re-enable fields
+              fields.forEach(field => field.disabled = false);
+              
+              // Reset button after delay
+              setTimeout(() => {
+                submitBtn.classList.remove('is-success');
+                submitBtn.disabled = false;
+                if (submitBtn.querySelector('.btn-text')) {
+                  submitBtn.querySelector('.btn-text').textContent = originalText;
+                } else {
+                  submitBtn.textContent = originalText;
+                }
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                  if (successMsg) {
+                    successMsg.classList.remove('show');
+                  }
+                }, 5000);
+              }, 2000);
+            }, 1500);
+          } else {
+            // For regular form submissions, just show loading state
+            submitBtn.classList.add('is-loading');
+          }
         });
       }
     });

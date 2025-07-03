@@ -42,7 +42,7 @@
     {{ block.settings.text }}
   </div>
   {% if f %}
-    {% form f %}
+    {% form f data-ajax data-form-type="kajabi" %}
       <div class="{% if block.settings.inline and f.fields.size <= 3 %}fields-wrapper{% endif %}">
         <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}">
         {% for field in f.fields %}
@@ -53,15 +53,24 @@
             <label for="btn">&nbsp;</label>
           {% endif %}
           <button
-            id="form-button"
-            class="form-btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }}"
+            id="form-button-{{ block.id }}"
+            class="form-btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }} btn-with-states"
             type="submit"
             role="button"
+            data-loading-text="{{ block.settings.loading_text | default: 'Processing...' }}"
             kjb-settings-id="{{ 'btn_text' | settings_id: section: section, block: block }}"
           >
-            {%- element "block.settings.btn_text" -%}
-              {{ block.settings.btn_text }}
-            {%- endelement -%}
+            <span class="btn-text">
+              {%- element "block.settings.btn_text" -%}
+                {{ block.settings.btn_text }}
+              {%- endelement -%}
+            </span>
+            <span class="btn-spinner"></span>
+            <span class="btn-success-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
           </button>
         </div>
       </div>
@@ -83,3 +92,33 @@
     {% endif %}
   {% endif %}
 </div>
+
+<script>
+  // Enhanced form validation for block_form
+  document.addEventListener('DOMContentLoaded', function() {
+    const blockForm = document.querySelector('#block-{{ block.id }} form');
+    if (blockForm && !blockForm.hasAttribute('data-enhanced')) {
+      blockForm.setAttribute('data-enhanced', 'true');
+      
+      // Add loading text to button if provided
+      const submitBtn = blockForm.querySelector('#form-button-{{ block.id }}');
+      if (submitBtn && '{{ block.settings.loading_text }}') {
+        submitBtn.setAttribute('data-loading-text', '{{ block.settings.loading_text }}');
+      }
+      
+      // Add success message container
+      const successContainer = document.createElement('div');
+      successContainer.className = 'form-feedback success';
+      successContainer.innerHTML = '<span>{{ block.settings.success_message | default: "Success! Your submission has been received." }}</span>';
+      successContainer.style.display = 'none';
+      blockForm.appendChild(successContainer);
+      
+      // Add error message container
+      const errorContainer = document.createElement('div');
+      errorContainer.className = 'form-feedback error';
+      errorContainer.innerHTML = '<span>Please check your information and try again.</span>';
+      errorContainer.style.display = 'none';
+      blockForm.appendChild(errorContainer);
+    }
+  });
+</script>

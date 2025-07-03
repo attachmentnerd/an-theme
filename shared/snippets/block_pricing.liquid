@@ -137,34 +137,54 @@
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      (function($) {
-      var $html = $("html");
-      var $body = $("body");
-      var $container = $('#block-{{ block.id }}');
-      var $trigger = $("[data-target='#{{ secondary_popup_id }}']", $container);
-      var $ctaPopup = $("#{{ secondary_popup_id }}");
-      var $closeX = $(".close-x");
-      var $content = $ctaPopup.find(".modal__content");
-      function open() {
-        $ctaPopup.addClass("modal--open");
-        $html.addClass("stop-scroll--html");
-        $body.addClass("stop-scroll--body");
-        $ctaPopup.on("click", close);
-        $closeX.on("click", close);
-        $content.on("click", function(event) {
-          event.stopPropagation();
+      // Vanilla JavaScript - no jQuery needed
+      var html = document.documentElement;
+      var body = document.body;
+      var container = document.getElementById('block-{{ block.id }}');
+      var ctaPopup = document.getElementById('{{ secondary_popup_id }}');
+      
+      if (!container || !ctaPopup) return;
+      
+      var triggers = container.querySelectorAll("[data-target='#{{ secondary_popup_id }}']");
+      var closeButtons = ctaPopup.querySelectorAll(".close-x");
+      var modalContent = ctaPopup.querySelector(".modal__content");
+      
+      function open(event) {
+        if (event) event.preventDefault();
+        ctaPopup.classList.add("modal--open");
+        html.classList.add("stop-scroll--html");
+        body.classList.add("stop-scroll--body");
+        
+        // Add event listeners when modal opens
+        ctaPopup.addEventListener("click", close);
+        closeButtons.forEach(function(btn) {
+          btn.addEventListener("click", close);
+        });
+        
+        if (modalContent) {
+          modalContent.addEventListener("click", function(event) {
+            event.stopPropagation();
+          });
+        }
+      }
+    
+      function close(event) {
+        if (event) event.preventDefault();
+        ctaPopup.classList.remove("modal--open");
+        html.classList.remove("stop-scroll--html");
+        body.classList.remove("stop-scroll--body");
+        
+        // Remove event listeners when modal closes
+        ctaPopup.removeEventListener("click", close);
+        closeButtons.forEach(function(btn) {
+          btn.removeEventListener("click", close);
         });
       }
     
-      function close() {
-        $ctaPopup.removeClass("modal--open");
-        $html.removeClass("stop-scroll--html");
-        $body.removeClass("stop-scroll--body");
-      }
-    
-      $trigger.on("click", open);
-    
-      })(jQuery);
+      // Add click handlers to all triggers
+      triggers.forEach(function(trigger) {
+        trigger.addEventListener("click", open);
+      });
     });
   </script>
   <div class="modal cta-popup background-{% if block.settings.secondary_cta_popup_background_color != blank  %}{{ block.settings.secondary_cta_popup_background_color | color_scheme_class }}{% else %}light{% endif %}" id="{{ secondary_popup_id }}">

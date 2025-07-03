@@ -1,0 +1,494 @@
+{% if section.settings.background_image != blank %}
+  {% render 'responsive-background',
+    unique_id: 'about-hero-' | append: section.id,
+    image: section.settings.background_image,
+    mobile_image: section.settings.mobile_background_image,
+    overlay: section.settings.use_overlay,
+    overlay_color: 'rgba(94, 59, 255, 0.1)'
+  %}
+{% endif %}
+
+<section class="about-hero-section {% if section.settings.background_image != blank %}about-hero-{{ section.id }}{% endif %}" 
+         style="{% if section.settings.background_image == blank %}background-color: var(--c-brand-100);{% endif %}">
+
+  <!-- Decorative elements for warmth and trust -->
+  <div class="about-hero-decorative">
+    <div class="about-hero-shape about-hero-shape--1"></div>
+    <div class="about-hero-shape about-hero-shape--2"></div>
+    <div class="about-hero-sparkle about-hero-sparkle--1">✨</div>
+    <div class="about-hero-sparkle about-hero-sparkle--2">💫</div>
+    <div class="about-hero-sparkle about-hero-sparkle--3">⭐</div>
+  </div>
+
+  {% comment %} Overlay is now handled by responsive-background snippet {% endcomment %}
+
+  <div class="container">
+    <div class="about-hero-content animate-fade-up">
+      {% if section.settings.tagline != blank %}
+        <p class="about-hero-tagline" kjb-settings-id="{{ 'tagline' | settings_id: section: section }}">
+          <span class="tagline-icon">🌟</span>
+          {{ section.settings.tagline }}
+          {% if section.settings.cta_link != blank %}
+            <a href="{{ section.settings.cta_link }}" class="about-hero-tagline-link">{{ section.settings.cta_text }}</a>
+          {% endif %}
+        </p>
+      {% endif %}
+
+      <h1 class="about-hero-title" kjb-settings-id="{{ 'title' | settings_id: section: section }}">
+        {{ section.settings.title }}
+      </h1>
+
+      {% if section.settings.subtitle != blank %}
+        <p class="about-hero-subtitle" kjb-settings-id="{{ 'subtitle' | settings_id: section: section }}">
+          {{ section.settings.subtitle }}
+        </p>
+      {% endif %}
+
+      <!-- Trust indicators for parent confidence -->
+      {% if section.settings.show_trust_indicators %}
+        <div class="about-hero-trust">
+          <div class="trust-item">
+            <span class="trust-icon">🎓</span>
+            <span class="trust-text">Licensed Therapist</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">❤️</span>
+            <span class="trust-text">17+ Years Experience</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">👨‍👩‍👧‍👦</span>
+            <span class="trust-text">50,000+ Families Helped</span>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="about-hero-buttons">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'button' %}
+              <a href="{{ block.settings.button_link }}"
+                 class="btn {% if block.settings.button_style == 'primary' %}btn-primary-modern{% else %}btn-secondary-modern{% endif %}"
+                 kjb-settings-id="{{ 'button_text' | settings_id: section: section, block: block }}">
+                {{ block.settings.button_text }}
+              </a>
+          {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* CSS Variables for About Hero */
+  :root {
+    --c-brand-100: #E9E6FF;
+    --c-brand-600: #5E3BFF;
+    --c-brand-800: #4025E0;
+    --c-white: #FFFFFF;
+    --c-ink-900: #1F2937;
+    --c-ink-700: #4B5563;
+    --c-accent-peach: #FF8BCB;
+    --c-accent-lemon: #FFE86B;
+    --g-brand: linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%);
+    --radius-pill: 9999px;
+    --radius-md: 8px;
+    --motion-duration-fast: 200ms;
+    --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-4xl: 96px;
+    --fs-display: clamp(2.5rem, 5vw, 3rem);
+    --fs-h1: clamp(2rem, 4vw, 2.5rem);
+    --fs-body-lg: 1.125rem;
+    --fs-caption: 0.875rem;
+  }
+
+  /* About Hero Award-Winning Enhancements */
+  .about-hero-section {
+    position: relative;
+    padding: var(--space-4xl) 0;
+    overflow: hidden;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Decorative elements for warmth */
+  .about-hero-decorative {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .about-hero-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c-accent-peach), var(--c-accent-lemon));
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .about-hero-shape--1 {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    right: 10%;
+    animation-delay: 0s;
+  }
+
+  .about-hero-shape--2 {
+    width: 150px;
+    height: 150px;
+    bottom: 20%;
+    left: 5%;
+    animation-delay: 2s;
+  }
+
+  .about-hero-sparkle {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.6;
+    animation: sparkle 4s ease-in-out infinite;
+  }
+
+  .about-hero-sparkle--1 {
+    top: 25%;
+    left: 15%;
+    animation-delay: 1s;
+  }
+
+  .about-hero-sparkle--2 {
+    top: 60%;
+    right: 20%;
+    animation-delay: 3s;
+  }
+
+  .about-hero-sparkle--3 {
+    bottom: 30%;
+    left: 70%;
+    animation-delay: 5s;
+  }
+
+  /* Content enhancements */
+  .about-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-hero-tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--c-white);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: var(--c-brand-600);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-lg);
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.15);
+    border: 1px solid var(--c-brand-100);
+  }
+
+  .tagline-icon {
+    font-size: 1.2em;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .about-hero-title {
+    font-size: var(--fs-display);
+    font-weight: 600;
+    color: var(--c-ink-900);
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+  }
+
+  .about-hero-subtitle {
+    font-size: var(--fs-body-lg);
+    color: var(--c-ink-700);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+  }
+
+  /* Trust indicators for parent confidence */
+  .about-hero-trust {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    flex-wrap: wrap;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--c-white);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--c-brand-100);
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .trust-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .trust-icon {
+    font-size: 1.2rem;
+  }
+
+  .trust-text {
+    font-size: var(--fs-caption);
+    font-weight: 500;
+    color: var(--c-ink-700);
+  }
+
+  .about-hero-buttons {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  /* Button styles specific to About Hero */
+  .about-hero-section .btn-primary-modern {
+    background: var(--g-brand, linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%));
+    color: var(--c-white) !important;
+    border-radius: var(--radius-pill);
+    padding: 12px 32px;
+    font-weight: 600;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+      0 4px 8px rgba(94, 59, 255, 0.35);
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .about-hero-section .btn-primary-modern:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+      0 8px 16px rgba(94, 59, 255, 0.45);
+    color: var(--c-white) !important;
+  }
+
+  .about-hero-section .btn-secondary-modern {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: var(--c-brand-600) !important;
+    border: 2px solid var(--c-brand-600) !important;
+    border-radius: var(--radius-pill);
+    padding: 12px 32px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .about-hero-section .btn-secondary-modern:hover {
+    background: var(--c-brand-600) !important;
+    color: var(--c-white) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(94, 59, 255, 0.25);
+  }
+
+  /* Animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .about-hero-section {
+      padding: var(--space-2xl) 0;
+      min-height: 60vh;
+    }
+
+    .about-hero-title {
+      font-size: var(--fs-h1);
+    }
+
+    .about-hero-trust {
+      gap: var(--space-sm);
+    }
+
+    .trust-item {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .about-hero-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero - About Page",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "default": "background.jpg"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Mobile Background Image (Optional)",
+      "info": "Different image for mobile devices. If not set, the main image will be used."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_overlay",
+      "label": "Add overlay to background image",
+      "default": true
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "LICENSED THERAPIST + ATTACHMENT NERD"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Tagline Link Text",
+      "default": "Learn my story →"
+    },
+    {
+      "type": "action",
+      "id": "cta_link",
+      "label": "Tagline Link"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Hi, I'm Eli – Your Attachment Nerd"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "For 17 years, I've been helping families build the secure connections they crave. Now I'm here to share what actually works – backed by science, tested in real life, and delivered with the warmth of your favorite therapist-friend."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_overlay",
+      "label": "Use Dark Overlay",
+      "default": true,
+      "info": "Add overlay when using background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_indicators",
+      "label": "Show Trust Indicators",
+      "default": true,
+      "info": "Display credentials and experience badges"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Hero - About Page",
+      "elements": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Work With Me"
+        },
+        {
+          "type": "action",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "radio",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            {
+              "label": "Primary",
+              "value": "primary"
+            },
+            {
+              "label": "Secondary",
+              "value": "secondary"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero - About Page",
+      "category": "Hero",
+      "settings": {
+        "tagline": "LICENSED THERAPIST + ATTACHMENT NERD",
+        "cta_text": "Learn my story →",
+        "title": "Hi, I'm Eli – Your Attachment Nerd",
+        "subtitle": "For 17 years, I've been helping families build the secure connections they crave. Now I'm here to share what actually works – backed by science, tested in real life, and delivered with the warmth of your favorite therapist-friend."
+      },
+      "blocks": [
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Work With Me",
+            "button_style": "primary"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Browse Resources",
+            "button_style": "secondary"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

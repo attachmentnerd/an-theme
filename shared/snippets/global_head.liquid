@@ -50,8 +50,8 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       {% endcomment %}
 
-      <!-- Font Awesome Icons -->
-      {{ "https://use.fontawesome.com/releases/v5.15.2/css/all.css" | async_style_link: crossorigin: "anonymous" }}
+      <!-- Icons are now inline SVGs via icon.liquid snippet -->
+      <!-- Font Awesome removed for performance improvement -->
 
       {{ "styles.css" | asset_url | stylesheet_tag }}
 

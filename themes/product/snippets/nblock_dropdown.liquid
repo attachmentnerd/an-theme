@@ -17,7 +17,7 @@
   <a class="dropdown__trigger dropdown-menu-trigger menu-item  dropdown-menu-item ">
        <span>{{ block.settings.dropdown }}</span>
     {% if block.settings.show_icon %}
-      <i class="dropdown__icon fa fa-chevron-down  dropdown-menu-icon"></i>
+      {% render 'icon', icon: 'chevron-down', size: 12, class: 'dropdown__icon dropdown-menu-icon' %}
     {% endif %}
   </a>
   <div class="dropdown__menu dropdown__menu--text-{{ block.settings.dropdown_menu_alignment }}">

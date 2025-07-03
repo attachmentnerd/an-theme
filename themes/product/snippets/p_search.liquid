@@ -8,7 +8,7 @@
   <form action="{{ current_product.search_url }}" method="get" role="search">
     <div class="input-group search{% if page_type == "post" %} post-page{% endif %}">
       <div class="input-group-prepend">
-        <div class="input-group-text search-icon"><i class="fa fa-search"></i></div>
+        <div class="input-group-text search-icon">{% render 'icon', icon: 'search', size: 16 %}</div>
       </div>
       <input class="form-control search-input" type="search" name="q" placeholder="{{ search_text }}">
     </div>

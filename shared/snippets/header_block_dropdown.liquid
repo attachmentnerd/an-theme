@@ -22,7 +22,7 @@
       {{ block.settings.trigger }}
     {% endelement %}
     {% if block.settings.show_icon %}
-      <i class="dropdown__icon fa fa-chevron-down"></i>
+      {% render 'icon', icon: 'chevron-down', size: 12, class: 'dropdown__icon' %}
     {% endif %}
   </a>
   <div class="dropdown__menu dropdown__menu--text-{{ block.settings.dropdown_menu_alignment }} ">

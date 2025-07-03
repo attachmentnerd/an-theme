@@ -722,6 +722,146 @@ The AN themes now use a modern, modular JavaScript approach replacing the legacy
 4. CSS transitions replace jQuery animations
 5. Modern ES6+ features with broad browser support
 
+## Icon System (v18.0.0+)
+
+### Modern SVG Icon System
+
+The AN themes use a modern, performant inline SVG icon system that replaced the Font Awesome dependency (~150KB) with a lightweight, customizable solution.
+
+#### Core Features
+- **Performance**: Inline SVGs with no external requests
+- **Tree-shaking**: Only icons used are included
+- **Customizable**: Full control over colors, sizes, and styling
+- **Accessible**: Built-in ARIA support
+- **Lightweight**: ~5KB total vs 150KB Font Awesome
+
+#### Usage
+```liquid
+{% render 'icon', icon: 'heart', size: 24, color: '#5E3BFF', class: 'custom-icon', aria_label: 'Favorite' %}
+```
+
+#### Available Icons
+**Common**: heart, star, check, close, chevron-left/right/up/down, search, menu, plus, minus, play, pause, download, upload, edit, delete, settings, info, warning, user, mail, phone, etc.
+
+**Social**: facebook, twitter, instagram, linkedin, youtube, pinterest, tiktok, etc.
+
+**Product-specific**: lesson, video, graduation-cap, certificate, trophy, chart, comments, login/logout, desktop, etc.
+
+#### Future Icon Guidelines
+- **Always use the icon snippet** instead of Font Awesome classes
+- **Add new icons** to the appropriate icon.liquid file (shared or product)
+- **Maintain consistency** with existing icon naming conventions
+- **Include accessibility** with aria_label when needed
+- **Use appropriate sizing** (16px default, 20-24px for larger UI elements)
+
+## Enhanced Form System (v18.3.0+)
+
+### Overview
+All forms in the AN theme now include a comprehensive enhancement system that provides consistent UX across the site. The `button_states.liquid` snippet automatically enhances all forms with loading states, validation, and success feedback.
+
+### Features
+1. **Real-time Validation**:
+   - Email format validation
+   - Required field checking
+   - Phone number validation
+   - Inline error messages on blur
+
+2. **Loading States**:
+   - Spinner animation during submission
+   - Custom loading text via `data-loading-text`
+   - Form fields disabled during processing
+   - Smooth transitions
+
+3. **Success Feedback**:
+   - Animated checkmark on success
+   - Customizable success messages
+   - Form reset after submission
+   - Auto-hide after 5 seconds
+
+### Implementation
+
+#### Basic Form Enhancement
+Forms are automatically enhanced when they include submit buttons. To enable full features:
+
+```liquid
+<!-- Add data-ajax to enable AJAX submission -->
+<form action="/submit" method="post" data-ajax data-form-type="contact">
+  <input type="email" name="email" required>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+```
+
+#### Custom Button States
+For full button state features, add the structure:
+
+```liquid
+<button type="submit" class="btn btn-primary btn-with-states" data-loading-text="Processing...">
+  <span class="btn-text">Submit Form</span>
+  <span class="btn-spinner"></span>
+  <span class="btn-success-icon">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+</button>
+```
+
+#### Form-Specific Messages
+Add custom success/error containers:
+
+```liquid
+<form>
+  <!-- Form fields -->
+  <div class="form-feedback success" style="display: none;">
+    <span>Custom success message!</span>
+  </div>
+  <div class="form-feedback error" style="display: none;">
+    <span>Custom error message</span>
+  </div>
+</form>
+```
+
+### Best Practices
+
+1. **Always use `data-ajax`** for forms that should submit without page reload
+2. **Add `data-loading-text`** to customize the loading message
+3. **Include proper ARIA labels** for accessibility
+4. **Use semantic HTML5 input types** (email, tel, etc.)
+5. **Add `required` attributes** for client-side validation
+
+### Form Types and Examples
+
+#### Newsletter Forms
+```liquid
+{% render 'block_form',
+  form: 'newsletter',
+  loading_text: 'Joining the circle...',
+  success_message: 'Welcome! Check your inbox for your gift.'
+%}
+```
+
+#### Contact Forms
+```liquid
+<form data-ajax data-form-type="contact">
+  <input type="text" name="name" required>
+  <input type="email" name="email" required>
+  <textarea name="message" required></textarea>
+  <button type="submit" class="btn btn-with-states" data-loading-text="Sending with love...">
+    <span class="btn-text">Send Message</span>
+    <!-- button state elements -->
+  </button>
+</form>
+```
+
+### CSS Classes Added by System
+
+- `.error` - Added to invalid fields
+- `.is-loading` - Added to buttons during submission
+- `.is-success` - Added to buttons after success
+- `.show` - Added to feedback messages when visible
+
+The form enhancement system is included automatically via `an_scripts.liquid` → `button_states.liquid`.
+
 ## Version History
 
 ### v11.1.0 (2025-01-18)
@@ -934,7 +1074,7 @@ When using `"range"` type, always include:
 
 ### Liquid Syntax Restrictions
 
-Kajabi has specific Liquid syntax requirements:
+Kajabi has specific Liquid syntax requirements that differ from standard Shopify Liquid:
 
 #### ❌ NOT Supported:
 ```liquid
@@ -943,6 +1083,12 @@ Kajabi has specific Liquid syntax requirements:
 
 <!-- Filter chains with ternary -->
 {{ value | default: condition ? 'a' : 'b' }}
+
+<!-- render tag (Shopify-specific) -->
+{% render 'snippet-name', param: value %}
+
+<!-- include with parameters -->
+{% include 'snippet-name', param: value %}
 ```
 
 #### ✅ Use Instead:
@@ -956,6 +1102,34 @@ Kajabi has specific Liquid syntax requirements:
 {% else %}
   {{ value | default: 'b' }}
 {% endif %}
+
+<!-- Use include without parameters -->
+{% include 'snippet-name' %}
+
+<!-- Pass data via assign -->
+{% assign param = value %}
+{% include 'snippet-name' %}
+
+<!-- For images, use direct img tags -->
+<img src="{{ image | image_picker_url: 'master' }}" alt="Description" loading="lazy">
+```
+
+#### Image Handling in Kajabi:
+```liquid
+<!-- Small images -->
+{{ image | image_picker_url: '300x' }}
+
+<!-- Medium images -->
+{{ image | image_picker_url: '800x' }}
+
+<!-- Large/original images -->
+{{ image | image_picker_url: 'master' }}
+
+<!-- Specific dimensions -->
+{{ image | image_picker_url: '400x300' }}
+
+<!-- Square crop -->
+{{ image | image_picker_url: '500x500' }}
 ```
 
 ### Common Section Development Issues
@@ -1572,9 +1746,79 @@ See `/shared/sections/page-coaching.liquid` for a complete example of an AI-gene
 
 ## Section Consolidation Strategy
 
+### Unified Testimonials Section (v19.0.0+)
+
+The theme now includes `an_testimonials.liquid` - a unified section that replaces multiple testimonial variants:
+
+#### Replaced Sections:
+- `testimonial_grid_cards.liquid` → Use `layout_style: "grid"`
+- `testimonial_sa_book_style.liquid` → Use `layout_style: "mixed"` or `layout_style: "featured"`
+- `testimonial_enhanced_highlights.liquid` → Use `layout_style: "mixed"`
+- `content_quote_block.liquid` → Use `layout_style: "single_quote"`
+
+#### Migration Guide:
+
+**Grid Layout (testimonial_grid_cards.liquid)**:
+```liquid
+{% section 'an_testimonials' %}
+Settings:
+- layout_style: "grid"
+- columns: 2-4 columns
+- show_stats: true
+- background_style: Choose background
+- Category badges and featured testimonials supported
+```
+
+**Book Style Layout (testimonial_sa_book_style.liquid)**:
+```liquid
+{% section 'an_testimonials' %}
+Settings:
+- layout_style: "mixed" (featured + grid)
+- show_stats: true
+- Use 'featured' block type for main testimonial
+- Add 'testimonial' blocks for supporting quotes
+```
+
+**Enhanced Highlights (testimonial_enhanced_highlights.liquid)**:
+```liquid
+{% section 'an_testimonials' %}
+Settings:
+- layout_style: "mixed"
+- Use 'featured' block for large quote
+- Add 'testimonial' blocks for grid reviews
+```
+
+**Single Quote (content_quote_block.liquid)**:
+```liquid
+{% section 'an_testimonials' %}
+Settings:
+- layout_style: "single_quote"
+- show_quote_icon: true
+- Use 'quote' block type
+- Support for author images and attribution
+```
+
+#### Layout Options:
+1. **Grid Layout**: 2-4 column testimonial cards with ratings and categories
+2. **Featured Layout**: Single large testimonial with prominent styling
+3. **Mixed Layout**: Featured testimonial + grid of supporting testimonials
+4. **Single Quote**: Large centered quote with author attribution
+
+#### Block Types:
+- **testimonial**: Standard testimonial with rating, category, featured toggle
+- **featured**: Large featured testimonial for mixed/featured layouts
+- **quote**: Single quote block with author attribution
+
+#### Benefits of Consolidation:
+1. **Single source of truth** - All testimonials use one section
+2. **Easier maintenance** - Update one file instead of four
+3. **More flexibility** - Mix and match features from all variants
+4. **Better performance** - Less code duplication
+5. **Simplified theme** - Fewer sections to manage
+
 ### Unified Book Showcase Section
 
-The theme now includes `an_book_showcase.liquid` - a unified section that replaces multiple book showcase variants:
+The theme also includes `an_book_showcase.liquid` - a unified section that replaces multiple book showcase variants:
 
 #### Replaced Sections:
 - `book_showcase.liquid` → Use `layout_style: "classic"`
@@ -1944,4 +2188,137 @@ To migrate existing images to responsive:
    - Check Core Web Vitals (LCP)
    - Monitor total image payload
    - Verify no layout shift (CLS)
+
+## 🚨 IMPORTANT: Image Optimization Requirements (v18.0.0+)
+
+### ALWAYS Use responsive-image Snippet for ALL Images
+
+**DO NOT use basic `<img>` tags anymore!** The theme now has a comprehensive responsive image system that MUST be used for all images to maintain performance standards.
+
+#### ❌ NEVER Do This:
+```liquid
+<img src="{{ image | image_picker_url: '800x' }}" 
+     alt="Description" 
+     class="img-fluid">
 ```
+
+#### ✅ ALWAYS Do This:
+```liquid
+{% render 'responsive-image',
+  image: image,
+  alt: 'Description',
+  sizes: '(max-width: 767px) 100vw, 800px',
+  aspect_ratio: '16/9',
+  placeholder_type: 'default',
+  blur_up: true
+%}
+```
+
+### Critical Requirements for New Sections:
+
+1. **Hero/Above-fold Images**: MUST use `priority: true`
+   ```liquid
+   {% render 'responsive-image',
+     image: hero_image,
+     priority: true,        # REQUIRED for LCP
+     sizes: '100vw',
+     aspect_ratio: '16/9',
+     blur_up: true
+   %}
+   ```
+
+2. **Always Specify aspect_ratio**: Prevents layout shift (CLS)
+   - Heroes: `'16/9'`
+   - Books: `'2/3'`
+   - Avatars: `'1/1'`
+   - Features: `'4/3'`
+
+3. **Use Appropriate placeholder_type**:
+   - `'hero'` - Hero sections
+   - `'book'` - Book covers
+   - `'avatar'` - Profile images
+   - `'feature'` - Feature images
+   - `'logo'` - Logo/badge images
+
+4. **Enable blur_up for Better UX**: Especially for larger images
+   ```liquid
+   blur_up: true
+   ```
+
+5. **Optimize widths Array**:
+   - Avatars: `'60,120,180'`
+   - Books: `'280,400,600,800'`
+   - Heroes: `'800,1200,1600,2000,2400'`
+   - Don't include unnecessary large sizes
+
+### Quick Reference for Common Patterns:
+
+```liquid
+{# Hero Image - Full Width, High Priority #}
+{% render 'responsive-image',
+  image: section.settings.hero_image,
+  alt: 'Hero description',
+  sizes: '100vw',
+  priority: true,
+  aspect_ratio: '16/9',
+  widths: '800,1200,1600,2000,2400',
+  placeholder_type: 'hero',
+  blur_up: true
+%}
+
+{# Book Cover - Fixed Width #}
+{% render 'responsive-image',
+  image: book_image,
+  alt: book_title,
+  sizes: '(max-width: 767px) 280px, 400px',
+  aspect_ratio: '2/3',
+  widths: '280,400,600,800',
+  placeholder_type: 'book',
+  blur_up: true
+%}
+
+{# Avatar - Small Fixed Size #}
+{% render 'responsive-image',
+  image: author_photo,
+  alt: author_name,
+  class: 'rounded-circle',
+  sizes: '60px',
+  aspect_ratio: '1/1',
+  widths: '60,120,180',
+  placeholder_type: 'avatar'
+%}
+
+{# Content Image - Responsive Columns #}
+{% render 'responsive-image',
+  image: content_image,
+  alt: 'Content description',
+  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
+  aspect_ratio: '4/3',
+  placeholder_type: 'feature',
+  blur_up: true
+%}
+```
+
+### Migration Checklist for New Development:
+
+- [ ] Replace ALL `<img>` tags with responsive-image snippet
+- [ ] Set `priority: true` for first 3-4 images
+- [ ] Add appropriate `aspect_ratio` to every image
+- [ ] Choose correct `placeholder_type`
+- [ ] Enable `blur_up` for images > 200px
+- [ ] Optimize `widths` array for use case
+- [ ] Test on slow 3G to verify blur-up works
+- [ ] Check DevTools Network tab for correct image loading
+- [ ] Verify CLS score is 0 in Lighthouse
+
+### Performance Impact:
+
+Using the responsive-image system properly results in:
+- **75-95% smaller images on mobile** (serves 400px instead of 2000px)
+- **0 CLS score** from proper aspect ratios
+- **Faster LCP** with priority loading
+- **Better perceived performance** with blur-up placeholders
+
+**Remember**: Every `<img>` tag without responsive-image is a performance regression!
+
+For detailed migration examples, see `/IMAGE_OPTIMIZATION_GUIDE.md`

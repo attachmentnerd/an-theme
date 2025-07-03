@@ -6,7 +6,7 @@
       {% if block.settings.comment_form_position == "top" %}
         {% if post.comments_mode_locked? %}
           <h4 class="comments-locked" kjb-settings-id="{{'language_comment_locked' | settings_id: section: section,block: block}}">
-            <i class="fa fa-lock"></i>
+            {% render 'icon', icon: 'lock', size: 16 %}
             {{ block.settings.language_comment_locked }}
           </h4>
         {% elsif current_site_user.muted? != true %}

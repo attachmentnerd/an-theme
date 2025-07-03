@@ -4158,6 +4158,100 @@ input[type="button"] {
    17. Component-Specific Utilities
    ========================================================================== */
 
+/* ==========================================================================
+   18. Icon System Styles
+   Added: 2025-01-20
+   ========================================================================== */
+
+/* Base icon styles */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: all var(--an-transition-base);
+}
+
+/* Icon sizing */
+.icon-xs { width: 12px; height: 12px; }
+.icon-sm { width: 16px; height: 16px; }
+.icon-md { width: 20px; height: 20px; }
+.icon-lg { width: 24px; height: 24px; }
+.icon-xl { width: 32px; height: 32px; }
+.icon-2xl { width: 48px; height: 48px; }
+
+/* Social icon specific styles */
+.icon-social {
+  transition: transform var(--an-transition-base), 
+              opacity var(--an-transition-base),
+              color var(--an-transition-base);
+}
+
+.icon-social:hover {
+  transform: translateY(-2px);
+  opacity: 0.8;
+}
+
+/* Icon in buttons */
+.btn .icon {
+  margin-right: 0.5em;
+}
+
+.btn .icon:last-child {
+  margin-right: 0;
+  margin-left: 0.5em;
+}
+
+.btn .icon:only-child {
+  margin: 0;
+}
+
+/* Icon colors */
+.icon-brand { color: var(--c-brand-600); }
+.icon-teal { color: var(--c-accent-teal); }
+.icon-peach { color: var(--c-accent-peach); }
+.icon-lemon { color: var(--c-accent-lemon); }
+.icon-muted { color: var(--c-ink-400); }
+
+/* Icon containers */
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-brand-100);
+  transition: all var(--an-transition-base);
+}
+
+.icon-circle:hover {
+  background: var(--c-brand-600);
+  color: white;
+}
+
+.icon-circle .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Social icons container styles */
+.social-icons__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: currentColor;
+  transition: all var(--an-transition-base);
+}
+
+.social-icons__icon--small .icon { width: 16px; height: 16px; }
+.social-icons__icon--medium .icon { width: 20px; height: 20px; }
+.social-icons__icon--large .icon { width: 24px; height: 24px; }
+
+/* ==========================================================================
+   19. Enhanced Background Textures & SVG Shapes
+   ========================================================================== */
+
 /* Sticky Mobile CTA Support */
 body.has-sticky-cta {
   padding-bottom: 90px !important; /* Space for sticky footer on mobile */
@@ -5559,6 +5653,99 @@ select:focus {
   100% {
     background-position: -200% 0;
   }
+}
+
+/* ==========================================================================
+   Aspect Ratio Utilities for Responsive Images
+   Added: 2025-01-03
+   ========================================================================== */
+
+/* Common aspect ratios */
+.aspect-square {
+  aspect-ratio: 1 / 1 !important;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9 !important;
+}
+
+.aspect-book {
+  aspect-ratio: 2 / 3 !important;
+}
+
+.aspect-landscape {
+  aspect-ratio: 4 / 3 !important;
+}
+
+.aspect-portrait {
+  aspect-ratio: 3 / 4 !important;
+}
+
+.aspect-wide {
+  aspect-ratio: 21 / 9 !important;
+}
+
+.aspect-golden {
+  aspect-ratio: 1.618 / 1 !important;
+}
+
+/* Responsive aspect ratios */
+@media (max-width: 767px) {
+  .aspect-square--mobile {
+    aspect-ratio: 1 / 1 !important;
+  }
+  
+  .aspect-video--mobile {
+    aspect-ratio: 16 / 9 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .aspect-square--tablet-up {
+    aspect-ratio: 1 / 1 !important;
+  }
+  
+  .aspect-video--tablet-up {
+    aspect-ratio: 16 / 9 !important;
+  }
+  
+  .aspect-book--tablet-up {
+    aspect-ratio: 2 / 3 !important;
+  }
+}
+
+/* Aspect ratio containers for legacy support */
+.aspect-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.aspect-container > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Padding-based aspect ratios for older browsers */
+.aspect-container--square::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+.aspect-container--video::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* 16:9 */
+}
+
+.aspect-container--book::before {
+  content: "";
+  display: block;
+  padding-top: 150%; /* 2:3 */
 }
 
 /* ==========================================================================

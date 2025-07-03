@@ -1,0 +1,926 @@
+{% comment %}
+  AN Dark Featured Section
+  - Dark background with gradient
+  - Flexible 1-3 column layout
+  - Icon or image support
+  - Brand-aligned styling
+  - Mobile-responsive design
+{% endcomment %}
+
+<section class="an-dark-featured {{ section.settings.section_padding }}" 
+         style="background: {{ section.settings.background_gradient | default: 'linear-gradient(135deg, #1B2937 0%, #0F1922 100%)' }}; 
+                background-color: {{ section.settings.background_color }};">
+  <div class="container" style="max-width: {{ section.settings.max_width }}px;">
+    <div class="an-dark-featured__wrapper">
+      <!-- Section Header -->
+      {% if section.settings.heading != blank or section.settings.subheading != blank %}
+        <div class="an-dark-featured__header text-center mb-5">
+          {% if section.settings.heading != blank %}
+            <h2 class="featured-heading {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
+                style="font-size: {{ section.settings.heading_size }}px; 
+                       color: {{ section.settings.heading_color }};">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.subheading != blank %}
+            <p class="featured-subheading {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
+               style="{% if section.settings.enable_animations %}animation-delay: 0.1s;{% endif %} 
+                      font-size: {{ section.settings.subheading_size }}px; 
+                      color: {{ section.settings.subheading_color }};">
+              {{ section.settings.subheading }}
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <!-- Feature Columns -->
+      {% assign column_count = section.blocks.size %}
+      {% if column_count > 3 %}
+        {% assign column_count = 3 %}
+      {% endif %}
+
+      <div class="an-dark-featured__grid columns-{{ column_count }}" style="gap: {{ section.settings.card_gap }}px;">
+        {% for block in section.blocks limit: 3 %}
+          <div class="featured-column {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
+               style="{% if section.settings.enable_animations %}animation-delay: {{ forloop.index | times: section.settings.animation_delay }}ms;{% endif %}" 
+               {{ block.shopify_attributes }}>
+            <div class="featured-card" 
+                 style="background: {{ section.settings.card_background }};
+                        border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+                        border-radius: {{ section.settings.card_border_radius }}px;
+                        padding: {{ section.settings.card_padding }}px;
+                        {% if section.settings.card_backdrop_blur %}backdrop-filter: blur(10px);{% endif %}">
+              <!-- Icon/Image -->
+              <div class="featured-visual">
+                {% if block.settings.use_image and block.settings.image %}
+                  <div class="featured-image" style="margin: -{{ section.settings.card_padding }}px -{{ section.settings.card_padding }}px {{ section.settings.card_padding }}px;">
+                    {% render 'responsive-image',
+  image: block.settings.image,
+  alt: '{{ block.settings.image_alt | default: block.settings.title }}',
+  class: 'featured-image__img',
+  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
+  aspect_ratio: '16/9',
+  widths: '400,600,800,1200,1600',
+  placeholder_type: 'default',
+  blur_up: true
+%}
+                  </div>
+                {% else %}
+                  <div class="featured-icon" 
+                       style="background: {{ block.settings.icon_bg_color | default: '#2D3E50' }};
+                              width: {{ section.settings.icon_size }}px;
+                              height: {{ section.settings.icon_size }}px;
+                              border-radius: {{ section.settings.icon_border_radius }}px;">
+                    {% case block.settings.icon_type %}
+                      {% when 'shopify' %}
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                          <path d="M41.69 11.16L39.54 11.72C39.54 11.72 37.81 6.04 37.65 5.52C37.49 5 37.18 4.75 36.77 4.75C36.74 4.75 36.71 4.75 36.68 4.75C36.61 4.64 36.53 4.53 36.45 4.43C35.91 3.75 35.16 3.4 34.23 3.41C34.22 3.41 34.22 3.41 34.21 3.41C34.17 3.41 34.14 3.41 34.1 3.41C33.99 3.27 33.87 3.14 33.74 3.02C32.84 2.14 31.65 1.69 30.25 1.71C27.26 1.75 24.27 3.95 21.91 7.94C20.29 10.64 19.09 13.95 18.69 16.42C15.26 17.48 12.82 18.21 12.76 18.23C11.37 18.65 11.33 18.69 11.15 20.02C11.02 21.01 7 50.23 7 50.23L35.31 45.56L48 43.08C48 43.08 41.71 11.2 41.69 11.16ZM32.27 6.48C31.09 6.85 29.79 7.26 28.42 7.68C28.43 7.52 28.43 7.36 28.43 7.19C28.43 5.43 28.17 4.05 27.73 2.96C29.63 3.27 31.02 5.13 32.27 6.48ZM25.68 3.59C26.17 4.61 26.48 6.09 26.48 7.96C26.48 8.23 26.47 8.48 26.46 8.72C24.07 9.49 21.46 10.33 18.85 11.17C19.73 8.15 21.94 5.2 23.93 3.84C24.53 3.47 25.13 3.29 25.68 3.59ZM23.15 2.13C23.47 2.13 23.78 2.19 24.08 2.32C23.94 2.4 23.8 2.49 23.66 2.59C21.04 4.29 18.78 7.96 17.94 11.85L17.93 11.9C16.09 12.47 14.34 13.01 12.82 13.48C13.89 8.61 17.89 2.24 23.15 2.13Z" fill="{{ block.settings.icon_color | default: '#95BF47' }}"/>
+                          <path d="M40.9 11.72L38.75 12.28C38.75 12.28 37.02 6.6 36.86 6.08C36.7 5.56 36.39 5.31 35.98 5.31C35.95 5.31 35.92 5.31 35.89 5.31L34.52 45.56L47.21 43.08C47.21 43.08 40.92 11.76 40.9 11.72Z" fill="{{ block.settings.icon_color | default: '#5E8E3E' }}"/>
+                          <path d="M24.04 18.34L22.2 24.14C22.2 24.14 20.53 23.27 18.49 23.38C15.54 23.54 15.52 25.46 15.54 25.92C15.65 28.39 22.01 29.04 22.35 34.62C22.61 38.97 20.11 42.07 16.29 42.31C11.7 42.6 9.2 39.88 9.2 39.88L10.27 35.42C10.27 35.42 12.8 37.36 14.81 37.24C16.11 37.16 16.58 36.11 16.52 35.41C16.37 32.3 11.17 32.49 10.85 27.36C10.58 23.01 13.3 18.61 19.45 18.24C21.88 18.08 23.11 18.66 23.11 18.66L24.04 18.34Z" fill="white"/>
+                        </svg>
+                      {% when 'pinterest' %}
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                          <path d="M24 4C12.954 4 4 12.954 4 24C4 32.83 9.736 40.326 17.574 42.984C17.406 41.346 17.262 38.838 17.646 37.02C17.994 35.37 19.914 26.976 19.914 26.976C19.914 26.976 19.338 25.812 19.338 24.06C19.338 21.366 20.886 19.356 22.794 19.356C24.426 19.356 25.218 20.58 25.218 22.044C25.218 23.688 24.174 26.148 23.634 28.404C23.19 30.294 24.546 31.836 26.406 31.836C29.778 31.836 32.382 28.068 32.382 22.62C32.382 17.82 29.058 14.508 23.91 14.508C17.97 14.508 14.67 18.756 14.67 23.208C14.67 24.888 15.306 26.7 16.134 27.69C16.35 27.954 16.386 28.182 16.314 28.452C16.158 29.058 15.798 30.366 15.726 30.654C15.63 31.05 15.414 31.134 14.994 30.954C12.606 29.82 11.118 26.268 11.118 23.124C11.118 16.86 15.534 11.148 24.426 11.148C31.59 11.148 37.122 15.972 37.122 22.536C37.122 29.7 32.646 35.466 26.79 35.466C24.81 35.466 22.95 34.428 22.314 33.198C22.314 33.198 21.354 37.008 21.126 37.884C20.706 39.486 19.53 41.556 18.774 42.816C20.454 43.338 22.206 43.608 24.012 43.608C35.058 43.608 44.012 34.656 44.012 23.61C44 12.954 35.046 4 24 4Z" fill="{{ block.settings.icon_color | default: '#E60023' }}"/>
+                        </svg>
+                      {% when 'instagram' %}
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                          <path d="M24 16.8C20.02 16.8 16.8 20.02 16.8 24C16.8 27.98 20.02 31.2 24 31.2C27.98 31.2 31.2 27.98 31.2 24C31.2 20.02 27.98 16.8 24 16.8ZM24 28.8C21.36 28.8 19.2 26.64 19.2 24C19.2 21.36 21.36 19.2 24 19.2C26.64 19.2 28.8 21.36 28.8 24C28.8 26.64 26.64 28.8 24 28.8Z" fill="{{ block.settings.icon_color | default: '#E4405F' }}"/>
+                          <path d="M31.2 14.4C30.086 14.4 29.184 15.302 29.184 16.416C29.184 17.53 30.086 18.432 31.2 18.432C32.314 18.432 33.216 17.53 33.216 16.416C33.216 15.302 32.314 14.4 31.2 14.4Z" fill="{{ block.settings.icon_color | default: '#E4405F' }}"/>
+                          <path d="M36 8.4C33.36 5.76 29.88 4.32 26.16 4.08C25.08 4.02 22.92 4.02 21.84 4.08C18.12 4.32 14.64 5.76 12 8.4C9.36 11.04 7.92 14.52 7.68 18.24C7.62 19.32 7.62 20.46 7.62 24C7.62 27.54 7.62 28.68 7.68 29.76C7.92 33.48 9.36 36.96 12 39.6C14.64 42.24 18.12 43.68 21.84 43.92C22.92 43.98 25.08 43.98 26.16 43.92C29.88 43.68 33.36 42.24 36 39.6C38.64 36.96 40.08 33.48 40.32 29.76C40.38 28.68 40.38 27.54 40.38 24C40.38 20.46 40.38 19.32 40.32 18.24C40.08 14.52 38.64 11.04 36 8.4ZM37.92 29.64C37.74 32.52 36.66 35.1 34.8 36.96C32.94 38.82 30.36 39.9 27.48 40.08C26.46 40.14 25.26 40.14 24 40.14C22.74 40.14 21.54 40.14 20.52 40.08C17.64 39.9 15.06 38.82 13.2 36.96C11.34 35.1 10.26 32.52 10.08 29.64C10.02 28.62 10.02 27.42 10.02 24C10.02 20.58 10.02 19.38 10.08 18.36C10.26 15.48 11.34 12.9 13.2 11.04C15.06 9.18 17.64 8.1 20.52 7.92C21.54 7.86 22.74 7.86 24 7.86C25.26 7.86 26.46 7.86 27.48 7.92C30.36 8.1 32.94 9.18 34.8 11.04C36.66 12.9 37.74 15.48 37.92 18.36C37.98 19.38 37.98 20.58 37.98 24C37.98 27.42 37.98 28.62 37.92 29.64Z" fill="{{ block.settings.icon_color | default: '#E4405F' }}"/>
+                        </svg>
+                      {% when 'google' %}
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                          <path d="M43.61 20.08H42V20H24V28H35.3C33.65 32.83 29.19 36.5 24 36.5C17.65 36.5 12.5 31.35 12.5 25C12.5 18.65 17.65 13.5 24 13.5C26.87 13.5 29.49 14.55 31.53 16.27L37.18 10.62C33.98 7.61 29.34 5.5 24 5.5C13.23 5.5 4.5 14.23 4.5 25C4.5 35.77 13.23 44.5 24 44.5C34.77 44.5 43.5 35.77 43.5 25C43.5 23.35 43.36 21.73 43.1 20.17L43.61 20.08Z" fill="{{ block.settings.icon_color | default: '#4285F4' }}"/>
+                          <path d="M6.91 15.06L13.51 19.86C15.33 15.34 19.32 12 24 12C26.87 12 29.49 13.05 31.53 14.77L37.18 9.12C33.98 6.11 29.34 4 24 4C16.32 4 9.66 8.34 6.41 14.56L6.91 15.06Z" fill="{{ block.settings.icon_color | default: '#EA4335' }}"/>
+                          <path d="M24 44C29.24 44 33.8 42.01 36.97 38.18L30.82 32.97C28.88 34.41 26.52 35.25 24 35.25C18.87 35.25 14.45 31.65 12.77 26.91L6.26 31.91C9.47 38.02 16.26 42 24 42V44Z" fill="{{ block.settings.icon_color | default: '#34A853' }}"/>
+                          <path d="M43.61 20.08H42V20H24V28H35.3C34.51 30.31 33.03 32.33 31.07 33.77L31.08 33.76L37.23 38.97C36.82 39.34 43.5 34.25 43.5 25C43.5 23.35 43.36 21.73 43.1 20.17L43.61 20.08Z" fill="{{ block.settings.icon_color | default: '#FBBC05' }}"/>
+                        </svg>
+                      {% when 'tiktok' %}
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                          <path d="M36.02 13.06C34.52 11.11 33.66 8.68 33.66 6.04H27.42V30.68C27.42 33.96 24.78 36.62 21.52 36.62C20.26 36.62 19.1 36.18 18.18 35.46C16.9 34.48 16.08 32.94 16.08 31.2C16.08 27.94 18.72 25.28 21.98 25.28C22.62 25.28 23.24 25.4 23.82 25.6V19.26C23.22 19.18 22.62 19.12 22 19.12C15.16 19.12 9.62 24.68 9.62 31.52C9.62 35.46 11.34 38.98 14.02 41.42C16.04 43.26 18.7 44.38 21.62 44.38C28.46 44.38 34 38.84 34 32V18.78C36.3 20.54 39.14 21.62 42.22 21.62V15.38C39.58 15.38 37.24 14.48 36.02 13.06Z" fill="{{ block.settings.icon_color | default: '#000000' }}"/>
+                        </svg>
+                      {% when 'custom' %}
+                        {% if block.settings.custom_icon_svg != blank %}
+                          {{ block.settings.custom_icon_svg }}
+                        {% else %}
+                          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="32" height="32" rx="4" stroke="{{ block.settings.icon_color | default: '#FFFFFF' }}" stroke-width="2" stroke-dasharray="4 4"/>
+                          </svg>
+                        {% endif %}
+                    {% endcase %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <!-- Content -->
+              <div class="featured-content">
+                {% if block.settings.title != blank %}
+                  <h3 class="featured-title" 
+                      style="font-size: {{ section.settings.title_size }}px; 
+                             color: {{ section.settings.title_color }};">
+                    {{ block.settings.title }}
+                  </h3>
+                {% endif %}
+
+                {% if block.settings.description != blank %}
+                  <p class="featured-description" 
+                     style="font-size: {{ section.settings.description_size }}px; 
+                            color: {{ section.settings.description_color }};">
+                    {{ block.settings.description }}
+                  </p>
+                {% endif %}
+
+                {% if block.settings.link_text != blank and block.settings.link_url != blank %}
+                  <a href="{{ block.settings.link_url }}"
+                     class="featured-link"
+                     style="color: {{ section.settings.link_color }};"
+                     {% if block.settings.link_new_tab %}target="_blank" rel="noopener"{% endif %}>
+                    {{ block.settings.link_text }}
+                    <svg class="link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Optional CTA -->
+      {% if section.settings.show_cta and section.settings.cta_text != blank %}
+        <div class="an-dark-featured__cta text-center mt-5 {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
+             style="{% if section.settings.enable_animations %}animation-delay: 0.6s;{% endif %}">
+          <a href="{{ section.settings.cta_url | default: '#' }}"
+             class="btn-primary-dark"
+             style="background: {{ section.settings.cta_bg_color }}; 
+                    color: {{ section.settings.cta_text_color }} !important;"
+             {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+            {{ section.settings.cta_text }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .an-dark-featured {
+    position: relative;
+    overflow: hidden;
+    color: var(--c-white);
+  }
+
+  /* Background decoration */
+  {% if section.settings.show_background_decoration %}
+  .an-dark-featured::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -25%;
+    width: 100%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(94, 59, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  {% endif %}
+
+  .an-dark-featured__wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .featured-heading {
+    font-size: var(--fs-h1);
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--c-white);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .featured-subheading {
+    font-size: var(--fs-body-lg);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 700px;
+    margin: 0 auto;
+    font-weight: var(--fw-light);
+  }
+
+  /* Grid Layout */
+  .an-dark-featured__grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .an-dark-featured__grid.columns-1 {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .an-dark-featured__grid.columns-2 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .an-dark-featured__grid.columns-3 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  /* Card */
+  .featured-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--motion-duration-base) var(--motion-ease-standard);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .featured-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(94, 59, 255, 0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  {% if section.settings.card_hover_lift %}
+  .featured-card:hover {
+    transform: translateY(-4px);
+    border-color: {{ section.settings.card_hover_border }};
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  {% else %}
+  .featured-card:hover {
+    border-color: {{ section.settings.card_hover_border }};
+  }
+  {% endif %}
+
+  .featured-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Visual Elements */
+  .featured-visual {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .featured-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--motion-duration-base) var(--motion-ease-spring);
+  }
+
+  .featured-card:hover .featured-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .featured-icon svg {
+    width: calc({{ section.settings.icon_size }}px * 0.6);
+    height: calc({{ section.settings.icon_size }}px * 0.6);
+    position: relative;
+    z-index: 1;
+  }
+
+  .featured-image {
+    border-radius: {{ section.settings.card_border_radius }}px {{ section.settings.card_border_radius }}px 0 0;
+    overflow: hidden;
+  }
+
+  .featured-image__img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform var(--motion-duration-slow) var(--motion-ease-standard);
+  }
+
+  .featured-card:hover .featured-image__img {
+    transform: scale(1.05);
+  }
+
+  /* Content */
+  .featured-content {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .featured-title {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    color: var(--c-white);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .featured-description {
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--c-accent-teal);
+    text-decoration: none;
+    font-weight: var(--fw-medium);
+    transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .featured-link:hover {
+    color: {{ section.settings.link_hover_color }};
+    gap: 0.75rem;
+  }
+
+  .link-arrow {
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .featured-link:hover .link-arrow {
+    transform: translateX(2px);
+  }
+
+  /* CTA Button */
+  .btn-primary-dark {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 32px;
+    background: var(--c-white);
+    color: var(--c-ink-900) !important;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .btn-primary-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+    color: var(--c-ink-900) !important;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 991px) {
+    .an-dark-featured__grid {
+      gap: 1.5rem;
+    }
+
+    .featured-card {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .an-dark-featured__grid.columns-2,
+    .an-dark-featured__grid.columns-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .featured-heading {
+      font-size: var(--fs-h2);
+    }
+
+    .featured-subheading {
+      font-size: var(--fs-body);
+    }
+
+    .featured-card {
+      padding: 1.5rem;
+    }
+
+    .featured-icon {
+      width: 60px;
+      height: 60px;
+    }
+
+    .featured-icon svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .featured-title {
+      font-size: 1.25rem;
+    }
+
+    .featured-description {
+      font-size: var(--fs-caption);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Feature - Dark Cards",
+  "class": "an-dark-featured",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Powered by the world's best checkout"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Everything you need to create amazing experiences for your customers, all in one place."
+    },
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "select",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "options": [
+        {
+          "value": "py-2",
+          "label": "Small (32px)"
+        },
+        {
+          "value": "py-3",
+          "label": "Medium (48px)"
+        },
+        {
+          "value": "py-4",
+          "label": "Large (64px)"
+        },
+        {
+          "value": "py-5",
+          "label": "Extra Large (80px)"
+        }
+      ],
+      "default": "py-5"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum Content Width",
+      "min": 800,
+      "max": 1400,
+      "step": 100,
+      "unit": "px",
+      "default": 1200,
+      "info": "Maximum width of the content container"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card Gap",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 32,
+      "info": "Space between cards"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Background"
+    },
+    {
+      "type": "text",
+      "id": "background_gradient",
+      "label": "Background Gradient",
+      "default": "linear-gradient(135deg, #1B2937 0%, #0F1922 100%)",
+      "info": "CSS gradient syntax"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color (Fallback)",
+      "default": "#1B2937",
+      "info": "Used if gradient is not supported"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background_decoration",
+      "label": "Show Background Decoration",
+      "default": true,
+      "info": "Adds subtle radial gradient decoration"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "rgba(255, 255, 255, 0.7)"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "rgba(255, 255, 255, 0.05)"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "rgba(255, 255, 255, 0.1)"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "label": "Card Border Width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card Padding",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "card_backdrop_blur",
+      "label": "Enable Backdrop Blur",
+      "default": true,
+      "info": "Adds glass morphism effect"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_border",
+      "label": "Card Hover Border Color",
+      "default": "rgba(94, 59, 255, 0.3)"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_hover_lift",
+      "label": "Enable Hover Lift Effect",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Container Size",
+      "min": 48,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "icon_border_radius",
+      "label": "Icon Border Radius",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Content Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Card Title Size",
+      "min": 18,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Card Title Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description Size",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "rgba(255, 255, 255, 0.8)"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#18D5E4"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "text",
+      "id": "cta_url",
+      "label": "CTA URL",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open CTA in New Tab",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "CTA Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#0F1922"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable Entrance Animations",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "animation_delay",
+      "label": "Animation Delay Between Cards",
+      "min": 0,
+      "max": 300,
+      "step": 50,
+      "unit": "ms",
+      "default": 150
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature - Dark Cards",
+      "limit": 3,
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "use_image",
+          "label": "Use Image Instead of Icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Feature Image",
+          "info": "400x300px recommended. Used when 'Use Image' is checked"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image Alt Text"
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon Type",
+          "options": [
+            {
+              "value": "shopify",
+              "label": "Shopify"
+            },
+            {
+              "value": "pinterest",
+              "label": "Pinterest"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "google",
+              "label": "Google"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "custom",
+              "label": "Custom SVG"
+            }
+          ],
+          "default": "shopify",
+          "info": "Used when 'Use Image' is not checked"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste SVG code here when 'Custom SVG' is selected"
+        },
+        {
+          "type": "color",
+          "id": "icon_bg_color",
+          "label": "Icon Background Color",
+          "default": "#2D3E50"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "In-person point of sale"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Sell face to face and keep offline and online sales in sync with our POS system."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Learn more"
+        },
+        {
+          "type": "text",
+          "id": "link_url",
+          "label": "Link URL",
+          "default": "#"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_new_tab",
+          "label": "Open Link in New Tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature - Dark Cards",
+      "category": "Content",
+      "description": "Dark section with 1-3 featured items",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon_type": "shopify",
+            "icon_bg_color": "#2D3E50",
+            "title": "In-person point of sale",
+            "description": "Sell face to face and keep offline and online sales in sync with Shopify POS.",
+            "link_text": "Shopify POS"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_type": "instagram",
+            "icon_bg_color": "#2D3E50",
+            "title": "Publish across channels",
+            "description": "Show up where shoppers scroll, search, and shop with multichannel integration.",
+            "link_text": "multichannel integration"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_type": "google",
+            "icon_bg_color": "#2D3E50",
+            "title": "Powered by the world's best checkout",
+            "description": "Shopify Checkout is fast, fully customizable, and optimized to close more sales.",
+            "link_text": "Shopify Checkout"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

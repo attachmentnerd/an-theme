@@ -1,5 +1,5 @@
 <style>
-  .sidebar-search__icon i {
+  .sidebar-search__icon .icon {
     color: {{ block.settings.search_icon_color }};
   }
   .sidebar-search--{{ block.id }} ::-webkit-input-placeholder {
@@ -22,7 +22,7 @@
 <div class="sidebar-search sidebar-search--{{ block.id }}" kjb-settings-id="{{ 'search_text' | settings_id: section: section, block: block }}">
   <form class="sidebar-search__form" action="{{ current_site.blog_search_url }}" method="get" role="search">
     <label for="search-{{ block.id }}" class="visually-hidden">{{ block.settings.search_text | default: 'Search' }}</label>
-    <span class="sidebar-search__icon" aria-hidden="true"><i class="fa fa-search"></i></span>
+    <span class="sidebar-search__icon" aria-hidden="true">{% render 'icon', icon: 'search', size: 16 %}</span>
     <input 
       id="search-{{ block.id }}"
       class="form-control sidebar-search__input" 

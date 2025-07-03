@@ -1,44 +1,29 @@
-<!-- Book Showcase Section - Modern Z-Pattern Design -->
-<section class="book-showcase-modern py-5 position-relative overflow-hidden {% if section.settings.alternate_layout %}bg-white{% else %}" style="background-color: #FAFAFA;{% endif %}">
+<!-- Book Showcase Section Alt - Modern Z-Pattern Design -->
+<section class="book-showcase-modern py-5 position-relative overflow-hidden bg-white">
   <div class="container">
-    <div class="row align-items-center g-5 {% if section.settings.alternate_layout %}flex-lg-row-reverse{% endif %}">
+    <div class="row align-items-center g-5 flex-lg-row-reverse">
       <!-- Book Visual Column -->
       <div class="col-lg-6">
         <div class="book-visual-wrapper position-relative animate-fade-in">
           <!-- Mock device frame with glow -->
-          <div class="book-frame position-relative" style="border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(94, 59, 255, 0.15), 0 0 0 1px rgba(94, 59, 255, 0.1);">
-            {% if section.settings.show_badges %}
-              <!-- Floating badges -->
-              {% if section.settings.top_badge %}
-                <div class="badge-float position-absolute" style="top: -10px; left: -10px; z-index: 10;">
-                  <span class="badge px-3 py-2" style="background: var(--c-accent-lemon); color: var(--c-ink-900); border-radius: 9999px; font-weight: 500;">
-                    {{ section.settings.top_badge }}
-                  </span>
-                </div>
-              {% endif %}
-            {% endif %}
-            
-            {% if section.settings.book_image != blank %}
+          <div class="book-frame position-relative" style="border-radius: 16px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,.08), 0 0 48px rgba(94,59,255,.15);">
+            <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
               {% render 'responsive-image',
                 image: section.settings.book_image,
-                alt: section.settings.book_title,
+                alt: 'Securely Attached',
                 class: 'img-fluid book-cover',
-                sizes: '(max-width: 575px) 90vw, (max-width: 991px) 50vw, 400px',
-                widths: '300,400,600,800',
-                width: '400',
-                height: '600',
-                aspect_ratio: '2/3'
+                sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',
+                priority: false,
+                aspect_ratio: '2/3',
+                widths: '400,600,800,1200',
+                placeholder_type: 'book',
+                blur_up: true
               %}
-            {% else %}
-              {% include 'svg_placeholders' %}
-              <div style="width: 400px; height: 600px; background: #FAFAFA;">
-                {{ svg_placeholder_book }}
-              </div>
-            {% endif %}
+            </div>
           </div>
           
           <!-- Decorative accent -->
-          <div class="accent-dot position-absolute" style="bottom: -20px; right: -20px; width: 100px; height: 100px; background: var(--c-accent-peach); opacity: 0.2; border-radius: 50%; filter: blur(40px);"></div>
+          <div class="accent-dot position-absolute" style="bottom: -20px; left: -20px; width: 100px; height: 100px; background: var(--c-accent-teal); opacity: 0.2; border-radius: 50%; filter: blur(40px);"></div>
         </div>
       </div>
       
@@ -46,20 +31,18 @@
       <div class="col-lg-6">
         <div class="book-content animate-fade-up" style="max-width: 560px;">
           <!-- Micro-label -->
-          {% if section.settings.micro_label %}
-            <div class="micro-label mb-3">
-              <span style="color: var(--c-accent-peach); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">
-                ✨ {{ section.settings.micro_label }}
-              </span>
-            </div>
-          {% endif %}
+          <div class="micro-label mb-3">
+            <span style="color: var(--c-accent-teal); font-size: var(--fs-caption); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">
+              💙 FOR COUPLES
+            </span>
+          </div>
           
-          <h2 class="mb-3" style="font-size: var(--fs-h1); font-weight: 500; color: var(--c-ink-900); line-height: 1.2;" kjb-settings-id="{{ 'book_title' | settings_id: section: section }}">
-            {{ section.settings.book_title }}
+          <h2 class="mb-3" style="font-size: var(--fs-h1); font-weight: 500; color: var(--c-ink-900); line-height: 1.2;">
+            Securely Attached
           </h2>
           
-          <p class="mb-4" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); line-height: 1.6;" kjb-settings-id="{{ 'book_subtitle' | settings_id: section: section }}">
-            {{ section.settings.book_subtitle }}
+          <p class="mb-4" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); line-height: 1.6;">
+            Transform Your Attachment Patterns into Loving, Lasting Romantic Relationships
           </p>
           
           <div class="book-description mb-4" style="font-size: var(--fs-body); color: var(--c-ink-500);" kjb-settings-id="{{ 'book_description' | settings_id: section: section }}">
@@ -67,128 +50,76 @@
           </div>
           
           <!-- Feature Pills -->
-          {% for block in section.blocks %}
-            {% case block.type %}
-              {% when 'feature' %}
-                {% if forloop.first %}<div class="feature-pills d-flex flex-wrap gap-2 mb-4">{% endif %}
-                  <span class="feature-pill" style="display: inline-block; padding: 8px 16px; background: var(--c-brand-100); color: var(--c-brand-600); border-radius: 9999px; font-size: var(--fs-caption); font-weight: 500;">
-                    {{ block.settings.text }}
-                  </span>
-                {% if forloop.last %}</div>{% endif %}
-            {% endcase %}
-          {% endfor %}
+          <div class="feature-pills d-flex flex-wrap gap-2 mb-4">
+            <span class="feature-pill" style="display: inline-block; padding: 8px 16px; background: var(--c-brand-100); color: var(--c-brand-600); border-radius: 9999px; font-size: var(--fs-caption); font-weight: 500;">
+              140+ Activities
+            </span>
+            <span class="feature-pill" style="display: inline-block; padding: 8px 16px; background: var(--c-brand-100); color: var(--c-brand-600); border-radius: 9999px; font-size: var(--fs-caption); font-weight: 500;">
+              Workbook Format
+            </span>
+            <span class="feature-pill" style="display: inline-block; padding: 8px 16px; background: var(--c-brand-100); color: var(--c-brand-600); border-radius: 9999px; font-size: var(--fs-caption); font-weight: 500;">
+              Expert-Endorsed
+            </span>
+          </div>
+          
+          <!-- Testimonial Card -->
+          {% if section.settings.show_testimonial %}
+            <div class="testimonial-card mb-4" style="background: var(--c-brand-100); border-radius: 16px; padding: 24px;">
+              <p class="mb-3" style="font-size: var(--fs-body); color: var(--c-ink-900); font-style: italic;" kjb-settings-id="{{ 'testimonial_quote' | settings_id: section: section }}">
+                "{{ section.settings.testimonial_quote }}"
+              </p>
+              <div class="d-flex align-items-center">
+                {% if section.settings.testimonial_author_image %}
+                  <div kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}" class="me-3" style="width: 48px; height: 48px;">
+                    {% render 'responsive-image',
+                      image: section.settings.testimonial_author_image,
+                      alt: section.settings.testimonial_author,
+                      class: 'rounded-circle',
+                      sizes: '48px',
+                      priority: false,
+                      aspect_ratio: '1/1',
+                      widths: '48,96,144',
+                      placeholder_type: 'avatar'
+                    %}
+                  </div>
+                {% endif %}
+                <cite style="font-size: var(--fs-caption); color: var(--c-ink-700); font-style: normal;" kjb-settings-id="{{ 'testimonial_author' | settings_id: section: section }}">
+                  — {{ section.settings.testimonial_author }}
+                </cite>
+              </div>
+            </div>
+          {% endif %}
           
           <!-- CTA Buttons -->
           <div class="cta-group d-flex flex-wrap gap-3">
-            {% if section.settings.primary_button_text %}
-              <a href="{{ section.settings.primary_button_link }}" 
-                 class="btn btn-primary-modern"
-                 style="color: var(--c-white) !important;"
-                 kjb-settings-id="{{ 'primary_button_text' | settings_id: section: section }}">
-                {{ section.settings.primary_button_text }}
-              </a>
-            {% endif %}
-            
-            {% if section.settings.secondary_button_text %}
-              <a href="{{ section.settings.secondary_button_link }}" 
-                 class="btn btn-secondary-modern"
-                 style="color: var(--c-brand-600) !important;"
-                 kjb-settings-id="{{ 'secondary_button_text' | settings_id: section: section }}">
-                {{ section.settings.secondary_button_text }}
-              </a>
-            {% endif %}
+            <a href="{{ section.settings.amazon_link }}" 
+               class="btn btn-primary-modern"
+               style="color: var(--c-white) !important;"
+               kjb-settings-id="{{ 'amazon_link' | settings_id: section: section }}">
+              Buy on Amazon
+            </a>
+            <a href="{{ section.settings.preview_link }}" 
+               class="btn btn-secondary-modern"
+               style="color: var(--c-brand-600) !important;"
+               kjb-settings-id="{{ 'preview_link' | settings_id: section: section }}">
+              Preview Inside
+            </a>
           </div>
-          
-          <!-- Trust Signal -->
-          {% if section.settings.trust_signal %}
-            <div class="trust-signal mt-4">
-              <p style="font-size: var(--fs-caption); color: var(--c-ink-500);" kjb-settings-id="{{ 'trust_signal' | settings_id: section: section }}">
-                {{ section.settings.trust_signal }}
-              </p>
-            </div>
-          {% endif %}
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<style>
-/* Book showcase animations */
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out;
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.6s ease-out 0.2s both;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Hover effects */
-.book-frame {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.book-showcase-modern:hover .book-frame {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 70px rgba(94, 59, 255, 0.2), 0 0 0 1px rgba(94, 59, 255, 0.15);
-}
-
-.feature-pill {
-  transition: all 0.2s ease;
-}
-
-.feature-pill:hover {
-  background: var(--c-brand-600);
-  color: var(--c-white);
-  transform: translateY(-1px);
-}
-
-/* Responsive */
-@media (max-width: 991px) {
-  .book-visual-wrapper {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-}
-</style>
-
 {% schema %}
 {
   "name": "Book - Showcase Modern",
   "elements": [
     {
-      "type": "text",
-      "id": "micro_label",
-      "label": "Micro Label",
-      "default": "17 YEARS OF CLINICAL WISDOM"
-    },
-    {
-      "type": "text",
-      "id": "book_title",
-      "label": "Book Title",
-      "default": "Raising Securely Attached Kids"
-    },
-    {
-      "type": "text",
-      "id": "book_subtitle",
-      "label": "Book Subtitle",
-      "default": "Your roadmap to raising kids who feel safe, seen, soothed, and secure – without losing yourself in the process."
-    },
-    {
       "type": "textarea",
       "id": "book_description",
       "label": "Book Description",
-      "default": "This isn't another 'gentle parenting' book. It's a therapist's toolkit for building the relationship your child needs to thrive – backed by neuroscience and tested in the real world of sticky hands and bedtime battles."
+      "default": "A practical workbook featuring 140 insightful prompts, quizzes, and activities to help you understand your attachment history and transform your relationship patterns."
     },
     {
       "type": "image_picker",
@@ -197,102 +128,38 @@
     },
     {
       "type": "checkbox",
-      "id": "show_badges",
-      "label": "Show Badges",
+      "id": "show_testimonial",
+      "label": "Show Testimonial",
       "default": true
     },
     {
-      "type": "text",
-      "id": "top_badge",
-      "label": "Badge Text",
-      "default": "USA TODAY BESTSELLER"
+      "type": "textarea",
+      "id": "testimonial_quote",
+      "label": "Testimonial Quote",
+      "default": "A resource that every therapist, client, and person needs in their life... engaging, concise, and hopeful towards healing attachment wounds."
     },
     {
       "type": "text",
-      "id": "primary_button_text",
-      "label": "Primary Button Text",
-      "default": "Start Your Journey"
+      "id": "testimonial_author",
+      "label": "Testimonial Author",
+      "default": "Dr. Nicole LePera, NYT Bestselling Author"
+    },
+    {
+      "type": "image_picker",
+      "id": "testimonial_author_image",
+      "label": "Testimonial Author Photo"
     },
     {
       "type": "action",
-      "id": "primary_button_link",
-      "label": "Primary Button Link",
+      "id": "amazon_link",
+      "label": "Amazon Link",
       "default": "#"
-    },
-    {
-      "type": "text",
-      "id": "secondary_button_text",
-      "label": "Secondary Button Text",
-      "default": "Peek Inside"
     },
     {
       "type": "action",
-      "id": "secondary_button_link",
-      "label": "Secondary Button Link",
+      "id": "preview_link",
+      "label": "Preview Link",
       "default": "#"
-    },
-    {
-      "type": "text",
-      "id": "trust_signal",
-      "label": "Trust Signal",
-      "default": "🌟 Trusted by 100,000+ caregivers worldwide"
-    },
-    {
-      "type": "checkbox",
-      "id": "alternate_layout",
-      "label": "Alternate Layout (Image on Right)",
-      "default": false
-    }
-  ],
-  "blocks": [
-    {
-      "type": "feature",
-      "name": "Feature Pill",
-      "elements": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Feature Text",
-          "default": "Science-backed"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Book Showcase - Modern",
-      "category": "Content",
-      "blocks": [
-        {
-          "type": "feature",
-          "settings": {
-            "text": "Evidence-based"
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "text": "Therapist-approved"
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "text": "Real-world tested"
-          }
-        }
-      ],
-      "settings": {
-        "micro_label": "17 YEARS OF CLINICAL WISDOM",
-        "book_title": "Raising Securely Attached Kids",
-        "book_subtitle": "Your roadmap to raising kids who feel safe, seen, soothed, and secure – without losing yourself in the process.",
-        "book_description": "This isn't another 'gentle parenting' book. It's a therapist's toolkit for building the relationship your child needs to thrive – backed by neuroscience and tested in the real world of sticky hands and bedtime battles.",
-        "show_badges": true,
-        "top_badge": "USA TODAY BESTSELLER",
-        "primary_button_text": "Start Your Journey",
-        "secondary_button_text": "Peek Inside",
-        "trust_signal": "🌟 Trusted by 100,000+ caregivers worldwide"
-      }
     }
   ]
 }

@@ -13,7 +13,7 @@
       <option value="name">{{ section.settings.text_name }}</option>
       <option value="location">{{ section.settings.text_location }}</option>
     </select>
-    <div class="filter__icon"><i class="fa fa-caret-down"></i></div>
+    <div class="filter__icon">{% render 'icon', icon: 'chevron-down', size: 12 %}</div>
   </div>
   <form class="search" action="{{ member_directory.url }}" method="get" role="search" kjb-settings-id="{{ 'text_search_placeholder' | settings_id: section: section, block: block }}">
     <input class="form-control search__control" type="search" name="name" placeholder="{{ section.settings.text_search_placeholder }}">

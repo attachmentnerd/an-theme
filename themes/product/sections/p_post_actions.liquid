@@ -19,7 +19,7 @@
     <div class="post-actions-pagination">
       {% if post_previous %}
         <a href="{{ post_previous_url }}">
-          <i class="fas fa-angle-left"></i>
+          {% render 'icon', icon: 'chevron-left', size: 20 %}
         </a>
       {% endif %}
     </div>
@@ -37,7 +37,7 @@
           </div>
           <div>
             <a href="#" data-favorite-toggle="true" data-favorited="{{ post.favorited? }}" data-favorite-token="{{ post.favorite_token }}" class="post-actions-favorite {% if post.favorited? %}favorited{% endif %}">
-              <i class="far fa-star"></i>
+              {% render 'icon', icon: 'star', size: 20 %}
             </a>
           </div>
           <div>
@@ -55,7 +55,7 @@
     <div class="post-actions-pagination">
       {% if post_next %}
         <a href="{{ post_next_url }}">
-          <i class="fas fa-angle-right"></i>
+          {% render 'icon', icon: 'chevron-right', size: 20 %}
         </a>
       {% endif %}
     </div>

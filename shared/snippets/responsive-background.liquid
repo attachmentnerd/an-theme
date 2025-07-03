@@ -1,0 +1,205 @@
+{% comment %}
+  Responsive Background Image Snippet
+  
+  Creates CSS for responsive background images with multiple sizes
+  for better performance across different device sizes.
+  
+  Parameters:
+  - unique_id: Unique identifier for the CSS class (required)
+  - image: Image URL from image_picker_url (required)
+  - mobile_image: Optional different image for mobile
+  - position: CSS background-position (default: 'center center')
+  - size: CSS background-size (default: 'cover')
+  - repeat: CSS background-repeat (default: 'no-repeat')
+  - overlay: boolean - add overlay gradient (default: false)
+  - overlay_color: overlay color with opacity (default: 'rgba(0,0,0,0.3)')
+  
+  Usage:
+  {% render 'responsive-background',
+    unique_id: 'hero-' | append: section.id,
+    image: section.settings.background_image,
+    mobile_image: section.settings.mobile_background_image,
+    overlay: true
+  %}
+  
+  Then use the class on your element:
+  <section class="hero-{{ section.id }}">
+{% endcomment %}
+
+{%- liquid
+  # Set defaults
+  if position == blank
+    assign position = 'center center'
+  endif
+  
+  if size == blank
+    assign size = 'cover'
+  endif
+  
+  if repeat == blank
+    assign repeat = 'no-repeat'
+  endif
+  
+  if overlay_color == blank
+    assign overlay_color = 'rgba(0,0,0,0.3)'
+  endif
+  
+  # Generate image URLs for different sizes
+  if image
+    assign image_400 = image | image_picker_url: '400x'
+    assign image_800 = image | image_picker_url: '800x'
+    assign image_1200 = image | image_picker_url: '1200x'
+    assign image_1600 = image | image_picker_url: '1600x'
+    assign image_2000 = image | image_picker_url: '2000x'
+    assign image_2400 = image | image_picker_url: '2400x'
+  endif
+  
+  # Mobile image if provided
+  if mobile_image
+    assign mobile_400 = mobile_image | image_picker_url: '400x'
+    assign mobile_800 = mobile_image | image_picker_url: '800x'
+  endif
+-%}
+
+{%- if image -%}
+<style>
+  /* Base styles */
+  .{{ unique_id }} {
+    background-position: {{ position }};
+    background-size: {{ size }};
+    background-repeat: {{ repeat }};
+    position: relative;
+  }
+  
+  {%- if overlay -%}
+  /* Overlay gradient */
+  .{{ unique_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: {{ overlay_color }};
+    z-index: 1;
+  }
+  
+  /* Ensure content is above overlay */
+  .{{ unique_id }} > * {
+    position: relative;
+    z-index: 2;
+  }
+  {%- endif -%}
+  
+  /* Mobile First: smallest image */
+  .{{ unique_id }} {
+    background-image: url('{{ image_400 }}');
+  }
+  
+  /* Larger mobile / small tablet */
+  @media (min-width: 400px) {
+    .{{ unique_id }} {
+      background-image: url('{{ image_800 }}');
+    }
+  }
+  
+  /* Tablet */
+  @media (min-width: 768px) {
+    .{{ unique_id }} {
+      background-image: url('{{ image_1200 }}');
+    }
+  }
+  
+  /* Desktop */
+  @media (min-width: 992px) {
+    .{{ unique_id }} {
+      background-image: url('{{ image_1600 }}');
+    }
+  }
+  
+  /* Large desktop */
+  @media (min-width: 1400px) {
+    .{{ unique_id }} {
+      background-image: url('{{ image_2000 }}');
+    }
+  }
+  
+  /* Extra large screens */
+  @media (min-width: 1920px) {
+    .{{ unique_id }} {
+      background-image: url('{{ image_2400 }}');
+    }
+  }
+  
+  {%- if mobile_image -%}
+  /* Mobile-specific image overrides */
+  @media (max-width: 767px) {
+    .{{ unique_id }} {
+      background-image: url('{{ mobile_400 }}');
+    }
+  }
+  
+  @media (min-width: 400px) and (max-width: 767px) {
+    .{{ unique_id }} {
+      background-image: url('{{ mobile_800 }}');
+    }
+  }
+  {%- endif -%}
+  
+  /* High DPI screens - serve larger images */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @media (max-width: 767px) {
+      .{{ unique_id }} {
+        background-image: url('{{ image_800 }}');
+      }
+    }
+    
+    @media (min-width: 768px) and (max-width: 991px) {
+      .{{ unique_id }} {
+        background-image: url('{{ image_1600 }}');
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .{{ unique_id }} {
+        background-image: url('{{ image_2400 }}');
+      }
+    }
+  }
+  
+  /* Modern browser support: image-set for better performance */
+  @supports (background-image: -webkit-image-set(url('test.jpg') 1x)) {
+    .{{ unique_id }} {
+      background-image: -webkit-image-set(
+        url('{{ image_400 }}') 1x,
+        url('{{ image_800 }}') 2x
+      );
+      background-image: image-set(
+        url('{{ image_400 }}') 1x,
+        url('{{ image_800 }}') 2x
+      );
+    }
+    
+    @media (min-width: 768px) {
+      .{{ unique_id }} {
+        background-image: -webkit-image-set(
+          url('{{ image_1200 }}') 1x,
+          url('{{ image_2400 }}') 2x
+        );
+        background-image: image-set(
+          url('{{ image_1200 }}') 1x,
+          url('{{ image_2400 }}') 2x
+        );
+      }
+    }
+  }
+</style>
+{%- else -%}
+  {%- comment -%}Fallback for missing images{%- endcomment -%}
+  <style>
+    .{{ unique_id }} {
+      background: var(--c-brand-100, #E9E6FF);
+      position: relative;
+    }
+  </style>
+{%- endif -%}

@@ -11,16 +11,24 @@
     {%- else -%}
 
         {%- if sIcon == "facebook-01" -%}
-            {%- assign sIcon = "fab fa-facebook"  -%}  
+            <a href="{{sUrl}}" class="social-icon {{block.settings.hover_effect}}">
+                {% render 'icon', icon: 'facebook', size: 20, class: 'icon-social' %}
+            </a>
         {%- elsif sIcon == "twitter-01" -%}
-            {%- assign sIcon = "fab fa-twitter"  -%}  
+            <a href="{{sUrl}}" class="social-icon {{block.settings.hover_effect}}">
+                {% render 'icon', icon: 'twitter', size: 20, class: 'icon-social' %}
+            </a>
         {%- elsif sIcon == "instagram-01" -%}
-            {%- assign sIcon = "fab fa-instagram"  -%}
+            <a href="{{sUrl}}" class="social-icon {{block.settings.hover_effect}}">
+                {% render 'icon', icon: 'instagram', size: 20, class: 'icon-social' %}
+            </a>
         {%- elsif sIcon == "linkedin-01" -%}
-            {%- assign sIcon = "fab fa-linkedin"  -%}
+            <a href="{{sUrl}}" class="social-icon {{block.settings.hover_effect}}">
+                {% render 'icon', icon: 'linkedin', size: 20, class: 'icon-social' %}
+            </a>
+        {%- else -%}
+            <a href="{{sUrl}}" class="social-icon {{block.settings.hover_effect}} {{sIcon}}"></a>
         {% endif  %}
-
-        <a href="{{sUrl}}" class="social-icon {{block.settings.hover_effect}} {{sIcon}}"></a>
 
     {%- endif -%}
 {%- endfor -%}

@@ -19,7 +19,7 @@
 
 <div class="mini-dashboard">
   <a href="{{ product_url }}" class="mini-dashboard-back" kjb-settings-id="{{ KJB_dashboard_text }}">
-    <i class="fas fa-chevron-left"></i>
+    {% render 'icon', icon: 'chevron-left', size: 16 %}
     {{ dashboard_text }}
   </a>
   <h1 class="mini-dashboard-title">{{ product_title }}</h1>

@@ -81,17 +81,24 @@
         <div class="ui-card">
           <div class="ui-card__inner">
             {% if section.settings.ui_image != blank %}
-              <img src="{{ section.settings.ui_image | image_picker_url: 'placeholder.png' }}" 
-                   alt="{{ section.settings.ui_image_alt }}"
-                   class="ui-card__image"
-                   width="600"
-                   height="400"
-                   loading="lazy">
+              {% render 'responsive-image',
+  image: section.settings.ui_image,
+  alt: '{{ section.settings.ui_image_alt }}',
+  class: 'ui-card__image',
+  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
+  aspect_ratio: '16/9',
+  widths: '400,600,800,1200,1600',
+  placeholder_type: 'default',
+  blur_up: true
+%}
             {% else %}
               {% comment %} On-brand placeholder instead of external image {% endcomment %}
-              {% include 'svg_placeholders' %}
-              <div class="ui-card__image" style="background: #FAFAFA;">
-                {{ svg_placeholder_default }}
+              <div class="ui-card__image" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
+                <svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="300" height="200" fill="#E0E0E0"/>
+                  <path d="M120 70L150 110L180 70" stroke="#BDBDBD" stroke-width="3" fill="none"/>
+                  <circle cx="150" cy="130" r="20" fill="#BDBDBD"/>
+                </svg>
               </div>
             {% endif %}
               
@@ -103,20 +110,26 @@
                               --element-left: {{ block.settings.left }}%;"
                        {{ block.shopify_attributes }}>
                     {% if block.settings.element_image != blank %}
-                      <img src="{{ block.settings.element_image | image_picker_url: 'placeholder.png' }}" 
-                           alt="{{ block.settings.element_alt }}"
-                           width="120"
-                           height="120"
-                           loading="lazy">
+                      {% render 'responsive-image',
+  image: block.settings.element_image,
+  alt: '{{ block.settings.element_alt }}',
+  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
+  aspect_ratio: '16/9',
+  widths: '400,600,800,1200,1600',
+  placeholder_type: 'default',
+  blur_up: true
+%}
                     {% elsif block.settings.element_content != blank %}
                       <div class="ui-element__content">
                         {{ block.settings.element_content }}
                       </div>
                     {% else %}
                       {% comment %} Small feature placeholder {% endcomment %}
-                      {% include 'svg_placeholders' %}
-                      <div style="width: 100px; height: 100px;">
-                        {{ svg_placeholder_feature }}
+                      <div style="width: 100px; height: 100px; background: #FAFAFA; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="10" y="10" width="40" height="40" rx="8" fill="#BDBDBD"/>
+                          <circle cx="30" cy="30" r="10" fill="#E0E0E0"/>
+                        </svg>
                       </div>
                     {% endif %}
                   </div>
@@ -424,7 +437,7 @@
 
 {% schema %}
 {
-  "name": "Content - Feature Showcase",
+  "name": "Feature - Showcase",
   "class": "feature-showcase-section",
   "elements": [
     {
@@ -524,7 +537,7 @@
   "blocks": [
     {
       "type": "feature_item",
-      "name": "Feature Item",
+      "name": "Feature - Showcase",
       "elements": [
         {
           "type": "text",
@@ -542,7 +555,7 @@
     },
     {
       "type": "ui_element",
-      "name": "Floating UI Element",
+      "name": "Feature - Showcase",
       "elements": [
         {
           "type": "select",
@@ -609,7 +622,7 @@
   ],
   "presets": [
     {
-      "name": "Feature Showcase",
+      "name": "Feature - Showcase",
       "category": "Features",
       "blocks": [
         {

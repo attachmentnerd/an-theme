@@ -3203,3 +3203,120 @@ li:hover {
 .p-3 { padding: var(--space-md); }
 .p-4 { padding: var(--space-lg); }
 .p-5 { padding: var(--space-xl); }
+
+/* ==========================================================================
+   Icon System Styles
+   Added: 2025-01-20
+   ========================================================================== */
+
+/* Base icon styles */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: all 200ms ease-in-out;
+}
+
+/* Icon sizing */
+.icon-xs { width: 12px; height: 12px; }
+.icon-sm { width: 16px; height: 16px; }
+.icon-md { width: 20px; height: 20px; }
+.icon-lg { width: 24px; height: 24px; }
+.icon-xl { width: 32px; height: 32px; }
+.icon-2xl { width: 48px; height: 48px; }
+
+/* Social icon specific styles */
+.icon-social {
+  transition: transform 200ms ease-in-out, 
+              opacity 200ms ease-in-out,
+              color 200ms ease-in-out;
+}
+
+.icon-social:hover {
+  transform: translateY(-2px);
+  opacity: 0.8;
+}
+
+/* Icon in buttons */
+.btn .icon {
+  margin-right: 0.5em;
+}
+
+.btn .icon:last-child {
+  margin-right: 0;
+  margin-left: 0.5em;
+}
+
+.btn .icon:only-child {
+  margin: 0;
+}
+
+/* Icon colors */
+.icon-brand { color: var(--c-brand-600); }
+.icon-teal { color: var(--c-accent-teal); }
+.icon-peach { color: var(--c-accent-peach); }
+.icon-lemon { color: var(--c-accent-lemon); }
+.icon-muted { color: var(--c-ink-500); }
+
+/* Icon containers */
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-brand-100);
+  transition: all 200ms ease-in-out;
+}
+
+.icon-circle:hover {
+  background: var(--c-brand-600);
+  color: white;
+}
+
+.icon-circle .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Social icons container styles */
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: currentColor;
+  transition: all 200ms ease-in-out;
+  margin: 0 8px;
+}
+
+.social-icon .icon { width: 20px; height: 20px; }
+
+/* Product theme specific icon styles */
+.post-icon {
+  margin-right: 8px;
+  color: var(--c-ink-500);
+}
+
+.lesson-icon {
+  color: var(--c-brand-600);
+}
+
+.download-icon {
+  color: var(--c-accent-teal);
+}
+
+/* Progress icons */
+.progress-icon {
+  color: var(--c-accent-lemon);
+}
+
+.complete-icon {
+  color: var(--c-accent-teal);
+}
+
+.locked-icon {
+  color: var(--c-ink-500);
+  opacity: 0.5;
+}

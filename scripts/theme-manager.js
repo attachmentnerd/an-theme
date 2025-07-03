@@ -157,6 +157,124 @@ async function buildTheme(type) {
   console.log(`✓ Built ${type} theme`);
 }
 
+// Get all files in a directory recursively
+async function getAllFiles(dir, fileList = [], baseDir = dir) {
+  const files = await fs.readdir(dir);
+  
+  for (const file of files) {
+    const filePath = path.join(dir, file);
+    const stat = await fs.stat(filePath);
+    
+    if (stat.isDirectory()) {
+      await getAllFiles(filePath, fileList, baseDir);
+    } else {
+      // Get relative path from base directory
+      const relativePath = path.relative(baseDir, filePath);
+      fileList.push(relativePath);
+    }
+  }
+  
+  return fileList;
+}
+
+// Compare two theme builds and generate change report
+async function generateChangeReport(type, previousVersion, currentVersion) {
+  const previousExportPath = path.join(__dirname, '..', 'exports', 'releases', `v${previousVersion}`);
+  const currentBuildPath = path.join(__dirname, '..', 'build', type);
+  
+  const report = {
+    version: {
+      previous: previousVersion,
+      current: currentVersion
+    },
+    added: [],
+    modified: [],
+    removed: [],
+    timestamp: new Date().toISOString()
+  };
+
+  // Get current files
+  const currentFiles = await getAllFiles(currentBuildPath);
+  
+  // Check if previous version exists
+  const previousZips = previousVersion && fs.existsSync(previousExportPath) 
+    ? await fs.readdir(previousExportPath)
+    : [];
+  
+  const previousZip = previousZips.find(f => f.endsWith('.zip'));
+  
+  if (previousZip) {
+    // Extract previous version temporarily
+    const tempDir = path.join(__dirname, '..', 'temp', `${type}-${previousVersion}`);
+    await fs.ensureDir(tempDir);
+    
+    try {
+      // Extract zip
+      const AdmZip = (await import('adm-zip')).default;
+      const zip = new AdmZip(path.join(previousExportPath, previousZip));
+      zip.extractAllTo(tempDir, true);
+      
+      // Find the theme subdirectory
+      const dirs = await fs.readdir(tempDir);
+      const themeDir = dirs.find(d => d.includes('AN_') || d.includes('AN-'));
+      const previousBuildPath = themeDir ? path.join(tempDir, themeDir) : tempDir;
+      
+      // Get previous files
+      const previousFiles = await getAllFiles(previousBuildPath);
+      
+      // Compare files
+      const previousSet = new Set(previousFiles);
+      const currentSet = new Set(currentFiles);
+      
+      // Find added files
+      for (const file of currentFiles) {
+        if (!previousSet.has(file)) {
+          report.added.push(file);
+        }
+      }
+      
+      // Find removed files
+      for (const file of previousFiles) {
+        if (!currentSet.has(file)) {
+          report.removed.push(file);
+        }
+      }
+      
+      // Find modified files
+      for (const file of currentFiles) {
+        if (previousSet.has(file)) {
+          const currentPath = path.join(currentBuildPath, file);
+          const previousPath = path.join(previousBuildPath, file);
+          
+          if (fs.existsSync(previousPath)) {
+            const currentContent = await fs.readFile(currentPath, 'utf8');
+            const previousContent = await fs.readFile(previousPath, 'utf8');
+            
+            if (currentContent !== previousContent) {
+              report.modified.push(file);
+            }
+          }
+        }
+      }
+      
+      // Clean up temp directory
+      await fs.remove(tempDir);
+      
+    } catch (error) {
+      console.error('Error comparing versions:', error);
+      // Clean up on error
+      if (fs.existsSync(tempDir)) {
+        await fs.remove(tempDir);
+      }
+    }
+  } else {
+    // No previous version, all files are new
+    report.added = currentFiles;
+  }
+  
+  return report;
+}
+
 // Generate version starting from 10.x.x to avoid Kajabi internal version conflicts
 function generateKajabiSafeVersion(type, major, minor, patch) {
   // Start from version 10 to avoid all Kajabi reserved versions
@@ -276,7 +394,71 @@ File: ${path.basename(zipPath)}
 `;
   await fs.writeFile(logPath, logContent);
 
+  // Generate change report
+  console.log('Generating change report...');
+  const changeReport = await generateChangeReport(type, currentVersion, newVersion);
+  
+  // Save change report as JSON
+  const changeReportPath = path.join(exportDir, 'change-report.json');
+  await fs.writeFile(changeReportPath, JSON.stringify(changeReport, null, 2));
+  
+  // Save human-readable change report
+  const readableReportPath = path.join(exportDir, 'CHANGES.md');
+  let readableReport = `# Theme Changes Report\n\n`;
+  readableReport += `**Theme:** ${themeName}\n`;
+  readableReport += `**Version:** ${currentVersion} → ${newVersion}\n`;
+  readableReport += `**Date:** ${new Date().toLocaleString()}\n`;
+  readableReport += `**Message:** ${message || 'No message provided'}\n\n`;
+  
+  readableReport += `## Summary\n`;
+  readableReport += `- **Added:** ${changeReport.added.length} files\n`;
+  readableReport += `- **Modified:** ${changeReport.modified.length} files\n`;
+  readableReport += `- **Removed:** ${changeReport.removed.length} files\n\n`;
+  
+  if (changeReport.added.length > 0) {
+    readableReport += `## Added Files\n`;
+    changeReport.added.forEach(file => {
+      readableReport += `- ${file}\n`;
+    });
+    readableReport += `\n`;
+  }
+  
+  if (changeReport.modified.length > 0) {
+    readableReport += `## Modified Files\n`;
+    changeReport.modified.forEach(file => {
+      readableReport += `- ${file}\n`;
+    });
+    readableReport += `\n`;
+  }
+  
+  if (changeReport.removed.length > 0) {
+    readableReport += `## ⚠️ Removed Files (Manual Action Required)\n`;
+    readableReport += `**Important:** Kajabi does not automatically remove files when updating themes.\n`;
+    readableReport += `You must manually delete these files from your Kajabi theme:\n\n`;
+    changeReport.removed.forEach(file => {
+      readableReport += `- [ ] ${file}\n`;
+    });
+    readableReport += `\n`;
+    readableReport += `### How to remove files in Kajabi:\n`;
+    readableReport += `1. Go to Website → Themes → Edit Code\n`;
+    readableReport += `2. Find each file listed above\n`;
+    readableReport += `3. Click the trash icon next to the file name\n`;
+    readableReport += `4. Confirm deletion\n`;
+  }
+  
+  await fs.writeFile(readableReportPath, readableReport);
+  
   console.log(`✓ Exported ${themeName} v${newVersion} to ${zipPath}`);
+  console.log(`✓ Change report saved to ${readableReportPath}`);
+  
+  // Also display removed files in console if any
+  if (changeReport.removed.length > 0) {
+    console.log('\n⚠️  FILES TO MANUALLY REMOVE IN KAJABI:');
+    changeReport.removed.forEach(file => {
+      console.log(`   - ${file}`);
+    });
+    console.log('\n');
+  }
   
   return zipPath;
 }

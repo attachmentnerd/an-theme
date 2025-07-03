@@ -8,7 +8,7 @@
 
 <!-- Preconnect to external domains -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://use.fontawesome.com" crossorigin>
+<!-- Font Awesome removed - using inline SVG icons -->
 
 <!-- Critical CSS - Inline for immediate render -->
 {% include 'critical_css' %}
@@ -82,8 +82,7 @@
   {% include 'animation_utilities' %}
 </style>
 
-<!-- Font Awesome - Already async -->
-{{ "https://use.fontawesome.com/releases/v5.15.2/css/all.css" | async_style_link: crossorigin: "anonymous" }}
+<!-- Icons are now inline SVGs via icon.liquid snippet -->
 
 <!-- Google Fonts - Load remaining weights async after critical fonts -->
 <link rel="preload" 

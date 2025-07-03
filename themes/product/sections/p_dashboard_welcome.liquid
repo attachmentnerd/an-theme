@@ -37,7 +37,7 @@
       <h2 class="dashboard-welcome-title" kjb-settings-id="{{ KJB_welcome_text }}">
         <span>{{ welcome_text }}</span> {{ user_name }}
       </h2>
-      <span class="dashboard-welcome-subtitle" kjb-settings-id="{{ KJB_complete_text }}"><i class="fas fa-desktop"></i> <span class="text">{{ product_completion }}% {{ complete_text }}</span></span>
+      <span class="dashboard-welcome-subtitle" kjb-settings-id="{{ KJB_complete_text }}">{% render 'icon', icon: 'desktop', size: 16 %} <span class="text">{{ product_completion }}% {{ complete_text }}</span></span>
       <!--<span class="dashboard-welcome-subtitle" kjb-settings-id="{{ KJB_remaining_text }}"><i class="far fa-clock"></i> <span class="text">{{ remaining_text }}</span></span>-->
     </div>
     <div class="align-self-center">

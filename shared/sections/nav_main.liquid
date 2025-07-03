@@ -1,0 +1,1150 @@
+<style>
+  /* CSS Custom Properties for Kajabi Theme Integration */
+  :root {
+    --kajabi-nav-height: 80px;
+    --kajabi-nav-mobile-height: 60px;
+    --kajabi-nav-padding-y: 1rem;
+    --kajabi-nav-bg: {{ section.settings.background_color | default: "#FFFFFF" }};
+    --kajabi-nav-bg-blur: {{ section.settings.background_color | default: "#FFFFFF" }}f2;
+    --kajabi-nav-text: {{ section.settings.text_color | default: "#2D3748" }};
+    --kajabi-nav-text-hover: {{ section.settings.text_color_hover | default: "#5A67D8" }};
+    --kajabi-nav-border: {{ section.settings.border_color | default: "#E2E8F0" }};
+    --kajabi-nav-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --kajabi-nav-transition: all 0.2s ease-in-out;
+    --kajabi-nav-radius: 0.375rem;
+  }
+
+  /* Kajabi Navigation Base Styles */
+  .kajabi-nav {
+    background-color: var(--kajabi-nav-bg);
+    box-shadow: var(--kajabi-nav-shadow);
+    position: relative;
+    z-index: 100;
+    min-height: var(--kajabi-nav-height);
+    transition: var(--kajabi-nav-transition);
+  }
+
+  /* Container following Kajabi standards */
+  .kajabi-nav .container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  @media (min-width: 768px) {
+    .kajabi-nav .container {
+      max-width: 750px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .kajabi-nav .container {
+      max-width: 970px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .kajabi-nav .container {
+      max-width: 1170px;
+    }
+  }
+
+  /* Navigation Content using Kajabi's media pattern */
+  .kajabi-nav__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--kajabi-nav-padding-y) 0;
+    min-height: var(--kajabi-nav-height);
+  }
+
+  /* Logo Section */
+  .kajabi-nav__logo {
+    flex-shrink: 0;
+    margin-right: 2rem;
+  }
+
+  .kajabi-nav__logo a {
+    display: inline-block;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__logo a:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+
+  .kajabi-nav__logo img {
+    height: {{ section.settings.logo_height | default: "40px" }};
+    width: auto;
+    display: block;
+  }
+
+  .kajabi-nav__logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--kajabi-nav-text);
+    text-decoration: none;
+  }
+
+  /* Navigation Links following Kajabi patterns */
+  .kajabi-nav__menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1;
+  }
+
+  .kajabi-nav__menu-item {
+    position: relative;
+  }
+
+  .kajabi-nav__menu-link {
+    color: var(--kajabi-nav-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    display: inline-block;
+    position: relative;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__menu-link:hover {
+    color: var(--kajabi-nav-text-hover);
+  }
+
+  .kajabi-nav__menu-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--kajabi-nav-text-hover);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+
+  .kajabi-nav__menu-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* Actions Section */
+  .kajabi-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-left: 2rem;
+  }
+
+  /* Kajabi Button Styles */
+  .kajabi-nav__button {
+    display: inline-block;
+    padding: 0.625rem 1.5rem;
+    background-color: {{ section.settings.button_bg_color | default: "#5A67D8" }};
+    color: {{ section.settings.button_text_color | default: "#FFFFFF" }};
+    border-radius: var(--kajabi-nav-radius);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: var(--kajabi-nav-transition);
+    border: 2px solid transparent;
+  }
+
+  .kajabi-nav__button:hover {
+    background-color: {{ section.settings.button_hover_bg_color | default: "#4C51BF" }};
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .kajabi-nav__button--outline {
+    background-color: transparent;
+    color: var(--kajabi-nav-text);
+    border-color: var(--kajabi-nav-border);
+  }
+
+  .kajabi-nav__button--outline:hover {
+    background-color: var(--kajabi-nav-bg);
+    border-color: var(--kajabi-nav-text);
+  }
+
+  /* User Account Dropdown */
+  .kajabi-nav__user {
+    position: relative;
+  }
+
+  .kajabi-nav__user-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__user-avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--kajabi-nav-border);
+  }
+
+  .kajabi-nav__user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background-color: var(--kajabi-nav-bg);
+    border: 1px solid var(--kajabi-nav-border);
+    border-radius: var(--kajabi-nav-radius);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__user.active .kajabi-nav__user-dropdown,
+  .kajabi-nav__user:hover .kajabi-nav__user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .kajabi-nav__user-dropdown a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--kajabi-nav-text);
+    text-decoration: none;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__user-dropdown a:hover {
+    background-color: {{ section.settings.dropdown_hover_bg | default: "#F7FAFC" }};
+  }
+
+  /* Mobile Hamburger */
+  .kajabi-nav__hamburger {
+    display: none;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .kajabi-nav__hamburger-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    position: relative;
+  }
+
+  .kajabi-nav__hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--kajabi-nav-text);
+    margin: 5px 0;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 991px) {
+    .kajabi-nav {
+      min-height: var(--kajabi-nav-mobile-height);
+    }
+
+    .kajabi-nav__content {
+      min-height: var(--kajabi-nav-mobile-height);
+      padding: 0.75rem 0;
+    }
+
+    .kajabi-nav__menu {
+      display: none;
+    }
+
+    .kajabi-nav__actions > *:not(.kajabi-nav__hamburger) {
+      display: none;
+    }
+
+    .kajabi-nav__hamburger {
+      display: block;
+    }
+
+    .kajabi-nav__logo img {
+      height: {{ section.settings.mobile_logo_height | default: "32px" }};
+    }
+  }
+
+  /* Mobile Menu Overlay */
+  .kajabi-nav__mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: {{ section.settings.mobile_menu_width | default: 320 }}px;
+    height: 100vh;
+    background-color: var(--kajabi-nav-bg);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .kajabi-nav__mobile-menu.active {
+    transform: translateX(0);
+  }
+
+  .kajabi-nav__mobile-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--kajabi-nav-transition);
+    z-index: 999;
+  }
+
+  .kajabi-nav__mobile-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Mobile Menu Header */
+  .kajabi-nav__mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--kajabi-nav-border);
+  }
+
+  .kajabi-nav__mobile-close {
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--kajabi-nav-text);
+  }
+
+  /* Mobile Menu Content */
+  .kajabi-nav__mobile-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .kajabi-nav__mobile-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+  }
+
+  .kajabi-nav__mobile-nav li {
+    margin-bottom: 0.5rem;
+  }
+
+  .kajabi-nav__mobile-nav a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--kajabi-nav-text);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: var(--kajabi-nav-radius);
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__mobile-nav a:hover {
+    background-color: {{ section.settings.mobile_hover_bg | default: "#F7FAFC" }};
+  }
+
+  .kajabi-nav__mobile-nav a.active {
+    background-color: {{ section.settings.mobile_active_bg | default: "#EBF4FF" }};
+    color: var(--kajabi-nav-text-hover);
+  }
+
+  /* Mobile CTA */
+  .kajabi-nav__mobile-cta {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background-color: {{ section.settings.mobile_cta_bg | default: "#5A67D8" }};
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: var(--kajabi-nav-radius);
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__mobile-cta:hover {
+    background-color: {{ section.settings.mobile_cta_hover_bg | default: "#4C51BF" }};
+  }
+
+  /* Sticky Navigation */
+  .kajabi-nav--sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    animation: slideDown 0.3s ease-in-out;
+  }
+
+  .kajabi-nav--sticky.kajabi-nav--hidden {
+    transform: translateY(-100%);
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Dropdown Support */
+  .kajabi-nav__dropdown {
+    position: relative;
+  }
+
+  .kajabi-nav__dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    background-color: var(--kajabi-nav-bg);
+    border: 1px solid var(--kajabi-nav-border);
+    border-radius: var(--kajabi-nav-radius);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__dropdown:hover .kajabi-nav__dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Utility Classes */
+  .kajabi-nav__spacer {
+    flex: 1;
+  }
+
+  .kajabi-nav__divider {
+    width: 1px;
+    height: 1.5rem;
+    background-color: var(--kajabi-nav-border);
+    margin: 0 1rem;
+  }
+
+  /* Accessibility */
+  .kajabi-nav a:focus,
+  .kajabi-nav button:focus {
+    outline: 2px solid var(--kajabi-nav-text-hover);
+    outline-offset: 2px;
+  }
+
+  /* Loading States */
+  .kajabi-nav__skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+</style>
+
+<!-- Kajabi Navigation Section -->
+<nav class="kajabi-nav {% if section.settings.sticky %}kajabi-nav--sticky{% endif %}"
+     role="navigation"
+     aria-label="{{ section.settings.aria_label | default: 'Main navigation' }}"
+     id="section-{{ section.id }}"
+     data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="kajabi-nav__content">
+      <!-- Logo -->
+      <div class="kajabi-nav__logo" kjb-settings-id="{{ 'logo_group' | settings_id: section: section }}">
+        <a href="{{ current_site.root_url }}">
+          {% if section.settings.logo_type == 'image' and section.settings.logo %}
+            <div kjb-settings-id="{{ '>
+  {% render 'responsive-image',
+    image: section.settings.logo,
+    alt: '{{ section.settings.logo_alt | default: current_site.title }}',
+    sizes: '(max-width: 767px) 120px, 180px',
+    widths: '120,180,240,360',
+    placeholder_type: 'logo'
+  %}
+</div>
+          {% else %}
+            <span class="kajabi-nav__logo-text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section }}">
+              {{ section.settings.logo_text | default: current_site.title }}
+            </span>
+          {% endif %}
+        </a>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="kajabi-nav__menu" kjb-settings-id="{{ 'menu' | settings_id: section: section }}">
+        {% if section.settings.menu %}
+          {% for link in linklists[section.settings.menu].links %}
+            <div class="kajabi-nav__menu-item {% if link.links.size > 0 %}kajabi-nav__dropdown{% endif %}">
+              <a href="{{ link.url }}" class="kajabi-nav__menu-link">{{ link.title }}</a>
+
+              {% if link.links.size > 0 %}
+                <div class="kajabi-nav__dropdown-menu">
+                  {% for child_link in link.links %}
+                    <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </nav>
+
+      <!-- Spacer -->
+      <div class="kajabi-nav__spacer"></div>
+
+      <!-- Actions -->
+      <div class="kajabi-nav__actions">
+        {% for block in section.blocks %}
+          <div class="kajabi-nav__action-item" kjb-settings-id="{{ 'block' | settings_id: section: section, block: block }}">
+            {% case block.type %}
+              {% when 'button' %}
+                <a href="{{ block.settings.button_link }}"
+                   class="kajabi-nav__button {% if block.settings.button_style == 'outline' %}kajabi-nav__button--outline{% endif %}"
+                   {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
+                   kjb-settings-id="{{ 'button_text' | settings_id: block: block }}">
+                  {{ block.settings.button_text }}
+                </a>
+
+              {% when 'user' %}
+                {% if current_site_user %}
+                  <div class="kajabi-nav__user">
+                    <button class="kajabi-nav__user-toggle" aria-label="User menu" aria-expanded="false">
+                      {% if block.settings.show_avatar %}
+                        {{ current_site_user | avatar_url | image_tag: class: "kajabi-nav__user-avatar", alt: "User avatar" }}
+                      {% else %}
+                        <span>{{ current_site_user.name | default: current_site_user.email }}</span>
+                      {% endif %}
+                    </button>
+                    <div class="kajabi-nav__user-dropdown">
+                      <a href="/library">{{ block.settings.library_text | default: 'My Library' }}</a>
+                      {{ block.settings.settings_text | default: 'Settings' | member_settings_link }}
+                      <hr style="margin: 0.5rem 0; border-color: var(--kajabi-nav-border);">
+                      {{ block.settings.logout_text | default: 'Log Out' | member_logout_link }}
+                    </div>
+                  </div>
+                {% else %}
+                  <a href="/login" class="kajabi-nav__button kajabi-nav__button--outline"
+                     kjb-settings-id="{{ 'login_text' | settings_id: block: block }}">
+                    {{ block.settings.login_text | default: 'Log In' }}
+                  </a>
+                {% endif %}
+
+              {% when 'cart' %}
+                {% if section.settings.enable_cart %}
+                  <a href="/cart" class="kajabi-nav__button kajabi-nav__button--outline">
+                    Cart
+                    {% if cart.item_count > 0 %}
+                      <span class="kajabi-nav__badge">{{ cart.item_count }}</span>
+                    {% endif %}
+                  </a>
+                {% endif %}
+
+              {% when 'link' %}
+                <a href="{{ block.settings.link_url }}"
+                   {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
+                   kjb-settings-id="{{ 'link_text' | settings_id: block: block }}">
+                  {{ block.settings.link_text }}
+                </a>
+            {% endcase %}
+          </div>
+        {% endfor %}
+
+        <!-- Mobile Hamburger -->
+        <button class="kajabi-nav__hamburger"
+                aria-label="Toggle mobile menu"
+                aria-expanded="false"
+                data-mobile-menu-trigger>
+          <span class="kajabi-nav__hamburger-icon">
+            <span class="kajabi-nav__hamburger-line"></span>
+            <span class="kajabi-nav__hamburger-line"></span>
+            <span class="kajabi-nav__hamburger-line"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu Backdrop -->
+<div class="kajabi-nav__mobile-backdrop" id="mobile-backdrop-{{ section.id }}"></div>
+
+<!-- Mobile Menu -->
+<div class="kajabi-nav__mobile-menu" id="mobile-menu-{{ section.id }}" aria-hidden="true">
+  <div class="kajabi-nav__mobile-header">
+    <div class="kajabi-nav__logo">
+      <a href="{{ current_site.root_url }}">
+        {% if section.settings.mobile_logo %}
+          {% render 'responsive-image',
+  image: section.settings.mobile_logo,
+  alt: '{{ section.settings.logo_alt | default: current_site.title }}',
+  sizes: '(max-width: 767px) 120px, 180px',
+  widths: '120,180,240,360',
+  placeholder_type: 'logo'
+%}
+        {% elsif section.settings.logo_type == 'image' and section.settings.logo %}
+          {% render 'responsive-image',
+  image: section.settings.logo,
+  alt: '{{ section.settings.logo_alt | default: current_site.title }}',
+  sizes: '(max-width: 767px) 120px, 180px',
+  widths: '120,180,240,360',
+  placeholder_type: 'logo'
+%}
+        {% else %}
+          <span class="kajabi-nav__logo-text">{{ section.settings.logo_text | default: current_site.title }}</span>
+        {% endif %}
+      </a>
+    </div>
+    <button class="kajabi-nav__mobile-close" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="kajabi-nav__mobile-content">
+    <!-- Mobile Navigation -->
+    <ul class="kajabi-nav__mobile-nav">
+      {% if section.settings.menu %}
+        {% for link in linklists[section.settings.menu].links %}
+          <li>
+            <a href="{{ link.url }}" {% if link.current %}class="active"{% endif %}>
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Mobile-only menu items -->
+      {% for block in section.blocks %}
+        {% if block.type == 'mobile_menu_item' %}
+          <li>
+            <a href="{{ block.settings.link }}"
+               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+              {{ block.settings.title }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <!-- Mobile CTA -->
+    {% if section.settings.show_mobile_cta %}
+      <a href="{{ section.settings.mobile_cta_link }}"
+         class="kajabi-nav__mobile-cta"
+         {% if section.settings.mobile_cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+        {{ section.settings.mobile_cta_text }}
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+// Kajabi Navigation JavaScript
+(function() {
+  'use strict';
+
+  const nav = document.getElementById('section-{{ section.id }}');
+  const mobileMenu = document.getElementById('mobile-menu-{{ section.id }}');
+  const backdrop = document.getElementById('mobile-backdrop-{{ section.id }}');
+  const hamburger = nav.querySelector('[data-mobile-menu-trigger]');
+  const closeBtn = mobileMenu.querySelector('.kajabi-nav__mobile-close');
+  const body = document.body;
+
+  let scrollPosition = 0;
+
+  // Mobile menu functions
+  function openMenu() {
+    scrollPosition = window.pageYOffset;
+    mobileMenu.classList.add('active');
+    backdrop.classList.add('active');
+    body.style.overflow = 'hidden';
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMenu() {
+    mobileMenu.classList.remove('active');
+    backdrop.classList.remove('active');
+    body.style.overflow = '';
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    window.scrollTo(0, scrollPosition);
+  }
+
+  // Event listeners
+  hamburger.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  backdrop.addEventListener('click', closeMenu);
+
+  // Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+      closeMenu();
+    }
+  });
+
+  // User dropdown
+  const userDropdowns = nav.querySelectorAll('.kajabi-nav__user');
+  userDropdowns.forEach(dropdown => {
+    const toggle = dropdown.querySelector('.kajabi-nav__user-toggle');
+    if (toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', !expanded);
+      });
+    }
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function() {
+    userDropdowns.forEach(dropdown => {
+      dropdown.classList.remove('active');
+      const toggle = dropdown.querySelector('.kajabi-nav__user-toggle');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Sticky navigation
+  {% if section.settings.sticky %}
+  let lastScrollTop = 0;
+  const navHeight = nav.offsetHeight;
+
+  window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > navHeight) {
+      nav.classList.add('kajabi-nav--sticky');
+
+      if (scrollTop > lastScrollTop && scrollTop > navHeight * 2) {
+        nav.classList.add('kajabi-nav--hidden');
+      } else {
+        nav.classList.remove('kajabi-nav--hidden');
+      }
+    } else {
+      nav.classList.remove('kajabi-nav--sticky', 'kajabi-nav--hidden');
+    }
+
+    lastScrollTop = scrollTop;
+  });
+  {% endif %}
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Navigation",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "radio",
+      "id": "logo_type",
+      "label": "Logo Type",
+      "default": "image",
+      "options": [
+        {
+          "label": "Image",
+          "value": "image"
+        },
+        {
+          "label": "Text",
+          "value": "text"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image",
+      "info": "Recommended: 180x40px"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Logo Alt Text",
+      "info": "Describes the logo for screen readers"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "Your Brand"
+    },
+    {
+      "type": "text",
+      "id": "logo_height",
+      "label": "Logo Height",
+      "default": "40px",
+      "info": "Desktop logo height"
+    },
+    {
+      "type": "text",
+      "id": "mobile_logo_height",
+      "label": "Mobile Logo Height",
+      "default": "32px"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Enable Sticky Navigation",
+      "default": true,
+      "info": "Navigation sticks to top when scrolling"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_cart",
+      "label": "Enable Shopping Cart",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "ARIA Label",
+      "default": "Main navigation",
+      "info": "Accessibility label for screen readers"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2D3748"
+    },
+    {
+      "type": "color",
+      "id": "text_color_hover",
+      "label": "Text Hover Color",
+      "default": "#5A67D8"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#E2E8F0"
+    },
+    {
+      "type": "header",
+      "content": "Button Colors"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background",
+      "default": "#5A67D8"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button Hover Background",
+      "default": "#4C51BF"
+    },
+    {
+      "type": "header",
+      "content": "Dropdown Settings"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_hover_bg",
+      "label": "Dropdown Hover Background",
+      "default": "#F7FAFC"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_logo",
+      "label": "Mobile Logo",
+      "info": "Optional: Different logo for mobile menu"
+    },
+    {
+      "type": "range",
+      "id": "mobile_menu_width",
+      "label": "Mobile Menu Width",
+      "default": 320,
+      "min": 280,
+      "max": 400,
+      "step": 20,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "mobile_hover_bg",
+      "label": "Mobile Menu Hover Background",
+      "default": "#F7FAFC"
+    },
+    {
+      "type": "color",
+      "id": "mobile_active_bg",
+      "label": "Mobile Active Page Background",
+      "default": "#EBF4FF"
+    },
+    {
+      "type": "header",
+      "content": "Mobile CTA"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile_cta",
+      "label": "Show Mobile CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mobile_cta_text",
+      "label": "Mobile CTA Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "action",
+      "id": "mobile_cta_link",
+      "label": "Mobile CTA Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_cta_new_tab",
+      "label": "Open CTA in New Tab",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "mobile_cta_bg",
+      "label": "Mobile CTA Background",
+      "default": "#5A67D8"
+    },
+    {
+      "type": "color",
+      "id": "mobile_cta_hover_bg",
+      "label": "Mobile CTA Hover Background",
+      "default": "#4C51BF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "action",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "solid",
+          "options": [
+            {
+              "label": "Solid",
+              "value": "solid"
+            },
+            {
+              "label": "Outline",
+              "value": "outline"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "name": "User Account",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_avatar",
+          "label": "Show Avatar",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "login_text",
+          "label": "Login Text",
+          "default": "Log In"
+        },
+        {
+          "type": "text",
+          "id": "logout_text",
+          "label": "Logout Text",
+          "default": "Log Out"
+        },
+        {
+          "type": "text",
+          "id": "settings_text",
+          "label": "Settings Text",
+          "default": "Settings"
+        },
+        {
+          "type": "text",
+          "id": "library_text",
+          "label": "Library Text",
+          "default": "My Library"
+        }
+      ]
+    },
+    {
+      "type": "cart",
+      "name": "Shopping Cart",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Cart must be enabled in section settings"
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Custom Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text"
+        },
+        {
+          "type": "action",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "mobile_menu_item",
+      "name": "Mobile Menu Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "action",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Navigation",
+      "category": "Navigation",
+      "description": "Modern navigation bar with mobile menu and user account support",
+      "blocks": [
+        {
+          "type": "user",
+          "settings": {
+            "show_avatar": true
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Get Started",
+            "button_style": "solid"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
