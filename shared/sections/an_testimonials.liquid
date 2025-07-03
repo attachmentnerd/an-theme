@@ -1,0 +1,864 @@
+<!-- Unified Testimonials Section
+     Replaces: testimonial_grid_cards, testimonial_sa_book_style, 
+               testimonial_enhanced_highlights, content_quote_block
+     Version: 1.0.0
+-->
+
+<section class="an-testimonials an-testimonials--{{ section.settings.layout_style }} py-5 {{ section.settings.custom_class }}"
+         id="section-{{ section.id }}"
+         style="background: {{ section.settings.background_style }};">
+  
+  <div class="container">
+    <!-- Section Header -->
+    {% if section.settings.heading or section.settings.subheading %}
+      <div class="text-center mb-5 animate-fade-up">
+        {% if section.settings.heading %}
+          <h2 class="section-heading mb-3" style="font-size: {{ section.settings.heading_size | default: 40 }}px;">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subheading %}
+          <p class="section-subheading text-muted" style="font-size: 18px;">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Statistics Bar (Optional) -->
+    {% if section.settings.show_stats %}
+      <div class="stats-bar mb-5 animate-fade-up">
+        <div class="row text-center">
+          <div class="col-md-4">
+            <div class="stat-item">
+              <div class="stat-number" style="font-size: 48px; font-weight: 700; color: var(--c-brand-600);">
+                {{ section.settings.stat_1_number }}
+              </div>
+              <div class="stat-label text-muted">{{ section.settings.stat_1_label }}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="stat-item">
+              <div class="stat-number" style="font-size: 48px; font-weight: 700; color: var(--c-brand-600);">
+                {{ section.settings.stat_2_number }}
+              </div>
+              <div class="stat-label text-muted">{{ section.settings.stat_2_label }}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="stat-item">
+              <div class="stat-number" style="font-size: 48px; font-weight: 700; color: var(--c-brand-600);">
+                {{ section.settings.stat_3_number }}
+              </div>
+              <div class="stat-label text-muted">{{ section.settings.stat_3_label }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Layout: Single Quote -->
+    {% if section.settings.layout_style == 'single_quote' %}
+      {% for block in section.blocks %}
+        {% if block.type == 'quote' %}
+          <div class="single-quote-wrapper text-{{ section.settings.quote_alignment | default: 'center' }} animate-fade-up">
+            {% if section.settings.show_quote_icon %}
+              <div class="quote-icon mb-4">
+                {% render 'icon', icon: 'quote', size: 48, color: 'var(--c-brand-200)' %}
+              </div>
+            {% endif %}
+            
+            <blockquote class="single-quote mb-4" style="max-width: 800px; margin: 0 auto;">
+              <p class="quote-text" style="font-size: {{ block.settings.quote_size | default: 24 }}px; line-height: 1.6;">
+                {{ block.settings.quote }}
+              </p>
+            </blockquote>
+            
+            {% if block.settings.author_name %}
+              <div class="quote-attribution d-flex align-items-center justify-content-{{ section.settings.quote_alignment | default: 'center' }} gap-3">
+                {% if block.settings.author_image %}
+                  {% render 'responsive-image',
+                    image: block.settings.author_image,
+                    alt: block.settings.author_name,
+                    class: 'rounded-circle',
+                    sizes: '60px',
+                    aspect_ratio: '1/1',
+                    widths: '60,120',
+                    placeholder_type: 'avatar'
+                  %}
+                {% endif %}
+                <div>
+                  <div class="author-name font-weight-bold">{{ block.settings.author_name }}</div>
+                  {% if block.settings.author_title %}
+                    <div class="author-title text-muted small">{{ block.settings.author_title }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+    <!-- Layout: Grid -->
+    {% elsif section.settings.layout_style == 'grid' %}
+      <div class="testimonials-grid">
+        <div class="row g-4">
+          {% for block in section.blocks %}
+            {% if block.type == 'testimonial' %}
+              <div class="col-md-{{ 12 | divided_by: section.settings.columns }} animate-fade-up">
+                <div class="testimonial-card h-100 {% if block.settings.featured %}testimonial-card--featured{% endif %}">
+                  <!-- Category Badge -->
+                  {% if block.settings.category %}
+                    <div class="testimonial-badge mb-3">{{ block.settings.category }}</div>
+                  {% endif %}
+                  
+                  <!-- Rating -->
+                  {% if block.settings.rating %}
+                    <div class="testimonial-rating mb-3">
+                      {% for i in (1..block.settings.rating) %}
+                        <span class="star">★</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                  
+                  <!-- Quote -->
+                  <p class="testimonial-quote mb-4">"{{ block.settings.quote }}"</p>
+                  
+                  <!-- Author -->
+                  <div class="testimonial-author d-flex align-items-center gap-3 mt-auto">
+                    {% if block.settings.author_image %}
+                      {% render 'responsive-image',
+                        image: block.settings.author_image,
+                        alt: block.settings.author_name,
+                        class: 'rounded-circle',
+                        sizes: '48px',
+                        aspect_ratio: '1/1',
+                        widths: '48,96',
+                        placeholder_type: 'avatar'
+                      %}
+                    {% else %}
+                      <div class="avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" 
+                           style="width: 48px; height: 48px; background: var(--c-brand-100); color: var(--c-brand-600);">
+                        {{ block.settings.author_name | slice: 0 }}
+                      </div>
+                    {% endif %}
+                    <div>
+                      <div class="author-name font-weight-medium">{{ block.settings.author_name }}</div>
+                      {% if block.settings.author_title %}
+                        <div class="author-title text-muted small">{{ block.settings.author_title }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+    <!-- Layout: Featured -->
+    {% elsif section.settings.layout_style == 'featured' %}
+      {% assign featured_testimonial = section.blocks | where: 'type', 'featured' | first %}
+      {% if featured_testimonial %}
+        <div class="featured-testimonial-wrapper">
+          <div class="featured-testimonial animate-fade-up">
+            {% if section.settings.show_quote_icon %}
+              <div class="quote-icon-large mb-4 text-center">
+                {% render 'icon', icon: 'quote', size: 64, color: 'var(--c-brand-200)' %}
+              </div>
+            {% endif %}
+            
+            <!-- Large Rating -->
+            {% if featured_testimonial.settings.rating %}
+              <div class="featured-rating text-center mb-4">
+                {% for i in (1..5) %}
+                  <span class="star-large {% if i <= featured_testimonial.settings.rating %}filled{% endif %}">★</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            <!-- Quote -->
+            <blockquote class="featured-quote text-center mb-5">
+              <p style="font-size: 28px; line-height: 1.5;">{{ featured_testimonial.settings.quote }}</p>
+            </blockquote>
+            
+            <!-- Author -->
+            <div class="featured-author d-flex align-items-center justify-content-center gap-3">
+              {% if featured_testimonial.settings.author_image %}
+                {% render 'responsive-image',
+                  image: featured_testimonial.settings.author_image,
+                  alt: featured_testimonial.settings.author_name,
+                  class: 'rounded-circle',
+                  sizes: '80px',
+                  aspect_ratio: '1/1',
+                  widths: '80,160',
+                  placeholder_type: 'avatar'
+                %}
+              {% endif %}
+              <div>
+                <div class="author-name font-weight-bold" style="font-size: 18px;">
+                  {{ featured_testimonial.settings.author_name }}
+                </div>
+                {% if featured_testimonial.settings.author_title %}
+                  <div class="author-title text-muted">{{ featured_testimonial.settings.author_title }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+    <!-- Layout: Mixed (Featured + Grid) -->
+    {% elsif section.settings.layout_style == 'mixed' %}
+      {% assign featured_testimonial = section.blocks | where: 'type', 'featured' | first %}
+      {% assign grid_testimonials = section.blocks | where: 'type', 'testimonial' %}
+      
+      <!-- Featured Testimonial -->
+      {% if featured_testimonial %}
+        <div class="featured-section mb-5 animate-fade-up">
+          <div class="featured-testimonial-card">
+            <div class="row align-items-center">
+              <div class="col-md-8 mx-auto text-center">
+                {% if featured_testimonial.settings.rating %}
+                  <div class="featured-rating mb-3">
+                    {% for i in (1..5) %}
+                      <span class="star">★</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                
+                <p class="featured-quote mb-4" style="font-size: 24px;">
+                  "{{ featured_testimonial.settings.quote }}"
+                </p>
+                
+                <div class="featured-author">
+                  <strong>{{ featured_testimonial.settings.author_name }}</strong>
+                  {% if featured_testimonial.settings.author_title %}
+                    <span class="text-muted ms-2">{{ featured_testimonial.settings.author_title }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      
+      <!-- Grid Testimonials -->
+      {% if grid_testimonials.size > 0 %}
+        <div class="testimonials-grid">
+          <div class="row g-4">
+            {% for block in grid_testimonials %}
+              <div class="col-md-6 animate-fade-up">
+                <div class="testimonial-card h-100">
+                  {% if block.settings.rating %}
+                    <div class="testimonial-rating mb-3">
+                      {% for i in (1..block.settings.rating) %}
+                        <span class="star">★</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                  
+                  <p class="testimonial-quote mb-4">"{{ block.settings.quote }}"</p>
+                  
+                  <div class="testimonial-author mt-auto">
+                    <strong>{{ block.settings.author_name }}</strong>
+                    {% if block.settings.author_title %}
+                      <div class="text-muted small">{{ block.settings.author_title }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    <!-- CTA Button -->
+    {% if section.settings.show_cta and section.settings.cta_text %}
+      <div class="text-center mt-5 animate-fade-up">
+        <a href="{{ section.settings.cta_url }}" class="btn btn-primary-modern">
+          {{ section.settings.cta_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .an-testimonials {
+    position: relative;
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    padding: 40px 0;
+    border-bottom: 1px solid var(--c-ink-100);
+  }
+  
+  .stat-item {
+    margin-bottom: 20px;
+  }
+
+  /* Single Quote Layout */
+  .single-quote-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .single-quote .quote-text {
+    font-weight: 300;
+    color: var(--c-ink-800);
+    margin: 0;
+  }
+  
+  .quote-icon svg {
+    opacity: 0.3;
+  }
+
+  /* Grid Layout */
+  .testimonial-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  
+  .testimonial-card--featured {
+    border: 2px solid var(--c-brand-600);
+    position: relative;
+  }
+  
+  .testimonial-card--featured::before {
+    content: 'FEATURED';
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: var(--c-brand-600);
+    color: white;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+  }
+
+  /* Badges */
+  .testimonial-badge {
+    display: inline-block;
+    background: var(--c-brand-100);
+    color: var(--c-brand-600);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  /* Ratings */
+  .testimonial-rating .star,
+  .featured-rating .star {
+    color: var(--c-accent-lemon);
+    font-size: 16px;
+  }
+  
+  .featured-rating .star-large {
+    font-size: 32px;
+    color: var(--c-ink-200);
+  }
+  
+  .featured-rating .star-large.filled {
+    color: var(--c-accent-lemon);
+  }
+
+  /* Quotes */
+  .testimonial-quote {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--c-ink-700);
+    flex-grow: 1;
+  }
+  
+  .featured-quote p {
+    font-weight: 300;
+    color: var(--c-ink-800);
+  }
+
+  /* Authors */
+  .testimonial-author,
+  .quote-attribution {
+    border-top: 1px solid var(--c-ink-100);
+    padding-top: 20px;
+  }
+  
+  .author-name {
+    font-size: 14px;
+    color: var(--c-ink-900);
+  }
+  
+  .author-title {
+    font-size: 13px;
+  }
+  
+  .avatar-placeholder {
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  /* Featured Layout */
+  .featured-testimonial {
+    background: var(--c-brand-100);
+    padding: 60px 40px;
+    border-radius: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Mixed Layout */
+  .featured-testimonial-card {
+    background: var(--c-brand-100);
+    padding: 48px;
+    border-radius: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .featured-testimonial-card .star {
+    font-size: 20px;
+  }
+
+  /* Animations */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+  
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 767px) {
+    .testimonial-card {
+      padding: 24px;
+    }
+    
+    .single-quote .quote-text {
+      font-size: 20px !important;
+    }
+    
+    .featured-quote p {
+      font-size: 20px !important;
+    }
+    
+    .stats-bar .stat-number {
+      font-size: 36px !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "an-testimonials-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "featured", "label": "Single Featured" },
+        { "value": "mixed", "label": "Featured + Grid" },
+        { "value": "single_quote", "label": "Single Quote" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Grid Columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "info": "For grid layout only"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "#FAFAFA", "label": "Light Grey" },
+        { "value": "var(--c-brand-100)", "label": "Lavender" },
+        { "value": "transparent", "label": "Transparent" }
+      ],
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Section Subheading"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Statistics Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Statistics",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Stat 1 Number",
+      "default": "50,000+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "Happy Families"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Stat 2 Number",
+      "default": "98%"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "Success Rate"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Stat 3 Number",
+      "default": "15+"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "Years Experience"
+    },
+    {
+      "type": "header",
+      "content": "Quote Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quote_icon",
+      "label": "Show Quote Icon",
+      "default": true,
+      "info": "For single quote and featured layouts"
+    },
+    {
+      "type": "select",
+      "id": "quote_alignment",
+      "label": "Quote Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "info": "For single quote layout"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "See More Reviews"
+    },
+    {
+      "type": "text",
+      "id": "cta_url",
+      "label": "CTA Button URL",
+      "default": "#"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS Class"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Testimonial Quote",
+          "default": "This product has transformed our family life!"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Jane Doe"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author Title/Credentials",
+          "default": "Parent of 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Photo"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category Badge",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "Sleep", "label": "Sleep" },
+            { "value": "Big Feelings", "label": "Big Feelings" },
+            { "value": "Connection", "label": "Connection" },
+            { "value": "Development", "label": "Development" },
+            { "value": "Parenting", "label": "Parenting" }
+          ],
+          "default": ""
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured Testimonial",
+          "default": false,
+          "info": "Adds special styling in grid layout"
+        }
+      ]
+    },
+    {
+      "type": "featured",
+      "name": "Featured Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Featured Quote",
+          "default": "This approach has completely changed how we connect as a family."
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Sarah Johnson"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author Title",
+          "default": "Mother of 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Photo"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Single Quote",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote Text",
+          "default": "The most important thing we can do for our children is to help them feel safe, seen, soothed, and secure."
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Dr. Daniel Siegel"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author Title",
+          "default": "Clinical Professor of Psychiatry"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Photo"
+        },
+        {
+          "type": "range",
+          "id": "quote_size",
+          "label": "Quote Font Size",
+          "min": 18,
+          "max": 36,
+          "step": 2,
+          "default": 24,
+          "unit": "px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials - Grid",
+      "category": "Content",
+      "settings": {
+        "layout_style": "grid",
+        "columns": 3,
+        "heading": "What Parents Are Saying"
+      },
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "This has been a game-changer for our bedtime routine!",
+            "author_name": "Emily R.",
+            "rating": 5,
+            "category": "Sleep"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally, strategies that actually work with my strong-willed child.",
+            "author_name": "Marcus T.",
+            "rating": 5,
+            "category": "Big Feelings"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I feel so much more confident as a parent now.",
+            "author_name": "Sarah K.",
+            "rating": 5,
+            "featured": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Testimonials - Featured",
+      "category": "Content",
+      "settings": {
+        "layout_style": "featured",
+        "show_quote_icon": true
+      },
+      "blocks": [
+        {
+          "type": "featured",
+          "settings": {
+            "quote": "This approach has transformed our entire family dynamic.",
+            "author_name": "Jennifer Adams",
+            "author_title": "Mother of 3",
+            "rating": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Testimonials - Mixed",
+      "category": "Content",
+      "settings": {
+        "layout_style": "mixed",
+        "heading": "Success Stories",
+        "show_stats": true
+      }
+    },
+    {
+      "name": "Quote Block",
+      "category": "Content",
+      "settings": {
+        "layout_style": "single_quote",
+        "show_quote_icon": true,
+        "quote_alignment": "center"
+      },
+      "blocks": [
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Children need to know they matter to us, that we get them, and that we'll always be there for them.",
+            "author_name": "Dr. Eli Harwood"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
