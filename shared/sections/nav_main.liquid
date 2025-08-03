@@ -692,6 +692,81 @@
     width: 20px;
     height: 20px;
   }
+  
+  /* Search Form Styles */
+  .kajabi-nav__search-form {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s var(--an-ease-spring);
+    z-index: 10;
+  }
+  
+  .kajabi-nav__search-form.active {
+    width: 300px;
+    opacity: 1;
+  }
+  
+  @media (max-width: 767px) {
+    .kajabi-nav__search-form.active {
+      width: calc(100vw - 120px);
+      max-width: 250px;
+    }
+  }
+  
+  .kajabi-nav__search-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--kajabi-nav-pill-bg);
+    border-radius: var(--kajabi-nav-radius);
+    box-shadow: var(--kajabi-nav-pill-shadow);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--kajabi-nav-border);
+  }
+  
+  .kajabi-nav__search-input {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--kajabi-nav-text);
+    outline: none;
+  }
+  
+  .kajabi-nav__search-input::placeholder {
+    color: var(--kajabi-nav-text);
+    opacity: 0.6;
+  }
+  
+  .kajabi-nav__search-submit,
+  .kajabi-nav__search-close {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--kajabi-nav-text);
+    transition: var(--kajabi-nav-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .kajabi-nav__search-submit:hover,
+  .kajabi-nav__search-close:hover {
+    color: var(--kajabi-nav-text-hover);
+    transform: scale(1.1);
+  }
+  
+  .kajabi-nav__search-submit svg,
+  .kajabi-nav__search-close svg {
+    width: 18px;
+    height: 18px;
+  }
 
   /* Mobile adjustments for transparent pill */
   @media (max-width: 991px) {
@@ -1059,6 +1134,30 @@
             {% endcase %}
           </div>
         {% endfor %}
+        
+        <!-- Search Form (Hidden by default) -->
+        {% if section.settings.search_behavior == 'inline' or section.settings.search_behavior == blank %}
+        <form class="kajabi-nav__search-form" id="nav-search-form-{{ section.id }}" role="search">
+          <div class="kajabi-nav__search-wrapper">
+            <input type="search" 
+                   id="nav-search-input-{{ section.id }}"
+                   class="kajabi-nav__search-input" 
+                   placeholder="{{ section.settings.search_placeholder | default: 'Search...' }}" 
+                   aria-label="Search">
+            <button type="submit" class="kajabi-nav__search-submit" aria-label="Submit search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </button>
+            <button type="button" class="kajabi-nav__search-close" data-search-close aria-label="Close search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+        {% endif %}
 
         <!-- Mobile Hamburger -->
         <button class="kajabi-nav__hamburger"
@@ -1423,6 +1522,73 @@
   
   // Check when Kajabi updates settings
   document.addEventListener('kajabi:section:load', checkNavBackground);
+  
+  // Search functionality
+  const searchTriggers = document.querySelectorAll('[data-search-trigger]');
+  const searchForm = document.getElementById('nav-search-form-{{ section.id }}');
+  const searchInput = document.getElementById('nav-search-input-{{ section.id }}');
+  
+  searchTriggers.forEach(trigger => {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const searchBehavior = '{{ section.settings.search_behavior | default: "inline" }}';
+      
+      if (searchBehavior === 'inline' && searchForm) {
+        // Toggle search form visibility
+        searchForm.classList.toggle('active');
+        if (searchForm.classList.contains('active')) {
+          searchInput.focus();
+        }
+      } else {
+        // Redirect to search page
+        const searchUrl = '{{ section.settings.search_url | default: "/search" }}';
+        window.location.href = searchUrl;
+      }
+    });
+  });
+  
+  // Close search on escape key
+  if (searchInput) {
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        searchForm.classList.remove('active');
+      }
+    });
+  }
+  
+  // Handle search form submission
+  if (searchForm) {
+    searchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = searchInput.value.trim();
+      if (query) {
+        // Redirect to search page with query
+        const searchUrl = '{{ section.settings.search_url | default: "/search" }}';
+        window.location.href = searchUrl + '?q=' + encodeURIComponent(query);
+      }
+    });
+  }
+  
+  // Close search button
+  const searchCloseBtn = document.querySelector('[data-search-close]');
+  if (searchCloseBtn) {
+    searchCloseBtn.addEventListener('click', function() {
+      if (searchForm) {
+        searchForm.classList.remove('active');
+        searchInput.value = '';
+      }
+    });
+  }
+  
+  // Click outside to close search
+  document.addEventListener('click', function(e) {
+    if (searchForm && searchForm.classList.contains('active')) {
+      if (!searchForm.contains(e.target) && !e.target.closest('[data-search-trigger]')) {
+        searchForm.classList.remove('active');
+      }
+    }
+  });
 })();
 </script>
 
@@ -1525,6 +1691,41 @@
       "label": "Enable Sticky Navigation",
       "default": true,
       "info": "Navigation sticks to top when scrolling"
+    },
+    {
+      "type": "header",
+      "content": "Search Settings"
+    },
+    {
+      "type": "select",
+      "id": "search_behavior",
+      "label": "Search Behavior",
+      "default": "inline",
+      "options": [
+        {
+          "label": "Inline Search Bar",
+          "value": "inline"
+        },
+        {
+          "label": "Redirect to Search Page",
+          "value": "redirect"
+        }
+      ],
+      "info": "Choose how the search icon behaves"
+    },
+    {
+      "type": "text",
+      "id": "search_url",
+      "label": "Search Page URL",
+      "default": "/search",
+      "info": "URL for search results page (used when redirect is selected)"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder Text",
+      "default": "Search...",
+      "info": "Placeholder text for search input"
     },
     {
       "type": "checkbox",
