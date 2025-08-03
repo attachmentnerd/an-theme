@@ -4,8 +4,11 @@
     --kajabi-nav-height: 80px;
     --kajabi-nav-mobile-height: 60px;
     --kajabi-nav-padding-y: 1rem;
-    --kajabi-nav-bg: {{ section.settings.background_color | default: "#FFFFFF" }};
-    --kajabi-nav-bg-blur: {{ section.settings.background_color | default: "#FFFFFF" }}f2;
+    {% assign bg_opacity = section.settings.background_opacity | default: 100 | divided_by: 100.0 %}
+    {% assign bg_color = section.settings.background_color | default: "#FFFFFF" %}
+    --kajabi-nav-bg: {{ bg_color }};
+    --kajabi-nav-bg-solid: {{ section.settings.background_color | default: "#FFFFFF" }};
+    --kajabi-nav-opacity: {{ bg_opacity }};
     --kajabi-nav-text: {{ section.settings.text_color | default: "#3B4252" }};
     --kajabi-nav-text-hover: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
     --kajabi-nav-border: {{ section.settings.border_color | default: "rgba(94, 59, 255, 0.1)" }};
@@ -18,13 +21,33 @@
 
   /* Kajabi Navigation Base Styles */
   .kajabi-nav {
-    background-color: var(--kajabi-nav-bg);
-    box-shadow: var(--kajabi-nav-shadow);
     position: relative;
     z-index: 100;
     min-height: var(--kajabi-nav-height);
     transition: var(--kajabi-nav-transition);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  /* Navigation background with opacity */
+  .kajabi-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--kajabi-nav-bg);
+    opacity: var(--kajabi-nav-opacity);
+    z-index: -1;
+    {% if section.settings.blur_background %}
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    {% endif %}
+  }
+  
+  /* Box shadow on the nav element */
+  .kajabi-nav {
+    box-shadow: var(--kajabi-nav-shadow);
   }
 
   /* Container following Kajabi standards */
@@ -644,11 +667,22 @@
     background-color: transparent;
     box-shadow: none;
   }
+  
+  /* Override the background for transparent pill */
+  .kajabi-nav--transparent-pill::before {
+    display: none;
+  }
 
   .kajabi-nav--transparent-pill.kajabi-nav--scrolled {
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     box-shadow: var(--kajabi-nav-shadow);
+  }
+  
+  .kajabi-nav--transparent-pill.kajabi-nav--scrolled::before {
+    display: block;
+    background-color: var(--kajabi-nav-bg-solid);
+    opacity: 0.95;
   }
 
   .kajabi-nav--transparent-pill .kajabi-nav__pill-container {
@@ -1897,6 +1931,24 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "background_opacity",
+      "label": "Background Opacity",
+      "default": 100,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "info": "Set to less than 100% for transparent navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "blur_background",
+      "label": "Blur Background",
+      "default": false,
+      "info": "Apply backdrop blur effect (works best with transparency)"
     },
     {
       "type": "color",
