@@ -84,6 +84,42 @@
     display: block;
   }
 
+  /* Logo switching for dark backgrounds */
+  .kajabi-nav__logo .logo-light {
+    display: block;
+  }
+  
+  .kajabi-nav__logo .logo-dark {
+    display: none;
+  }
+  
+  /* When nav has dark background, switch logos */
+  .kajabi-nav--dark-bg .kajabi-nav__logo .logo-light {
+    display: none;
+  }
+  
+  .kajabi-nav--dark-bg .kajabi-nav__logo .logo-dark {
+    display: block;
+  }
+  
+  /* Apply same logic to mobile menu based on mobile background color */
+  .kajabi-nav__mobile-menu .logo-light {
+    display: block;
+  }
+  
+  .kajabi-nav__mobile-menu .logo-dark {
+    display: none;
+  }
+  
+  /* If mobile menu has dark background */
+  .kajabi-nav__mobile-menu--dark-bg .logo-light {
+    display: none;
+  }
+  
+  .kajabi-nav__mobile-menu--dark-bg .logo-dark {
+    display: block;
+  }
+
   .kajabi-nav__logo-text {
     font-size: 1.5rem;
     font-weight: 600;
@@ -848,12 +884,14 @@
 </style>
 
 <!-- Kajabi Navigation Section -->
-<nav class="kajabi-nav {% if section.settings.sticky %}kajabi-nav--sticky{% endif %} {% if section.settings.nav_style == 'transparent_pill' %}kajabi-nav--transparent-pill{% endif %}"
+<nav class="kajabi-nav {% if section.settings.sticky %}kajabi-nav--sticky{% endif %} {% if section.settings.nav_style == 'transparent_pill' %}kajabi-nav--transparent-pill{% endif %} {% if section.settings.use_dark_logo %}kajabi-nav--dark-bg{% endif %}"
      role="navigation"
      aria-label="{{ section.settings.aria_label | default: 'Main navigation' }}"
      id="section-{{ section.id }}"
      data-section-id="{{ section.id }}"
-     data-nav-style="{{ section.settings.nav_style | default: 'default' }}">
+     data-nav-style="{{ section.settings.nav_style | default: 'default' }}"
+     data-text-color="{{ section.settings.text_color | default: '#3B4252' }}"
+     data-bg-color="{{ section.settings.background_color | default: '#FFFFFF' }}">
   <div class="container">
     <div class="kajabi-nav__content">
       <!-- Logo -->
@@ -862,10 +900,28 @@
           {% comment %} Check for logo image block first {% endcomment %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.logo_image %}
+            {% comment %} Light background logo (default) {% endcomment %}
             <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}" 
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
                  loading="lazy"
+                 class="logo-light"
                  style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
+            
+            {% comment %} Dark background logo (if provided) {% endcomment %}
+            {% if logo_block.settings.dark_logo_image %}
+              <img src="{{ logo_block.settings.dark_logo_image | image_picker_url: '360x120' }}" 
+                   alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
+                   loading="lazy"
+                   class="logo-dark"
+                   style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
+            {% else %}
+              {% comment %} Fallback to same logo for dark mode {% endcomment %}
+              <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}" 
+                   alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
+                   loading="lazy"
+                   class="logo-dark"
+                   style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
+            {% endif %}
           {% elsif section.settings.logo_type == 'image' and section.settings.logo %}
             <div kjb-settings-id="{{ 'logo' | settings_id: section: section }}">
               <img src="{{ section.settings.logo | image_picker_url: '360x120' }}" 
@@ -1034,12 +1090,28 @@
           <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: '240x80' }}" 
                alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
                loading="lazy"
+               class="logo-light"
                style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% if logo_block.settings.dark_logo_image %}
+            <img src="{{ logo_block.settings.dark_logo_image | image_picker_url: '240x80' }}" 
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
+                 loading="lazy"
+                 class="logo-dark"
+                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% endif %}
         {% elsif logo_block and logo_block.settings.logo_image %}
           <img src="{{ logo_block.settings.logo_image | image_picker_url: '240x80' }}" 
                alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
                loading="lazy"
+               class="logo-light"
                style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% if logo_block.settings.dark_logo_image %}
+            <img src="{{ logo_block.settings.dark_logo_image | image_picker_url: '240x80' }}" 
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
+                 loading="lazy"
+                 class="logo-dark"
+                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% endif %}
         {% elsif section.settings.mobile_logo %}
           <img src="{{ section.settings.mobile_logo | image_picker_url: '240x80' }}" 
                alt="{{ section.settings.logo_alt | default: current_site.title }}" 
@@ -1317,6 +1389,40 @@
     lastScrollTop = scrollTop;
   });
   {% endif %}
+
+  // Logo switching based on background
+  function checkNavBackground() {
+    const nav = document.querySelector('.kajabi-nav');
+    if (!nav) return;
+    
+    const bgColor = nav.dataset.bgColor || '#FFFFFF';
+    const textColor = nav.dataset.textColor || '#3B4252';
+    
+    // Simple luminance check
+    function getLuminance(hex) {
+      const rgb = parseInt(hex.slice(1), 16);
+      const r = (rgb >> 16) & 0xff;
+      const g = (rgb >> 8) & 0xff;
+      const b = (rgb >> 0) & 0xff;
+      return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    }
+    
+    // Check if background is dark (luminance < 0.5) or if text is light (luminance > 0.5)
+    const bgLuminance = getLuminance(bgColor);
+    const textLuminance = getLuminance(textColor);
+    
+    if (bgLuminance < 0.5 || textLuminance > 0.6) {
+      nav.classList.add('kajabi-nav--dark-bg');
+    } else {
+      nav.classList.remove('kajabi-nav--dark-bg');
+    }
+  }
+  
+  // Check on load
+  checkNavBackground();
+  
+  // Check when Kajabi updates settings
+  document.addEventListener('kajabi:section:load', checkNavBackground);
 })();
 </script>
 
@@ -1327,6 +1433,13 @@
     {
       "type": "header",
       "content": "Logo Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_dark_logo",
+      "label": "Use Dark Background Logo",
+      "info": "Check this if the navigation has a dark background",
+      "default": false
     },
     {
       "type": "radio",
@@ -1581,6 +1694,12 @@
           "id": "logo_image",
           "label": "Logo Image",
           "info": "Recommended: 180x40px for desktop"
+        },
+        {
+          "type": "image_picker",
+          "id": "dark_logo_image",
+          "label": "Dark Background Logo",
+          "info": "Logo to show on dark backgrounds (same dimensions as main logo)"
         },
         {
           "type": "image_picker",
