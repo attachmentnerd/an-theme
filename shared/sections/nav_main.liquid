@@ -1623,17 +1623,27 @@
   
   // Check when Kajabi updates settings
   document.addEventListener('kajabi:section:load', checkNavBackground);
+})();
+
+// Search functionality - runs independently of navigation
+(function() {
+  'use strict';
   
   // Search functionality
   const searchTriggers = document.querySelectorAll('[data-search-trigger]');
   const searchForm = document.getElementById('nav-search-form-{{ section.id }}');
   const searchInput = document.getElementById('nav-search-input-{{ section.id }}');
   
+  console.log('Search triggers found:', searchTriggers.length);
+  console.log('Search form:', searchForm);
+  
   searchTriggers.forEach(trigger => {
     trigger.addEventListener('click', function(e) {
       e.preventDefault();
+      console.log('Search icon clicked!');
       
       const searchBehavior = '{{ section.settings.search_behavior | default: "inline" }}';
+      console.log('Search behavior:', searchBehavior);
       
       if (searchBehavior === 'inline' && searchForm) {
         // Toggle search form visibility
