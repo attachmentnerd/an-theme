@@ -119,6 +119,20 @@
   .kajabi-nav__mobile-menu--dark-bg .logo-dark {
     display: block;
   }
+  
+  /* Ensure logo switching works in transparent pill mode */
+  .kajabi-nav--transparent-pill .kajabi-nav__logo .logo-light,
+  .kajabi-nav--transparent-pill .kajabi-nav__logo .logo-dark {
+    /* Same behavior as regular nav */
+  }
+  
+  .kajabi-nav--transparent-pill.kajabi-nav--dark-bg .kajabi-nav__logo .logo-light {
+    display: none;
+  }
+  
+  .kajabi-nav--transparent-pill.kajabi-nav--dark-bg .kajabi-nav__logo .logo-dark {
+    display: block;
+  }
 
   .kajabi-nav__logo-text {
     font-size: 1.5rem;
@@ -1496,9 +1510,14 @@
     
     const bgColor = nav.dataset.bgColor || '#FFFFFF';
     const textColor = nav.dataset.textColor || '#3B4252';
+    const isTransparentPill = nav.classList.contains('kajabi-nav--transparent-pill');
     
     // Simple luminance check
     function getLuminance(hex) {
+      // Handle transparent backgrounds
+      if (hex.toLowerCase() === 'transparent' || hex === '') {
+        return 1; // Treat as light
+      }
       const rgb = parseInt(hex.slice(1), 16);
       const r = (rgb >> 16) & 0xff;
       const g = (rgb >> 8) & 0xff;
@@ -1506,14 +1525,25 @@
       return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
     }
     
-    // Check if background is dark (luminance < 0.5) or if text is light (luminance > 0.5)
-    const bgLuminance = getLuminance(bgColor);
-    const textLuminance = getLuminance(textColor);
-    
-    if (bgLuminance < 0.5 || textLuminance > 0.6) {
-      nav.classList.add('kajabi-nav--dark-bg');
+    // For transparent pill, check text color to determine which logo to use
+    if (isTransparentPill && (bgColor.toLowerCase() === 'transparent' || bgColor === '')) {
+      // If text is light, we're likely on a dark background
+      const textLuminance = getLuminance(textColor);
+      if (textLuminance > 0.6) {
+        nav.classList.add('kajabi-nav--dark-bg');
+      } else {
+        nav.classList.remove('kajabi-nav--dark-bg');
+      }
     } else {
-      nav.classList.remove('kajabi-nav--dark-bg');
+      // Regular background color check
+      const bgLuminance = getLuminance(bgColor);
+      const textLuminance = getLuminance(textColor);
+      
+      if (bgLuminance < 0.5 || textLuminance > 0.6) {
+        nav.classList.add('kajabi-nav--dark-bg');
+      } else {
+        nav.classList.remove('kajabi-nav--dark-bg');
+      }
     }
   }
   
