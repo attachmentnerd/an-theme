@@ -25,13 +25,15 @@
           </div>
         {% else %}
           <h2 class="an-footer__brand" kjb-settings-id="{{ 'brand_text' | settings_id: section: section }}">
-            <span class="an-footer__brand-icon">🔗</span>
+            {% if section.settings.brand_icon != blank %}
+              <span class="an-footer__brand-icon" kjb-settings-id="{{ 'brand_icon' | settings_id: section: section }}">{{ section.settings.brand_icon }}</span>
+            {% endif %}
             <span class="an-footer__brand-text">{{ section.settings.brand_text | default: 'Attachment Nerd' }}</span>
           </h2>
         {% endif %}
 
         {% if section.settings.tagline != blank %}
-          <p class="an-footer__tagline">{{ section.settings.tagline }}</p>
+          <p class="an-footer__tagline" kjb-settings-id="{{ 'tagline' | settings_id: section: section }}">{{ section.settings.tagline }}</p>
         {% endif %}
       </div>
     </div>
@@ -43,7 +45,7 @@
           <!-- Avatar with Soft Glow -->
           <div class="an-footer__avatar-container">
             <div class="an-footer__avatar-glow"></div>
-            <div class="an-footer__avatar-wrapper">
+            <div class="an-footer__avatar-wrapper" kjb-settings-id="{{ 'avatar_image' | settings_id: section: section }}">
               {% if section.settings.avatar_image != blank %}
                 <img src="{{ section.settings.avatar_image | image_picker_url: '120x120' }}" 
              alt="{{ section.settings.author_name | default: 'Avatar' }}" 
@@ -68,18 +70,20 @@
           <!-- Bio Content -->
           <div class="an-footer__bio-content">
             {% if section.settings.author_name != blank %}
-              <h3 class="an-footer__author-name">{{ section.settings.author_name }}</h3>
+              <h3 class="an-footer__author-name" kjb-settings-id="{{ 'author_name' | settings_id: section: section }}">{{ section.settings.author_name }}</h3>
             {% endif %}
 
             {% if section.settings.author_title != blank %}
-              <p class="an-footer__author-title">
-                <span class="an-footer__title-accent">✨</span>
+              <p class="an-footer__author-title" kjb-settings-id="{{ 'author_title' | settings_id: section: section }}">
+                {% if section.settings.title_accent != blank %}
+                  <span class="an-footer__title-accent" kjb-settings-id="{{ 'title_accent' | settings_id: section: section }}">{{ section.settings.title_accent }}</span>
+                {% endif %}
                 {{ section.settings.author_title }}
               </p>
             {% endif %}
 
             {% if section.settings.bio_text != blank %}
-              <p class="an-footer__bio-text">{{ section.settings.bio_text }}</p>
+              <p class="an-footer__bio-text" kjb-settings-id="{{ 'bio_text' | settings_id: section: section }}">{{ section.settings.bio_text }}</p>
             {% endif %}
 
             <!-- Social Pills -->
@@ -139,7 +143,7 @@
 
       <!-- Navigation with Cards -->
       <div class="an-footer__nav-section">
-        <h3 class="an-footer__nav-title">{{ section.settings.nav_title | default: 'Quick Links' }}</h3>
+        <h3 class="an-footer__nav-title" kjb-settings-id="{{ 'nav_title' | settings_id: section: section }}">{{ section.settings.nav_title | default: 'Quick Links' }}</h3>
 
         <div class="an-footer__nav-grid">
           {% for block in section.blocks %}
@@ -160,8 +164,9 @@
         {% if section.settings.show_cta %}
           <div class="an-footer__cta-wrapper">
             <a href="{{ section.settings.cta_url | default: '/contact' }}"
-               class="an-footer__cta-btn">
-              <span>{{ section.settings.cta_text | default: 'Get Started' }}</span>
+               class="an-footer__cta-btn"
+               kjb-settings-id="{{ 'cta_url' | settings_id: section: section }}">
+              <span kjb-settings-id="{{ 'cta_text' | settings_id: section: section }}">{{ section.settings.cta_text | default: 'Get Started' }}</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
@@ -176,8 +181,8 @@
       <div class="an-footer__bottom-content">
         {% if section.settings.show_copyright %}
           <p class="an-footer__copyright">
-            © {{ 'now' | date: '%Y' }} {{ section.settings.copyright_name | default: 'Attachment Nerd' }}.
-            {{ section.settings.copyright_text | default: 'All rights reserved.' }}
+            © {{ 'now' | date: '%Y' }} <span kjb-settings-id="{{ 'copyright_name' | settings_id: section: section }}">{{ section.settings.copyright_name | default: 'Attachment Nerd' }}</span>.
+            <span kjb-settings-id="{{ 'copyright_text' | settings_id: section: section }}">{{ section.settings.copyright_text | default: 'All rights reserved.' }}</span>
           </p>
         {% endif %}
 
@@ -725,6 +730,13 @@
     },
     {
       "type": "text",
+      "id": "brand_icon",
+      "label": "Brand Icon (Emoji)",
+      "default": "🔗",
+      "info": "Enter an emoji or leave blank for no icon"
+    },
+    {
+      "type": "text",
       "id": "tagline",
       "label": "Brand Tagline",
       "default": "Building secure connections through science & heart"
@@ -749,6 +761,13 @@
       "id": "author_title",
       "label": "Author Title",
       "default": "Licensed Therapist & Attachment Expert"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Title Accent (Emoji)",
+      "default": "✨",
+      "info": "Emoji that appears before the title"
     },
     {
       "type": "textarea",
