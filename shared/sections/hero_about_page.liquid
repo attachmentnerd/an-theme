@@ -1,8 +1,14 @@
-<section class="about-hero-section" style="{% if section.settings.background_image != blank %}
-    background-image: url('{{ section.settings.background_image | image_picker_url: 'placeholder.png' }}');
-  {% else %}
-    background-color: var(--c-brand-100);
-  {% endif %}">
+{% if section.settings.background_image != blank %}
+  {% capture unique_id %}about-hero-{{ section.id }}{% endcapture %}
+  {% assign image = section.settings.background_image %}
+  {% assign mobile_image = section.settings.mobile_background_image %}
+  {% assign overlay = section.settings.use_overlay %}
+  {% assign overlay_color = 'rgba(94, 59, 255, 0.1)' %}
+  {% include 'responsive-background' %}
+{% endif %}
+
+<section class="about-hero-section {% if section.settings.background_image != blank %}about-hero-{{ section.id }}{% endif %}" 
+         style="{% if section.settings.background_image == blank %}background-color: var(--c-brand-100);{% endif %}">
 
   <!-- Decorative elements for warmth and trust -->
   <div class="about-hero-decorative">
@@ -13,9 +19,7 @@
     <div class="about-hero-sparkle about-hero-sparkle--3">⭐</div>
   </div>
 
-  {% if section.settings.background_image != blank and section.settings.use_overlay %}
-    <div class="about-hero-overlay"></div>
-  {% endif %}
+  {% comment %} Overlay is now handled by responsive-background snippet {% endcomment %}
 
   <div class="container">
     <div class="about-hero-content animate-fade-up">
@@ -358,6 +362,18 @@
       "id": "background_image",
       "label": "Background Image",
       "default": "background.jpg"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Mobile Background Image (Optional)",
+      "info": "Different image for mobile devices. If not set, the main image will be used."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_overlay",
+      "label": "Add overlay to background image",
+      "default": true
     },
     {
       "type": "divider"

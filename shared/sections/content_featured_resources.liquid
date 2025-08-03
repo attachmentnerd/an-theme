@@ -29,12 +29,11 @@
             <!-- Resource Image -->
             <div class="featured-resource__image-wrapper">
               {% if block.settings.image != blank %}
-                <img 
-                  src="{{ block.settings.image | image_picker_url: '800x' }}"
-                  alt="{{ block.settings.title }}"
-                  class="featured-resource__image"
-                  loading="lazy"
-                >
+                <img src="{{ block.settings.image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ block.settings.title }} }}" 
+             class="featured-resource__image"
+             loading="lazy"
+             style="object-fit: cover;">
               {% else %}
                 <div class="featured-resource__placeholder">
                   <svg width="60" height="60" viewBox="0 0 24 24" fill="var(--c-brand-600)">

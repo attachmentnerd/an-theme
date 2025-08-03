@@ -1,0 +1,38 @@
+{% comment %}
+Example Template: Page with Custom Navigation
+This template demonstrates how to use a custom navigation section
+while maintaining the global navigation control setting.
+
+Usage: Create a new page template in Kajabi and use this code as reference.
+Requires a custom navigation section named 'nav_header_static'.
+{% endcomment %}
+
+<!-- Use custom static navigation instead of main navigation -->
+{% include "navigation_controller", nav_section: "nav_header_static" %}
+
+<!-- Page Content -->
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-info">
+        <strong>Custom Navigation Example:</strong> This page uses a static header navigation 
+        instead of the main navigation with mobile menu.
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ content_for_layout }}
+
+<!-- Example of conditional navigation based on user state -->
+{% if current_site_user %}
+  <!-- Show enhanced navigation for logged-in users -->
+  <div class="fixed-bottom p-3 bg-primary text-white text-center">
+    <small>Logged in as {{ current_site_user.name | default: current_site_user.email }}</small>
+  </div>
+{% else %}
+  <!-- Show call-to-action for visitors -->
+  <div class="fixed-bottom p-3 bg-secondary text-white text-center">
+    <small><a href="/login" class="text-white">Login</a> to access your account</small>
+  </div>
+{% endif %}

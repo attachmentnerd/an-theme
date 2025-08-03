@@ -65,10 +65,13 @@
                 </p>
                 <div class="d-flex align-items-center">
                   {% if block.settings.featured_image != blank %}
-                    <img src="{{ block.settings.featured_image | image_picker_url: '100x100' }}" 
-                         alt="{{ block.settings.featured_name }}"
-                         style="width: 60px; height: 60px; border-radius: 50%; margin-right: 16px;"
-                         kjb-settings-id="{{ 'featured_image' | settings_id: section: section, block: block }}">
+                    <div kjb-settings-id="{{ '>
+  <img src="{{ block.settings.featured_image | image_picker_url: '600x400' }}" 
+             alt="{{ {{ block.settings.featured_name }} }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+</div>
                   {% endif %}
                   <div>
                     <div style="font-weight: 600; font-size: 18px; color: var(--c-ink-900);" kjb-settings-id="{{ 'featured_name' | settings_id: section: section, block: block }}">
@@ -102,7 +105,7 @@
 {% schema %}
 {
   "name": "Testimonial - Enhanced Highlights",
-  "settings": [
+  "elements": [
     {
       "type": "text",
       "id": "heading",
@@ -119,7 +122,7 @@
     {
       "type": "review",
       "name": "Review",
-      "settings": [
+      "elements": [
         {
           "type": "textarea",
           "id": "review_text",
@@ -147,7 +150,7 @@
     {
       "type": "featured",
       "name": "Featured Testimonial",
-      "settings": [
+      "elements": [
         {
           "type": "textarea",
           "id": "featured_text",
@@ -175,7 +178,6 @@
     {
       "name": "Testimonial - Enhanced Highlights",
       "category": "Testimonials",
-      "description": "Grid of customer reviews with featured testimonial",
       "blocks": [
         {
           "type": "review",

@@ -6,10 +6,13 @@
       <div class="col-lg-5 mb-4 mb-lg-0">
         <div class="position-relative">
           {% if section.settings.book_image != blank %}
-            <img src="{{ section.settings.book_image | image_picker_url: 'sa-book-cover.png' }}" 
-                 alt="Securely Attached" 
-                 class="img-fluid rounded-lg shadow-lg hover-lift"
-                 kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
+            <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
+              <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+             alt="{{ Securely Attached }}" 
+             class="img-fluid rounded-lg shadow-lg hover-lift"
+             loading="lazy"
+             style="object-fit: cover;">
+            </div>
           {% else %}
             <div class="book-placeholder rounded-lg shadow-lg" style="width: 100%; height: 600px; background: linear-gradient(135deg, #FFE6F7 0%, #E9E6FF 100%); display: flex; align-items: center; justify-content: center;">
               <div style="text-align: center;">
@@ -69,11 +72,13 @@
             </p>
             <div class="d-flex align-items-center">
               {% if section.settings.testimonial_author_image %}
-                <img src="{{ section.settings.testimonial_author_image | image_picker_url: 'avatar-placeholder.png' }}" 
-                     alt="{{ section.settings.testimonial_author }}" 
-                     class="rounded-circle me-3"
-                     style="width: 48px; height: 48px; object-fit: cover;"
-                     kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}">
+                <div kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}" class="me-3" style="width: 48px; height: 48px;">
+                  <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
+             alt="{{ section.settings.testimonial_author }}" 
+             class="rounded-circle"
+             loading="lazy"
+             style="object-fit: cover;">
+                </div>
               {% endif %}
               <cite class="text-sm text-slate" kjb-settings-id="{{ 'testimonial_author' | settings_id: section: section }}">
                 — {{ section.settings.testimonial_author }}

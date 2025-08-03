@@ -56,6 +56,66 @@ As of v10.0.6+, Website and Landing themes are FULLY UNIFIED, sharing 100% of co
 3. Build process copies everything from shared
 4. No theme-specific overrides needed for Website/Landing
 
+## Navigation Control System (v21.0.24+)
+
+The AN themes include a comprehensive navigation control system that allows global and page-level control over navigation visibility.
+
+### Global Theme Setting
+
+A new **"Show Main Navigation"** setting is available in both Website and Landing theme settings:
+
+- **Location**: Theme Settings > Navigation
+- **Setting ID**: `show_navigation`
+- **Default**: `true` (enabled)
+- **Effect**: Controls navigation visibility site-wide
+
+### Implementation
+
+The navigation control uses the `navigation_controller` snippet included in both theme layouts:
+
+```liquid
+<!-- themes/website/layouts/theme.liquid -->
+<!-- themes/landing/layouts/theme.liquid -->
+{% include "navigation_controller" %}
+```
+
+### Page-Level Control
+
+For granular control, templates can override the global setting:
+
+```liquid
+<!-- Force show navigation -->
+{% include "navigation_controller", force_show: true %}
+
+<!-- Force hide navigation -->
+{% include "navigation_controller", force_hide: true %}
+
+<!-- Use custom navigation section -->
+{% include "navigation_controller", nav_section: "nav_header_static" %}
+```
+
+### Priority System
+
+1. **`force_hide: true`** - Always hides navigation
+2. **`force_show: true`** - Always shows navigation  
+3. **Global setting** - Uses `settings.show_navigation`
+
+### Use Cases
+
+- **Landing Pages**: Disable navigation globally, enable selectively
+- **Checkout Flow**: Hide navigation during purchase process
+- **A/B Testing**: Test pages with/without navigation
+- **Minimal Pages**: Create clean, distraction-free experiences
+
+### Available Navigation Sections
+
+- `nav_main` (default) - Full navigation with mobile menu
+- `nav_header_static` - Static header navigation
+- `nav_alt` - Alternative navigation styles
+- Custom navigation sections as needed
+
+For complete documentation, see `/NAVIGATION_CONTROL_GUIDE.md`.
+
 ## CSS Architecture
 
 ### Overview
@@ -952,6 +1012,11 @@ When creating new sections for Kajabi themes, follow these requirements:
 
 1. **File Location**: Place section files in `/shared/sections/` for website/landing themes
 
+**⚠️ CRITICAL: Block Schema Structure**
+- **Section-level settings**: Use `"settings": []` array
+- **Block-level settings**: Use `"elements": []` array (NOT "settings"!)
+- This is opposite of what you might expect, but it's how Kajabi requires it
+
 2. **Section Types - Static vs Dynamic**:
    
    **Static Sections**: Pre-loaded on specific pages, not moveable
@@ -968,7 +1033,7 @@ When creating new sections for Kajabi themes, follow these requirements:
    {% schema %}
    {
      "name": "Section Name",
-     "elements": [
+     "settings": [        // ← Section uses "settings"
        {
          "type": "text",
          "id": "heading",
@@ -979,7 +1044,7 @@ When creating new sections for Kajabi themes, follow these requirements:
        {
          "type": "block_type",
          "name": "Block Name",
-         "elements": [
+         "elements": [    // ← Blocks use "elements" (NOT "settings"!)
            {
              "type": "text",
              "id": "text",
@@ -1089,6 +1154,9 @@ Kajabi has specific Liquid syntax requirements that differ from standard Shopify
 
 <!-- include with parameters -->
 {% include 'snippet-name', param: value %}
+
+<!-- Shopify's linklists object -->
+{% for link in linklists[menu_handle].links %}
 ```
 
 #### ✅ Use Instead:
@@ -1112,6 +1180,11 @@ Kajabi has specific Liquid syntax requirements that differ from standard Shopify
 
 <!-- For images, use direct img tags -->
 <img src="{{ image | image_picker_url: 'master' }}" alt="Description" loading="lazy">
+
+<!-- Kajabi's link_lists object (MUST use current_site prefix) -->
+{% for link in current_site.link_lists[menu_handle].links %}
+  <a href="{{ link.url }}">{{ link.title }}</a>
+{% endfor %}
 ```
 
 #### Image Handling in Kajabi:
@@ -1145,7 +1218,15 @@ Kajabi has specific Liquid syntax requirements that differ from standard Shopify
    - Missing required range properties (min, max, step)
    - Using unsupported Liquid syntax (ternary operators)
 
-3. **Best Practices for Presets**
+3. **Menu Links Not Showing**
+   - **CRITICAL**: Must use `current_site.link_lists` in Kajabi
+   - Shopify uses `linklists` (no underscore, no prefix)
+   - Kajabi requires `current_site.link_lists` (with underscore AND current_site prefix)
+   - This affects navigation menus, footer menus, and any menu selections
+   - Always use: `{% for link in current_site.link_lists[menu_handle].links %}`
+   - The `.name` property is used instead of `.title` for link text
+
+4. **Best Practices for Presets**
    ```json
    "presets": [
      {

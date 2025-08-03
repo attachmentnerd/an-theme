@@ -39,13 +39,11 @@
           {% endif %}
 
           {% if section.settings.book_image %}
-            <img src="{{ section.settings.book_image | image_picker_url: '800x' }}"
-                 alt="{{ section.settings.book_title | default: 'Book cover' }}"
-                 class="book-showcase__image img-fluid"
-                 width="400"
-                 height="600"
-                 loading="lazy"
-                 style="aspect-ratio: 2/3; object-fit: cover;">
+            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+             alt="{{ {{ section.settings.book_title | default:  }}" 
+             class="book-showcase__image img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
           {% else %}
             <div class="book-showcase__placeholder">
               <svg width="300" height="450" viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -126,13 +124,11 @@
                 <p>"{{ section.settings.testimonial_text }}"</p>
                 <footer>
                   {% if section.settings.testimonial_author_image %}
-                    <img src="{{ section.settings.testimonial_author_image | image_picker_url: '160x' }}"
-                         alt="{{ section.settings.testimonial_author }}"
-                         class="testimonial__avatar"
-                         width="80"
-                         height="80"
-                         loading="lazy"
-                         style="aspect-ratio: 1/1; object-fit: cover; border-radius: 50%;">
+                    <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
+             alt="{{ {{ section.settings.testimonial_author }} }}" 
+             class="testimonial__avatar"
+             loading="lazy"
+             style="object-fit: cover;">
                   {% endif %}
                   <div>
                     <cite>{{ section.settings.testimonial_author }}</cite>

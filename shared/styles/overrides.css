@@ -5749,5 +5749,122 @@ select:focus {
 }
 
 /* ==========================================================================
+   Section Text Color Fixes
+   Added: 2025-08-02
+   ========================================================================== */
+
+/* Fix z-index for section overlay to ensure content is visible */
+.section {
+  position: relative;
+  color: inherit;
+}
+
+.section__overlay {
+  z-index: 0 !important;
+  pointer-events: none;
+}
+
+/* Hide overlay if no background color is set */
+.section__overlay[style*="background-color: ;"],
+.section__overlay[style*="background-color:;"],
+.section__overlay:not([style*="background-color"]) {
+  display: none !important;
+}
+
+/* Ensure sizer is positioned correctly */
+.section .sizer {
+  position: relative;
+  z-index: 1;
+}
+
+.section .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fix text color for sections with dark backgrounds */
+.section {
+  color: inherit;
+}
+
+/* When section has dark background overlay, use white text */
+.section .section__overlay[style*="background-color: rgba("] {
+  color: #fff;
+}
+
+/* Ensure all text elements inside dark sections use white */
+.section:has(.section__overlay[style*="background-color: rgba("]) {
+  color: #fff;
+}
+
+.section:has(.section__overlay[style*="background-color: rgba("]) h1,
+.section:has(.section__overlay[style*="background-color: rgba("]) h2,
+.section:has(.section__overlay[style*="background-color: rgba("]) h3,
+.section:has(.section__overlay[style*="background-color: rgba("]) h4,
+.section:has(.section__overlay[style*="background-color: rgba("]) h5,
+.section:has(.section__overlay[style*="background-color: rgba("]) h6,
+.section:has(.section__overlay[style*="background-color: rgba("]) p,
+.section:has(.section__overlay[style*="background-color: rgba("]) span,
+.section:has(.section__overlay[style*="background-color: rgba("]) div,
+.section:has(.section__overlay[style*="background-color: rgba("]) .block-type--text {
+  color: #fff !important;
+}
+
+/* Alternative approach for browsers that don't support :has() */
+.section[style*="background-color: rgba(22, 30, 42"],
+.section[style*="background-color: rgba(0, 0, 0"],
+.section[style*="background-color: #000"],
+.section[style*="background-color: #111"],
+.section[style*="background-color: #222"] {
+  color: #fff;
+}
+
+.section[style*="background-color: rgba(22, 30, 42"] *,
+.section[style*="background-color: rgba(0, 0, 0"] *,
+.section[style*="background-color: #000"] *,
+.section[style*="background-color: #111"] *,
+.section[style*="background-color: #222"] * {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   Animation Visibility Fix
+   Added: 2025-08-03
+   ========================================================================== */
+
+/* Fix for blocks with data-aos="none" being hidden */
+[data-aos="none"] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Only hide elements with actual animations */
+[data-aos]:not([data-aos="none"]) {
+  opacity: 0;
+  transition-property: transform, opacity;
+}
+
+[data-aos]:not([data-aos="none"]).aos-animate {
+  opacity: 1;
+}
+
+/* Ensure all blocks are visible by default */
+.block-type--text,
+.block-type--feature,
+.block-type--image,
+.block-type--cta,
+.block-type--video,
+.block-type--form,
+.block {
+  opacity: 1 !important;
+}
+
+/* Override any animation opacity if animations aren't initialized */
+body:not(.aos-initialized) [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ==========================================================================
    END OF SHARED STYLES
    ========================================================================== */

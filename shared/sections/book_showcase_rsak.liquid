@@ -11,11 +11,13 @@
             </div>
           {% endif %}
           
-          <img src="{{ section.settings.book_image | image_picker_url: 'rsak-book-cover.png' }}" 
-               alt="Raising Securely Attached Kids" 
-               class="img-fluid rounded-lg shadow-lg hover-lift"
-               loading="lazy"
-               kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
+          <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
+            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+             alt="{{ Raising Securely Attached Kids }}" 
+             class="img-fluid rounded-lg shadow-lg hover-lift"
+             loading="lazy"
+             style="object-fit: cover;">
+          </div>
           
           {% if section.settings.show_award_badge %}
             <div class="badge badge-teal position-absolute bottom-0 end-0 m-3">

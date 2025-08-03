@@ -1,0 +1,33 @@
+{% comment %}
+Example Template: Clean Landing Page Without Navigation
+This template demonstrates how to create a distraction-free landing page
+by hiding the main navigation while keeping the global setting intact.
+
+Usage: Create a new page template in Kajabi and use this code as reference.
+{% endcomment %}
+
+<!-- Force hide navigation for this template -->
+{% include "navigation_controller", force_hide: true %}
+
+<!-- Hero Section -->
+<section class="hero-section py-5" style="background: linear-gradient(135deg, #5E3BFF, #18D5E4); color: white; text-align: center;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1 class="display-4 mb-4">Clean Landing Page</h1>
+        <p class="lead mb-4">This page demonstrates navigation control - no navigation bar appears even if the global setting is enabled.</p>
+        <a href="#" class="btn btn-light btn-lg">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Content sections would go here -->
+{{ content_for_layout }}
+
+<!-- Optional: Add a minimal footer or contact info -->
+<footer class="py-4 text-center" style="background: #f8f9fa;">
+  <div class="container">
+    <p class="mb-0">Need help? <a href="/contact">Contact Us</a> | <a href="/">Back to Main Site</a></p>
+  </div>
+</footer>

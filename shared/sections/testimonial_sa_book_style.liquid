@@ -25,12 +25,13 @@
             
             <div class="d-flex align-items-center justify-content-center">
               {% if block.settings.author_image %}
-                <img src="{{ block.settings.author_image | image_picker_url: 'avatar-placeholder.png' }}" 
-                     alt="{{ block.settings.author }}" 
-                     class="rounded-circle me-3"
-                     style="width: 56px; height: 56px; object-fit: cover;"
-                     loading="lazy"
-                     kjb-settings-id="{{ 'author_image' | settings_id: section: section, block: block }}">
+                <div kjb-settings-id="{{ '>
+  <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
+             alt="{{ {{ block.settings.author }} }}" 
+             class="rounded-circle me-3"
+             loading="lazy"
+             style="object-fit: cover;">
+</div>
               {% else %}
                 <div class="rounded-circle me-3 d-flex align-items-center justify-content-center" 
                      style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--c-brand-600) 0%, var(--c-brand-800) 100%); color: white; font-weight: 600;">
@@ -73,12 +74,13 @@
               
               <div class="d-flex align-items-center">
                 {% if block.settings.author_image %}
-                  <img src="{{ block.settings.author_image | image_picker_url: 'avatar-placeholder.png' }}" 
-                       alt="{{ block.settings.author }}" 
-                       class="rounded-circle me-2"
-                       style="width: 40px; height: 40px; object-fit: cover;"
-                       loading="lazy"
-                       kjb-settings-id="{{ 'author_image' | settings_id: section: section, block: block }}">
+                  <div kjb-settings-id="{{ '>
+  <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
+             alt="{{ {{ block.settings.author }} }}" 
+             class="rounded-circle me-2"
+             loading="lazy"
+             style="object-fit: cover;">
+</div>
                 {% else %}
                   <div class="rounded-circle me-2 d-flex align-items-center justify-content-center" 
                        style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--c-accent-teal) 0%, var(--c-brand-600) 100%); color: white; font-size: 14px; font-weight: 600;">
@@ -137,7 +139,7 @@
 {% schema %}
 {
   "name": "Testimonial - SA Book Style",
-  "settings": [
+  "elements": [
     {
       "type": "text",
       "id": "heading",
@@ -185,7 +187,7 @@
     {
       "type": "testimonial",
       "name": "Testimonial",
-      "settings": [
+      "elements": [
         {
           "type": "textarea",
           "id": "quote",
@@ -219,7 +221,6 @@
     {
       "name": "Testimonial - SA Book Style",
       "category": "Content",
-      "description": "Book testimonials with author photos and stats",
       "blocks": [
         {
           "type": "testimonial",

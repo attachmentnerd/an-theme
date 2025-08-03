@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eli Harwood - Transform Your Audience with Attachment Science</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Brand Colors */
+            --c-brand-600: #5E3BFF;
+            --c-brand-800: #4025E0;
+            --c-brand-100: #E9E6FF;
+            --c-accent-teal: #18D5E4;
+            --c-accent-peach: #FF8BCB;
+            --c-accent-lemon: #FFE86B;
+            --c-ink-900: #1B1B29;
+            --c-ink-700: #323346;
+            --c-ink-500: #6E6F7B;
+            --c-white: #FFFFFF;
+            
+            /* Typography */
+            --fs-display: 3rem;
+            --fs-h1: 2.5rem;
+            --fs-h2: 1.875rem;
+            --fs-body-lg: 1.125rem;
+            --fs-body: 1rem;
+            --fs-caption: 0.875rem;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+        }
+        
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--c-ink-700);
+            font-weight: 400;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        /* Typography */
+        h1, h2, h3 {
+            color: var(--c-ink-900);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+        
+        h1 {
+            font-size: var(--fs-display);
+            margin-bottom: var(--space-lg);
+        }
+        
+        h2 {
+            font-size: var(--fs-h1);
+            margin-bottom: var(--space-xl);
+        }
+        
+        h3 {
+            font-size: var(--fs-h2);
+            margin-bottom: var(--space-md);
+        }
+        
+        /* Header Bar */
+        .header-bar {
+            background: var(--c-ink-900);
+            color: var(--c-white);
+            padding: var(--space-md) 0;
+            text-align: center;
+            font-size: var(--fs-caption);
+            font-weight: 500;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: var(--c-brand-100);
+            padding: var(--space-3xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -25%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--c-brand-600) 0%, transparent 70%);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .credentials-badge {
+            background: var(--c-white);
+            color: var(--c-brand-600);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: 9999px;
+            font-size: var(--fs-caption);
+            margin-bottom: var(--space-lg);
+            display: inline-block;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+        }
+        
+        .hero h1 {
+            color: var(--c-ink-900);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .hero .tagline {
+            font-size: var(--fs-body-lg);
+            color: var(--c-ink-700);
+            margin-bottom: var(--space-xl);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-2xl);
+            margin: var(--space-2xl) 0;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stat {
+            text-align: center;
+        }
+        
+        .hero-stat-number {
+            font-size: var(--fs-h1);
+            font-weight: 500;
+            display: block;
+            color: var(--c-brand-600);
+        }
+        
+        .hero-stat-label {
+            font-size: var(--fs-caption);
+            color: var(--c-ink-500);
+            margin-top: var(--space-xs);
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: 9999px;
+            font-size: var(--fs-body);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            margin: var(--space-sm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
+            color: var(--c-white);
+            box-shadow: 0 4px 12px rgba(94, 59, 255, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(94, 59, 255, 0.35);
+        }
+        
+        .btn-secondary {
+            background: var(--c-white);
+            color: var(--c-brand-600);
+            border: 2px solid var(--c-brand-100);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--c-brand-100);
+            transform: translateY(-2px);
+        }
+        
+        /* Credentials Section */
+        .credentials {
+            background: var(--c-white);
+            padding: var(--space-3xl) 0;
+        }
+        
+        .credentials h2 {
+            text-align: center;
+        }
+        
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .credential-card {
+            background: var(--c-white);
+            padding: var(--space-xl);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            border: 1px solid rgba(94, 59, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .credential-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .credential-card h3 {
+            color: var(--c-brand-600);
+            font-size: var(--fs-body-lg);
+            margin-bottom: var(--space-md);
+        }
+        
+        .credential-card p {
+            color: var(--c-ink-700);
+            font-size: var(--fs-body);
+        }
+        
+        /* Problems Section */
+        .problems {
+            background: linear-gradient(135deg, var(--c-brand-600) 0%, var(--c-brand-800) 100%);
+            color: var(--c-white);
+            padding: var(--space-3xl) 0;
+            position: relative;
+        }
+        
+        .problems::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--c-white) 0%, transparent 100%);
+        }
+        
+        .problems h2 {
+            text-align: center;
+            color: var(--c-white);
+        }
+        
+        .problems-intro {
+            text-align: center;
+            font-size: var(--fs-body-lg);
+            max-width: 700px;
+            margin: 0 auto var(--space-2xl);
+            opacity: 0.9;
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .problem-card {
+            background: rgba(255,255,255,0.1);
+            padding: var(--space-lg);
+            border-radius: 16px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .problem-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .problem-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            display: block;
+            filter: brightness(1.2);
+        }
+        
+        .problem-card h3 {
+            font-size: var(--fs-body-lg);
+            margin-bottom: var(--space-sm);
+            color: var(--c-white);
+        }
+        
+        .problem-card p {
+            font-size: var(--fs-body);
+            opacity: 0.9;
+        }
+        
+        /* Solutions Section */
+        .solutions {
+            background: var(--c-white);
+            padding: var(--space-3xl) 0;
+        }
+        
+        .solutions h2 {
+            text-align: center;
+        }
+        
+        .solution-intro {
+            text-align: center;
+            padding: var(--space-2xl) 0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .solution-intro h2 {
+            color: var(--c-brand-600);
+            margin-bottom: var(--space-md);
+        }
+        
+        .solution-intro p {
+            font-size: var(--fs-body-lg);
+            color: var(--c-ink-700);
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+        }
+        
+        .solution-card {
+            background: var(--c-white);
+            padding: var(--space-xl);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            border-left: 4px solid var(--c-accent-teal);
+            transition: all 0.3s ease;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.08);
+        }
+        
+        .solution-card h3 {
+            color: var(--c-ink-900);
+            font-size: var(--fs-body-lg);
+            margin-bottom: var(--space-md);
+        }
+        
+        .solution-card p {
+            color: var(--c-ink-700);
+            margin-bottom: var(--space-md);
+        }
+        
+        .outcome-note {
+            background: var(--c-brand-100);
+            color: var(--c-brand-800);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 8px;
+            font-size: var(--fs-caption);
+            font-style: italic;
+        }
+        
+        /* Benefits Section */
+        .benefits {
+            background: var(--c-brand-100);
+            padding: var(--space-3xl) 0;
+            position: relative;
+        }
+        
+        .benefits::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -25%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--c-accent-peach) 0%, transparent 70%);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+        
+        .benefits h2 {
+            text-align: center;
+        }
+        
+        .benefits-intro {
+            text-align: center;
+            font-size: var(--fs-body-lg);
+            max-width: 650px;
+            margin: 0 auto var(--space-2xl);
+            color: var(--c-ink-700);
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .benefit-card {
+            background: var(--c-white);
+            padding: var(--space-lg);
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            display: block;
+        }
+        
+        .benefit-card h3 {
+            font-size: var(--fs-body-lg);
+            margin-bottom: var(--space-sm);
+            color: var(--c-ink-900);
+        }
+        
+        .benefit-card p {
+            margin-bottom: var(--space-md);
+            color: var(--c-ink-700);
+        }
+        
+        .benefit-note {
+            background: var(--c-brand-100);
+            color: var(--c-brand-600);
+            padding: var(--space-xs) var(--space-md);
+            border-radius: 9999px;
+            font-size: var(--fs-caption);
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        /* Topics Section */
+        .topics {
+            background: var(--c-white);
+            padding: var(--space-3xl) 0;
+        }
+        
+        .topics h2 {
+            text-align: center;
+        }
+        
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .topic-card {
+            background: var(--c-white);
+            padding: var(--space-lg);
+            border-radius: 16px;
+            border: 2px solid var(--c-brand-100);
+            transition: all 0.3s ease;
+        }
+        
+        .topic-card:hover {
+            border-color: var(--c-brand-600);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(94, 59, 255, 0.1);
+        }
+        
+        .topic-card h3 {
+            color: var(--c-brand-600);
+            font-size: var(--fs-body-lg);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .topic-card p {
+            color: var(--c-ink-700);
+            font-size: var(--fs-body);
+        }
+        
+        /* CTA Section */
+        .final-cta {
+            background: linear-gradient(135deg, var(--c-brand-600) 0%, var(--c-brand-800) 100%);
+            color: var(--c-white);
+            padding: var(--space-3xl) 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -25%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--c-accent-teal) 0%, transparent 70%);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+        
+        .final-cta-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .final-cta h2 {
+            color: var(--c-white);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .final-cta p {
+            font-size: var(--fs-body-lg);
+            max-width: 600px;
+            margin: 0 auto var(--space-xl);
+            opacity: 0.9;
+        }
+        
+        .booking-info {
+            background: rgba(255,255,255,0.1);
+            padding: var(--space-xl);
+            border-radius: 24px;
+            margin: var(--space-xl) auto;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .booking-info h3 {
+            color: var(--c-white);
+            margin-bottom: var(--space-md);
+            font-size: var(--fs-body-lg);
+        }
+        
+        .booking-info p {
+            font-size: var(--fs-body);
+            opacity: 0.9;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --fs-display: 2rem;
+                --fs-h1: 1.875rem;
+                --fs-h2: 1.5rem;
+            }
+            
+            .hero-stats {
+                gap: var(--space-xl);
+            }
+            
+            .btn {
+                display: block;
+                margin: var(--space-sm) auto;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Bar -->
+    <div class="header-bar">
+        Licensed Therapist • USA TODAY Bestselling Author • 622K+ Followers • Attachment Science Expert
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="credentials-badge">
+                    ✨ Eli Harwood, MA, LPC
+                </div>
+                <h1>Help Your Audience Break Cycles & Build Connection</h1>
+                <p class="tagline">
+                    Transform overwhelmed caregivers into confident relationship-builders with science-backed attachment tools they can actually remember in the heat of the moment.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">622K+</span>
+                        <div class="hero-stat-label">Trusted Followers</div>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">17+</span>
+                        <div class="hero-stat-label">Years Clinical Practice</div>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">1M+</span>
+                        <div class="hero-stat-label">Lives Transformed</div>
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <a href="#contact" class="btn btn-primary">Book Speaking Engagement</a>
+                    <a href="#topics" class="btn btn-secondary">Explore Topics</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Credentials -->
+    <section class="credentials">
+        <div class="container">
+            <h2>Why Organizations Trust Eli</h2>
+            <div class="credentials-grid">
+                <div class="credential-card">
+                    <h3>🧠 Science-Backed Authority</h3>
+                    <p>Licensed therapist with 17+ years translating attachment research into tools that work in real life—not just in theory.</p>
+                </div>
+                
+                <div class="credential-card">
+                    <h3>📚 Bestselling Impact</h3>
+                    <p>Author of "Securely Attached" and "Raising Securely Attached Kids"—USA TODAY bestsellers that make the complex feel doable.</p>
+                </div>
+                
+                <div class="credential-card">
+                    <h3>💝 Trusted Voice</h3>
+                    <p>The "therapist-friend" to 622K+ followers who rely on her warm, judgment-free guidance to navigate their hardest moments.</p>
+                </div>
+                
+                <div class="credential-card">
+                    <h3>🎯 Real-World Results</h3>
+                    <p>Specializes in giving caregivers scripts they can actually remember when their kid is melting down and their nervous system is flooded.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problems -->
+    <section class="problems">
+        <div class="container">
+            <h2>The Pain Points Your Audience Knows Too Well</h2>
+            <p class="problems-intro">
+                These are the 3am Google searches, the tearful confessions, and the "I'm failing" moments that bring people to your event seeking real help.
+            </p>
+            
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <span class="problem-icon">😰</span>
+                    <h3>"I Just Snapped Again"</h3>
+                    <p>The crushing guilt after yelling—knowing the theory but losing it in the moment anyway</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">🔄</span>
+                    <h3>Childhood On Repeat</h3>
+                    <p>Watching their own trauma responses hijack their parenting despite desperately wanting different</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">🤯</span>
+                    <h3>Information Overload</h3>
+                    <p>Drowning in parenting advice but mind goes blank when their child is actually melting down</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">😔</span>
+                    <h3>"Am I Too Soft?"</h3>
+                    <p>Questioning if gentle parenting even works when tantrums still happen daily</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">💔</span>
+                    <h3>Relationship Ruptures</h3>
+                    <p>Feeling disconnected from their child and not knowing how to repair the growing distance</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">🏃‍♀️</span>
+                    <h3>Professional Burnout</h3>
+                    <p>Helpers feeling depleted, questioning if they're even making a difference anymore</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Intro -->
+    <section class="solution-intro">
+        <div class="container">
+            <h2>A Different Approach That Actually Sticks</h2>
+            <p>Eli doesn't just explain why relationships matter—she gives your audience the exact words to say when everything's falling apart.</p>
+        </div>
+    </section>
+
+    <!-- Solutions -->
+    <section class="solutions">
+        <div class="container">
+            <h2>How Eli Transforms Your Event</h2>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <h3>Makes Science Memorable</h3>
+                    <p>Translates complex attachment theory into sticky phrases and vivid metaphors that audiences actually remember under stress.</p>
+                    <div class="outcome-note">"Finally understood my triggers in a way that stuck"</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Provides Micro-Scripts</h3>
+                    <p>Delivers specific, 10-second interventions caregivers can use immediately—not lengthy protocols they'll forget.</p>
+                    <div class="outcome-note">"Used her 'pause and kneel' technique that same night"</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Normalizes the Struggle</h3>
+                    <p>Creates a judgment-free space where shame dissolves and growth begins through vulnerable, relatable storytelling.</p>
+                    <div class="outcome-note">"First time I didn't feel like a monster for yelling"</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Addresses Trauma Tenderly</h3>
+                    <p>Helps audiences understand their childhood wounds without retraumatizing, focusing on healing and hope.</p>
+                    <div class="outcome-note">"Saw my patterns clearly but felt empowered, not broken"</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Bridges Theory to Reality</h3>
+                    <p>Connects research to real tantrum moments, showing exactly how attachment science applies when kids are screaming.</p>
+                    <div class="outcome-note">"No fluff—just tools that work in real life"</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Ignites Lasting Change</h3>
+                    <p>Leaves audiences with clear next steps and the confidence to implement them, not just inspiration that fades.</p>
+                    <div class="outcome-note">"Still using her strategies six months later"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits">
+        <div class="container">
+            <h2>What Your Audience Takes Home</h2>
+            <p class="benefits-intro">
+                Beyond the event high—real tools for real life that create ripple effects in families, classrooms, and communities.
+            </p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-icon">🧘‍♀️</span>
+                    <h3>Calm in Chaos</h3>
+                    <p>Nervous system regulation tools that work in seconds when everything's exploding</p>
+                    <span class="benefit-note">Less yelling, more connecting</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">🗣️</span>
+                    <h3>Words That Work</h3>
+                    <p>Simple scripts for hard moments that build connection instead of walls</p>
+                    <span class="benefit-note">Actually remember what to say</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">💪</span>
+                    <h3>Confidence to Repair</h3>
+                    <p>Permission to mess up and tools to reconnect stronger than before</p>
+                    <span class="benefit-note">Rupture becomes opportunity</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">🔍</span>
+                    <h3>Pattern Recognition</h3>
+                    <p>Ability to spot triggers before they hijack reactions</p>
+                    <span class="benefit-note">Respond, don't react</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">❤️‍🩹</span>
+                    <h3>Healing Momentum</h3>
+                    <p>Hope that breaking cycles is possible, with a clear path forward</p>
+                    <span class="benefit-note">Their kids get a different story</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">🤝</span>
+                    <h3>Connection Culture</h3>
+                    <p>Skills that transform not just parent-child bonds but all relationships</p>
+                    <span class="benefit-note">Ripples through communities</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Speaking Topics -->
+    <section class="topics" id="topics">
+        <div class="container">
+            <h2>Speaking Topics That Transform</h2>
+            <div class="topics-grid">
+                <div class="topic-card">
+                    <h3>Breaking the Yelling Cycle</h3>
+                    <p>Practical nervous system tools for when caregivers are about to snap—with scripts that stick.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>From Triggered to Connected</h3>
+                    <p>Understanding childhood wounds and building new neural pathways for calmer responses.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>The Attachment Lens</h3>
+                    <p>How understanding attachment styles transforms every relationship—romantic, parental, and professional.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Repair Over Perfection</h3>
+                    <p>Why ruptures aren't failures and how to reconnect stronger after hard moments.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Co-Regulation in Crisis</h3>
+                    <p>Being the calm in their storm—practical techniques for high-stress moments.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Building Secure Teams</h3>
+                    <p>Applying attachment science to create psychologically safe workplaces and communities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="contact">
+        <div class="container">
+            <div class="final-cta-content">
+                <h2>Ready to Transform Your Event?</h2>
+                <p>
+                    Give your audience more than inspiration—give them the science-backed tools to break cycles and build the relationships they've always wanted.
+                </p>
+                
+                <div class="cta-buttons">
+                    <a href="mailto:speaking@attachmentnerd.com" class="btn btn-primary">Start the Conversation</a>
+                    <a href="tel:+15551234567" class="btn btn-secondary">Call (555) 123-4567</a>
+                </div>
+                
+                <div class="booking-info">
+                    <h3>What's Included</h3>
+                    <p>Every speaking engagement includes customized content for your audience, practical handouts with scripts and tools, plus follow-up resources to sustain the transformation. Virtual and in-person options available.</p>
+                </div>
+                
+                <p style="margin-top: var(--space-xl); font-size: var(--fs-body); opacity: 0.9;">
+                    <strong>Let's connect:</strong> speaking@attachmentnerd.com<br>
+                    <strong>Response time:</strong> Within 48 hours
+                </p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

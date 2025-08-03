@@ -70,10 +70,11 @@
           <div class="an-feature-testimonial__image">
             {% if section.settings.product_image %}
               <div class="product-showcase">
-                <img src="{{ section.settings.product_image | image_picker_url: 'master' }}"
-                     alt="{{ section.settings.product_image_alt | default: 'Product showcase' }}"
-                     class="img-fluid"
-                     loading="lazy">
+                <img src="{{ section.settings.product_image | image_picker_url: '400x600' }}" 
+             alt="{{ {{ section.settings.product_image_alt | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
             {% endif %}
           </div>
@@ -93,10 +94,11 @@
           <div class="testimonial-author">
             {% if section.settings.testimonial_image %}
               <div class="author-image">
-                <img src="{{ section.settings.testimonial_image | image_picker_url: '120x120' }}"
-                     alt="{{ section.settings.testimonial_name }}"
-                     width="60"
-                     height="60">
+                <img src="{{ section.settings.testimonial_image | image_picker_url: '120x120' }}" 
+             alt="{{ {{ section.settings.testimonial_name }} }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
             {% endif %}
 

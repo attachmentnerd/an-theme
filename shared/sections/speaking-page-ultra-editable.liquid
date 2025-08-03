@@ -1,0 +1,2438 @@
+{% comment %}
+  Ultra Editable Speaking Page Section
+  Every aspect is customizable - text, images, colors, fonts, spacing, and more
+{% endcomment %}
+
+<style>
+.speaking-page-ultra {
+  --hero-bg: {{ section.settings.hero_bg_color }};
+  --hero-text: {{ section.settings.hero_text_color }};
+  --content-bg: {{ section.settings.content_bg_color }};
+  --event-gradient-start: {{ section.settings.event_gradient_start }};
+  --event-gradient-end: {{ section.settings.event_gradient_end }};
+  --why-bg: {{ section.settings.why_bg_color }};
+  --btn-primary-bg: {{ section.settings.btn_primary_bg }};
+  --btn-primary-text: {{ section.settings.btn_primary_text_color }};
+  --btn-secondary-border: {{ section.settings.btn_secondary_border }};
+  --btn-secondary-text: {{ section.settings.btn_secondary_text }};
+  
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.speaking-page-ultra h1,
+.speaking-page-ultra h2,
+.speaking-page-ultra h3 {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: {{ section.settings.heading_weight }};
+}
+
+.speaking-page-ultra .container {
+  max-width: {{ section.settings.container_width }}px;
+  margin: 0 auto;
+  padding: 0 {{ section.settings.container_padding }}px;
+}
+
+/* Hero Section */
+.speaking-page-ultra .hero {
+  background: var(--hero-bg);
+  padding: {{ section.settings.hero_padding_top }}px 0 {{ section.settings.hero_padding_bottom }}px;
+  text-align: {{ section.settings.hero_text_align }};
+}
+
+.speaking-page-ultra .hero h1 {
+  font-size: {{ section.settings.hero_title_size }}px;
+  color: var(--hero-text);
+  margin-bottom: {{ section.settings.hero_title_margin }}px;
+  max-width: {{ section.settings.hero_title_max_width }}px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: {{ section.settings.hero_title_line_height }};
+}
+
+.speaking-page-ultra .hero-subtitle {
+  font-size: {{ section.settings.hero_subtitle_size }}px;
+  color: var(--hero-text);
+  opacity: {{ section.settings.hero_subtitle_opacity }};
+  max-width: {{ section.settings.hero_subtitle_max_width }}px;
+  margin: 0 auto {{ section.settings.hero_subtitle_margin }}px;
+}
+
+.speaking-page-ultra .hero-subtitle .highlight {
+  color: {{ section.settings.hero_highlight_color }};
+  font-weight: {{ section.settings.hero_highlight_weight }};
+}
+
+/* Video Section */
+.speaking-page-ultra .video-section {
+  padding: {{ section.settings.video_padding_top }}px 0 {{ section.settings.video_padding_bottom }}px;
+  background: {{ section.settings.video_bg_color }};
+}
+
+.speaking-page-ultra .video-wrapper {
+  max-width: {{ section.settings.video_max_width }}px;
+  margin: 0 auto;
+  border-radius: {{ section.settings.video_border_radius }}px;
+  overflow: hidden;
+  box-shadow: 0 {{ section.settings.video_shadow_y }}px {{ section.settings.video_shadow_blur }}px rgba(0,0,0,{{ section.settings.video_shadow_opacity }});
+}
+
+.speaking-page-ultra .video-placeholder {
+  position: relative;
+  padding-bottom: 56.25%;
+  background: {{ section.settings.video_placeholder_bg }};
+  overflow: hidden;
+}
+
+.speaking-page-ultra .video-placeholder img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.speaking-page-ultra .play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: {{ section.settings.play_button_size }}px;
+  height: {{ section.settings.play_button_size }}px;
+  background: {{ section.settings.play_button_bg }};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.speaking-page-ultra .play-button:hover {
+  transform: translate(-50%, -50%) scale({{ section.settings.play_button_hover_scale }});
+}
+
+.speaking-page-ultra .play-icon {
+  width: 0;
+  height: 0;
+  border-left: {{ section.settings.play_icon_size }}px solid {{ section.settings.play_icon_color }};
+  border-top: {{ section.settings.play_icon_size | divided_by: 1.67 }}px solid transparent;
+  border-bottom: {{ section.settings.play_icon_size | divided_by: 1.67 }}px solid transparent;
+  margin-left: {{ section.settings.play_icon_size | divided_by: 4 }}px;
+}
+
+/* Content Section */
+.speaking-page-ultra .content-section {
+  padding: {{ section.settings.content_padding_top }}px 0 {{ section.settings.content_padding_bottom }}px;
+  background: var(--content-bg);
+}
+
+.speaking-page-ultra .content-grid {
+  display: grid;
+  grid-template-columns: {{ section.settings.content_image_width }}fr {{ section.settings.content_text_width }}fr;
+  gap: {{ section.settings.content_gap }}px;
+  align-items: {{ section.settings.content_vertical_align }};
+}
+
+.speaking-page-ultra .content-image {
+  position: relative;
+  border-radius: {{ section.settings.content_image_radius }}px;
+  overflow: hidden;
+  box-shadow: 0 {{ section.settings.content_image_shadow_y }}px {{ section.settings.content_image_shadow_blur }}px rgba(0,0,0,{{ section.settings.content_image_shadow_opacity }});
+}
+
+.speaking-page-ultra .content-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.speaking-page-ultra .content-text h2 {
+  font-size: {{ section.settings.content_title_size }}px;
+  color: {{ section.settings.content_title_color }};
+  margin-bottom: {{ section.settings.content_title_margin }}px;
+}
+
+.speaking-page-ultra .content-text p {
+  font-size: {{ section.settings.content_text_size }}px;
+  margin-bottom: {{ section.settings.content_text_margin }}px;
+  color: {{ section.settings.content_text_color }};
+  line-height: {{ section.settings.content_text_line_height }};
+}
+
+.speaking-page-ultra .content-card {
+  background: {{ section.settings.content_card_bg }};
+  padding: {{ section.settings.content_card_padding }}px;
+  border-radius: {{ section.settings.content_card_radius }}px;
+  margin-top: {{ section.settings.content_card_margin }}px;
+  border-left: {{ section.settings.content_card_border_width }}px solid {{ section.settings.content_card_border_color }};
+}
+
+.speaking-page-ultra .btn-primary {
+  background: {% if section.settings.btn_primary_gradient %}linear-gradient(135deg, var(--btn-primary-bg) 0%, {{ section.settings.btn_primary_gradient_end }} 100%){% else %}var(--btn-primary-bg){% endif %};
+  color: var(--btn-primary-text);
+  padding: {{ section.settings.btn_padding_y }}px {{ section.settings.btn_padding_x }}px;
+  border-radius: {{ section.settings.btn_radius }}px;
+  font-size: {{ section.settings.btn_font_size }}px;
+  font-weight: {{ section.settings.btn_font_weight }};
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 {{ section.settings.btn_shadow_y }}px {{ section.settings.btn_shadow_blur }}px rgba(94, 59, 255, {{ section.settings.btn_shadow_opacity }});
+  border: none;
+  cursor: pointer;
+}
+
+.speaking-page-ultra .btn-primary:hover {
+  transform: translateY(-{{ section.settings.btn_hover_lift }}px);
+  box-shadow: 0 {{ section.settings.btn_shadow_y | plus: 4 }}px {{ section.settings.btn_shadow_blur | plus: 12 }}px rgba(94, 59, 255, {{ section.settings.btn_shadow_opacity | plus: 0.1 }});
+}
+
+/* Event Section */
+.speaking-page-ultra .event-section {
+  background: linear-gradient({{ section.settings.event_gradient_angle }}deg, var(--event-gradient-start) 0%, var(--event-gradient-end) 100%);
+  color: {{ section.settings.event_text_color }};
+  padding: {{ section.settings.event_padding_top }}px 0 {{ section.settings.event_padding_bottom }}px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+{% if section.settings.event_show_pattern %}
+.speaking-page-ultra .event-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="{{ section.settings.event_pattern_size }}" height="{{ section.settings.event_pattern_size }}" xmlns="http://www.w3.org/2000/svg"><circle cx="{{ section.settings.event_pattern_size | divided_by: 2 }}" cy="{{ section.settings.event_pattern_size | divided_by: 2 }}" r="{{ section.settings.event_pattern_size | divided_by: 2.5 }}" fill="{{ section.settings.event_pattern_color }}" fill-opacity="{{ section.settings.event_pattern_opacity }}"/></svg>');
+  background-size: {{ section.settings.event_pattern_size }}px {{ section.settings.event_pattern_size }}px;
+}
+{% endif %}
+
+.speaking-page-ultra .event-content {
+  position: relative;
+  z-index: 1;
+}
+
+.speaking-page-ultra .event-section h2 {
+  font-size: {{ section.settings.event_title_size }}px;
+  color: {{ section.settings.event_text_color }};
+  margin-bottom: {{ section.settings.event_title_margin }}px;
+  text-transform: {{ section.settings.event_title_transform }};
+  letter-spacing: {{ section.settings.event_title_spacing }}px;
+}
+
+.speaking-page-ultra .event-subtitle {
+  font-size: {{ section.settings.event_subtitle_size }}px;
+  opacity: {{ section.settings.event_subtitle_opacity }};
+}
+
+/* Ready Section */
+.speaking-page-ultra .ready-section {
+  padding: {{ section.settings.ready_padding_top }}px 0 {{ section.settings.ready_padding_bottom }}px;
+  background: {{ section.settings.ready_bg_color }};
+}
+
+.speaking-page-ultra .ready-header {
+  text-align: {{ section.settings.ready_header_align }};
+  margin-bottom: {{ section.settings.ready_header_margin }}px;
+}
+
+.speaking-page-ultra .ready-header h2 {
+  font-size: {{ section.settings.ready_title_size }}px;
+  color: {{ section.settings.ready_title_color }};
+  margin-bottom: {{ section.settings.ready_title_margin }}px;
+}
+
+.speaking-page-ultra .ready-steps {
+  display: grid;
+  grid-template-columns: {{ section.settings.ready_content_width }}fr {{ section.settings.ready_image_width }}fr;
+  gap: {{ section.settings.ready_gap }}px;
+  align-items: {{ section.settings.ready_vertical_align }};
+}
+
+.speaking-page-ultra .ready-list {
+  display: flex;
+  flex-direction: column;
+  gap: {{ section.settings.ready_items_gap }}px;
+}
+
+.speaking-page-ultra .ready-item {
+  display: flex;
+  gap: {{ section.settings.ready_item_gap }}px;
+}
+
+.speaking-page-ultra .ready-number {
+  flex-shrink: 0;
+  width: {{ section.settings.ready_number_size }}px;
+  height: {{ section.settings.ready_number_size }}px;
+  background: {{ section.settings.ready_number_bg }};
+  color: {{ section.settings.ready_number_color }};
+  border-radius: {% if section.settings.ready_number_circle %}50%{% else %}{{ section.settings.ready_number_radius }}px{% endif %};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: {{ section.settings.ready_number_font_size }}px;
+  font-weight: {{ section.settings.ready_number_font_weight }};
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.speaking-page-ultra .ready-content h3 {
+  font-size: {{ section.settings.ready_step_title_size }}px;
+  color: {{ section.settings.ready_step_title_color }};
+  text-transform: {{ section.settings.ready_step_title_transform }};
+  letter-spacing: {{ section.settings.ready_step_title_spacing }}px;
+  margin-bottom: {{ section.settings.ready_step_title_margin }}px;
+}
+
+.speaking-page-ultra .ready-content p {
+  color: {{ section.settings.ready_step_text_color }};
+  font-size: {{ section.settings.ready_step_text_size }}px;
+  line-height: {{ section.settings.ready_step_text_line_height }};
+}
+
+.speaking-page-ultra .ready-image {
+  position: relative;
+  border-radius: {{ section.settings.ready_image_radius }}px;
+  overflow: hidden;
+  box-shadow: 0 {{ section.settings.ready_image_shadow_y }}px {{ section.settings.ready_image_shadow_blur }}px rgba(0,0,0,{{ section.settings.ready_image_shadow_opacity }});
+}
+
+.speaking-page-ultra .ready-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.speaking-page-ultra .ready-cta {
+  margin-top: {{ section.settings.ready_cta_margin }}px;
+  display: flex;
+  gap: {{ section.settings.ready_cta_gap }}px;
+}
+
+.speaking-page-ultra .btn-secondary {
+  background: {{ section.settings.btn_secondary_bg }};
+  color: var(--btn-secondary-text);
+  padding: {{ section.settings.btn_padding_y }}px {{ section.settings.btn_padding_x }}px;
+  border-radius: {{ section.settings.btn_radius }}px;
+  font-size: {{ section.settings.btn_font_size }}px;
+  font-weight: {{ section.settings.btn_font_weight }};
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: {{ section.settings.btn_secondary_border_width }}px solid var(--btn-secondary-border);
+}
+
+.speaking-page-ultra .btn-secondary:hover {
+  background: {{ section.settings.btn_secondary_hover_bg }};
+  transform: translateY(-{{ section.settings.btn_hover_lift }}px);
+}
+
+/* Why Section */
+.speaking-page-ultra .why-section {
+  background: var(--why-bg);
+  padding: {{ section.settings.why_padding_top }}px 0 {{ section.settings.why_padding_bottom }}px;
+}
+
+.speaking-page-ultra .why-grid {
+  display: grid;
+  grid-template-columns: {{ section.settings.why_image_width }}fr {{ section.settings.why_content_width }}fr;
+  gap: {{ section.settings.why_gap }}px;
+  align-items: {{ section.settings.why_vertical_align }};
+}
+
+{% if section.settings.why_reverse_order %}
+.speaking-page-ultra .why-grid {
+  direction: rtl;
+}
+.speaking-page-ultra .why-grid > * {
+  direction: ltr;
+}
+{% endif %}
+
+.speaking-page-ultra .why-image {
+  position: relative;
+  border-radius: {{ section.settings.why_image_radius }}px;
+  overflow: hidden;
+}
+
+.speaking-page-ultra .why-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.speaking-page-ultra .why-content {
+  background: {{ section.settings.why_content_bg }};
+  padding: {{ section.settings.why_content_padding }}px;
+  border-radius: {{ section.settings.why_content_radius }}px;
+  box-shadow: 0 {{ section.settings.why_content_shadow_y }}px {{ section.settings.why_content_shadow_blur }}px rgba(0,0,0,{{ section.settings.why_content_shadow_opacity }});
+}
+
+.speaking-page-ultra .why-content h2 {
+  font-size: {{ section.settings.why_title_size }}px;
+  color: {{ section.settings.why_title_color }};
+  margin-bottom: {{ section.settings.why_title_margin }}px;
+}
+
+.speaking-page-ultra .why-content h3 {
+  font-size: {{ section.settings.why_subtitle_size }}px;
+  color: {{ section.settings.why_subtitle_color }};
+  margin-bottom: {{ section.settings.why_subtitle_margin }}px;
+}
+
+.speaking-page-ultra .why-content p {
+  margin-bottom: {{ section.settings.why_text_margin }}px;
+  color: {{ section.settings.why_text_color }};
+  font-size: {{ section.settings.why_text_size }}px;
+  line-height: {{ section.settings.why_text_line_height }};
+}
+
+.speaking-page-ultra .why-quote {
+  padding: {{ section.settings.why_quote_padding }}px;
+  background: {{ section.settings.why_quote_bg }};
+  border-radius: {{ section.settings.why_quote_radius }}px;
+  font-style: italic;
+  font-size: {{ section.settings.why_quote_size }}px;
+  color: {{ section.settings.why_quote_color }};
+  border-left: {{ section.settings.why_quote_border_width }}px solid {{ section.settings.why_quote_border_color }};
+  margin: {{ section.settings.why_quote_margin }}px 0;
+}
+
+/* Responsive */
+@media (max-width: {{ section.settings.mobile_breakpoint }}px) {
+  .speaking-page-ultra .content-grid,
+  .speaking-page-ultra .ready-steps,
+  .speaking-page-ultra .why-grid {
+    grid-template-columns: 1fr;
+    gap: {{ section.settings.mobile_gap }}px;
+  }
+  
+  .speaking-page-ultra .ready-cta {
+    flex-direction: column;
+  }
+  
+  .speaking-page-ultra .btn-primary,
+  .speaking-page-ultra .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .speaking-page-ultra .hero h1 {
+    font-size: {{ section.settings.hero_title_mobile_size }}px;
+  }
+  
+  .speaking-page-ultra .ready-header h2 {
+    font-size: {{ section.settings.ready_title_mobile_size }}px;
+  }
+  
+  .speaking-page-ultra .why-content h2 {
+    font-size: {{ section.settings.why_title_mobile_size }}px;
+  }
+}
+</style>
+
+<div class="speaking-page-ultra">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>{{ section.settings.hero_title }}</h1>
+      <p class="hero-subtitle">{{ section.settings.hero_subtitle_before }}<span class="highlight">{{ section.settings.hero_subtitle_highlight }}</span>{{ section.settings.hero_subtitle_after }}</p>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  {% if section.settings.show_video %}
+  <section class="video-section">
+    <div class="container">
+      <div class="video-wrapper">
+        <div class="video-placeholder">
+          {% if section.settings.video_thumbnail %}
+            {% assign image = section.settings.video_thumbnail %}
+            {% assign alt = section.settings.video_alt %}
+            {% capture sizes %}(max-width: 767px) 100vw, {{ section.settings.video_max_width }}px{% endcapture %}
+            {% assign priority = true %}
+            {% include 'responsive-image' %}
+          {% endif %}
+          {% if section.settings.video_url %}
+          <a href="{{ section.settings.video_url }}" class="play-button" aria-label="{{ section.settings.play_button_aria }}">
+            <div class="play-icon"></div>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <div class="container">
+      <div class="content-grid">
+        <div class="content-image">
+          {% if section.settings.content_image %}
+            {% assign image = section.settings.content_image %}
+            {% assign alt = section.settings.content_image_alt %}
+            {% assign sizes = '(max-width: 767px) 100vw, 50vw' %}
+            {% include 'responsive-image' %}
+          {% endif %}
+        </div>
+        <div class="content-text">
+          <h2>{{ section.settings.content_title }}</h2>
+          {% if section.settings.content_use_rich_text %}
+            {{ section.settings.content_rich_text }}
+          {% else %}
+            <p>{{ section.settings.content_text_1 }}</p>
+            <p>{{ section.settings.content_text_2 }}</p>
+          {% endif %}
+          {% if section.settings.content_highlight %}
+          <div class="content-card">
+            <p>{{ section.settings.content_highlight }}</p>
+          </div>
+          {% endif %}
+          {% if section.settings.content_button_text %}
+          <a href="{{ section.settings.content_button_url }}" class="btn-primary">
+            {{ section.settings.content_button_text }}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event Section -->
+  {% if section.settings.show_event_banner %}
+  <section class="event-section">
+    <div class="container">
+      <div class="event-content">
+        <h2>{{ section.settings.event_title }}</h2>
+        <p class="event-subtitle">{{ section.settings.event_subtitle }}</p>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Ready Section -->
+  <section class="ready-section">
+    <div class="container">
+      <div class="ready-header">
+        <h2>{{ section.settings.ready_title }}</h2>
+      </div>
+      <div class="ready-steps">
+        <div class="ready-list">
+          <!-- Step 1 -->
+          <div class="ready-item">
+            <div class="ready-number">{{ section.settings.step_1_number }}</div>
+            <div class="ready-content">
+              <h3>{{ section.settings.step_1_title }}</h3>
+              <p>{{ section.settings.step_1_text }}</p>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div class="ready-item">
+            <div class="ready-number">{{ section.settings.step_2_number }}</div>
+            <div class="ready-content">
+              <h3>{{ section.settings.step_2_title }}</h3>
+              <p>{{ section.settings.step_2_text }}</p>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="ready-item">
+            <div class="ready-number">{{ section.settings.step_3_number }}</div>
+            <div class="ready-content">
+              <h3>{{ section.settings.step_3_title }}</h3>
+              <p>{{ section.settings.step_3_text }}</p>
+            </div>
+          </div>
+          <div class="ready-cta">
+            {% if section.settings.ready_button_1_text %}
+            <a href="{{ section.settings.ready_button_1_url }}" class="btn-primary">
+              {{ section.settings.ready_button_1_text }}
+            </a>
+            {% endif %}
+            {% if section.settings.ready_button_2_text %}
+            <a href="{{ section.settings.ready_button_2_url }}" class="btn-secondary">
+              {{ section.settings.ready_button_2_text }}
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="ready-image">
+          {% if section.settings.ready_image %}
+            {% assign image = section.settings.ready_image %}
+            {% assign alt = section.settings.ready_image_alt %}
+            {% assign sizes = '(max-width: 767px) 100vw, 50vw' %}
+            {% include 'responsive-image' %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Section -->
+  <section class="why-section">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-image">
+          {% if section.settings.why_image %}
+            {% assign image = section.settings.why_image %}
+            {% assign alt = section.settings.why_image_alt %}
+            {% assign sizes = '(max-width: 767px) 100vw, 50vw' %}
+            {% include 'responsive-image' %}
+            %}
+          {% endif %}
+        </div>
+        <div class="why-content">
+          <h2>{{ section.settings.why_title }}</h2>
+          <h3>{{ section.settings.why_subtitle }}</h3>
+          {% if section.settings.why_use_rich_text %}
+            {{ section.settings.why_rich_text }}
+          {% else %}
+            <p>{{ section.settings.why_text_1 }}</p>
+            <p>{{ section.settings.why_text_2 }}</p>
+            <p>{{ section.settings.why_text_3 }}</p>
+          {% endif %}
+          {% if section.settings.why_quote %}
+          <div class="why-quote">
+            {{ section.settings.why_quote }}
+          </div>
+          {% endif %}
+          {% if section.settings.why_button_text %}
+          <a href="{{ section.settings.why_button_url }}" class="btn-primary">
+            {{ section.settings.why_button_text }}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Speaking Page - Ultra Editable",
+  "class": "speaking-page-ultra",
+  "elements": [
+    {
+      "type": "header",
+      "content": "🎨 Global Settings"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Font Weight",
+      "default": "500",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container Max Width",
+      "default": 1200,
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "label": "Container Side Padding",
+      "default": 24,
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_breakpoint",
+      "label": "Mobile Breakpoint",
+      "default": 768,
+      "min": 576,
+      "max": 992,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Mobile Gap Between Elements",
+      "default": 32,
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "🎯 Hero Section"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "Eli helps overwhelmed caregivers find their calm in the chaos—with science-backed tools that lead to deeper connection"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle_before",
+      "label": "Hero Subtitle (Before Highlight)",
+      "default": "Transform your audience with practical attachment science they can "
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle_highlight",
+      "label": "Hero Subtitle (Highlighted Text)",
+      "default": "actually remember"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle_after",
+      "label": "Hero Subtitle (After Highlight)",
+      "default": " when their nervous system is flooded"
+    },
+    {
+      "type": "color",
+      "id": "hero_bg_color",
+      "label": "Hero Background Color",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "hero_text_color",
+      "label": "Hero Text Color",
+      "default": "#1B1B29"
+    },
+    {
+      "type": "color",
+      "id": "hero_highlight_color",
+      "label": "Hero Highlight Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "range",
+      "id": "hero_highlight_weight",
+      "label": "Hero Highlight Font Weight",
+      "default": 500,
+      "min": 300,
+      "max": 700,
+      "step": 100
+    },
+    {
+      "type": "range",
+      "id": "hero_padding_top",
+      "label": "Hero Padding Top",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "hero_padding_bottom",
+      "label": "Hero Padding Bottom",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "hero_text_align",
+      "label": "Hero Text Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "hero_title_size",
+      "label": "Hero Title Size (Desktop)",
+      "default": 48,
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "hero_title_mobile_size",
+      "label": "Hero Title Size (Mobile)",
+      "default": 32,
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "hero_title_line_height",
+      "label": "Hero Title Line Height",
+      "default": 1.2,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "hero_title_margin",
+      "label": "Hero Title Bottom Margin",
+      "default": 24,
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "hero_title_max_width",
+      "label": "Hero Title Max Width",
+      "default": 800,
+      "min": 500,
+      "max": 1200,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "hero_subtitle_size",
+      "label": "Hero Subtitle Size",
+      "default": 18,
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "hero_subtitle_opacity",
+      "label": "Hero Subtitle Opacity",
+      "default": 1,
+      "min": 0.5,
+      "max": 1,
+      "step": 0.05
+    },
+    {
+      "type": "range",
+      "id": "hero_subtitle_max_width",
+      "label": "Hero Subtitle Max Width",
+      "default": 600,
+      "min": 400,
+      "max": 900,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "hero_subtitle_margin",
+      "label": "Hero Subtitle Bottom Margin",
+      "default": 32,
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "🎬 Video Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video",
+      "label": "Show Video Section",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "video_thumbnail",
+      "label": "Video Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "video_alt",
+      "label": "Video Alt Text",
+      "default": "Eli Harwood Speaker Reel"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "play_button_aria",
+      "label": "Play Button Aria Label",
+      "default": "Play speaker reel video"
+    },
+    {
+      "type": "color",
+      "id": "video_bg_color",
+      "label": "Video Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "video_placeholder_bg",
+      "label": "Video Placeholder Background",
+      "default": "#1B1B29"
+    },
+    {
+      "type": "range",
+      "id": "video_padding_top",
+      "label": "Video Section Padding Top",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "video_padding_bottom",
+      "label": "Video Section Padding Bottom",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "video_max_width",
+      "label": "Video Max Width",
+      "default": 800,
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "video_border_radius",
+      "label": "Video Border Radius",
+      "default": 16,
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "video_shadow_y",
+      "label": "Video Shadow Y Offset",
+      "default": 12,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "video_shadow_blur",
+      "label": "Video Shadow Blur",
+      "default": 24,
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "video_shadow_opacity",
+      "label": "Video Shadow Opacity",
+      "default": 0.08,
+      "min": 0,
+      "max": 0.3,
+      "step": 0.02
+    },
+    {
+      "type": "range",
+      "id": "play_button_size",
+      "label": "Play Button Size",
+      "default": 80,
+      "min": 60,
+      "max": 120,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "play_button_bg",
+      "label": "Play Button Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "play_button_hover_scale",
+      "label": "Play Button Hover Scale",
+      "default": 1.1,
+      "min": 1,
+      "max": 1.3,
+      "step": 0.05
+    },
+    {
+      "type": "range",
+      "id": "play_icon_size",
+      "label": "Play Icon Size",
+      "default": 20,
+      "min": 15,
+      "max": 30,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "play_icon_color",
+      "label": "Play Icon Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "📝 Content Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "content_image",
+      "label": "Content Image"
+    },
+    {
+      "type": "text",
+      "id": "content_image_alt",
+      "label": "Content Image Alt Text",
+      "default": "Eli Harwood speaking on stage"
+    },
+    {
+      "type": "text",
+      "id": "content_title",
+      "label": "Content Title",
+      "default": "Breaking cycles starts with understanding why"
+    },
+    {
+      "type": "checkbox",
+      "id": "content_use_rich_text",
+      "label": "Use Rich Text Editor for Content",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "content_rich_text",
+      "label": "Content Rich Text",
+      "default": "<p>Using brain science, clinical wisdom, and real-life stories, Eli helps audiences understand <strong>why</strong> they react the way they do—and gives them practical scripts to respond differently.</p><p>Your attendees leave with more than inspiration. They get science-backed micro-tools they can use <em>tonight</em> when bedtime goes sideways or tomorrow when their trauma gets triggered.</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "content_text_1",
+      "label": "Content Text 1",
+      "default": "Using brain science, clinical wisdom, and real-life stories, Eli helps audiences understand why they react the way they do—and gives them practical scripts to respond differently."
+    },
+    {
+      "type": "textarea",
+      "id": "content_text_2",
+      "label": "Content Text 2",
+      "default": "Your attendees leave with more than inspiration. They get science-backed micro-tools they can use tonight when bedtime goes sideways or tomorrow when their trauma gets triggered."
+    },
+    {
+      "type": "textarea",
+      "id": "content_highlight",
+      "label": "Content Highlight Box",
+      "default": "Translation: No more \"I know better but I keep yelling anyway.\" Eli bridges the gap between knowing and doing with tools that stick when everything's falling apart."
+    },
+    {
+      "type": "text",
+      "id": "content_button_text",
+      "label": "Content Button Text",
+      "default": "Book Eli to Speak"
+    },
+    {
+      "type": "action",
+      "id": "content_button_url",
+      "label": "Content Button URL",
+      "default": "#book"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Content Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_top",
+      "label": "Content Padding Top",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom",
+      "label": "Content Padding Bottom",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Content Grid Gap",
+      "default": 48,
+      "min": 24,
+      "max": 96,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_image_width",
+      "label": "Content Image Width Ratio",
+      "default": 1,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "content_text_width",
+      "label": "Content Text Width Ratio",
+      "default": 1,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "select",
+      "id": "content_vertical_align",
+      "label": "Content Vertical Alignment",
+      "default": "center",
+      "options": [
+        { "value": "start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_image_radius",
+      "label": "Content Image Border Radius",
+      "default": 16,
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_image_shadow_y",
+      "label": "Content Image Shadow Y",
+      "default": 12,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_image_shadow_blur",
+      "label": "Content Image Shadow Blur",
+      "default": 24,
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_image_shadow_opacity",
+      "label": "Content Image Shadow Opacity",
+      "default": 0.08,
+      "min": 0,
+      "max": 0.3,
+      "step": 0.02
+    },
+    {
+      "type": "range",
+      "id": "content_title_size",
+      "label": "Content Title Size",
+      "default": 40,
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "content_title_color",
+      "label": "Content Title Color",
+      "default": "#1B1B29"
+    },
+    {
+      "type": "range",
+      "id": "content_title_margin",
+      "label": "Content Title Bottom Margin",
+      "default": 24,
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_text_size",
+      "label": "Content Text Size",
+      "default": 16,
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Content Text Color",
+      "default": "#323346"
+    },
+    {
+      "type": "range",
+      "id": "content_text_line_height",
+      "label": "Content Text Line Height",
+      "default": 1.6,
+      "min": 1.2,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "content_text_margin",
+      "label": "Content Text Bottom Margin",
+      "default": 16,
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "content_card_bg",
+      "label": "Content Card Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "range",
+      "id": "content_card_padding",
+      "label": "Content Card Padding",
+      "default": 24,
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_card_radius",
+      "label": "Content Card Border Radius",
+      "default": 16,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_card_margin",
+      "label": "Content Card Top Margin",
+      "default": 24,
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_card_border_width",
+      "label": "Content Card Border Width",
+      "default": 0,
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "content_card_border_color",
+      "label": "Content Card Border Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "🎉 Event Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_event_banner",
+      "label": "Show Event Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "event_title",
+      "label": "Event Title",
+      "default": "Transform Your Event"
+    },
+    {
+      "type": "text",
+      "id": "event_subtitle",
+      "label": "Event Subtitle",
+      "default": "Science + Heart + Practical Tools = Real Change"
+    },
+    {
+      "type": "color",
+      "id": "event_gradient_start",
+      "label": "Event Gradient Start Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "event_gradient_end",
+      "label": "Event Gradient End Color",
+      "default": "#4025E0"
+    },
+    {
+      "type": "range",
+      "id": "event_gradient_angle",
+      "label": "Event Gradient Angle",
+      "default": 135,
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "unit": "deg"
+    },
+    {
+      "type": "color",
+      "id": "event_text_color",
+      "label": "Event Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "event_padding_top",
+      "label": "Event Padding Top",
+      "default": 48,
+      "min": 24,
+      "max": 96,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "event_padding_bottom",
+      "label": "Event Padding Bottom",
+      "default": 48,
+      "min": 24,
+      "max": 96,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "event_show_pattern",
+      "label": "Show Background Pattern",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "event_pattern_size",
+      "label": "Pattern Size",
+      "default": 100,
+      "min": 50,
+      "max": 200,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "event_pattern_color",
+      "label": "Pattern Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "event_pattern_opacity",
+      "label": "Pattern Opacity",
+      "default": 0.05,
+      "min": 0.01,
+      "max": 0.2,
+      "step": 0.01
+    },
+    {
+      "type": "range",
+      "id": "event_title_size",
+      "label": "Event Title Size",
+      "default": 40,
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "event_title_margin",
+      "label": "Event Title Bottom Margin",
+      "default": 4,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "event_title_transform",
+      "label": "Event Title Text Transform",
+      "default": "uppercase",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "event_title_spacing",
+      "label": "Event Title Letter Spacing",
+      "default": 2,
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "event_subtitle_size",
+      "label": "Event Subtitle Size",
+      "default": 18,
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "event_subtitle_opacity",
+      "label": "Event Subtitle Opacity",
+      "default": 0.9,
+      "min": 0.5,
+      "max": 1,
+      "step": 0.05
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "✅ Ready Section"
+    },
+    {
+      "type": "text",
+      "id": "ready_title",
+      "label": "Ready Section Title",
+      "default": "ELI'S READY TO SERVE YOUR AUDIENCE"
+    },
+    {
+      "type": "text",
+      "id": "step_1_number",
+      "label": "Step 1 Number",
+      "default": "01"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Step 1 Title",
+      "default": "SYNC SCHEDULES"
+    },
+    {
+      "type": "textarea",
+      "id": "step_1_text",
+      "label": "Step 1 Text",
+      "default": "Virtual or in-person, Eli brings the same warm energy and practical wisdom. We'll work together to customize content perfectly for your unique audience—whether that's burned-out parents, helping professionals, or entire organizations."
+    },
+    {
+      "type": "text",
+      "id": "step_2_number",
+      "label": "Step 2 Number",
+      "default": "02"
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Step 2 Title",
+      "default": "SHARE THE VISION"
+    },
+    {
+      "type": "textarea",
+      "id": "step_2_text",
+      "label": "Step 2 Text",
+      "default": "You know your people best. Share their struggles, their language, their dreams. Eli crafts every talk to meet them exactly where they are—with stories and scripts that resonate deeply."
+    },
+    {
+      "type": "text",
+      "id": "step_3_number",
+      "label": "Step 3 Number",
+      "default": "03"
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Step 3 Title",
+      "default": "LET'S LOCK IT IN"
+    },
+    {
+      "type": "textarea",
+      "id": "step_3_text",
+      "label": "Step 3 Text",
+      "default": "From pre-event connection to follow-up resources, we handle the details so you can focus on your people. Your attendees get tools they'll use for years, not just inspiration that fades."
+    },
+    {
+      "type": "text",
+      "id": "ready_button_1_text",
+      "label": "Ready Button 1 Text",
+      "default": "Schedule Speaker Call"
+    },
+    {
+      "type": "action",
+      "id": "ready_button_1_url",
+      "label": "Ready Button 1 URL",
+      "default": "#schedule"
+    },
+    {
+      "type": "text",
+      "id": "ready_button_2_text",
+      "label": "Ready Button 2 Text",
+      "default": "View Topics"
+    },
+    {
+      "type": "action",
+      "id": "ready_button_2_url",
+      "label": "Ready Button 2 URL",
+      "default": "#topics"
+    },
+    {
+      "type": "image_picker",
+      "id": "ready_image",
+      "label": "Ready Section Image"
+    },
+    {
+      "type": "text",
+      "id": "ready_image_alt",
+      "label": "Ready Image Alt Text",
+      "default": "Eli connecting with audience"
+    },
+    {
+      "type": "color",
+      "id": "ready_bg_color",
+      "label": "Ready Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "ready_padding_top",
+      "label": "Ready Padding Top",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_padding_bottom",
+      "label": "Ready Padding Bottom",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "ready_header_align",
+      "label": "Ready Header Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "ready_header_margin",
+      "label": "Ready Header Bottom Margin",
+      "default": 48,
+      "min": 24,
+      "max": 72,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_title_size",
+      "label": "Ready Title Size (Desktop)",
+      "default": 40,
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_title_mobile_size",
+      "label": "Ready Title Size (Mobile)",
+      "default": 30,
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "ready_title_color",
+      "label": "Ready Title Color",
+      "default": "#1B1B29"
+    },
+    {
+      "type": "range",
+      "id": "ready_title_margin",
+      "label": "Ready Title Bottom Margin",
+      "default": 16,
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_gap",
+      "label": "Ready Grid Gap",
+      "default": 48,
+      "min": 24,
+      "max": 96,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_content_width",
+      "label": "Ready Content Width Ratio",
+      "default": 1,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "ready_image_width",
+      "label": "Ready Image Width Ratio",
+      "default": 1,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "select",
+      "id": "ready_vertical_align",
+      "label": "Ready Vertical Alignment",
+      "default": "start",
+      "options": [
+        { "value": "start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "ready_items_gap",
+      "label": "Ready Items Gap",
+      "default": 32,
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_item_gap",
+      "label": "Ready Item Internal Gap",
+      "default": 24,
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_number_size",
+      "label": "Ready Number Size",
+      "default": 60,
+      "min": 40,
+      "max": 80,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "ready_number_bg",
+      "label": "Ready Number Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "ready_number_color",
+      "label": "Ready Number Text Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "ready_number_circle",
+      "label": "Ready Number as Circle",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "ready_number_radius",
+      "label": "Ready Number Border Radius (if not circle)",
+      "default": 8,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_number_font_size",
+      "label": "Ready Number Font Size",
+      "default": 30,
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "ready_number_font_weight",
+      "label": "Ready Number Font Weight",
+      "default": "500",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "ready_step_title_size",
+      "label": "Ready Step Title Size",
+      "default": 18,
+      "min": 16,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "ready_step_title_color",
+      "label": "Ready Step Title Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "select",
+      "id": "ready_step_title_transform",
+      "label": "Ready Step Title Transform",
+      "default": "uppercase",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "ready_step_title_spacing",
+      "label": "Ready Step Title Letter Spacing",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_step_title_margin",
+      "label": "Ready Step Title Bottom Margin",
+      "default": 8,
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "ready_step_text_color",
+      "label": "Ready Step Text Color",
+      "default": "#323346"
+    },
+    {
+      "type": "range",
+      "id": "ready_step_text_size",
+      "label": "Ready Step Text Size",
+      "default": 16,
+      "min": 14,
+      "max": 18,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_step_text_line_height",
+      "label": "Ready Step Text Line Height",
+      "default": 1.6,
+      "min": 1.2,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "ready_image_radius",
+      "label": "Ready Image Border Radius",
+      "default": 16,
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_image_shadow_y",
+      "label": "Ready Image Shadow Y",
+      "default": 12,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_image_shadow_blur",
+      "label": "Ready Image Shadow Blur",
+      "default": 24,
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_image_shadow_opacity",
+      "label": "Ready Image Shadow Opacity",
+      "default": 0.08,
+      "min": 0,
+      "max": 0.3,
+      "step": 0.02
+    },
+    {
+      "type": "range",
+      "id": "ready_cta_margin",
+      "label": "Ready CTA Top Margin",
+      "default": 32,
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ready_cta_gap",
+      "label": "Ready CTA Buttons Gap",
+      "default": 16,
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "🌟 Why Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "why_image",
+      "label": "Why Section Image"
+    },
+    {
+      "type": "text",
+      "id": "why_image_alt",
+      "label": "Why Image Alt Text",
+      "default": "Eli Harwood professional headshot"
+    },
+    {
+      "type": "text",
+      "id": "why_title",
+      "label": "Why Title",
+      "default": "WHY ELI?"
+    },
+    {
+      "type": "text",
+      "id": "why_subtitle",
+      "label": "Why Subtitle",
+      "default": "Because your audience deserves more than fleeting inspiration"
+    },
+    {
+      "type": "checkbox",
+      "id": "why_use_rich_text",
+      "label": "Use Rich Text Editor for Why Content",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "why_rich_text",
+      "label": "Why Rich Text Content",
+      "default": "<p>With 17+ years of clinical experience, two bestselling books, and a gift for making complex science feel like common sense, Eli transforms how people understand themselves and their relationships.</p><p>She's the therapist-friend to 622K+ followers who trust her to translate attachment research into <strong>actual words they can say</strong> when their child is melting down or their partner is pulling away.</p><p>Eli doesn't just explain <em>why</em> relationships matter. She gives your audience the exact scripts to build them—even when their nervous system is screaming and old patterns are pulling hard.</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "why_text_1",
+      "label": "Why Text 1",
+      "default": "With 17+ years of clinical experience, two bestselling books, and a gift for making complex science feel like common sense, Eli transforms how people understand themselves and their relationships."
+    },
+    {
+      "type": "textarea",
+      "id": "why_text_2",
+      "label": "Why Text 2",
+      "default": "She's the therapist-friend to 622K+ followers who trust her to translate attachment research into actual words they can say when their child is melting down or their partner is pulling away."
+    },
+    {
+      "type": "textarea",
+      "id": "why_text_3",
+      "label": "Why Text 3",
+      "default": "Eli doesn't just explain why relationships matter. She gives your audience the exact scripts to build them—even when their nervous system is screaming and old patterns are pulling hard."
+    },
+    {
+      "type": "textarea",
+      "id": "why_quote",
+      "label": "Why Quote",
+      "default": "Connection is possible, repair is powerful, and it's never too late to earn secure attachment. Let me show your people how."
+    },
+    {
+      "type": "text",
+      "id": "why_button_text",
+      "label": "Why Button Text",
+      "default": "Start the Conversation"
+    },
+    {
+      "type": "action",
+      "id": "why_button_url",
+      "label": "Why Button URL",
+      "default": "#contact"
+    },
+    {
+      "type": "color",
+      "id": "why_bg_color",
+      "label": "Why Section Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "range",
+      "id": "why_padding_top",
+      "label": "Why Padding Top",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_padding_bottom",
+      "label": "Why Padding Bottom",
+      "default": 64,
+      "min": 24,
+      "max": 120,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_gap",
+      "label": "Why Grid Gap",
+      "default": 48,
+      "min": 24,
+      "max": 96,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_image_width",
+      "label": "Why Image Width Ratio",
+      "default": 1,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "why_content_width",
+      "label": "Why Content Width Ratio",
+      "default": 1,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "checkbox",
+      "id": "why_reverse_order",
+      "label": "Reverse Order (Image Right)",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "why_vertical_align",
+      "label": "Why Vertical Alignment",
+      "default": "center",
+      "options": [
+        { "value": "start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "why_image_radius",
+      "label": "Why Image Border Radius",
+      "default": 16,
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "why_content_bg",
+      "label": "Why Content Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "why_content_padding",
+      "label": "Why Content Padding",
+      "default": 48,
+      "min": 24,
+      "max": 72,
+      "step": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_content_radius",
+      "label": "Why Content Border Radius",
+      "default": 24,
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_content_shadow_y",
+      "label": "Why Content Shadow Y",
+      "default": 12,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_content_shadow_blur",
+      "label": "Why Content Shadow Blur",
+      "default": 24,
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_content_shadow_opacity",
+      "label": "Why Content Shadow Opacity",
+      "default": 0.08,
+      "min": 0,
+      "max": 0.3,
+      "step": 0.02
+    },
+    {
+      "type": "range",
+      "id": "why_title_size",
+      "label": "Why Title Size (Desktop)",
+      "default": 40,
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_title_mobile_size",
+      "label": "Why Title Size (Mobile)",
+      "default": 30,
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "why_title_color",
+      "label": "Why Title Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "range",
+      "id": "why_title_margin",
+      "label": "Why Title Bottom Margin",
+      "default": 24,
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_subtitle_size",
+      "label": "Why Subtitle Size",
+      "default": 30,
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "why_subtitle_color",
+      "label": "Why Subtitle Color",
+      "default": "#1B1B29"
+    },
+    {
+      "type": "range",
+      "id": "why_subtitle_margin",
+      "label": "Why Subtitle Bottom Margin",
+      "default": 16,
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "why_text_color",
+      "label": "Why Text Color",
+      "default": "#323346"
+    },
+    {
+      "type": "range",
+      "id": "why_text_size",
+      "label": "Why Text Size",
+      "default": 16,
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_text_line_height",
+      "label": "Why Text Line Height",
+      "default": 1.6,
+      "min": 1.2,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "why_text_margin",
+      "label": "Why Text Bottom Margin",
+      "default": 24,
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "why_quote_bg",
+      "label": "Why Quote Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "why_quote_color",
+      "label": "Why Quote Text Color",
+      "default": "#4025E0"
+    },
+    {
+      "type": "range",
+      "id": "why_quote_size",
+      "label": "Why Quote Font Size",
+      "default": 18,
+      "min": 16,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_quote_padding",
+      "label": "Why Quote Padding",
+      "default": 24,
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_quote_radius",
+      "label": "Why Quote Border Radius",
+      "default": 16,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "why_quote_border_width",
+      "label": "Why Quote Border Width",
+      "default": 4,
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "why_quote_border_color",
+      "label": "Why Quote Border Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "range",
+      "id": "why_quote_margin",
+      "label": "Why Quote Vertical Margin",
+      "default": 24,
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "🎯 Buttons"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_bg",
+      "label": "Primary Button Background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_primary_gradient",
+      "label": "Use Gradient for Primary Button",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_gradient_end",
+      "label": "Primary Button Gradient End Color",
+      "default": "#7B4DFF"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_text_color",
+      "label": "Primary Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_bg",
+      "label": "Secondary Button Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_hover_bg",
+      "label": "Secondary Button Hover Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_text",
+      "label": "Secondary Button Text Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_border",
+      "label": "Secondary Button Border Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "range",
+      "id": "btn_secondary_border_width",
+      "label": "Secondary Button Border Width",
+      "default": 2,
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "btn_padding_x",
+      "label": "Button Horizontal Padding",
+      "default": 32,
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "btn_padding_y",
+      "label": "Button Vertical Padding",
+      "default": 16,
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "label": "Button Border Radius",
+      "default": 9999,
+      "min": 0,
+      "max": 9999,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "btn_font_size",
+      "label": "Button Font Size",
+      "default": 16,
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "btn_font_weight",
+      "label": "Button Font Weight",
+      "default": "500",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "btn_hover_lift",
+      "label": "Button Hover Lift",
+      "default": 2,
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "btn_shadow_y",
+      "label": "Button Shadow Y Offset",
+      "default": 4,
+      "min": 0,
+      "max": 12,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "btn_shadow_blur",
+      "label": "Button Shadow Blur",
+      "default": 12,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "btn_shadow_opacity",
+      "label": "Button Shadow Opacity",
+      "default": 0.25,
+      "min": 0,
+      "max": 0.5,
+      "step": 0.05
+    }
+  ],
+  "presets": [
+    {
+      "name": "Speaking Page - Ultra Editable",
+      "category": "Pages",
+      "description": "Fully customizable speaking page with complete control over every element - text, colors, fonts, spacing, and more"
+    }
+  ]
+}
+{% endschema %}

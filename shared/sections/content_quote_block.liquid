@@ -24,12 +24,11 @@
           {% if section.settings.show_left_image and section.settings.left_image != blank %}
             <div class="col-lg-3 {% if section.settings.layout_style == 'centered' %}d-none d-lg-block{% endif %}">
               <div class="an-quote-block__image an-quote-block__image--left">
-                <img src="{{ section.settings.left_image | image_picker_url: '400x600' }}" 
-                     alt="{{ section.settings.left_image_alt | default: 'Quote decoration' }}"
-                     class="img-fluid"
-                     width="400"
-                     height="600"
-                     loading="lazy">
+                <img src="{{ section.settings.left_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ section.settings.left_image_alt | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
             </div>
           {% endif %}
@@ -58,11 +57,10 @@
                   {% if section.settings.author_image %}
                     <div class="an-quote-block__author-image">
                       <img src="{{ section.settings.author_image | image_picker_url: '120x120' }}" 
-                           alt="{{ section.settings.author_name }}"
-                           class="rounded-circle"
-                           width="56"
-                           height="56"
-                           loading="lazy">
+             alt="{{ {{ section.settings.author_name }} }}" 
+             class="rounded-circle"
+             loading="lazy"
+             style="object-fit: cover;">
                     </div>
                   {% endif %}
                   <div class="an-quote-block__author-info">
@@ -84,12 +82,11 @@
           {% if section.settings.show_right_image and section.settings.right_image != blank %}
             <div class="col-lg-3 {% if section.settings.layout_style == 'centered' %}d-none d-lg-block{% endif %}">
               <div class="an-quote-block__image an-quote-block__image--right">
-                <img src="{{ section.settings.right_image | image_picker_url: '400x600' }}" 
-                     alt="{{ section.settings.right_image_alt | default: 'Quote decoration' }}"
-                     class="img-fluid"
-                     width="400"
-                     height="600"
-                     loading="lazy">
+                <img src="{{ section.settings.right_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ section.settings.right_image_alt | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
             </div>
           {% endif %}

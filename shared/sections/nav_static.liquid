@@ -1,0 +1,1018 @@
+<style>
+  /* CSS Custom Properties for Kajabi Theme Integration */
+  :root {
+    --kajabi-nav-height: 80px;
+    --kajabi-nav-mobile-height: 60px;
+    --kajabi-nav-padding-y: 1rem;
+    --kajabi-nav-bg: {{ section.settings.background_color | default: "#FFFFFF" }};
+    --kajabi-nav-bg-blur: {{ section.settings.background_color | default: "#FFFFFF" }}f2;
+    --kajabi-nav-text: {{ section.settings.text_color | default: "#3B4252" }};
+    --kajabi-nav-text-hover: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
+    --kajabi-nav-border: {{ section.settings.border_color | default: "rgba(94, 59, 255, 0.1)" }};
+    --kajabi-nav-shadow: var(--an-shadow-sm);
+    --kajabi-nav-transition: all 0.3s var(--an-ease-spring);
+    --kajabi-nav-radius: 9999px;
+    --kajabi-nav-pill-bg: {{ section.settings.pill_bg_color | default: "#FFFFFF" }};
+    --kajabi-nav-pill-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Kajabi Navigation Base Styles */
+  .kajabi-nav {
+    background-color: var(--kajabi-nav-bg);
+    box-shadow: var(--kajabi-nav-shadow);
+    position: relative;
+    z-index: 100;
+    min-height: var(--kajabi-nav-height);
+    transition: var(--kajabi-nav-transition);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+
+  /* Container following Kajabi standards */
+  .kajabi-nav .container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  @media (min-width: 768px) {
+    .kajabi-nav .container {
+      max-width: 750px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .kajabi-nav .container {
+      max-width: 970px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .kajabi-nav .container {
+      max-width: 1170px;
+    }
+  }
+
+  /* Navigation Content using Kajabi's media pattern */
+  .kajabi-nav__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--kajabi-nav-padding-y) 0;
+    min-height: var(--kajabi-nav-height);
+  }
+
+  /* Logo Section */
+  .kajabi-nav__logo {
+    flex-shrink: 0;
+    margin-right: 2rem;
+  }
+
+  .kajabi-nav__logo a {
+    display: inline-block;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__logo a:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+  }
+
+  .kajabi-nav__logo img {
+    height: {{ section.settings.logo_height | default: "40px" }};
+    width: auto;
+    display: block;
+  }
+
+  .kajabi-nav__logo-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--kajabi-nav-text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  /* Navigation Links following Kajabi patterns */
+  .kajabi-nav__menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1;
+  }
+
+  .kajabi-nav__menu-item {
+    position: relative;
+  }
+
+  .kajabi-nav__menu-link {
+    color: var(--kajabi-nav-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    display: inline-block;
+    position: relative;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__menu-link:hover {
+    color: var(--kajabi-nav-text-hover);
+  }
+
+  .kajabi-nav__menu-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--kajabi-nav-text-hover);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s var(--an-ease-spring);
+  }
+
+  .kajabi-nav__menu-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* Actions Section */
+  .kajabi-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-left: 2rem;
+  }
+
+  /* Kajabi Button Styles */
+  .kajabi-nav__button {
+    display: inline-block;
+    padding: {{ section.settings.button_padding_y | default: '0.75rem' }} {{ section.settings.button_padding_x | default: '1.75rem' }};
+    {% if section.settings.button_style == 'gradient' %}
+      background: linear-gradient({{ section.settings.button_gradient_angle | default: 135 }}deg, {{ section.settings.button_bg_color | default: "#5E3BFF" }}, {{ section.settings.button_gradient_end | default: section.settings.button_bg_color | default: "#5E3BFF" | color_modify: 'darken', 10 }});
+    {% elsif section.settings.button_style == 'outline' %}
+      background: transparent;
+      border: {{ section.settings.button_border_width | default: '2px' }} solid {{ section.settings.button_bg_color | default: "#5E3BFF" }};
+    {% elsif section.settings.button_style == 'ghost' %}
+      background: transparent;
+      border: none;
+    {% else %}
+      background: {{ section.settings.button_bg_color | default: "#5E3BFF" }};
+    {% endif %}
+    color: {% if section.settings.button_style == 'outline' or section.settings.button_style == 'ghost' %}{{ section.settings.button_bg_color | default: "#5E3BFF" }}{% else %}{{ section.settings.button_text_color | default: "#FFFFFF" }}{% endif %};
+    border-radius: {{ section.settings.button_border_radius | default: '9999px' }};
+    font-weight: {{ section.settings.button_font_weight | default: '500' }};
+    font-size: {{ section.settings.button_font_size | default: '0.875rem' }};
+    text-decoration: none;
+    transition: var(--kajabi-nav-transition);
+    {% if section.settings.button_style != 'outline' %}
+      border: none;
+    {% endif %}
+    position: relative;
+    overflow: hidden;
+    {% if section.settings.button_shadow %}
+      box-shadow: {{ section.settings.button_shadow_x | default: '0' }}px {{ section.settings.button_shadow_y | default: '4' }}px {{ section.settings.button_shadow_blur | default: '12' }}px {{ section.settings.button_shadow_spread | default: '-4' }}px {{ section.settings.button_shadow_color | default: 'rgba(94, 59, 255, 0.2)' }};
+    {% endif %}
+    text-transform: {{ section.settings.button_text_transform | default: 'none' }};
+    letter-spacing: {{ section.settings.button_letter_spacing | default: '0' }};
+  }
+
+  /* Button hover state */
+  .kajabi-nav__button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    {% if section.settings.button_style == 'gradient' %}
+      background: linear-gradient({{ section.settings.button_gradient_angle | default: 135 }}deg, {{ section.settings.button_hover_bg_color | default: "#4025E0" }}, {{ section.settings.button_hover_gradient_end | default: section.settings.button_hover_bg_color | default: "#4025E0" | color_modify: 'darken', 5 }});
+    {% elsif section.settings.button_style == 'outline' %}
+      background: {{ section.settings.button_hover_bg_color | default: "#5E3BFF" }};
+    {% elsif section.settings.button_style == 'ghost' %}
+      background: {{ section.settings.button_hover_bg_color | default: "rgba(94, 59, 255, 0.1)" }};
+    {% else %}
+      background: {{ section.settings.button_hover_bg_color | default: "#4025E0" }};
+    {% endif %}
+    opacity: 0;
+    transition: opacity var(--kajabi-nav-transition);
+  }
+
+  .kajabi-nav__button:hover {
+    transform: translateY({{ section.settings.button_hover_lift | default: '-2' }}px);
+    {% if section.settings.button_hover_shadow %}
+      box-shadow: {{ section.settings.button_hover_shadow_x | default: '0' }}px {{ section.settings.button_hover_shadow_y | default: '8' }}px {{ section.settings.button_hover_shadow_blur | default: '24' }}px {{ section.settings.button_hover_shadow_spread | default: '-8' }}px {{ section.settings.button_hover_shadow_color | default: 'rgba(94, 59, 255, 0.3)' }};
+    {% endif %}
+    {% if section.settings.button_style == 'outline' %}
+      color: {{ section.settings.button_hover_text_color | default: "#FFFFFF" }} !important;
+      border-color: {{ section.settings.button_hover_bg_color | default: "#4025E0" }};
+    {% elsif section.settings.button_style == 'ghost' %}
+      color: {{ section.settings.button_hover_text_color | default: section.settings.button_bg_color | default: "#5E3BFF" }} !important;
+    {% else %}
+      color: {{ section.settings.button_hover_text_color | default: "#FFFFFF" }} !important;
+    {% endif %}
+  }
+
+  .kajabi-nav__button:hover::before {
+    opacity: 1;
+  }
+
+  .kajabi-nav__button span {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Button icon support */
+  .kajabi-nav__button-icon {
+    margin-left: {{ section.settings.button_icon_spacing | default: '0.5rem' }};
+    font-size: {{ section.settings.button_icon_size | default: '1em' }};
+    vertical-align: middle;
+  }
+
+  /* Mobile Hamburger */
+  .kajabi-nav__hamburger {
+    display: none;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .kajabi-nav__hamburger-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    position: relative;
+  }
+
+  .kajabi-nav__hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--kajabi-nav-text);
+    margin: 5px 0;
+    transition: var(--kajabi-nav-transition);
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 991px) {
+    .kajabi-nav {
+      min-height: var(--kajabi-nav-mobile-height);
+    }
+
+    .kajabi-nav__content {
+      min-height: var(--kajabi-nav-mobile-height);
+      padding: 0.75rem 0;
+    }
+
+    .kajabi-nav__menu {
+      display: none;
+    }
+
+    .kajabi-nav__actions > *:not(.kajabi-nav__hamburger) {
+      display: none;
+    }
+
+    .kajabi-nav__hamburger {
+      display: block;
+    }
+
+    .kajabi-nav__logo img {
+      height: {{ section.settings.mobile_logo_height | default: "32px" }};
+    }
+  }
+
+  /* Transparent Pill Navigation Styles */
+  .kajabi-nav--transparent-pill {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .kajabi-nav--transparent-pill.kajabi-nav--scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--kajabi-nav-shadow);
+  }
+
+  .kajabi-nav--transparent-pill .kajabi-nav__pill-container {
+    background-color: var(--kajabi-nav-pill-bg);
+    border-radius: var(--kajabi-nav-radius);
+    box-shadow: var(--kajabi-nav-pill-shadow);
+    padding: 0.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 0 auto;
+    flex: 0 1 auto;
+  }
+
+  .kajabi-nav--transparent-pill .kajabi-nav__content {
+    justify-content: space-between;
+  }
+
+  .kajabi-nav--transparent-pill .kajabi-nav__logo {
+    margin-right: 2rem;
+    flex-shrink: 0;
+  }
+
+  .kajabi-nav--transparent-pill .kajabi-nav__menu {
+    margin: 0;
+    gap: 1.5rem;
+    flex: 0 1 auto;
+  }
+
+  .kajabi-nav--transparent-pill .kajabi-nav__spacer {
+    display: none;
+  }
+
+  .kajabi-nav--transparent-pill .kajabi-nav__actions {
+    margin-left: 0;
+    flex-shrink: 0;
+  }
+
+  /* Mobile adjustments for transparent pill */
+  @media (max-width: 991px) {
+    .kajabi-nav--transparent-pill {
+      background-color: var(--kajabi-nav-bg);
+      box-shadow: var(--kajabi-nav-shadow);
+    }
+    
+    .kajabi-nav--transparent-pill .kajabi-nav__pill-container {
+      background-color: transparent;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+    }
+  }
+
+  /* Sticky Navigation */
+  .kajabi-nav--sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    animation: slideDown 0.3s ease-in-out;
+  }
+
+  .kajabi-nav--sticky.kajabi-nav--hidden {
+    transform: translateY(-100%);
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Dropdown Support */
+  .kajabi-nav__dropdown {
+    position: relative;
+  }
+
+  .kajabi-nav__dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    background-color: var(--kajabi-nav-bg);
+    border: 1px solid var(--kajabi-nav-border);
+    border-radius: 1rem;
+    box-shadow: var(--an-shadow-lg);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition: var(--kajabi-nav-transition);
+    overflow: hidden;
+  }
+
+  .kajabi-nav__dropdown:hover .kajabi-nav__dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .kajabi-nav__dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--kajabi-nav-text);
+    text-decoration: none;
+    transition: var(--kajabi-nav-transition);
+    font-size: 0.875rem;
+  }
+
+  .kajabi-nav__dropdown-menu a:hover {
+    background-color: {{ section.settings.dropdown_hover_bg | default: "#E9E6FF" }};
+    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
+  }
+
+  /* Utility Classes */
+  .kajabi-nav__spacer {
+    flex: 1;
+  }
+
+  /* Accessibility */
+  .kajabi-nav a:focus,
+  .kajabi-nav button:focus {
+    outline: 2px solid var(--kajabi-nav-text-hover);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  .kajabi-nav a:focus-visible,
+  .kajabi-nav button:focus-visible {
+    outline: 3px solid var(--kajabi-nav-text-hover);
+    outline-offset: 3px;
+  }
+</style>
+
+<!-- Kajabi Navigation Section -->
+<nav class="kajabi-nav {% if section.settings.sticky %}kajabi-nav--sticky{% endif %} {% if section.settings.nav_style == 'transparent_pill' %}kajabi-nav--transparent-pill{% endif %}"
+     role="navigation"
+     aria-label="{{ section.settings.aria_label | default: 'Main navigation' }}"
+     id="section-{{ section.id }}"
+     data-section-id="{{ section.id }}"
+     data-nav-style="{{ section.settings.nav_style | default: 'transparent_pill' }}">
+  <div class="container">
+    <div class="kajabi-nav__content">
+      <!-- Logo -->
+      <div class="kajabi-nav__logo">
+        <a href="{{ current_site.root_url }}">
+          {% if section.settings.logo_type == 'image' and section.settings.logo %}
+            <img src="{{ section.settings.logo | image_picker_url: '360x120' }}" 
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                 loading="lazy">
+          {% else %}
+            <span class="kajabi-nav__logo-text">
+              {{ section.settings.logo_text | default: current_site.title }}
+            </span>
+          {% endif %}
+        </a>
+      </div>
+
+      <!-- Navigation Menu Container -->
+      {% if section.settings.nav_style == 'transparent_pill' %}
+        <div class="kajabi-nav__pill-container">
+      {% endif %}
+      
+      <nav class="kajabi-nav__menu">
+        {% if section.settings.menu %}
+          {% for link in current_site.link_lists[section.settings.menu].links %}
+            <div class="kajabi-nav__menu-item {% if link.links.size > 0 %}kajabi-nav__dropdown{% endif %}">
+              <a href="{{ link.url }}" class="kajabi-nav__menu-link">{{ link.name }}</a>
+
+              {% if link.links.size > 0 %}
+                <div class="kajabi-nav__dropdown-menu">
+                  {% for child_link in link.links %}
+                    <a href="{{ child_link.url }}">{{ child_link.name }}</a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </nav>
+      
+      {% if section.settings.nav_style == 'transparent_pill' %}
+        </div>
+      {% endif %}
+
+      <!-- Spacer -->
+      <div class="kajabi-nav__spacer"></div>
+
+      <!-- Actions -->
+      <div class="kajabi-nav__actions">
+        {% if section.settings.show_cta_button %}
+          <a href="{{ section.settings.cta_link }}"
+             class="kajabi-nav__button"
+             {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+            <span>{{ section.settings.cta_text | default: 'Get Started' }}</span>
+            {% if section.settings.button_icon %}
+              <i class="{{ section.settings.button_icon }} kajabi-nav__button-icon"></i>
+            {% endif %}
+          </a>
+        {% endif %}
+
+        <!-- Mobile Hamburger -->
+        <button class="kajabi-nav__hamburger"
+                aria-label="Toggle mobile menu"
+                aria-expanded="false"
+                data-mobile-menu-trigger>
+          <span class="kajabi-nav__hamburger-icon">
+            <span class="kajabi-nav__hamburger-line"></span>
+            <span class="kajabi-nav__hamburger-line"></span>
+            <span class="kajabi-nav__hamburger-line"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+// Kajabi Navigation JavaScript
+(function() {
+  'use strict';
+
+  const nav = document.getElementById('section-{{ section.id }}');
+  const navStyle = nav.getAttribute('data-nav-style');
+
+  // Sticky navigation
+  {% if section.settings.sticky %}
+  let lastScrollTop = 0;
+  const navHeight = nav.offsetHeight;
+
+  window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > navHeight) {
+      nav.classList.add('kajabi-nav--sticky');
+
+      if (scrollTop > lastScrollTop && scrollTop > navHeight * 2) {
+        nav.classList.add('kajabi-nav--hidden');
+      } else {
+        nav.classList.remove('kajabi-nav--hidden');
+      }
+    } else {
+      nav.classList.remove('kajabi-nav--sticky', 'kajabi-nav--hidden');
+    }
+
+    // Add scrolled class for transparent pill navigation
+    if (navStyle === 'transparent_pill') {
+      if (scrollTop > 50) {
+        nav.classList.add('kajabi-nav--scrolled');
+      } else {
+        nav.classList.remove('kajabi-nav--scrolled');
+      }
+    }
+
+    lastScrollTop = scrollTop;
+  });
+  {% endif %}
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Navigation Static",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "radio",
+      "id": "logo_type",
+      "label": "Logo Type",
+      "default": "image",
+      "options": [
+        {
+          "label": "Image",
+          "value": "image"
+        },
+        {
+          "label": "Text",
+          "value": "text"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image",
+      "info": "Recommended: 180x40px"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Logo Alt Text",
+      "info": "Describes the logo for screen readers"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "Your Brand"
+    },
+    {
+      "type": "text",
+      "id": "logo_height",
+      "label": "Logo Height",
+      "default": "40px",
+      "info": "Desktop logo height"
+    },
+    {
+      "type": "text",
+      "id": "mobile_logo_height",
+      "label": "Mobile Logo Height",
+      "default": "32px"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "select",
+      "id": "nav_style",
+      "label": "Navigation Style",
+      "default": "transparent_pill",
+      "options": [
+        {
+          "label": "Default",
+          "value": "default"
+        },
+        {
+          "label": "Transparent with Pill Menu",
+          "value": "transparent_pill"
+        }
+      ],
+      "info": "Choose the navigation layout style"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Enable Sticky Navigation",
+      "default": true,
+      "info": "Navigation sticks to top when scrolling"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "ARIA Label",
+      "default": "Main navigation",
+      "info": "Accessibility label for screen readers"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#3B4252"
+    },
+    {
+      "type": "color",
+      "id": "text_color_hover",
+      "label": "Text Hover Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "pill_bg_color",
+      "label": "Pill Background Color",
+      "default": "#FFFFFF",
+      "info": "Background color for the pill container in transparent mode"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_button",
+      "label": "Show CTA Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "action",
+      "id": "cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open in New Tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Button Style"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "default": "gradient",
+      "options": [
+        {
+          "label": "Solid",
+          "value": "solid"
+        },
+        {
+          "label": "Gradient",
+          "value": "gradient"
+        },
+        {
+          "label": "Outline",
+          "value": "outline"
+        },
+        {
+          "label": "Ghost",
+          "value": "ghost"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_border_radius",
+      "label": "Border Radius",
+      "default": "9999px",
+      "info": "Use px for rounded corners (e.g., 8px) or 9999px for pill shape"
+    },
+    {
+      "type": "text",
+      "id": "button_border_width",
+      "label": "Border Width (Outline Style)",
+      "default": "2px"
+    },
+    {
+      "type": "header",
+      "content": "Button Colors"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "button_gradient_end",
+      "label": "Gradient End Color",
+      "info": "For gradient style only"
+    },
+    {
+      "type": "range",
+      "id": "button_gradient_angle",
+      "label": "Gradient Angle",
+      "default": 135,
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "unit": "deg",
+      "info": "For gradient style only"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Button Hover State"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover Background",
+      "default": "#4025E0"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_gradient_end",
+      "label": "Hover Gradient End",
+      "info": "For gradient style only"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "button_hover_lift",
+      "label": "Hover Lift (px)",
+      "default": "-2",
+      "info": "Negative value lifts button on hover"
+    },
+    {
+      "type": "header",
+      "content": "Button Typography"
+    },
+    {
+      "type": "text",
+      "id": "button_font_size",
+      "label": "Font Size",
+      "default": "0.875rem"
+    },
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "label": "Font Weight",
+      "default": "500",
+      "options": [
+        {
+          "label": "Regular",
+          "value": "400"
+        },
+        {
+          "label": "Medium",
+          "value": "500"
+        },
+        {
+          "label": "Semi-Bold",
+          "value": "600"
+        },
+        {
+          "label": "Bold",
+          "value": "700"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_text_transform",
+      "label": "Text Transform",
+      "default": "none",
+      "options": [
+        {
+          "label": "None",
+          "value": "none"
+        },
+        {
+          "label": "Uppercase",
+          "value": "uppercase"
+        },
+        {
+          "label": "Lowercase",
+          "value": "lowercase"
+        },
+        {
+          "label": "Capitalize",
+          "value": "capitalize"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_letter_spacing",
+      "label": "Letter Spacing",
+      "default": "0",
+      "info": "Use values like 0.05em or 1px"
+    },
+    {
+      "type": "header",
+      "content": "Button Spacing"
+    },
+    {
+      "type": "text",
+      "id": "button_padding_x",
+      "label": "Horizontal Padding",
+      "default": "1.75rem"
+    },
+    {
+      "type": "text",
+      "id": "button_padding_y",
+      "label": "Vertical Padding",
+      "default": "0.75rem"
+    },
+    {
+      "type": "header",
+      "content": "Button Shadow"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_shadow",
+      "label": "Enable Shadow",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_shadow_x",
+      "label": "Shadow X Offset",
+      "default": "0"
+    },
+    {
+      "type": "text",
+      "id": "button_shadow_y",
+      "label": "Shadow Y Offset",
+      "default": "4"
+    },
+    {
+      "type": "text",
+      "id": "button_shadow_blur",
+      "label": "Shadow Blur",
+      "default": "12"
+    },
+    {
+      "type": "text",
+      "id": "button_shadow_spread",
+      "label": "Shadow Spread",
+      "default": "-4"
+    },
+    {
+      "type": "color",
+      "id": "button_shadow_color",
+      "label": "Shadow Color",
+      "default": "rgba(94, 59, 255, 0.2)"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_hover_shadow",
+      "label": "Enable Hover Shadow",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_hover_shadow_x",
+      "label": "Hover Shadow X",
+      "default": "0"
+    },
+    {
+      "type": "text",
+      "id": "button_hover_shadow_y",
+      "label": "Hover Shadow Y",
+      "default": "8"
+    },
+    {
+      "type": "text",
+      "id": "button_hover_shadow_blur",
+      "label": "Hover Shadow Blur",
+      "default": "24"
+    },
+    {
+      "type": "text",
+      "id": "button_hover_shadow_spread",
+      "label": "Hover Shadow Spread",
+      "default": "-8"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_shadow_color",
+      "label": "Hover Shadow Color",
+      "default": "rgba(94, 59, 255, 0.3)"
+    },
+    {
+      "type": "header",
+      "content": "Button Icon"
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icon Class",
+      "info": "Font Awesome class (e.g., 'fas fa-arrow-right')"
+    },
+    {
+      "type": "text",
+      "id": "button_icon_size",
+      "label": "Icon Size",
+      "default": "1em"
+    },
+    {
+      "type": "text",
+      "id": "button_icon_spacing",
+      "label": "Icon Spacing",
+      "default": "0.5rem"
+    },
+    {
+      "type": "header",
+      "content": "Dropdown Settings"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_hover_bg",
+      "label": "Dropdown Hover Background",
+      "default": "#E9E6FF"
+    }
+  ]
+}
+{% endschema %}

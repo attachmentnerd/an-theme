@@ -1,0 +1,19 @@
+{% comment %}
+Conditional Navigation Snippet
+Renders the main navigation only if the global theme setting allows it.
+This provides site-wide control over navigation visibility.
+
+Usage:
+{% include 'conditional_navigation' %}
+
+or with custom navigation section:
+{% include 'conditional_navigation', nav_section: 'custom_nav_section' %}
+{% endcomment %}
+
+{% if settings.show_navigation %}
+  {% if nav_section %}
+    {% section nav_section %}
+  {% else %}
+    {% section 'nav_main' %}
+  {% endif %}
+{% endif %}

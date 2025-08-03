@@ -5,12 +5,11 @@
       <div class="book-testimonial-showcase__content">
         {% if section.settings.book_image %}
           <div class="book-testimonial-showcase__book">
-            <img 
-              src="{{ section.settings.book_image | image_picker_url: '600x' }}"
-              alt="{{ section.settings.book_title | default: 'Book cover' }}"
-              class="book-testimonial-showcase__book-img"
-              loading="lazy"
-            >
+            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+             alt="{{ {{ section.settings.book_title | default:  }}" 
+             class="book-testimonial-showcase__book-img"
+             loading="lazy"
+             style="object-fit: cover;">
             {% if section.settings.bestseller_badge %}
               <div class="book-testimonial-showcase__badge" style="background-color: {{ section.settings.badge_bg_color }}; color: {{ section.settings.badge_text_color }};">
                 <span class="badge-number">{{ section.settings.badge_number | default: '#1' }}</span>
@@ -57,7 +56,11 @@
       <div class="book-testimonial-showcase__testimonials">
         {% if section.settings.testimonial_logo %}
           <div class="testimonial-logo">
-            <img src="{{ section.settings.testimonial_logo | image_picker_url: '300x' }}" alt="{{ section.settings.testimonial_logo_alt | default: 'Logo' }}" loading="lazy">
+            <img src="{{ section.settings.testimonial_logo | image_picker_url: '240x80' }}" 
+             alt="{{ {{ section.settings.testimonial_logo_alt | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
           </div>
         {% endif %}
         
@@ -82,12 +85,11 @@
                   </div>
                   {% if block.settings.author_image %}
                     <div class="testimonial-author__avatar">
-                      <img 
-                        src="{{ block.settings.author_image | image_picker_url: '160x' }}"
-                        alt="{{ block.settings.author_name }}"
-                        class="testimonial-author__avatar-img"
-                        loading="lazy"
-                      >
+                      <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
+             alt="{{ {{ block.settings.author_name }} }}" 
+             class="testimonial-author__avatar-img"
+             loading="lazy"
+             style="object-fit: cover;">
                     </div>
                   {% endif %}
                 </div>

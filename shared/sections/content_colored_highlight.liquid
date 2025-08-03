@@ -196,10 +196,11 @@
             <!-- Icon -->
             {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
               <div class="colored-highlight__icon-wrapper">
-                <img src="{{ block.settings.icon_image | image_picker_url: 'placeholder.png' }}" 
-                     alt="{{ block.settings.icon_alt | default: 'Icon' }}"
-                     class="colored-highlight__icon"
-                     loading="lazy">
+                <img src="{{ block.settings.icon_image | image_picker_url: '120x68' }}" 
+             alt="{{ {{ block.settings.icon_alt | default:  }}" 
+             class="colored-highlight__icon"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
             {% elsif block.settings.icon_type == 'emoji' and block.settings.icon_emoji != blank %}
               <div class="colored-highlight__icon-wrapper">

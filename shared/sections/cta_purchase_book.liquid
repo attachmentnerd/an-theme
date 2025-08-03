@@ -22,10 +22,11 @@
               {% endif %}
               
               <div class="mb-3">
-                <img src="{{ block.settings.retailer_logo | img_url: '200x' }}" 
-                     alt="{{ block.settings.retailer_name }}" 
-                     style="max-height: 40px; width: auto;"
-                     loading="lazy">
+                <img src="{{ block.settings.retailer_logo | image_picker_url: '240x80' }}" 
+             alt="{{ {{ block.settings.retailer_name }} }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
               
               <h3 class="mb-2" style="font-size: var(--fs-h3); color: var(--c-ink-900);" kjb-settings-id="{{ 'format' | settings_id: section: section, block: block }}">

@@ -81,12 +81,11 @@
         <div class="ui-card">
           <div class="ui-card__inner">
             {% if section.settings.ui_image != blank %}
-              <img src="{{ section.settings.ui_image | image_picker_url: 'placeholder.png' }}" 
-                   alt="{{ section.settings.ui_image_alt }}"
+              <img src="{{ section.settings.ui_image | image_picker_url: '600x338' }}" 
+                   alt="{{ section.settings.ui_image_alt }}" 
                    class="ui-card__image"
-                   width="600"
-                   height="400"
-                   loading="lazy">
+                   loading="lazy"
+                   style="aspect-ratio: 16/9; object-fit: cover;">
             {% else %}
               {% comment %} On-brand placeholder instead of external image {% endcomment %}
               <div class="ui-card__image" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
@@ -106,11 +105,10 @@
                               --element-left: {{ block.settings.left }}%;"
                        {{ block.shopify_attributes }}>
                     {% if block.settings.element_image != blank %}
-                      <img src="{{ block.settings.element_image | image_picker_url: '240x' }}" 
-                           alt="{{ block.settings.element_alt }}"
-                           width="120"
-                           height="120"
-                           loading="lazy">
+                      <img src="{{ block.settings.element_image | image_picker_url: '200x113' }}" 
+                           alt="{{ block.settings.element_alt }}" 
+                           loading="lazy"
+                           style="aspect-ratio: 16/9; object-fit: cover; max-width: 100px; height: auto;">
                     {% elsif block.settings.element_content != blank %}
                       <div class="ui-element__content">
                         {{ block.settings.element_content }}

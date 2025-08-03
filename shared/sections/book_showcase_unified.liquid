@@ -1,0 +1,1113 @@
+<!-- Unified Book/Product Showcase Section -->
+<!-- Consolidates: book_showcase_modern, book_showcase_sa, book_showcase_rsak, book_details, feature_single_clean -->
+<!-- Version: 1.0.0 -->
+
+<section class="book-showcase-unified section--{{ section.id }} {{ section.settings.additional_classes }}" 
+         data-section-id="{{ section.id }}"
+         style="background-color: {{ section.settings.background_color | default: 'transparent' }}; 
+                padding-top: {{ section.settings.padding_top | default: 40 }}px; 
+                padding-bottom: {{ section.settings.padding_bottom | default: 40 }}px;">
+  
+  <!-- Logo Row (for testimonial layout) -->
+  {% if section.settings.layout_style == 'testimonial' and section.blocks.size > 0 %}
+    {% assign logo_blocks = section.blocks | where: 'type', 'logo' %}
+    {% if logo_blocks.size > 0 %}
+      <div class="container text-center mb-4">
+        <div class="logo-row d-flex justify-content-center align-items-center flex-wrap gap-4">
+          {% for block in logo_blocks %}
+            {% if block.settings.logo %}
+              <div class="logo-item" style="opacity: 0.7; transition: opacity 0.2s;">
+                <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
+             alt="{{ block.settings.alt_text | default: 'Partner logo' }}" 
+             class="logo-img"
+             loading="lazy"
+             style="object-fit: cover;">
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <div class="{% if section.settings.container_size == 'full' %}container-fluid{% else %}container{% endif %}">
+    <div class="row align-items-center {% if section.settings.image_position == 'right' %}flex-lg-row-reverse{% endif %} {% if section.settings.enable_animations %}animate-fade-in{% endif %}">
+      
+      <!-- Left Testimonial (for testimonial layout) -->
+      {% if section.settings.layout_style == 'testimonial' %}
+        {% assign left_testimonials = section.blocks | where: 'type', 'testimonial' | limit: 1 %}
+        {% if left_testimonials.size > 0 %}
+          {% assign left_test = left_testimonials[0] %}
+          <div class="col-lg-3 mb-4 mb-lg-0">
+            {% assign testimonial = left_test %}
+            {% assign show_stars = section.settings.show_star_ratings %}
+            {% include 'book_testimonial_card' %}
+          </div>
+        {% endif %}
+      {% endif %}
+
+      <!-- Book/Product Image Column -->
+      <div class="col-lg-{% if section.settings.layout_style == 'testimonial' %}6{% else %}5{% endif %} mb-4 mb-lg-0 text-center position-relative">
+        <!-- Top Badge -->
+        {% if section.settings.show_badges and section.settings.top_badge_text %}
+          <div class="badge-top position-absolute" style="top: -10px; right: 20px; z-index: 2;">
+            <span class="badge bg-warning text-dark px-3 py-2">{{ section.settings.top_badge_text }}</span>
+          </div>
+        {% endif %}
+
+        <!-- Floating Badge (Modern Style) -->
+        {% if section.settings.layout_style == 'modern' and section.settings.floating_badge_text %}
+          <div class="floating-badge position-absolute" style="top: 20px; right: -20px; z-index: 3; animation: float 3s ease-in-out infinite;">
+            <div class="badge bg-coral text-white px-3 py-2 rounded-pill shadow-lg">
+              {{ section.settings.floating_badge_text }}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Book Image Container -->
+        <div class="book-image-wrapper position-relative d-inline-block" 
+             style="{% if section.settings.layout_style == 'modern' and section.settings.enable_glow %}border-radius: 16px; box-shadow: 0 0 48px rgba(94,59,255,.15);{% endif %}">
+          
+          {% if section.settings.book_image %}
+            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+                 alt="{{ section.settings.book_title | default: 'Book cover' }}" 
+                 class="img-fluid {% if section.settings.enable_hover_effects %}hover-lift{% endif %}"
+                 loading="{% if section.settings.image_priority %}eager{% else %}lazy{% endif %}"
+                 style="aspect-ratio: 2/3; object-fit: cover;">
+          {% else %}
+            <!-- Fallback Placeholder -->
+            <div class="book-placeholder d-flex align-items-center justify-content-center" 
+                 style="width: 100%; max-width: 400px; aspect-ratio: 2/3; 
+                        background: linear-gradient(135deg, #5E3BFF 0%, #18D5E4 100%); 
+                        border-radius: 8px; color: white;">
+              <div class="text-center p-4">
+                <i class="fas fa-book fa-3x mb-3"></i>
+                <p class="mb-0">{{ section.settings.book_title | default: 'Book Cover' }}</p>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Bottom Badge -->
+        {% if section.settings.show_badges and section.settings.bottom_badge_text %}
+          <div class="badge-bottom position-absolute" style="bottom: -10px; left: 20px; z-index: 2;">
+            <span class="badge bg-success text-white px-3 py-2">{{ section.settings.bottom_badge_text }}</span>
+          </div>
+        {% endif %}
+
+        <!-- Award Badge (for RSAK style) -->
+        {% if section.settings.award_badge_image %}
+          <div class="award-badge position-absolute" style="bottom: 10px; right: 10px; z-index: 2;">
+            <img src="{{ section.settings.award_badge_image | image_picker_url: '240x80' }}" 
+             alt="{{ Award badge }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Content Column -->
+      <div class="col-lg-{% if section.settings.layout_style == 'testimonial' %}3{% else %}7{% endif %}">
+        <div class="book-content {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
+             style="max-width: {% if section.settings.content_max_width %}{{ section.settings.content_max_width }}px{% else %}560px{% endif %};">
+          
+          <!-- Micro Label (Modern Style) -->
+          {% if section.settings.micro_label %}
+            <p class="micro-label text-uppercase mb-3" 
+               style="font-size: 12px; letter-spacing: 0.1em; color: var(--c-accent-teal); font-weight: 600;">
+              {{ section.settings.micro_label }}
+            </p>
+          {% endif %}
+
+          <!-- Main Heading -->
+          {% if section.settings.heading %}
+            <h2 class="{{ section.settings.heading_size | default: 'h2' }} {% if section.settings.heading_style == 'bold' %}font-bold{% else %}font-medium{% endif %} mb-3" 
+                style="color: {{ section.settings.heading_color | default: 'var(--c-ink-900)' }};">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+
+          <!-- Subheading -->
+          {% if section.settings.subheading %}
+            <p class="lead mb-4" style="font-size: {{ section.settings.subheading_size | default: 18 }}px; color: {{ section.settings.subheading_color | default: 'var(--c-ink-700)' }};">
+              {{ section.settings.subheading }}
+            </p>
+          {% endif %}
+
+          <!-- Description -->
+          {% if section.settings.description %}
+            <div class="description mb-4" style="color: {{ section.settings.text_color | default: 'var(--c-ink-600)' }};">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+
+          <!-- Features Section -->
+          {% assign feature_blocks = section.blocks | where: 'type', 'feature' %}
+          {% if feature_blocks.size > 0 %}
+            <div class="features-wrapper mb-4">
+              {% case section.settings.feature_display %}
+                {% when 'pills' %}
+                  <!-- Modern Pills Style -->
+                  <div class="feature-pills d-flex flex-wrap gap-2">
+                    {% for feature in feature_blocks %}
+                      <span class="feature-pill px-3 py-2 rounded-pill" 
+                            style="background: var(--c-brand-100); color: var(--c-brand-800); font-size: 14px; font-weight: 500;">
+                        {% if feature.settings.icon %}
+                          <i class="{{ feature.settings.icon }} me-1"></i>
+                        {% endif %}
+                        {{ feature.settings.text }}
+                      </span>
+                    {% endfor %}
+                  </div>
+                
+                {% when 'list' %}
+                  <!-- Classic List Style -->
+                  <ul class="feature-list list-unstyled">
+                    {% for feature in feature_blocks %}
+                      <li class="mb-2 d-flex align-items-start">
+                        {% if feature.settings.icon %}
+                          <i class="{{ feature.settings.icon }} me-2 mt-1" style="color: var(--c-accent-teal);"></i>
+                        {% else %}
+                          <span class="me-2" style="color: var(--c-accent-teal);">✓</span>
+                        {% endif %}
+                        <span>{{ feature.settings.text }}</span>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                
+                {% when 'grid' %}
+                  <!-- Grid Style -->
+                  <div class="row g-2">
+                    {% for feature in feature_blocks %}
+                      <div class="col-6">
+                        <div class="feature-item p-2 rounded" style="background: var(--c-grey-100);">
+                          {% if feature.settings.icon %}
+                            <i class="{{ feature.settings.icon }} me-1"></i>
+                          {% endif %}
+                          {{ feature.settings.text }}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+              {% endcase %}
+            </div>
+          {% endif %}
+
+          <!-- Integrated Testimonial (SA/Modern Style) -->
+          {% if section.settings.show_inline_testimonial and section.settings.testimonial_text %}
+            <div class="testimonial-card p-3 rounded mb-4" style="background: var(--c-brand-100);">
+              <blockquote class="mb-0">
+                <p class="mb-2 fst-italic">"{{ section.settings.testimonial_text }}"</p>
+                {% if section.settings.testimonial_author %}
+                  <footer class="blockquote-footer">
+                    {% if section.settings.testimonial_author_image %}
+                      <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
+             alt="{{ section.settings.testimonial_author }}" 
+             class="rounded-circle me-2 d-inline-block"
+             loading="lazy"
+             style="object-fit: cover;">
+                    {% endif %}
+                    <cite>{{ section.settings.testimonial_author }}</cite>
+                    {% if section.settings.testimonial_author_title %}
+                      <small class="d-block">{{ section.settings.testimonial_author_title }}</small>
+                    {% endif %}
+                  </footer>
+                {% endif %}
+              </blockquote>
+            </div>
+          {% endif %}
+
+          <!-- Primary CTA Buttons -->
+          {% assign button_blocks = section.blocks | where: 'type', 'button' %}
+          {% if button_blocks.size > 0 %}
+            <div class="cta-buttons mb-4">
+              <div class="d-flex flex-wrap gap-3">
+                {% for button in button_blocks %}
+                  {% if button.settings.button_text and button.settings.button_url %}
+                    <a href="{{ button.settings.button_url }}" 
+                       class="btn {{ button.settings.button_style | default: 'btn-primary' }} {{ button.settings.button_size | default: 'btn-lg' }} {% if button.settings.full_width_mobile %}w-100 w-md-auto{% endif %}"
+                       {% if button.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+                      {% if button.settings.button_icon %}
+                        <i class="{{ button.settings.button_icon }} me-2"></i>
+                      {% endif %}
+                      {{ button.settings.button_text }}
+                    </a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Free Chapter/Bonus CTA Box -->
+          {% if section.settings.show_cta_box and section.settings.cta_box_text %}
+            <div class="cta-box p-3 rounded" style="background: {{ section.settings.cta_box_bg | default: 'var(--c-accent-peach)' }};">
+              <p class="mb-2 font-weight-bold">{{ section.settings.cta_box_heading | default: '🎁 Free Gift' }}</p>
+              <p class="mb-0">{{ section.settings.cta_box_text }}</p>
+              {% if section.settings.cta_box_button_text and section.settings.cta_box_button_url %}
+                <a href="{{ section.settings.cta_box_button_url }}" class="btn btn-sm btn-dark mt-2">
+                  {{ section.settings.cta_box_button_text }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right Testimonial (for testimonial layout) -->
+      {% if section.settings.layout_style == 'testimonial' %}
+        {% assign right_testimonials = section.blocks | where: 'type', 'testimonial' | offset: 1 | limit: 1 %}
+        {% if right_testimonials.size > 0 %}
+          {% assign right_test = right_testimonials[0] %}
+          <div class="col-lg-3 mb-4 mb-lg-0">
+            {% assign testimonial = right_test %}
+            {% assign show_stars = section.settings.show_star_ratings %}
+            {% include 'book_testimonial_card' %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <!-- Bottom CTA Button (testimonial layout) -->
+    {% if section.settings.layout_style == 'testimonial' and section.settings.bottom_cta_text and section.settings.bottom_cta_url %}
+      <div class="text-center mt-5">
+        <a href="{{ section.settings.bottom_cta_url }}" 
+           class="btn btn-primary btn-lg {% if section.settings.bottom_cta_gradient %}btn-gradient{% endif %}">
+          {{ section.settings.bottom_cta_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Decorative Elements -->
+  {% if section.settings.layout_style == 'modern' and section.settings.show_decorations %}
+    <div class="decoration-dot position-absolute" 
+         style="width: 120px; height: 120px; background: var(--c-accent-teal); 
+                filter: blur(80px); opacity: 0.3; top: 50%; right: 10%; 
+                transform: translateY(-50%); pointer-events: none;"></div>
+  {% endif %}
+</section>
+
+<!-- Inline Styles -->
+<style>
+  .section--{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Animation Keyframes */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Hover Effects */
+  .section--{{ section.id }} .hover-lift {
+    transition: transform 0.3s ease;
+  }
+  
+  .section--{{ section.id }} .hover-lift:hover {
+    transform: translateY(-5px);
+  }
+
+  /* Logo Row */
+  .section--{{ section.id }} .logo-item:hover {
+    opacity: 1 !important;
+  }
+
+  /* Feature Pills */
+  .section--{{ section.id }} .feature-pill {
+    transition: all 0.2s ease;
+  }
+  
+  .section--{{ section.id }} .feature-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.15);
+  }
+
+  /* Gradient Button */
+  .section--{{ section.id }} .btn-gradient {
+    background: var(--g-brand);
+    border: none;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .section--{{ section.id }} .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(94, 59, 255, 0.25);
+  }
+
+  /* Testimonial Card Styles */
+  .section--{{ section.id }} .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Mobile Optimizations */
+  @media (max-width: 767px) {
+    .section--{{ section.id }} .book-image-wrapper {
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    
+    .section--{{ section.id }} .floating-badge {
+      right: 10px !important;
+      top: 10px !important;
+    }
+    
+    .section--{{ section.id }} .feature-pills {
+      justify-content: center;
+    }
+  }
+
+  /* Custom Button Styles Based on Retailer */
+  .section--{{ section.id }} .btn-amazon {
+    background-color: #FF9900;
+    color: #000;
+    border: none;
+  }
+  
+  .section--{{ section.id }} .btn-bn {
+    background-color: #2F5233;
+    color: #FFF;
+    border: none;
+  }
+  
+  .section--{{ section.id }} .btn-target {
+    background-color: #CC0000;
+    color: #FFF;
+    border: none;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Book Showcase (Unified)",
+  "elements": [
+    {
+      "type": "header",
+      "label": "Layout & Style"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "default": "classic",
+      "options": [
+        {
+          "value": "classic",
+          "label": "Classic (Traditional badges, lists)"
+        },
+        {
+          "value": "modern",
+          "label": "Modern (Glow effects, pills, animations)"
+        },
+        {
+          "value": "testimonial",
+          "label": "Testimonial Focus (3-column with quotes)"
+        },
+        {
+          "value": "minimal",
+          "label": "Minimal (Clean, no decorations)"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "container_size",
+      "label": "Container Size",
+      "default": "standard",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard Container"
+        },
+        {
+          "value": "full",
+          "label": "Full Width Container"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "label": "Book/Product Details"
+    },
+    {
+      "type": "image_picker",
+      "id": "book_image",
+      "label": "Book/Product Image",
+      "info": "Recommended: 2:3 aspect ratio for books"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_priority",
+      "label": "High Priority Image",
+      "default": false,
+      "info": "Enable for above-fold images"
+    },
+    {
+      "type": "text",
+      "id": "book_title",
+      "label": "Book Title (for alt text)",
+      "default": "Book Title"
+    },
+    {
+      "type": "header",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "micro_label",
+      "label": "Micro Label (Modern style)",
+      "info": "Small text above heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Transform Your Relationships"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "default": "h2",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1 (Largest)"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4 (Smallest)"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "Heading Style",
+      "default": "bold",
+      "options": [
+        {
+          "value": "bold",
+          "label": "Bold"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover the science of secure attachment"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "info": "Main content paragraph"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "header",
+      "label": "Features Display"
+    },
+    {
+      "type": "select",
+      "id": "feature_display",
+      "label": "Feature Display Style",
+      "default": "list",
+      "options": [
+        {
+          "value": "none",
+          "label": "Hide Features"
+        },
+        {
+          "value": "list",
+          "label": "Bullet List"
+        },
+        {
+          "value": "pills",
+          "label": "Pills (Modern)"
+        },
+        {
+          "value": "grid",
+          "label": "Grid (2 columns)"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "label": "Badges & Awards"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Show Corner Badges",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "top_badge_text",
+      "label": "Top Badge Text",
+      "default": "BESTSELLER"
+    },
+    {
+      "type": "text",
+      "id": "bottom_badge_text",
+      "label": "Bottom Badge Text"
+    },
+    {
+      "type": "text",
+      "id": "floating_badge_text",
+      "label": "Floating Badge (Modern)",
+      "info": "Only shows in modern layout"
+    },
+    {
+      "type": "image_picker",
+      "id": "award_badge_image",
+      "label": "Award Badge Image"
+    },
+    {
+      "type": "header",
+      "label": "Inline Testimonial"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_inline_testimonial",
+      "label": "Show Inline Testimonial",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial_text",
+      "label": "Testimonial Text"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_author",
+      "label": "Testimonial Author"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_author_title",
+      "label": "Author Title/Role"
+    },
+    {
+      "type": "image_picker",
+      "id": "testimonial_author_image",
+      "label": "Author Image"
+    },
+    {
+      "type": "header",
+      "label": "CTA Box"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_box",
+      "label": "Show CTA Box",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_box_heading",
+      "label": "CTA Box Heading",
+      "default": "🎁 Free Chapter"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_box_text",
+      "label": "CTA Box Text"
+    },
+    {
+      "type": "color",
+      "id": "cta_box_bg",
+      "label": "CTA Box Background"
+    },
+    {
+      "type": "text",
+      "id": "cta_box_button_text",
+      "label": "CTA Box Button Text"
+    },
+    {
+      "type": "text",
+      "id": "cta_box_button_url",
+      "label": "CTA Box Button URL"
+    },
+    {
+      "type": "header",
+      "label": "Testimonial Layout Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_star_ratings",
+      "label": "Show Star Ratings",
+      "default": true,
+      "info": "For testimonial layout"
+    },
+    {
+      "type": "text",
+      "id": "bottom_cta_text",
+      "label": "Bottom CTA Text",
+      "info": "For testimonial layout"
+    },
+    {
+      "type": "text",
+      "id": "bottom_cta_url",
+      "label": "Bottom CTA URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "bottom_cta_gradient",
+      "label": "Use Gradient for Bottom CTA",
+      "default": true
+    },
+    {
+      "type": "header",
+      "label": "Visual Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_glow",
+      "label": "Enable Glow Effect",
+      "default": true,
+      "info": "For modern layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable Animations",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_effects",
+      "label": "Enable Hover Effects",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_decorations",
+      "label": "Show Decorative Elements",
+      "default": true,
+      "info": "For modern layout"
+    },
+    {
+      "type": "header",
+      "label": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content Max Width",
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "default": 560,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "additional_classes",
+      "label": "Additional CSS Classes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Point",
+      "elements": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Key benefit or feature"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon Class",
+          "info": "FontAwesome class (e.g., 'fas fa-check')"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "elements": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Buy Now"
+        },
+        {
+          "type": "text",
+          "id": "button_url",
+          "label": "Button URL",
+          "default": "#"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "btn-primary",
+          "options": [
+            {
+              "value": "btn-primary",
+              "label": "Primary"
+            },
+            {
+              "value": "btn-secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "btn-outline-primary",
+              "label": "Outline Primary"
+            },
+            {
+              "value": "btn-dark",
+              "label": "Dark"
+            },
+            {
+              "value": "btn-light",
+              "label": "Light"
+            },
+            {
+              "value": "btn-amazon",
+              "label": "Amazon (Orange)"
+            },
+            {
+              "value": "btn-bn",
+              "label": "Barnes & Noble (Green)"
+            },
+            {
+              "value": "btn-target",
+              "label": "Target (Red)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button Size",
+          "default": "btn-lg",
+          "options": [
+            {
+              "value": "btn-sm",
+              "label": "Small"
+            },
+            {
+              "value": "",
+              "label": "Regular"
+            },
+            {
+              "value": "btn-lg",
+              "label": "Large"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon",
+          "label": "Button Icon",
+          "info": "FontAwesome class (e.g., 'fab fa-amazon')"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width_mobile",
+          "label": "Full Width on Mobile",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote Text",
+          "default": "This book changed my life..."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Jane Doe"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author Title/Bio",
+          "default": "Mother of two"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    },
+    {
+      "type": "logo",
+      "name": "Logo",
+      "elements": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "default": "Partner logo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Book Showcase - Classic",
+      "category": "Content",
+      "description": "Traditional book showcase with badges and list features",
+      "settings": {
+        "layout_style": "classic",
+        "heading": "Discover the Science of Secure Attachment",
+        "show_badges": true,
+        "feature_display": "list"
+      },
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Evidence-based strategies",
+            "icon": "fas fa-check"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Real-world examples",
+            "icon": "fas fa-check"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Buy on Amazon",
+            "button_style": "btn-primary"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Book Showcase - Modern",
+      "category": "Content",
+      "description": "Modern showcase with glow effects and pill features",
+      "settings": {
+        "layout_style": "modern",
+        "image_position": "right",
+        "micro_label": "💙 FOR COUPLES",
+        "heading": "Securely Attached",
+        "enable_glow": true,
+        "floating_badge_text": "BESTSELLER",
+        "feature_display": "pills",
+        "show_inline_testimonial": true
+      },
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Attachment Quiz Inside"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "200+ Practical Tools"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Get Your Copy",
+            "button_style": "btn-primary"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Book Showcase - Testimonial Focus",
+      "category": "Content",
+      "description": "3-column layout with book testimonials and ratings",
+      "settings": {
+        "layout_style": "testimonial",
+        "heading": "Join 50,000+ Readers",
+        "show_star_ratings": true,
+        "bottom_cta_text": "Start Your Journey",
+        "bottom_cta_gradient": true
+      },
+      "blocks": [
+        {
+          "type": "logo",
+          "settings": {
+            "alt_text": "New York Times"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Life-changing insights!",
+            "author": "Sarah M.",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "A must-read for couples!",
+            "author": "John D.",
+            "rating": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Book Showcase - Multi-Retailer",
+      "category": "Content",
+      "description": "Showcase with multiple purchase options",
+      "settings": {
+        "layout_style": "classic",
+        "heading": "Available Everywhere Books Are Sold",
+        "show_cta_box": true,
+        "cta_box_heading": "🎁 Free Chapter",
+        "cta_box_text": "Get the first chapter free when you join our newsletter"
+      },
+      "blocks": [
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Amazon",
+            "button_style": "btn-amazon",
+            "button_icon": "fab fa-amazon"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Barnes & Noble",
+            "button_style": "btn-bn"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Target",
+            "button_style": "btn-target",
+            "button_icon": "fas fa-bullseye"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

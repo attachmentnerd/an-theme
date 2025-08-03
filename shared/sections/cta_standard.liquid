@@ -5,10 +5,11 @@
     <div class="an-cta__wrapper animate-fade-up">
       {% if section.settings.image != blank %}
         <div class="an-cta__image">
-          <img src="{{ section.settings.image | image_picker_url: '400x400' }}" 
-               alt="{{ section.settings.image_alt }}" 
-               class="an-cta__img"
-               loading="lazy" />
+          <img src="{{ section.settings.image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ section.settings.image_alt }} }}" 
+             class="an-cta__img"
+             loading="lazy"
+             style="object-fit: cover;">
         </div>
       {% endif %}
       

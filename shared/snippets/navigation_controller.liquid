@@ -1,0 +1,51 @@
+{% comment %}
+Navigation Controller Snippet
+Provides flexible navigation rendering with multiple control mechanisms:
+
+1. Global theme setting (settings.show_navigation)
+2. Page-level override (via force_show or force_hide parameters)
+3. Custom navigation section selection
+
+Usage Examples:
+<!-- Use global setting -->
+{% include 'navigation_controller' %}
+
+<!-- Force show navigation regardless of global setting -->
+{% include 'navigation_controller', force_show: true %}
+
+<!-- Force hide navigation regardless of global setting -->
+{% include 'navigation_controller', force_hide: true %}
+
+<!-- Use custom navigation section -->
+{% include 'navigation_controller', nav_section: 'nav_alt' %}
+
+<!-- Combine custom section with forced visibility -->
+{% include 'navigation_controller', nav_section: 'nav_header_static', force_show: true %}
+
+Parameters:
+- force_show: (boolean) Override global setting to show navigation
+- force_hide: (boolean) Override global setting to hide navigation  
+- nav_section: (string) Custom navigation section name (default: 'nav_main')
+{% endcomment %}
+
+{% assign should_show_nav = false %}
+
+{% comment %} Priority 1: Check for force_hide {% endcomment %}
+{% if force_hide %}
+  {% assign should_show_nav = false %}
+{% comment %} Priority 2: Check for force_show {% endcomment %}
+{% elsif force_show %}
+  {% assign should_show_nav = true %}
+{% comment %} Priority 3: Use global theme setting {% endcomment %}
+{% elsif settings.show_navigation %}
+  {% assign should_show_nav = true %}
+{% endif %}
+
+{% comment %} Render navigation if conditions are met {% endcomment %}
+{% if should_show_nav %}
+  {% if nav_section %}
+    {% section nav_section %}
+  {% else %}
+    {% section 'nav_main' %}
+  {% endif %}
+{% endif %}

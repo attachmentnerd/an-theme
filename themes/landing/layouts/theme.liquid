@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="{{ current_site.locale | default: "en" }}">
+  {% include "global_head" %}
+  {% include "global_background" %}
+  <body id="encore-theme" class="background-{{ settings.background_color | color_scheme_class }}">
+    {% include "alert_messages" %}
+    {% section "header" %}
+    {% if settings.show_navigation %}
+      {% section "nav_static" %}
+    {% endif %}
+    <main>
+      {{ content_for_layout }}
+    </main>
+    {% include "global_scripts" %}
+  </body>
+</html>

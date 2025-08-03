@@ -1,0 +1,510 @@
+{% comment %}
+  Auto-generated from securely-attached.html
+  Generated: 2025-07-03T20:41:42.536Z
+  
+  This is a static page section with editable images.
+  To use: Create a template with {% section 'page-securely-attached' %}
+{% endcomment %}
+
+<style>
+/* Auto-generated styles for page-securely-attached */
+/* Common styles removed - using theme utilities from /shared/styles/overrides.css */
+/* 
+ * Available utilities:
+ * - Layout: container, d-flex, gap-3, max-w-xl
+ * - Colors: text-navy, bg-lavender, section-peach
+ * - Typography: text-4xl, font-bold, text-center
+ * - Spacing: py-5, mt-4, mb-3, px-3
+ * - Components: btn-primary-modern, card-modern, badge
+ * - Animations: animate-fade-up, hover-lift
+ */
+/* Consider using these utility classes instead:
+ * text-center
+ * font-bold
+ * text-4xl
+ * text-3xl
+ * text-2xl
+ * text-xl
+ * d-flex
+ * justify-content-center
+ * align-items-center
+ * mb-3
+ * py-5
+ */
+.page-securely-attached .hero{background:var(--lavender);padding:80px 0;overflow:hidden}
+.page-securely-attached .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.page-securely-attached .hero h1{font-size:48px;font-weight:600;color:var(--ink-900);margin-bottom:24px;line-height:1.2}
+.page-securely-attached .hero-subtitle{font-size:20px;color:var(--ink-700);margin-bottom:32px;line-height:1.6}
+.page-securely-attached .hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.page-securely-attached .btn-primary{background:var(--gradient);color:var(--white);padding:16px 32px;border-radius:100px;text-decoration:none;font-weight:500;display:inline-block;transition:transform 0.15s ease,box-shadow 0.15s ease;box-shadow:0 0 0 2px rgba(255,255,255,.25) inset,0 4px 8px rgba(94,59,255,.35)}
+.page-securely-attached .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 0 2px rgba(255,255,255,.25) inset,0 8px 16px rgba(94,59,255,.45)}
+.page-securely-attached .btn-secondary{background:var(--white);color:var(--primary);padding:16px 32px;border:1px solid var(--lavender);border-radius:12px;text-decoration:none;font-weight:500;display:inline-block;transition:all 0.15s ease}
+.page-securely-attached .btn-secondary:hover{background:var(--lavender);transform:translateY(-2px)}
+.page-securely-attached .book-cover{position:relative}
+.page-securely-attached .book-cover img{width:100%;max-width:400px;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.15);transition:transform 0.3s ease}
+.page-securely-attached .book-cover:hover img{transform:scale(1.02)}
+.page-securely-attached .award-badge{position:absolute;top:-20px;right:-20px;background:var(--lemon);color:var(--ink-900);padding:12px 24px;border-radius:100px;font-weight:600;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.1);transform:rotate(5deg)}
+.page-securely-attached .benefits{padding:80px 0;background:white}
+.page-securely-attached .benefits h2{text-align:center;font-size:40px;color:var(--ink-900);margin-bottom:60px}
+.page-securely-attached .benefits-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px}
+.page-securely-attached .benefit-card{background:var(--white);padding:40px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.05);transition:transform 0.3s ease,box-shadow 0.3s ease;border:1px solid rgba(94,59,255,0.1)}
+.page-securely-attached .benefit-card:hover{transform:translateY(-5px);box-shadow:0 12px 24px rgba(0,0,0,.08)}
+.page-securely-attached .benefit-icon{width:48px;height:48px;background:var(--lavender);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:24px}
+.page-securely-attached .benefit-card h3{font-size:24px;color:var(--ink-900);margin-bottom:12px}
+.page-securely-attached .benefit-card p{color:var(--ink-700);line-height:1.6}
+.page-securely-attached .testimonials{background:#FAFAFA;padding:80px 0}
+.page-securely-attached .testimonials h2{text-align:center;font-size:40px;color:var(--ink-900);margin-bottom:60px}
+.page-securely-attached .testimonial-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px}
+.page-securely-attached .testimonial-card{background:white;padding:40px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+.page-securely-attached .testimonial-text{font-size:18px;color:var(--ink-700);line-height:1.8;margin-bottom:24px;font-style:italic}
+.page-securely-attached .testimonial-author{display:flex;align-items:center;gap:16px}
+.page-securely-attached .testimonial-author img{width:48px;height:48px;border-radius:50%}
+.page-securely-attached .testimonial-author-info h4{font-size:16px;color:var(--ink-900);margin-bottom:4px}
+.page-securely-attached .testimonial-author-info p{font-size:14px;color:var(--ink-500)}
+.page-securely-attached .reviews{padding:80px 0;background:white}
+.page-securely-attached .reviews h2{text-align:center;font-size:40px;color:var(--ink-900);margin-bottom:60px}
+.page-securely-attached .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.page-securely-attached .review-card{background:#FAFAFA;padding:32px;border-radius:16px;transition:transform 0.3s ease}
+.page-securely-attached .review-card:hover{transform:translateY(-5px)}
+.page-securely-attached .review-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.page-securely-attached .review-avatar{width:40px;height:40px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600}
+.page-securely-attached .review-name{font-size:16px;font-weight:600;color:var(--ink-900)}
+.page-securely-attached .review-stars{color:var(--lemon);font-size:14px;margin-bottom:12px}
+.page-securely-attached .review-text{color:var(--ink-700);line-height:1.6;font-size:15px}
+.page-securely-attached .author{background:var(--lavender);padding:80px 0}
+.page-securely-attached .author-content{display:grid;grid-template-columns:1fr 2fr;gap:60px;align-items:center}
+.page-securely-attached .author-image img{width:100%;max-width:300px;border-radius:16px;box-shadow:0 12px 24px rgba(0,0,0,0.08)}
+.page-securely-attached .author-info h2{font-size:36px;color:var(--ink-900);margin-bottom:20px}
+.page-securely-attached .author-info p{font-size:18px;color:var(--ink-700);line-height:1.8;margin-bottom:24px}
+.page-securely-attached .author-credentials{display:flex;gap:16px;flex-wrap:wrap}
+.page-securely-attached .credential{background:var(--white);padding:8px 20px;border-radius:100px;font-size:14px;color:var(--primary);font-weight:500}
+.page-securely-attached .final-cta{background:white;padding:80px 0}
+.page-securely-attached .cta-box{background:white;border-radius:24px;padding:60px;text-align:center;box-shadow:0 0 0 1px rgba(0,0,0,0.05) inset,0 4px 12px rgba(0,0,0,0.05);max-width:800px;margin:0 auto}
+.page-securely-attached .cta-box h2{font-size:40px;color:var(--ink-900);margin-bottom:20px}
+.page-securely-attached .cta-box p{font-size:20px;color:var(--ink-700);margin-bottom:32px}
+.page-securely-attached .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.page-securely-attached @media (max-width:768px){.page-securely-attached .hero-grid,.page-securely-attached .testimonial-grid,.page-securely-attached .author-content{grid-template-columns:1fr;gap:40px}
+.page-securely-attached .benefits-grid,.page-securely-attached .reviews-grid{grid-template-columns:1fr}
+.page-securely-attached .hero h1{font-size:36px}
+.page-securely-attached .testimonials h2,.page-securely-attached .benefits h2,.page-securely-attached .reviews h2,.page-securely-attached .cta-box h2{font-size:32px}
+.page-securely-attached .book-cover{text-align:center}
+.page-securely-attached .award-badge{position:static;display:inline-block;margin:20px auto;transform:none}
+}
+</style>
+
+<div class="page-securely-attached">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1>{{ section.settings.h1_1_transform_your_attac }}</h1>
+                    <p class="hero-subtitle">{{ section.settings._hero_subtitle_1_unlock_the_key_to_de }}</p>
+                    <div class="hero-cta">
+                        <a href="{{ section.settings._btn_primary_1_get_your_copy_url }}" class="btn-primary">{{ section.settings._btn_primary_1_get_your_copy }}</a>
+                        <a href="{{ section.settings._btn_secondary_1_read_reviews_url }}" class="btn-secondary">{{ section.settings._btn_secondary_1_read_reviews }}</a>
+                    </div>
+                </div>
+                <div class="book-cover">
+                    <!--@id=book_cover-->
+                    <img src="{{ section.settings.img_1_securely_attached_book_c | image_picker_url: '2000x' }}" alt="Securely Attached book cover by Eli Harwood" loading="lazy">
+                    <div class="award-badge">USA Today Bestseller!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2>{{ section.settings.h2_not__h3__1_your_journey_to_secu }}</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔍</div>
+                    <h3>Identify Your Attachment Patterns</h3>
+                    <p>Understand which of the four attachment categories inform your close relationships and why. Gain clarity on how your past shapes your present connections.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💚</div>
+                    <h3>Heal Past Wounds</h3>
+                    <p>Reflect and process your unique attachment story for a perspective shift. Work through 140 insightful prompts designed to facilitate deep healing.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🛠️</div>
+                    <h3>Develop Tools for Growth</h3>
+                    <p>Quizzes, exercises, and tips provide actionable steps to learning secure patterns. Build a practical toolkit for creating healthier relationships.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">❤️</div>
+                    <h3>Love Securely</h3>
+                    <p>Find, build, and nurture healthy ways of loving—and being loved. Create the deeply satisfying connections you've always wanted.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>{{ section.settings.h2_not__h3__2_praise_from_experts }}</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Securely Attached is a resource that every therapist, client, and person needs in their life. Eli hands us her clear knowledge of the attachment research in a way that is engaging, concise, and hopeful."</p>
+                    <div class="testimonial-author">
+                        <!--@id=expert_1-->
+                        <img src="{{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '2000x' }}" alt="Dr. Nicole LePera" loading="lazy">
+                        <div class="testimonial-author-info">
+                            <h4>Dr. Nicole LePera</h4>
+                            <p>NYT Bestselling Author of How to Do the Work</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Eli empowers adults with insecure attachment styles to forge deeply satisfying and secure relationships. A guiding light on the path of self-discovery and growth."</p>
+                    <div class="testimonial-author">
+                        <!--@id=expert_2-->
+                        <img src="{{ section.settings.img_3_jessica_baum | image_picker_url: '2000x' }}" alt="Jessica Baum" loading="lazy">
+                        <div class="testimonial-author-info">
+                            <h4>Jessica Baum, LMHC</h4>
+                            <p>Author of Anxiously Attached</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Reviews Section -->
+    <section class="reviews" id="reviews">
+        <div class="container">
+            <h2>{{ section.settings.h2_not__h3__3_what_readers_are_say }}</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">D</div>
+                        <div class="review-name">{{ section.settings._review_name_1_diana }}</div>
+                    </div>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">{{ section.settings._review_text_1__like_therapy_in_boo }}</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">M</div>
+                        <div class="review-name">{{ section.settings._review_name_2_mary_e_ }}</div>
+                    </div>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">{{ section.settings._review_text_2__amazing__it_gives_y }}</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">A</div>
+                        <div class="review-name">{{ section.settings._review_name_3_andrea }}</div>
+                    </div>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">{{ section.settings._review_text_3__if_you_have_found_e }}</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">C</div>
+                        <div class="review-name">{{ section.settings._review_name_4_christina }}</div>
+                    </div>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">{{ section.settings._review_text_4__this_book_has_helpe }}</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">J</div>
+                        <div class="review-name">{{ section.settings._review_name_5_jennifer }}</div>
+                    </div>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">{{ section.settings._review_text_5__this_is_a_workbook_ }}</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">M</div>
+                        <div class="review-name">{{ section.settings._review_name_6_matt }}</div>
+                    </div>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">{{ section.settings._review_text_6__a_terrific__warm_bu }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Author Section -->
+    <section class="author">
+        <div class="container">
+            <div class="author-content">
+                <div class="author-image">
+                    <!--@id=eli_photo-->
+                    <img src="{{ section.settings.img_4_eli_harwood_the_attachme | image_picker_url: '2000x' }}" alt="Eli Harwood, The Attachment Nerd" loading="lazy">
+                </div>
+                <div class="author-info">
+                    <h2>{{ section.settings.h2_not__h3__4_meet_eli_harwood }}</h2>
+                    <p>Known as "The Attachment Nerd," Eli Harwood is a licensed therapist with over 17 years of experience helping people process relational traumas and develop secure connections. With over a million followers across social media, she translates complex attachment science into accessible, actionable guidance.</p>
+                    <p>Her warm, humorous approach makes the deeply personal work of attachment healing feel less threatening and more achievable. Eli's mission is to help you break generational cycles and create the loving relationships you deserve.</p>
+                    <div class="author-credentials">
+                        <span class="credential">Licensed Therapist</span>
+                        <span class="credential">17+ Years Experience</span>
+                        <span class="credential">1M+ Social Followers</span>
+                        <span class="credential">USA Today Bestseller</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="final-cta" id="purchase">
+        <div class="container">
+            <div class="cta-box">
+                <h2>{{ section.settings.h2_not__h3__5_ready_to_transform_y }}</h2>
+                <p>Join thousands who are creating secure, lasting love with Securely Attached.</p>
+                <div class="cta-buttons">
+                    <a href="{{ section.settings._btn_primary_2_buy_on_amazon_url }}" class="btn-primary">{{ section.settings._btn_primary_2_buy_on_amazon }}</a>
+                    <a href="{{ section.settings._btn_secondary_2_other_retailers_url }}" class="btn-secondary">{{ section.settings._btn_secondary_2_other_retailers }}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+{% schema %}
+{
+  "name": "Page - Securely-attached",
+  "class": "page-securely-attached",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Headlines"
+    },
+    {
+      "type": "text",
+      "id": "h1_1_transform_your_attac",
+      "label": "Transform Your Attachment Patterns Into Loving, La...",
+      "default": "Transform Your Attachment Patterns Into Loving, Lasting Relationships"
+    },
+    {
+      "type": "text",
+      "id": "h2_not__h3__1_your_journey_to_secu",
+      "label": "Your Journey to Secure Love Starts Here",
+      "default": "Your Journey to Secure Love Starts Here"
+    },
+    {
+      "type": "text",
+      "id": "h2_not__h3__2_praise_from_experts",
+      "label": "Praise from Experts",
+      "default": "Praise from Experts"
+    },
+    {
+      "type": "text",
+      "id": "h2_not__h3__3_what_readers_are_say",
+      "label": "What Readers Are Saying",
+      "default": "What Readers Are Saying"
+    },
+    {
+      "type": "text",
+      "id": "h2_not__h3__4_meet_eli_harwood",
+      "label": "Meet Eli Harwood",
+      "default": "Meet Eli Harwood"
+    },
+    {
+      "type": "text",
+      "id": "h2_not__h3__5_ready_to_transform_y",
+      "label": "Ready to Transform Your Relationships?",
+      "default": "Ready to Transform Your Relationships?"
+    },
+    {
+      "type": "header",
+      "content": "Hero Content"
+    },
+    {
+      "type": "textarea",
+      "id": "_hero_subtitle_1_unlock_the_key_to_de",
+      "label": "Unlock the key to deeply satisfying relationships ...",
+      "default": "Unlock the key to deeply satisfying relationships with this practical workbook from Eli Harwood, aka The Attachment Nerd—licensed therapist and viral TikTok star."
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "_btn_primary_1_get_your_copy",
+      "label": "Get Your Copy",
+      "default": "Get Your Copy"
+    },
+    {
+      "type": "action",
+      "id": "_btn_primary_1_get_your_copy_url",
+      "label": "Get Your Copy - Link",
+      "default": "#purchase"
+    },
+    {
+      "type": "text",
+      "id": "_btn_primary_2_buy_on_amazon",
+      "label": "Buy on Amazon",
+      "default": "Buy on Amazon"
+    },
+    {
+      "type": "action",
+      "id": "_btn_primary_2_buy_on_amazon_url",
+      "label": "Buy on Amazon - Link",
+      "default": "https://www.amazon.com/Securely-Attached-Transform-Attachment-Relationships/dp/1632174898"
+    },
+    {
+      "type": "text",
+      "id": "_btn_secondary_1_read_reviews",
+      "label": "Read Reviews",
+      "default": "Read Reviews"
+    },
+    {
+      "type": "action",
+      "id": "_btn_secondary_1_read_reviews_url",
+      "label": "Read Reviews - Link",
+      "default": "#reviews"
+    },
+    {
+      "type": "text",
+      "id": "_btn_secondary_2_other_retailers",
+      "label": "Other Retailers",
+      "default": "Other Retailers"
+    },
+    {
+      "type": "action",
+      "id": "_btn_secondary_2_other_retailers_url",
+      "label": "Other Retailers - Link",
+      "default": "https://sasquatchbooks.com/books/securely-attached/"
+    },
+    {
+      "type": "header",
+      "content": "Customer Reviews"
+    },
+    {
+      "type": "textarea",
+      "id": "_review_text_1__like_therapy_in_boo",
+      "label": "\"Like therapy in book form. Attachment theory is h...",
+      "default": "\"Like therapy in book form. Attachment theory is hugely important and pretty complex, I am so glad this exists so that more people can learn about it and understand themselves more.\""
+    },
+    {
+      "type": "textarea",
+      "id": "_review_text_2__amazing__it_gives_y",
+      "label": "\"AMAZING! It gives you pointers and directs you do...",
+      "default": "\"AMAZING! It gives you pointers and directs you down the path of an 'earned' secure attachment. I'm an EMDR-trained trauma therapist and have already recommended it to clients.\""
+    },
+    {
+      "type": "textarea",
+      "id": "_review_text_3__if_you_have_found_e",
+      "label": "\"If you have found Eli on social media first you w...",
+      "default": "\"If you have found Eli on social media first you will be thrilled! She sifts through mountains of research to distill what you need to know to make changes happen in your real life.\""
+    },
+    {
+      "type": "textarea",
+      "id": "_review_text_4__this_book_has_helpe",
+      "label": "\"This book has helped us go deeper and make more p...",
+      "default": "\"This book has helped us go deeper and make more positive strides in our attachment to each other than years of therapy. Incredibly healing and life giving to our marriage.\""
+    },
+    {
+      "type": "textarea",
+      "id": "_review_text_5__this_is_a_workbook_",
+      "label": "\"This is a workbook where you write your own story...",
+      "default": "\"This is a workbook where you write your own story. I expected to learn theory and instead learned more about myself than I realized I was carrying. Highly recommend!\""
+    },
+    {
+      "type": "textarea",
+      "id": "_review_text_6__a_terrific__warm_bu",
+      "label": "\"A terrific, warm bundle of sunshine! Eli has a gi...",
+      "default": "\"A terrific, warm bundle of sunshine! Eli has a gift for clear, simple language when addressing such a complex topic. Perfect amount of lightheartedness into a serious matter.\""
+    },
+    {
+      "type": "text",
+      "id": "_review_name_1_diana",
+      "label": "Diana",
+      "default": "Diana"
+    },
+    {
+      "type": "text",
+      "id": "_review_name_2_mary_e_",
+      "label": "Mary E.",
+      "default": "Mary E."
+    },
+    {
+      "type": "text",
+      "id": "_review_name_3_andrea",
+      "label": "Andrea",
+      "default": "Andrea"
+    },
+    {
+      "type": "text",
+      "id": "_review_name_4_christina",
+      "label": "Christina",
+      "default": "Christina"
+    },
+    {
+      "type": "text",
+      "id": "_review_name_5_jennifer",
+      "label": "Jennifer",
+      "default": "Jennifer"
+    },
+    {
+      "type": "text",
+      "id": "_review_name_6_matt",
+      "label": "Matt",
+      "default": "Matt"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_1_securely_attached_book_c",
+      "label": "Securely Attached book cover by Eli Harwood",
+      "default": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_2_dr_nicole_lepera",
+      "label": "Dr. Nicole LePera",
+      "default": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_3_jessica_baum",
+      "label": "Jessica Baum",
+      "default": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_4_eli_harwood_the_attachme",
+      "label": "Eli Harwood, The Attachment Nerd",
+      "default": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600"
+    },
+    {
+      "type": "header",
+      "content": "SEO Settings"
+    },
+    {
+      "type": "text",
+      "id": "meta_title",
+      "label": "Page Title",
+      "default": "Securely Attached - Transform Your Attachment Patterns | Eli Harwood"
+    },
+    {
+      "type": "textarea",
+      "id": "meta_description",
+      "label": "Meta Description",
+      "default": "Unlock deeply satisfying relationships with this practical workbook from Eli Harwood. Based on attachment theory research, learn to identify patterns, heal wounds, and love securely."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Securely-attached Page",
+      "category": "Pages"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaking Page - Middle Sections</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* CREDENTIALS */
+        .credentials {
+            background: #f8f9fa;
+            padding: 70px 0;
+        }
+        
+        .credentials h2 {
+            text-align: center;
+            font-size: 2.3rem;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .credential-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+        
+        .credential-card h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .credential-card p {
+            color: #7f8c8d;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* PROBLEMS */
+        .problems {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 70px 0;
+        }
+        
+        .problems h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .problems-intro {
+            text-align: center;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            line-height: 1.7;
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .problem-card {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .problem-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .problem-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .problem-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        /* SOLUTION INTRO */
+        .solution-intro {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .solution-intro h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .solution-intro p {
+            font-size: 1.2rem;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        
+        /* SOLUTIONS */
+        .solutions {
+            background: white;
+            padding: 70px 0;
+        }
+        
+        .solutions h2 {
+            text-align: center;
+            font-size: 2.3rem;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .solution-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .solution-card h3 {
+            color: #27ae60;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .solution-card p {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .outcome-note {
+            background: #e8f5e8;
+            color: #2c5530;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        
+        /* BENEFITS */
+        .benefits {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 70px 0;
+        }
+        
+        .benefits h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .benefits-intro {
+            text-align: center;
+            font-size: 1.1rem;
+            max-width: 650px;
+            margin: 0 auto 50px;
+            line-height: 1.7;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .benefit-card {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .benefit-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .benefit-card p {
+            margin-bottom: 15px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .benefit-note {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        /* SPEAKING TOPICS */
+        .topics {
+            background: white;
+            padding: 70px 0;
+        }
+        
+        .topics h2 {
+            text-align: center;
+            font-size: 2.3rem;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .topic-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .topic-card h3 {
+            color: #3498db;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .topic-card p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .problems h2,
+            .benefits h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- CREDENTIALS -->
+    <section class="credentials">
+        <div class="container">
+            <h2>Professional Background</h2>
+            <div class="credentials-grid">
+                <div class="credential-card">
+                    <h3>Clinical Experience</h3>
+                    <p>Licensed Professional Counselor with 17+ years of experience in attachment-based therapy, trauma treatment, and family systems work.</p>
+                </div>
+                
+                <div class="credential-card">
+                    <h3>Published Author</h3>
+                    <p>Author of "Securely Attached" and "Raising Securely Attached Kids" - both bestsellers that make attachment theory accessible to mainstream audiences.</p>
+                </div>
+                
+                <div class="credential-card">
+                    <h3>Educational Leadership</h3>
+                    <p>Executive Director of JAI Institute for Parenting, Faculty at Denver Family Institute, training the next generation of mental health professionals.</p>
+                </div>
+                
+                <div class="credential-card">
+                    <h3>Social Media Educator</h3>
+                    <p>622K+ Instagram followers trust her accessible explanations of complex psychological concepts through the "Attachment Nerd" platform.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEMS -->
+    <section class="problems">
+        <div class="container">
+            <h2>The Challenges Your Audience Faces</h2>
+            <p class="problems-intro">
+                Whether working with families, organizations, or mental health professionals, these relationship challenges show up consistently across all settings.
+            </p>
+            
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <span class="problem-icon">💔</span>
+                    <h3>Relationship Struggles</h3>
+                    <p>Difficulty maintaining healthy connections in marriages, families, and workplace relationships</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">🔄</span>
+                    <h3>Repeating Patterns</h3>
+                    <p>Same conflicts arising repeatedly without understanding why or how to change them</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">😰</span>
+                    <h3>Emotional Regulation</h3>
+                    <p>Overwhelming reactions that damage relationships and create instability</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">🏃‍♀️</span>
+                    <h3>Professional Burnout</h3>
+                    <p>Mental health professionals feeling overwhelmed by complex cases and client needs</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">🧠</span>
+                    <h3>Understanding Attachment</h3>
+                    <p>Knowing attachment theory exists but struggling to apply it practically in real situations</p>
+                </div>
+                
+                <div class="problem-card">
+                    <span class="problem-icon">👨‍👩‍👧‍👦</span>
+                    <h3>Generational Patterns</h3>
+                    <p>Recognizing family patterns but not knowing how to break cycles for the next generation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTION INTRO -->
+    <section class="solution-intro">
+        <div class="container">
+            <h2>A Different Approach</h2>
+            <p>Eli translates complex attachment research into practical tools that audiences can understand and implement immediately, creating lasting change in how people connect.</p>
+        </div>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section class="solutions">
+        <div class="container">
+            <h2>How Eli's Presentations Help</h2>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <h3>Simplifies Complex Science</h3>
+                    <p>Makes attachment theory accessible without losing the scientific foundation, helping audiences understand the "why" behind their relationship patterns.</p>
+                    <div class="outcome-note">Audiences report finally understanding their own behavior</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Provides Practical Tools</h3>
+                    <p>Offers specific techniques for co-regulation, communication, and conflict resolution that can be used immediately.</p>
+                    <div class="outcome-note">Attendees often implement strategies the same day</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Addresses Root Causes</h3>
+                    <p>Helps people understand their attachment patterns and nervous system responses rather than just managing surface behaviors.</p>
+                    <div class="outcome-note">Creates deeper, more sustainable change</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Builds Professional Skills</h3>
+                    <p>Gives mental health professionals and educators advanced techniques for working with attachment-related challenges.</p>
+                    <div class="outcome-note">Enhances clinical practice and client outcomes</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Reduces Shame</h3>
+                    <p>Frames relationship struggles through a compassionate, neurobiological lens rather than moral failing or weakness.</p>
+                    <div class="outcome-note">Increases hope and motivation for change</div>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>Improves Organizational Culture</h3>
+                    <p>Helps teams understand psychological safety and how to create more secure working relationships.</p>
+                    <div class="outcome-note">Strengthens team dynamics and retention</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="benefits">
+        <div class="container">
+            <h2>What Your Audience Will Gain</h2>
+            <p class="benefits-intro">
+                Based on feedback from thousands of attendees across conferences, workshops, and training programs.
+            </p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-icon">🧠</span>
+                    <h3>Understanding</h3>
+                    <p>Clear insight into why relationships feel difficult and what's happening neurologically during conflict</p>
+                    <span class="benefit-note">Reduces self-blame and confusion</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">🔧</span>
+                    <h3>Practical Skills</h3>
+                    <p>Specific techniques for emotional regulation, communication, and conflict de-escalation</p>
+                    <span class="benefit-note">Immediately applicable tools</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">💝</span>
+                    <h3>Hope</h3>
+                    <p>Evidence that secure relationships are possible and achievable with the right approach</p>
+                    <span class="benefit-note">Motivation for continued growth</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">🎯</span>
+                    <h3>Direction</h3>
+                    <p>Clear understanding of what to work on first and how to approach relationship growth systematically</p>
+                    <span class="benefit-note">Structured path forward</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">🗣</span>
+                    <h3>Communication Skills</h3>
+                    <p>Language and approaches that increase connection rather than create defensiveness</p>
+                    <span class="benefit-note">Improves daily interactions</span>
+                </div>
+                
+                <div class="benefit-card">
+                    <span class="benefit-icon">🔄</span>
+                    <h3>Pattern Recognition</h3>
+                    <p>Ability to identify triggers and interrupt unhelpful cycles before they escalate</p>
+                    <span class="benefit-note">Prevents relationship damage</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPEAKING TOPICS -->
+    <section class="topics" id="topics">
+        <div class="container">
+            <h2>Speaking Topics</h2>
+            <div class="topics-grid">
+                <div class="topic-card">
+                    <h3>Attachment Theory Fundamentals</h3>
+                    <p>Understanding the four attachment styles and how they show up in adult relationships and professional settings.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Co-Regulation Strategies</h3>
+                    <p>Practical techniques for managing emotional states and helping others feel safe during difficult conversations.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Breaking Generational Patterns</h3>
+                    <p>How to identify family patterns and create intentional change to benefit the next generation.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Trauma-Informed Practices</h3>
+                    <p>Implementing attachment-based approaches in clinical, educational, and organizational settings.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Building Secure Organizations</h3>
+                    <p>Creating psychological safety and healthy team dynamics using attachment principles.</p>
+                </div>
+                
+                <div class="topic-card">
+                    <h3>Parent-Child Attachment</h3>
+                    <p>Connection-focused parenting approaches that build security and emotional regulation in families.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

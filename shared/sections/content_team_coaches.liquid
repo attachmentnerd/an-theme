@@ -39,10 +39,11 @@
                 <!-- Photo with Overlap Effect -->
                 <div class="an-team__photo-wrapper card-overlap--top">
                   {% if block.settings.photo != blank %}
-                    <img src="{{ block.settings.photo | image_picker_url: '600x' }}" 
-                         alt="{{ block.settings.name }}" 
-                         class="an-team__photo card-overlap__image shadow-layered"
-                         loading="lazy">
+                    <img src="{{ block.settings.photo | image_picker_url: '800x450' }}" 
+             alt="{{ {{ block.settings.name }} }}" 
+             class="an-team__photo card-overlap__image shadow-layered"
+             loading="lazy"
+             style="object-fit: cover;">
                   {% else %}
                     <div class="an-team__photo card-overlap__image shadow-layered" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
                       <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">

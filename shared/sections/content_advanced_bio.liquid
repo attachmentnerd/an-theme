@@ -67,19 +67,22 @@
             <!-- Main Image -->
             {% if section.settings.main_image %}
               <div class="bio-main-image">
-                <img src="{{ section.settings.main_image | image_picker_url: '800x1000' }}" 
-                     alt="{{ section.settings.main_image_alt | default: 'Bio image' }}"
-                     class="img-fluid"
-                     loading="lazy">
+                <img src="{{ section.settings.main_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ section.settings.main_image_alt | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
               </div>
             {% endif %}
 
             <!-- Overlay Product Image -->
             {% if section.settings.overlay_image %}
               <div class="bio-overlay-image" style="bottom: {{ section.settings.overlay_position_bottom | default: '50' }}px; {{ section.settings.overlay_position_side }}: {{ section.settings.overlay_position_offset | default: '-50' }}px;">
-                <img src="{{ section.settings.overlay_image | image_picker_url: '300x400' }}" 
-                     alt="{{ section.settings.overlay_image_alt | default: 'Product image' }}"
-                     loading="lazy">
+                <img src="{{ section.settings.overlay_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ section.settings.overlay_image_alt | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
                 {% if section.settings.show_overlay_decoration %}
                   <div class="overlay-decoration">
                     <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
@@ -108,10 +111,11 @@
                 {% if block.type == 'logo' %}
                   <div class="logo-item" {{ block.shopify_attributes }}>
                     {% if block.settings.logo_image %}
-                      <img src="{{ block.settings.logo_image | image_picker_url: '200x100' }}" 
-                           alt="{{ block.settings.logo_alt | default: 'Media logo' }}"
-                           style="max-height: {{ section.settings.logo_max_height | default: '40' }}px;"
-                           loading="lazy">
+                      <img src="{{ block.settings.logo_image | image_picker_url: '240x80' }}" 
+             alt="{{ {{ block.settings.logo_alt | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
                     {% elsif block.settings.logo_text %}
                       <span class="logo-text" style="font-size: {{ section.settings.logo_text_size | default: '18' }}px;">
                         {{ block.settings.logo_text }}

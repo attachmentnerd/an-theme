@@ -59,10 +59,11 @@
                 <!-- Resource Image/Icon -->
                 <div class="an-resources__visual">
                   {% if block.settings.preview_image != blank %}
-                    <img src="{{ block.settings.preview_image | image_picker_url: 'placeholder.png' }}" 
-                         alt="{{ block.settings.title }}" 
-                         class="an-resources__image"
-                         loading="lazy">
+                    <img src="{{ block.settings.preview_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ block.settings.title }} }}" 
+             class="an-resources__image"
+             loading="lazy"
+             style="object-fit: cover;">
                   {% else %}
                     <div class="an-resources__icon-wrapper">
                       {% case block.settings.file_type %}

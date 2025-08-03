@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eli Harwood - Speaking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Brand Colors */
+            --c-brand-600: #5E3BFF;
+            --c-brand-800: #4025E0;
+            --c-brand-100: #E9E6FF;
+            --c-accent-teal: #18D5E4;
+            --c-accent-peach: #FF8BCB;
+            --c-accent-lemon: #FFE86B;
+            --c-ink-900: #1B1B29;
+            --c-ink-700: #323346;
+            --c-ink-500: #6E6F7B;
+            --c-white: #FFFFFF;
+            
+            /* Typography */
+            --fs-display: 3rem;
+            --fs-h1: 2.5rem;
+            --fs-h2: 1.875rem;
+            --fs-body-lg: 1.125rem;
+            --fs-body: 1rem;
+            --fs-caption: 0.875rem;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+        }
+        
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--c-ink-700);
+            font-weight: 400;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4 {
+            color: var(--c-ink-900);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: var(--c-brand-100);
+            padding: var(--space-3xl) 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: var(--fs-display);
+            margin-bottom: var(--space-lg);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--fs-body-lg);
+            color: var(--c-ink-700);
+            max-width: 600px;
+            margin: 0 auto var(--space-xl);
+        }
+        
+        .hero-subtitle .highlight {
+            color: var(--c-brand-600);
+            font-weight: 500;
+        }
+        
+        /* Video Section */
+        .video-section {
+            padding: var(--space-3xl) 0;
+            background: var(--c-white);
+        }
+        
+        .video-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .video-placeholder {
+            position: relative;
+            padding-bottom: 56.25%;
+            background: var(--c-ink-900);
+            overflow: hidden;
+        }
+        
+        .video-placeholder img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: var(--c-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 20px solid var(--c-brand-600);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+        
+        /* Content Section */
+        .content-section {
+            padding: var(--space-3xl) 0;
+            background: var(--c-white);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            align-items: center;
+        }
+        
+        .content-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .content-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .content-text h2 {
+            font-size: var(--fs-h1);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .content-text p {
+            font-size: var(--fs-body);
+            margin-bottom: var(--space-md);
+            color: var(--c-ink-700);
+        }
+        
+        .content-card {
+            background: var(--c-brand-100);
+            padding: var(--space-lg);
+            border-radius: 16px;
+            margin-top: var(--space-lg);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
+            color: var(--c-white);
+            padding: var(--space-md) var(--space-xl);
+            border-radius: 9999px;
+            font-size: var(--fs-body);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(94, 59, 255, 0.25);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(94, 59, 255, 0.35);
+        }
+        
+        /* Event Section */
+        .event-section {
+            background: linear-gradient(135deg, var(--c-brand-600) 0%, var(--c-brand-800) 100%);
+            color: var(--c-white);
+            padding: var(--space-2xl) 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="white" fill-opacity="0.05"/></svg>');
+            background-size: 200px 200px;
+        }
+        
+        .event-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .event-section h2 {
+            font-size: var(--fs-h1);
+            color: var(--c-white);
+            margin-bottom: var(--space-xs);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .event-subtitle {
+            font-size: var(--fs-body-lg);
+            opacity: 0.9;
+        }
+        
+        /* Ready Section */
+        .ready-section {
+            padding: var(--space-3xl) 0;
+            background: var(--c-white);
+        }
+        
+        .ready-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+        
+        .ready-header h2 {
+            font-size: var(--fs-h1);
+            margin-bottom: var(--space-md);
+        }
+        
+        .ready-steps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            align-items: start;
+        }
+        
+        .ready-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+        }
+        
+        .ready-item {
+            display: flex;
+            gap: var(--space-lg);
+        }
+        
+        .ready-number {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--c-brand-100);
+            color: var(--c-brand-600);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--fs-h2);
+            font-weight: 500;
+        }
+        
+        .ready-content h3 {
+            font-size: var(--fs-body-lg);
+            color: var(--c-brand-600);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .ready-content p {
+            color: var(--c-ink-700);
+            font-size: var(--fs-body);
+        }
+        
+        .ready-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .ready-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .ready-cta {
+            margin-top: var(--space-xl);
+            display: flex;
+            gap: var(--space-md);
+        }
+        
+        .btn-secondary {
+            background: var(--c-white);
+            color: var(--c-brand-600);
+            padding: var(--space-md) var(--space-xl);
+            border-radius: 9999px;
+            font-size: var(--fs-body);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: 2px solid var(--c-brand-600);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--c-brand-100);
+            transform: translateY(-2px);
+        }
+        
+        /* Why Section */
+        .why-section {
+            background: var(--c-brand-100);
+            padding: var(--space-3xl) 0;
+        }
+        
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            align-items: center;
+        }
+        
+        .why-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .why-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .why-content {
+            background: var(--c-white);
+            padding: var(--space-2xl);
+            border-radius: 24px;
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+        }
+        
+        .why-content h2 {
+            font-size: var(--fs-h1);
+            margin-bottom: var(--space-lg);
+            color: var(--c-brand-600);
+        }
+        
+        .why-content h3 {
+            font-size: var(--fs-h2);
+            margin-bottom: var(--space-md);
+        }
+        
+        .why-content p {
+            margin-bottom: var(--space-lg);
+            color: var(--c-ink-700);
+        }
+        
+        .why-quote {
+            padding: var(--space-lg);
+            background: var(--c-brand-100);
+            border-radius: 16px;
+            font-style: italic;
+            font-size: var(--fs-body-lg);
+            color: var(--c-brand-800);
+            border-left: 4px solid var(--c-brand-600);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --fs-display: 2rem;
+                --fs-h1: 1.875rem;
+                --fs-h2: 1.5rem;
+            }
+            
+            .content-grid,
+            .ready-steps,
+            .why-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-2xl);
+            }
+            
+            .ready-cta {
+                flex-direction: column;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Eli helps overwhelmed caregivers find their calm in the chaos—with science-backed tools that lead to deeper connection</h1>
+            <p class="hero-subtitle">Transform your audience with practical attachment science they can <span class="highlight">actually remember</span> when their nervous system is flooded</p>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section">
+        <div class="container">
+            <div class="video-wrapper">
+                <div class="video-placeholder">
+                    <!--@id=speaker_reel-->
+                    <img src="https://via.placeholder.com/800x450/1B1B29/ffffff?text=Speaker+Reel" alt="Eli Harwood Speaker Reel">
+                    <div class="play-button">
+                        <div class="play-icon"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid">
+                <div class="content-image">
+                    <!--@id=eli_speaking_stage-->
+                    <img src="https://via.placeholder.com/600x800/E9E6FF/5E3BFF?text=Eli+Speaking" alt="Eli Harwood speaking on stage">
+                </div>
+                <div class="content-text">
+                    <h2>Breaking cycles starts with understanding why</h2>
+                    <p>Using brain science, clinical wisdom, and real-life stories, Eli helps audiences understand <strong>why</strong> they react the way they do—and gives them practical scripts to respond differently.</p>
+                    <p>Your attendees leave with more than inspiration. They get science-backed micro-tools they can use <em>tonight</em> when bedtime goes sideways or tomorrow when their trauma gets triggered.</p>
+                    <div class="content-card">
+                        <p><strong>Translation:</strong> No more "I know better but I keep yelling anyway." Eli bridges the gap between knowing and doing with tools that stick when everything's falling apart.</p>
+                    </div>
+                    <a href="#book" class="btn-primary">Book Eli to Speak</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Section -->
+    <section class="event-section">
+        <div class="container">
+            <div class="event-content">
+                <h2>Transform Your Event</h2>
+                <p class="event-subtitle">Science + Heart + Practical Tools = Real Change</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ready Section -->
+    <section class="ready-section">
+        <div class="container">
+            <div class="ready-header">
+                <h2>ELI'S READY TO SERVE YOUR AUDIENCE</h2>
+            </div>
+            <div class="ready-steps">
+                <div class="ready-list">
+                    <div class="ready-item">
+                        <div class="ready-number">01</div>
+                        <div class="ready-content">
+                            <h3>SYNC SCHEDULES</h3>
+                            <p>Virtual or in-person, Eli brings the same warm energy and practical wisdom. We'll work together to customize content perfectly for your unique audience—whether that's burned-out parents, helping professionals, or entire organizations.</p>
+                        </div>
+                    </div>
+                    <div class="ready-item">
+                        <div class="ready-number">02</div>
+                        <div class="ready-content">
+                            <h3>SHARE THE VISION</h3>
+                            <p>You know your people best. Share their struggles, their language, their dreams. Eli crafts every talk to meet them exactly where they are—with stories and scripts that resonate deeply.</p>
+                        </div>
+                    </div>
+                    <div class="ready-item">
+                        <div class="ready-number">03</div>
+                        <div class="ready-content">
+                            <h3>LET'S LOCK IT IN</h3>
+                            <p>From pre-event connection to follow-up resources, we handle the details so you can focus on your people. Your attendees get tools they'll use for years, not just inspiration that fades.</p>
+                        </div>
+                    </div>
+                    <div class="ready-cta">
+                        <a href="#schedule" class="btn-primary">Schedule Speaker Call</a>
+                        <a href="#topics" class="btn-secondary">View Topics</a>
+                    </div>
+                </div>
+                <div class="ready-image">
+                    <!--@id=eli_audience_connection-->
+                    <img src="https://via.placeholder.com/600x900/E9E6FF/5E3BFF?text=Eli+with+Audience" alt="Eli connecting with audience">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section -->
+    <section class="why-section">
+        <div class="container">
+            <div class="why-grid">
+                <div class="why-image">
+                    <!--@id=eli_professional_headshot-->
+                    <img src="https://via.placeholder.com/600x800/ffffff/5E3BFF?text=Eli+Headshot" alt="Eli Harwood professional headshot">
+                </div>
+                <div class="why-content">
+                    <h2>WHY ELI?</h2>
+                    <h3>Because your audience deserves more than fleeting inspiration</h3>
+                    <p>With 17+ years of clinical experience, two bestselling books, and a gift for making complex science feel like common sense, Eli transforms how people understand themselves and their relationships.</p>
+                    <p>She's the therapist-friend to 622K+ followers who trust her to translate attachment research into <strong>actual words they can say</strong> when their child is melting down or their partner is pulling away.</p>
+                    <p>Eli doesn't just explain <em>why</em> relationships matter. She gives your audience the exact scripts to build them—even when their nervous system is screaming and old patterns are pulling hard.</p>
+                    <div class="why-quote">
+                        "Connection is possible, repair is powerful, and it's never too late to earn secure attachment. Let me show your people how."
+                    </div>
+                    <a href="#contact" class="btn-primary">Start the Conversation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

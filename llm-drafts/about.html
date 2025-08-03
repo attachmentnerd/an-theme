@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Eli Harwood - Attachment Nerd®</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Brand Colors */
+            --c-brand-600: #5E3BFF;
+            --c-brand-800: #4025E0;
+            --c-brand-100: #E9E6FF;
+            --c-accent-teal: #18D5E4;
+            --c-accent-peach: #FF8BCB;
+            --c-accent-lemon: #FFE86B;
+            --c-ink-900: #1B1B29;
+            --c-ink-700: #323346;
+            --c-ink-500: #6E6F7B;
+            --c-white: #FFFFFF;
+            
+            /* Gradients */
+            --g-brand: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
+            
+            /* Typography */
+            --fs-display: 3rem;
+            --fs-h1: 2.5rem;
+            --fs-h2: 1.875rem;
+            --fs-body-lg: 1.125rem;
+            --fs-body: 1rem;
+            --fs-caption: 0.875rem;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+        }
+        
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            color: var(--c-ink-700);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            background: var(--g-brand);
+            color: var(--c-white);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle fill="rgba(255,255,255,0.1)" cx="20" cy="20" r="2"/><circle fill="rgba(255,255,255,0.1)" cx="80" cy="40" r="1.5"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: var(--fs-display);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+            line-height: 1.1;
+        }
+        
+        .tagline {
+            font-size: var(--fs-body-lg);
+            margin-bottom: var(--space-xl);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-3xl);
+            margin: var(--space-2xl) 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: var(--fs-h1);
+            font-weight: 500;
+            display: block;
+            margin-bottom: var(--space-sm);
+            color: var(--c-accent-lemon);
+        }
+        
+        .stat-label {
+            font-size: var(--fs-caption);
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero-cta {
+            margin-top: var(--space-2xl);
+        }
+        
+        .btn-primary {
+            background: var(--c-white);
+            color: var(--c-brand-600);
+            padding: var(--space-md) var(--space-xl);
+            border: none;
+            border-radius: 9999px;
+            font-size: var(--fs-body);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            margin: var(--space-sm);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--c-white);
+            border: 2px solid var(--c-white);
+            padding: 14px 30px;
+            border-radius: 9999px;
+            font-size: var(--fs-body);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            margin: var(--space-sm);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--c-white);
+            color: var(--c-brand-600);
+        }
+        
+        /* STORY SECTIONS */
+        .story-section {
+            padding: 80px 0;
+        }
+        
+        .story-section:nth-child(even) {
+            background: #FAFBFC;
+        }
+        
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--space-3xl);
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .story-section:nth-child(odd) .story-content {
+            grid-template-columns: 2fr 1fr;
+        }
+        
+        .story-section:nth-child(odd) .story-visual {
+            order: 2;
+        }
+        
+        .story-visual {
+            text-align: center;
+        }
+        
+        .story-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--c-brand-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto var(--space-lg);
+        }
+        
+        .story-section h2 {
+            font-size: var(--fs-h1);
+            font-weight: 500;
+            color: var(--c-ink-900);
+            margin-bottom: var(--space-md);
+            line-height: 1.2;
+        }
+        
+        .story-section h3 {
+            font-size: var(--fs-h2);
+            font-weight: 500;
+            color: var(--c-brand-600);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .story-text {
+            font-size: var(--fs-body-lg);
+            color: var(--c-ink-700);
+            line-height: 1.7;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .story-highlight {
+            color: var(--c-brand-600);
+            font-weight: 500;
+        }
+        
+        .insight-box {
+            background: var(--c-brand-100);
+            padding: var(--space-lg);
+            border-radius: 16px;
+            border-left: 4px solid var(--c-brand-600);
+            margin: var(--space-xl) 0;
+        }
+        
+        .insight-box h4 {
+            color: var(--c-brand-800);
+            font-size: var(--fs-body-lg);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+        }
+        
+        .insight-box p {
+            color: var(--c-ink-700);
+            font-size: var(--fs-body);
+        }
+        
+        /* MISSION SECTION */
+        .mission {
+            background: var(--c-ink-900);
+            color: var(--c-white);
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mission::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -25%;
+            width: 600px;
+            height: 600px;
+            background: var(--c-brand-600);
+            opacity: 0.1;
+            border-radius: 50%;
+            filter: blur(100px);
+        }
+        
+        .mission-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .mission h2 {
+            font-size: var(--fs-h1);
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
+            color: var(--c-white);
+        }
+        
+        .mission-quote {
+            font-size: var(--fs-body-lg);
+            font-style: italic;
+            margin: var(--space-xl) 0;
+            opacity: 0.9;
+            line-height: 1.8;
+            padding: 0 var(--space-xl);
+        }
+        
+        .mission-attribution {
+            font-size: var(--fs-body);
+            opacity: 0.7;
+            margin-top: var(--space-md);
+            font-style: normal;
+        }
+        
+        /* IMPACT SECTION */
+        .impact {
+            padding: 80px 0;
+            background: var(--c-white);
+        }
+        
+        .impact h2 {
+            text-align: center;
+            font-size: var(--fs-h1);
+            font-weight: 500;
+            color: var(--c-ink-900);
+            margin-bottom: var(--space-3xl);
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-xl);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .impact-card {
+            background: var(--c-white);
+            padding: var(--space-xl);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--c-accent-teal);
+        }
+        
+        .impact-card:nth-child(2)::before {
+            background: var(--c-accent-peach);
+        }
+        
+        .impact-card:nth-child(3)::before {
+            background: var(--c-accent-lemon);
+        }
+        
+        .impact-card:nth-child(4)::before {
+            background: var(--c-brand-600);
+        }
+        
+        .impact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .impact-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--c-brand-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto var(--space-md);
+        }
+        
+        .impact-card h3 {
+            font-size: var(--fs-body-lg);
+            font-weight: 500;
+            color: var(--c-ink-900);
+            margin-bottom: var(--space-md);
+        }
+        
+        .impact-card p {
+            color: var(--c-ink-500);
+            font-size: var(--fs-body);
+            line-height: 1.6;
+        }
+        
+        /* FINAL CTA */
+        .final-cta {
+            background: var(--g-brand);
+            color: var(--c-white);
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="white" fill-opacity="0.05"/></svg>');
+            background-size: 200px 200px;
+        }
+        
+        .final-cta-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .final-cta h2 {
+            font-size: var(--fs-h1);
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .final-cta p {
+            font-size: var(--fs-body-lg);
+            max-width: 600px;
+            margin: 0 auto var(--space-2xl);
+            line-height: 1.7;
+        }
+        
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            :root {
+                --fs-display: 2.5rem;
+                --fs-h1: 2rem;
+                --fs-h2: 1.5rem;
+            }
+            
+            .hero-stats {
+                gap: var(--space-xl);
+            }
+            
+            .story-content,
+            .story-section:nth-child(odd) .story-content {
+                grid-template-columns: 1fr;
+                gap: var(--space-xl);
+                text-align: center;
+            }
+            
+            .story-section:nth-child(odd) .story-visual {
+                order: 1;
+            }
+            
+            .container {
+                padding: 0 var(--space-md);
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                display: block;
+                margin: var(--space-sm) auto;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Meet Eli Harwood</h1>
+                <p class="tagline">Attachment Nerd® • Therapist • Author • Mama</p>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">1M+</span>
+                        <div class="stat-label">Families Served</div>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">17+</span>
+                        <div class="stat-label">Years of Clinical Wisdom</div>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2</span>
+                        <div class="stat-label">Bestselling Books</div>
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <a href="#tools" class="btn-primary">Get Your Attachment Toolkit</a>
+                    <a href="#story" class="btn-secondary">Read My Story</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE BEGINNING -->
+    <section class="story-section" id="story">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-visual">
+                    <div class="story-icon">🌳</div>
+                    <h3>The Roots</h3>
+                </div>
+                <div class="story-text-content">
+                    <h2>From Generational Trauma to Generational Healing</h2>
+                    <p class="story-text">
+                        <span class="story-highlight">"My family tree reads like a trauma textbook,"</span> Eli shares with her characteristic blend of vulnerability and hope. Growing up with mental illness, domestic violence, and religious trauma wasn't just her story—it was the family inheritance passed down through generations.
+                    </p>
+                    <p class="story-text">
+                        But here's what changed everything: <strong>understanding that these patterns weren't permanent.</strong> They were learned, which meant they could be unlearned. Rewritten. Transformed.
+                    </p>
+                    <div class="insight-box">
+                        <h4>The Science of Breaking Cycles</h4>
+                        <p>Research shows that understanding your attachment style is the first step to earning secure attachment—at any age. It's never too late to rewrite your story.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE TURNING POINT -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-text-content">
+                    <h2>When Everything Changed</h2>
+                    <p class="story-text">
+                        At nine years old, Eli watched her mother make the bravest decision of her life. Struggling with PTSD and Bipolar II, her mom chose to check herself into a psychiatric hospital. <span class="story-highlight">"That single act of courage didn't just save her—it checked our entire family into hope."</span>
+                    </p>
+                    <p class="story-text">
+                        This pivotal moment planted the seed for Eli's life mission: helping families find their way from surviving to thriving, one secure connection at a time.
+                    </p>
+                    <div class="insight-box">
+                        <h4>The Power of One Brave Choice</h4>
+                        <p>Sometimes breaking generational cycles starts with one person saying, "It stops with me. I'm getting help."</p>
+                    </div>
+                </div>
+                <div class="story-visual">
+                    <div class="story-icon">🌅</div>
+                    <h3>The Turning Point</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE MISSION -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-visual">
+                    <div class="story-icon">🧭</div>
+                    <h3>The Mission</h3>
+                </div>
+                <div class="story-text-content">
+                    <h2>Making Science Stick When Everything's Falling Apart</h2>
+                    <p class="story-text">
+                        After 17+ years as a Licensed Professional Counselor specializing in attachment, Eli discovered a painful gap: <span class="story-highlight">parents knew what they should do, but couldn't access that knowledge when their nervous system was flooded.</span>
+                    </p>
+                    <p class="story-text">
+                        So she created a new approach: micro-tools and actual scripts that stick in your brain even when your toddler is melting down at Target or your teen is slamming doors.
+                    </p>
+                    <div class="insight-box">
+                        <h4>The Attachment Nerd® Difference</h4>
+                        <p>Deep science translated into simple tools. Because knowing better only helps if you can remember it when everything's chaotic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MISSION STATEMENT -->
+    <section class="mission">
+        <div class="container">
+            <div class="mission-content">
+                <h2>Why This Work Matters</h2>
+                <blockquote class="mission-quote">
+                    "The attachment research that could transform your family shouldn't be locked away in academic journals. It belongs in your pocket, ready when you need it most. Because every child deserves to grow up feeling safe, seen, soothed, and secure—and every parent deserves the tools to make that happen."
+                </blockquote>
+                <p class="mission-attribution">— Eli Harwood</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section class="impact">
+        <div class="container">
+            <h2>Real Impact, Real Change</h2>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-icon">📚</div>
+                    <h3>Award-Winning Author</h3>
+                    <p>USA Today Bestseller "Raising Securely Attached Kids" won the Child Psychology Award for Literary Excellence</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">🎯</div>
+                    <h3>Practical Scripts That Stick</h3>
+                    <p>Micro-tools you can actually remember when your nervous system is flooded and your mind goes blank</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">🏕️</div>
+                    <h3>Intimate Transformation</h3>
+                    <p>Life-changing Attachment Camps where 25 families dive deep into healing and connection</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">💝</div>
+                    <h3>Accessible to All</h3>
+                    <p>"If money's tight, we'll figure it out together"—because every family deserves these tools</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta" id="tools">
+        <div class="container">
+            <div class="final-cta-content">
+                <h2>Ready to Transform Your Family's Story?</h2>
+                <p>
+                    Join nearly a million parents who've discovered that earning secure attachment isn't about being perfect—it's about having the right tools for repair when things go sideways.
+                </p>
+                <div class="hero-cta">
+                    <a href="#start" class="btn-primary">Start Your Journey</a>
+                    <a href="#resources" class="btn-secondary">Explore Resources</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

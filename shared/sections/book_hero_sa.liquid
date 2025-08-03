@@ -10,12 +10,13 @@
             
             <!-- Main image -->
             <div class="position-relative" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.08);">
-              <img src="{{ section.settings.showcase_image | img_url: '800x' }}" 
-                   alt="{{ section.settings.image_alt }}" 
-                   class="img-fluid"
-                   style="border-radius: 8px;"
-                   loading="lazy"
-                   kjb-settings-id="{{ 'showcase_image' | settings_id: section: section }}">
+              <div kjb-settings-id="{{ 'showcase_image' | settings_id: section: section }}">
+                <img src="{{ section.settings.showcase_image | image_picker_url: '600x400' }}" 
+             alt="{{ section.settings.image_alt }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+              </div>
             </div>
           </div>
         </div>

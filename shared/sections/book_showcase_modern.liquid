@@ -7,12 +7,13 @@
         <div class="book-visual-wrapper position-relative animate-fade-in">
           <!-- Mock device frame with glow -->
           <div class="book-frame position-relative" style="border-radius: 16px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,.08), 0 0 48px rgba(94,59,255,.15);">
-            <img src="{{ section.settings.book_image | image_picker_url: 'sa-book-cover.png' }}" 
-                 alt="Securely Attached" 
-                 class="img-fluid book-cover"
-                 loading="lazy"
-                 style="width: 100%; height: auto; display: block;"
-                 kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
+            <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
+              <img src="{{ section.settings.book_image | image_picker_url: '600x900' }}" 
+                   alt="Securely Attached" 
+                   class="img-fluid book-cover"
+                   loading="lazy"
+                   style="aspect-ratio: 2/3; object-fit: cover;">
+            </div>
           </div>
           
           <!-- Decorative accent -->
@@ -63,12 +64,13 @@
               </p>
               <div class="d-flex align-items-center">
                 {% if section.settings.testimonial_author_image %}
-                  <img src="{{ section.settings.testimonial_author_image | image_picker_url: 'avatar-placeholder.png' }}" 
-                       alt="{{ section.settings.testimonial_author }}" 
-                       class="rounded-circle me-3"
-                       loading="lazy"
-                       style="width: 48px; height: 48px; object-fit: cover;"
-                       kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}">
+                  <div kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}" class="me-3" style="width: 48px; height: 48px;">
+                    <img src="{{ section.settings.testimonial_author_image | image_picker_url: '96x96' }}" 
+                         alt="{{ section.settings.testimonial_author }}" 
+                         class="rounded-circle"
+                         loading="lazy"
+                         style="aspect-ratio: 1/1; object-fit: cover; width: 48px; height: 48px;">
+                  </div>
                 {% endif %}
                 <cite style="font-size: var(--fs-caption); color: var(--c-ink-700); font-style: normal;" kjb-settings-id="{{ 'testimonial_author' | settings_id: section: section }}">
                   — {{ section.settings.testimonial_author }}

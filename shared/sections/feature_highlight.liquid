@@ -73,10 +73,11 @@
           
           {% if section.settings.visual_type == 'image' %}
             {% if section.settings.main_image != blank %}
-              <img src="{{ section.settings.main_image | image_picker_url: 'placeholder.png' }}" 
-                   alt="{{ section.settings.main_image_alt }}"
-                   class="visual-container__image"
-                   loading="lazy">
+              <img src="{{ section.settings.main_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ section.settings.main_image_alt }} }}" 
+             class="visual-container__image"
+             loading="lazy"
+             style="object-fit: cover;">
             {% else %}
               <div class="visual-container__placeholder" style="width: 100%; height: 100%; min-height: 400px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 20px;">
                 <div style="text-align: center;">
@@ -110,8 +111,11 @@
                 {% elsif block.settings.element_type == 'icon' %}
                   <div class="floating-element__icon">{{ block.settings.icon_content }}</div>
                 {% elsif block.settings.element_type == 'image' and block.settings.element_image != blank %}
-                  <img src="{{ block.settings.element_image | image_picker_url: 'placeholder.png' }}" 
-                       alt="{{ block.settings.element_alt }}">
+                  <img src="{{ block.settings.element_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ block.settings.element_alt }} }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
                 {% endif %}
               </div>
             {% endif %}

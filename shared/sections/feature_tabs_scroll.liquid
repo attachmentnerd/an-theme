@@ -74,10 +74,11 @@
                   <!-- Panel Image/Content -->
                   {% if block.settings.content_image %}
                     <div class="panel-image-container mt-4">
-                      <img src="{{ block.settings.content_image | image_picker_url: 'master' }}"
-                           alt="{{ block.settings.image_alt }}"
-                           class="panel-image img-fluid"
-                           loading="lazy">
+                      <img src="{{ block.settings.content_image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ block.settings.image_alt }} }}" 
+             class="panel-image img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
                     </div>
                   {% endif %}
 

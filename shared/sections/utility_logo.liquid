@@ -154,10 +154,11 @@
            title="{{ section.settings.logo_title | default: current_site.title }}"
            {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
           {% if section.settings.logo_image %}
-            <img src="{{ section.settings.logo_image | image_url }}" 
-                 alt="{{ section.settings.image_alt | default: current_site.title }}"
-                 class="logo-section__image"
-                 loading="eager">
+            <img src="{{ section.settings.logo_image | image_picker_url: '240x80' }}" 
+             alt="{{ {{ section.settings.image_alt | default: current_site.title }} }}" 
+             class="logo-section__image"
+             loading="lazy"
+             style="object-fit: cover;">
           {% else %}
             <span class="logo-section__text">
               {{ section.settings.logo_text | default: current_site.title }}

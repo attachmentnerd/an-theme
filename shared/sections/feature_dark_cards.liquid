@@ -55,12 +55,11 @@
               <div class="featured-visual">
                 {% if block.settings.use_image and block.settings.image %}
                   <div class="featured-image" style="margin: -{{ section.settings.card_padding }}px -{{ section.settings.card_padding }}px {{ section.settings.card_padding }}px;">
-                    <img 
-                      src="{{ block.settings.image | image_picker_url: '800x' }}"
-                      alt="{{ block.settings.image_alt | default: block.settings.title }}"
-                      class="featured-image__img"
-                      loading="lazy"
-                    >
+                    <img src="{{ block.settings.image | image_picker_url: '800x450' }}" 
+             alt="{{ {{ block.settings.image_alt | default: block.settings.title }} }}" 
+             class="featured-image__img"
+             loading="lazy"
+             style="object-fit: cover;">
                   </div>
                 {% else %}
                   <div class="featured-icon" 

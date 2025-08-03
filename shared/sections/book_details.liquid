@@ -15,12 +15,11 @@
         {% if block.type == 'logo' %}
           <div class="book__logo" {{ block.shopify_attributes }}>
             {% if block.settings.logo_image != blank %}
-              <img src="{{ block.settings.logo_image | image_picker_url: '300x' }}" 
-                   alt="{{ block.settings.logo_alt_text | default: 'Logo' }}"
-                   class="img-fluid"
-                   width="150"
-                   height="auto"
-                   loading="lazy">
+              <img src="{{ block.settings.logo_image | image_picker_url: '240x80' }}" 
+             alt="{{ {{ block.settings.logo_alt_text | default:  }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
             {% endif %}
           </div>
         {% endif %}
@@ -49,13 +48,11 @@
         {% if section.settings.left_author_image != blank or section.settings.left_author_name != blank %}
           <div class="book__author">
             {% if section.settings.left_author_image != blank %}
-              <img src="{{ section.settings.left_author_image | image_picker_url: '120x' }}" 
-                   alt="{{ section.settings.left_author_name | default: 'Author' }}"
-                   class="book__author-image"
-                   width="60"
-                   height="60"
-                   loading="lazy"
-                   style="aspect-ratio: 1/1; object-fit: cover; border-radius: 50%;">
+              <img src="{{ section.settings.left_author_image | image_picker_url: '120x120' }}" 
+             alt="{{ {{ section.settings.left_author_name | default:  }}" 
+             class="book__author-image"
+             loading="lazy"
+             style="object-fit: cover;">
             {% endif %}
             <div class="book__author-info">
               {% if section.settings.left_author_name != blank %}
@@ -72,13 +69,11 @@
       {% comment %} Center Book Image {% endcomment %}
       <div class="book__image-wrapper">
         {% if section.settings.book_image != blank %}
-          <img src="{{ section.settings.book_image | image_picker_url: '800x' }}" 
-               alt="{{ section.settings.book_alt_text | default: 'Book cover' }}"
-               class="book__image"
-               width="400"
-               height="600"
-               loading="lazy"
-               style="aspect-ratio: 2/3; object-fit: cover;">
+          <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
+             alt="{{ {{ section.settings.book_alt_text | default:  }}" 
+             class="book__image"
+             loading="lazy"
+             style="object-fit: cover;">
         {% endif %}
         
         {% if section.settings.badge_text != blank %}
@@ -107,13 +102,11 @@
         {% if section.settings.right_author_image != blank or section.settings.right_author_name != blank %}
           <div class="book__author">
             {% if section.settings.right_author_image != blank %}
-              <img src="{{ section.settings.right_author_image | image_picker_url: '120x' }}" 
-                   alt="{{ section.settings.right_author_name | default: 'Author' }}"
-                   class="book__author-image"
-                   width="60"
-                   height="60"
-                   loading="lazy"
-                   style="aspect-ratio: 1/1; object-fit: cover; border-radius: 50%;">
+              <img src="{{ section.settings.right_author_image | image_picker_url: '120x120' }}" 
+             alt="{{ {{ section.settings.right_author_name | default:  }}" 
+             class="book__author-image"
+             loading="lazy"
+             style="object-fit: cover;">
             {% endif %}
             <div class="book__author-info">
               {% if section.settings.right_author_name != blank %}
