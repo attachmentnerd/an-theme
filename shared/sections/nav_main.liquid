@@ -986,9 +986,36 @@
       <!-- Logo -->
       <div class="kajabi-nav__logo" kjb-settings-id="{{ 'logo_group' | settings_id: section: section }}">
         <a href="{{ current_site.root_url }}">
-          {% comment %} Check for logo image block first {% endcomment %}
-          {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
-          {% if logo_block and logo_block.settings.logo_image %}
+          {% comment %} Check if we're in transparent pill mode with hardcoded logos {% endcomment %}
+          {% if section.settings.nav_style == 'transparent_pill' and section.settings.transparent_logo_light and section.settings.transparent_logo_dark %}
+            {% comment %} Use hardcoded transparent pill logos {% endcomment %}
+            {% if section.settings.transparent_logo_mode == 'light' %}
+              <img src="{{ section.settings.transparent_logo_light | image_picker_url: '360x120' }}" 
+                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                   loading="lazy"
+                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
+            {% elsif section.settings.transparent_logo_mode == 'dark' %}
+              <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '360x120' }}" 
+                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                   loading="lazy"
+                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
+            {% else %}
+              {% comment %} Auto mode - show both and let CSS/JS handle visibility {% endcomment %}
+              <img src="{{ section.settings.transparent_logo_light | image_picker_url: '360x120' }}" 
+                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                   loading="lazy"
+                   class="logo-light"
+                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
+              <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '360x120' }}" 
+                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                   loading="lazy"
+                   class="logo-dark"
+                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
+            {% endif %}
+          {% else %}
+            {% comment %} Standard logo logic {% endcomment %}
+            {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
+            {% if logo_block and logo_block.settings.logo_image %}
             {% comment %} Light background logo (default) {% endcomment %}
             <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}" 
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
@@ -1022,6 +1049,7 @@
             <span class="kajabi-nav__logo-text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section }}">
               {{ section.settings.logo_text | default: current_site.title }}
             </span>
+          {% endif %}
           {% endif %}
         </a>
       </div>
@@ -1197,8 +1225,35 @@
   <div class="kajabi-nav__mobile-header">
     <div class="kajabi-nav__logo">
       <a href="{{ current_site.root_url }}">
-        {% comment %} Check for logo image block first {% endcomment %}
-        {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
+        {% comment %} Check if we're in transparent pill mode with hardcoded logos {% endcomment %}
+        {% if section.settings.nav_style == 'transparent_pill' and section.settings.transparent_logo_light and section.settings.transparent_logo_dark %}
+          {% comment %} Use hardcoded transparent pill logos for mobile {% endcomment %}
+          {% if section.settings.transparent_logo_mode == 'light' %}
+            <img src="{{ section.settings.transparent_logo_light | image_picker_url: '240x80' }}" 
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                 loading="lazy"
+                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
+          {% elsif section.settings.transparent_logo_mode == 'dark' %}
+            <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '240x80' }}" 
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                 loading="lazy"
+                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
+          {% else %}
+            {% comment %} Auto mode - show both and let CSS/JS handle visibility {% endcomment %}
+            <img src="{{ section.settings.transparent_logo_light | image_picker_url: '240x80' }}" 
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                 loading="lazy"
+                 class="logo-light"
+                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
+            <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '240x80' }}" 
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+                 loading="lazy"
+                 class="logo-dark"
+                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
+          {% endif %}
+        {% else %}
+          {% comment %} Standard logo logic {% endcomment %}
+          {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
         {% if logo_block and logo_block.settings.mobile_logo_image %}
           <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: '240x80' }}" 
                alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
@@ -1237,6 +1292,7 @@
                style="max-height: 40px; width: auto;">
         {% else %}
           <span class="kajabi-nav__logo-text">{{ section.settings.logo_text | default: current_site.title }}</span>
+        {% endif %}
         {% endif %}
       </a>
     </div>
@@ -1698,6 +1754,43 @@
       "id": "mobile_logo_height",
       "label": "Mobile Logo Height",
       "default": "32px"
+    },
+    {
+      "type": "header",
+      "content": "Transparent Pill Logo Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "transparent_logo_light",
+      "label": "Light Logo (for dark backgrounds)",
+      "info": "White/light version of your logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "transparent_logo_dark",
+      "label": "Dark Logo (for light backgrounds)",
+      "info": "Dark/colored version of your logo"
+    },
+    {
+      "type": "select",
+      "id": "transparent_logo_mode",
+      "label": "Which Logo to Show",
+      "default": "auto",
+      "options": [
+        {
+          "label": "Auto-detect (based on text color)",
+          "value": "auto"
+        },
+        {
+          "label": "Always use Light Logo",
+          "value": "light"
+        },
+        {
+          "label": "Always use Dark Logo",
+          "value": "dark"
+        }
+      ],
+      "info": "Choose which logo to display in transparent pill mode"
     },
     {
       "type": "header",
