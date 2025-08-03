@@ -1393,6 +1393,13 @@
   const nav = document.getElementById('section-{{ section.id }}');
   const mobileMenu = document.getElementById('mobile-menu-{{ section.id }}');
   const backdrop = document.getElementById('mobile-backdrop-{{ section.id }}');
+  
+  // Exit early if essential elements don't exist
+  if (!nav || !mobileMenu) {
+    console.warn('Navigation elements not found');
+    return;
+  }
+  
   const hamburger = nav.querySelector('[data-mobile-menu-trigger]');
   const closeBtn = mobileMenu.querySelector('.kajabi-nav__mobile-close');
   const body = document.body;
@@ -1402,26 +1409,32 @@
   // Mobile menu functions
   function openMenu() {
     scrollPosition = window.pageYOffset;
-    mobileMenu.classList.add('active');
-    backdrop.classList.add('active');
+    if (mobileMenu) mobileMenu.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
     body.style.overflow = 'hidden';
-    mobileMenu.setAttribute('aria-hidden', 'false');
-    hamburger.setAttribute('aria-expanded', 'true');
+    if (mobileMenu) mobileMenu.setAttribute('aria-hidden', 'false');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
   }
 
   function closeMenu() {
-    mobileMenu.classList.remove('active');
-    backdrop.classList.remove('active');
+    if (mobileMenu) mobileMenu.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
     body.style.overflow = '';
-    mobileMenu.setAttribute('aria-hidden', 'true');
-    hamburger.setAttribute('aria-expanded', 'false');
+    if (mobileMenu) mobileMenu.setAttribute('aria-hidden', 'true');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
     window.scrollTo(0, scrollPosition);
   }
 
   // Event listeners
-  hamburger.addEventListener('click', openMenu);
-  closeBtn.addEventListener('click', closeMenu);
-  backdrop.addEventListener('click', closeMenu);
+  if (hamburger) {
+    hamburger.addEventListener('click', openMenu);
+  }
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
+  if (backdrop) {
+    backdrop.addEventListener('click', closeMenu);
+  }
 
   // Escape key
   document.addEventListener('keydown', function(e) {
@@ -1471,15 +1484,16 @@
 
   // Sticky navigation
   {% if section.settings.sticky %}
-  let lastScrollTop = 0;
-  const navHeight = nav.offsetHeight;
-  const navStyle = nav.getAttribute('data-nav-style');
+  if (nav) {
+    let lastScrollTop = 0;
+    const navHeight = nav.offsetHeight;
+    const navStyle = nav.getAttribute('data-nav-style');
 
-  window.addEventListener('scroll', function() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    window.addEventListener('scroll', function() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (scrollTop > navHeight) {
-      nav.classList.add('kajabi-nav--sticky');
+      if (scrollTop > navHeight) {
+        nav.classList.add('kajabi-nav--sticky');
 
       if (scrollTop > lastScrollTop && scrollTop > navHeight * 2) {
         nav.classList.add('kajabi-nav--hidden');
@@ -1501,6 +1515,7 @@
 
     lastScrollTop = scrollTop;
   });
+  }
   {% endif %}
 
   // Logo switching based on background
