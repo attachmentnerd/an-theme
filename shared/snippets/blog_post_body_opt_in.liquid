@@ -44,12 +44,19 @@
     {{ section.settings.opt_in_content }}
   </div>
   <div class="blog-post-optin__form" kjb-settings-id="{{ 'opt_in_form' | settings_id: section: section }}">
-    {% assign f = current_site.find_form[section.settings.opt_in_form] %}
+    {% assign form_setting = section.settings.opt_in_form %}
+    {% assign form_id = section.settings.opt_in_manual_form_id | default: form_setting.id | default: form_setting %}
+    {% assign f = current_site.find_form[form_id] %}
     {% if f %}
       {% form f %}
+        {% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
         <input type="hidden" name="thank_you_url" value="{{ section.settings.opt_in_thank_you }}">
         {% for field in f.fields %}
-          {{ field | form_input: class: "form-group", input_class: "form-control", label: use_label, placeholder: use_placeholder }}
+          {% if field.input_type == 'email' and user_email != blank %}
+            <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
+          {% else %}
+            {{ field | form_input: class: "form-group", input_class: "form-control", label: use_label, placeholder: use_placeholder }}
+          {% endif %}
         {% endfor %}
         <button
           id="opt-in-btn"
@@ -62,10 +69,33 @@
         </button>
       {% endform %}
     {% else %}
-      {% if editor %}
-        <div class="editor-null" kjb-settings-id="{{ 'opt_in_form' | settings_id: section: section }}">
-          Click here to select a form to display.
-        </div>
+      {% if form_id %}
+        {% form "optin", id: form_id %}
+          <input type="hidden" name="thank_you_url" value="{{ section.settings.opt_in_thank_you }}">
+          {% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
+          {% for field in form.fields %}
+            {% if field.input_type == 'email' and user_email != blank %}
+              <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
+            {% else %}
+              {{ field | form_input: class: "form-group", input_class: "form-control", label: use_label, placeholder: use_placeholder }}
+            {% endif %}
+          {% endfor %}
+          <button
+            id="opt-in-btn"
+            class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }} {{ appended_classes }}"
+            name="commit"
+          >
+            {%- element "section.settings.opt_in_btn_text" -%}
+              {{ section.settings.opt_in_btn_text }}
+            {%- endelement -%}
+          </button>
+        {% endform %}
+      {% else %}
+        {% if editor %}
+          <div class="editor-null" kjb-settings-id="{{ 'opt_in_form' | settings_id: section: section }}">
+            No form found. Select a form or paste a Form ID in "Manual Form ID".
+          </div>
+        {% endif %}
       {% endif %}
     {% endif %}
   </div>

@@ -7,7 +7,7 @@
   - Brand-aligned styling
 {% endcomment %}
 
-<section class="an-feature-two-column-list py-5" style="background-color: {{ section.settings.background_color | default: '#FFF8F5' }};">
+<section id="{{ section.settings.section_id | default: 'feature-two-column-list' }}-{{ section.id }}" class="an-feature-two-column-list py-5" style="background-color: {{ section.settings.background_color | default: '#FFF8F5' }};">
   <div class="container">
     <div class="an-feature-two-column-list__wrapper">
       <!-- Section Header -->
@@ -25,27 +25,42 @@
 
       <!-- Two Column Lists -->
       <div class="an-feature-two-column-list__content" style="background-color: {{ section.settings.content_bg_color | default: '#FFFFFF' }};">
+        {%- comment -%} Compute how many feature blocks exist and split evenly {%- endcomment -%}
+        {% assign total_features = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'left_feature' or block.type == 'right_feature' %}
+            {% assign total_features = total_features | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+        {% assign left_count = total_features | plus: 1 | divided_by: 2 %}
+
         <div class="row">
           <!-- Left Column -->
           <div class="col-lg-6">
             <div class="feature-column feature-column--left">
+              {% assign feature_index = 0 %}
+              {% assign left_rendered = 0 %}
               {% for block in section.blocks %}
-                {% if block.type == 'left_feature' %}
-                  <div class="feature-item animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;" {{ block.shopify_attributes }}>
-                    <div class="feature-icon">
-                      {% if block.settings.use_emoji %}
-                        <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>
-                      {% else %}
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                          <circle cx="12" cy="12" r="10" fill="{{ section.settings.icon_bg_color | default: '#FFE86B' }}" opacity="0.2"/>
-                          <path d="M8 12L11 15L16 9" stroke="{{ section.settings.icon_color | default: '#5E3BFF' }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      {% endif %}
+                {% if block.type == 'left_feature' or block.type == 'right_feature' %}
+                  {% assign feature_index = feature_index | plus: 1 %}
+                  {% if feature_index <= left_count %}
+                    {% assign left_rendered = left_rendered | plus: 1 %}
+                    <div class="feature-item animate-fade-up" style="animation-delay: {{ left_rendered | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+                      <div class="feature-icon">
+                        {% if block.settings.use_emoji %}
+                          <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>
+                        {% else %}
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" fill="{{ section.settings.icon_bg_color | default: '#FFE86B' }}" opacity="0.2"/>
+                            <path d="M8 12L11 15L16 9" stroke="{{ section.settings.icon_color | default: '#5E3BFF' }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        {% endif %}
+                      </div>
+                      <div class="feature-text">
+                        {{ block.settings.text }}
+                      </div>
                     </div>
-                    <div class="feature-text">
-                      {{ block.settings.text }}
-                    </div>
-                  </div>
+                  {% endif %}
                 {% endif %}
               {% endfor %}
             </div>
@@ -54,23 +69,29 @@
           <!-- Right Column -->
           <div class="col-lg-6">
             <div class="feature-column feature-column--right">
+              {% assign feature_index = 0 %}
+              {% assign right_rendered = 0 %}
               {% for block in section.blocks %}
-                {% if block.type == 'right_feature' %}
-                  <div class="feature-item animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 | plus: 0.05 }}s;" {{ block.shopify_attributes }}>
-                    <div class="feature-icon">
-                      {% if block.settings.use_emoji %}
-                        <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>
-                      {% else %}
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                          <circle cx="12" cy="12" r="10" fill="{{ section.settings.icon_bg_color | default: '#FFE86B' }}" opacity="0.2"/>
-                          <path d="M8 12L11 15L16 9" stroke="{{ section.settings.icon_color | default: '#5E3BFF' }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      {% endif %}
+                {% if block.type == 'left_feature' or block.type == 'right_feature' %}
+                  {% assign feature_index = feature_index | plus: 1 %}
+                  {% if feature_index > left_count %}
+                    {% assign right_rendered = right_rendered | plus: 1 %}
+                    <div class="feature-item animate-fade-up" style="animation-delay: {{ right_rendered | times: 0.1 | plus: 0.05 }}s;" {{ block.shopify_attributes }}>
+                      <div class="feature-icon">
+                        {% if block.settings.use_emoji %}
+                          <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>
+                        {% else %}
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" fill="{{ section.settings.icon_bg_color | default: '#FFE86B' }}" opacity="0.2"/>
+                            <path d="M8 12L11 15L16 9" stroke="{{ section.settings.icon_color | default: '#5E3BFF' }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        {% endif %}
+                      </div>
+                      <div class="feature-text">
+                        {{ block.settings.text }}
+                      </div>
                     </div>
-                    <div class="feature-text">
-                      {{ block.settings.text }}
-                    </div>
-                  </div>
+                  {% endif %}
                 {% endif %}
               {% endfor %}
             </div>
@@ -173,23 +194,23 @@
   }
 
   /* Column Styles */
-  .feature-column {
+  .an-feature-two-column-list .feature-column {
     padding: 0 1rem;
   }
 
   @media (min-width: 992px) {
-    .feature-column--left {
+    .an-feature-two-column-list .feature-column--left {
       border-right: 1px solid rgba(0, 0, 0, 0.08);
       padding-right: 2.5rem;
     }
 
-    .feature-column--right {
+    .an-feature-two-column-list .feature-column--right {
       padding-left: 2.5rem;
     }
   }
 
   /* Feature Items */
-  .feature-item {
+  .an-feature-two-column-list .feature-item {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
@@ -209,12 +230,12 @@
     }
   }
 
-  .feature-item:last-child {
+  .an-feature-two-column-list .feature-item:last-child {
     margin-bottom: 0;
   }
 
   /* Icons */
-  .feature-icon {
+  .an-feature-two-column-list .feature-icon {
     flex-shrink: 0;
     width: 32px;
     height: 32px;
@@ -224,14 +245,14 @@
     position: relative;
   }
 
-  .feature-emoji {
+  .an-feature-two-column-list .feature-emoji {
     font-size: 1.5rem;
     line-height: 1;
     filter: sepia(20%) saturate(2);
   }
 
   /* Pulse animation on hover */
-  .feature-item:hover .feature-icon {
+  .an-feature-two-column-list .feature-item:hover .an-feature-two-column-list .feature-icon {
     animation: pulse 0.6s ease-out;
   }
 
@@ -242,20 +263,20 @@
   }
 
   /* Text */
-  .feature-text {
+  .an-feature-two-column-list .feature-text {
     font-size: 1.125rem;
     line-height: 1.6;
     color: var(--c-ink-800);
     flex: 1;
   }
 
-  .feature-text strong {
+  .an-feature-two-column-list .feature-text strong {
     font-weight: 600;
     color: var(--c-ink-900);
   }
 
   /* Footer */
-  .footer-text {
+  .an-feature-two-column-list .footer-text {
     font-size: 1.125rem;
     line-height: 1.6;
     color: var(--c-ink-700);
@@ -297,18 +318,18 @@
       padding: 2rem;
     }
 
-    .feature-column--left {
+    .an-feature-two-column-list .feature-column--left {
       border-right: none;
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       padding-bottom: 2rem;
       margin-bottom: 2rem;
     }
 
-    .feature-column {
+    .an-feature-two-column-list .feature-column {
       padding: 0;
     }
 
-    .feature-text {
+    .an-feature-two-column-list .feature-text {
       font-size: 1rem;
     }
   }
@@ -326,20 +347,20 @@
       padding: 1.5rem;
     }
 
-    .feature-item {
+    .an-feature-two-column-list .feature-item {
       margin-bottom: 1.25rem;
     }
 
-    .feature-icon {
+    .an-feature-two-column-list .feature-icon {
       width: 28px;
       height: 28px;
     }
 
-    .feature-emoji {
+    .an-feature-two-column-list .feature-emoji {
       font-size: 1.25rem;
     }
 
-    .footer-text {
+    .an-feature-two-column-list .footer-text {
       font-size: 1rem;
     }
   }
@@ -350,6 +371,17 @@
   "name": "Feature - Two Column List",
   "class": "an-feature-two-column-list",
   "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-two-column-list",
+      "info": "Custom ID for internal linking (e.g., #feature-two-column-list)"
+    },
     {
       "type": "header",
       "content": "Content"

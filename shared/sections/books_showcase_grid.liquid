@@ -1,0 +1,1337 @@
+{%- comment -%}
+  Attachment Nerd – Books Showcase Grid Section
+  A modern grid layout for showcasing books with customizable colored backgrounds
+  Responsive design that adapts based on number of blocks
+{%- endcomment -%}
+
+<section id="{{ section.settings.section_id | default: 'books-showcase' }}-{{ section.id }}" 
+         class="books-showcase-grid py-{{ section.settings.padding_y }}" 
+         style="background: {{ section.settings.section_background }};">
+  <div class="container">
+    <!-- Section Header -->
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="books-showcase__header text-{{ section.settings.text_align }} mb-{{ section.settings.header_spacing }} animate-fade-up">
+        {% if section.settings.heading != blank %}
+          <h2 class="books-showcase__heading mb-{{ section.settings.heading_spacing }}" 
+              style="font-size: {{ section.settings.heading_size }}px; 
+                     color: {{ section.settings.heading_color }}; 
+                     font-weight: {{ section.settings.heading_weight }};
+                     line-height: {{ section.settings.heading_line_height }};
+                     text-transform: {{ section.settings.heading_transform }};
+                     letter-spacing: {{ section.settings.heading_letter_spacing }}em;"
+              kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="books-showcase__subheading" 
+             style="font-size: {{ section.settings.subheading_size }}px; 
+                    color: {{ section.settings.subheading_color }};
+                    line-height: {{ section.settings.subheading_line_height }};
+                    max-width: {{ section.settings.subheading_max_width }}px;
+                    margin: 0 auto;"
+             kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Books Grid -->
+    <div class="books-showcase__grid books-showcase__grid--{{ section.blocks.size }} books-showcase__grid--text-{{ section.settings.text_placement }}" 
+         style="gap: {{ section.settings.grid_gap }}px;">
+      {% for block in section.blocks %}
+        {% if block.type == 'book' %}
+          <div class="book-showcase-item book-showcase-item--text-{{ section.settings.text_placement }} animate-fade-up" 
+               style="animation-delay: {{ forloop.index0 | times: 0.1 }}s; {% if section.settings.text_placement == 'inside' %}background-color: {{ block.settings.background_color }};{% endif %}">
+            
+            <!-- Book Image Container -->
+            <div class="book-showcase__image-container" 
+                 style="{% if section.settings.text_placement == 'below' %}background-color: {{ block.settings.background_color }}; padding: {{ section.settings.container_padding }}px; border-radius: {{ section.settings.container_radius }}px; box-shadow: {{ section.settings.container_shadow }};{% endif %}">
+              <div class="book-showcase__image-wrapper"
+                   style="padding: {{ section.settings.image_padding }}px; margin: {{ section.settings.image_margin }}px;">
+                {% if block.settings.book_image != blank %}
+                  <img src="{{ block.settings.book_image | image_picker_url: '400x600' }}" 
+                       alt="{{ block.settings.title }}" 
+                       class="book-showcase__image"
+                       loading="lazy"
+                       style="border-radius: {{ section.settings.image_border_radius }}px; 
+                              {% if section.settings.image_border_width > 0 %}border: {{ section.settings.image_border_width }}px solid {{ section.settings.image_border_color }};{% endif %}
+                              transform: rotate({{ section.settings.image_rotation }}deg);
+                              box-shadow: {{ section.settings.image_shadow }};"
+                       srcset="{{ block.settings.book_image | image_picker_url: '280x420' }} 280w,
+                               {{ block.settings.book_image | image_picker_url: '400x600' }} 400w,
+                               {{ block.settings.book_image | image_picker_url: '600x900' }} 600w,
+                               {{ block.settings.book_image | image_picker_url: '800x1200' }} 800w"
+                       sizes="(max-width: 767px) 280px, 400px"
+                       kjb-settings-id="{{ 'book_image' | settings_id: section: section, block: block }}">
+                {% else %}
+                <div class="book-showcase__placeholder">
+                  <svg width="60" height="80" viewBox="0 0 60 80" fill="currentColor" opacity="0.3">
+                    <rect width="60" height="80" rx="4" />
+                    <rect x="10" y="15" width="40" height="2" fill="white" opacity="0.5" />
+                    <rect x="10" y="25" width="30" height="2" fill="white" opacity="0.5" />
+                    <rect x="10" y="35" width="35" height="2" fill="white" opacity="0.5" />
+                  </svg>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Book Content -->
+            <div class="book-showcase__content">
+              <h3 class="book-showcase__title" 
+                  style="font-size: {{ section.settings.title_size }}px; 
+                         color: {{ section.settings.title_color }}; 
+                         font-weight: {{ section.settings.title_weight }};
+                         line-height: {{ section.settings.title_line_height }};"
+                  kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">
+                {{ block.settings.title }}
+              </h3>
+              
+              {% if block.settings.subtitle != blank %}
+                <p class="book-showcase__subtitle" 
+                   style="font-size: {{ section.settings.subtitle_size }}px; 
+                          color: {{ section.settings.subtitle_color }};
+                          line-height: {{ section.settings.subtitle_line_height }};
+                          opacity: {{ section.settings.subtitle_opacity }};"
+                   kjb-settings-id="{{ 'subtitle' | settings_id: section: section, block: block }}">
+                  {{ block.settings.subtitle }}
+                </p>
+              {% endif %}
+              
+              {% if block.settings.show_cta %}
+                <div class="book-showcase__action" style="margin-top: {{ section.settings.cta_spacing }}px;">
+                  <a href="{{ block.settings.cta_url }}" 
+                     class="book-showcase__cta"
+                     style="font-size: {{ section.settings.cta_font_size }}px;
+                            font-weight: {{ section.settings.cta_font_weight }};
+                            color: {{ section.settings.cta_color }};
+                            text-transform: {{ section.settings.cta_text_transform }};
+                            letter-spacing: {{ section.settings.cta_letter_spacing }}em;"
+                     {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
+                     kjb-settings-id="{{ 'cta_text' | settings_id: section: section, block: block }}">
+                    {{ block.settings.cta_text }}
+                    {% if section.settings.show_cta_icon %}
+                      <svg width="{{ section.settings.cta_icon_size }}" height="{{ section.settings.cta_icon_size }}" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M12.293 5.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-2 2a1 1 0 01-1.414-1.414L13.586 8l-1.293-1.293a1 1 0 010-1.414z"/>
+                        <path d="M3 8a1 1 0 011-1h8a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                      </svg>
+                    {% endif %}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Footer CTA -->
+    {% if section.settings.show_footer_cta %}
+      <div class="books-showcase__footer text-{{ section.settings.footer_align }} animate-fade-up" 
+           style="margin-top: {{ section.settings.footer_spacing }}px;">
+        <a href="{{ section.settings.footer_cta_url }}" 
+           class="btn"
+           style="background: {{ section.settings.footer_cta_bg }};
+                  color: {{ section.settings.footer_cta_color }} !important;
+                  padding: {{ section.settings.footer_cta_padding }};
+                  font-size: {{ section.settings.footer_cta_font_size }}px;
+                  font-weight: {{ section.settings.footer_cta_font_weight }};
+                  border-radius: {{ section.settings.footer_cta_radius }}px;
+                  border: {{ section.settings.footer_cta_border_width }}px solid {{ section.settings.footer_cta_border_color }};
+                  text-transform: {{ section.settings.footer_cta_text_transform }};"
+           kjb-settings-id="{{ 'footer_cta_text' | settings_id: section: section }}">
+          {{ section.settings.footer_cta_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  /* Books Showcase Section */
+  .books-showcase-grid {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .books-showcase__header {
+    margin-bottom: var(--an-space-3xl);
+  }
+
+  .books-showcase__heading {
+    margin: 0;
+  }
+
+  .books-showcase__subheading {
+    margin: 0;
+  }
+
+  /* Grid Layout */
+  .books-showcase__grid {
+    display: grid;
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+
+  /* Dynamic grid based on number of items */
+  .books-showcase__grid--1 {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+
+  .books-showcase__grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1000px;
+  }
+
+  .books-showcase__grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1200px;
+  }
+
+  .books-showcase__grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .books-showcase__grid--5,
+  .books-showcase__grid--6 {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1200px;
+  }
+
+  /* Individual Book Item */
+  .book-showcase-item {
+    border-radius: var(--an-radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all var(--an-transition-base);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Text inside card layout */
+  .book-showcase-item--text-inside {
+    padding: var(--an-space-2xl);
+  }
+
+  /* Text below card layout */
+  .book-showcase-item--text-below {
+    padding: 0;
+    background: transparent !important;
+  }
+
+  .book-showcase-item--text-below .book-showcase__image-container {
+    border-radius: var(--an-radius-lg);
+    overflow: hidden;
+    width: 100%;
+    transition: all var(--an-transition-base);
+  }
+
+  .book-showcase-item::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity var(--an-transition-base);
+    pointer-events: none;
+  }
+
+  .book-showcase-item--text-inside:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  .book-showcase-item--text-below:hover .book-showcase__image-container {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  .book-showcase-item:hover::before {
+    opacity: 1;
+  }
+
+  /* Book Image Container */
+  .book-showcase__image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Book Image Wrapper */
+  .book-showcase__image-wrapper {
+    width: 100%;
+    max-width: 280px;
+    position: relative;
+  }
+
+  .book-showcase-item--text-inside .book-showcase__image-wrapper {
+    margin-bottom: var(--an-space-xl);
+  }
+
+  .book-showcase-item--text-below .book-showcase__content {
+    padding: var(--an-space-lg) var(--an-space-md) 0;
+  }
+
+  .book-showcase__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--an-radius-md);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transition: transform var(--an-transition-base);
+  }
+
+  .book-showcase-item:hover .book-showcase__image {
+    transform: scale(1.05) translateY(-4px);
+  }
+
+  .book-showcase__placeholder {
+    width: 100%;
+    aspect-ratio: 2/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: var(--an-radius-md);
+  }
+
+  /* Book Content */
+  .book-showcase__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--an-space-sm);
+  }
+
+  .book-showcase__title {
+    margin: 0;
+  }
+
+  .book-showcase__subtitle {
+    margin: 0;
+  }
+
+  /* CTA Button */
+  .book-showcase__action {
+    margin-top: var(--an-space-md);
+  }
+
+  .book-showcase__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--an-space-xs);
+    text-decoration: none;
+    transition: all var(--an-transition-base);
+    position: relative;
+  }
+
+  .book-showcase__cta::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width var(--an-transition-base);
+  }
+
+  .book-showcase__cta:hover::after {
+    width: 100%;
+  }
+
+  .book-showcase__cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  .book-showcase__cta svg {
+    transition: transform var(--an-transition-base);
+  }
+
+  /* Footer CTA */
+  .books-showcase__footer {
+    margin-top: var(--an-space-3xl);
+  }
+
+  /* Animations */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Tablet Responsive */
+  @media (max-width: 991px) {
+    .books-showcase__grid--4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .books-showcase__grid--5,
+    .books-showcase__grid--6 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .book-showcase__title {
+      font-size: var(--an-font-xl);
+    }
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 767px) {
+    .books-showcase__heading {
+      font-size: 1.75rem;
+    }
+
+    .books-showcase__grid {
+      grid-template-columns: 1fr !important;
+      gap: var(--an-space-lg) !important;
+    }
+
+    .book-showcase-item {
+      padding: var(--an-space-xl);
+    }
+
+    .book-showcase__image-wrapper {
+      max-width: 200px;
+    }
+
+    .book-showcase__title {
+      font-size: var(--an-font-lg);
+    }
+
+    .book-showcase__subtitle {
+      font-size: var(--an-font-sm);
+    }
+  }
+
+  /* Custom background color adjustments for contrast */
+  .book-showcase-item[style*="background-color: #FFEB3B"],
+  .book-showcase-item[style*="background-color: #FFE86B"],
+  .book-showcase-item[style*="background-color: #FFF9C4"],
+  .book-showcase-item[style*="background-color: #F0F4C3"] {
+    color: var(--c-ink-900);
+  }
+
+  .book-showcase-item[style*="background-color: #FFEB3B"] .book-showcase__cta,
+  .book-showcase-item[style*="background-color: #FFE86B"] .book-showcase__cta,
+  .book-showcase-item[style*="background-color: #FFF9C4"] .book-showcase__cta,
+  .book-showcase-item[style*="background-color: #F0F4C3"] .book-showcase__cta {
+    color: var(--c-ink-900);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Books Showcase Grid",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "books-showcase",
+      "info": "Custom ID for the section"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "padding_y",
+      "label": "Section Padding",
+      "options": [
+        {
+          "value": "3",
+          "label": "Small"
+        },
+        {
+          "value": "4",
+          "label": "Medium"
+        },
+        {
+          "value": "5",
+          "label": "Large"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "MEL'S BESTSELLING TITLES"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "heading_line_height",
+      "label": "Heading Line Height",
+      "options": [
+        {
+          "value": "1.0",
+          "label": "Tight"
+        },
+        {
+          "value": "1.2",
+          "label": "Normal"
+        },
+        {
+          "value": "1.4",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.2"
+    },
+    {
+      "type": "select",
+      "id": "heading_transform",
+      "label": "Heading Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "label": "Heading Letter Spacing",
+      "min": 0,
+      "max": 0.2,
+      "step": 0.01,
+      "unit": "em",
+      "default": 0.02
+    },
+    {
+      "type": "select",
+      "id": "heading_spacing",
+      "label": "Heading Bottom Spacing",
+      "options": [
+        {
+          "value": "2",
+          "label": "Small"
+        },
+        {
+          "value": "3",
+          "label": "Medium"
+        },
+        {
+          "value": "4",
+          "label": "Large"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#4A4A4A"
+    },
+    {
+      "type": "select",
+      "id": "subheading_line_height",
+      "label": "Subheading Line Height",
+      "options": [
+        {
+          "value": "1.4",
+          "label": "Tight"
+        },
+        {
+          "value": "1.6",
+          "label": "Normal"
+        },
+        {
+          "value": "1.8",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.6"
+    },
+    {
+      "type": "range",
+      "id": "subheading_max_width",
+      "label": "Subheading Max Width",
+      "min": 400,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 700
+    },
+    {
+      "type": "select",
+      "id": "header_spacing",
+      "label": "Header Bottom Spacing",
+      "options": [
+        {
+          "value": "3",
+          "label": "Small"
+        },
+        {
+          "value": "4",
+          "label": "Medium"
+        },
+        {
+          "value": "5",
+          "label": "Large"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "header",
+      "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid Gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24,
+      "info": "Space between book items"
+    },
+    {
+      "type": "header",
+      "content": "Layout Options"
+    },
+    {
+      "type": "select",
+      "id": "text_placement",
+      "label": "Text Placement",
+      "options": [
+        {
+          "value": "inside",
+          "label": "Inside Card"
+        },
+        {
+          "value": "below",
+          "label": "Below Image"
+        }
+      ],
+      "default": "inside",
+      "info": "Place text inside the colored card or below the image"
+    },
+    {
+      "type": "header",
+      "content": "Image Styling"
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "label": "Container Padding",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24,
+      "info": "Padding for the colored container"
+    },
+    {
+      "type": "range",
+      "id": "container_radius",
+      "label": "Container Border Radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "container_shadow",
+      "label": "Container Shadow",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "0 4px 12px rgba(0,0,0,0.05)",
+          "label": "Small"
+        },
+        {
+          "value": "0 8px 24px rgba(0,0,0,0.08)",
+          "label": "Medium"
+        },
+        {
+          "value": "0 16px 48px rgba(0,0,0,0.1)",
+          "label": "Large"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "image_padding",
+      "label": "Image Padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "info": "Padding around the book image"
+    },
+    {
+      "type": "range",
+      "id": "image_margin",
+      "label": "Image Margin",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "info": "Margin around the book image"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8,
+      "info": "Corner rounding for book images"
+    },
+    {
+      "type": "range",
+      "id": "image_border_width",
+      "label": "Image Border Width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "Border thickness for book images"
+    },
+    {
+      "type": "color",
+      "id": "image_border_color",
+      "label": "Image Border Color",
+      "default": "#FFFFFF",
+      "info": "Border color for book images"
+    },
+    {
+      "type": "range",
+      "id": "image_rotation",
+      "label": "Image Rotation",
+      "min": -5,
+      "max": 5,
+      "step": 0.5,
+      "unit": "deg",
+      "default": 0,
+      "info": "Subtle rotation for visual interest"
+    },
+    {
+      "type": "select",
+      "id": "image_shadow",
+      "label": "Image Shadow",
+      "options": [
+        {
+          "value": "0 8px 24px rgba(0,0,0,0.2)",
+          "label": "Default"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "0 4px 12px rgba(0,0,0,0.15)",
+          "label": "Small"
+        },
+        {
+          "value": "0 12px 36px rgba(0,0,0,0.25)",
+          "label": "Large"
+        }
+      ],
+      "default": "0 8px 24px rgba(0,0,0,0.2)"
+    },
+    {
+      "type": "header",
+      "content": "Text Styling"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 16,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "title_line_height",
+      "label": "Title Line Height",
+      "options": [
+        {
+          "value": "1.1",
+          "label": "Tight"
+        },
+        {
+          "value": "1.2",
+          "label": "Normal"
+        },
+        {
+          "value": "1.4",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.2"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#4A4A4A"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_line_height",
+      "label": "Subtitle Line Height",
+      "options": [
+        {
+          "value": "1.3",
+          "label": "Tight"
+        },
+        {
+          "value": "1.5",
+          "label": "Normal"
+        },
+        {
+          "value": "1.7",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.5"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_opacity",
+      "label": "Subtitle Opacity",
+      "min": 0.5,
+      "max": 1,
+      "step": 0.05,
+      "default": 0.9
+    },
+    {
+      "type": "header",
+      "content": "CTA Link Settings"
+    },
+    {
+      "type": "range",
+      "id": "cta_spacing",
+      "label": "CTA Top Spacing",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size",
+      "label": "CTA Font Size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "cta_font_weight",
+      "label": "CTA Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "cta_color",
+      "label": "CTA Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "select",
+      "id": "cta_text_transform",
+      "label": "CTA Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "cta_letter_spacing",
+      "label": "CTA Letter Spacing",
+      "min": 0,
+      "max": 0.2,
+      "step": 0.01,
+      "unit": "em",
+      "default": 0.05
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_icon",
+      "label": "Show CTA Arrow Icon",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cta_icon_size",
+      "label": "CTA Icon Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Footer Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_footer_cta",
+      "label": "Show Footer CTA Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "footer_cta_text",
+      "label": "Footer CTA Button Text",
+      "default": "SEE ALL BOOKS"
+    },
+    {
+      "type": "action",
+      "id": "footer_cta_url",
+      "label": "Footer CTA URL",
+      "default": "/books"
+    },
+    {
+      "type": "select",
+      "id": "footer_align",
+      "label": "Footer Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "footer_spacing",
+      "label": "Footer Top Spacing",
+      "min": 24,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "footer_cta_bg",
+      "label": "Footer CTA Background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "footer_cta_color",
+      "label": "Footer CTA Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "footer_cta_padding",
+      "label": "Footer CTA Padding",
+      "default": "14px 32px"
+    },
+    {
+      "type": "range",
+      "id": "footer_cta_font_size",
+      "label": "Footer CTA Font Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "footer_cta_font_weight",
+      "label": "Footer CTA Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "footer_cta_radius",
+      "label": "Footer CTA Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "footer_cta_border_width",
+      "label": "Footer CTA Border Width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "footer_cta_border_color",
+      "label": "Footer CTA Border Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "select",
+      "id": "footer_cta_text_transform",
+      "label": "Footer CTA Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "book",
+      "name": "Book",
+      "elements": [
+        {
+          "type": "image_picker",
+          "id": "book_image",
+          "label": "Book Cover Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Book Title",
+          "default": "Book Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle/Tagline",
+          "default": "A compelling subtitle"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#E9E6FF",
+          "info": "Choose a vibrant color for this book's background"
+        },
+        {
+          "type": "header",
+          "content": "Call to Action"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_cta",
+          "label": "Show CTA Link",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text",
+          "default": "LEARN MORE"
+        },
+        {
+          "type": "action",
+          "id": "cta_url",
+          "label": "CTA URL",
+          "default": "#"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Books Showcase Grid",
+      "category": "Content",
+      "description": "Display books in a colorful grid layout",
+      "blocks": [
+        {
+          "type": "book",
+          "settings": {
+            "title": "The Let Them Theory",
+            "subtitle": "A life-changing tool that millions of people can't stop talking about.",
+            "background_color": "#7ED3B2",
+            "show_cta": false
+          }
+        },
+        {
+          "type": "book",
+          "settings": {
+            "title": "The High 5 Habit",
+            "subtitle": "Take control of your life with one simple habit",
+            "background_color": "#FFE86B",
+            "show_cta": false
+          }
+        },
+        {
+          "type": "book",
+          "settings": {
+            "title": "The 5 Second Rule",
+            "subtitle": "The Fastest Way to Change Your Life",
+            "background_color": "#8B6F47",
+            "show_cta": false
+          }
+        }
+      ],
+      "settings": {
+        "heading": "MEL'S BESTSELLING TITLES",
+        "section_background": "#FFFFFF",
+        "grid_gap": 24,
+        "text_placement": "inside",
+        "image_padding": 0,
+        "image_margin": 0,
+        "image_border_radius": 8,
+        "image_border_width": 0,
+        "image_border_color": "#FFFFFF",
+        "show_footer_cta": true,
+        "footer_cta_text": "SEE ALL BOOKS",
+        "footer_cta_url": "/books"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,210 @@
+{% include "product_syllabus" %}
+
+{% schema %}
+  {
+    "name": "Product Syllabus",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "show_syllabus",
+        "label": "Show Syllabus",
+        "default": "true"
+      },
+      {
+        "type": "radio",
+        "id": "type",
+        "label": "Syllabus Type",
+        "default": "categories",
+        "info": "Be careful with using post setting on larger products as it can cause a liquid error.",
+        "options": [
+          { "label": "Categories", "value": "categories" },
+          { "label": "Posts", "value": "posts" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Card Style"
+      },
+      {
+        "type": "select",
+        "id": "card_style",
+        "label": "Card Style",
+        "default": "elevated",
+        "options": [
+          { "label": "Elevated", "value": "elevated" },
+          { "label": "Outline", "value": "outline" },
+          { "label": "Flat", "value": "flat" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "label": "Card Corner Radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "default": 12
+      },
+      {
+        "type": "checkbox",
+        "id": "card_shadow",
+        "label": "Show Shadow (Elevated)",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "card_bg",
+        "label": "Card Background (Flat)",
+        "allow_blank": true
+      },
+      {
+        "type": "range",
+        "id": "gap_y",
+        "label": "Vertical Spacing Between Items",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 12
+      },
+      {
+        "type": "header",
+        "content": "Thumbnail Image"
+      },
+      {
+        "type": "range",
+        "id": "image_size",
+        "label": "Image Size",
+        "min": 40,
+        "max": 200,
+        "step": 4,
+        "unit": "px",
+        "default": 80
+      },
+      {
+        "type": "select",
+        "id": "image_shape",
+        "label": "Image Shape",
+        "default": "rounded",
+        "options": [
+          { "label": "Square", "value": "square" },
+          { "label": "Rounded", "value": "rounded" },
+          { "label": "Circle", "value": "circle" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_fit",
+        "label": "Image Fit",
+        "default": "cover",
+        "options": [
+          { "label": "Cover", "value": "cover" },
+          { "label": "Contain", "value": "contain" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "range",
+        "id": "image_percent",
+        "label": "Lesson Image Width (%)",
+        "min": 10,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 25
+      },
+      {
+        "type": "checkbox",
+        "id": "show_excerpt",
+        "label": "Show lesson excerpt",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "excerpt_length",
+        "label": "Excerpt length",
+        "min": 60,
+        "max": 260,
+        "step": 10,
+        "default": 120
+      },
+      {
+        "type": "checkbox",
+        "id": "show_progress",
+        "label": "Show progress pill",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_paywall_icon",
+        "label": "Show paywall icon on locked items",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Chapter Row"
+      },
+      {
+        "type": "color",
+        "id": "chapter_bg",
+        "label": "Chapter background",
+        "allow_blank": true
+      },
+      {
+        "type": "range",
+        "id": "chapter_radius",
+        "label": "Chapter corner radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "default": 12
+      },
+      {
+        "type": "checkbox",
+        "id": "chapter_shadow",
+        "label": "Chapter shadow",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "chapter_gap_y",
+        "label": "Space between chapters",
+        "min": 0,
+        "max": 48,
+        "step": 2,
+        "unit": "px",
+        "default": 20
+      },
+      {
+        "type": "text",
+        "default": "",
+        "label": "Truncate At",
+        "id": "truncate",
+        "info": "Insert a custom number if you would like to override the standard 100 character truncation. Only applies to post type syllabus."
+      },
+      {
+        "type": "text",
+        "default": "Categories",
+        "label": "Categories Text",
+        "id": "categories"
+      },
+      {
+        "type": "text",
+        "id": "coming_soon",
+        "label": "Coming Soon Text",
+        "default": "Coming Soon"
+      },
+      {
+        "type": "text",
+        "id": "show_more",
+        "label": "Show More Text",
+        "default": "Show More"
+      }
+    ]
+  }
+{% endschema %}

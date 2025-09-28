@@ -1,51 +1,45 @@
 {% comment %}
-Navigation Controller Snippet
-Provides flexible navigation rendering with multiple control mechanisms:
-
-1. Global theme setting (settings.show_navigation)
-2. Page-level override (via force_show or force_hide parameters)
-3. Custom navigation section selection
-
-Usage Examples:
-<!-- Use global setting -->
-{% include 'navigation_controller' %}
-
-<!-- Force show navigation regardless of global setting -->
-{% include 'navigation_controller', force_show: true %}
-
-<!-- Force hide navigation regardless of global setting -->
-{% include 'navigation_controller', force_hide: true %}
-
-<!-- Use custom navigation section -->
-{% include 'navigation_controller', nav_section: 'nav_alt' %}
-
-<!-- Combine custom section with forced visibility -->
-{% include 'navigation_controller', nav_section: 'nav_header_static', force_show: true %}
-
-Parameters:
-- force_show: (boolean) Override global setting to show navigation
-- force_hide: (boolean) Override global setting to hide navigation  
-- nav_section: (string) Custom navigation section name (default: 'nav_main')
+Navigation Controller - Respects global show_navigation setting
+- Optional parameters: force_show, force_hide, nav_section
+- The global setting is overridden by force_show/force_hide
 {% endcomment %}
 
-{% assign should_show_nav = false %}
+{% assign should_show_nav = settings.show_navigation %}
+{% assign resolved_nav_section = nav_section %}
+{% if resolved_nav_section == blank %}
+  {% assign resolved_nav_section = 'nav_main' %}
+{% endif %}
 
-{% comment %} Priority 1: Check for force_hide {% endcomment %}
+{% comment %} Force parameters override the global setting {% endcomment %}
 {% if force_hide %}
   {% assign should_show_nav = false %}
-{% comment %} Priority 2: Check for force_show {% endcomment %}
 {% elsif force_show %}
-  {% assign should_show_nav = true %}
-{% comment %} Priority 3: Use global theme setting {% endcomment %}
-{% elsif settings.show_navigation %}
   {% assign should_show_nav = true %}
 {% endif %}
 
-{% comment %} Render navigation if conditions are met {% endcomment %}
 {% if should_show_nav %}
-  {% if nav_section %}
-    {% section nav_section %}
-  {% else %}
-    {% section 'nav_main' %}
-  {% endif %}
+  {% case resolved_nav_section %}
+    {% when 'hardcoded_nav_minimal' %}
+      {% section 'hardcoded_nav_minimal' %}
+    {% when 'hardcoded_nav' %}
+      {% section 'hardcoded_nav' %}
+    {% when 'simple_nav' %}
+      {% section 'simple_nav' %}
+    {% when 'nav_hardcoded' %}
+      {% include 'nav_hardcoded' %}
+    {% when 'nav_alt' %}
+      {% section 'nav_alt' %}
+    {% when 'nav_header_static' %}
+      {% section 'nav_header_static' %}
+    {% when 'nav_header' %}
+      {% section 'nav_header' %}
+    {% when 'nav_static' %}
+      {% section 'nav_static' %}
+    {% when 'nav_mobile_sticky_bar' %}
+      {% section 'nav_mobile_sticky_bar' %}
+    {% when 'nav_main' %}
+      {% section 'nav_main' %}
+    {% else %}
+      {% section 'nav_main' %}
+  {% endcase %}
 {% endif %}

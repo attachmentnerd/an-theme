@@ -1,6 +1,6 @@
 <style>
   .newsletter-recent-post .newsletter-listing__content {
-    font-size: 90%;
+    font-size: var(--fs-body);
   }
 
   .newsletter-recent-post .newsletter-listing__title {
@@ -49,16 +49,10 @@
 {% schema %}
 {
   "name": "Blog - Newsletter Recent",
-  "type": "newsletter_recent_posts",
-  "deletable": "false",
-  "duplicatable": "false",
   "elements": [
-    {
-      "type": "checkbox",
-      "id": "show_image",
-      "label": "Show Image",
-      "default": "true"
-    }
+    { "type": "header", "content": "General Settings" },
+    { "type": "text", "id": "section_id", "label": "Section ID", "default": "blog-newsletter-recent", "info": "Custom ID for internal linking (e.g., #blog-newsletter-recent)" },
+    { "type": "checkbox", "id": "show_image", "label": "Show Image", "default": true }
   ]
 }
 {% endschema %}

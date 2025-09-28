@@ -1,34 +1,79 @@
 <!-- sections/cta_section.liquid -->
-<section class="an-cta-section {{ section.settings.background_style }}" 
-         style="background: {{ section.settings.background_type == 'gradient' ? section.settings.gradient_start : section.settings.background_color }}{% if section.settings.background_type == 'gradient' %} linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_start }} 0%, {{ section.settings.gradient_end }} 100%){% endif %};">
+<section id="{{ section.settings.section_id | default: 'cta' }}-{{ section.id }}"
+         class="an-cta-section {{ section.settings.background_style }}"
+         style="background: {% if section.settings.background_type == 'gradient' %}{{ section.settings.gradient_start }}{% else %}{{ section.settings.background_color }}{% endif %}{% if section.settings.background_type == 'gradient' %} linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_start }} 0%, {{ section.settings.gradient_end }} 100%){% endif %};">
   <div class="container">
     <div class="an-cta__wrapper animate-fade-up">
       {% if section.settings.image != blank %}
         <div class="an-cta__image">
-          <img src="{{ section.settings.image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ section.settings.image_alt }} }}" 
+          <img src="{{ section.settings.image | image_picker_url: '800x450' }}"
+             alt="{{ section.settings.image_alt }}"
              class="an-cta__img"
+             width="800" height="450"
+             decoding="async"
              loading="lazy"
              style="object-fit: cover;">
         </div>
       {% endif %}
-      
+
       <div class="an-cta__content">
         {% if section.settings.eyebrow_text != blank %}
-          <span class="an-cta__eyebrow">{{ section.settings.eyebrow_text }}</span>
+          <span class="an-cta__eyebrow" style="color: {{ section.settings.eyebrow_color | default: '#FFFFFF' }} !important;" kjb-settings-id="{{ 'eyebrow_text' | settings_id: section: section }}">{{ section.settings.eyebrow_text }}</span>
         {% endif %}
-        
-        <h2 class="an-cta__heading">{{ section.settings.heading }}</h2>
-        
+
+        <h2 class="an-cta__heading" style="color: {{ section.settings.heading_color | default: '#FFFFFF' }} !important;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">{{ section.settings.heading }}</h2>
+
         {% if section.settings.subheading != blank %}
-          <p class="an-cta__subheading">{{ section.settings.subheading }}</p>
+          <p class="an-cta__subheading" style="color: {{ section.settings.subheading_color | default: 'rgba(255,255,255,0.9)' }} !important;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">{{ section.settings.subheading }}</p>
         {% endif %}
-        
-        {% if section.settings.button_text != blank %}
-          <a href="{{ section.settings.button_link }}" class="btn btn-primary-modern an-cta__button">
-            {{ section.settings.button_text }}
-          </a>
-        {% endif %}
+
+        <div class="an-cta__buttons">
+          {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'button' %}
+                  <a href="{{ block.settings.button_link }}"
+                     class="btn {% if block.settings.button_style == 'primary' %}btn-primary-modern{% else %}btn-secondary-modern{% endif %} an-cta__button"
+                     style="
+                       {% if block.settings.button_style == 'primary' %}
+                         {% if block.settings.use_custom_colors and block.settings.button_bg_color != blank %}
+                           background: {{ block.settings.button_bg_color }};
+                         {% else %}
+                           background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }};
+                         {% endif %}
+                         {% if block.settings.use_custom_colors and block.settings.button_text_color != blank %}
+                           color: {{ block.settings.button_text_color }} !important;
+                         {% else %}
+                           color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important;
+                         {% endif %}
+                         border: none;
+                       {% else %}
+                         background: transparent;
+                         {% if block.settings.use_custom_colors and block.settings.button_text_color != blank %}
+                           color: {{ block.settings.button_text_color }} !important;
+                         {% else %}
+                           color: {{ section.settings.secondary_button_text | default: '#FFFFFF' }} !important;
+                         {% endif %}
+                         {% if block.settings.use_custom_colors and block.settings.button_outline_color != blank %}
+                           border: 2px solid {{ block.settings.button_outline_color }};
+                         {% else %}
+                           border: 2px solid {{ section.settings.secondary_button_border | default: 'rgba(255,255,255,0.4)' }};
+                         {% endif %}
+                       {% endif %}
+                       border-radius: {{ section.settings.button_radius | default: 999 }}px;
+                       padding: {% if block.settings.button_size == 'lg' %}14px 36px{% else %}12px 28px{% endif %};
+                       {% if section.settings.button_shadow %}box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}
+                     ">
+                    {{ block.settings.button_text }}
+                  </a>
+              {% endcase %}
+            {% endfor %}
+          {% elsif section.settings.button_text != blank %}
+            <a href="{{ section.settings.button_link }}" class="btn btn-primary-modern an-cta__button">
+              {{ section.settings.button_text }}
+            </a>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
@@ -42,15 +87,15 @@
     position: relative;
     overflow: hidden;
   }
-  
+
   .an-cta-section.section-white {
     background: var(--c-white) !important;
   }
-  
+
   .an-cta-section.section-lavender {
     background: var(--c-brand-100) !important;
   }
-  
+
   .an-cta__wrapper {
     display: flex;
     align-items: center;
@@ -58,24 +103,24 @@
     max-width: 1000px;
     margin: 0 auto;
   }
-  
+
   .an-cta__image {
     flex: 0 0 auto;
     width: 200px;
   }
-  
+
   .an-cta__img {
     width: 100%;
     height: auto;
     border-radius: var(--radius-lg);
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
   }
-  
+
   .an-cta__content {
     flex: 1;
     text-align: center;
   }
-  
+
   .an-cta__eyebrow {
     display: inline-block;
     font-size: var(--fs-caption);
@@ -89,7 +134,7 @@
     margin-bottom: var(--space-md);
     backdrop-filter: blur(var(--blur-sm));
   }
-  
+
   .an-cta__heading {
     font-size: var(--fs-h1);
     font-weight: 600;
@@ -97,7 +142,7 @@
     margin-bottom: var(--space-md);
     line-height: 1.2;
   }
-  
+
   .an-cta__subheading {
     font-size: var(--fs-body-lg);
     color: rgba(255, 255, 255, 0.9);
@@ -107,45 +152,52 @@
     margin-left: auto;
     margin-right: auto;
   }
-  
+
   /* Let the btn-primary-modern class handle the styling for proper contrast */
   .an-cta__button {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-  
+
+  .an-cta__buttons {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   .an-cta__button:hover {
     transform: translateY(-2px);
   }
-  
+
   /* White/Lavender background text colors */
   .an-cta-section.section-white .an-cta__eyebrow {
     color: var(--c-brand-600);
     background: var(--c-brand-100);
   }
-  
+
   .an-cta-section.section-white .an-cta__heading {
     color: var(--c-ink-900);
   }
-  
+
   .an-cta-section.section-white .an-cta__subheading {
     color: var(--c-ink-700);
   }
-  
+
   /* Button styles are handled by btn-primary-modern class */
-  
+
   .an-cta-section.section-lavender .an-cta__eyebrow {
     color: var(--c-brand-600);
     background: var(--c-white);
   }
-  
+
   .an-cta-section.section-lavender .an-cta__heading {
     color: var(--c-ink-900);
   }
-  
+
   .an-cta-section.section-lavender .an-cta__subheading {
     color: var(--c-ink-700);
   }
-  
+
   /* Responsive design */
   @media (max-width: 767px) {
     .an-cta__wrapper {
@@ -153,21 +205,22 @@
       text-align: center;
       gap: var(--space-lg);
     }
-    
+
     .an-cta__image {
       width: 150px;
     }
-    
+
     .an-cta__heading {
       font-size: var(--fs-h2);
     }
   }
-  
+
   /* Add subtle animation */
   .animate-fade-up {
-    animation: fadeUp 0.6s ease-out;
+    animation: fadeUp 0.6s ease-out forwards;
+    opacity: 0;
   }
-  
+
   @keyframes fadeUp {
     from {
       opacity: 0;
@@ -184,6 +237,17 @@
 {
   "name": "CTA - Standard",
   "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "cta",
+      "info": "Custom ID for internal linking (e.g., #cta)"
+    },
     {
       "type": "header",
       "content": "Content"
@@ -300,6 +364,34 @@
       "step": 15,
       "unit": "deg",
       "default": 135
+    },
+    { "type": "header", "content": "Typography Colors" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow Color", "default": "#FFFFFF" },
+    { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#FFFFFF" },
+    { "type": "color", "id": "subheading_color", "label": "Subheading Color", "default": "rgba(255,255,255,0.9)" },
+
+    { "type": "header", "content": "Buttons (Global)" },
+    { "type": "color", "id": "primary_button_bg", "label": "Primary Button Background", "default": "#5E3BFF" },
+    { "type": "color", "id": "primary_button_text", "label": "Primary Button Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "secondary_button_text", "label": "Secondary Button Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "secondary_button_border", "label": "Secondary Button Border", "default": "rgba(255,255,255,0.4)" },
+    { "type": "range", "id": "button_radius", "label": "Button Radius", "min": 0, "max": 999, "step": 1, "unit": "px", "default": 999 },
+    { "type": "checkbox", "id": "button_shadow", "label": "Button Shadow", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "elements": [
+        { "type": "text", "id": "button_text", "label": "Button Text", "default": "Get Started" },
+        { "type": "action", "id": "button_link", "label": "Button Link", "anchor": true, "two_step": true },
+        { "type": "radio", "id": "button_size", "label": "Button Size", "default": "md", "options": [ { "label": "Medium", "value": "md" }, { "label": "Large", "value": "lg" } ] },
+        { "type": "radio", "id": "button_style", "label": "Button Style", "default": "primary", "options": [ { "label": "Primary", "value": "primary" }, { "label": "Secondary", "value": "secondary" } ] },
+        { "type": "checkbox", "id": "use_custom_colors", "label": "Use custom colors", "default": false },
+        { "type": "color", "id": "button_bg_color", "label": "Custom BG (primary)", "default": "#5E3BFF" },
+        { "type": "color", "id": "button_text_color", "label": "Custom Text", "default": "#FFFFFF" },
+        { "type": "color", "id": "button_outline_color", "label": "Custom Outline (secondary)", "default": "#FFFFFF" }
+      ]
     }
   ],
   "presets": [
@@ -316,8 +408,21 @@
         "background_color": "#5E3BFF",
         "gradient_start": "#5E3BFF",
         "gradient_end": "#4025E0",
-        "gradient_angle": 135
-      }
+        "gradient_angle": 135,
+        "eyebrow_color": "#FFFFFF",
+        "heading_color": "#FFFFFF",
+        "subheading_color": "rgba(255,255,255,0.9)",
+        "primary_button_bg": "#5E3BFF",
+        "primary_button_text": "#FFFFFF",
+        "secondary_button_text": "#FFFFFF",
+        "secondary_button_border": "rgba(255,255,255,0.4)",
+        "button_radius": 999,
+        "button_shadow": true
+      },
+      "blocks": [
+        { "type": "button", "settings": { "button_text": "Get Started", "button_style": "primary", "button_size": "lg" } },
+        { "type": "button", "settings": { "button_text": "Learn more →", "button_style": "secondary", "button_size": "md" } }
+      ]
     }
   ]
 }

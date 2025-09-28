@@ -50,18 +50,18 @@
     font-size: var(--fs-body);
     line-height: 1.7;
   }
-  
+
   /* Typography improvements for blog content */
   .blog-post-body__content p {
     margin-bottom: 1.5rem;
   }
-  
+
   .blog-post-body__content h2,
   .blog-post-body__content h3 {
     margin-top: 2.5rem;
     margin-bottom: 1rem;
   }
-  
+
   .blog-post-body__content blockquote {
     font-style: italic;
     font-family: var(--font-serif);
@@ -92,7 +92,7 @@
   }
 </style>
 
-<section class="blog-post-body {% if section.settings.background_color != blank %}background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+<section id="{{ section.settings.section_id | default: 'blog-post-content' }}-{{ section.id }}" class="blog-post-body {% if section.settings.background_color != blank %}background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="sizer">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}
@@ -105,12 +105,12 @@
           <div class="col-lg-12">
         {% endif %}
           <article class="{% if section.settings.blog_post_body_in_panel %}blog-post-body__panel box-shadow-{{ section.settings.blog_post_body_box_shadow }} {% if section.settings.blog_post_body_background_color != blank %}background-{{ section.settings.blog_post_body_background_color | color_scheme_class }}{% endif %}{% endif %}"
-                   itemscope 
+                   itemscope
                    itemtype="https://schema.org/BlogPosting">
             <meta itemprop="headline" content="{{ blog_post.title }}">
             <meta itemprop="datePublished" content="{{ blog_post.created_at | date: '%Y-%m-%d' }}">
             <meta itemprop="author" content="{{ blog_post.author.name | default: current_site.title }}">
-            
+
             {% unless section.settings.header_on_top %}
               {% include "blog_post_body_media" %}
             {% endunless %}
@@ -162,7 +162,18 @@
   "duplicatable": "false",
   "elements": [
     {
-      "type": "checkbox",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "blog-post-content",
+      "info": "Custom ID for internal linking (e.g., #blog-post-content)"
+    },
+      {
+        "type": "checkbox",
       "id": "header_on_top",
       "label": "Header on Top",
       "default": "true"
@@ -1346,6 +1357,12 @@
           "label": "Form",
           "info": "Select the form you wish to use on this Page.",
           "default": "default"
+        },
+        {
+          "type": "text",
+          "id": "opt_in_manual_form_id",
+          "label": "Manual Form ID (fallback)",
+          "info": "Paste a Form ID if the picker is empty or broken"
         },
         {
           "type": "action",

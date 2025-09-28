@@ -62,7 +62,7 @@
   }
 </style>
 
-<section class="blog-search-results {% if section.settings.background_color != blank %}background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+<section id="{{ section.settings.section_id | default: 'blog-search-results' }}-{{ section.id }}" class="blog-search-results {% if section.settings.background_color != blank %}background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="sizer">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}
@@ -104,7 +104,18 @@
   "duplicatable": "false",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "blog-search-results",
+      "info": "Custom ID for internal linking (e.g., #blog-search-results)"
+    },
+      {
+        "type": "text",
       "id": "searched",
       "label": "Searched Text",
       "default": "Searched"

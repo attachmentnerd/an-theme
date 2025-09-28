@@ -1,4 +1,4 @@
-<section class="book-testimonial-showcase" style="background-color: {{ section.settings.right_bg_color | default: '#F5F5F0' }};">
+<section id="{{ section.settings.section_id | default: 'testimonial-book-split-layout' }}-{{ section.id }}" class="book-testimonial-showcase" style="background-color: {{ section.settings.right_bg_color | default: '#F5F5F0' }};">
   <div class="book-testimonial-showcase__wrapper">
     <!-- Left Side - Book Showcase -->
     <div class="book-testimonial-showcase__left" style="background-color: {{ section.settings.left_bg_color | default: '#E6FF69' }};">
@@ -6,7 +6,7 @@
         {% if section.settings.book_image %}
           <div class="book-testimonial-showcase__book">
             <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
-             alt="{{ {{ section.settings.book_title | default:  }}" 
+             alt="{{ section.settings.book_title | default: 'Book' }}" 
              class="book-testimonial-showcase__book-img"
              loading="lazy"
              style="object-fit: cover;">
@@ -57,46 +57,62 @@
         {% if section.settings.testimonial_logo %}
           <div class="testimonial-logo">
             <img src="{{ section.settings.testimonial_logo | image_picker_url: '240x80' }}" 
-             alt="{{ {{ section.settings.testimonial_logo_alt | default:  }}" 
+             alt="{{ section.settings.testimonial_logo_alt | default: 'Logo' }}" 
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
           </div>
         {% endif %}
         
-        <div class="testimonial-slider" data-autoplay="{{ section.settings.autoplay | default: true }}" data-autoplay-speed="{{ section.settings.autoplay_speed | default: 5000 }}">
-          {% for block in section.blocks %}
-            {% if block.type == 'testimonial' %}
-              <div class="testimonial-slide">
-                <blockquote class="testimonial-quote" style="color: {{ section.settings.quote_color }};">
-                  "{{ block.settings.quote }}"
-                </blockquote>
-                
-                <div class="testimonial-author">
-                  <div class="testimonial-author__info">
-                    <h4 class="testimonial-author__name" style="color: {{ section.settings.author_name_color }};">
-                      {{ block.settings.author_name }}
-                    </h4>
-                    {% if block.settings.author_title %}
-                      <p class="testimonial-author__title" style="color: {{ section.settings.author_title_color }};">
-                        {{ block.settings.author_title }}
-                      </p>
+        {% assign has_testimonials = false %}
+        {% for block in section.blocks %}
+          {% if block.type == 'testimonial' %}
+            {% assign has_testimonials = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        
+        {% if has_testimonials %}
+          <div class="testimonial-slider" data-autoplay="{{ section.settings.autoplay | default: true }}" data-autoplay-speed="{{ section.settings.autoplay_speed | default: 5000 }}">
+            {% for block in section.blocks %}
+              {% if block.type == 'testimonial' %}
+                <div class="testimonial-slide{% if forloop.first %} active{% endif %}">
+                  <blockquote class="testimonial-quote" style="color: {{ section.settings.quote_color }};">
+                    "{{ block.settings.quote }}"
+                  </blockquote>
+                  
+                  <div class="testimonial-author">
+                    <div class="testimonial-author__info">
+                      <h4 class="testimonial-author__name" style="color: {{ section.settings.author_name_color }};">
+                        {{ block.settings.author_name }}
+                      </h4>
+                      {% if block.settings.author_title %}
+                        <p class="testimonial-author__title" style="color: {{ section.settings.author_title_color }};">
+                          {{ block.settings.author_title }}
+                        </p>
+                      {% endif %}
+                    </div>
+                    {% if block.settings.author_image %}
+                      <div class="testimonial-author__avatar">
+                        <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
+               alt="{{ block.settings.author_name }}" 
+               class="testimonial-author__avatar-img"
+               loading="lazy"
+               style="object-fit: cover;">
+                      </div>
                     {% endif %}
                   </div>
-                  {% if block.settings.author_image %}
-                    <div class="testimonial-author__avatar">
-                      <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
-             alt="{{ {{ block.settings.author_name }} }}" 
-             class="testimonial-author__avatar-img"
-             loading="lazy"
-             style="object-fit: cover;">
-                    </div>
-                  {% endif %}
                 </div>
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="testimonial-placeholder">
+            <p style="color: {{ section.settings.quote_color }}; font-size: 18px; text-align: center;">
+              Add testimonial blocks to display customer reviews
+            </p>
+          </div>
+        {% endif %}
         
         <!-- Slider dots -->
         <div class="testimonial-dots"></div>
@@ -226,6 +242,13 @@
     max-width: 560px;
     width: 100%;
     text-align: center;
+  }
+  
+  .testimonial-placeholder {
+    padding: 60px 40px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.5);
   }
   
   .testimonial-logo {
@@ -432,7 +455,18 @@
   "name": "Testimonial - Book Split Layout",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "testimonial-book-split-layout",
+      "info": "Custom ID for internal linking (e.g., #testimonial-book-split-layout)"
+    },
+      {
+        "type": "header",
       "content": "Book Section"
     },
     {
@@ -649,7 +683,28 @@
       "description": "Split layout with book showcase and testimonial slider",
       "blocks": [
         {
-          "type": "testimonial"
+          "type": "testimonial",
+          "settings": {
+            "quote": "I had a $25,000 launch thanks to The Copy Cure...I LOVED the way the course is hilarious and interactive. DOOOO IIITTTT!!!!! It is one of the most revolutionary mind shifts in communication and marketing your business.",
+            "author_name": "Hugette Montesinos-Rodriguez",
+            "author_title": "Editor-in-Chief, DiSFunkshion Magazine, Miami, Florida USA"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The Copy Cure is packed with wisdom, strategy, and Marie's hilarious personality. I went from charging $50 for a blog post to $2,000+ for a sales page.",
+            "author_name": "Laura Belgray",
+            "author_title": "Founder, Talking Shrimp"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "After taking The Copy Cure, I raised my prices by 300% and still have a waiting list of clients. This course changed my business and my life.",
+            "author_name": "Sarah Johnson",
+            "author_title": "Copywriter & Brand Strategist"
+          }
         }
       ]
     }

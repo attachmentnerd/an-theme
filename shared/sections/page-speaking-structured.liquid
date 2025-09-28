@@ -84,7 +84,7 @@
 <div class="page-speaking-structured">
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="{{ section.settings.section_id | default: 'speaking-structured' }}-{{ section.id }}" class="hero">
         <div class="container">
             <h1>{{ section.settings.h1_1_eli_helps_overwhelme }}</h1>
             <p class="hero-subtitle">{{ section.settings._hero_subtitle_1_transform_your_audie }}</p>
@@ -211,7 +211,18 @@
   "class": "page-speaking-structured",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "speaking-structured",
+      "info": "Custom ID for internal linking (e.g., #speaking-structured)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

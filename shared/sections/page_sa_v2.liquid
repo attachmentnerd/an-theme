@@ -1,7 +1,7 @@
 {% comment %}
   Auto-generated from securely-attached-v2.html
   Generated: 2025-06-23T23:23:44.923Z
-  
+
   This is a static page section with editable images.
   To use: Create a template with {% section 'page-securely-attached-v2' %}
 {% endcomment %}
@@ -9,7 +9,7 @@
 <style>
 /* Auto-generated styles for page-securely-attached-v2 */
 /* Common styles removed - using theme utilities from /shared/styles/overrides.css */
-/* 
+/*
  * Available utilities:
  * - Layout: container, d-flex, gap-3, max-w-xl
  * - Colors: text-navy, bg-lavender, section-peach
@@ -106,7 +106,7 @@
 .page-securely-attached-v2 .proof-header h2{font-size:48px;color:var(--ink-900);margin-bottom:16px}
 .page-securely-attached-v2 .expert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-bottom:80px}
 .page-securely-attached-v2 .expert-card{background:white;border:1px solid rgba(0,0,0,0.05);border-radius:16px;padding:40px;text-align:center;transition:all 0.3s ease;position:relative;overflow:hidden}
-.page-securely-attached-v2 .expert-card::before{content:'"';position:absolute;top:-20px;left:20px;font-size:120px;color:var(--lavender);font-family:Georgia,serif;line-height:1}
+.page-securely-attached-v2 .expert-card::before{content:'"';position:absolute;top:-20px;left:20px;font-size:120px;color:var(--lavender);font-family:var(--font-serif);line-height:1}
 .page-securely-attached-v2 .expert-card:hover{transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,0.08)}
 .page-securely-attached-v2 .expert-quote{font-size:18px;color:var(--ink-700);line-height:1.7;margin-bottom:24px;font-style:italic;position:relative;z-index:1}
 .page-securely-attached-v2 .expert-author{display:flex;align-items:center;justify-content:center;gap:16px}
@@ -163,7 +163,7 @@
 <div class="page-securely-attached-v2">
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="{{ section.settings.section_id | default: 'sa-v2' }}-{{ section.id }}" class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="bestseller-badge">
@@ -184,8 +184,8 @@
                     </div>
                     <div class="book-main">
                         <!--@id=book_hero-->
-                        <img src="{{ section.settings.img_1_securely_attached_book_c | image_picker_url: '400x600' }}" 
-             alt="{{ Securely Attached book cover showing workbook with attachment theory exercises }}" 
+                        <img src="{{ section.settings.img_1_securely_attached_book_c | image_picker_url: '400x600' }}"
+             alt="{{ Securely Attached book cover showing workbook with attachment theory exercises }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -194,7 +194,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Stats Bar -->
     <section class="stats-bar">
         <div class="container">
@@ -218,7 +218,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Journey Section -->
     <section class="journey">
         <div class="container">
@@ -254,7 +254,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Inside Look Section -->
     <section class="inside-look" id="inside">
         <div class="container">
@@ -292,22 +292,22 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Social Proof Section -->
     <section class="social-proof">
         <div class="container">
             <div class="proof-header">
                 <h2>{{ section.settings.h2_not__h3__3_trusted_by_therapist }}</h2>
             </div>
-            
+
             <!-- Expert Testimonials -->
             <div class="expert-grid">
                 <div class="expert-card">
                     <p class="expert-quote">{{ section.settings._expert_quote_1_eli_hands_us_clear_k }}</p>
                     <div class="expert-author">
                         <!--@id=expert_lepera-->
-                        <img src="{{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '800x450' }}" 
-             alt="{{ Dr. Nicole LePera }}" 
+                        <img src="{{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '800x450' }}"
+             alt="{{ Dr. Nicole LePera }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -321,8 +321,8 @@
                     <p class="expert-quote">{{ section.settings._expert_quote_2_an_important__user_f }}</p>
                     <div class="expert-author">
                         <!--@id=expert_sroufe-->
-                        <img src="{{ section.settings.img_3_alan_sroufe | image_picker_url: '800x450' }}" 
-             alt="{{ Alan Sroufe }}" 
+                        <img src="{{ section.settings.img_3_alan_sroufe | image_picker_url: '800x450' }}"
+             alt="{{ Alan Sroufe }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -336,8 +336,8 @@
                     <p class="expert-quote">{{ section.settings._expert_quote_3_this_visually_engagi }}</p>
                     <div class="expert-author">
                         <!--@id=expert_becker-->
-                        <img src="{{ section.settings.img_4_leslie_becker_phelps | image_picker_url: '800x450' }}" 
-             alt="{{ Leslie Becker-Phelps }}" 
+                        <img src="{{ section.settings.img_4_leslie_becker_phelps | image_picker_url: '800x450' }}"
+             alt="{{ Leslie Becker-Phelps }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -348,7 +348,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Reader Reviews -->
             <div class="review-carousel">
                 <div class="review-track">
@@ -416,7 +416,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Author Section -->
     <section class="author-section">
         <div class="container">
@@ -424,8 +424,8 @@
                 <div class="author-visual">
                     <div class="author-image">
                         <!--@id=eli_author-->
-                        <img src="{{ section.settings.img_5_eli_harwood_the_attachme | image_picker_url: '120x120' }}" 
-             alt="{{ Eli Harwoo }}" 
+                        <img src="{{ section.settings.img_5_eli_harwood_the_attachme | image_picker_url: '120x120' }}"
+             alt="{{ Eli Harwoo }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -474,7 +474,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Final CTA -->
     <section class="final-cta" id="purchase">
         <div class="container">
@@ -502,7 +502,18 @@
   "class": "page-securely-attached-v2",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "sa-v2",
+      "info": "Custom ID for internal linking (e.g., #sa-v2)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

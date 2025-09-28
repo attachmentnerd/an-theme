@@ -1,2452 +1,403 @@
+{% include 'nav_default_links' %}
+{% assign nav_links = nav_links %}
+{% assign cta_label = nav_cta_label %}
+{% assign cta_url = nav_cta_url %}
+{% assign secondary_label = nav_secondary_label %}
+{% assign secondary_url = nav_secondary_url %}
+{% assign show_secondary_cta = nav_show_secondary %}
+{% assign login_url = '/login' %}
+{% assign profile_label = 'Login' %}
+{% assign profile_event = 'nav_login' %}
+{% if current_site_user %}
+  {% assign login_url = '/library' %}
+  {% assign profile_label = current_site_user.name | default: current_site_user.email | default: 'My Library' %}
+  {% assign profile_event = 'nav_library' %}
+{% endif %}
+{% assign current_path = request.path | default: '/' | downcase %}
+{% assign nav_style = nav_style %}
+{% assign nav_is_sticky = nav_is_sticky %}
+{% assign nav_show_login = nav_show_login %}
+{% assign logo_normal = nav_logo_url %}
+{% assign logo_inverted = nav_logo_url_inverted %}
+{% assign use_inverted = false %}
+{% assign logo_current = logo_normal %}
+
 <style>
-  /* CSS Custom Properties for Kajabi Theme Integration */
-  :root {
-    --kajabi-nav-height: 80px;
-    --kajabi-nav-mobile-height: 60px;
-    --kajabi-nav-padding-y: 1rem;
-    {% assign bg_opacity = section.settings.background_opacity | default: 100 | divided_by: 100.0 %}
-    {% assign bg_color = section.settings.background_color | default: "#FFFFFF" %}
-    --kajabi-nav-bg: {{ bg_color }};
-    --kajabi-nav-bg-solid: {{ section.settings.background_color | default: "#FFFFFF" }};
-    --kajabi-nav-opacity: {{ bg_opacity }};
-    --kajabi-nav-text: {{ section.settings.text_color | default: "#3B4252" }};
-    --kajabi-nav-text-hover: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-    --kajabi-nav-border: {{ section.settings.border_color | default: "rgba(94, 59, 255, 0.1)" }};
-    --kajabi-nav-shadow: var(--an-shadow-sm);
-    --kajabi-nav-transition: all 0.3s var(--an-ease-spring);
-    --kajabi-nav-radius: 9999px;
-    --kajabi-nav-pill-bg: {{ section.settings.pill_bg_color | default: "#FFFFFF" }};
-    --kajabi-nav-pill-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Kajabi Navigation Base Styles */
-  .kajabi-nav {
-    position: relative;
-    z-index: 100;
-    min-height: var(--kajabi-nav-height);
-    transition: var(--kajabi-nav-transition);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  }
-  
-  /* Navigation background with opacity */
-  .kajabi-nav::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--kajabi-nav-bg);
-    opacity: var(--kajabi-nav-opacity);
-    z-index: -1;
-    {% if section.settings.blur_background %}
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+  #an-pill-nav-{{ section.id }} {
+    {% if nav_is_sticky %}position: sticky; top: 0;{% else %}position: relative;{% endif %}
+    z-index: 9999;
+    padding: 1.15rem 0;
+    {% if nav_style == 'transparent' %}
+      background: transparent;
+      backdrop-filter: none;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    {% else %}
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.85) 60%, rgba(255, 255, 255, 0.70) 100%);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
     {% endif %}
-  }
-  
-  /* Box shadow on the nav element */
-  .kajabi-nav {
-    box-shadow: var(--kajabi-nav-shadow);
+    transition: box-shadow 0.25s ease;
   }
 
-  /* Container following Kajabi standards */
-  .kajabi-nav .container {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+  #an-pill-nav-{{ section.id }}.is-scrolled {
+    box-shadow: 0 12px 30px -20px rgba(15, 23, 42, 0.45);
   }
 
-  @media (min-width: 768px) {
-    .kajabi-nav .container {
-      max-width: 750px;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .kajabi-nav .container {
-      max-width: 970px;
-    }
-  }
-
-  @media (min-width: 1200px) {
-    .kajabi-nav .container {
-      max-width: 1170px;
-    }
-  }
-
-  /* Navigation Content using Kajabi's media pattern */
-  .kajabi-nav__content {
+  #an-pill-nav-{{ section.id }} .an-pill-nav__container {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--kajabi-nav-padding-y) 0;
-    min-height: var(--kajabi-nav-height);
+    gap: 2rem;
   }
 
-  /* Logo Section */
-  .kajabi-nav__logo {
-    flex-shrink: 0;
-    margin-right: 2rem;
+  #an-pill-nav-{{ section.id }} .an-pill-nav__logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
   }
 
-  .kajabi-nav__logo a {
-    display: inline-block;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__logo a:hover {
-    transform: translateY(-2px);
-    opacity: 0.95;
-  }
-
-  .kajabi-nav__logo img {
-    height: {{ section.settings.logo_height | default: "40px" }};
+  #an-pill-nav-{{ section.id }} .an-pill-nav__logo img {
+    height: 34px;
     width: auto;
     display: block;
   }
 
-  /* Logo switching for dark backgrounds */
-  .kajabi-nav__logo .logo-light {
-    display: block;
-  }
-  
-  .kajabi-nav__logo .logo-dark {
-    display: none;
-  }
-  
-  /* When nav has dark background, switch logos */
-  .kajabi-nav--dark-bg .kajabi-nav__logo .logo-light {
-    display: none;
-  }
-  
-  .kajabi-nav--dark-bg .kajabi-nav__logo .logo-dark {
-    display: block;
-  }
-  
-  /* Apply same logic to mobile menu based on mobile background color */
-  .kajabi-nav__mobile-menu .logo-light {
-    display: block;
-  }
-  
-  .kajabi-nav__mobile-menu .logo-dark {
-    display: none;
-  }
-  
-  /* If mobile menu has dark background */
-  .kajabi-nav__mobile-menu--dark-bg .logo-light {
-    display: none;
-  }
-  
-  .kajabi-nav__mobile-menu--dark-bg .logo-dark {
-    display: block;
-  }
-  
-  /* Ensure logo switching works in transparent pill mode */
-  .kajabi-nav--transparent-pill .kajabi-nav__logo .logo-light,
-  .kajabi-nav--transparent-pill .kajabi-nav__logo .logo-dark {
-    /* Same behavior as regular nav */
-  }
-  
-  .kajabi-nav--transparent-pill.kajabi-nav--dark-bg .kajabi-nav__logo .logo-light {
-    display: none;
-  }
-  
-  .kajabi-nav--transparent-pill.kajabi-nav--dark-bg .kajabi-nav__logo .logo-dark {
-    display: block;
-  }
-
-  .kajabi-nav__logo-text {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--kajabi-nav-text);
-    text-decoration: none;
-    letter-spacing: -0.02em;
-  }
-
-  /* Navigation Links following Kajabi patterns */
-  .kajabi-nav__menu {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    flex: 1;
-  }
-
-  .kajabi-nav__menu-item {
-    position: relative;
-  }
-
-  .kajabi-nav__menu-link {
-    color: var(--kajabi-nav-text);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1rem;
-    padding: 0.5rem 0;
-    display: inline-block;
-    position: relative;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__menu-link:hover {
-    color: var(--kajabi-nav-text-hover);
-  }
-
-  .kajabi-nav__menu-link::after {
-    content: '';
+  #an-pill-nav-{{ section.id }} .an-pill-nav__pill {
     position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background-color: var(--kajabi-nav-text-hover);
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s var(--an-ease-spring);
-  }
-
-  .kajabi-nav__menu-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
-
-  /* Actions Section */
-  .kajabi-nav__actions {
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    margin-left: 2rem;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    background: #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 12px 35px -18px rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.18);
   }
 
-  /* Kajabi Button Styles */
-  .kajabi-nav__button {
-    display: inline-block;
-    padding: 0.75rem 1.75rem;
-    background: linear-gradient(135deg, {{ section.settings.button_bg_color | default: "#5E3BFF" }}, {{ section.settings.button_bg_color | default: "#5E3BFF" | color_modify: 'darken', 10 }});
-    color: {{ section.settings.button_text_color | default: "#FFFFFF" }};
-    border-radius: var(--kajabi-nav-radius);
-    font-weight: 500;
-    font-size: 0.875rem;
-    text-decoration: none;
-    transition: var(--kajabi-nav-transition);
-    border: none;
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link {
     position: relative;
-    overflow: hidden;
-  }
-
-  .kajabi-nav__button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, {{ section.settings.button_hover_bg_color | default: "#4025E0" }}, {{ section.settings.button_hover_bg_color | default: "#4025E0" | color_modify: 'darken', 5 }});
-    opacity: 0;
-    transition: opacity var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px -8px rgba(94, 59, 255, 0.3);
-    color: #FFFFFF !important;
-  }
-
-  .kajabi-nav__button:hover::before {
-    opacity: 1;
-  }
-
-  .kajabi-nav__button span {
-    position: relative;
-    z-index: 1;
-  }
-
-  .kajabi-nav__button--outline {
-    background: transparent;
-    color: {{ section.settings.button_bg_color | default: "#5E3BFF" }};
-    border: 2px solid {{ section.settings.button_bg_color | default: "#5E3BFF" }};
-    padding: calc(0.75rem - 2px) calc(1.75rem - 2px);
-  }
-
-  .kajabi-nav__button--outline::before {
-    background: {{ section.settings.button_bg_color | default: "#5E3BFF" }};
-  }
-
-  .kajabi-nav__button--outline:hover {
-    color: #FFFFFF !important;
-    border-color: {{ section.settings.button_hover_bg_color | default: "#4025E0" }};
-  }
-
-  /* User Account Dropdown */
-  .kajabi-nav__user {
-    position: relative;
-  }
-
-  .kajabi-nav__user-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.375rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__user-avatar {
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--kajabi-nav-border);
-  }
-
-  .kajabi-nav__user-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 0.5rem;
-    background-color: var(--kajabi-nav-bg);
-    border: 1px solid var(--kajabi-nav-border);
-    border-radius: 1rem;
-    box-shadow: var(--an-shadow-lg);
-    min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-0.5rem);
-    transition: var(--kajabi-nav-transition);
-    overflow: hidden;
-  }
-
-  .kajabi-nav__user.active .kajabi-nav__user-dropdown,
-  .kajabi-nav__user:hover .kajabi-nav__user-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .kajabi-nav__user-dropdown a {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: var(--kajabi-nav-text);
-    text-decoration: none;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__user-dropdown a:hover {
-    background-color: {{ section.settings.dropdown_hover_bg | default: "#E9E6FF" }};
-    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-  }
-
-  /* Mobile Hamburger */
-  .kajabi-nav__hamburger {
-    display: none;
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .kajabi-nav__hamburger-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    position: relative;
-  }
-
-  .kajabi-nav__hamburger-line {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: var(--kajabi-nav-text);
-    margin: 5px 0;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  /* Mobile Styles */
-  @media (max-width: 991px) {
-    .kajabi-nav {
-      min-height: var(--kajabi-nav-mobile-height);
-    }
-
-    .kajabi-nav__content {
-      min-height: var(--kajabi-nav-mobile-height);
-      padding: 0.75rem 0;
-    }
-
-    .kajabi-nav__menu {
-      display: none;
-    }
-
-    .kajabi-nav__actions > *:not(.kajabi-nav__hamburger) {
-      display: none;
-    }
-
-    .kajabi-nav__hamburger {
-      display: block;
-    }
-
-    .kajabi-nav__logo img {
-      height: {{ section.settings.mobile_logo_height | default: "32px" }};
-    }
-  }
-
-  /* Mobile Menu Overlay */
-  .kajabi-nav__mobile-menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    max-width: {{ section.settings.mobile_menu_width | default: 360 }}px;
-    height: 100vh;
-    background-color: {{ section.settings.mobile_bg_color | default: "#FAFAFA" }};
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
-    transform: translateX(100%);
-    transition: transform 0.4s var(--an-ease-spring);
-    z-index: 1000;
-    overflow-y: auto;
-  }
-
-  .kajabi-nav__mobile-menu.active {
-    transform: translateX(0);
-  }
-
-  .kajabi-nav__mobile-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: var(--kajabi-nav-transition);
-    z-index: 999;
-  }
-
-  .kajabi-nav__mobile-backdrop.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  /* Mobile Menu Header */
-  .kajabi-nav__mobile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--kajabi-nav-border);
-    background-color: var(--kajabi-nav-bg);
-  }
-
-  .kajabi-nav__mobile-close {
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--kajabi-nav-text);
-  }
-
-  /* Mobile Menu Content */
-  .kajabi-nav__mobile-content {
-    padding: 2rem 0;
-  }
-
-  .kajabi-nav__mobile-nav {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2rem 0;
-  }
-
-  .kajabi-nav__mobile-nav li {
-    margin-bottom: 0.5rem;
-  }
-
-  .kajabi-nav__mobile-nav a {
-    display: block;
-    padding: 1rem 1.5rem;
-    color: var(--kajabi-nav-text);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 0.75rem;
-    transition: var(--kajabi-nav-transition);
-    margin: 0 1rem;
-  }
-
-  .kajabi-nav__mobile-nav a:hover {
-    background-color: {{ section.settings.mobile_hover_bg | default: "#E9E6FF" }};
-    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-    transform: translateX(4px);
-  }
-
-  .kajabi-nav__mobile-nav a.active {
-    background-color: {{ section.settings.mobile_active_bg | default: "#E9E6FF" }};
-    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-    font-weight: 600;
-  }
-
-  /* Mobile CTA */
-  .kajabi-nav__mobile-cta {
-    display: block;
-    width: calc(100% - 3rem);
-    margin: 0 1.5rem;
-    padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, {{ section.settings.mobile_cta_bg | default: "#5E3BFF" }}, {{ section.settings.mobile_cta_bg | default: "#5E3BFF" | color_modify: 'darken', 10 }});
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: var(--kajabi-nav-radius);
-    transition: var(--kajabi-nav-transition);
-    box-shadow: 0 4px 16px -4px rgba(94, 59, 255, 0.2);
-  }
-
-  .kajabi-nav__mobile-cta:hover {
-    background: linear-gradient(135deg, {{ section.settings.mobile_cta_hover_bg | default: "#4025E0" }}, {{ section.settings.mobile_cta_hover_bg | default: "#4025E0" | color_modify: 'darken', 5 }});
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px -8px rgba(94, 59, 255, 0.3);
-    color: #FFFFFF !important;
-  }
-
-  /* Sticky Navigation */
-  .kajabi-nav--sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    animation: slideDown 0.3s ease-in-out;
-  }
-
-  .kajabi-nav--sticky.kajabi-nav--hidden {
-    transform: translateY(-100%);
-  }
-
-  @keyframes slideDown {
-    from {
-      transform: translateY(-100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  /* Dropdown Support */
-  .kajabi-nav__dropdown {
-    position: relative;
-  }
-
-  .kajabi-nav__dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 0.5rem;
-    background-color: var(--kajabi-nav-bg);
-    border: 1px solid var(--kajabi-nav-border);
-    border-radius: 1rem;
-    box-shadow: var(--an-shadow-lg);
-    min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-0.5rem);
-    transition: var(--kajabi-nav-transition);
-    overflow: hidden;
-  }
-
-  .kajabi-nav__dropdown:hover .kajabi-nav__dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .kajabi-nav__dropdown-menu a {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: var(--kajabi-nav-text);
-    text-decoration: none;
-    transition: var(--kajabi-nav-transition);
-    font-size: 0.875rem;
-  }
-
-  .kajabi-nav__dropdown-menu a:hover {
-    background-color: {{ section.settings.dropdown_hover_bg | default: "#E9E6FF" }};
-    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-  }
-
-  /* Utility Classes */
-  .kajabi-nav__spacer {
-    flex: 1;
-  }
-
-  .kajabi-nav__divider {
-    width: 1px;
-    height: 1.5rem;
-    background-color: var(--kajabi-nav-border);
-    margin: 0 1rem;
-  }
-
-  /* Accessibility */
-  .kajabi-nav a:focus,
-  .kajabi-nav button:focus {
-    outline: 2px solid var(--kajabi-nav-text-hover);
-    outline-offset: 2px;
-    border-radius: 0.5rem;
-  }
-
-  .kajabi-nav a:focus-visible,
-  .kajabi-nav button:focus-visible {
-    outline: 3px solid var(--kajabi-nav-text-hover);
-    outline-offset: 3px;
-  }
-
-  /* Loading States */
-  .kajabi-nav__skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-  }
-
-  @keyframes loading {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-
-  /* Mobile Dropdown Styles */
-  .kajabi-nav__mobile-dropdown {
-    margin-bottom: 1.5rem;
-  }
-
-  .kajabi-nav__mobile-dropdown-toggle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: calc(100% - 3rem);
-    margin: 0 1.5rem;
-    padding: 1rem 1.5rem;
-    background: none;
-    border: none;
-    text-align: left;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--kajabi-nav-text);
-    cursor: pointer;
-    transition: var(--kajabi-nav-transition);
-    border-radius: 0.75rem;
-  }
-
-  .kajabi-nav__mobile-dropdown-toggle:hover {
-    background-color: {{ section.settings.mobile_hover_bg | default: "#E9E6FF" }};
-    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-  }
-
-  .kajabi-nav__mobile-dropdown-toggle-icon {
-    transition: transform 0.3s ease;
-  }
-
-  .kajabi-nav__mobile-dropdown.active .kajabi-nav__mobile-dropdown-toggle-icon {
-    transform: rotate(180deg);
-  }
-
-  .kajabi-nav__mobile-dropdown-content {
-    display: none;
-    padding: 0.5rem 0;
-  }
-
-  .kajabi-nav__mobile-dropdown.active .kajabi-nav__mobile-dropdown-content {
-    display: block;
-  }
-
-  /* Transparent Pill Navigation Styles */
-  .kajabi-nav--transparent-pill {
-    background-color: transparent;
-    box-shadow: none;
-  }
-  
-  /* Override the background for transparent pill */
-  .kajabi-nav--transparent-pill::before {
-    display: none;
-  }
-
-  .kajabi-nav--transparent-pill.kajabi-nav--scrolled {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--kajabi-nav-shadow);
-  }
-  
-  .kajabi-nav--transparent-pill.kajabi-nav--scrolled::before {
-    display: block;
-    background-color: var(--kajabi-nav-bg-solid);
-    opacity: 0.95;
-  }
-
-  .kajabi-nav--transparent-pill .kajabi-nav__pill-container {
-    background-color: var(--kajabi-nav-pill-bg);
-    border-radius: var(--kajabi-nav-radius);
-    box-shadow: var(--kajabi-nav-pill-shadow);
-    padding: 0.5rem 2rem;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin: 0 auto;
-    flex: 0 1 auto;
-  }
-
-  .kajabi-nav--transparent-pill .kajabi-nav__content {
-    justify-content: space-between;
-  }
-
-  .kajabi-nav--transparent-pill .kajabi-nav__logo {
-    margin-right: 2rem;
-    flex-shrink: 0;
-  }
-
-  .kajabi-nav--transparent-pill .kajabi-nav__menu {
-    margin: 0;
-    gap: 1.5rem;
-    flex: 0 1 auto;
-  }
-
-  .kajabi-nav--transparent-pill .kajabi-nav__spacer {
-    display: none;
-  }
-
-  .kajabi-nav--transparent-pill .kajabi-nav__actions {
-    margin-left: 0;
-    flex-shrink: 0;
-  }
-
-  /* Search icon in transparent pill mode */
-  .kajabi-nav__search-icon {
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--kajabi-nav-text);
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__search-icon:hover {
-    color: var(--kajabi-nav-text-hover);
-    transform: scale(1.1);
-  }
-
-  .kajabi-nav__search-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  /* Search Form Styles */
-  .kajabi-nav__search-form {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    width: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: all 0.3s var(--an-ease-spring);
-    z-index: 10;
-  }
-  
-  .kajabi-nav__search-form.active {
-    width: 300px;
-    opacity: 1;
-  }
-  
-  @media (max-width: 767px) {
-    .kajabi-nav__search-form.active {
-      width: calc(100vw - 120px);
-      max-width: 250px;
-    }
-  }
-  
-  .kajabi-nav__search-wrapper {
-    display: flex;
-    align-items: center;
-    background: var(--kajabi-nav-pill-bg);
-    border-radius: var(--kajabi-nav-radius);
-    box-shadow: var(--kajabi-nav-pill-shadow);
-    padding: 0.25rem 0.5rem;
-    border: 1px solid var(--kajabi-nav-border);
-  }
-  
-  .kajabi-nav__search-input {
-    flex: 1;
-    border: none;
-    background: none;
-    padding: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--kajabi-nav-text);
-    outline: none;
-  }
-  
-  .kajabi-nav__search-input::placeholder {
-    color: var(--kajabi-nav-text);
-    opacity: 0.6;
-  }
-  
-  .kajabi-nav__search-submit,
-  .kajabi-nav__search-close {
-    background: none;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    color: var(--kajabi-nav-text);
-    transition: var(--kajabi-nav-transition);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .kajabi-nav__search-submit:hover,
-  .kajabi-nav__search-close:hover {
-    color: var(--kajabi-nav-text-hover);
-    transform: scale(1.1);
-  }
-  
-  .kajabi-nav__search-submit svg,
-  .kajabi-nav__search-close svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* Mobile adjustments for transparent pill */
-  @media (max-width: 991px) {
-    .kajabi-nav--transparent-pill {
-      background-color: var(--kajabi-nav-bg);
-      box-shadow: var(--kajabi-nav-shadow);
-    }
-    
-    .kajabi-nav--transparent-pill .kajabi-nav__pill-container {
-      background-color: transparent;
-      box-shadow: none;
-      padding: 0;
-      margin: 0;
-      flex: 1;
-    }
-  }
-
-  /* Mobile Card Styles */
-  .kajabi-nav__mobile-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1rem;
-    padding: 0 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .kajabi-nav__mobile-card {
-    display: block;
+    min-width: 66px;
+    padding: 0.55rem 1.05rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #374151;
     text-decoration: none;
-    border-radius: 1rem;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link:hover,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link:focus {
+    color: #5e3bff;
+    background: rgba(94, 59, 255, 0.08);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link--active {
+    color: #5e3bff;
+    font-weight: 600;
+    background: rgba(94, 59, 255, 0.12);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-left: auto;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(94, 59, 255, 0.2);
+    background: #ffffff;
     overflow: hidden;
-    transition: var(--kajabi-nav-transition);
-    position: relative;
-    aspect-ratio: 1 / 1.3;
-    box-shadow: var(--an-shadow-sm);
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 0.85rem;
   }
 
-  .kajabi-nav__mobile-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--an-shadow-lg);
-  }
-
-  .kajabi-nav__mobile-card-image {
+  #an-pill-nav-{{ section.id }} .an-pill-nav__avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: block;
   }
 
-  .kajabi-nav__mobile-card-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: white;
-  }
-
-  .kajabi-nav__mobile-card-title {
-    font-size: 0.875rem;
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.45rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #5e3bff 0%, #7b66ff 100%);
+    color: #ffffff;
     font-weight: 600;
-    margin-bottom: 0.25rem;
-    line-height: 1.2;
-  }
-
-  .kajabi-nav__mobile-card-description {
-    font-size: 0.75rem;
-    opacity: 0.9;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* With background color instead of image */
-  .kajabi-nav__mobile-card--colored {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1rem;
-  }
-
-  .kajabi-nav__mobile-card--colored .kajabi-nav__mobile-card-content {
-    position: static;
-    background: none;
-    color: inherit;
-    padding: 0;
-  }
-
-  .kajabi-nav__mobile-card--colored .kajabi-nav__mobile-card-title {
-    color: white;
-  }
-
-  .kajabi-nav__mobile-card--colored .kajabi-nav__mobile-card-description {
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  /* Mobile Dropdown Links */
-  .kajabi-nav__mobile-dropdown-links {
-    list-style: none;
-    padding: 0;
-    margin: 0 1.5rem;
-  }
-
-  .kajabi-nav__mobile-dropdown-links li {
-    margin-bottom: 0.25rem;
-  }
-
-  .kajabi-nav__mobile-dropdown-links a {
-    display: block;
-    padding: 0.75rem 1.5rem;
-    text-decoration: none;
-    color: var(--kajabi-nav-text);
     font-size: 0.95rem;
-    border-radius: 0.5rem;
-    transition: var(--kajabi-nav-transition);
-  }
-
-  .kajabi-nav__mobile-dropdown-links a:hover {
-    background-color: {{ section.settings.mobile_hover_bg | default: "#E9E6FF" }};
-    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-    transform: translateX(4px);
-  }
-
-  /* Mobile Button Styles */
-  .kajabi-nav__mobile-button {
-    display: block;
-    padding: 1rem 1.5rem;
-    margin: 0 1.5rem 1rem;
-    text-align: center;
     text-decoration: none;
+    box-shadow: 0 16px 35px -18px rgba(94, 59, 255, 0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 130px;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta:hover,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 38px -16px rgba(94, 59, 255, 0.75);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta--secondary {
+    background: #ffffff;
+    color: #5e3bff;
+    border: 1px solid rgba(94, 59, 255, 0.35);
+    box-shadow: none;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #1f2937;
+    border-radius: 999px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    margin: 0 auto;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__toggle span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__toggle span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__drawer,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__backdrop {
+    display: none;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.2);
+    backdrop-filter: blur(2px);
+    z-index: 290;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__drawer {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 295;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2.5rem;
+    background: #ffffff;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__drawer a {
+    color: #1f2937;
+    text-decoration: none;
+    font-size: 1.35rem;
     font-weight: 500;
-    border-radius: var(--kajabi-nav-radius);
-    transition: var(--kajabi-nav-transition);
-    border: 2px solid transparent;
-    position: relative;
-    overflow: hidden;
   }
 
-  .kajabi-nav__mobile-button--primary {
-    background: linear-gradient(135deg, {{ section.settings.button_bg_color | default: "#5E3BFF" }}, {{ section.settings.button_bg_color | default: "#5E3BFF" | color_modify: 'darken', 10 }});
-    color: {{ section.settings.button_text_color | default: "#FFFFFF" }};
+  #an-pill-nav-{{ section.id }} .an-pill-nav__drawer a.an-pill-nav__cta {
+    font-size: 1.1rem;
   }
 
-  .kajabi-nav__mobile-button--primary:hover {
-    background: linear-gradient(135deg, {{ section.settings.button_hover_bg_color | default: "#4025E0" }}, {{ section.settings.button_hover_bg_color | default: "#4025E0" | color_modify: 'darken', 5 }});
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px -8px rgba(94, 59, 255, 0.3);
-    color: #FFFFFF !important;
-  }
+  @media (max-width: 1024px) {
+    #an-pill-nav-{{ section.id }} {
+      padding: 0.85rem 0;
+    }
 
-  .kajabi-nav__mobile-button--secondary {
-    background-color: transparent;
-    color: var(--kajabi-nav-text);
-    border-color: var(--kajabi-nav-border);
-  }
+    #an-pill-nav-{{ section.id }} .an-pill-nav__pill {
+      display: none;
+    }
 
-  .kajabi-nav__mobile-button--secondary:hover {
-    background-color: {{ section.settings.mobile_hover_bg | default: "#E9E6FF" }};
-    border-color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-    color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
-  }
+    #an-pill-nav-{{ section.id }} .an-pill-nav__toggle {
+      display: flex;
+    }
 
-  .kajabi-nav__mobile-button--outline {
-    background-color: transparent;
-    color: {{ section.settings.button_bg_color | default: "#5E3BFF" }};
-    border-color: {{ section.settings.button_bg_color | default: "#5E3BFF" }};
-  }
-
-  .kajabi-nav__mobile-button--outline:hover {
-    background-color: {{ section.settings.button_bg_color | default: "#5E3BFF" }};
-    color: #FFFFFF !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px -8px rgba(94, 59, 255, 0.3);
-  }
-
-  .kajabi-nav__mobile-button--full {
-    width: calc(100% - 2rem);
-  }
-
-  .kajabi-nav__mobile-button-icon {
-    margin-right: 0.5rem;
-    font-size: 1.125rem;
-    vertical-align: middle;
+    #an-pill-nav-{{ section.id }} .an-pill-nav__actions {
+      display: none;
+    }
   }
 </style>
 
-<!-- Kajabi Navigation Section -->
-<nav class="kajabi-nav {% if section.settings.sticky %}kajabi-nav--sticky{% endif %} {% if section.settings.nav_style == 'transparent_pill' %}kajabi-nav--transparent-pill{% endif %} {% if section.settings.use_dark_logo %}kajabi-nav--dark-bg{% endif %}"
-     role="navigation"
-     aria-label="{{ section.settings.aria_label | default: 'Main navigation' }}"
-     id="section-{{ section.id }}"
-     data-section-id="{{ section.id }}"
-     data-nav-style="{{ section.settings.nav_style | default: 'default' }}"
-     data-text-color="{{ section.settings.text_color | default: '#3B4252' }}"
-     data-bg-color="{{ section.settings.background_color | default: '#FFFFFF' }}">
-  <div class="container">
-    <div class="kajabi-nav__content">
-      <!-- Logo -->
-      <div class="kajabi-nav__logo" kjb-settings-id="{{ 'logo_group' | settings_id: section: section }}">
-        <a href="{{ current_site.root_url }}">
-          {% comment %} Check if we're in transparent pill mode with hardcoded logos {% endcomment %}
-          {% if section.settings.nav_style == 'transparent_pill' and section.settings.transparent_logo_light and section.settings.transparent_logo_dark %}
-            {% comment %} Use hardcoded transparent pill logos {% endcomment %}
-            {% if section.settings.transparent_logo_mode == 'light' %}
-              <img src="{{ section.settings.transparent_logo_light | image_picker_url: '360x120' }}" 
-                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                   loading="lazy"
-                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
-            {% elsif section.settings.transparent_logo_mode == 'dark' %}
-              <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '360x120' }}" 
-                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                   loading="lazy"
-                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
-            {% else %}
-              {% comment %} Auto mode - show both and let CSS/JS handle visibility {% endcomment %}
-              <img src="{{ section.settings.transparent_logo_light | image_picker_url: '360x120' }}" 
-                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                   loading="lazy"
-                   class="logo-light"
-                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
-              <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '360x120' }}" 
-                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                   loading="lazy"
-                   class="logo-dark"
-                   style="max-height: {{ section.settings.logo_height | default: '40px' }}; width: auto;">
-            {% endif %}
-          {% else %}
-            {% comment %} Standard logo logic {% endcomment %}
-            {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
-            {% if logo_block and logo_block.settings.logo_image %}
-            {% comment %} Light background logo (default) {% endcomment %}
-            <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}" 
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-                 loading="lazy"
-                 class="logo-light"
-                 style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
-            
-            {% comment %} Dark background logo (if provided) {% endcomment %}
-            {% if logo_block.settings.dark_logo_image %}
-              <img src="{{ logo_block.settings.dark_logo_image | image_picker_url: '360x120' }}" 
-                   alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-                   loading="lazy"
-                   class="logo-dark"
-                   style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
-            {% else %}
-              {% comment %} Fallback to same logo for dark mode {% endcomment %}
-              <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}" 
-                   alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-                   loading="lazy"
-                   class="logo-dark"
-                   style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
-            {% endif %}
-          {% elsif section.settings.logo_type == 'image' and section.settings.logo %}
-            <div kjb-settings-id="{{ 'logo' | settings_id: section: section }}">
-              <img src="{{ section.settings.logo | image_picker_url: '360x120' }}" 
-                   alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                   loading="lazy"
-                   style="max-height: 60px; width: auto;">
-            </div>
-          {% else %}
-            <span class="kajabi-nav__logo-text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section }}">
-              {{ section.settings.logo_text | default: current_site.title }}
-            </span>
-          {% endif %}
-          {% endif %}
-        </a>
-      </div>
+<nav id="an-pill-nav-{{ section.id }}" class="an-pill-nav">
+  <div class="container an-pill-nav__container">
+    <a class="an-pill-nav__logo" href="{{ current_site.root_url | default: '/' }}">
+      <img src="{{ logo_current }}" alt="Attachment Nerd logo">
+    </a>
 
-      <!-- Navigation Menu Container -->
-      {% if section.settings.nav_style == 'transparent_pill' %}
-        <div class="kajabi-nav__pill-container">
-      {% endif %}
-      
-      <nav class="kajabi-nav__menu" kjb-settings-id="{{ 'menu' | settings_id: section: section }}">
-        {% comment %} Render menu blocks if they exist {% endcomment %}
-        {% assign has_menu_blocks = false %}
-        {% for block in section.blocks %}
-          {% if block.type == 'menu' %}
-            {% assign has_menu_blocks = true %}
-          {% endif %}
-        {% endfor %}
-        
-        {% if has_menu_blocks %}
-          {% comment %} Use menu blocks {% endcomment %}
-          {% for block in section.blocks %}
-            {% if block.type == 'menu' %}
-              {% for link in current_site.link_lists[block.settings.menu].links %}
-                <div class="kajabi-nav__menu-item {% if link.links.size > 0 %}kajabi-nav__dropdown{% endif %}">
-                  <a href="{{ link.url }}" class="kajabi-nav__menu-link">{{ link.name }}</a>
-
-                  {% if link.links.size > 0 %}
-                    <div class="kajabi-nav__dropdown-menu">
-                      {% for child_link in link.links %}
-                        <a href="{{ child_link.url }}">{{ child_link.name }}</a>
-                      {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        {% elsif section.settings.menu %}
-          {% comment %} Fallback to section settings menu {% endcomment %}
-          {% for link in current_site.link_lists[section.settings.menu].links %}
-            <div class="kajabi-nav__menu-item {% if link.links.size > 0 %}kajabi-nav__dropdown{% endif %}">
-              <a href="{{ link.url }}" class="kajabi-nav__menu-link">{{ link.name }}</a>
-
-              {% if link.links.size > 0 %}
-                <div class="kajabi-nav__dropdown-menu">
-                  {% for child_link in link.links %}
-                    <a href="{{ child_link.url }}">{{ child_link.name }}</a>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-          {% endfor %}
+    <div class="an-pill-nav__pill" aria-label="Primary navigation">
+      {% for raw_item in nav_links %}
+        {% assign parts = raw_item | split: '=>' %}
+        {% assign label = parts[0] | default: '' | strip %}
+        {% assign url = '/' %}
+        {% if parts.size > 1 %}
+          {% assign url = parts[1] | strip | default: '/' %}
         {% endif %}
-      </nav>
-      
-      {% if section.settings.nav_style == 'transparent_pill' %}
-        </div>
-      {% endif %}
-
-      <!-- Spacer -->
-      <div class="kajabi-nav__spacer"></div>
-
-      <!-- Actions -->
-      <div class="kajabi-nav__actions">
-        {% for block in section.blocks %}
-          <div class="kajabi-nav__action-item" kjb-settings-id="{{ 'block' | settings_id: section: section, block: block }}">
-            {% case block.type %}
-              {% when 'button' %}
-                <a href="{{ block.settings.button_link }}"
-                   class="kajabi-nav__button {% if block.settings.button_style == 'outline' %}kajabi-nav__button--outline{% endif %}"
-                   {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
-                   kjb-settings-id="{{ 'button_text' | settings_id: block: block }}">
-                  <span>{{ block.settings.button_text }}</span>
-                </a>
-
-              {% when 'user' %}
-                {% if current_site_user %}
-                  <div class="kajabi-nav__user">
-                    <button class="kajabi-nav__user-toggle" aria-label="User menu" aria-expanded="false">
-                      {% if block.settings.show_avatar %}
-                        {{ current_site_user | avatar_url | image_tag: class: "kajabi-nav__user-avatar", alt: "User avatar" }}
-                      {% else %}
-                        <span>{{ current_site_user.name | default: current_site_user.email }}</span>
-                      {% endif %}
-                    </button>
-                    <div class="kajabi-nav__user-dropdown">
-                      <a href="/library">{{ block.settings.library_text | default: 'My Library' }}</a>
-                      {{ block.settings.settings_text | default: 'Settings' | member_settings_link }}
-                      <hr style="margin: 0.5rem 0; border-color: var(--kajabi-nav-border);">
-                      {{ block.settings.logout_text | default: 'Log Out' | member_logout_link }}
-                    </div>
-                  </div>
-                {% else %}
-                  <a href="/login" class="kajabi-nav__button kajabi-nav__button--outline"
-                     kjb-settings-id="{{ 'login_text' | settings_id: block: block }}">
-                    <span>{{ block.settings.login_text | default: 'Log In' }}</span>
-                  </a>
-                {% endif %}
-
-              {% when 'cart' %}
-                {% if section.settings.enable_cart %}
-                  <a href="/cart" class="kajabi-nav__button kajabi-nav__button--outline">
-                    Cart
-                    {% if cart.item_count > 0 %}
-                      <span class="kajabi-nav__badge">{{ cart.item_count }}</span>
-                    {% endif %}
-                  </a>
-                {% endif %}
-
-              {% when 'link' %}
-                <a href="{{ block.settings.link_url }}"
-                   {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
-                   kjb-settings-id="{{ 'link_text' | settings_id: block: block }}">
-                  {{ block.settings.link_text }}
-                </a>
-                
-              {% when 'search' %}
-                <button class="kajabi-nav__search-icon" aria-label="Search" data-search-trigger>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                  </svg>
-                </button>
-            {% endcase %}
-          </div>
-        {% endfor %}
-        
-        <!-- Search Form (Hidden by default) -->
-        {% if section.settings.search_behavior == 'inline' or section.settings.search_behavior == blank %}
-        <form class="kajabi-nav__search-form" id="nav-search-form-{{ section.id }}" role="search">
-          <div class="kajabi-nav__search-wrapper">
-            <input type="search" 
-                   id="nav-search-input-{{ section.id }}"
-                   class="kajabi-nav__search-input" 
-                   placeholder="{{ section.settings.search_placeholder | default: 'Search...' }}" 
-                   aria-label="Search">
-            <button type="submit" class="kajabi-nav__search-submit" aria-label="Submit search">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-              </svg>
-            </button>
-            <button type="button" class="kajabi-nav__search-close" data-search-close aria-label="Close search">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6L6 18M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-        </form>
+        {% if label != '' %}
+          {% assign normalized_url = url | downcase %}
+          {% assign is_active = false %}
+          {% if current_path == normalized_url or current_path == normalized_url | append: '/' %}
+            {% assign is_active = true %}
+          {% endif %}
+          <a href="{{ url }}"
+             class="an-pill-nav__link{% if is_active %} an-pill-nav__link--active{% endif %}"
+             data-evt="nav_link_{{ label | handle }}">
+            {{ label }}
+          </a>
         {% endif %}
-
-        <!-- Mobile Hamburger -->
-        <button class="kajabi-nav__hamburger"
-                aria-label="Toggle mobile menu"
-                aria-expanded="false"
-                data-mobile-menu-trigger>
-          <span class="kajabi-nav__hamburger-icon">
-            <span class="kajabi-nav__hamburger-line"></span>
-            <span class="kajabi-nav__hamburger-line"></span>
-            <span class="kajabi-nav__hamburger-line"></span>
-          </span>
-        </button>
-      </div>
+      {% endfor %}
     </div>
-  </div>
-</nav>
 
-<!-- Mobile Menu Backdrop -->
-<div class="kajabi-nav__mobile-backdrop" id="mobile-backdrop-{{ section.id }}"></div>
-
-<!-- Mobile Menu -->
-<div class="kajabi-nav__mobile-menu" id="mobile-menu-{{ section.id }}" aria-hidden="true">
-  <div class="kajabi-nav__mobile-header">
-    <div class="kajabi-nav__logo">
-      <a href="{{ current_site.root_url }}">
-        {% comment %} Check if we're in transparent pill mode with hardcoded logos {% endcomment %}
-        {% if section.settings.nav_style == 'transparent_pill' and section.settings.transparent_logo_light and section.settings.transparent_logo_dark %}
-          {% comment %} Use hardcoded transparent pill logos for mobile {% endcomment %}
-          {% if section.settings.transparent_logo_mode == 'light' %}
-            <img src="{{ section.settings.transparent_logo_light | image_picker_url: '240x80' }}" 
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                 loading="lazy"
-                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
-          {% elsif section.settings.transparent_logo_mode == 'dark' %}
-            <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '240x80' }}" 
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                 loading="lazy"
-                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
-          {% else %}
-            {% comment %} Auto mode - show both and let CSS/JS handle visibility {% endcomment %}
-            <img src="{{ section.settings.transparent_logo_light | image_picker_url: '240x80' }}" 
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                 loading="lazy"
-                 class="logo-light"
-                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
-            <img src="{{ section.settings.transparent_logo_dark | image_picker_url: '240x80' }}" 
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-                 loading="lazy"
-                 class="logo-dark"
-                 style="max-height: {{ section.settings.mobile_logo_height | default: '30px' }}; width: auto;">
-          {% endif %}
+    <div class="an-pill-nav__actions">
+      {% if nav_show_login %}
+        {% if current_site_user %}
+          <a class="an-pill-nav__avatar" href="/library" data-evt="{{ profile_event }}">
+            {% assign avatar_url = current_site_user | avatar_url %}
+            {% if avatar_url %}
+              <img src="{{ avatar_url }}" alt="{{ current_site_user.name | default: 'Account' }}">
+            {% else %}
+              {{ profile_label | slice: 0, 1 | upcase }}
+            {% endif %}
+          </a>
         {% else %}
-          {% comment %} Standard logo logic {% endcomment %}
-          {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
-        {% if logo_block and logo_block.settings.mobile_logo_image %}
-          <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: '240x80' }}" 
-               alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-               loading="lazy"
-               class="logo-light"
-               style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
-          {% if logo_block.settings.dark_logo_image %}
-            <img src="{{ logo_block.settings.dark_logo_image | image_picker_url: '240x80' }}" 
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-                 loading="lazy"
-                 class="logo-dark"
-                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
-          {% endif %}
-        {% elsif logo_block and logo_block.settings.logo_image %}
-          <img src="{{ logo_block.settings.logo_image | image_picker_url: '240x80' }}" 
-               alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-               loading="lazy"
-               class="logo-light"
-               style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
-          {% if logo_block.settings.dark_logo_image %}
-            <img src="{{ logo_block.settings.dark_logo_image | image_picker_url: '240x80' }}" 
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-                 loading="lazy"
-                 class="logo-dark"
-                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
-          {% endif %}
-        {% elsif section.settings.mobile_logo %}
-          <img src="{{ section.settings.mobile_logo | image_picker_url: '240x80' }}" 
-               alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-               loading="lazy"
-               style="max-height: 40px; width: auto;">
-        {% elsif section.settings.logo_type == 'image' and section.settings.logo %}
-          <img src="{{ section.settings.logo | image_picker_url: '240x80' }}" 
-               alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-               loading="lazy"
-               style="max-height: 40px; width: auto;">
-        {% else %}
-          <span class="kajabi-nav__logo-text">{{ section.settings.logo_text | default: current_site.title }}</span>
+          <a class="an-pill-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}" aria-label="Login">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </a>
         {% endif %}
-        {% endif %}
-      </a>
+      {% endif %}
+      <a class="an-pill-nav__cta" href="{{ cta_url }}" data-evt="nav_cta">{{ cta_label }}</a>
+      {% if show_secondary_cta %}
+        <a class="an-pill-nav__cta an-pill-nav__cta--secondary" href="{{ secondary_url }}" data-evt="nav_cta_secondary">{{ secondary_label }}</a>
+      {% endif %}
     </div>
-    <button class="kajabi-nav__mobile-close" aria-label="Close menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M6 18L18 6M6 6l12 12"/>
-      </svg>
+
+    <button class="an-pill-nav__toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-pill-nav-toggle>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
   </div>
 
-  <div class="kajabi-nav__mobile-content">
-    <!-- Mobile Navigation -->
-    <ul class="kajabi-nav__mobile-nav">
-      {% comment %} Check if we have menu blocks {% endcomment %}
-      {% assign has_menu_blocks = false %}
-      {% for block in section.blocks %}
-        {% if block.type == 'menu' and block.settings.show_in_mobile %}
-          {% assign has_menu_blocks = true %}
-        {% endif %}
-      {% endfor %}
-
-      {% if has_menu_blocks %}
-        {% comment %} Render menu blocks {% endcomment %}
-        {% for block in section.blocks %}
-          {% if block.type == 'menu' and block.settings.show_in_mobile %}
-            {% for link in current_site.link_lists[block.settings.menu].links %}
-              <li>
-                <a href="{{ link.url }}" {% if link.current %}class="active"{% endif %}>
-                  {{ link.name }}
-                </a>
-              </li>
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
-      {% elsif section.settings.menu %}
-        {% comment %} Fallback to section settings menu {% endcomment %}
-        {% for link in current_site.link_lists[section.settings.menu].links %}
-          <li>
-            <a href="{{ link.url }}" {% if link.current %}class="active"{% endif %}>
-              {{ link.name }}
-            </a>
-          </li>
-        {% endfor %}
+  <div class="an-pill-nav__backdrop" data-pill-nav-backdrop></div>
+  <div class="an-pill-nav__drawer" role="dialog" aria-modal="true" aria-label="Mobile navigation" data-pill-nav-drawer>
+    {% for raw_item in nav_links %}
+      {% assign parts = raw_item | split: '=>' %}
+      {% assign label = parts[0] | default: '' | strip %}
+      {% assign url = '/' %}
+      {% if parts.size > 1 %}
+        {% assign url = parts[1] | strip | default: '/' %}
       {% endif %}
-
-      <!-- Mobile-only menu items -->
-      {% for block in section.blocks %}
-        {% if block.type == 'mobile_menu_item' %}
-          <li>
-            <a href="{{ block.settings.link }}"
-               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-              {{ block.settings.title }}
-            </a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-
-    <!-- Mobile Buttons -->
-    {% for block in section.blocks %}
-      {% if block.type == 'mobile_button' %}
-        <a href="{{ block.settings.button_link }}"
-           class="kajabi-nav__mobile-button kajabi-nav__mobile-button--{{ block.settings.button_style }} {% if block.settings.full_width %}kajabi-nav__mobile-button--full{% endif %}"
-           {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-          {% if block.settings.icon %}
-            <i class="{{ block.settings.icon }} kajabi-nav__mobile-button-icon"></i>
-          {% endif %}
-          {{ block.settings.button_text }}
-        </a>
+      {% if label != '' %}
+        <a href="{{ url }}" data-evt="nav_link_mobile_{{ label | handle }}">{{ label }}</a>
       {% endif %}
     {% endfor %}
-
-    <!-- Mobile Dropdown Sections -->
-    {% for block in section.blocks %}
-      {% if block.type == 'mobile_dropdown' %}
-        <div class="kajabi-nav__mobile-dropdown {% if block.settings.expanded_default %}active{% endif %}" data-dropdown-id="{{ block.id }}">
-          <button class="kajabi-nav__mobile-dropdown-toggle" aria-expanded="{{ block.settings.expanded_default | default: false }}">
-            <span>{{ block.settings.title }}</span>
-            <svg class="kajabi-nav__mobile-dropdown-toggle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 7.5L10 12.5L15 7.5"/>
-            </svg>
-          </button>
-          <div class="kajabi-nav__mobile-dropdown-content">
-            {% if block.blocks and block.blocks.size > 0 %}
-              <!-- Check if we have cards -->
-              {% assign has_cards = false %}
-              {% for nested_block in block.blocks %}
-                {% if nested_block.type == 'dropdown_card' %}
-                  {% assign has_cards = true %}
-                  {% break %}
-                {% endif %}
-              {% endfor %}
-              
-              {% if has_cards %}
-                <div class="kajabi-nav__mobile-cards">
-                  {% for nested_block in block.blocks %}
-                    {% if nested_block.type == 'dropdown_card' %}
-                      <a href="{{ nested_block.settings.card_link }}" 
-                         class="kajabi-nav__mobile-card {% unless nested_block.settings.card_image %}kajabi-nav__mobile-card--colored{% endunless %}"
-                         {% if nested_block.settings.card_bg_color and nested_block.settings.card_image == blank %}style="background-color: {{ nested_block.settings.card_bg_color }};"{% endif %}>
-                        {% if nested_block.settings.card_image %}
-                          <img src="{{ nested_block.settings.card_image | image_picker_url: '300x390' }}" 
-                               alt="{{ nested_block.settings.card_title }}"
-                               class="kajabi-nav__mobile-card-image"
-                               loading="lazy">
-                        {% endif %}
-                        <div class="kajabi-nav__mobile-card-content">
-                          <h3 class="kajabi-nav__mobile-card-title">{{ nested_block.settings.card_title }}</h3>
-                          {% if nested_block.settings.card_description %}
-                            <p class="kajabi-nav__mobile-card-description">{{ nested_block.settings.card_description }}</p>
-                          {% endif %}
-                        </div>
-                      </a>
-                    {% endif %}
-                  {% endfor %}
-                </div>
-              {% else %}
-                <!-- Regular links -->
-                <ul class="kajabi-nav__mobile-dropdown-links">
-                  {% for nested_block in block.blocks %}
-                    {% if nested_block.type == 'dropdown_link' %}
-                      <li>
-                        <a href="{{ nested_block.settings.link }}"
-                           {% if nested_block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-                          {{ nested_block.settings.title }}
-                        </a>
-                      </li>
-                    {% endif %}
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            {% endif %}
-          </div>
-        </div>
-      {% endif %}
-    {% endfor %}
-
-    <!-- Mobile CTA -->
-    {% if section.settings.show_mobile_cta %}
-      <a href="{{ section.settings.mobile_cta_link }}"
-         class="kajabi-nav__mobile-cta"
-         {% if section.settings.mobile_cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-        {{ section.settings.mobile_cta_text }}
-      </a>
+    <a class="an-pill-nav__cta" href="{{ cta_url }}" data-evt="nav_cta_mobile">{{ cta_label }}</a>
+    {% if show_secondary_cta %}
+      <a class="an-pill-nav__cta an-pill-nav__cta--secondary" href="{{ secondary_url }}" data-evt="nav_cta_secondary_mobile">{{ secondary_label }}</a>
+    {% endif %}
+    {% if nav_show_login %}
+      {% unless current_site_user %}
+        <a class="an-pill-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}">{{ profile_label }}</a>
+      {% endunless %}
     {% endif %}
   </div>
-</div>
+</nav>
 
 <script>
-// Kajabi Navigation JavaScript
-(function() {
-  'use strict';
+  (function () {
+    var nav = document.getElementById('an-pill-nav-{{ section.id }}');
+    if (!nav) { return; }
+    var toggle = nav.querySelector('[data-pill-nav-toggle]');
+    var backdrop = nav.querySelector('[data-pill-nav-backdrop]');
+    var drawer = nav.querySelector('[data-pill-nav-drawer]');
+    if (!toggle || !backdrop || !drawer) { return; }
 
-  const nav = document.getElementById('section-{{ section.id }}');
-  const mobileMenu = document.getElementById('mobile-menu-{{ section.id }}');
-  const backdrop = document.getElementById('mobile-backdrop-{{ section.id }}');
-  
-  // Exit early if essential elements don't exist
-  if (!nav || !mobileMenu) {
-    console.warn('Navigation elements not found');
-    return;
-  }
-  
-  const hamburger = nav.querySelector('[data-mobile-menu-trigger]');
-  const closeBtn = mobileMenu.querySelector('.kajabi-nav__mobile-close');
-  const body = document.body;
-
-  let scrollPosition = 0;
-
-  // Mobile menu functions
-  function openMenu() {
-    scrollPosition = window.pageYOffset;
-    if (mobileMenu) mobileMenu.classList.add('active');
-    if (backdrop) backdrop.classList.add('active');
-    body.style.overflow = 'hidden';
-    if (mobileMenu) mobileMenu.setAttribute('aria-hidden', 'false');
-    if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
-  }
-
-  function closeMenu() {
-    if (mobileMenu) mobileMenu.classList.remove('active');
-    if (backdrop) backdrop.classList.remove('active');
-    body.style.overflow = '';
-    if (mobileMenu) mobileMenu.setAttribute('aria-hidden', 'true');
-    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-    window.scrollTo(0, scrollPosition);
-  }
-
-  // Event listeners
-  if (hamburger) {
-    hamburger.addEventListener('click', openMenu);
-  }
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeMenu);
-  }
-  if (backdrop) {
-    backdrop.addEventListener('click', closeMenu);
-  }
-
-  // Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-      closeMenu();
+    function closeNav() {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
     }
-  });
 
-  // User dropdown
-  const userDropdowns = nav.querySelectorAll('.kajabi-nav__user');
-  userDropdowns.forEach(dropdown => {
-    const toggle = dropdown.querySelector('.kajabi-nav__user-toggle');
-    if (toggle) {
-      toggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        dropdown.classList.toggle('active');
-        const expanded = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', !expanded);
+    toggle.addEventListener('click', function () {
+      var isOpen = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    backdrop.addEventListener('click', closeNav);
+
+    document.addEventListener('keyup', function (event) {
+      if (event.key === 'Escape') {
+        closeNav();
+      }
+    });
+
+    drawer.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeNav);
+    });
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) { return; }
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        var scrolled = window.scrollY > 8;
+        if (scrolled) {
+          nav.classList.add('is-scrolled');
+        } else {
+          nav.classList.remove('is-scrolled');
+        }
+        ticking = false;
       });
     }
-  });
 
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', function() {
-    userDropdowns.forEach(dropdown => {
-      dropdown.classList.remove('active');
-      const toggle = dropdown.querySelector('.kajabi-nav__user-toggle');
-      if (toggle) {
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  });
-
-  // Mobile dropdown toggles
-  const dropdownToggles = mobileMenu.querySelectorAll('.kajabi-nav__mobile-dropdown-toggle');
-  dropdownToggles.forEach(toggle => {
-    toggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      const dropdown = toggle.closest('.kajabi-nav__mobile-dropdown');
-      const isActive = dropdown.classList.contains('active');
-      
-      // Toggle current dropdown
-      dropdown.classList.toggle('active');
-      toggle.setAttribute('aria-expanded', !isActive);
-    });
-  });
-
-  // Sticky navigation
-  {% if section.settings.sticky %}
-  if (nav) {
-    let lastScrollTop = 0;
-    const navHeight = nav.offsetHeight;
-    const navStyle = nav.getAttribute('data-nav-style');
-
-    window.addEventListener('scroll', function() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      if (scrollTop > navHeight) {
-        nav.classList.add('kajabi-nav--sticky');
-
-      if (scrollTop > lastScrollTop && scrollTop > navHeight * 2) {
-        nav.classList.add('kajabi-nav--hidden');
-      } else {
-        nav.classList.remove('kajabi-nav--hidden');
-      }
-    } else {
-      nav.classList.remove('kajabi-nav--sticky', 'kajabi-nav--hidden');
-    }
-
-    // Add scrolled class for transparent pill navigation
-    if (navStyle === 'transparent_pill') {
-      if (scrollTop > 50) {
-        nav.classList.add('kajabi-nav--scrolled');
-      } else {
-        nav.classList.remove('kajabi-nav--scrolled');
-      }
-    }
-
-    lastScrollTop = scrollTop;
-  });
-  }
-  {% endif %}
-
-  // Logo switching based on background
-  function checkNavBackground() {
-    const nav = document.querySelector('.kajabi-nav');
-    if (!nav) return;
-    
-    const bgColor = nav.dataset.bgColor || '#FFFFFF';
-    const textColor = nav.dataset.textColor || '#3B4252';
-    const isTransparentPill = nav.classList.contains('kajabi-nav--transparent-pill');
-    
-    // Simple luminance check
-    function getLuminance(hex) {
-      // Handle transparent backgrounds
-      if (hex.toLowerCase() === 'transparent' || hex === '') {
-        return 1; // Treat as light
-      }
-      const rgb = parseInt(hex.slice(1), 16);
-      const r = (rgb >> 16) & 0xff;
-      const g = (rgb >> 8) & 0xff;
-      const b = (rgb >> 0) & 0xff;
-      return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    }
-    
-    // For transparent pill, check text color to determine which logo to use
-    if (isTransparentPill && (bgColor.toLowerCase() === 'transparent' || bgColor === '')) {
-      // If text is light, we're likely on a dark background
-      const textLuminance = getLuminance(textColor);
-      if (textLuminance > 0.6) {
-        nav.classList.add('kajabi-nav--dark-bg');
-      } else {
-        nav.classList.remove('kajabi-nav--dark-bg');
-      }
-    } else {
-      // Regular background color check
-      const bgLuminance = getLuminance(bgColor);
-      const textLuminance = getLuminance(textColor);
-      
-      if (bgLuminance < 0.5 || textLuminance > 0.6) {
-        nav.classList.add('kajabi-nav--dark-bg');
-      } else {
-        nav.classList.remove('kajabi-nav--dark-bg');
-      }
-    }
-  }
-  
-  // Check on load
-  checkNavBackground();
-  
-  // Check when Kajabi updates settings
-  document.addEventListener('kajabi:section:load', checkNavBackground);
-})();
-
-// Search functionality - runs independently of navigation
-(function() {
-  'use strict';
-  
-  // Search functionality
-  const searchTriggers = document.querySelectorAll('[data-search-trigger]');
-  const searchForm = document.getElementById('nav-search-form-{{ section.id }}');
-  const searchInput = document.getElementById('nav-search-input-{{ section.id }}');
-  
-  console.log('Search triggers found:', searchTriggers.length);
-  console.log('Search form:', searchForm);
-  
-  searchTriggers.forEach(trigger => {
-    trigger.addEventListener('click', function(e) {
-      e.preventDefault();
-      console.log('Search icon clicked!');
-      
-      const searchBehavior = '{{ section.settings.search_behavior | default: "inline" }}';
-      console.log('Search behavior:', searchBehavior);
-      
-      if (searchBehavior === 'inline' && searchForm) {
-        // Toggle search form visibility
-        searchForm.classList.toggle('active');
-        if (searchForm.classList.contains('active')) {
-          searchInput.focus();
-        }
-      } else {
-        // Redirect to search page
-        const searchUrl = '{{ section.settings.search_url | default: "/search" }}';
-        window.location.href = searchUrl;
-      }
-    });
-  });
-  
-  // Close search on escape key
-  if (searchInput) {
-    searchInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        searchForm.classList.remove('active');
-      }
-    });
-  }
-  
-  // Handle search form submission
-  if (searchForm) {
-    searchForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const query = searchInput.value.trim();
-      if (query) {
-        // Redirect to search page with query
-        const searchUrl = '{{ section.settings.search_url | default: "/search" }}';
-        window.location.href = searchUrl + '?q=' + encodeURIComponent(query);
-      }
-    });
-  }
-  
-  // Close search button
-  const searchCloseBtn = document.querySelector('[data-search-close]');
-  if (searchCloseBtn) {
-    searchCloseBtn.addEventListener('click', function() {
-      if (searchForm) {
-        searchForm.classList.remove('active');
-        searchInput.value = '';
-      }
-    });
-  }
-  
-  // Click outside to close search
-  document.addEventListener('click', function(e) {
-    if (searchForm && searchForm.classList.contains('active')) {
-      if (!searchForm.contains(e.target) && !e.target.closest('[data-search-trigger]')) {
-        searchForm.classList.remove('active');
-      }
-    }
-  });
-})();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
 </script>
 
 {% schema %}
 {
   "name": "Navigation",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Logo Settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "use_dark_logo",
-      "label": "Use Dark Background Logo",
-      "info": "Check this if the navigation has a dark background",
-      "default": false
-    },
-    {
-      "type": "radio",
-      "id": "logo_type",
-      "label": "Logo Type",
-      "default": "image",
-      "options": [
-        {
-          "label": "Image",
-          "value": "image"
-        },
-        {
-          "label": "Text",
-          "value": "text"
-        }
-      ]
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo Image",
-      "info": "Recommended: 180x40px"
-    },
-    {
-      "type": "text",
-      "id": "logo_alt",
-      "label": "Logo Alt Text",
-      "info": "Describes the logo for screen readers"
-    },
-    {
-      "type": "text",
-      "id": "logo_text",
-      "label": "Logo Text",
-      "default": "Your Brand"
-    },
-    {
-      "type": "text",
-      "id": "logo_height",
-      "label": "Logo Height",
-      "default": "40px",
-      "info": "Desktop logo height"
-    },
-    {
-      "type": "text",
-      "id": "mobile_logo_height",
-      "label": "Mobile Logo Height",
-      "default": "32px"
-    },
-    {
-      "type": "header",
-      "content": "Transparent Pill Logo Settings"
-    },
-    {
-      "type": "image_picker",
-      "id": "transparent_logo_light",
-      "label": "Light Logo (for dark backgrounds)",
-      "info": "White/light version of your logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "transparent_logo_dark",
-      "label": "Dark Logo (for light backgrounds)",
-      "info": "Dark/colored version of your logo"
-    },
-    {
-      "type": "select",
-      "id": "transparent_logo_mode",
-      "label": "Which Logo to Show",
-      "default": "auto",
-      "options": [
-        {
-          "label": "Auto-detect (based on text color)",
-          "value": "auto"
-        },
-        {
-          "label": "Always use Light Logo",
-          "value": "light"
-        },
-        {
-          "label": "Always use Dark Logo",
-          "value": "dark"
-        }
-      ],
-      "info": "Choose which logo to display in transparent pill mode"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
-    },
-    {
-      "type": "header",
-      "content": "General Settings"
-    },
-    {
-      "type": "select",
-      "id": "nav_style",
-      "label": "Navigation Style",
-      "default": "transparent_pill",
-      "options": [
-        {
-          "label": "Default",
-          "value": "default"
-        },
-        {
-          "label": "Transparent with Pill Menu",
-          "value": "transparent_pill"
-        }
-      ],
-      "info": "Choose the navigation layout style"
-    },
-    {
-      "type": "checkbox",
-      "id": "sticky",
-      "label": "Enable Sticky Navigation",
-      "default": true,
-      "info": "Navigation sticks to top when scrolling"
-    },
-    {
-      "type": "header",
-      "content": "Search Settings"
-    },
-    {
-      "type": "select",
-      "id": "search_behavior",
-      "label": "Search Behavior",
-      "default": "inline",
-      "options": [
-        {
-          "label": "Inline Search Bar",
-          "value": "inline"
-        },
-        {
-          "label": "Redirect to Search Page",
-          "value": "redirect"
-        }
-      ],
-      "info": "Choose how the search icon behaves"
-    },
-    {
-      "type": "text",
-      "id": "search_url",
-      "label": "Search Page URL",
-      "default": "/search",
-      "info": "URL for search results page (used when redirect is selected)"
-    },
-    {
-      "type": "text",
-      "id": "search_placeholder",
-      "label": "Search Placeholder Text",
-      "default": "Search...",
-      "info": "Placeholder text for search input"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_cart",
-      "label": "Enable Shopping Cart",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "aria_label",
-      "label": "ARIA Label",
-      "default": "Main navigation",
-      "info": "Accessibility label for screen readers"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "range",
-      "id": "background_opacity",
-      "label": "Background Opacity",
-      "default": 100,
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "info": "Set to less than 100% for transparent navigation"
-    },
-    {
-      "type": "checkbox",
-      "id": "blur_background",
-      "label": "Blur Background",
-      "default": false,
-      "info": "Apply backdrop blur effect (works best with transparency)"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#3B4252"
-    },
-    {
-      "type": "color",
-      "id": "text_color_hover",
-      "label": "Text Hover Color",
-      "default": "#5E3BFF"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border Color",
-      "default": "#E9E6FF"
-    },
-    {
-      "type": "color",
-      "id": "pill_bg_color",
-      "label": "Pill Background Color",
-      "default": "#FFFFFF",
-      "info": "Background color for the pill container in transparent mode"
-    },
-    {
-      "type": "header",
-      "content": "Button Colors"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color",
-      "label": "Button Background",
-      "default": "#5E3BFF"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button Text Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "button_hover_bg_color",
-      "label": "Button Hover Background",
-      "default": "#4025E0"
-    },
-    {
-      "type": "header",
-      "content": "Dropdown Settings"
-    },
-    {
-      "type": "color",
-      "id": "dropdown_hover_bg",
-      "label": "Dropdown Hover Background",
-      "default": "#E9E6FF"
-    },
-    {
-      "type": "header",
-      "content": "Mobile Menu"
-    },
-    {
-      "type": "image_picker",
-      "id": "mobile_logo",
-      "label": "Mobile Logo",
-      "info": "Optional: Different logo for mobile menu"
-    },
-    {
-      "type": "range",
-      "id": "mobile_menu_width",
-      "label": "Mobile Menu Width",
-      "default": 360,
-      "min": 280,
-      "max": 400,
-      "step": 20,
-      "unit": "px"
-    },
-    {
-      "type": "color",
-      "id": "mobile_bg_color",
-      "label": "Mobile Menu Background",
-      "default": "#FAFAFA"
-    },
-    {
-      "type": "color",
-      "id": "mobile_hover_bg",
-      "label": "Mobile Menu Hover Background",
-      "default": "#E9E6FF"
-    },
-    {
-      "type": "color",
-      "id": "mobile_active_bg",
-      "label": "Mobile Active Page Background",
-      "default": "#E9E6FF"
-    },
-    {
-      "type": "header",
-      "content": "Mobile CTA"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mobile_cta",
-      "label": "Show Mobile CTA",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "mobile_cta_text",
-      "label": "Mobile CTA Text",
-      "default": "Get Started"
-    },
-    {
-      "type": "action",
-      "id": "mobile_cta_link",
-      "label": "Mobile CTA Link"
-    },
-    {
-      "type": "checkbox",
-      "id": "mobile_cta_new_tab",
-      "label": "Open CTA in New Tab",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "mobile_cta_bg",
-      "label": "Mobile CTA Background",
-      "default": "#5E3BFF"
-    },
-    {
-      "type": "color",
-      "id": "mobile_cta_hover_bg",
-      "label": "Mobile CTA Hover Background",
-      "default": "#4025E0"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "logo_image",
-      "name": "Logo Image",
-      "elements": [
-        {
-          "type": "image_picker",
-          "id": "logo_image",
-          "label": "Logo Image",
-          "info": "Recommended: 180x40px for desktop"
-        },
-        {
-          "type": "image_picker",
-          "id": "dark_logo_image",
-          "label": "Dark Background Logo",
-          "info": "Logo to show on dark backgrounds (same dimensions as main logo)"
-        },
-        {
-          "type": "image_picker",
-          "id": "mobile_logo_image",
-          "label": "Mobile Logo Image",
-          "info": "Optional: Different logo for mobile (recommended: 120x30px)"
-        },
-        {
-          "type": "text",
-          "id": "alt_text",
-          "label": "Alt Text",
-          "default": "Company Logo"
-        },
-        {
-          "type": "text",
-          "id": "desktop_height",
-          "label": "Desktop Logo Height",
-          "default": "40px"
-        },
-        {
-          "type": "text",
-          "id": "mobile_height",
-          "label": "Mobile Logo Height",
-          "default": "30px"
-        }
-      ]
-    },
-    {
-      "type": "button",
-      "name": "Button",
-      "elements": [
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "Button Text",
-          "default": "Get Started"
-        },
-        {
-          "type": "action",
-          "id": "button_link",
-          "label": "Button Link"
-        },
-        {
-          "type": "select",
-          "id": "button_style",
-          "label": "Button Style",
-          "default": "solid",
-          "options": [
-            {
-              "label": "Solid",
-              "value": "solid"
-            },
-            {
-              "label": "Outline",
-              "value": "outline"
-            }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "id": "new_tab",
-          "label": "Open in New Tab",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "user",
-      "name": "User Account",
-      "elements": [
-        {
-          "type": "checkbox",
-          "id": "show_avatar",
-          "label": "Show Avatar",
-          "default": true
-        },
-        {
-          "type": "text",
-          "id": "login_text",
-          "label": "Login Text",
-          "default": "Log In"
-        },
-        {
-          "type": "text",
-          "id": "logout_text",
-          "label": "Logout Text",
-          "default": "Log Out"
-        },
-        {
-          "type": "text",
-          "id": "settings_text",
-          "label": "Settings Text",
-          "default": "Settings"
-        },
-        {
-          "type": "text",
-          "id": "library_text",
-          "label": "Library Text",
-          "default": "My Library"
-        }
-      ]
-    },
-    {
-      "type": "cart",
-      "name": "Shopping Cart",
-      "elements": [
-        {
-          "type": "header",
-          "content": "Cart must be enabled in section settings"
-        }
-      ]
-    },
-    {
-      "type": "link",
-      "name": "Custom Link",
-      "elements": [
-        {
-          "type": "text",
-          "id": "link_text",
-          "label": "Link Text"
-        },
-        {
-          "type": "action",
-          "id": "link_url",
-          "label": "Link URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "new_tab",
-          "label": "Open in New Tab",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "search",
-      "name": "Search Icon",
-      "elements": [
-        {
-          "type": "header",
-          "content": "Adds a search icon to the navigation"
-        }
-      ]
-    },
-    {
-      "type": "mobile_menu_item",
-      "name": "Mobile Menu Item",
-      "elements": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title"
-        },
-        {
-          "type": "action",
-          "id": "link",
-          "label": "Link"
-        },
-        {
-          "type": "checkbox",
-          "id": "new_tab",
-          "label": "Open in New Tab",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "mobile_dropdown",
-      "name": "Mobile Dropdown Section",
-      "elements": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Section Title",
-          "default": "Topics"
-        },
-        {
-          "type": "checkbox",
-          "id": "expanded_default",
-          "label": "Expanded by Default",
-          "default": false
-        }
-      ],
-      "blocks": [
-        {
-          "type": "dropdown_link",
-          "name": "Dropdown Link",
-          "elements": [
-            {
-              "type": "text",
-              "id": "title",
-              "label": "Link Title"
-            },
-            {
-              "type": "action",
-              "id": "link",
-              "label": "Link URL"
-            },
-            {
-              "type": "checkbox",
-              "id": "new_tab",
-              "label": "Open in New Tab",
-              "default": false
-            }
-          ]
-        },
-        {
-          "type": "dropdown_card",
-          "name": "Dropdown Card",
-          "elements": [
-            {
-              "type": "image_picker",
-              "id": "card_image",
-              "label": "Card Image"
-            },
-            {
-              "type": "text",
-              "id": "card_title",
-              "label": "Card Title"
-            },
-            {
-              "type": "text",
-              "id": "card_description",
-              "label": "Card Description"
-            },
-            {
-              "type": "action",
-              "id": "card_link",
-              "label": "Card Link"
-            },
-            {
-              "type": "color",
-              "id": "card_bg_color",
-              "label": "Card Background Color",
-              "default": "#5ED797"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "mobile_button",
-      "name": "Mobile Button",
-      "elements": [
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "Button Text",
-          "default": "Get Started"
-        },
-        {
-          "type": "action",
-          "id": "button_link",
-          "label": "Button Link"
-        },
-        {
-          "type": "select",
-          "id": "button_style",
-          "label": "Button Style",
-          "default": "primary",
-          "options": [
-            {
-              "label": "Primary",
-              "value": "primary"
-            },
-            {
-              "label": "Secondary",
-              "value": "secondary"
-            },
-            {
-              "label": "Outline",
-              "value": "outline"
-            }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "id": "full_width",
-          "label": "Full Width",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "new_tab",
-          "label": "Open in New Tab",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Icon Class (Optional)",
-          "info": "Font Awesome icon class (e.g. 'fas fa-arrow-right')"
-        }
-      ]
-    },
-    {
-      "type": "menu",
-      "name": "Menu",
-      "elements": [
-        {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Menu",
-          "default": "main-menu"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_in_mobile",
-          "label": "Show in Mobile Menu",
-          "default": true
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Navigation",
-      "category": "Navigation",
-      "description": "Modern navigation bar with mobile menu and user account support",
-      "settings": {
-        "nav_style": "transparent_pill"
-      },
-      "blocks": [
-        {
-          "type": "logo_image",
-          "settings": {
-            "alt_text": "Company Logo",
-            "desktop_height": "40px",
-            "mobile_height": "30px"
-          }
-        },
-        {
-          "type": "user",
-          "settings": {
-            "show_avatar": true
-          }
-        },
-        {
-          "type": "button",
-          "settings": {
-            "button_text": "Get Started",
-            "button_style": "solid"
-          }
-        }
-      ]
-    }
-  ]
+  "elements": []
 }
 {% endschema %}

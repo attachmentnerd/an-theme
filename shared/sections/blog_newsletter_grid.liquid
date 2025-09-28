@@ -33,7 +33,7 @@
     {% assign sidebar_col_class = "col-lg-3 order-last" %}
 {% endcase %}
 
-<section class="newsletter-listings">
+<section id="{{ section.settings.section_id | default: 'blog-newsletter-grid' }}-{{ section.id }}" class="newsletter-listings">
   <div class="sizer">
     <div class="container">
       <div class="row justify-content-center">
@@ -84,7 +84,18 @@
   "duplicatable": "false",
   "elements": [
     {
-      "type": "select",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "blog-newsletter-grid",
+      "info": "Custom ID for internal linking (e.g., #blog-newsletter-grid)"
+    },
+      {
+        "type": "select",
       "id": "layout_style",
       "label": "Layout Style",
       "default": "list",

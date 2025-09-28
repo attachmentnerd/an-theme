@@ -1,0 +1,300 @@
+<style>
+  /* Styles for the coupon discount display at the top */
+  .checkout-discount-summary {
+    background: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .checkout-discount-summary.active {
+    display: block;
+  }
+
+  .discount-original-price {
+    text-decoration: line-through;
+    color: #6b7280;
+    font-size: 0.9em;
+    margin-right: 8px;
+  }
+
+  .discount-final-price {
+    color: #059669;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
+  .discount-savings {
+    color: #dc2626;
+    font-weight: 600;
+    margin-left: 12px;
+  }
+
+  .discount-code-applied {
+    font-size: 0.85em;
+    color: #0284c7;
+    margin-top: 4px;
+  }
+
+  /* Update the main price display when discount is active */
+  .kjb-embedded-checkout.has-discount .checkout-price-display {
+    position: relative;
+  }
+
+  .kjb-embedded-checkout.has-discount .checkout-price-display::after {
+    content: "Discount applied below";
+    font-size: 0.75em;
+    color: #059669;
+    display: block;
+    margin-top: 4px;
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  // Function to format currency
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
+  }
+
+  // Function to extract price from text
+  function extractPrice(text) {
+    if (!text) return 0;
+    // Match patterns like $99.00, $1,234.56, etc.
+    const match = text.match(/\$?([\d,]+\.?\d*)/);
+    if (match) {
+      return parseFloat(match[1].replace(/,/g, ''));
+    }
+    return 0;
+  }
+
+  // Function to check for coupon and update display
+  function updateCouponDisplay() {
+    // Look for Kajabi's Sage checkout elements
+    const couponInput = document.querySelector('input[name*="coupon"], input[name*="discount_code"], input#discount_code, .sage-form-field__input[placeholder*="Discount"], .sage-form-field__input[placeholder*="Coupon"]');
+    const couponApplied = document.querySelector('.discount-applied, .coupon-applied, .promo-code-applied, .sage-alert--success, [data-testid="discount-message"]');
+
+    // Sage-specific price selectors
+    const summarySection = document.querySelector('.order-summary, .checkout-summary, .payment-summary, .sage-checkout__summary, .sage-panel');
+    const priceDisplay = document.querySelector('.checkout-price, .offer-price, .total-price, [data-price], .kjb-price, .sage-checkout__price, .sage-type--strikethrough, [data-testid="original-price"]');
+
+    // Look for discount amount in the Sage checkout
+    const discountElement = document.querySelector('.discount-amount, .coupon-discount, .promo-discount, [data-discount-amount], .sage-checkout__discount, [data-testid="discount-amount"], .sage-type--success');
+    const totalElement = document.querySelector('.order-total, .checkout-total, .total-amount, [data-total], .sage-checkout__total, [data-testid="final-total"], .sage-heading--h3');
+
+    if (discountElement || (couponApplied && summarySection)) {
+      // Get the original price
+      let originalPrice = 0;
+      let discountAmount = 0;
+      let finalPrice = 0;
+      let couponCode = '';
+
+      // Try to get the original price
+      if (priceDisplay) {
+        originalPrice = extractPrice(priceDisplay.textContent);
+      }
+
+      // Try to get discount amount
+      if (discountElement) {
+        discountAmount = extractPrice(discountElement.textContent);
+      }
+
+      // Try to get final total
+      if (totalElement) {
+        finalPrice = extractPrice(totalElement.textContent);
+      }
+
+      // If we don't have final price, calculate it
+      if (!finalPrice && originalPrice && discountAmount) {
+        finalPrice = originalPrice - discountAmount;
+      }
+
+      // Try to get the coupon code
+      if (couponInput && couponInput.value) {
+        couponCode = couponInput.value;
+      } else if (couponApplied) {
+        const codeMatch = couponApplied.textContent.match(/code[:\s]+(\w+)/i);
+        if (codeMatch) {
+          couponCode = codeMatch[1];
+        }
+      }
+
+      // Create or update the discount summary at the top
+      let discountSummary = document.querySelector('.checkout-discount-summary');
+
+      if (!discountSummary) {
+        discountSummary = document.createElement('div');
+        discountSummary.className = 'checkout-discount-summary';
+
+        // Try multiple possible insertion points for Sage frame
+        const insertionTargets = [
+          '.sage-frame--align-center-right.sage-frame--direction-horizontal',
+          '.sage-frame__content',
+          '.sage-checkout__content',
+          '.kjb-embedded-checkout',
+          '[data-testid="checkout-form"]',
+          '.checkout-form',
+          '.order-form'
+        ];
+
+        let inserted = false;
+        for (const selector of insertionTargets) {
+          const target = document.querySelector(selector);
+          if (target) {
+            const firstChild = target.firstElementChild;
+            if (firstChild) {
+              target.insertBefore(discountSummary, firstChild);
+            } else {
+              target.appendChild(discountSummary);
+            }
+            inserted = true;
+            console.log('Discount summary inserted into:', selector);
+            break;
+          }
+        }
+
+        if (!inserted) {
+          console.warn('Could not find suitable container for discount summary');
+        }
+      }
+
+      // Update the content
+      if (originalPrice && (discountAmount || finalPrice)) {
+        let html = '<div class="discount-price-row">';
+        html += `<span class="discount-original-price">${formatCurrency(originalPrice)}</span>`;
+
+        if (finalPrice) {
+          html += `<span class="discount-final-price">${formatCurrency(finalPrice)}</span>`;
+        }
+
+        if (discountAmount) {
+          const percentage = Math.round((discountAmount / originalPrice) * 100);
+          html += `<span class="discount-savings">Save ${formatCurrency(discountAmount)} (${percentage}%)</span>`;
+        }
+
+        html += '</div>';
+
+        if (couponCode) {
+          html += `<div class="discount-code-applied">Coupon "${couponCode}" applied ✓</div>`;
+        }
+
+        discountSummary.innerHTML = html;
+        discountSummary.classList.add('active');
+
+        // Add class to checkout container
+        const checkoutContainer = document.querySelector('.kjb-embedded-checkout');
+        if (checkoutContainer) {
+          checkoutContainer.classList.add('has-discount');
+        }
+      }
+    }
+  }
+
+  // Function to initialize the observer
+  function initializeDiscountObserver() {
+    // Initial check
+    updateCouponDisplay();
+
+    // Set up MutationObserver to watch for changes
+    const observer = new MutationObserver(function(mutations) {
+      updateCouponDisplay();
+    });
+
+    // Try to observe multiple possible checkout containers
+    const checkoutSelectors = [
+      '.sage-frame--align-center-right.sage-frame--direction-horizontal',
+      '.kjb-embedded-checkout',
+      '.checkout-column',
+      'main',
+      '[data-testid="checkout-container"]'
+    ];
+
+    let observing = false;
+    for (const selector of checkoutSelectors) {
+      const checkoutArea = document.querySelector(selector);
+      if (checkoutArea) {
+        observer.observe(checkoutArea, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+          attributes: true,
+          attributeFilter: ['class', 'data-discount', 'data-total', 'data-price']
+        });
+        console.log('Observing checkout area:', selector);
+        observing = true;
+        break;
+      }
+    }
+
+    if (!observing) {
+      console.warn('Could not find checkout area to observe');
+      // Try again after a delay
+      setTimeout(initializeDiscountObserver, 1000);
+    }
+
+    // Also listen for input changes on coupon field
+    const couponInput = document.querySelector('input[name*="coupon"], input[name*="discount_code"]');
+    if (couponInput) {
+      couponInput.addEventListener('change', updateCouponDisplay);
+      couponInput.addEventListener('blur', function() {
+        setTimeout(updateCouponDisplay, 1000); // Delay to allow server response
+      });
+    }
+
+    // Listen for form submissions (coupon application)
+    document.addEventListener('submit', function(e) {
+      if (e.target && e.target.querySelector('input[name*="coupon"], input[name*="discount_code"]')) {
+        setTimeout(updateCouponDisplay, 2000); // Wait for server response
+      }
+    });
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeDiscountObserver);
+  } else {
+    initializeDiscountObserver();
+  }
+
+  // Wait for Sage frame to load
+  function waitForSageFrame() {
+    const sageFrame = document.querySelector('.sage-frame--align-center-right, .sage-frame__content, .sage-checkout');
+    if (sageFrame) {
+      console.log('Sage frame detected, initializing discount observer');
+      setTimeout(initializeDiscountObserver, 500);
+    } else {
+      setTimeout(waitForSageFrame, 500);
+    }
+  }
+  waitForSageFrame();
+
+  // Also reinitialize on AJAX complete (for Kajabi's dynamic updates)
+  if (typeof jQuery !== 'undefined') {
+    jQuery(document).ajaxComplete(function() {
+      setTimeout(updateCouponDisplay, 500);
+    });
+  }
+
+  // Listen for Kajabi-specific events
+  document.addEventListener('kjb:coupon:applied', updateCouponDisplay);
+  document.addEventListener('kjb:checkout:updated', updateCouponDisplay);
+  document.addEventListener('checkout:updated', updateCouponDisplay);
+  document.addEventListener('sage:checkout:loaded', initializeDiscountObserver);
+
+  // Listen for iframe load events (Sage may use iframes)
+  window.addEventListener('load', function() {
+    setTimeout(initializeDiscountObserver, 1000);
+  });
+
+  // Debug logging
+  console.log('Coupon discount display script loaded');
+
+})();
+</script>

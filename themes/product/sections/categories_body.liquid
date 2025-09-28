@@ -1,0 +1,78 @@
+<div class="panel syllabus">
+  <div class="panel__body">
+    <h5 class="syllabus__heading" kjb-settings-id="{{ 'categories' | settings_id: section: section }}">
+      {% element "section.settings.categories" %}{{ section.settings.categories }}{% endelement %}
+      <span class="pull-right">{{ current_product.categories.size }}</span>
+    </h5>
+    {% paginate current_product.categories by 10 %}
+      {% for category in paginate.collection %}
+        <div class="category-card-sizer" style="--card-media-width: {{ section.settings.card_media_width | default: 160 }}px; --card-media-aspect: {{ section.settings.card_media_aspect | default: '16/9' }}; --card-media-radius: {{ section.settings.card_media_radius | default: 8 }}px; --card-grid-gap: {{ section.settings.card_grid_gap | default: 16 }}px;">
+          {% include "category" %}
+        </div>
+      {% endfor %}
+      {% if paginate.pages > 1 %}
+        {% include "pagination" %}
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Categories Body",
+    "elements": [
+      {
+        "type": "text",
+        "default": "Categories",
+        "label": "Categories Text",
+        "id": "categories"
+      },
+      {
+        "type": "text",
+        "id": "coming_soon",
+        "label": "Coming Soon Text",
+        "default": "Coming Soon"
+      },
+      {
+        "type": "range",
+        "id": "card_media_width",
+        "label": "Card image width (px)",
+        "min": 80,
+        "max": 320,
+        "step": 4,
+        "default": 160
+      },
+      {
+        "type": "select",
+        "id": "card_media_aspect",
+        "label": "Card image aspect ratio",
+        "options": [
+          { "value": "16/9", "label": "16:9 (widescreen)" },
+          { "value": "4/3", "label": "4:3" },
+          { "value": "1/1", "label": "1:1 (square)" },
+          { "value": "3/4", "label": "3:4 (portrait)" },
+          { "value": "21/9", "label": "21:9 (cinematic)" }
+        ],
+        "default": "16/9"
+      },
+      {
+        "type": "range",
+        "id": "card_media_radius",
+        "label": "Card image radius (px)",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "card_grid_gap",
+        "label": "Card grid gap (px)",
+        "min": 8,
+        "max": 32,
+        "step": 1,
+        "default": 16
+      }
+    ]
+  }
+{% endschema %}

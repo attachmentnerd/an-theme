@@ -242,7 +242,7 @@
 </style>
 
 {% if products.size > 0 %}
-  <section class="section products {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+  <section id="{{ section.settings.section_id | default: 'product-grid' }}-{{ section.id }}" class="section products {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
     <div class="sizer">
       {% if section.settings.bg_type == "video" %}
         {% include "global_background_video" %}
@@ -280,7 +280,18 @@
   "duplicatable": "false",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "product-grid",
+      "info": "Custom ID for internal linking (e.g., #product-grid)"
+    },
+      {
+        "type": "text",
       "id": "text_heading",
       "label": "Heading Text",
       "default": "Transform Your Parenting Journey"

@@ -197,7 +197,7 @@
             {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
               <div class="colored-highlight__icon-wrapper">
                 <img src="{{ block.settings.icon_image | image_picker_url: '120x68' }}" 
-             alt="{{ {{ block.settings.icon_alt | default:  }}" 
+             alt="{{ block.settings.icon_alt | default: 'Icon' }}" 
              class="colored-highlight__icon"
              loading="lazy"
              style="object-fit: cover;">
@@ -236,7 +236,18 @@
   "name": "Content - Colored Highlight",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content-colored-highlight",
+      "info": "Custom ID for internal linking (e.g., #content-colored-highlight)"
+    },
+      {
+        "type": "header",
       "content": "Section Settings"
     },
     {

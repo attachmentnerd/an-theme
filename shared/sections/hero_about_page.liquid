@@ -7,7 +7,7 @@
   {% include 'responsive-background' %}
 {% endif %}
 
-<section class="about-hero-section {% if section.settings.background_image != blank %}about-hero-{{ section.id }}{% endif %}" 
+<section id="{{ section.settings.section_id | default: 'hero-about-page' }}-{{ section.id }}" class="about-hero-section {% if section.settings.background_image != blank %}about-hero-{{ section.id }}{% endif %}" 
          style="{% if section.settings.background_image == blank %}background-color: var(--c-brand-100);{% endif %}">
 
   <!-- Decorative elements for warmth and trust -->
@@ -354,7 +354,18 @@
   "name": "Hero - About Page",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "hero-about-page",
+      "info": "Custom ID for internal linking (e.g., #hero-about-page)"
+    },
+      {
+        "type": "header",
       "content": "Background"
     },
     {

@@ -1,0 +1,166 @@
+/* AN Checkout Theme Custom Styles */
+/* Coupon Discount Display Enhancement */
+
+/* Make the coupon field more prominent */
+.kjb-embedded-checkout input[name*="coupon"],
+.kjb-embedded-checkout input[name*="discount"],
+.kjb-embedded-checkout input#discount_code {
+  border: 2px solid #0ea5e9;
+  padding: 10px 12px;
+  font-size: 16px;
+}
+
+.kjb-embedded-checkout input[name*="coupon"]:focus,
+.kjb-embedded-checkout input[name*="discount"]:focus,
+.kjb-embedded-checkout input#discount_code:focus {
+  outline: none;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* Style the apply button */
+.kjb-embedded-checkout button[type="submit"][name*="coupon"],
+.kjb-embedded-checkout button[type="submit"][name*="discount"],
+.kjb-embedded-checkout .coupon-apply-button,
+.kjb-embedded-checkout .discount-apply-button {
+  background: #0ea5e9;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.kjb-embedded-checkout button[type="submit"][name*="coupon"]:hover,
+.kjb-embedded-checkout button[type="submit"][name*="discount"]:hover,
+.kjb-embedded-checkout .coupon-apply-button:hover,
+.kjb-embedded-checkout .discount-apply-button:hover {
+  background: #0284c7;
+}
+
+/* Highlight when discount is applied */
+.kjb-embedded-checkout .discount-applied,
+.kjb-embedded-checkout .coupon-applied,
+.kjb-embedded-checkout .promo-applied {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: #166534;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+/* Style the discount line in order summary */
+.kjb-embedded-checkout .discount-line,
+.kjb-embedded-checkout .coupon-line,
+.kjb-embedded-checkout [data-discount-line] {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Animate the discount summary appearance */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.checkout-discount-summary.active {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Make sure our discount summary is responsive */
+@media (max-width: 768px) {
+  .checkout-discount-summary {
+    padding: 10px 12px;
+    margin-bottom: 15px;
+  }
+
+  .discount-final-price {
+    font-size: 1.1em;
+  }
+
+  .discount-savings {
+    display: block;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}
+
+/* Ensure the summary appears at the very top */
+.kjb-embedded-checkout > .checkout-discount-summary:first-child {
+  margin-top: 0;
+}
+
+/* Force discount container to be visible and at top */
+#coupon-discount-container {
+  position: relative !important;
+  z-index: 9999 !important;
+  margin-bottom: 20px !important;
+}
+
+#coupon-discount-container:not(:empty) {
+  display: block !important;
+}
+
+/* Floating discount display as backup */
+#floating-discount-display {
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  z-index: 99999 !important;
+  max-width: 300px !important;
+}
+
+/* Make sure discount displays above everything */
+.checkout-discount-summary,
+#coupon-discount-container,
+#floating-discount-display {
+  position: relative;
+  z-index: 9999;
+}
+
+/* Override any Kajabi styles that might hide it */
+.kjb-embedded-checkout .checkout-discount-summary {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Style Kajabi's embedded checkout coupon elements */
+.embedded-checkout-coupon__price {
+  color: #dc2626 !important;
+  font-weight: bold !important;
+  font-size: 1.1em !important;
+}
+
+/* Highlight when a coupon is active */
+.embedded-checkout-coupon,
+.embedded-checkout-coupon__wrapper {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+/* Make the discount more prominent */
+.embedded-checkout-coupon__price::before {
+  content: "💰 ";
+}
+
+/* Style the total when discount is applied */
+.embedded-checkout__total.has-discount,
+.embedded-checkout-order__total.has-discount {
+  color: #059669 !important;
+  font-size: 1.3em !important;
+  font-weight: bold !important;
+}

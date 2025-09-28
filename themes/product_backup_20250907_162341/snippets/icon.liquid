@@ -1,0 +1,497 @@
+{% comment %}
+  Icon System - Inline SVG Icons
+  
+  Usage:
+    {% include 'icon', icon: 'facebook', class: 'icon-social', size: 24 %}
+    {% include 'icon', icon: 'search', class: 'icon-ui' %}
+    {% include 'icon', icon: 'chevron-down' %}
+  
+  Parameters:
+    - icon: (required) Icon name
+    - class: Additional CSS classes
+    - size: Icon size in pixels (default: 20)
+    - color: Icon color (default: currentColor)
+    - aria_label: Accessibility label
+{% endcomment %}
+
+{% assign icon_size = size | default: 20 %}
+{% assign icon_color = color | default: 'currentColor' %}
+{% assign icon_class = class | default: '' %}
+
+{% case icon %}
+  {% comment %} Social Media Icons {% endcomment %}
+  {% when 'facebook' %}
+    <svg class="icon icon-facebook {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+    </svg>
+    
+  {% when 'twitter' %}
+    <svg class="icon icon-twitter {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+    </svg>
+    
+  {% when 'instagram' %}
+    <svg class="icon icon-instagram {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
+    </svg>
+    
+  {% when 'youtube' %}
+    <svg class="icon icon-youtube {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    </svg>
+    
+  {% when 'pinterest' %}
+    <svg class="icon icon-pinterest {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+    </svg>
+    
+  {% when 'linkedin' %}
+    <svg class="icon icon-linkedin {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+    </svg>
+    
+  {% when 'tiktok' %}
+    <svg class="icon icon-tiktok {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+    </svg>
+    
+  {% when 'github' %}
+    <svg class="icon icon-github {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+    </svg>
+    
+  {% when 'amazon' %}
+    <svg class="icon icon-amazon {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.743-2.64 1.316-4.185 1.726a17.617 17.617 0 01-4.516.584c-3.037 0-5.817-.572-8.36-1.726C.873 19.82.09 19.126.09 18.44c0-.124-.015-.248-.045-.42zm13.013-9.448c-1.407 1.023-2.247 2.423-2.518 4.21-.056.367-.14.672-.25.91-.11.24-.307.357-.59.357-.315 0-.526-.134-.645-.403-.135-.3-.203-.816-.203-1.544v-.77c0-1.156.124-2.14.37-2.95.248-.81.652-1.48 1.216-2.01.564-.53 1.29-.885 2.174-1.065.885-.18 1.807-.27 2.766-.27.81 0 1.62.06 2.425.18.807.118 1.484.25 2.03.405.136.03.272.075.406.135.134.06.2.18.2.36 0 .134-.045.24-.14.31-.09.075-.21.12-.36.136-.45.046-.947.1-1.486.166-.54.06-1.118.09-1.726.09-1.486 0-2.646.3-3.48.897zm6.615 4.66c0 1.125-.3 2.047-.903 2.773-.6.724-1.432 1.086-2.485 1.086-1.066 0-1.903-.37-2.51-1.114-.608-.743-.91-1.655-.91-2.742 0-1.125.3-2.063.905-2.81.607-.746 1.44-1.12 2.502-1.12 1.052 0 1.882.37 2.49 1.108.61.737.913 1.667.913 2.783l-.002.035zm-1.765.008v-.06c0-.615-.12-1.096-.358-1.444-.238-.35-.608-.526-1.11-.526-.524 0-.915.175-1.17.523-.254.35-.38.846-.38 1.486 0 .668.127 1.162.38 1.48.253.318.64.477 1.155.477.5 0 .873-.174 1.125-.523.254-.35.38-.86.38-1.53l-.022.116z" fill-rule="evenodd"/>
+    </svg>
+    
+  {% when 'apple' %}
+    <svg class="icon icon-apple {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+    </svg>
+    
+  {% when 'vimeo' %}
+    <svg class="icon icon-vimeo {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.374-8.29 6.374-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197c1.185-1.044 2.351-2.084 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.493 4.797l-.013.01z"/>
+    </svg>
+    
+  {% when 'tumblr' %}
+    <svg class="icon icon-tumblr {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.999 0h3.517v6.114h4.801v3.633h-4.82v7.47c.016 1.001.375 2.371 2.207 2.371h.09c.631-.02 1.486-.205 1.936-.419l1.156 3.425c-.436.636-2.4 1.374-4.156 1.404h-.178l.011.002z"/>
+    </svg>
+    
+  {% when 'spotify' %}
+    <svg class="icon icon-spotify {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+    </svg>
+    
+  {% when 'medium' %}
+    <svg class="icon icon-medium {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+    </svg>
+    
+  {% when 'soundcloud' %}
+    <svg class="icon icon-soundcloud {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c0-.057-.045-.1-.09-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.165 1.308c0 .055.045.094.09.094s.089-.045.104-.104l.21-1.319-.21-1.334c0-.061-.044-.09-.09-.09m1.83-1.229c-.061 0-.104.045-.12.104l-.21 2.563.225 2.458c0 .06.045.12.119.12.061 0 .105-.061.121-.12l.254-2.474-.254-2.548c-.016-.06-.061-.12-.121-.12m.945-.089c-.075 0-.135.06-.15.135l-.193 2.64.21 2.544c.016.077.075.138.149.138.075 0 .135-.061.15-.15l.24-2.532-.24-2.623c0-.075-.06-.135-.135-.135l-.03-.017zm1.155.135c-.074 0-.149.06-.165.15l-.21 2.563.21 2.54c0 .078.074.148.149.148.074 0 .148-.074.165-.15l.225-2.54-.225-2.5c-.015-.089-.074-.165-.15-.165m1.185.061c-.09 0-.18.074-.194.179l-.181 2.393.196 2.348c0 .104.09.18.18.18.089 0 .179-.076.193-.18l.21-2.348-.21-2.389c-.008-.104-.088-.18-.192-.18m.943 3.911c0 .12.09.21.209.21.105 0 .195-.09.21-.21l.193-1.83-.192-3.069c-.016-.12-.105-.21-.21-.21-.104 0-.194.09-.21.225l-.18 3.054.18 1.83zm.718-3.84c-.104 0-.18.09-.209.194l-.18 3.016.18 1.769c0 .105.105.195.21.195.104 0 .194-.09.208-.195l.194-1.784-.194-3.016c-.015-.12-.105-.195-.21-.195m1.245 3.885c0 .118.104.224.225.224.119 0 .224-.105.238-.224l.166-1.695-.166-3.075c-.015-.135-.119-.225-.225-.225-.119 0-.225.105-.239.225l-.153 3.074.165 1.696zm.719-3.825c-.135 0-.254.119-.27.254l-.135 2.942.135 1.681c.016.135.135.254.27.254.134 0 .254-.12.269-.269l.15-1.667-.164-2.941c-.015-.135-.135-.255-.255-.255m1.005.015c-.15 0-.284.135-.3.3l-.103 2.64.12 1.654c.016.149.135.285.284.285.15 0 .285-.135.3-.285l.135-1.654-.135-2.64c-.016-.15-.15-.3-.3-.3m1.154 1.547c-.045-.015-.09-.015-.12-.015-.165 0-.314.15-.329.315l-.09 2.325.104 1.634c0 .18.165.33.33.33.148 0 .314-.149.328-.33l.12-1.634-.135-2.325c-.015-.18-.164-.315-.33-.315m1.019.569c-.164 0-.343.165-.358.345l-.089 1.695.104 1.603c.016.195.165.36.36.36.179 0 .344-.165.359-.36l.12-1.604-.12-1.679c-.015-.195-.18-.36-.359-.36m13.022 1.68c-.195-.435-.569-.779-1.034-.914-.21-1.095-1.109-1.933-2.222-1.933-1.278 0-2.325.99-2.414 2.249-.18-.03-.359-.045-.54-.045-1.438 0-2.595 1.17-2.595 2.625S17.23 19 18.67 19h4.582c1.109 0 2.01-.901 2.01-2.01s-.886-2.009-2.009-2.009" />
+    </svg>
+    
+  {% when 'slack' %}
+    <svg class="icon icon-slack {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
+    </svg>
+    
+  {% when 'dribbble' %}
+    <svg class="icon icon-dribbble {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308a10.28 10.28 0 0 0 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.04 6.4a10.161 10.161 0 0 0 6.29 2.166c1.42 0 2.77-.29 4.006-.816zm-11.62-2.58c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.855zm-2.42-8.955c.46.008 4.683.026 9.477-1.248a65.473 65.473 0 0 0-3.8-5.928 10.275 10.275 0 0 0-5.676 7.17zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702A10.19 10.19 0 0 0 12 1.764c-.825 0-1.63.1-2.4.285zm10.335 3.483c-.218.29-1.935 2.493-5.724 4.04.24.49.47.985.68 1.486.08.18.15.36.22.53 3.41-.43 6.8.26 7.14.33-.02-2.42-.88-4.64-2.31-6.38z"/>
+    </svg>
+    
+  {% when 'flickr' %}
+    <svg class="icon icon-flickr {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M0 12c0 3.074 2.494 5.564 5.565 5.564 3.075 0 5.569-2.49 5.569-5.564S8.64 6.436 5.565 6.436C2.495 6.436 0 8.926 0 12zm12.866 0c0 3.074 2.493 5.564 5.567 5.564C21.496 17.564 24 15.074 24 12s-2.492-5.564-5.564-5.564c-3.075 0-5.57 2.49-5.57 5.564z"/>
+    </svg>
+    
+  {% when 'yelp' %}
+    <svg class="icon icon-yelp {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M21.111 18.226c-.141.969-2.119 3.483-3.029 3.847-.311.124-.611.094-.85-.061-.154-.105-.74-.811-1.312-1.414l-.625-.66c-.244-.252-.359-.605-.309-.938.045-.295.194-.549.43-.719.225-.164.479-.225.732-.193.137.021 1.045.175 1.912.33.389.064.725.135.967.178.309.057.574.086.785.086l.068.003c.539 0 .701.23.787.578.055.226.041.652-.064 1.073l.002-.004c-.003.012-.006.021-.008.031l-.486-.057zm-7.434-1.689c-.01.006-.02.012-.029.018a.727.727 0 00-.225.234c-.105.16-.146.316-.146.479 0 .209.072.412.209.59.402.522.992 1.289 1.658 2.141.205.265.379.486.52.67.225.285.375.479.482.617.168.226.436.436.826.436a.987.987 0 00.686-.251c.797-.661.945-3.764.633-4.488-.201-.448-.531-.473-.689-.48-.078-.002-.188.016-.352.064-.141.039-.365.096-.674.188-.523.154-1.172.346-1.816.541-.084.022-.166.049-.244.074l-.791.232v.002l.018-.007zm-1.693-3.74c.047-.066.1-.125.16-.182a.721.721 0 00.15-.397.786.786 0 00-.059-.346c-.209-.465-.977-1.016-2.027-1.516l-.652-.311c-.441-.211-.762-.363-1.016-.502-.484-.26-.809-.434-1.08-.572-.152-.08-.365-.164-.633-.164-.264 0-.508.082-.725.238-.671.482-1.433 2.871-.951 3.74.263.474.662.58 1.012.58.244 0 .45-.049.602-.105.072-.027.176-.068.314-.115.117-.047.289-.105.525-.18.391-.123.87-.275 1.365-.434.074-.023.145-.045.217-.064.662-.186 1.455-.41 2.234-.631l.564-.16zm3.795 6.494c-.334-.039-.74-.087-1.186-.138l-1.078-.127-.029.002a.701.701 0 00-.496.209.724.724 0 00-.215.536c.008.139.063.273.16.375.223.24.549.589.908.969.119.127.246.258.371.389l.662.68c.189.195.346.357.459.471.207.211.43.314.666.314.123 0 .252-.029.379-.09.875-.42 2.016-3.607 1.742-4.395-.168-.484-.465-.546-.617-.556-.088-.006-.217.002-.408.027-.158.02-.396.051-.717.094v-.022.012zm-7.141-7.15c-.114-.191-.234-.324-.358-.441l-.085-.06c-.209-.148-.471-.221-.736-.221-.174 0-.348.033-.516.094-.783.291-2.314 2.762-2.061 3.711.178.654.555.797.842.816.061.002.115.006.164.006.258 0 .477-.068.65-.139.078-.033.191-.08.338-.142.125-.049.295-.117.533-.209.398-.156.887-.348 1.357-.533.236-.092.473-.186.695-.275l.031-.013c.496-.205 1.092-.451 1.594-.654.172-.07.307-.135.396-.186.111-.064.191-.123.256-.182a.7.7 0 00.133-.492.773.773 0 00-.129-.389c-.361-.532-1.887-1.049-2.732-1.272-.24-.064-.434-.113-.586-.15-.24-.061-.401-.1-.502-.125-.225-.061-.472-.029-.735.086l.021.006c-.016.008-.033.014-.047.021l-.617 1.314zm2.086-3.792a.704.704 0 00.195.488c.082.064.172.113.266.139.102.029.668.209 1.418.434.33.102.676.205 1.023.311.375.113.74.221 1.064.313.545.15.973.27 1.271.357.336.1.553.164.697.207.219.066.41.049.611-.053.875-.459 1.803-3.659 1.404-4.45-.279-.568-.66-.611-.834-.615a.834.834 0 00-.096.002c-.141.014-.355.045-.646.104-.244.051-.549.117-.91.195-.598.135-1.336.303-2.07.471-.395.088-.791.18-1.158.266l-.016.003c-.293.066-.648.15-.936.217-.164.041-.299.074-.398.1-.129.033-.221.063-.285.09a.716.716 0 00-.354.482c0 .121.033.246.104.359l.002.012c.004.008.01.018.016.025l1.386.277z"/>
+    </svg>
+    
+  {% comment %} UI/Navigation Icons {% endcomment %}
+  {% when 'search' %}
+    <svg class="icon icon-search {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+    
+  {% when 'chevron-down' %}
+    <svg class="icon icon-chevron-down {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+    
+  {% when 'chevron-up' %}
+    <svg class="icon icon-chevron-up {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+    
+  {% when 'chevron-left' %}
+    <svg class="icon icon-chevron-left {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    
+  {% when 'chevron-right' %}
+    <svg class="icon icon-chevron-right {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+    
+  {% when 'arrow-left' %}
+    <svg class="icon icon-arrow-left {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    
+  {% when 'arrow-right' %}
+    <svg class="icon icon-arrow-right {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>
+    
+  {% when 'close' or 'times' %}
+    <svg class="icon icon-close {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+    
+  {% when 'check' %}
+    <svg class="icon icon-check {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    
+  {% when 'check-circle' %}
+    <svg class="icon icon-check-circle {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    
+  {% when 'lock' %}
+    <svg class="icon icon-lock {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+    </svg>
+    
+  {% when 'play' %}
+    <svg class="icon icon-play {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </svg>
+    
+  {% when 'play-circle' %}
+    <svg class="icon icon-play-circle {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="12" r="10"></circle>
+      <polygon points="10 8 16 12 10 16 10 8" fill="{{ icon_color }}"></polygon>
+    </svg>
+    
+  {% when 'menu' or 'bars' %}
+    <svg class="icon icon-menu {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+    
+  {% comment %} File Type Icons {% endcomment %}
+  {% when 'file' %}
+    <svg class="icon icon-file {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+      <polyline points="13 2 13 9 20 9"></polyline>
+    </svg>
+    
+  {% when 'file-pdf' %}
+    <svg class="icon icon-file-pdf {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <text x="7" y="17" font-size="8" fill="{{ icon_color }}">PDF</text>
+    </svg>
+    
+  {% comment %} Other Icons {% endcomment %}
+  {% when 'heart' %}
+    <svg class="icon icon-heart {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+    
+  {% when 'star' %}
+    <svg class="icon icon-star {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    </svg>
+    
+  {% when 'star-filled' %}
+    <svg class="icon icon-star-filled {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    </svg>
+    
+  {% when 'calendar' %}
+    <svg class="icon icon-calendar {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+    
+  {% when 'clock' %}
+    <svg class="icon icon-clock {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="12" r="10"></circle>
+      <polyline points="12 6 12 12 16 14"></polyline>
+    </svg>
+    
+  {% when 'tag' %}
+    <svg class="icon icon-tag {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+    </svg>
+    
+  {% when 'warning' or 'exclamation-triangle' %}
+    <svg class="icon icon-warning {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+      <line x1="12" y1="9" x2="12" y2="13"></line>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+    
+  {% when 'download' %}
+    <svg class="icon icon-download {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    
+  {% when 'external-link' %}
+    <svg class="icon icon-external-link {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <line x1="10" y1="14" x2="21" y2="3"></line>
+    </svg>
+    
+  {% when 'email' or 'mail' %}
+    <svg class="icon icon-email {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+      <polyline points="22,6 12,13 2,6"></polyline>
+    </svg>
+    
+  {% when 'phone' %}
+    <svg class="icon icon-phone {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+    
+  {% when 'user' %}
+    <svg class="icon icon-user {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+    
+  {% when 'shopping-cart' %}
+    <svg class="icon icon-shopping-cart {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="9" cy="21" r="1"></circle>
+      <circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
+    
+  {% when 'info' %}
+    <svg class="icon icon-info {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+    
+  {% when 'plus' %}
+    <svg class="icon icon-plus {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    
+  {% when 'minus' %}
+    <svg class="icon icon-minus {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    
+  {% comment %} Podcast icon {% endcomment %}
+  {% when 'podcast' %}
+    <svg class="icon icon-podcast {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12 2C6.48 2 2 6.48 2 12c0 2.19.7 4.21 1.89 5.85l1.78-1.78A7.002 7.002 0 0 1 5 12c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.51-.48 2.91-1.29 4.05l1.78 1.78A8.963 8.963 0 0 0 22 12c0-5.52-4.48-10-10-10zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2-.9-2-2v-4c0-1.1.9-2 2-2s2 .9 2 2v4c0 1.1-.9 2-2 2z"/>
+    </svg>
+    
+  {% comment %} Retailer-specific icons {% endcomment %}
+  {% when 'target' or 'bullseye' %}
+    <svg class="icon icon-target {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="12" r="10"></circle>
+      <circle cx="12" cy="12" r="6"></circle>
+      <circle cx="12" cy="12" r="2"></circle>
+    </svg>
+    
+  {% comment %} Product Theme Specific Icons {% endcomment %}
+  {% when 'lesson' or 'chalkboard-teacher' %}
+    <svg class="icon icon-lesson {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+    </svg>
+    
+  {% when 'video' or 'video-play' %}
+    <svg class="icon icon-video {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+    </svg>
+    
+  {% when 'graduation' or 'graduation-cap' %}
+    <svg class="icon icon-graduation {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+    </svg>
+    
+  {% when 'certificate' %}
+    <svg class="icon icon-certificate {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M17.81 4.47c-.8 0-1.54.3-2.1.81L13.9 7.08c-.56.51-1.32.81-2.1.81s-1.54-.3-2.1-.81L7.89 5.28c-.56-.51-1.3-.81-2.1-.81-1.69 0-3.06 1.3-3.19 2.98-.15 1.87 1.37 3.43 3.24 3.43.8 0 1.54-.3 2.1-.81l1.81-1.8c.56-.51 1.32-.81 2.1-.81s1.54.3 2.1.81l1.81 1.8c.56.51 1.3.81 2.1.81 1.87 0 3.39-1.56 3.24-3.43-.13-1.69-1.5-2.98-3.19-2.98zm-.91 8.05l-3.12 3.12c-.51.51-1.32.51-1.83 0l-3.12-3.12c-.51-.51-.51-1.32 0-1.83l3.12-3.12c.51-.51 1.32-.51 1.83 0l3.12 3.12c.51.51.51 1.32 0 1.83z"/>
+    </svg>
+    
+  {% when 'trophy' %}
+    <svg class="icon icon-trophy {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
+    </svg>
+    
+  {% when 'chart' or 'chart-line' %}
+    <svg class="icon icon-chart {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="18" y1="20" x2="18" y2="10"></line>
+      <line x1="12" y1="20" x2="12" y2="4"></line>
+      <line x1="6" y1="20" x2="6" y2="14"></line>
+    </svg>
+    
+  {% when 'comment' or 'comments' %}
+    <svg class="icon icon-comment {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+    </svg>
+    
+  {% when 'rocket' %}
+    <svg class="icon icon-rocket {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M12 2.5s4.5 2.04 4.5 10.5c0 2.49-1.04 5.57-1.6 7H9.1c-.56-1.43-1.6-4.51-1.6-7C7.5 4.54 12 2.5 12 2.5zm2 8.5c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zm-6.31 9.52c-.48-1.23-1.52-4.17-1.67-6.87l-1.13.75c-.56.38-.89 1-.89 1.67V22l3.69-1.48zM20 22v-5.93c0-.67-.33-1.29-.89-1.66l-1.13-.75c-.15 2.69-1.2 5.64-1.67 6.87L20 22z"/>
+    </svg>
+    
+  {% when 'login' or 'sign-in' %}
+    <svg class="icon icon-login {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+      <polyline points="10 17 15 12 10 7"></polyline>
+      <line x1="15" y1="12" x2="3" y2="12"></line>
+    </svg>
+    
+  {% when 'logout' or 'sign-out' %}
+    <svg class="icon icon-logout {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+      <polyline points="16 17 21 12 16 7"></polyline>
+      <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+    
+  {% when 'edit' or 'pencil' %}
+    <svg class="icon icon-edit {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+    </svg>
+    
+  {% when 'reply' %}
+    <svg class="icon icon-reply {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="9 14 4 9 9 4"></polyline>
+      <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+    </svg>
+    
+  {% when 'send' or 'paper-plane' %}
+    <svg class="icon icon-send {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="22" y1="2" x2="11" y2="13"></line>
+      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+    </svg>
+    
+  {% comment %} File Type Icons for Downloads {% endcomment %}
+  {% when 'file-word' %}
+    <svg class="icon icon-file-word {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <text x="8" y="17" font-size="7" fill="{{ icon_color }}" stroke="none">DOC</text>
+    </svg>
+    
+  {% when 'file-excel' %}
+    <svg class="icon icon-file-excel {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <text x="8" y="17" font-size="7" fill="{{ icon_color }}" stroke="none">XLS</text>
+    </svg>
+    
+  {% when 'file-powerpoint' %}
+    <svg class="icon icon-file-powerpoint {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <text x="8" y="17" font-size="7" fill="{{ icon_color }}" stroke="none">PPT</text>
+    </svg>
+    
+  {% when 'file-image' %}
+    <svg class="icon icon-file-image {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <circle cx="10" cy="13" r="2"></circle>
+      <path d="m20 17-1.09-1.09a2 2 0 0 0-2.82 0L10 22"></path>
+    </svg>
+    
+  {% when 'file-video' %}
+    <svg class="icon icon-file-video {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <polygon points="10 11 16 14 10 17 10 11"></polygon>
+    </svg>
+    
+  {% when 'file-audio' %}
+    <svg class="icon icon-file-audio {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <path d="M9 13v-1a2 2 0 0 1 4 0v1"></path>
+      <circle cx="11" cy="15" r="1"></circle>
+    </svg>
+    
+  {% when 'file-archive' or 'file-zip' %}
+    <svg class="icon icon-file-archive {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="10" y1="12" x2="10" y2="18"></line>
+      <path d="M10 12h4v2h-4z"></path>
+    </svg>
+    
+  {% when 'file-code' %}
+    <svg class="icon icon-file-code {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <polyline points="8 12 11 15 8 18"></polyline>
+      <polyline points="16 12 13 15 16 18"></polyline>
+    </svg>
+    
+  {% when 'file-text' %}
+    <svg class="icon icon-file-text {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
+    
+  {% comment %} Default fallback {% endcomment %}
+  {% else %}
+    <svg class="icon icon-default {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+{% endcase %}
+
+{% comment %}
+  CSS for consistent icon styling
+  Add to your overrides.css:
+  
+  .icon {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  
+  .icon-social {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  
+  .icon-social:hover {
+    transform: translateY(-2px);
+    opacity: 0.8;
+  }
+{% endcomment %}

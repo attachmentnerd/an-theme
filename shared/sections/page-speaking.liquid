@@ -114,7 +114,7 @@
     </div>
 
     <!-- HERO -->
-    <section class="hero">
+    <section id="{{ section.settings.section_id | default: 'speaking' }}-{{ section.id }}" class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="credentials-badge">
@@ -458,7 +458,18 @@
   "class": "page-speaking",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "speaking",
+      "info": "Custom ID for internal linking (e.g., #speaking)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

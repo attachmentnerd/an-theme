@@ -8,7 +8,7 @@
   /* ==========================================================================
      Dynamic Background Effects
      ========================================================================== */
-  
+
   /* Base dynamic background container */
   .dynamic-bg {
     position: absolute;
@@ -19,12 +19,12 @@
     overflow: hidden;
     z-index: 0;
   }
-  
+
   .dynamic-bg-content {
     position: relative;
     z-index: 1;
   }
-  
+
   /* 1. Animated Gradient Background */
   .gradient-shift {
     background: linear-gradient(
@@ -37,13 +37,13 @@
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
   }
-  
+
   @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-  
+
   /* 2. Floating Orbs/Particles */
   .orb-container {
     position: absolute;
@@ -52,13 +52,13 @@
     filter: blur(40px);
     opacity: 0.7;
   }
-  
+
   .floating-orb {
     position: absolute;
     border-radius: 50%;
     animation: floatOrb 20s infinite ease-in-out;
   }
-  
+
   .orb-1 {
     width: 400px;
     height: 400px;
@@ -67,7 +67,7 @@
     left: -100px;
     animation-duration: 25s;
   }
-  
+
   .orb-2 {
     width: 300px;
     height: 300px;
@@ -77,7 +77,7 @@
     animation-duration: 20s;
     animation-delay: -5s;
   }
-  
+
   .orb-3 {
     width: 350px;
     height: 350px;
@@ -88,7 +88,7 @@
     animation-duration: 30s;
     animation-delay: -10s;
   }
-  
+
   @keyframes floatOrb {
     0%, 100% {
       transform: translate(0, 0) scale(1);
@@ -100,7 +100,7 @@
       transform: translate(-20px, 20px) scale(0.9);
     }
   }
-  
+
   /* 3. Morphing Blob Background */
   .blob-container {
     position: absolute;
@@ -109,13 +109,13 @@
     filter: blur(30px);
     opacity: 0.6;
   }
-  
+
   .morphing-blob {
     position: absolute;
     background: var(--c-brand-600);
     animation: morphBlob 20s infinite ease-in-out;
   }
-  
+
   @keyframes morphBlob {
     0%, 100% {
       border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
@@ -134,10 +134,10 @@
       transform: rotate(270deg) scale(1.05);
     }
   }
-  
+
   /* 4. Mesh Gradient (CSS Paint API fallback) */
   .mesh-gradient {
-    background: 
+    background:
       radial-gradient(at 40% 20%, var(--c-accent-teal) 0px, transparent 50%),
       radial-gradient(at 80% 0%, var(--c-brand-100) 0px, transparent 50%),
       radial-gradient(at 0% 50%, var(--c-accent-peach) 0px, transparent 50%),
@@ -145,12 +145,12 @@
       radial-gradient(at 0% 100%, var(--c-accent-lemon) 0px, transparent 50%);
     animation: meshMove 20s ease infinite;
   }
-  
+
   @keyframes meshMove {
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
     50% { transform: translate(-20px, -20px) rotate(180deg); }
   }
-  
+
   /* 5. Wave Pattern */
   .wave-bg {
     position: absolute;
@@ -161,29 +161,29 @@
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%235E3BFF' fill-opacity='0.1' d='M0,50 C360,100 720,0 1440,50 L1440,100 L0,100 Z'%3E%3C/path%3E%3C/svg%3E");
     animation: waveMove 10s linear infinite;
   }
-  
+
   @keyframes waveMove {
     0% { transform: translateX(0); }
     100% { transform: translateX(-1440px); }
   }
-  
+
   /* 6. Geometric Patterns */
   .geo-pattern {
     position: absolute;
     width: 100%;
     height: 100%;
     opacity: 0.05;
-    background-image: 
+    background-image:
       repeating-linear-gradient(45deg, var(--c-brand-600) 0, var(--c-brand-600) 1px, transparent 1px, transparent 15px),
       repeating-linear-gradient(-45deg, var(--c-brand-600) 0, var(--c-brand-600) 1px, transparent 1px, transparent 15px);
     animation: geoShift 30s linear infinite;
   }
-  
+
   @keyframes geoShift {
     0% { transform: translate(0, 0); }
     100% { transform: translate(30px, 30px); }
   }
-  
+
   /* 7. Noise Texture Overlay */
   .noise-overlay {
     position: absolute;
@@ -192,7 +192,7 @@
     opacity: 0.03;
     mix-blend-mode: multiply;
   }
-  
+
   .noise-overlay::before {
     content: '';
     position: absolute;
@@ -203,7 +203,7 @@
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
     animation: noiseMove 8s steps(10) infinite;
   }
-  
+
   @keyframes noiseMove {
     0% { transform: translate(0, 0); }
     10% { transform: translate(-5%, -5%); }
@@ -217,7 +217,7 @@
     90% { transform: translate(10%, 5%); }
     100% { transform: translate(5%, 0); }
   }
-  
+
   /* 8. Aurora Effect */
   .aurora-bg {
     position: absolute;
@@ -225,7 +225,7 @@
     height: 100%;
     background: linear-gradient(to bottom, transparent, var(--c-brand-100));
   }
-  
+
   .aurora {
     position: absolute;
     width: 200%;
@@ -237,7 +237,7 @@
     opacity: 0.3;
     animation: aurora 15s ease-in-out infinite;
   }
-  
+
   @keyframes aurora {
     0%, 100% {
       transform: rotate(0deg) translateY(0);
@@ -246,14 +246,14 @@
       transform: rotate(180deg) translateY(-50px);
     }
   }
-  
+
   /* 9. Particle Field */
   .particle-field {
     position: absolute;
     width: 100%;
     height: 100%;
   }
-  
+
   .particle {
     position: absolute;
     width: 4px;
@@ -263,7 +263,7 @@
     opacity: 0.6;
     animation: particleFloat 20s linear infinite;
   }
-  
+
   @keyframes particleFloat {
     from {
       transform: translateY(100vh) rotate(0deg);
@@ -280,7 +280,7 @@
       opacity: 0;
     }
   }
-  
+
   /* Performance optimization */
   @media (prefers-reduced-motion: reduce) {
     .gradient-shift,
@@ -294,14 +294,14 @@
       animation: none;
     }
   }
-  
+
   /* Mobile optimizations */
   @media (max-width: 768px) {
     .orb-container,
     .blob-container {
       filter: blur(60px); /* More blur on mobile for performance */
     }
-    
+
     .floating-orb,
     .morphing-blob {
       animation-duration: 30s; /* Slower animations on mobile */
@@ -312,16 +312,25 @@
 <script>
   // Dynamic background enhancements
   document.addEventListener('DOMContentLoaded', function() {
-    // Add parallax effect to orbs based on mouse movement
+    // Respect reduced motion and small screens
+    var enableFX = false;
+    try {
+      enableFX = window.matchMedia && window.matchMedia('(prefers-reduced-motion: no-preference)').matches && window.innerWidth >= 768;
+    } catch(e) { enableFX = window.innerWidth >= 768; }
+
+    // Only proceed if effects are enabled and elements exist
     const dynamicBgs = document.querySelectorAll('.dynamic-bg');
-    
+    if (!enableFX || !dynamicBgs.length) return;
+
+    // Add parallax effect to orbs based on mouse movement
+
     dynamicBgs.forEach(bg => {
       if (bg.classList.contains('orb-container') || bg.classList.contains('blob-container')) {
         bg.addEventListener('mousemove', (e) => {
           const rect = bg.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width - 0.5;
           const y = (e.clientY - rect.top) / rect.height - 0.5;
-          
+
           bg.querySelectorAll('.floating-orb, .morphing-blob').forEach((element, index) => {
             const speed = (index + 1) * 0.02;
             element.style.transform = `translate(${x * speed * 100}px, ${y * speed * 100}px)`;
@@ -329,9 +338,9 @@
         });
       }
     });
-    
+
     // Intersection observer for performance
-    const bgObserver = new IntersectionObserver((entries) => {
+    const bgObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.style.animationPlayState = 'running';
@@ -339,17 +348,17 @@
           entry.target.style.animationPlayState = 'paused';
         }
       });
-    });
-    
+    }) : null;
+
     // Pause animations when not in viewport
-    document.querySelectorAll('.gradient-shift, .orb-container, .blob-container').forEach(el => {
-      bgObserver.observe(el);
-    });
-    
+    if (bgObserver) {
+      document.querySelectorAll('.gradient-shift, .orb-container, .blob-container').forEach(function(el){ bgObserver.observe(el); });
+    }
+
     // Generate particles
     document.querySelectorAll('.particle-field').forEach(field => {
       const particleCount = window.innerWidth > 768 ? 20 : 10;
-      
+
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';

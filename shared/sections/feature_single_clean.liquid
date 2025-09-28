@@ -17,7 +17,7 @@
   {% if section.settings.enable_animations %}animate-section{% endif %}
 {% endcapture %}
 
-<section class="{{ section_classes | strip }}"
+<section id="{{ section.settings.section_id | default: 'feature-single-clean' }}-{{ section.id }}" class="{{ section_classes | strip }}"
          style="background-color: {{ section.settings.background_color | default: '#ffffff' }};
                 padding-top: {{ section.settings.padding_top }}px;
                 padding-bottom: {{ section.settings.padding_bottom }}px;">
@@ -40,7 +40,7 @@
 
           {% if section.settings.book_image %}
             <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
-             alt="{{ {{ section.settings.book_title | default:  }}" 
+             alt="{{ section.settings.book_title | default: 'Book' }}" 
              class="book-showcase__image img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -125,7 +125,7 @@
                 <footer>
                   {% if section.settings.testimonial_author_image %}
                     <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
-             alt="{{ {{ section.settings.testimonial_author }} }}" 
+             alt="{{ section.settings.testimonial_author }}" 
              class="testimonial__avatar"
              loading="lazy"
              style="object-fit: cover;">
@@ -337,7 +337,7 @@
     margin-bottom: 2rem;
   }
 
-  .feature-pill {
+  .book-showcase .feature-pill {
     display: inline-block;
     padding: 0.5rem 1rem;
     background: var(--c-brand-100);
@@ -478,6 +478,17 @@
   "name": "Feature - Single Clean",
   "description": "Unified book showcase section with multiple layout and style options",
   "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-single-clean",
+      "info": "Custom ID for internal linking (e.g., #feature-single-clean)"
+    },
     {
       "type": "header",
       "content": "Layout & Style"

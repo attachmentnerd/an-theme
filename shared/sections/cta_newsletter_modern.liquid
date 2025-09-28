@@ -1,68 +1,118 @@
 <!-- Newsletter CTA Section - Modern Full-Width Footer Style -->
-<section class="newsletter-cta-modern py-5 position-relative" style="background-color: #FAFAFA;">
+<section id="{{ section.settings.section_id | default: 'cta-newsletter-modern' }}-{{ section.id }}" class="newsletter-cta-modern py-5 position-relative" style="background-color: #FAFAFA;">
   <div class="container">
     <div class="cta-wrapper position-relative" style="background: var(--c-white); border-radius: 24px; padding: 64px 48px; box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset, 0 8px 32px rgba(0,0,0,.04); overflow: hidden;">
       <!-- Background gradient decoration -->
       <div class="position-absolute" style="top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, var(--c-accent-peach) 0%, transparent 70%); opacity: 0.1;"></div>
       <div class="position-absolute" style="bottom: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, var(--c-accent-teal) 0%, transparent 70%); opacity: 0.1;"></div>
-      
+
       <div class="row justify-content-center position-relative">
         <div class="col-lg-8 text-center">
           <div class="cta-content animate-scale-fade" style="animation-delay: 0.1s;">
             <!-- Icon or emoji -->
             <div class="mb-3">
-              <span style="font-size: 3rem;">{{ section.settings.icon }}</span>
+              <span style="font-size: 3rem; color: {{ section.settings.icon_color | default: 'inherit' }};">{{ section.settings.icon }}</span>
             </div>
-            
-            <h3 class="mb-3" style="font-size: var(--fs-h1); font-weight: 500; color: var(--c-ink-900);" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+
+            <h3 class="mb-3" style="font-size: var(--fs-h1); font-weight: 500; color: {{ section.settings.heading_color | default: 'var(--c-ink-900)' }};" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
               {{ section.settings.heading }}
             </h3>
-            
-            <p class="mb-4" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 600px; margin: 0 auto;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+
+            <p class="mb-4" style="font-size: var(--fs-body-lg); color: {{ section.settings.subheading_color | default: 'var(--c-ink-700)' }}; max-width: 600px; margin: 0 auto;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
               {{ section.settings.subheading }}
             </p>
-            
-            <!-- Form -->
-            <form class="newsletter-form" action="{{ section.settings.form_action }}" method="post" data-form-type="newsletter">
-              <div class="form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
-                <input type="email" 
-                       class="form-control-modern flex-grow-1 newsletter-email-input" 
-                       placeholder="{{ section.settings.email_placeholder }}"
-                       name="email"
-                       required
-                       aria-label="Email address"
-                       aria-required="true"
-                       aria-describedby="newsletter-error-{{ section.id }}"
-                       style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease; background: var(--c-white);"
-                       kjb-settings-id="{{ 'email_placeholder' | settings_id: section: section }}">
-                
-                <button type="submit" 
-                        class="btn btn-primary-modern btn-lg newsletter-submit-btn"
-                        style="white-space: nowrap;"
-                        kjb-settings-id="{{ 'button_text' | settings_id: section: section }}">
-                  {{ section.settings.button_text }}
-                </button>
-              </div>
-              
-              <!-- Form Messages -->
-              <div class="newsletter-form__messages mt-3" style="max-width: 500px; margin: 0 auto;">
-                <div class="newsletter-form__success" style="display: none;">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="10" cy="10" r="9" fill="var(--c-accent-teal)"/>
-                    <path d="M14 7L8.5 12.5L6 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <span>{{ section.settings.success_message }}</span>
+
+            <!-- Form (Kajabi-integrated) -->
+            {% assign form_setting = section.settings.form %}
+            {% assign form_id = section.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+            {% assign f = current_site.find_form[form_id] %}
+            {% if f %}
+              {% form f %}
+                <div class="newsletter-form form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
+                  {% for field in f.fields %}
+                    {{ field | form_input: class: "form-group w-100", input_class: "form-control-modern flex-grow-1 newsletter-email-input", label: false, placeholder: true }}
+                  {% endfor %}
+
+                  <button type="submit"
+                          class="btn btn-primary-modern btn-lg newsletter-submit-btn"
+                          style="white-space: nowrap;{% if section.settings.override_submit_button %} background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }}; color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important; border-radius: {{ section.settings.button_radius | default: 999 }}px;{% if section.settings.button_shadow %} box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}{% endif %}"
+                          kjb-settings-id="{{ 'button_text' | settings_id: section: section }}">
+                    {{ section.settings.button_text }}
+                  </button>
                 </div>
-                <div class="newsletter-form__error" id="newsletter-error-{{ section.id }}" style="display: none;">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="10" cy="10" r="9" fill="#FF6B6B"/>
-                    <path d="M10 6V10M10 14H10.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <span class="error-message">Please enter a valid email address</span>
+              {% endform %}
+            {% elsif form_id %}
+              {% form "optin", id: form_id %}
+                <div class="newsletter-form form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
+                  {{ form | fields }}
+                  <button type="submit"
+                          class="btn btn-primary-modern btn-lg newsletter-submit-btn"
+                          style="white-space: nowrap;{% if section.settings.override_submit_button %} background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }}; color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important; border-radius: {{ section.settings.button_radius | default: 999 }}px;{% if section.settings.button_shadow %} box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}{% endif %}"
+                          kjb-settings-id="{{ 'button_text' | settings_id: section: section }}">
+                    {{ section.settings.button_text }}
+                  </button>
                 </div>
+              {% endform %}
+            {% else %}
+              <form class="newsletter-form" action="#" method="post" data-form-type="newsletter">
+                <div class="form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
+                  <input type="email" class="form-control-modern flex-grow-1 newsletter-email-input" placeholder="{{ section.settings.email_placeholder }}" name="email" required aria-label="Email address" aria-required="true" style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease; background: var(--c-white);">
+                  <button type="submit" class="btn btn-primary-modern btn-lg newsletter-submit-btn" style="white-space: nowrap;{% if section.settings.override_submit_button %} background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }}; color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important; border-radius: {{ section.settings.button_radius | default: 999 }}px;{% if section.settings.button_shadow %} box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}{% endif %}">{{ section.settings.button_text }}</button>
+                </div>
+              </form>
+            {% endif %}
+
+            {% assign buttons_count = 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'button' %}
+                {% assign buttons_count = buttons_count | plus: 1 %}
+              {% endif %}
+            {% endfor %}
+            {% if buttons_count > 0 %}
+              <div class="newsletter-extra-buttons mt-4">
+                {% for block in section.blocks %}
+                  {% case block.type %}
+                    {% when 'button' %}
+                      <a href="{{ block.settings.button_link }}"
+                         class="btn {% if block.settings.button_style == 'primary' %}btn-primary-modern{% else %}btn-secondary-modern{% endif %}"
+                         kjb-settings-id="{{ 'button_text' | settings_id: section: section, block: block }}"
+                         style="
+                           {% if block.settings.button_style == 'primary' %}
+                             {% if block.settings.use_custom_colors and block.settings.button_bg_color != blank %}
+                               background: {{ block.settings.button_bg_color }};
+                             {% else %}
+                               background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }};
+                             {% endif %}
+                             {% if block.settings.use_custom_colors and block.settings.button_text_color != blank %}
+                               color: {{ block.settings.button_text_color }} !important;
+                             {% else %}
+                               color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important;
+                             {% endif %}
+                             border: none;
+                           {% else %}
+                             background: transparent;
+                             {% if block.settings.use_custom_colors and block.settings.button_text_color != blank %}
+                               color: {{ block.settings.button_text_color }} !important;
+                             {% else %}
+                               color: {{ section.settings.secondary_button_text | default: '#FFFFFF' }} !important;
+                             {% endif %}
+                             {% if block.settings.use_custom_colors and block.settings.button_outline_color != blank %}
+                               border: 2px solid {{ block.settings.button_outline_color }};
+                             {% else %}
+                               border: 2px solid {{ section.settings.secondary_button_border | default: 'rgba(255,255,255,0.4)' }};
+                             {% endif %}
+                           {% endif %}
+                           border-radius: {{ section.settings.button_radius | default: 999 }}px;
+                           padding: {% if block.settings.button_size == 'lg' %}14px 36px{% else %}12px 28px{% endif %};
+                           {% if section.settings.button_shadow %}box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}
+                         ">
+                        {{ block.settings.button_text }}
+                      </a>
+                  {% endcase %}
+                {% endfor %}
               </div>
-            </form>
-            
+            {% endif %}
+
             <!-- Benefits -->
             {% if section.settings.show_benefits %}
               <div class="benefits mt-4 d-flex flex-wrap justify-content-center gap-4">
@@ -79,9 +129,9 @@
                 {% endfor %}
               </div>
             {% endif %}
-            
+
             {% if section.settings.disclaimer %}
-              <p class="mt-3 mb-0" style="font-size: var(--fs-caption); color: var(--c-ink-500);" kjb-settings-id="{{ 'disclaimer' | settings_id: section: section }}">
+              <p class="mt-3 mb-0" style="font-size: var(--fs-caption); color: {{ section.settings.disclaimer_color | default: 'var(--c-ink-500)' }};" kjb-settings-id="{{ 'disclaimer' | settings_id: section: section }}">
                 {{ section.settings.disclaimer }}
               </p>
             {% endif %}
@@ -187,131 +237,48 @@
   .cta-wrapper {
     padding: 48px 24px !important;
   }
-  
+
   .form-wrapper {
     max-width: 100% !important;
   }
 }
 </style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('#shopify-section-{{ section.id }}');
-    const form = section.querySelector('.newsletter-form');
-    const emailInput = section.querySelector('.newsletter-email-input');
-    const submitBtn = section.querySelector('.newsletter-submit-btn');
-    const successMsg = section.querySelector('.newsletter-form__success');
-    const errorMsg = section.querySelector('.newsletter-form__error');
-    const errorText = errorMsg.querySelector('.error-message');
-    const originalBtnText = submitBtn.textContent;
+<style>
+  .newsletter-extra-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 
-    // Email validation regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  @media (max-width: 767px) {
+    .newsletter-extra-buttons .btn {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+</style>
 
-    // Validate email field
-    const validateEmail = (email) => {
-      const value = email.trim();
-      if (!value) {
-        return { valid: false, message: 'Please enter your email address' };
-      }
-      if (!emailRegex.test(value)) {
-        return { valid: false, message: 'Please enter a valid email address' };
-      }
-      return { valid: true };
-    };
-
-    // Show error message
-    const showError = (message) => {
-      errorText.textContent = message;
-      errorMsg.style.display = 'flex';
-      successMsg.style.display = 'none';
-      emailInput.classList.add('error');
-      emailInput.setAttribute('aria-invalid', 'true');
-    };
-
-    // Hide messages
-    const hideMessages = () => {
-      successMsg.style.display = 'none';
-      errorMsg.style.display = 'none';
-      emailInput.classList.remove('error');
-      emailInput.setAttribute('aria-invalid', 'false');
-    };
-
-    // Real-time validation on blur
-    emailInput.addEventListener('blur', function() {
-      const validation = validateEmail(this.value);
-      if (!validation.valid && this.value.trim() !== '') {
-        showError(validation.message);
-      } else {
-        hideMessages();
-      }
-    });
-
-    // Clear error on input
-    emailInput.addEventListener('input', function() {
-      if (this.classList.contains('error')) {
-        hideMessages();
-      }
-    });
-
-    // Form submission
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Hide any existing messages
-      hideMessages();
-      
-      // Validate email
-      const validation = validateEmail(emailInput.value);
-      if (!validation.valid) {
-        showError(validation.message);
-        emailInput.focus();
-        return;
-      }
-      
-      // Show loading state
-      submitBtn.textContent = 'Joining the circle...';
-      submitBtn.disabled = true;
-      emailInput.disabled = true;
-      
-      // Get form data
-      const formData = new FormData(form);
-      
-      // Here you would normally submit to your server
-      // For now, we'll simulate a successful submission
-      
-      // Simulate API call
-      setTimeout(function() {
-        // Show success message
-        successMsg.style.display = 'flex';
-        errorMsg.style.display = 'none';
-        
-        // Reset form
-        form.reset();
-        
-        // Reset button
-        submitBtn.textContent = originalBtnText;
-        submitBtn.disabled = false;
-        emailInput.disabled = false;
-        
-        // Scroll to success message
-        successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        
-        // Hide success message after 5 seconds
-        setTimeout(() => {
-          successMsg.style.display = 'none';
-        }, 5000);
-      }, 1500);
-    });
-  });
-</script>
+<!-- Removed custom JS; Kajabi handles submission and validation for {% form %} -->
 
 {% schema %}
 {
   "name": "CTA - Newsletter Modern",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "cta-newsletter-modern",
+      "info": "Custom ID for internal linking (e.g., #cta-newsletter-modern)"
+    },
+      {
+        "type": "text",
       "id": "icon",
       "label": "Icon/Emoji",
       "default": "💌"
@@ -352,6 +319,9 @@
       "label": "Form Action URL",
       "default": "#"
     },
+    { "type": "header", "content": "Form" },
+    { "type": "form", "id": "form", "label": "Select Kajabi Form" },
+    { "type": "text", "id": "manual_form_id", "label": "Manual Form ID (optional)", "info": "Overrides the selected form when provided." },
     {
       "type": "checkbox",
       "id": "show_benefits",
@@ -363,7 +333,23 @@
       "id": "success_message",
       "label": "Success Message",
       "default": "Welcome to the circle! Check your inbox for your free attachment guide 💜"
-    }
+    },
+    { "type": "header", "content": "Typography Colors" },
+    { "type": "color", "id": "icon_color", "label": "Icon Color", "default": "inherit" },
+    { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#0F172A" },
+    { "type": "color", "id": "subheading_color", "label": "Subheading Color", "default": "#334155" },
+    { "type": "color", "id": "disclaimer_color", "label": "Disclaimer Color", "default": "#6E6F7B" },
+
+    { "type": "header", "content": "Submit Button Overrides" },
+    { "type": "checkbox", "id": "override_submit_button", "label": "Override Submit Button Styles", "default": false },
+    { "type": "color", "id": "primary_button_bg", "label": "Submit Button Background", "default": "#5E3BFF" },
+    { "type": "color", "id": "primary_button_text", "label": "Submit Button Text", "default": "#FFFFFF" },
+    { "type": "range", "id": "button_radius", "label": "Submit Button Radius", "min": 0, "max": 999, "step": 1, "unit": "px", "default": 999 },
+    { "type": "checkbox", "id": "button_shadow", "label": "Submit Button Shadow", "default": true },
+
+    { "type": "header", "content": "Buttons (Global)" },
+    { "type": "color", "id": "secondary_button_text", "label": "Secondary Button Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "secondary_button_border", "label": "Secondary Button Border", "default": "rgba(255,255,255,0.4)" }
   ],
   "blocks": [
     {
@@ -377,6 +363,20 @@
           "default": "Free secure attachment guide"
         }
       ]
+    },
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "elements": [
+        { "type": "text", "id": "button_text", "label": "Button Text", "default": "Explore Resources" },
+        { "type": "action", "id": "button_link", "label": "Button Link", "anchor": true, "two_step": true },
+        { "type": "radio", "id": "button_size", "label": "Button Size", "default": "md", "options": [ { "label": "Medium", "value": "md" }, { "label": "Large", "value": "lg" } ] },
+        { "type": "radio", "id": "button_style", "label": "Button Style", "default": "primary", "options": [ { "label": "Primary", "value": "primary" }, { "label": "Secondary", "value": "secondary" } ] },
+        { "type": "checkbox", "id": "use_custom_colors", "label": "Use custom colors", "default": false },
+        { "type": "color", "id": "button_bg_color", "label": "Custom BG (primary)", "default": "#5E3BFF" },
+        { "type": "color", "id": "button_text_color", "label": "Custom Text", "default": "#FFFFFF" },
+        { "type": "color", "id": "button_outline_color", "label": "Custom Outline (secondary)", "default": "#FFFFFF" }
+      ]
     }
   ],
   "presets": [
@@ -384,24 +384,10 @@
       "name": "CTA - Newsletter Modern",
       "category": "Call to Action",
       "blocks": [
-        {
-          "type": "benefit",
-          "settings": {
-            "text": "Free secure attachment guide"
-          }
-        },
-        {
-          "type": "benefit",
-          "settings": {
-            "text": "Real-life connection scripts"
-          }
-        },
-        {
-          "type": "benefit",
-          "settings": {
-            "text": "Early access to new resources"
-          }
-        }
+        { "type": "benefit", "settings": { "text": "Free secure attachment guide" } },
+        { "type": "benefit", "settings": { "text": "Real-life connection scripts" } },
+        { "type": "benefit", "settings": { "text": "Early access to new resources" } },
+        { "type": "button", "settings": { "button_text": "Explore Resources", "button_style": "secondary", "button_size": "md" } }
       ],
       "settings": {
         "icon": "💌",
@@ -410,7 +396,16 @@
         "email_placeholder": "Your email (we protect it like family)",
         "button_text": "Count Me In",
         "disclaimer": "100% science. 0% spam. Unsubscribe with love anytime.",
-        "show_benefits": true
+        "show_benefits": true,
+        "icon_color": "inherit",
+        "heading_color": "#0F172A",
+        "subheading_color": "#334155",
+        "disclaimer_color": "#6E6F7B",
+        "override_submit_button": false,
+        "primary_button_bg": "#5E3BFF",
+        "primary_button_text": "#FFFFFF",
+        "button_radius": 999,
+        "button_shadow": true
       }
     }
   ]

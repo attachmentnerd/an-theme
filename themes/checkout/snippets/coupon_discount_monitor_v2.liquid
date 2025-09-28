@@ -1,0 +1,249 @@
+<script>
+(function() {
+  'use strict';
+
+  console.log('[Coupon Monitor V2] Script starting...');
+
+  // Function to check for discount using Kajabi's exact structure
+  function checkForDiscount() {
+    console.log('[Coupon Monitor V2] Checking for discount...');
+
+    // Look for the embedded-checkout-coupon__price element (this shows the discount amount)
+    const couponPriceElement = document.querySelector('.embedded-checkout-coupon__price');
+
+    if (couponPriceElement) {
+      console.log('[Coupon Monitor V2] Found coupon price element:', couponPriceElement.textContent);
+
+      // Extract discount amount (e.g., "-$20.00" becomes 20)
+      const discountText = couponPriceElement.textContent || '';
+      const discountMatch = discountText.match(/\$?([\d,]+\.?\d*)/);
+      const discountAmount = discountMatch ? parseFloat(discountMatch[1].replace(/[$,]/g, '')) : 0;
+
+      if (discountAmount > 0) {
+        // Look for the original price - it should be in a different element
+        let originalPrice = 0;
+        let finalPrice = 0;
+
+        // Check for the subtotal/original price (before discount)
+        const subtotalElement = document.querySelector('.embedded-checkout-order__subtotal, .embedded-checkout__subtotal, .embedded-checkout-subtotal');
+        if (subtotalElement) {
+          const subtotalMatch = subtotalElement.textContent.match(/\$?([\d,]+\.?\d*)/);
+          originalPrice = subtotalMatch ? parseFloat(subtotalMatch[1].replace(/[$,]/g, '')) : 0;
+        }
+
+        // If no subtotal, look for any price that's not the discount
+        if (!originalPrice) {
+          const allPriceElements = document.querySelectorAll('.embedded-checkout__price, .embedded-checkout-order__price');
+          for (const el of allPriceElements) {
+            if (!el.classList.contains('embedded-checkout-coupon__price')) {
+              const priceMatch = el.textContent.match(/\$?([\d,]+\.?\d*)/);
+              const price = priceMatch ? parseFloat(priceMatch[1].replace(/[$,]/g, '')) : 0;
+              if (price > discountAmount) {
+                originalPrice = price;
+                break;
+              }
+            }
+          }
+        }
+
+        // Calculate final price
+        finalPrice = originalPrice - discountAmount;
+
+        // Look for coupon code
+        let couponCode = '';
+
+        // Check if there's a coupon code displayed
+        const codeElement = document.querySelector('.embedded-checkout-coupon__code, .embedded-checkout-coupon__name');
+        if (codeElement) {
+          couponCode = codeElement.textContent.trim();
+        }
+
+        // If not found, check input field
+        if (!couponCode) {
+          const inputElement = document.querySelector('input[name*="discount"], input[name*="coupon"], input#discount_code');
+          if (inputElement && inputElement.value) {
+            couponCode = inputElement.value.trim();
+          }
+        }
+
+        // Calculate percentage
+        const percentage = originalPrice > 0 ? Math.round((discountAmount / originalPrice) * 100) : 0;
+
+        console.log('[Coupon Monitor V2] Discount details:', {
+          originalPrice,
+          discountAmount,
+          finalPrice,
+          percentage,
+          couponCode
+        });
+
+        // Show the discount display
+        showDiscountDisplay(originalPrice, finalPrice, discountAmount, percentage, couponCode);
+      }
+    } else {
+      // Hide display if no discount
+      const container = document.getElementById('coupon-discount-container');
+      if (container) {
+        container.style.display = 'none';
+      }
+    }
+  }
+
+  function showDiscountDisplay(original, final, savings, percentage, code) {
+    let container = document.getElementById('coupon-discount-container');
+
+    // If container doesn't exist in the expected place, create it
+    if (!container) {
+      // Try to find the checkout container
+      const checkoutElement = document.querySelector('.kjb-embedded-checkout, [data-pages-embedded-checkout]');
+      if (checkoutElement) {
+        container = document.createElement('div');
+        container.id = 'coupon-discount-container';
+        container.className = 'checkout-discount-summary';
+
+        // Insert at the beginning of the checkout element
+        if (checkoutElement.firstChild) {
+          checkoutElement.insertBefore(container, checkoutElement.firstChild);
+        } else {
+          checkoutElement.appendChild(container);
+        }
+
+        console.log('[Coupon Monitor V2] Created discount container');
+      }
+    }
+
+    if (container && original > 0 && savings > 0) {
+      container.innerHTML = `
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 16px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <div style="color: white; font-size: 14px; font-weight: 600; margin-bottom: 8px; opacity: 0.95;">
+            ✨ SPECIAL DISCOUNT APPLIED
+          </div>
+          <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;">
+            <span style="text-decoration: line-through; color: rgba(255,255,255,0.7); font-size: 18px;">
+              $${original.toFixed(2)}
+            </span>
+            <span style="font-size: 32px; font-weight: bold; color: white;">
+              $${final.toFixed(2)}
+            </span>
+            <span style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 14px;">
+              SAVE $${savings.toFixed(2)} (${percentage}%)
+            </span>
+          </div>
+          ${code ? `
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2);">
+              <span style="color: rgba(255,255,255,0.9); font-size: 13px;">
+                Promo Code Applied: <strong style="color: white;">${code.toUpperCase()}</strong> ✓
+              </span>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      container.style.display = 'block';
+
+      // Also add a class to the checkout to indicate discount is active
+      const checkoutElement = document.querySelector('.kjb-embedded-checkout, [data-pages-embedded-checkout]');
+      if (checkoutElement) {
+        checkoutElement.classList.add('has-active-discount');
+      }
+    }
+  }
+
+  // Initialize monitoring
+  function startMonitoring() {
+    // Initial check
+    checkForDiscount();
+
+    // Check periodically
+    setInterval(checkForDiscount, 1500);
+
+    // Monitor DOM changes
+    const observer = new MutationObserver(function(mutations) {
+      // Only check if there were actual changes to price elements
+      const relevantChange = mutations.some(mutation => {
+        const target = mutation.target;
+        return target.nodeType === 1 && (
+          target.classList.contains('embedded-checkout-coupon__price') ||
+          target.classList.contains('embedded-checkout__price') ||
+          target.classList.contains('embedded-checkout-order__price') ||
+          target.querySelector('.embedded-checkout-coupon__price')
+        );
+      });
+
+      if (relevantChange) {
+        setTimeout(checkForDiscount, 100);
+      }
+    });
+
+    // Observe the body for changes
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+
+    console.log('[Coupon Monitor V2] Monitoring started');
+  }
+
+  // Start when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startMonitoring);
+  } else {
+    startMonitoring();
+  }
+
+  // Also start after a delay to catch late-loading content
+  setTimeout(startMonitoring, 2000);
+
+})();
+</script>
+
+<style>
+/* Enhanced styles for the discount display */
+.checkout-discount-summary {
+  animation: slideDown 0.4s ease-out;
+  position: relative;
+  z-index: 100;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add some visual feedback when discount is active */
+.kjb-embedded-checkout.has-active-discount {
+  position: relative;
+}
+
+.kjb-embedded-checkout.has-active-discount::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Make sure our container is visible */
+#coupon-discount-container {
+  display: none;
+  margin-bottom: 20px !important;
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+#coupon-discount-container:not(:empty) {
+  display: block !important;
+}
+</style>

@@ -7,7 +7,7 @@
   - Optional testimonial quotes
 {% endcomment %}
 
-<section class="an-media-press py-5" style="background: {{ section.settings.background_color }};">
+<section id="{{ section.settings.section_id | default: 'feature-press-logos' }}-{{ section.id }}" class="an-media-press py-5" style="background: {{ section.settings.background_color }};">
   <div class="container">
     <!-- Section Header -->
     {% if section.settings.heading != blank or section.settings.subheading != blank %}
@@ -62,7 +62,7 @@
 
                 {% if block.settings.logo != blank %}
                   <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ {{ block.settings.name }} }}" 
+             alt="{{ block.settings.name }}" 
              class="an-media-press__logo"
              loading="lazy"
              style="object-fit: cover;">
@@ -98,7 +98,7 @@
 
                 {% if block.settings.logo != blank %}
                   <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ {{ block.settings.name }} }}" 
+             alt="{{ block.settings.name }}" 
              class="an-media-press__logo"
              loading="lazy"
              style="object-fit: cover;">
@@ -390,7 +390,18 @@
   "name": "Feature - Press Logos",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-press-logos",
+      "info": "Custom ID for internal linking (e.g., #feature-press-logos)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "As Featured In"

@@ -54,7 +54,18 @@
   "name": "Utility - Exit Popup",
   "elements": [
     {
-      "type": "checkbox",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "utility-exit-popup",
+      "info": "Custom ID for internal linking (e.g., #utility-exit-popup)"
+    },
+      {
+        "type": "checkbox",
       "id": "modal_edit",
       "label": "Edit Exit Popup",
       "default": "false",

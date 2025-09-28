@@ -15,14 +15,14 @@
   --btn-primary-text: {{ section.settings.btn_primary_text_color }};
   --btn-secondary-border: {{ section.settings.btn_secondary_border }};
   --btn-secondary-text: {{ section.settings.btn_secondary_text }};
-  
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+  font-family: var(--font-sans);
 }
 
 .speaking-page-ultra h1,
 .speaking-page-ultra h2,
 .speaking-page-ultra h3 {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-serif);
   font-weight: {{ section.settings.heading_weight }};
 }
 
@@ -277,7 +277,7 @@
   justify-content: center;
   font-size: {{ section.settings.ready_number_font_size }}px;
   font-weight: {{ section.settings.ready_number_font_weight }};
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
 }
 
 .speaking-page-ultra .ready-content h3 {
@@ -410,25 +410,25 @@
     grid-template-columns: 1fr;
     gap: {{ section.settings.mobile_gap }}px;
   }
-  
+
   .speaking-page-ultra .ready-cta {
     flex-direction: column;
   }
-  
+
   .speaking-page-ultra .btn-primary,
   .speaking-page-ultra .btn-secondary {
     width: 100%;
     text-align: center;
   }
-  
+
   .speaking-page-ultra .hero h1 {
     font-size: {{ section.settings.hero_title_mobile_size }}px;
   }
-  
+
   .speaking-page-ultra .ready-header h2 {
     font-size: {{ section.settings.ready_title_mobile_size }}px;
   }
-  
+
   .speaking-page-ultra .why-content h2 {
     font-size: {{ section.settings.why_title_mobile_size }}px;
   }
@@ -437,7 +437,7 @@
 
 <div class="speaking-page-ultra">
   <!-- Hero Section -->
-  <section class="hero">
+  <section id="{{ section.settings.section_id | default: 'speaking-page-ultra-editable' }}-{{ section.id }}" class="hero">
     <div class="container">
       <h1>{{ section.settings.hero_title }}</h1>
       <p class="hero-subtitle">{{ section.settings.hero_subtitle_before }}<span class="highlight">{{ section.settings.hero_subtitle_highlight }}</span>{{ section.settings.hero_subtitle_after }}</p>
@@ -617,7 +617,18 @@
   "class": "speaking-page-ultra",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "speaking-page-ultra-editable",
+      "info": "Custom ID for internal linking (e.g., #speaking-page-ultra-editable)"
+    },
+      {
+        "type": "header",
       "content": "🎨 Global Settings"
     },
     {

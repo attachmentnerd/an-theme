@@ -40,7 +40,7 @@
   }
 </style>
 
-<section class="page {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+<section id="{{ section.settings.section_id | default: 'content' }}-{{ section.id }}" class="page {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="sizer">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}
@@ -63,7 +63,18 @@
   "duplicatable": "false",
   "elements": [
     {
-      "type": "color",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content",
+      "info": "Custom ID for internal linking (e.g., #content)"
+    },
+      {
+        "type": "color",
       "id": "color_title",
       "label": "Title Text Color",
       "default": "",

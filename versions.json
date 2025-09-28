@@ -1,5 +1,8 @@
 {
-  "website": "21.3.1",
-  "landing": "21.3.1",
-  "product": "21.0.0"
+  "website": "23.10.0",
+  "landing": "23.10.0",
+  "product": "25.0.26",
+  "checkout": "11.0.1",
+  "product-premier": "10.2.5",
+  "product-premier-raw": "10.0.1"
 }

@@ -51,7 +51,18 @@
   "name": "CTA - Two Step Optin",
   "elements": [
     {
-      "type": "checkbox",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "cta-two-step-optin",
+      "info": "Custom ID for internal linking (e.g., #cta-two-step-optin)"
+    },
+      {
+        "type": "checkbox",
       "id": "two_step_edit",
       "label": "Edit Two Step Popup",
       "default": "false",

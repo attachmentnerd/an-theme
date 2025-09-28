@@ -95,7 +95,7 @@
 <div class="page-securely-attached">
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="{{ section.settings.section_id | default: 'securely-attached' }}-{{ section.id }}" class="hero">
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
@@ -278,7 +278,18 @@
   "class": "page-securely-attached",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "securely-attached",
+      "info": "Custom ID for internal linking (e.g., #securely-attached)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

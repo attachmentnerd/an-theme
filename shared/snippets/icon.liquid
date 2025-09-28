@@ -259,6 +259,12 @@
       <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
     
+  {% when 'map-pin' or 'map-marker' or 'map-marker-alt' %}
+    <svg class="icon icon-map-pin {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"></path>
+      <circle cx="12" cy="10" r="3"></circle>
+    </svg>
+    
   {% when 'external-link' %}
     <svg class="icon icon-external-link {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>

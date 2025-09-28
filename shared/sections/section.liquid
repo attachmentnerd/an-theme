@@ -1,6 +1,6 @@
 {% include "section_styles" %}
 
-<section kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
+<section id="{{ section.settings.section_id | default: 'section' }}-{{ section.id }}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
   class="section
   {% if section.settings.hide_on_desktop == true %}hidden--desktop{% endif %}
   {% if section.settings.hide_on_mobile == true %}hidden--mobile{% endif %}
@@ -14,6 +14,16 @@
     {% endif %}
     <div class="section__overlay"></div>
     <div class="container {% if section.settings.full_width == true %}container--full{% endif %}">
+      {% if section.settings.heading != blank or section.settings.subheading != blank %}
+        <div class="section__header text-center">
+          {% if section.settings.heading != blank %}
+            <h2 class="section__heading" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <p class="section__subheading" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">{{ section.settings.subheading }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
       <div class="row align-items-{{ section.settings.vertical }} justify-content-{{ section.settings.horizontal }}">
         {% for block in section.blocks %}
           {% include "block" type: block.type, appended_countdown_class: "countdown--standard" %}
@@ -31,7 +41,18 @@
       "name": "Background",
       "elements": [
         {
-          "type": "select",
+        "type": "header",
+          "content": "General Settings"
+        },
+        {
+          "type": "text",
+          "id": "section_id",
+          "label": "Section ID",
+          "default": "section",
+          "info": "Custom ID for internal linking (e.g., #section)"
+        },
+          {
+            "type": "select",
           "id": "bg_type",
           "label": "Background Media Type",
           "default": "none",
@@ -98,6 +119,23 @@
           "id": "background_color",
           "allow_blank": true,
           "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+        }
+      ]
+    },
+    {
+      "name": "Header",
+      "elements": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": ""
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": ""
         }
       ]
     },
@@ -3242,6 +3280,13 @@
           "default": "6"
         },
         {
+          "type": "text",
+          "id": "html_id",
+          "label": "Block HTML id (optional)",
+          "default": "",
+          "info": "Add a custom id attribute to this block (e.g., video-hero)."
+        },
+        {
           "type": "textarea",
           "id": "code",
           "label": "Code",
@@ -3629,6 +3674,18 @@
           "id": "width",
           "label": "Width",
           "default": "4"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Card Title"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Optional subtitle"
         },
         {
           "type": "action",
@@ -5646,6 +5703,18 @@
           "default": "3"
         },
         {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Amazing Feature"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Brief supporting text"
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
@@ -6150,6 +6219,12 @@
           "label": "Form",
           "default": "",
           "allow_blank": true
+        },
+        {
+          "type": "text",
+          "id": "manual_form_id",
+          "label": "Manual Form ID (fallback)",
+          "info": "Paste a Form ID if the picker is empty or broken"
         },
         {
           "type": "action",
@@ -13081,22 +13156,6 @@
       "blocks": [
         {
           "type": "video_embed",
-          "settings": {
-            "width": "8"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Offer",
-      "description": "",
-      "category": "Offers & Pricing",
-      "blocks": [
-        {
-          "type": "offer"
-        },
-        {
-          "type": "text",
           "settings": {
             "width": "8"
           }

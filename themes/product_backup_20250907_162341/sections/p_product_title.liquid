@@ -1,0 +1,26 @@
+{% assign library_text = section.settings.library %}
+
+{% assign KJB_library_text = 'library' | settings_id: section: section %}
+
+<div class="product-title">
+  {% include 'icon', icon: 'close', size: 20, class: 'product-title-icon responsive-toggle-trigger' %}
+  <a href="/library" class="product-title-back" kjb-settings-id="{{ KJB_library_text }}">
+    {% include 'icon', icon: 'chevron-left', size: 16 %}
+    {{ library_text }}
+  </a>
+  <h1>{{ current_product.title }}</h1>
+</div>
+
+{% schema %}
+  {
+    "name": "Navigation Title",
+    "elements": [
+      {
+        "type": "text",
+        "id": "library",
+        "label": "Back Link Text",
+        "default": "Library"
+      }
+    ]
+  }
+{% endschema %}

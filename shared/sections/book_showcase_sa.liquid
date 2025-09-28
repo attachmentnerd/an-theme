@@ -1,5 +1,5 @@
 <!-- Securely Attached Book Showcase (Static) -->
-<section class="py-5 bg-grey">
+<section id="{{ section.settings.section_id | default: 'book-showcase-sa' }}-{{ section.id }}" class="py-5 bg-grey">
   <div class="container">
     <div class="row align-items-center flex-lg-row-reverse">
       <!-- Book Image Column -->
@@ -8,8 +8,10 @@
           {% if section.settings.book_image != blank %}
             <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
               <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
-             alt="{{ Securely Attached }}" 
+             alt="Securely Attached" 
              class="img-fluid rounded-lg shadow-lg hover-lift"
+             width="400" height="600"
+             decoding="async"
              loading="lazy"
              style="object-fit: cover;">
             </div>
@@ -76,6 +78,8 @@
                   <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
              alt="{{ section.settings.testimonial_author }}" 
              class="rounded-circle"
+             width="120" height="120"
+             decoding="async"
              loading="lazy"
              style="object-fit: cover;">
                 </div>
@@ -112,7 +116,18 @@
   "name": "Book - Showcase SA",
   "elements": [
     {
-      "type": "textarea",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "book-showcase-sa",
+      "info": "Custom ID for internal linking (e.g., #book-showcase-sa)"
+    },
+      {
+        "type": "textarea",
       "id": "book_description",
       "label": "Book Description",
       "default": "A practical workbook featuring 140 insightful prompts, quizzes, and activities to help you understand your attachment history and transform your relationship patterns."

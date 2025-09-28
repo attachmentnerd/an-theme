@@ -28,7 +28,7 @@
     color: {{ btn_background_color }};
   }
 </style>
-<section kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
+<section id="{{ section.settings.section_id | default: 'utility-login' }}-{{ section.id }}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
 class="section
 {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}">
   {% if section.settings.bg_type == "video" %}
@@ -49,7 +49,18 @@ class="section
   "name": "Utility - Login",
   "elements": [
     {
-      "type": "checkbox",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "utility-login",
+      "info": "Custom ID for internal linking (e.g., #utility-login)"
+    },
+      {
+        "type": "checkbox",
       "id": "show_image",
       "label": "Show Image",
       "default": "false"

@@ -9,7 +9,7 @@
   }
 
   .nav-transparent-pill {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -19,9 +19,7 @@
   }
 
   .nav-transparent-pill--scrolled {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    /* Keep transparent; only adjust padding when scrolled */
     padding: var(--nav-pill-padding-y-scrolled) 0;
   }
 
@@ -61,8 +59,8 @@
   }
 
   .nav-transparent-pill__logo-text {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
     color: {{ section.settings.logo_text_color | default: '#333333' }};
     text-decoration: none;
     letter-spacing: -0.02em;
@@ -98,8 +96,8 @@
     padding: 8px 16px;
     color: {{ section.settings.menu_text_color | default: '#333333' }};
     text-decoration: none;
-    font-weight: 500;
-    font-size: {{ section.settings.menu_font_size | default: 15 }}px;
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-body);
     transition: all 0.2s ease;
     border-radius: 25px;
     position: relative;
@@ -151,7 +149,7 @@
     padding: 12px 20px;
     color: {{ section.settings.menu_text_color | default: '#333333' }};
     text-decoration: none;
-    font-size: 14px;
+    font-size: var(--fs-body);
     transition: all 0.2s ease;
   }
 
@@ -171,8 +169,8 @@
 
   .nav-transparent-pill__icon-btn,
   .nav-transparent-pill__mobile-toggle {
-    background: none;
-    border: none;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
     padding: 8px;
     cursor: pointer;
     color: {{ section.settings.icon_color | default: '#333333' }};
@@ -205,7 +203,7 @@
     right: 2px;
     background: {{ section.settings.badge_bg | default: '#FF3B3B' }};
     color: white;
-    font-size: 10px;
+    font-size: var(--fs-caption);
     font-weight: bold;
     min-width: 16px;
     height: 16px;
@@ -743,7 +741,7 @@
   }
 </style>
 
-<nav class="nav-transparent-pill {% if section.settings.sticky %}nav-transparent-pill--sticky{% endif %}" 
+<nav class="nav-transparent-pill {% if section.settings.sticky %}nav-transparent-pill--sticky{% endif %}"
      data-nav-transparent-pill
      role="navigation"
      aria-label="{{ section.settings.aria_label | default: 'Main navigation' }}"
@@ -752,21 +750,33 @@
     <!-- Logo -->
     <div class="nav-transparent-pill__logo">
       <a href="{{ current_site.root_url }}">
-        {% comment %} Check for logo image block first {% endcomment %}
-        {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
-        {% if logo_block and logo_block.settings.logo_image %}
-          <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}" 
-               alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
+        {% comment %} Prefer inverse logo when enabled (section-level), else block-level inverse, else defaults {% endcomment %}
+        {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
+          <img src="{{ section.settings.inverse_logo | image_picker_url: '360x120' }}"
+               alt="{{ section.settings.logo_alt | default: current_site.title }}"
                loading="eager"
-               style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
-        {% elsif section.settings.logo %}
-          <img src="{{ section.settings.logo | image_picker_url: '360x120' }}" 
-               alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-               loading="eager">
+               style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
         {% else %}
-          <span class="nav-transparent-pill__logo-text">
-            {{ section.settings.logo_text | default: current_site.title }}
-          </span>
+          {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
+          {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
+            <img src="{{ logo_block.settings.inverse_logo_image | image_picker_url: '360x120' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 loading="eager"
+                 style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
+          {% elsif logo_block and logo_block.settings.logo_image %}
+            <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 loading="eager"
+                 style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
+          {% elsif section.settings.logo %}
+            <img src="{{ section.settings.logo | image_picker_url: '360x120' }}"
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
+                 loading="eager">
+          {% else %}
+            <span class="nav-transparent-pill__logo-text">
+              {{ section.settings.logo_text | default: current_site.title }}
+            </span>
+          {% endif %}
         {% endif %}
       </a>
     </div>
@@ -781,14 +791,14 @@
             {% assign has_menu_blocks = true %}
           {% endif %}
         {% endfor %}
-        
+
         {% if has_menu_blocks %}
           {% comment %} Use menu blocks {% endcomment %}
           {% for block in section.blocks %}
             {% if block.type == 'menu' %}
               {% for link in current_site.link_lists[block.settings.menu].links %}
                 <li class="nav-transparent-pill__menu-item {% if link.links.size > 0 %}nav-transparent-pill__dropdown{% endif %}">
-                  <a href="{{ link.url }}" 
+                  <a href="{{ link.url }}"
                      class="nav-transparent-pill__menu-link {% if link.current %}nav-transparent-pill__menu-link--active{% endif %}">
                     {{ link.name }}
                   </a>
@@ -808,7 +818,7 @@
           {% comment %} Fallback to section settings menu {% endcomment %}
           {% for link in current_site.link_lists[section.settings.menu].links %}
             <li class="nav-transparent-pill__menu-item {% if link.links.size > 0 %}nav-transparent-pill__dropdown{% endif %}">
-              <a href="{{ link.url }}" 
+              <a href="{{ link.url }}"
                  class="nav-transparent-pill__menu-link {% if link.current %}nav-transparent-pill__menu-link--active{% endif %}">
                 {{ link.name }}
               </a>
@@ -822,13 +832,37 @@
               {% endif %}
             </li>
           {% endfor %}
+        {% else %}
+          {% include 'nav_default_links' %}
+          {% assign current_path = request.path | default: '/' | downcase %}
+          {% for item in nav_default_links %}
+            {% assign parts = item | split: ":" %}
+            {% assign item_title = parts[0] | strip %}
+            {% assign item_url = parts[1] | default: '/' | strip %}
+            {% assign item_event = parts[2] | default: 'nav_link' | strip %}
+            {% assign normalized_item_url = item_url | downcase %}
+            {% assign is_active = false %}
+            {% if current_path == normalized_item_url or current_path == normalized_item_url | append: '/' %}
+              {% assign is_active = true %}
+            {% endif %}
+            {% if current_site_user and item_event == 'nav_login' %}
+              {% continue %}
+            {% endif %}
+            <li class="nav-transparent-pill__menu-item">
+              <a href="{{ item_url }}"
+                 class="nav-transparent-pill__menu-link {% if is_active %}nav-transparent-pill__menu-link--active{% endif %}"
+                 data-evt="{{ item_event }}">
+                {{ item_title }}
+              </a>
+            </li>
+          {% endfor %}
         {% endif %}
-        
+
         {% comment %} Render custom link blocks {% endcomment %}
         {% for block in section.blocks %}
           {% if block.type == 'link' %}
             <li class="nav-transparent-pill__menu-item">
-              <a href="{{ block.settings.link_url }}" 
+              <a href="{{ block.settings.link_url }}"
                  class="nav-transparent-pill__menu-link"
                  {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
                 {{ block.settings.link_text }}
@@ -844,8 +878,22 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'button' %}
+            {% assign show_btn = true %}
+            {% if current_site_user and block.settings.show_when_logged_in == false %}
+              {% assign show_btn = false %}
+            {% endif %}
+            {% if current_site_user == blank and block.settings.show_when_logged_out == false %}
+              {% assign show_btn = false %}
+            {% endif %}
+            {% if show_btn %}
             {% comment %} Generate unique ID for this button block {% endcomment %}
             {% assign button_id = 'btn-' | append: block.id %}
+            {% assign primary_button_label = block.settings.button_text | default: 'Get Started' %}
+            {% assign primary_button_url = block.settings.button_link | default: '/program/secure-parenting' %}
+            {% if current_site_user %}
+              {% assign primary_button_label = block.settings.auth_button_text | default: 'My Library' %}
+              {% assign primary_button_url = block.settings.auth_button_link | default: '/library' %}
+            {% endif %}
             <style>
               #{{ button_id }} {
                 {% if block.settings.button_style == 'gradient' %}
@@ -881,15 +929,17 @@
                 {% endif %}
               }
             </style>
-            <a href="{{ block.settings.button_link }}"
+            <a href="{{ primary_button_url }}"
                id="{{ button_id }}"
                class="nav-transparent-pill__button"
-               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-              <span>{{ block.settings.button_text }}</span>
+               {% if block.settings.new_tab and not current_site_user %}target="_blank" rel="noopener"{% endif %}
+               data-evt="nav_cta_primary">
+              <span>{{ primary_button_label }}</span>
               {% if block.settings.button_icon %}
                 <i class="{{ block.settings.button_icon }} nav-transparent-pill__button-icon"></i>
               {% endif %}
             </a>
+            {% endif %}
 
           {% when 'user' %}
             {% if current_site_user %}
@@ -909,8 +959,8 @@
                 </div>
               </div>
             {% else %}
-              <a href="/login" class="nav-transparent-pill__button nav-transparent-pill__button--outline">
-                <span>{{ block.settings.login_text | default: 'Log In' }}</span>
+              <a href="/login" class="nav-transparent-pill__button nav-transparent-pill__button--outline" data-evt="nav_login">
+                <span>{{ block.settings.login_text | default: 'Login' }}</span>
               </a>
             {% endif %}
 
@@ -927,7 +977,10 @@
             {% endif %}
 
           {% when 'search' %}
-            <button class="nav-transparent-pill__icon-btn" aria-label="Search" data-search-trigger>
+            <button class="nav-transparent-pill__icon-btn"
+                    aria-label="Search"
+                    data-search-trigger
+                    data-evt="nav_search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
@@ -936,7 +989,8 @@
 
           {% when 'link' %}
             <a href="{{ block.settings.link_url }}"
-               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
+               data-evt="{{ block.settings.link_event | default: 'nav_link_custom' }}">
               {{ block.settings.link_text }}
             </a>
         {% endcase %}
@@ -958,8 +1012,8 @@
       {% endif %}
 
       <!-- Mobile Toggle -->
-      <button class="nav-transparent-pill__mobile-toggle" 
-              aria-label="Toggle mobile menu" 
+      <button class="nav-transparent-pill__mobile-toggle"
+              aria-label="Toggle mobile menu"
               aria-expanded="false"
               data-mobile-toggle>
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -975,32 +1029,49 @@
   <div class="nav-transparent-pill__mobile-header">
     <div class="nav-transparent-pill__logo">
       <a href="{{ current_site.root_url }}">
-        {% comment %} Check for logo image block first {% endcomment %}
-        {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
-        {% if logo_block and logo_block.settings.mobile_logo_image %}
-          <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: '240x80' }}" 
-               alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
+        {% comment %} Prefer inverse logo on mobile (section-level), then block-level inverse mobile/desktop, then defaults {% endcomment %}
+        {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
+          <img src="{{ section.settings.inverse_logo | image_picker_url: '240x80' }}"
+               alt="{{ section.settings.logo_alt | default: current_site.title }}"
                loading="lazy"
-               style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
-        {% elsif logo_block and logo_block.settings.logo_image %}
-          <img src="{{ logo_block.settings.logo_image | image_picker_url: '240x80' }}" 
-               alt="{{ logo_block.settings.alt_text | default: current_site.title }}" 
-               loading="lazy"
-               style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
-        {% elsif section.settings.mobile_logo %}
-          <img src="{{ section.settings.mobile_logo | image_picker_url: '240x80' }}" 
-               alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-               loading="lazy"
-               style="max-height: 30px; width: auto;">
-        {% elsif section.settings.logo %}
-          <img src="{{ section.settings.logo | image_picker_url: '240x80' }}" 
-               alt="{{ section.settings.logo_alt | default: current_site.title }}" 
-               loading="lazy"
-               style="max-height: 30px; width: auto;">
+               style="max-height: {{ section.settings.logo_height_scrolled | default: 32 }}px; width: auto;">
         {% else %}
-          <span class="nav-transparent-pill__logo-text" style="font-size: 20px;">
-            {{ section.settings.logo_text | default: current_site.title }}
-          </span>
+          {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
+          {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.mobile_inverse_logo_image %}
+            <img src="{{ logo_block.settings.mobile_inverse_logo_image | image_picker_url: '240x80' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 loading="lazy"
+                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% elsif logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
+            <img src="{{ logo_block.settings.inverse_logo_image | image_picker_url: '240x80' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 loading="lazy"
+                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% elsif logo_block and logo_block.settings.mobile_logo_image %}
+            <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: '240x80' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 loading="lazy"
+                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% elsif logo_block and logo_block.settings.logo_image %}
+            <img src="{{ logo_block.settings.logo_image | image_picker_url: '240x80' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 loading="lazy"
+                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+          {% elsif section.settings.mobile_logo %}
+            <img src="{{ section.settings.mobile_logo | image_picker_url: '240x80' }}"
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
+                 loading="lazy"
+                 style="max-height: 30px; width: auto;">
+          {% elsif section.settings.logo %}
+            <img src="{{ section.settings.logo | image_picker_url: '240x80' }}"
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
+                 loading="lazy"
+                 style="max-height: 30px; width: auto;">
+          {% else %}
+            <span class="nav-transparent-pill__logo-text" style="font-size: 20px;">
+              {{ section.settings.logo_text | default: current_site.title }}
+            </span>
+          {% endif %}
         {% endif %}
       </a>
     </div>
@@ -1045,6 +1116,30 @@
               </a>
             </li>
           {% endfor %}
+        {% else %}
+          {% include 'nav_default_links' %}
+          {% assign current_path = request.path | default: '/' | downcase %}
+          {% for item in nav_default_links %}
+            {% assign parts = item | split: ":" %}
+            {% assign item_title = parts[0] | strip %}
+            {% assign item_url = parts[1] | default: '/' | strip %}
+            {% assign item_event = parts[2] | default: 'nav_link' | strip %}
+            {% assign normalized_item_url = item_url | downcase %}
+            {% assign is_active = false %}
+            {% if current_path == normalized_item_url or current_path == normalized_item_url | append: '/' %}
+              {% assign is_active = true %}
+            {% endif %}
+            {% if current_site_user and item_event == 'nav_login' %}
+              {% continue %}
+            {% endif %}
+            <li>
+              <a href="{{ item_url }}"
+                 {% if is_active %}class="active"{% endif %}
+                 data-evt="{{ item_event }}">
+                {{ item_title }}
+              </a>
+            </li>
+          {% endfor %}
         {% endif %}
 
         <!-- Mobile-only menu items -->
@@ -1064,14 +1159,30 @@
     <!-- Mobile Buttons -->
     {% for block in section.blocks %}
       {% if block.type == 'mobile_button' %}
-        <a href="{{ block.settings.button_link }}"
+        {% assign show_mobile_btn = true %}
+        {% if current_site_user and block.settings.show_when_logged_in == false %}
+          {% assign show_mobile_btn = false %}
+        {% endif %}
+        {% if current_site_user == blank and block.settings.show_when_logged_out == false %}
+          {% assign show_mobile_btn = false %}
+        {% endif %}
+        {% if show_mobile_btn %}
+        {% assign mobile_button_label = block.settings.button_text | default: 'Get Started' %}
+        {% assign mobile_button_url = block.settings.button_link | default: '/program/secure-parenting' %}
+        {% if current_site_user %}
+          {% assign mobile_button_label = block.settings.auth_button_text | default: 'My Library' %}
+          {% assign mobile_button_url = block.settings.auth_button_link | default: '/library' %}
+        {% endif %}
+        <a href="{{ mobile_button_url }}"
            class="nav-transparent-pill__mobile-button nav-transparent-pill__mobile-button--{{ block.settings.button_style }}"
-           {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+           {% if block.settings.new_tab and not current_site_user %}target="_blank" rel="noopener"{% endif %}
+           data-evt="nav_mobile_cta">
           {% if block.settings.icon %}
             <i class="{{ block.settings.icon }} nav-transparent-pill__mobile-button-icon"></i>
           {% endif %}
-          {{ block.settings.button_text }}
+          {{ mobile_button_label }}
         </a>
+        {% endif %}
       {% endif %}
     {% endfor %}
 
@@ -1095,16 +1206,16 @@
                   {% break %}
                 {% endif %}
               {% endfor %}
-              
+
               {% if has_cards %}
                 <div class="nav-transparent-pill__mobile-cards">
                   {% for nested_block in block.blocks %}
                     {% if nested_block.type == 'dropdown_card' %}
-                      <a href="{{ nested_block.settings.card_link }}" 
+                      <a href="{{ nested_block.settings.card_link }}"
                          class="nav-transparent-pill__mobile-card {% unless nested_block.settings.card_image %}nav-transparent-pill__mobile-card--colored{% endunless %}"
                          {% if nested_block.settings.card_bg_color and nested_block.settings.card_image == blank %}style="background-color: {{ nested_block.settings.card_bg_color }};"{% endif %}>
                         {% if nested_block.settings.card_image %}
-                          <img src="{{ nested_block.settings.card_image | image_picker_url: '300x390' }}" 
+                          <img src="{{ nested_block.settings.card_image | image_picker_url: '300x390' }}"
                                alt="{{ nested_block.settings.card_title }}"
                                class="nav-transparent-pill__mobile-card-image"
                                loading="lazy">
@@ -1142,10 +1253,17 @@
 
     <!-- Mobile CTA -->
     {% if section.settings.show_mobile_cta %}
-      <a href="{{ section.settings.mobile_cta_link }}"
+      {% assign mobile_cta_label = section.settings.mobile_cta_text | default: 'Get Started' %}
+      {% assign mobile_cta_url = section.settings.mobile_cta_link | default: '/program/secure-parenting' %}
+      {% if current_site_user %}
+        {% assign mobile_cta_label = section.settings.mobile_cta_text_authenticated | default: 'My Library' %}
+        {% assign mobile_cta_url = section.settings.mobile_cta_link_authenticated | default: '/library' %}
+      {% endif %}
+      <a href="{{ mobile_cta_url }}"
          class="nav-transparent-pill__mobile-cta"
-         {% if section.settings.mobile_cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-        {{ section.settings.mobile_cta_text }}
+         {% if section.settings.mobile_cta_new_tab and not current_site_user %}target="_blank" rel="noopener"{% endif %}
+         data-evt="nav_mobile_cta_primary">
+        {{ mobile_cta_label }}
       </a>
     {% endif %}
 
@@ -1171,8 +1289,20 @@
   const mobileClose = mobileMenu.querySelector('[data-mobile-close]');
   const overlay = document.querySelector('[data-mobile-overlay]');
   const body = document.body;
+  const searchTriggers = nav ? nav.querySelectorAll('[data-search-trigger]') : [];
+  const searchUrl = '{{ section.settings.search_url | default: "/search" }}';
 
   let scrollPosition = 0;
+
+  // Search icon redirects to configured page
+  if (searchTriggers.length > 0) {
+    searchTriggers.forEach(trigger => {
+      trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = searchUrl;
+      });
+    });
+  }
 
   // Mobile menu functions
   function openMobileMenu() {
@@ -1243,7 +1373,7 @@
       e.preventDefault();
       const dropdown = toggle.closest('.nav-transparent-pill__mobile-dropdown');
       const isActive = dropdown.classList.contains('active');
-      
+
       // Toggle current dropdown
       dropdown.classList.toggle('active');
       toggle.setAttribute('aria-expanded', !isActive);
@@ -1284,7 +1414,7 @@
   // Just handle scrolled state for transparent pill
   window.addEventListener('scroll', function() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+
     if (scrollTop > 50) {
       nav.classList.add('nav-transparent-pill--scrolled');
     } else {
@@ -1300,7 +1430,18 @@
   "name": "Transparent Pill Navigation",
   "settings": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "alt",
+      "info": "Custom ID for internal linking (e.g., #alt)"
+    },
+      {
+        "type": "header",
       "content": "General Settings"
     },
     {
@@ -1329,9 +1470,24 @@
     },
     {
       "type": "image_picker",
+      "id": "inverse_logo",
+      "label": "Inverse Logo (for dark hero backgrounds)",
+      "info": "Upload a light/white logo to use when the nav overlays dark hero sections.",
+      "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_inverse_logo",
+      "label": "Use Inverse Logo",
+      "default": false,
+      "info": "When enabled and an inverse logo is set, it will be used."
+    },
+    {
+      "type": "image_picker",
       "id": "logo",
       "label": "Logo Image",
-      "info": "Recommended: 180x40px"
+      "info": "Recommended: 180x40px",
+      "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png"
     },
     {
       "type": "text",
@@ -1463,6 +1619,12 @@
       "label": "Show Search Icon",
       "default": true,
       "info": "Legacy setting - use blocks for more control"
+    },
+    {
+      "type": "text",
+      "id": "search_url",
+      "label": "Search Page URL",
+      "default": "/search"
     },
     {
       "type": "color",
@@ -1819,6 +1981,18 @@
       "label": "Mobile CTA Link"
     },
     {
+      "type": "text",
+      "id": "mobile_cta_text_authenticated",
+      "label": "Mobile CTA Text (Logged-in)",
+      "default": "My Library"
+    },
+    {
+      "type": "action",
+      "id": "mobile_cta_link_authenticated",
+      "label": "Mobile CTA Link (Logged-in)",
+      "default": "/library"
+    },
+    {
       "type": "checkbox",
       "id": "mobile_cta_new_tab",
       "label": "Open CTA in New Tab",
@@ -1864,22 +2038,45 @@
       "name": "Logo Image",
       "elements": [
         {
+          "type": "checkbox",
+          "id": "use_block_inverse_logo",
+          "label": "Use Block Inverse Logo",
+          "default": false,
+          "info": "Enable to use inverse logos from this block instead of section-level inverse logo."
+        },
+        {
+          "type": "image_picker",
+          "id": "inverse_logo_image",
+          "label": "Inverse Logo (Desktop)",
+          "info": "Light/white logo for dark backgrounds (desktop).",
+          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_inverse_logo_image",
+          "label": "Inverse Logo (Mobile)",
+          "info": "Light/white logo for dark backgrounds (mobile).",
+          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp"
+        },
+        {
           "type": "image_picker",
           "id": "logo_image",
           "label": "Logo Image",
-          "info": "Recommended: 180x40px for desktop"
+          "info": "Recommended: 180x40px for desktop",
+          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png"
         },
         {
           "type": "image_picker",
           "id": "mobile_logo_image",
           "label": "Mobile Logo Image",
-          "info": "Optional: Different logo for mobile (recommended: 120x30px)"
+          "info": "Optional: Different logo for mobile (recommended: 120x30px)",
+          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png"
         },
         {
           "type": "text",
           "id": "alt_text",
           "label": "Alt Text",
-          "default": "Company Logo"
+          "default": "Attachment Nerd"
         },
         {
           "type": "text",
@@ -1899,6 +2096,8 @@
       "type": "button",
       "name": "Button",
       "elements": [
+        { "type": "checkbox", "id": "show_when_logged_in", "label": "Show when logged in", "default": true },
+        { "type": "checkbox", "id": "show_when_logged_out", "label": "Show when logged out", "default": true },
         {
           "type": "text",
           "id": "button_text",
@@ -1909,6 +2108,30 @@
           "type": "action",
           "id": "button_link",
           "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "auth_button_text",
+          "label": "Button Text (Logged-in)",
+          "default": "My Library"
+        },
+        {
+          "type": "action",
+          "id": "auth_button_link",
+          "label": "Button Link (Logged-in)",
+          "default": "/library"
+        },
+        {
+          "type": "text",
+          "id": "auth_button_text",
+          "label": "Button Text (Logged-in)",
+          "default": "My Library"
+        },
+        {
+          "type": "action",
+          "id": "auth_button_link",
+          "label": "Button Link (Logged-in)",
+          "default": "/library"
         },
         {
           "type": "header",
@@ -2059,6 +2282,13 @@
           "label": "Link URL"
         },
         {
+          "type": "text",
+          "id": "link_event",
+          "label": "Analytics Event Key",
+          "info": "Optional event identifier for tracking",
+          "default": "nav_link_custom"
+        },
+        {
           "type": "checkbox",
           "id": "new_tab",
           "label": "Open in New Tab",
@@ -2176,6 +2406,8 @@
       "type": "mobile_button",
       "name": "Mobile Button",
       "elements": [
+        { "type": "checkbox", "id": "show_when_logged_in", "label": "Show when logged in", "default": true },
+        { "type": "checkbox", "id": "show_when_logged_out", "label": "Show when logged out", "default": true },
         {
           "type": "text",
           "id": "button_text",
@@ -2253,7 +2485,11 @@
         {
           "type": "logo_image",
           "settings": {
-            "alt_text": "Company Logo",
+            "logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png",
+            "mobile_logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png",
+            "inverse_logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp",
+            "mobile_inverse_logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp",
+            "alt_text": "Attachment Nerd",
             "desktop_height": "40px",
             "mobile_height": "30px"
           }

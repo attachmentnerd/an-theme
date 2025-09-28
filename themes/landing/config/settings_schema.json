@@ -2,10 +2,11 @@
   {
     "name": "theme_info",
     "theme_name": "AN Landing Theme",
-    "theme_version": "21.3.1",
+    "theme_version": "AN-LP 2025.09.28+23.10.0",
     "theme_author": "AN Themes",
     "theme_documentation_url": "https://anthemes.com/docs",
-    "theme_support_url": "https://anthemes.com/support"
+    "theme_support_url": "https://anthemes.com/support",
+    "settings_validatable": true
   },
   {
     "name": "Favicon",
@@ -402,6 +403,46 @@
         "label": "Show Main Navigation",
         "default": true,
         "info": "Toggle the main navigation bar on/off site-wide. When disabled, no navigation will appear on any page."
+      }
+    ]
+  },
+  {
+    "name": "Footer",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Global Footer Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_footer",
+        "label": "Show Footer",
+        "default": true,
+        "info": "Toggle the global footer on/off site-wide. When disabled, no footer will appear on any page."
+      },
+      {
+        "type": "select",
+        "id": "global_footer_section",
+        "label": "Footer Layout",
+        "default": "nav_footer_modern",
+        "info": "Select which footer section file renders globally. Update the matching section in code for structural changes.",
+        "options": [
+          {
+            "value": "nav_footer_modern",
+            "label": "Modern Footer (Default)"
+          },
+          {
+            "value": "nav_footer_bio",
+            "label": "Bio Footer"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "footer_hide_paths",
+        "label": "Hide Footer On Paths",
+        "default": "",
+        "info": "One path per line (for example: /opt-in/thank-you). Supports wildcard entries with * to match prefixes (for example: /webinar/*)."
       }
     ]
   },

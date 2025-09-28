@@ -1,1 +1,15 @@
-{% content_for_index %}
+<!doctype html>
+<html lang="{{ current_site.locale | default: "en" }}">
+  {% include "global_head" %}
+  {% include "global_background" %}
+  <body id="encore-theme" class="background-{{ settings.background_color | color_scheme_class }}">
+    {% include "navigation_controller" %}
+    {% include "alert_messages" %}
+    {% section "header" %}
+    <main>
+      {% dynamic_sections_for "home" %}
+    </main>
+    {% include "footer_controller" %}
+    {% include "global_scripts" %}
+  </body>
+</html>

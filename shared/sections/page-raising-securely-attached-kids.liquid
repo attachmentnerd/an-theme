@@ -184,7 +184,7 @@
     <div class="page-raising-securely-attached-kids">
         
         <!-- Hero Section -->
-        <section class="hero">
+        <section id="{{ section.settings.section_id | default: 'raising-securely-attached-kids' }}-{{ section.id }}" class="hero">
             <div class="container">
                 <div class="hero-content">
                     <div class="hero-text">
@@ -579,7 +579,18 @@
   "class": "page-raising-securely-attached-kids",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "raising-securely-attached-kids",
+      "info": "Custom ID for internal linking (e.g., #raising-securely-attached-kids)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {
@@ -779,8 +790,8 @@
     {
       "type": "text",
       "id": "_cta_content_h2_1____section_settings_",
-      "label": "{{ section.settings.h2_not__h3__6_you_re_not_alone...",
-      "default": "{{ section.settings.h2_not__h3__6_you_re_not_alone_in_ }}"
+      "label": "CTA Content Heading",
+      "default": "You're Not Alone in This Journey"
     },
     {
       "type": "textarea",

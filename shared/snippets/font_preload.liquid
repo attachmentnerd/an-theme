@@ -4,25 +4,20 @@
   Uses Inter font as primary brand typeface
 {% endcomment %}
 
-<!-- DNS Prefetch for faster font loading -->
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-
-<!-- Preconnect to establish early connections -->
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<!-- Preconnect to establish early connections for font files -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <!-- Preload critical Inter font files (Regular 400 and Medium 500) -->
-<link rel="preload" 
-      href="https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2" 
-      as="font" 
-      type="font/woff2" 
+<link rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2"
+      as="font"
+      type="font/woff2"
       crossorigin>
-      
-<link rel="preload" 
-      href="https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7W0Q5nw.woff2" 
-      as="font" 
-      type="font/woff2" 
+
+<link rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7W0Q5nw.woff2"
+      as="font"
+      type="font/woff2"
       crossorigin>
 
 <!-- Preload Merriweather for headings (Regular 400) -->
@@ -43,7 +38,7 @@
     src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
-  
+
   @font-face {
     font-family: 'Inter';
     font-style: normal;
@@ -52,7 +47,7 @@
     src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7W0Q5nw.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
-  
+
   /* Merriweather for headings - warm, friendly serif */
   @font-face {
     font-family: 'Merriweather';
@@ -62,12 +57,12 @@
     src: url(https://fonts.gstatic.com/s/merriweather/v30/u-440qyriQwlOrhSvowK_l5-fCZM.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
-  
+
   /* Fallback font stack while Inter loads */
   body {
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   }
-  
+
   /* Optional: Fine-tune font rendering */
   body {
     -webkit-font-smoothing: antialiased;
@@ -76,14 +71,4 @@
   }
 </style>
 
-<!-- Load full Google Fonts CSS async for additional weights/styles -->
-{% comment %}
-  This will load async after critical fonts are already available,
-  preventing FOUT for primary text while still loading extra weights
-{% endcomment %}
-{{ settings | settings_google_font_url | async_style_link }}
-
-<!-- Fallback for browsers without preload support -->
-<noscript>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-</noscript>
+<!-- Note: We no longer load Google Fonts CSS; critical woff2 files above cover Inter + Merriweather. -->

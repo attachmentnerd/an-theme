@@ -1,13 +1,17 @@
-<section class="agents-showcase-section py-5" style="background-color: {{ section.settings.bg_color | default: '#f8f8f8' }};">
+{% assign section_dom_id = section.settings.section_id | default: 'feature-tabs-scroll' %}
+{% assign section_dom_id = section_dom_id | replace: ' ', '-' %}
+{% assign first_block = section.blocks | first %}
+
+<section id="{{ section_dom_id | escape }}-{{ section.id }}" class="agents-showcase-section py-5" style="background-color: {{ section.settings.bg_color | default: '#f8f8f8' | escape }};">
   <div class="container">
     <!-- Header -->
     <div class="text-center mb-5">
       <h2 class="agents-showcase__title" style="font-size: var(--fs-display); color: var(--c-ink-900); font-weight: 500;">
-        {{ section.settings.title | default: 'Agents that scale across every workflow' }}
+        {{ section.settings.title | default: 'Agents that scale across every workflow' | escape }}
       </h2>
       {% if section.settings.subtitle %}
         <p class="agents-showcase__subtitle" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-          {{ section.settings.subtitle }}
+          {{ section.settings.subtitle | escape }}
         </p>
       {% endif %}
       {% if section.settings.enable_scroll_trigger %}
@@ -31,13 +35,18 @@
             <div class="agents-showcase__tabs-wrapper">
               <div class="agents-showcase__tabs" role="tablist">
                 {% for block in section.blocks %}
-                  <a href="#agent-panel-{{ forloop.index0 }}"
+                  {% assign tab_id = 'agent-tab-' | append: section.id | append: '-' | append: forloop.index0 %}
+                  {% assign panel_id = 'agent-panel-' | append: section.id | append: '-' | append: forloop.index0 %}
+                  <a id="{{ tab_id | escape }}"
+                     href="#{{ panel_id | escape }}"
                      class="agents-showcase__tab {% if forloop.first %}active{% endif %}"
                      data-tab-index="{{ forloop.index0 }}"
                      role="tab"
-                     aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
-                    <div class="tab-number">{{ block.settings.tab_number | default: forloop.index | prepend: '0' }}</div>
-                    <div class="tab-title">{{ block.settings.tab_title }}</div>
+                     aria-controls="{{ panel_id | escape }}"
+                     aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                     tabindex="{% if forloop.first %}0{% else %}-1{% endif %}">
+                    <div class="tab-number">{{ block.settings.tab_number | default: forloop.index | prepend: '0' | escape }}</div>
+                    <div class="tab-title">{{ block.settings.tab_title | escape }}</div>
                   </a>
                 {% endfor %}
               </div>
@@ -47,21 +56,28 @@
 
         <!-- Scrollable Content Column -->
         <div class="col-lg-8">
-          <div class="agents-showcase__content" id="agents-content-{{ section.id }}">
+          <div class="agents-showcase__content" id="agents-content-{{ section.id }}"{% if first_block %} style="--agents-active-bg: {{ first_block.settings.panel_bg_color | default: '#ffffff' | escape }};"{% endif %}>
             {% for block in section.blocks %}
+              {% assign tab_id = 'agent-tab-' | append: section.id | append: '-' | append: forloop.index0 %}
+              {% assign panel_id = 'agent-panel-' | append: section.id | append: '-' | append: forloop.index0 %}
               <div class="agents-showcase__panel {% if forloop.first %}in-view{% endif %}"
-                   id="agent-panel-{{ forloop.index0 }}"
+                   id="{{ panel_id | escape }}"
                    data-panel-index="{{ forloop.index0 }}"
-                   role="tabpanel">
-                <div class="panel-card" style="background-color: {{ block.settings.card_bg_color | default: '#e8f5e8' }};">
+                   role="tabpanel"
+                   aria-labelledby="{{ tab_id | escape }}"
+                   aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+                   tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                   data-panel-bg="{{ block.settings.panel_bg_color | default: '#ffffff' | escape }}"
+                   style="--panel-active-bg: {{ block.settings.panel_bg_color | default: '#ffffff' | escape }}; --panel-card-bg: {{ block.settings.card_bg_color | default: '#e8f5e8' | escape }};">
+                <div class="panel-card" style="background-color: var(--panel-card-bg, {{ block.settings.card_bg_color | default: '#e8f5e8' | escape }});">
                   <!-- Panel Header -->
                   <div class="panel-header">
-                    <h3 class="panel-title">{{ block.settings.panel_title }}</h3>
+                    <h3 class="panel-title">{{ block.settings.panel_title | escape }}</h3>
                     {% if block.settings.show_cta %}
-                      <a href="{{ block.settings.cta_url }}"
+                      <a href="{{ block.settings.cta_url | default: '#' | escape }}"
                          class="btn btn-dark panel-cta"
                          {% if block.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-                        {{ block.settings.cta_text | default: 'Try it now' }}
+                        {{ block.settings.cta_text | default: 'Try it now' | escape }}
                       </a>
                     {% endif %}
                   </div>
@@ -74,8 +90,8 @@
                   <!-- Panel Image/Content -->
                   {% if block.settings.content_image %}
                     <div class="panel-image-container mt-4">
-                      <img src="{{ block.settings.content_image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ block.settings.image_alt }} }}" 
+                      <img src="{{ block.settings.content_image | image_picker_url: '800x450' }}"
+             alt="{{ block.settings.image_alt | default: 'Agent showcase image' | escape }}"
              class="panel-image img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -110,6 +126,7 @@
 <style>
   .agents-showcase-section {
     overflow: hidden;
+    --agents-active-bg: transparent;
   }
 
   .agents-showcase__title {
@@ -150,6 +167,7 @@
   }
 
   /* When sticky, show placeholder */
+  .agents-showcase__tabs-column.has-sticky-tabs .agents-showcase__tabs-placeholder,
   .agents-showcase__tabs-column:has(.is-sticky) .agents-showcase__tabs-placeholder {
     display: block;
   }
@@ -167,9 +185,16 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
   }
 
+  @supports not ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    .agents-showcase__tabs {
+      background: #ffffff;
+    }
+  }
+
   .agents-showcase__tab {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 1.25rem;
     padding: 1.25rem 1.75rem;
     background: transparent;
@@ -182,6 +207,7 @@
     transform: translateX(0);
     text-decoration: none;
     color: inherit;
+    white-space: normal;
   }
 
   .agents-showcase__tab::before {
@@ -220,7 +246,8 @@
     color: var(--c-ink-400);
     min-width: 3rem;
     transition: all 0.2s ease;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-family: var(--font-mono);
+    flex-shrink: 0;
   }
 
   .agents-showcase__tab:hover .tab-number {
@@ -238,6 +265,10 @@
     font-weight: 500;
     transition: all 0.2s ease;
     line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .agents-showcase__tab:hover .tab-title {
@@ -254,18 +285,25 @@
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    padding-left: 2rem;
+    padding: 2rem;
+    border-radius: 24px;
+    background-color: var(--agents-active-bg, transparent);
+    transition: background-color 0.3s ease;
   }
 
   .agents-showcase__panel {
     scroll-margin-top: 120px; /* Account for sticky header + padding */
     min-height: 700px; /* Ensure panels are tall enough to scroll */
     opacity: 0.4;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    border-radius: 24px;
+    padding: 1rem;
+    background-color: transparent;
   }
 
   .agents-showcase__panel.in-view {
     opacity: 1;
+    background-color: var(--panel-active-bg, transparent);
   }
 
   .panel-card {
@@ -278,6 +316,9 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .agents-showcase__panel.in-view .panel-card {
@@ -303,6 +344,9 @@
     line-height: 1.2;
     flex: 1;
     letter-spacing: -0.02em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .panel-cta {
@@ -339,7 +383,9 @@
     line-height: 1.7;
     color: var(--c-ink-600);
     margin-bottom: 2.5rem;
-    max-width: 90%;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   /* Support for HTML formatting in descriptions */
@@ -377,18 +423,23 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 100%;
   }
 
   .panel-image {
     width: 100%;
     height: auto;
     display: block;
+    max-width: 100%;
+    object-fit: contain;
   }
 
   .panel-additional-content {
     font-size: 0.9rem;
     color: var(--c-ink-600);
     line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   /* Scroll progress indicator */
@@ -482,9 +533,13 @@
     }
   }
 
-  /* Mobile Responsive */
+  /* Tablet Responsive */
   @media (max-width: 991px) {
-    /* On mobile, tabs are at the top, not sticky */
+    .agents-showcase__container {
+      min-height: auto;
+    }
+
+    /* On tablet/mobile, tabs are at the top, not sticky */
     .agents-showcase__tabs-wrapper {
       position: relative;
       top: auto;
@@ -492,24 +547,16 @@
     }
 
     .agents-showcase__tabs {
-      flex-direction: row;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding-bottom: 1rem;
-      padding-right: 0;
-      gap: 0.5rem;
-    }
-
-    .agents-showcase__tabs::-webkit-scrollbar {
-      display: none;
+      flex-direction: column;
+      overflow-x: visible;
+      padding: 1rem;
+      gap: 0.75rem;
     }
 
     .agents-showcase__tab {
-      flex: 0 0 auto;
-      white-space: nowrap;
-      padding: 0.75rem 1.25rem;
+      flex: 1 1 auto;
+      width: 100%;
+      padding: 1rem 1.5rem;
     }
 
     .agents-showcase__tab::before {
@@ -518,272 +565,478 @@
 
     .agents-showcase__tab.active {
       background: var(--c-brand-100);
+      transform: translateX(0);
+    }
+
+    .agents-showcase__content {
+      padding: 1.5rem;
+      gap: 2rem;
     }
 
     .agents-showcase__panel {
       min-height: auto;
       scroll-margin-top: 20px;
+      padding: 0.75rem;
+    }
+
+    .panel-card {
+      padding: 2rem;
+      min-height: 400px;
+    }
+
+    .panel-title {
+      font-size: 1.75rem;
+    }
+
+    .panel-description {
+      font-size: 1.125rem;
+      max-width: 100%;
+    }
+
+    .tab-number {
+      font-size: 1.25rem;
+      min-width: 2.5rem;
+    }
+
+    .tab-title {
+      font-size: 1rem;
+    }
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 767px) {
+    .agents-showcase__title {
+      font-size: 2rem !important;
+      line-height: 1.2;
+    }
+
+    .agents-showcase__subtitle {
+      font-size: 1rem !important;
+    }
+
+    .agents-showcase__tabs {
+      padding: 0.75rem;
+      gap: 0.5rem;
+    }
+
+    .agents-showcase__tab {
+      padding: 0.75rem 1rem;
+      width: 100%;
+      gap: 0.75rem;
     }
 
     .panel-card {
       padding: 1.5rem;
+      min-height: 300px;
+    }
+
+    .agents-showcase__panel {
+      padding: 0.5rem;
+    }
+
+    .panel-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .panel-title {
       font-size: 1.5rem;
+      line-height: 1.3;
     }
 
     .panel-description {
       font-size: 1rem;
-    }
-
-    .tab-number {
-      font-size: 1rem;
-    }
-
-    .tab-title {
-      font-size: 0.9rem;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .panel-header {
-      flex-direction: column;
-      align-items: flex-start;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
     }
 
     .panel-cta {
       width: 100%;
       text-align: center;
+      justify-content: center;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+    }
+
+    .panel-image-container {
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+      margin-bottom: -1.5rem;
+      border-radius: 0 0 20px 20px;
+      overflow: hidden;
+    }
+
+    .tab-number {
+      font-size: 1rem;
+      min-width: auto;
+    }
+
+    .tab-title {
+      font-size: 0.875rem;
+      line-height: 1.3;
+    }
+
+    /* Hide progress dots on mobile */
+    .agents-showcase__progress {
+      display: none;
+    }
+  }
+
+  /* Extra small mobile */
+  @media (max-width: 480px) {
+    .agents-showcase__title {
+      font-size: 1.75rem !important;
+    }
+
+    .panel-title {
+      font-size: 1.25rem;
+    }
+
+    .panel-description {
+      font-size: 0.9375rem;
+    }
+
+    .agents-showcase__tab {
+      width: 100%;
     }
   }
 </style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('.agents-showcase-section');
+<script data-section-id="{{ section_dom_id | escape }}-{{ section.id }}">
+  (function() {
+    const script = document.currentScript;
+    if (!script) return;
+
+    const sectionId = script.dataset.sectionId;
+    if (!sectionId) return;
+
+    const section = document.getElementById(sectionId);
     if (!section) return;
 
-    const tabs = section.querySelectorAll('.agents-showcase__tab');
-    const panels = section.querySelectorAll('.agents-showcase__panel');
-    const progressDots = section.querySelectorAll('.progress-dot');
-    const enableScrollSpy = {{ section.settings.enable_scroll_trigger | default: true }};
+    const tabs = Array.from(section.querySelectorAll('.agents-showcase__tab'));
+    const panels = Array.from(section.querySelectorAll('.agents-showcase__panel'));
 
-    // Sticky tabs elements
+    if (!tabs.length || !panels.length) return;
+
+    const progressDots = Array.from(section.querySelectorAll('.progress-dot'));
     const tabsWrapper = section.querySelector('.agents-showcase__tabs-wrapper');
     const tabsColumn = section.querySelector('.agents-showcase__tabs-column');
     const placeholder = section.querySelector('.agents-showcase__tabs-placeholder');
     const container = section.querySelector('.agents-showcase__container');
+    const content = section.querySelector('.agents-showcase__content');
+    const tabsContainer = section.querySelector('.agents-showcase__tabs');
 
-    let currentIndex = -1;
+    const enableScrollSpy = {{ section.settings.enable_scroll_trigger | default: true | json }};
+
+    const cleanupFns = [];
+    let destroyed = false;
     let isScrolling = false;
+    let scrollScheduled = false;
+    let scrollUnlockTimeoutId = null;
+    let stickyOffset = getStickyOffset();
+    let currentIndex = -1;
 
-    // Calculate sticky offset based on Kajabi header
+    const SCROLL_LOCK_TIMEOUT = 700;
+
+    function cleanup() {
+      if (destroyed) return;
+      destroyed = true;
+      cleanupFns.forEach((fn) => {
+        try {
+          fn();
+        } catch (err) {
+          /* no-op */
+        }
+      });
+    }
+
+    window.addEventListener('beforeunload', cleanup);
+    cleanupFns.push(() => window.removeEventListener('beforeunload', cleanup));
+
+    const removalObserver = new MutationObserver(() => {
+      if (!document.body.contains(section)) {
+        cleanup();
+      }
+    });
+    removalObserver.observe(document.body, { childList: true, subtree: true });
+    cleanupFns.push(() => removalObserver.disconnect());
+
+    cleanupFns.push(() => {
+      if (scrollUnlockTimeoutId) {
+        window.clearTimeout(scrollUnlockTimeoutId);
+        scrollUnlockTimeoutId = null;
+      }
+    });
+
     function getStickyOffset() {
-      // Try to find Kajabi's header
       const header = document.querySelector('.header, .navigation, header, [class*="header"]');
       if (header && header.offsetHeight > 0) {
-        return header.offsetHeight + 20; // Add 20px padding
+        return header.offsetHeight + 20;
       }
-      return 80; // Default fallback
+      return 80;
     }
 
-    let stickyOffset = getStickyOffset();
+    function resetStickyStyles() {
+      if (!tabsWrapper) return;
+      tabsWrapper.classList.remove('is-sticky');
+      tabsWrapper.style.position = '';
+      tabsWrapper.style.top = '';
+      tabsWrapper.style.left = '';
+      tabsWrapper.style.width = '';
+      tabsWrapper.style.bottom = '';
+      if (tabsColumn) {
+        tabsColumn.classList.remove('has-sticky-tabs');
+      }
+      if (placeholder) {
+        placeholder.style.height = '';
+      }
+    }
 
-    // Initialize sticky behavior
-    function initStickyTabs() {
-      if (!tabsWrapper || window.innerWidth <= 991) return;
+    function updateStickyState() {
+      if (!tabsWrapper || !tabsColumn || !container) {
+        return;
+      }
 
-      // Calculate dimensions
+      if (window.innerWidth <= 991) {
+        resetStickyStyles();
+        return;
+      }
+
       const wrapperHeight = tabsWrapper.offsetHeight;
-      const columnWidth = tabsColumn.offsetWidth;
+      const containerRect = container.getBoundingClientRect();
+      const columnRect = tabsColumn.getBoundingClientRect();
 
-      // Set placeholder height to prevent layout jump
-      placeholder.style.height = wrapperHeight + 'px';
-
-      // Function to update sticky state
-      function updateStickyState() {
-        const containerRect = container.getBoundingClientRect();
-        const wrapperRect = tabsWrapper.getBoundingClientRect();
-        const contentHeight = container.offsetHeight;
-
-        // Check if we should stick
-        if (containerRect.top <= stickyOffset &&
-            containerRect.bottom > stickyOffset + wrapperHeight) {
-          // Make sticky
-          if (!tabsWrapper.classList.contains('is-sticky')) {
-            tabsWrapper.classList.add('is-sticky');
-            tabsWrapper.style.position = 'fixed';
-            tabsWrapper.style.top = stickyOffset + 'px';
-            tabsWrapper.style.left = tabsColumn.getBoundingClientRect().left + 'px';
-            tabsWrapper.style.width = columnWidth + 'px';
-          }
-        } else if (containerRect.bottom <= stickyOffset + wrapperHeight) {
-          // Stick to bottom of container
-          tabsWrapper.classList.remove('is-sticky');
-          tabsWrapper.style.position = 'absolute';
-          tabsWrapper.style.top = 'auto';
-          tabsWrapper.style.bottom = '0';
-          tabsWrapper.style.left = '0';
-          tabsWrapper.style.width = '100%';
-        } else {
-          // Reset to normal
-          tabsWrapper.classList.remove('is-sticky');
-          tabsWrapper.style.position = '';
-          tabsWrapper.style.top = '';
-          tabsWrapper.style.left = '';
-          tabsWrapper.style.width = '';
-          tabsWrapper.style.bottom = '';
-        }
+      if (placeholder) {
+        placeholder.style.height = wrapperHeight + 'px';
       }
 
-      // Update on scroll
-      window.addEventListener('scroll', updateStickyState, { passive: true });
-      window.addEventListener('resize', () => {
-        // Recalculate dimensions on resize
-        if (tabsWrapper.classList.contains('is-sticky')) {
-          tabsWrapper.style.width = tabsColumn.offsetWidth + 'px';
-          tabsWrapper.style.left = tabsColumn.getBoundingClientRect().left + 'px';
-        }
-      });
+      const shouldFix = containerRect.top <= stickyOffset && containerRect.bottom > stickyOffset + wrapperHeight;
+      const stickToBottom = containerRect.bottom <= stickyOffset + wrapperHeight && containerRect.bottom > containerRect.top;
 
-      // Initial check
-      updateStickyState();
+      if (shouldFix) {
+        if (!tabsWrapper.classList.contains('is-sticky')) {
+          tabsWrapper.classList.add('is-sticky');
+        }
+        tabsColumn.classList.add('has-sticky-tabs');
+        tabsWrapper.style.position = 'fixed';
+        tabsWrapper.style.top = stickyOffset + 'px';
+        tabsWrapper.style.left = columnRect.left + 'px';
+        tabsWrapper.style.width = columnRect.width + 'px';
+        tabsWrapper.style.bottom = '';
+      } else if (stickToBottom) {
+        tabsWrapper.classList.remove('is-sticky');
+        tabsWrapper.style.position = 'absolute';
+        tabsWrapper.style.top = 'auto';
+        tabsWrapper.style.bottom = '0';
+        tabsWrapper.style.left = '0';
+        tabsWrapper.style.width = '100%';
+        tabsColumn.classList.add('has-sticky-tabs');
+      } else {
+        resetStickyStyles();
+      }
     }
 
-    // Initialize sticky tabs
-    initStickyTabs();
+    function updateActiveBackground(index) {
+      if (!content) return;
+      const panel = panels[index];
+      if (!panel) return;
+      const color = panel.dataset.panelBg;
+      if (color) {
+        content.style.setProperty('--agents-active-bg', color);
+      }
+    }
 
-    // Update active tab based on index
-    function setActiveTab(index) {
-      if (index === currentIndex) return;
+    function setActiveTab(index, options = {}) {
+      const { focus = false, force = false } = options;
+      if (index < 0 || index >= tabs.length) {
+        return;
+      }
 
-      // Remove active class from all
-      tabs.forEach(tab => {
-        tab.classList.remove('active');
-        tab.setAttribute('aria-selected', 'false');
+      if (index === currentIndex && !force) {
+        if (focus && tabs[index]) {
+          tabs[index].focus();
+        }
+        return;
+      }
+
+      tabs.forEach((tab, tabIndex) => {
+        const isActive = tabIndex === index;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        tab.setAttribute('tabindex', isActive ? '0' : '-1');
+        if (isActive && focus) {
+          tab.focus();
+        }
       });
-      progressDots.forEach(dot => dot.classList.remove('active'));
-      panels.forEach(panel => panel.classList.remove('in-view'));
 
-      // Add active class to current
-      if (tabs[index]) {
-        tabs[index].classList.add('active');
-        tabs[index].setAttribute('aria-selected', 'true');
+      panels.forEach((panel, panelIndex) => {
+        const isActive = panelIndex === index;
+        panel.classList.toggle('in-view', isActive);
+        panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        panel.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
 
-        // Add in-view class to panel
-        if (panels[index]) {
-          panels[index].classList.add('in-view');
-        }
+      progressDots.forEach((dot, dotIndex) => {
+        dot.classList.toggle('active', dotIndex === index);
+      });
 
-        // Update progress dot
-        if (progressDots[index]) {
-          progressDots[index].classList.add('active');
-        }
-
-        // Scroll tab into view on mobile
-        if (window.innerWidth <= 991) {
-          const tabsContainer = section.querySelector('.agents-showcase__tabs');
-          const activeTab = tabs[index];
-          if (tabsContainer && activeTab) {
-            const scrollLeft = activeTab.offsetLeft - (tabsContainer.offsetWidth / 2) + (activeTab.offsetWidth / 2);
+      if (tabsContainer && window.innerWidth <= 991) {
+        const activeTab = tabs[index];
+        if (activeTab && tabsContainer.scrollWidth > tabsContainer.clientWidth) {
+          const scrollLeft = activeTab.offsetLeft - (tabsContainer.offsetWidth / 2) + (activeTab.offsetWidth / 2);
+          const targetLeft = Math.max(0, scrollLeft);
+          if (typeof tabsContainer.scrollTo === 'function') {
             tabsContainer.scrollTo({
-              left: Math.max(0, scrollLeft),
+              left: targetLeft,
               behavior: 'smooth'
             });
+          } else {
+            tabsContainer.scrollLeft = targetLeft;
           }
         }
+      }
 
-        currentIndex = index;
+      updateActiveBackground(index);
+      currentIndex = index;
+    }
+
+    function scrollToPanel(index) {
+      const panel = panels[index];
+      if (!panel) return;
+
+      if (scrollUnlockTimeoutId) {
+        window.clearTimeout(scrollUnlockTimeoutId);
+      }
+
+      isScrolling = true;
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+
+      scrollUnlockTimeoutId = window.setTimeout(() => {
+        isScrolling = false;
+        if (enableScrollSpy) {
+          updateActivePanel();
+        }
+      }, SCROLL_LOCK_TIMEOUT);
+    }
+
+    function handleTabSelection(index, options = {}) {
+      const { focus = false, scroll = true, force = false } = options;
+      setActiveTab(index, { focus, force });
+      if (scroll) {
+        scrollToPanel(index);
       }
     }
 
-    // Find which panel is currently in view
     function updateActivePanel() {
-      if (!enableScrollSpy || isScrolling) return;
+      if (!enableScrollSpy || !panels.length) {
+        return;
+      }
 
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-
-      // Find the panel that's most in view
-      let activeIndex = 0;
-      let maxVisibility = 0;
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+      let activeIndex = currentIndex >= 0 ? currentIndex : 0;
+      let maxVisibility = -1;
 
       panels.forEach((panel, index) => {
         const rect = panel.getBoundingClientRect();
-        const panelTop = rect.top;
-        const panelBottom = rect.bottom;
-        const panelHeight = rect.height;
+        const visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0));
+        const ratio = rect.height > 0 ? visibleHeight / rect.height : 0;
 
-        // Calculate how much of the panel is visible
-        const visibleTop = Math.max(0, Math.min(panelBottom, windowHeight));
-        const visibleBottom = Math.max(0, Math.min(windowHeight, windowHeight - panelTop));
-        const visibleHeight = Math.min(visibleTop, visibleBottom);
-        const visibilityRatio = visibleHeight / panelHeight;
-
-        // If this panel is more visible than previous ones, it's our active panel
-        if (visibilityRatio > maxVisibility) {
-          maxVisibility = visibilityRatio;
+        if (ratio > maxVisibility) {
+          maxVisibility = ratio;
           activeIndex = index;
         }
       });
 
-      setActiveTab(activeIndex);
-    }
-
-    // Smooth scroll to panel when tab is clicked
-    function scrollToPanel(index) {
-      const panel = panels[index];
-      if (panel) {
-        isScrolling = true;
-        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        // Re-enable scroll spy after animation
-        setTimeout(() => {
-          isScrolling = false;
-        }, 1000);
+      if (activeIndex !== currentIndex) {
+        setActiveTab(activeIndex);
       }
     }
 
-    // Handle tab clicks
-    tabs.forEach((tab, index) => {
-      tab.addEventListener('click', (e) => {
-        e.preventDefault();
-        scrollToPanel(index);
-        setActiveTab(index);
+    function handleWindowScroll() {
+      updateStickyState();
+      if (!enableScrollSpy || isScrolling) {
+        return;
+      }
+      if (scrollScheduled) {
+        return;
+      }
+      scrollScheduled = true;
+      window.requestAnimationFrame(() => {
+        scrollScheduled = false;
+        updateActivePanel();
       });
-    });
-
-    // Handle progress dot clicks
-    progressDots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        scrollToPanel(index);
-        setActiveTab(index);
-      });
-    });
-
-    // Set up scroll listener
-    if (enableScrollSpy) {
-      let scrollTimeout;
-
-      window.addEventListener('scroll', () => {
-        if (!scrollTimeout) {
-          scrollTimeout = setTimeout(() => {
-            scrollTimeout = null;
-            updateActivePanel();
-          }, 50);
-        }
-      }, { passive: true });
-
-      // Initial check
-      updateActivePanel();
     }
 
-    // Handle window resize
-    window.addEventListener('resize', () => {
-      updateActivePanel();
+    function handleResize() {
+      stickyOffset = getStickyOffset();
+      updateStickyState();
+      if (enableScrollSpy && !isScrolling) {
+        updateActivePanel();
+      }
+    }
+
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+
+    cleanupFns.push(() => window.removeEventListener('scroll', handleWindowScroll));
+    cleanupFns.push(() => window.removeEventListener('resize', handleResize));
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', (event) => {
+        event.preventDefault();
+        handleTabSelection(index, { focus: true });
+      });
+
+      tab.addEventListener('keydown', (event) => {
+        let targetIndex = null;
+        switch (event.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+            targetIndex = (index + 1) % tabs.length;
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+            targetIndex = (index - 1 + tabs.length) % tabs.length;
+            break;
+          case 'Home':
+            targetIndex = 0;
+            break;
+          case 'End':
+            targetIndex = tabs.length - 1;
+            break;
+          case 'Enter':
+          case ' ': // Space
+          case 'Spacebar':
+            event.preventDefault();
+            handleTabSelection(index, { focus: true });
+            return;
+          default:
+            return;
+        }
+
+        if (targetIndex !== null) {
+          event.preventDefault();
+          handleTabSelection(targetIndex, { focus: true });
+        }
+      });
     });
-  });
+
+    progressDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        handleTabSelection(index);
+      });
+    });
+
+    const initialIndex = Math.max(0, tabs.findIndex((tab) => tab.classList.contains('active')));
+    handleTabSelection(initialIndex, { scroll: false, force: true });
+
+    updateStickyState();
+    if (enableScrollSpy) {
+      updateActivePanel();
+    }
+  })();
 </script>
 
 {% schema %}
@@ -791,6 +1044,17 @@
   "name": "Feature - Tabs Scroll",
   "class": "agents-showcase",
   "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-tabs-scroll",
+      "info": "Custom ID for internal linking (e.g., #feature-tabs-scroll)"
+    },
     {
       "type": "text",
       "id": "title",

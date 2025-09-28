@@ -1,7 +1,7 @@
 <!-- Javascripts ======================================================= -->
 {{ "encore_core.js" | kajabi_asset_url | script_tag }}
 
-{% comment %} 
+{% comment %}
   Modern AN Theme Scripts - Lightweight and performant
   Old scripts.js (980KB) replaced with modular approach
 {% endcomment %}
@@ -19,10 +19,7 @@
 {% endcomment %}
 
 <!-- Google Tag Manager (noscript) -->
-{% if settings.gtm_id and settings.gtm_id != '' %}
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.gtm_id }}"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-{% endif %}
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKCGMPHT" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Custom Body Scripts -->
 {% if settings.body_scripts and settings.body_scripts != '' %}

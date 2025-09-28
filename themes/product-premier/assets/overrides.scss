@@ -1,0 +1,257 @@
+/*============================================================================
+  #Override Stylesheet
+  #Add Custom Styles Here
+==============================================================================*/
+
+/* Design tokens (subset) to align with landing theme */
+:root {
+  --c-brand-600: #5e3bff;
+  --c-brand-800: #4025e0;
+  --c-ink-900: #1b1b29;
+  --c-ink-700: #323346;
+  --c-ink-500: #6e6f7b;
+  --c-white: #ffffff;
+  --g-brand: linear-gradient(135deg, #6757ff 0%, #7b4dff 100%);
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+  --border-light: rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 8px 20px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Typography: improve hierarchy and readability                              */
+/* -------------------------------------------------------------------------- */
+html { font-size: 16px; }
+body {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--c-ink-700);
+}
+h1, .h1 { font-size: 2.5rem; line-height: 1.2; color: var(--c-ink-900); }
+h2, .h2 { font-size: 1.875rem; line-height: 1.25; color: var(--c-ink-900); }
+h3, .h3 { font-size: 1.5rem; line-height: 1.3; color: var(--c-ink-900); }
+h4, .h4 { font-size: 1.25rem; line-height: 1.35; color: var(--c-ink-900); }
+h5, .h5 { font-size: 1.125rem; line-height: 1.4; color: var(--c-ink-900); }
+h6, .h6 { font-size: 1rem; line-height: 1.4; color: var(--c-ink-900); }
+p { margin: 0 0 0.85rem; }
+
+/* Buttons: align with brand look */
+.btn {
+  transition: transform .15s ease, filter .15s ease, box-shadow .2s ease;
+}
+.btn--solid {
+  background: var(--g-brand);
+  border-color: transparent;
+  color: #fff !important;
+  box-shadow: 0 10px 22px rgba(94, 59, 255, .25);
+}
+.btn--solid:hover { filter: brightness(1.02); transform: translateY(-1px); }
+.btn--outline { border-color: var(--c-brand-600); color: var(--c-brand-600) !important; }
+.btn--outline:hover { filter: brightness(1.05); }
+
+/* Card baseline */
+.an-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.an-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.an-card:focus-within { box-shadow: 0 0 0 3px rgba(94,59,255,.2), var(--shadow-card); }
+
+/* Apply card styling to common objects without changing markup */
+/* Panels */
+.panel, .panel__block {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  color: var(--c-ink-700);
+}
+.panel__block { padding: 24px; }
+
+/* Syllabus/category items */
+.syllabus__item a {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.syllabus__item a:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.syllabus__img .thumb, .syllabus__img .img-responsive { border-radius: var(--radius-md); }
+.syllabus__title { color: var(--c-ink-900); font-weight: 700; }
+.syllabus__text { color: var(--c-ink-700); }
+
+/* Make card images larger and bolder */
+.syllabus__img .thumb,
+.syllabus__img .img-responsive {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  box-shadow: var(--shadow-media);
+}
+@media (max-width: 768px) {
+  .syllabus__img .thumb,
+  .syllabus__img .img-responsive { width: 120px; height: 90px; }
+}
+
+/* Playlist tracks (default light context) */
+.track {
+  background: #fff;
+  color: var(--c-ink-900);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  margin-bottom: 10px;
+  filter: none;
+}
+.track:hover { color: var(--c-ink-900); }
+.track--active { background: #fff; border-color: rgba(94,59,255,.35); box-shadow: 0 0 0 2px rgba(94,59,255,.12), var(--shadow-card); }
+.track__title { color: var(--c-ink-900); font-weight: 600; }
+.track__count { color: var(--c-ink-500); }
+.track__count.active { color: var(--c-brand-600); }
+.progress__bar { background: rgba(0,0,0,.08); }
+.progress__fill { background: var(--c-brand-600); }
+.track__thumb { width: 120px; height: 72px; object-fit: cover; border-radius: var(--radius-md); box-shadow: var(--shadow-media); }
+@media (max-width: 768px) { .track__thumb { width: 96px; height: 60px; } }
+
+.media { gap: 14px; }
+
+/* Downloads list rows */
+.downloads__download {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 14px 16px;
+  color: var(--c-ink-700);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.downloads__download + .downloads__download { margin-top: 8px; }
+.downloads__download:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+/* Comments and user dropdown menu */
+.comment, .user__dropdown {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  color: var(--c-ink-700);
+}
+
+/* Focus ring for links acting like cards */
+.syllabus__item a:focus, .downloads__download:focus, .track:focus { outline: 3px solid rgba(94,59,255,.25); outline-offset: 2px; }
+
+/* -------------------------------------------------------------------------- */
+/* Video player cards: keep dark theme with strong contrast                    */
+/* -------------------------------------------------------------------------- */
+.video--player,
+.video--player .panel,
+.video--player .panel__block {
+  background: #0b0f19 !important;
+  color: #fff !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+.video--player h1,
+.video--player h2,
+.video--player h3,
+.video--player h4,
+.video--player h5,
+.video--player h6 { color: #fff; }
+.video--player a { color: #cfd8ff; }
+.video--player .btn--outline { border-color: #cfd8ff; color: #cfd8ff !important; }
+.video--player .btn--solid { background: var(--g-purple-dark); box-shadow: 0 10px 22px rgba(0,0,0,.35); }
+
+/* Dark playlist styling scoped to the player (playlist is sibling of video) */
+.player .playlist { background: #141827; color: #fff; }
+.player .playlist__title { background: #101423; }
+.player .playlist__title h2 { color: #fff; font-size: 1rem; }
+.player .playlist__title h3 { color: rgba(255,255,255,.7); font-size: .875rem; }
+.player .track {
+  background: #1a1f2e;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: none;
+}
+.player .track:hover { filter: none; box-shadow: 0 0 0 2px rgba(94,59,255,.25); }
+.player .track--active { background: #1e2434; border-color: rgba(94,59,255,.5); box-shadow: 0 0 0 2px rgba(94,59,255,.25); }
+.player .track__title { color: #fff; }
+.player .track__count { color: rgba(255,255,255,.7); }
+.player .track__count.active { color: #cfd8ff; }
+.player .progress__bar { background: rgba(255,255,255,.18); }
+.player .progress__fill { background: #cfd8ff; }
+
+/* Ensure player nav CTA uses white text */
+.video--player .player__nav .btn { color: #fff !important; }
+.video--player .player__nav .btn--outline { border-color: #cfd8ff; color: #cfd8ff !important; }
+.video--player .player__nav .btn--solid { background: var(--g-purple-dark); }
+
+/* Post body readability and reduce nested shadows */
+.panel__body h1 { font-size: 2.5rem; }
+.panel__body h2 { font-size: 1.75rem; }
+.panel__body h3 { font-size: 1.375rem; }
+.panel__body p, .panel__body li { font-size: 1.325rem; line-height: 1.8; }
+.panel__body ul { margin-left: 1.1rem; }
+
+/* Keep Download items/CTA at their own baseline, not post-scaled */
+.panel__body .downloads,
+.panel__body .downloads__download,
+.panel__body .downloads__download .media-body { font-size: 1rem; line-height: 1.6; }
+.panel__body .dl-btn { font-size: 1rem; }
+.panel .downloads__download,
+.panel .track,
+.panel .comment,
+.panel .user__dropdown { box-shadow: none !important; }
+.panel .downloads__download { border-color: var(--border-light); }
+
+/* -------------------------------------------------------------------------- */
+/* Big Idea inline card                                                       */
+/* -------------------------------------------------------------------------- */
+#big-idea-inline { margin: 1.25rem 0; }
+#big-idea-inline .bi-card {
+  --bi-bg: var(--bi-bg, #f5f7ff);
+  --bi-fg: var(--bi-fg, var(--c-ink-900));
+  display: block;
+  background: var(--bi-bg);
+  color: var(--bi-fg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 20px 22px;
+}
+#big-idea-inline .bi-pad-lg { padding: 28px 30px; }
+#big-idea-inline .is-rounded { border-radius: var(--radius-lg); }
+#big-idea-inline .bi-align-center { text-align: center; }
+#big-idea-inline .bi-label {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.25);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: var(--radius-pill);
+  padding: 6px 10px;
+  margin: 0 0 8px;
+}
+#big-idea-inline .bi-text {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  font-weight: 700;
+  color: #fff; /* default assumes vivid bg; override via --bi-fg if needed */
+  text-wrap: balance;
+}
+@media (max-width: 768px){
+  #big-idea-inline .bi-card{ padding:18px; }
+  #big-idea-inline .bi-text{ font-size:1.0625rem; }
+}

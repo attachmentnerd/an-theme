@@ -1,4 +1,4 @@
-<section class="sa-testimonials py-5">
+<section id="{{ section.settings.section_id | default: 'testimonial-sa-book-style' }}-{{ section.id }}" class="sa-testimonials py-5">
   <div class="container">
     <div class="text-center mb-5 animate-fade-up">
       <h2 class="mb-3" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
@@ -25,13 +25,13 @@
             
             <div class="d-flex align-items-center justify-content-center">
               {% if block.settings.author_image %}
-                <div kjb-settings-id="{{ '>
-  <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
-             alt="{{ {{ block.settings.author }} }}" 
-             class="rounded-circle me-3"
-             loading="lazy"
-             style="object-fit: cover;">
-</div>
+                <div kjb-settings-id="{{ 'author_image' | settings_id: section: section, block: block }}">
+                  <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
+                       alt="{{ block.settings.author }}" 
+                       class="rounded-circle me-3"
+                       loading="lazy"
+                       style="object-fit: cover;">
+                </div>
               {% else %}
                 <div class="rounded-circle me-3 d-flex align-items-center justify-content-center" 
                      style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--c-brand-600) 0%, var(--c-brand-800) 100%); color: white; font-weight: 600;">
@@ -76,7 +76,7 @@
                 {% if block.settings.author_image %}
                   <div kjb-settings-id="{{ '>
   <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
-             alt="{{ {{ block.settings.author }} }}" 
+             alt="{{ block.settings.author }}" 
              class="rounded-circle me-2"
              loading="lazy"
              style="object-fit: cover;">
@@ -141,7 +141,18 @@
   "name": "Testimonial - SA Book Style",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "testimonial-sa-book-style",
+      "info": "Custom ID for internal linking (e.g., #testimonial-sa-book-style)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Praise for Securely Attached"

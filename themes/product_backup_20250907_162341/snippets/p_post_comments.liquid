@@ -1,0 +1,57 @@
+{% assign user_avatar = current_site_user | avatar_url %}
+
+{% unless post.comments_mode_hidden? %}
+  <div class="comments">
+    <div class="main-content-container">
+      {% if block.settings.comment_form_position == "top" %}
+        {% if post.comments_mode_locked? %}
+          <h4 class="comments-locked" kjb-settings-id="{{'language_comment_locked' | settings_id: section: section,block: block}}">
+            {% include 'icon', icon: 'lock', size: 16 %}
+            {{ block.settings.language_comment_locked }}
+          </h4>
+        {% elsif current_site_user.muted? != true %}
+          <h3 class="comment-form-title">Type your comment</h3>
+          {% form "comment", post %}
+            <div class="media">
+              <div>
+                <img class="comments-img" src="{{ user_avatar }}" />
+              </div>
+              <div class="media-body">
+                <textarea
+                  class="form-control"
+                  id="comment_body"
+                  kjb-settings-id="{{'language_comment_placeholder' | settings_id: section: section,block: block}}"
+                  name="comment[body]"
+                  placeholder="{{ block.settings.language_comment_placeholder }}"
+                  rows="5"></textarea>
+                <input
+                  class="btn comments-btn"
+                  data-disable-with="{{ block.settings.language_comment_submitting }}"
+                  kjb-settings-id="{{'language_comment_add' | settings_id: section: section,block: block}}"
+                  name="commit"
+                  type="submit"
+                  value="{{ block.settings.language_comment_add }}">
+              </div>
+            </div>
+          {% endform %}
+        {% endif %}
+      {% endif %}
+      {% if post.comments.size > 0 %}
+        <h3 class="comment-form-title">{{ block.settings.language_comment_title }}</h3>
+        <p>{{ block.settings.language_comment_description }}</p>
+        <div class="comment-block-wrapper" data-comments-list>
+          {% for comment in post.comments_toplevel %}
+            {% include "comment" %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if block.settings.comment_form_position == "bottom" %}
+        {% include "p_comment_input" %}
+      {% endif %}
+    </div>
+  </div>
+{% else %}
+  <div class="comment_unavailable">
+    <span>Comments UnAvailable</span>
+  </div>
+{% endunless %}

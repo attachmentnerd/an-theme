@@ -1,4 +1,4 @@
-<section class="sa-journey py-5" style="background: var(--c-brand-100);">
+<section id="{{ section.settings.section_id | default: 'book-journey-sa' }}-{{ section.id }}" class="sa-journey py-5" style="background: var(--c-brand-100);">
   <div class="container">
     <div class="text-center mb-5 animate-fade-up">
       <h2 class="mb-4" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
@@ -59,7 +59,18 @@
   "name": "Book - Journey SA",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "book-journey-sa",
+      "info": "Custom ID for internal linking (e.g., #book-journey-sa)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Your Journey to Secure Love in 4 Steps"

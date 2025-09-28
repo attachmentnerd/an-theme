@@ -2,7 +2,7 @@
 <!-- Consolidates: book_showcase_modern, book_showcase_sa, book_showcase_rsak, book_details, feature_single_clean -->
 <!-- Version: 1.0.0 -->
 
-<section class="book-showcase-unified section--{{ section.id }} {{ section.settings.additional_classes }}" 
+<section id="{{ section.settings.section_id | default: 'book-showcase-unified' }}-{{ section.id }}" class="book-showcase-unified section--{{ section.id }} {{ section.settings.additional_classes }}" 
          data-section-id="{{ section.id }}"
          style="background-color: {{ section.settings.background_color | default: 'transparent' }}; 
                 padding-top: {{ section.settings.padding_top | default: 40 }}px; 
@@ -99,7 +99,7 @@
         {% if section.settings.award_badge_image %}
           <div class="award-badge position-absolute" style="bottom: 10px; right: 10px; z-index: 2;">
             <img src="{{ section.settings.award_badge_image | image_picker_url: '240x80' }}" 
-             alt="{{ Award badge }}" 
+             alt="Award badge" 
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -316,11 +316,11 @@
   }
 
   /* Feature Pills */
-  .section--{{ section.id }} .feature-pill {
+  .section--{{ section.id }} .book-showcase-unified .feature-pill {
     transition: all 0.2s ease;
   }
   
-  .section--{{ section.id }} .feature-pill:hover {
+  .section--{{ section.id }} .book-showcase-unified .feature-pill:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(94, 59, 255, 0.15);
   }
@@ -358,7 +358,7 @@
       top: 10px !important;
     }
     
-    .section--{{ section.id }} .feature-pills {
+    .section--{{ section.id }} .book-showcase-unified .feature-pills {
       justify-content: center;
     }
   }
@@ -388,8 +388,19 @@
   "name": "Book Showcase (Unified)",
   "elements": [
     {
-      "type": "header",
-      "label": "Layout & Style"
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "book-showcase-unified",
+      "info": "Custom ID for internal linking (e.g., #book-showcase-unified)"
+    },
+      {
+        "type": "header",
+      "content": "Layout & Style"
     },
     {
       "type": "select",
@@ -455,7 +466,7 @@
     },
     {
       "type": "header",
-      "label": "Book/Product Details"
+      "content": "Book/Product Details"
     },
     {
       "type": "image_picker",
@@ -478,7 +489,7 @@
     },
     {
       "type": "header",
-      "label": "Content"
+      "content": "Content"
     },
     {
       "type": "text",
@@ -571,7 +582,7 @@
     },
     {
       "type": "header",
-      "label": "Features Display"
+      "content": "Features Display"
     },
     {
       "type": "select",
@@ -599,7 +610,7 @@
     },
     {
       "type": "header",
-      "label": "Badges & Awards"
+      "content": "Badges & Awards"
     },
     {
       "type": "checkbox",
@@ -631,7 +642,7 @@
     },
     {
       "type": "header",
-      "label": "Inline Testimonial"
+      "content": "Inline Testimonial"
     },
     {
       "type": "checkbox",
@@ -661,7 +672,7 @@
     },
     {
       "type": "header",
-      "label": "CTA Box"
+      "content": "CTA Box"
     },
     {
       "type": "checkbox",
@@ -697,7 +708,7 @@
     },
     {
       "type": "header",
-      "label": "Testimonial Layout Options"
+      "content": "Testimonial Layout Options"
     },
     {
       "type": "checkbox",
@@ -725,7 +736,7 @@
     },
     {
       "type": "header",
-      "label": "Visual Effects"
+      "content": "Visual Effects"
     },
     {
       "type": "checkbox",
@@ -755,7 +766,7 @@
     },
     {
       "type": "header",
-      "label": "Spacing"
+      "content": "Spacing"
     },
     {
       "type": "range",

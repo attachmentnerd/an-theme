@@ -8,41 +8,41 @@
   /* ==========================================================================
      Button State Animations
      ========================================================================== */
-  
+
   /* Button with states */
   .btn-with-states {
     position: relative;
     transition: all 0.3s var(--ease-spring);
     overflow: hidden;
   }
-  
+
   .btn-with-states .btn-text {
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  
+
   /* Loading state */
   .btn-with-states.is-loading .btn-text {
     opacity: 0;
     transform: scale(0.8);
   }
-  
+
   .btn-with-states.is-loading {
     pointer-events: none;
     color: transparent !important;
   }
-  
+
   /* Success state */
   .btn-with-states.is-success .btn-text {
     opacity: 0;
     transform: scale(0.8);
   }
-  
+
   .btn-with-states.is-success {
     background: var(--c-accent-teal) !important;
     border-color: var(--c-accent-teal) !important;
     pointer-events: none;
   }
-  
+
   /* Spinner */
   .btn-spinner {
     position: absolute;
@@ -54,11 +54,11 @@
     opacity: 0;
     transition: opacity 0.2s ease;
   }
-  
+
   .btn-with-states.is-loading .btn-spinner {
     opacity: 1;
   }
-  
+
   .btn-spinner::after {
     content: '';
     position: absolute;
@@ -69,7 +69,7 @@
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
-  
+
   /* Success checkmark */
   .btn-success-icon {
     position: absolute;
@@ -81,25 +81,25 @@
     opacity: 0;
     transition: all 0.3s var(--ease-spring);
   }
-  
+
   .btn-with-states.is-success .btn-success-icon {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     animation: successPulse 0.5s ease;
   }
-  
+
   /* SVG checkmark animation */
   .btn-success-icon svg {
     width: 100%;
     height: 100%;
   }
-  
+
   .btn-success-icon path {
     stroke-dasharray: 28;
     stroke-dashoffset: 28;
     animation: checkmark 0.4s ease 0.1s forwards;
   }
-  
+
   /* Ripple effect on click */
   .btn-ripple {
     position: absolute;
@@ -109,29 +109,29 @@
     animation: ripple 0.6s ease-out;
     pointer-events: none;
   }
-  
+
   /* Animations */
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
-  
+
   @keyframes checkmark {
     to { stroke-dashoffset: 0; }
   }
-  
+
   @keyframes successPulse {
     0% { transform: translate(-50%, -50%) scale(0); }
     50% { transform: translate(-50%, -50%) scale(1.2); }
     100% { transform: translate(-50%, -50%) scale(1); }
   }
-  
+
   @keyframes ripple {
     to {
       transform: scale(4);
       opacity: 0;
     }
   }
-  
+
   /* Form feedback messages */
   .form-feedback,
   .form-error,
@@ -148,7 +148,7 @@
     align-items: center;
     gap: 0.75rem;
   }
-  
+
   .form-feedback.show,
   .form-error.show,
   .success-message.show,
@@ -156,13 +156,13 @@
     opacity: 1;
     transform: translateY(0);
   }
-  
+
   .form-feedback.success {
     background: rgba(24, 213, 228, 0.1);
     color: var(--c-accent-teal);
     border: 1px solid rgba(24, 213, 228, 0.2);
   }
-  
+
   .form-feedback.error,
   .form-error,
   .error-message {
@@ -170,7 +170,7 @@
     color: #E53E3E;
     border: 1px solid rgba(255, 139, 203, 0.2);
   }
-  
+
   /* Form input validation states */
   input.error,
   textarea.error,
@@ -179,7 +179,7 @@
     border-color: var(--c-accent-peach) !important;
     background: rgba(255, 139, 203, 0.05) !important;
   }
-  
+
   input.error:focus,
   textarea.error:focus,
   select.error:focus,
@@ -187,7 +187,7 @@
     border-color: var(--c-accent-peach) !important;
     box-shadow: 0 0 0 3px rgba(255, 139, 203, 0.1) !important;
   }
-  
+
   /* Success icons for feedback messages */
   .form-feedback.success::before,
   .success-message::before {
@@ -197,7 +197,7 @@
     background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='9' fill='%2318D5E4'/%3E%3Cpath d='M14 7L8.5 12.5L6 10' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
     flex-shrink: 0;
   }
-  
+
   /* Error icons for feedback messages */
   .form-feedback.error::before,
   .form-error::before,
@@ -208,18 +208,18 @@
     background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='9' fill='%23FF6B6B'/%3E%3Cpath d='M10 6V10M10 14H10.01' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
     flex-shrink: 0;
   }
-  
+
   /* Button group animations */
   .btn-group-animated .btn {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeUpIn 0.5s var(--ease-spring) forwards;
   }
-  
+
   .btn-group-animated .btn:nth-child(1) { animation-delay: 0.1s; }
   .btn-group-animated .btn:nth-child(2) { animation-delay: 0.2s; }
   .btn-group-animated .btn:nth-child(3) { animation-delay: 0.3s; }
-  
+
   @keyframes fadeUpIn {
     to {
       opacity: 1;
@@ -231,11 +231,18 @@
 <script>
   // Enhanced Button State Management with Form Validation
   document.addEventListener('DOMContentLoaded', function() {
+    // Respect reduced motion and small screens for micro-interactions
+    var enableFX = false;
+    try {
+      enableFX = window.matchMedia && window.matchMedia('(prefers-reduced-motion: no-preference)').matches && window.innerWidth >= 768;
+    } catch(e) { enableFX = window.innerWidth >= 768; }
     // Add button HTML structure
     function enhanceButton(button) {
       if (!button.classList.contains('btn-enhanced')) {
         button.classList.add('btn-enhanced', 'btn-with-states');
-        const text = button.innerHTML;
+        // Preserve existing inline structure if present for SSR/plain text
+        const existingTextNode = button.querySelector('.btn-text');
+        const text = existingTextNode ? existingTextNode.textContent : button.textContent;
         button.innerHTML = `
           <span class="btn-text">${text}</span>
           <span class="btn-spinner"></span>
@@ -247,7 +254,7 @@
         `;
       }
     }
-    
+
     // Add ripple effect
     function createRipple(event) {
       const button = event.currentTarget;
@@ -256,30 +263,30 @@
       const size = Math.max(rect.width, rect.height);
       const x = event.clientX - rect.left - size / 2;
       const y = event.clientY - rect.top - size / 2;
-      
+
       ripple.style.width = ripple.style.height = size + 'px';
       ripple.style.left = x + 'px';
       ripple.style.top = y + 'px';
       ripple.classList.add('btn-ripple');
-      
+
       button.appendChild(ripple);
-      
+
       setTimeout(() => ripple.remove(), 600);
     }
-    
+
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
     // Enhanced validation function
     function validateField(field) {
       const value = field.value.trim();
-      
+
       // Required field validation
       if (field.hasAttribute('required') && !value) {
         field.classList.add('error');
         return { valid: false, message: 'This field is required' };
       }
-      
+
       // Email validation
       if (field.type === 'email' && value) {
         if (!emailRegex.test(value)) {
@@ -287,7 +294,7 @@
           return { valid: false, message: 'Please enter a valid email address' };
         }
       }
-      
+
       // Phone validation
       if (field.type === 'tel' && value) {
         const phoneRegex = /^[\d\s\-\(\)\+]+$/;
@@ -296,11 +303,11 @@
           return { valid: false, message: 'Please enter a valid phone number' };
         }
       }
-      
+
       field.classList.remove('error');
       return { valid: true };
     }
-    
+
     // Show validation error
     function showError(form, message) {
       let errorMsg = form.querySelector('.form-feedback.error, .form-error, .error-message');
@@ -314,7 +321,7 @@
         errorMsg.classList.add('show');
       }
     }
-    
+
     // Hide validation messages
     function hideMessages(form) {
       const messages = form.querySelectorAll('.form-feedback, .form-error, .success-message');
@@ -323,12 +330,12 @@
         setTimeout(() => msg.style.display = 'none', 300);
       });
     }
-    
+
     // Handle form submissions
     document.querySelectorAll('form').forEach(form => {
       const submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
       const fields = form.querySelectorAll('input, textarea, select');
-      
+
       // Add real-time validation to all fields
       fields.forEach(field => {
         // Clear error on input
@@ -338,7 +345,7 @@
             hideMessages(form);
           }
         });
-        
+
         // Validate on blur
         field.addEventListener('blur', function() {
           const validation = validateField(this);
@@ -347,19 +354,21 @@
           }
         });
       });
-      
+
       if (submitBtn && submitBtn.tagName === 'BUTTON') {
         enhanceButton(submitBtn);
         const originalText = submitBtn.textContent;
-        
-        // Add ripple on click
-        submitBtn.addEventListener('click', createRipple);
-        
+
+        // Add ripple on click if effects enabled
+        if (enableFX) {
+          submitBtn.addEventListener('click', createRipple);
+        }
+
         form.addEventListener('submit', function(e) {
           // Validate all required fields
           let isValid = true;
           const requiredFields = form.querySelectorAll('[required]');
-          
+
           requiredFields.forEach(field => {
             const validation = validateField(field);
             if (!validation.valid) {
@@ -368,23 +377,23 @@
               showError(form, validation.message);
             }
           });
-          
+
           if (!isValid) {
             e.preventDefault();
             return;
           }
-          
+
           // If using AJAX submission (check for data-ajax attribute)
           if (form.hasAttribute('data-ajax') || form.hasAttribute('data-form-type')) {
             e.preventDefault();
-            
+
             // Hide any existing messages
             hideMessages(form);
-            
+
             // Show loading state
             submitBtn.classList.add('is-loading');
             submitBtn.disabled = true;
-            
+
             // Update button text if data-loading-text is present
             const loadingText = submitBtn.getAttribute('data-loading-text') || 'Sending...';
             if (submitBtn.querySelector('.btn-text')) {
@@ -392,36 +401,37 @@
             } else {
               submitBtn.textContent = loadingText;
             }
-            
+
             // Disable form inputs
             fields.forEach(field => field.disabled = true);
-            
+
             // Get form data
             const formData = new FormData(form);
-            
+
             // Simulate form submission (replace with actual AJAX call)
             setTimeout(() => {
               // Show success state
               submitBtn.classList.remove('is-loading');
               submitBtn.classList.add('is-success');
-              
+
               // Show success message
               let successMsg = form.querySelector('.form-feedback.success, .success-message');
               if (!successMsg) {
                 successMsg = document.createElement('div');
                 successMsg.className = 'form-feedback success';
-                successMsg.innerHTML = '<span>Success! Your message has been sent.</span>';
+                var customSuccess = (form.closest('[data-form-scope]') && form.closest('[data-form-scope]').getAttribute('data-success-message')) || 'Success! Your message has been sent.';
+                successMsg.innerHTML = '<span>' + customSuccess + '</span>';
                 form.appendChild(successMsg);
               }
               successMsg.style.display = 'flex';
               successMsg.classList.add('show');
-              
+
               // Reset form
               form.reset();
-              
+
               // Re-enable fields
               fields.forEach(field => field.disabled = false);
-              
+
               // Reset button after delay
               setTimeout(() => {
                 submitBtn.classList.remove('is-success');
@@ -431,7 +441,7 @@
                 } else {
                   submitBtn.textContent = originalText;
                 }
-                
+
                 // Hide success message after 5 seconds
                 setTimeout(() => {
                   if (successMsg) {
@@ -447,7 +457,7 @@
         });
       }
     });
-    
+
     // Enhance standalone CTAs
     document.querySelectorAll('.btn-primary-modern, .btn-secondary-modern').forEach(btn => {
       if (btn.tagName === 'BUTTON' && !btn.closest('form')) {

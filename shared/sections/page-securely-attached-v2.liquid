@@ -163,7 +163,7 @@
 <div class="page-securely-attached-v2">
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="{{ section.settings.section_id | default: 'securely-attached-v2' }}-{{ section.id }}" class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="bestseller-badge">
@@ -482,7 +482,18 @@
   "class": "page-securely-attached-v2",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "securely-attached-v2",
+      "info": "Custom ID for internal linking (e.g., #securely-attached-v2)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

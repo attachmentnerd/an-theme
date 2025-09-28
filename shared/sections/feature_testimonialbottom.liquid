@@ -6,14 +6,79 @@
   - Brand-aligned design
 {% endcomment %}
 
-<section class="an-feature-testimonial py-5" style="background-color: {{ section.settings.background_color | default: '#FAFAFA' }};">
+<section id="{{ section.settings.section_id | default: 'feature-testimonialbottom' }}-{{ section.id }}" class="an-feature-testimonial py-5" style="background-color: {{ section.settings.background_color | default: '#FAFAFA' }};">
   <div class="container">
     <!-- Main Constrained Box -->
     <div class="an-feature-testimonial__box">
-      <div class="row align-items-center">
+      <div class="row align-items-center" style="--image-order: {% if section.settings.image_position == 'left' %}1{% else %}2{% endif %}; --content-order: {% if section.settings.image_position == 'left' %}2{% else %}1{% endif %};">
+        <!-- Media Column (Image or Video) -->
+        <div class="col-lg-6 order-1 image-column">
+          <div class="an-feature-testimonial__image" style="background: {{ section.settings.image_bg_color | default: 'linear-gradient(135deg, #F8F9FF 0%, #F0EDFF 100%)' }};">
+            {% if section.settings.media_type == 'video' %}
+              <div class="product-showcase">
+                {% if section.settings.video %}
+                  <div class="product-video-container">
+                    <iframe src="https://fast.wistia.net/embed/iframe/{{ section.settings.video.wistia_id }}?videoFoam=true"
+                            title="Video"
+                            allow="autoplay; fullscreen"
+                            allowfullscreen
+                            frameborder="0"></iframe>
+                  </div>
+                {% elsif section.settings.video_url != blank %}
+                  <div class="product-video-container">
+                    {% if section.settings.video_url contains 'youtube.com' or section.settings.video_url contains 'youtu.be' %}
+                      {% assign yt_id = section.settings.video_url | split: 'v=' | last | split: '&' | first %}
+                      {% if section.settings.video_url contains 'youtu.be' %}
+                        {% assign yt_id = section.settings.video_url | split: '/' | last %}
+                      {% endif %}
+                      <iframe src="https://www.youtube.com/embed/{{ yt_id }}{% if section.settings.video_autoplay %}?autoplay=1{% endif %}"
+                              title="YouTube video"
+                              allow="autoplay; fullscreen"
+                              allowfullscreen
+                              frameborder="0"></iframe>
+                    {% elsif section.settings.video_url contains 'vimeo.com' %}
+                      {% assign vimeo_id = section.settings.video_url | split: '/' | last %}
+                      <iframe src="https://player.vimeo.com/video/{{ vimeo_id }}{% if section.settings.video_autoplay %}?autoplay=1{% endif %}"
+                              title="Vimeo video"
+                              allow="autoplay; fullscreen"
+                              allowfullscreen
+                              frameborder="0"></iframe>
+                    {% elsif section.settings.video_url contains 'wistia' %}
+                      {% assign wistia_id = section.settings.video_url | split: '/' | last %}
+                      <iframe src="https://fast.wistia.net/embed/iframe/{{ wistia_id }}?videoFoam=true"
+                              title="Wistia video"
+                              allow="autoplay; fullscreen"
+                              allowfullscreen
+                              frameborder="0"></iframe>
+                    {% else %}
+                      <video
+                        {% if section.settings.video_autoplay %}autoplay{% endif %}
+                        {% if section.settings.video_muted %}muted{% endif %}
+                        {% if section.settings.video_loop %}loop{% endif %}
+                        {% if section.settings.video_controls %}controls{% endif %}
+                        playsinline
+                        {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_picker_url: '800x450' }}"{% endif %}>
+                        <source src="{{ section.settings.video_url }}" type="video/mp4">
+                      </video>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            {% elsif section.settings.product_image %}
+              <div class="product-showcase">
+                <img src="{{ section.settings.product_image | image_picker_url: '400x600' }}"
+             alt="{{ section.settings.product_image_alt | default: 'Product image' }}"
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
         <!-- Content Column -->
-        <div class="col-lg-6 {% if section.settings.image_position == 'left' %}order-lg-2{% endif %}">
-          <div class="an-feature-testimonial__content">
+        <div class="col-lg-6 order-2 content-column">
+          <div class="an-feature-testimonial__content" style="background-color: {{ section.settings.content_bg_color | default: '#FFFFFF' }};">
           <!-- Module Label -->
           {% if section.settings.module_label != blank %}
             <div class="module-label">
@@ -52,38 +117,50 @@
             {% endfor %}
           </div>
 
-          <!-- CTA Button -->
-          {% if section.settings.cta_text != blank %}
-            <div class="feature-cta">
-              <a href="{{ section.settings.cta_url | default: '#' }}"
-                 class="btn-gradient"
-                 {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-                {{ section.settings.cta_text }}
-              </a>
-            </div>
-          {% endif %}
+          <!-- CTA Buttons -->
+          <div class="feature-cta-group">
+            {% for block in section.blocks %}
+              {% if block.type == 'cta_button' %}
+                <div class="feature-cta" {{ block.shopify_attributes }}>
+                  <div class="cta-dropdown-wrapper">
+                    <a href="{{ block.settings.cta_url | default: '#' }}"
+                       class="btn-custom btn-{{ block.settings.button_style | default: 'gradient' }} {% if block.settings.dropdown_links != blank %}has-dropdown{% endif %}"
+                       {% if block.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}
+                       style="{% if block.settings.button_style == 'solid' %}background-color: {{ block.settings.button_color }}; color: {{ block.settings.button_text_color }};{% elsif block.settings.button_style == 'outline' %}border-color: {{ block.settings.button_color }}; color: {{ block.settings.button_color }};{% endif %}">
+                      {{ block.settings.cta_text }}
+                      {% if block.settings.dropdown_links != blank %}
+                        <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M4 6L8 10L12 6H4Z"/>
+                        </svg>
+                      {% endif %}
+                    </a>
+
+                    {% if block.settings.dropdown_links != blank %}
+                      <div class="cta-dropdown">
+                        {% assign dropdown_items = block.settings.dropdown_links | split: ',' %}
+                        {% for item in dropdown_items %}
+                          {% assign parts = item | split: '|' %}
+                          {% if parts.size == 2 %}
+                            <a href="{{ parts[1] | strip }}" class="dropdown-link">
+                              {{ parts[0] | strip }}
+                            </a>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
           </div>
         </div>
 
-        <!-- Image Column -->
-        <div class="col-lg-6 {% if section.settings.image_position == 'left' %}order-lg-1{% endif %}">
-          <div class="an-feature-testimonial__image">
-            {% if section.settings.product_image %}
-              <div class="product-showcase">
-                <img src="{{ section.settings.product_image | image_picker_url: '400x600' }}" 
-             alt="{{ {{ section.settings.product_image_alt | default:  }}" 
-             class="img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
-              </div>
-            {% endif %}
-          </div>
-        </div>
       </div>
 
       <!-- Testimonial Section - Inside the box -->
       {% if section.settings.show_testimonial %}
-        <div class="an-feature-testimonial__testimonial">
+        <div class="an-feature-testimonial__testimonial" style="background-color: {{ section.settings.testimonial_bg_color | default: '#F8F9FF' }};">
           <div class="testimonial-content">
           <!-- Quote -->
           <div class="testimonial-quote">
@@ -94,8 +171,8 @@
           <div class="testimonial-author">
             {% if section.settings.testimonial_image %}
               <div class="author-image">
-                <img src="{{ section.settings.testimonial_image | image_picker_url: '120x120' }}" 
-             alt="{{ {{ section.settings.testimonial_name }} }}" 
+                <img src="{{ section.settings.testimonial_image | image_picker_url: '120x120' }}"
+             alt="{{ section.settings.testimonial_name }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -133,7 +210,8 @@
 <style>
   .an-feature-testimonial {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    z-index: 5;
   }
 
   /* Main Constrained Box */
@@ -141,10 +219,11 @@
     background: white;
     border-radius: 24px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
+    overflow: visible;
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
+    z-index: 10;
   }
 
   /* Content Styling */
@@ -195,7 +274,7 @@
     margin-bottom: 2.5rem;
   }
 
-  .feature-item {
+  .an-feature-testimonial .feature-item {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
@@ -204,9 +283,9 @@
     opacity: 0;
   }
 
-  .feature-item:nth-child(1) { animation-delay: 0.1s; }
-  .feature-item:nth-child(2) { animation-delay: 0.2s; }
-  .feature-item:nth-child(3) { animation-delay: 0.3s; }
+  .an-feature-testimonial .feature-item:nth-child(1) { animation-delay: 0.1s; }
+  .an-feature-testimonial .feature-item:nth-child(2) { animation-delay: 0.2s; }
+  .an-feature-testimonial .feature-item:nth-child(3) { animation-delay: 0.3s; }
 
   @keyframes fadeInUp {
     to {
@@ -219,52 +298,173 @@
     }
   }
 
-  .feature-icon {
+  .an-feature-testimonial .feature-icon {
     flex-shrink: 0;
     width: 24px;
     height: 24px;
   }
 
-  .feature-text {
+  .an-feature-testimonial .feature-text {
     font-size: 1rem;
     line-height: 1.5;
     color: var(--c-ink-800);
     flex: 1;
   }
 
-  /* CTA Button - Using brand styles */
-  .btn-gradient {
+  /* CTA Button Group */
+  .feature-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .feature-cta {
+    position: relative;
+  }
+
+  .cta-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1001;
+  }
+
+  /* CTA Button Base Styles */
+  .btn-custom {
     display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
     padding: 12px 32px;
-    background: var(--g-brand);
-    color: var(--c-white) !important;
-    border: none;
     border-radius: var(--radius-pill);
     font-weight: 600;
     font-size: var(--fs-body);
     text-decoration: none;
+    border: 2px solid transparent;
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .btn-custom:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  /* Gradient Style */
+  .btn-gradient {
+    background: var(--g-brand);
+    color: var(--c-white) !important;
     box-shadow:
       0 0 0 2px rgba(255, 255, 255, 0.25) inset,
       0 4px 8px rgba(94, 59, 255, 0.35);
-    transition:
-      transform var(--motion-duration-fast) var(--motion-ease-standard),
-      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   .btn-gradient:hover {
-    transform: translateY(-2px);
     box-shadow:
       0 0 0 2px rgba(255, 255, 255, 0.25) inset,
       0 8px 16px rgba(94, 59, 255, 0.4);
     color: var(--c-white) !important;
   }
 
+  /* Solid Style */
+  .btn-solid {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-solid:hover {
+    opacity: 0.9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Outline Style */
+  .btn-outline {
+    background: transparent;
+    border-width: 2px;
+    border-style: solid;
+  }
+
+  .btn-outline:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  /* Dropdown Arrow */
+  .dropdown-arrow {
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .has-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  /* Dropdown Menu */
+  .cta-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+    z-index: 9999;
+    min-width: 200px;
+    margin-top: 8px;
+    white-space: nowrap;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .cta-dropdown-wrapper:hover .cta-dropdown,
+  .cta-dropdown-wrapper:focus-within .cta-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Auto-hide dropdown when scrolling or clicking outside */
+  .cta-dropdown-wrapper {
+    isolation: isolate;
+  }
+
+  /* Ensure dropdown doesn't interfere with next section */
+  .an-feature-testimonial {
+    margin-bottom: 2rem;
+  }
+
+  .dropdown-link {
+    display: block;
+    padding: 12px 20px;
+    color: #333 !important;
+    text-decoration: none;
+    font-size: var(--fs-body);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .dropdown-link:last-child {
+    border-bottom: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .dropdown-link:first-child {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .dropdown-link:hover {
+    background-color: #f8f9fa;
+    color: #333 !important;
+  }
+
   /* Product Showcase */
   .an-feature-testimonial__image {
     position: relative;
     padding: 4rem;
-    background: linear-gradient(135deg, #F8F9FF 0%, #F0EDFF 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -292,9 +492,34 @@
     object-fit: contain;
   }
 
+  /* Video container maintains 16:9 aspect ratio */
+  .product-showcase .product-video-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .product-showcase .product-video-container::before {
+    content: '';
+    display: block;
+    padding-bottom: 56.25%;
+  }
+
+  .product-showcase .product-video-container iframe,
+  .product-showcase .product-video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: #000;
+  }
+
   /* Testimonial Section - Now inside the box */
   .an-feature-testimonial__testimonial {
-    background: rgba(248, 249, 255, 0.5);
     padding: 3rem 4rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     position: relative;
@@ -397,6 +622,17 @@
     padding: 0;
   }
 
+  /* Dynamic column ordering */
+  @media (min-width: 992px) {
+    .image-column {
+      order: var(--image-order);
+    }
+
+    .content-column {
+      order: var(--content-order);
+    }
+  }
+
   /* Mobile Styles */
   @media (max-width: 991px) {
     .feature-heading {
@@ -430,6 +666,21 @@
     }
 
     .star-rating {
+      justify-content: center;
+    }
+
+    /* CTA Group mobile spacing */
+    .feature-cta-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .feature-cta {
+      width: 100%;
+    }
+
+    .btn-gradient {
+      width: 100%;
       justify-content: center;
     }
   }
@@ -480,6 +731,17 @@
   "elements": [
     {
       "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-testimonialbottom",
+      "info": "Custom ID for internal linking (e.g., #feature-testimonialbottom)"
+    },
+    {
+      "type": "header",
       "content": "Content"
     },
     {
@@ -525,6 +787,16 @@
       "content": "Product Showcase"
     },
     {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media Type",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image"
+    },
+    {
       "type": "image_picker",
       "id": "product_image",
       "label": "Product Image",
@@ -536,26 +808,43 @@
       "label": "Product Image Alt Text"
     },
     {
-      "type": "header",
-      "content": "CTA Button"
+      "type": "video",
+      "id": "video",
+      "label": "Kajabi Video"
     },
     {
       "type": "text",
-      "id": "cta_text",
-      "label": "Button Text",
-      "default": "Get Time Genius"
+      "id": "video_url",
+      "label": "External Video URL (YouTube, Vimeo, Wistia, or MP4)"
     },
     {
-      "type": "text",
-      "id": "cta_url",
-      "label": "Button URL",
-      "default": "#"
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Video Poster (for MP4)"
     },
     {
       "type": "checkbox",
-      "id": "cta_new_tab",
-      "label": "Open in New Tab",
+      "id": "video_autoplay",
+      "label": "Autoplay",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_controls",
+      "label": "Show Controls",
+      "default": true
     },
     {
       "type": "header",
@@ -597,8 +886,26 @@
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background Color",
+      "label": "Section Background Color",
       "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Left Side (Content) Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Right Side (Image) Background",
+      "default": "#F8F9FF"
+    },
+    {
+      "type": "color",
+      "id": "testimonial_bg_color",
+      "label": "Quote Area Background",
+      "default": "#F8F9FF"
     },
     {
       "type": "color",
@@ -631,6 +938,70 @@
           "default": "Find out the surprising reason \"hope\" is sabotaging your success."
         }
       ]
+    },
+    {
+      "type": "cta_button",
+      "name": "CTA Button",
+      "elements": [
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "text",
+          "id": "cta_url",
+          "label": "Button URL",
+          "default": "#"
+        },
+        {
+          "type": "checkbox",
+          "id": "cta_new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "options": [
+            {
+              "value": "gradient",
+              "label": "Gradient (Primary)"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            },
+            {
+              "value": "solid",
+              "label": "Solid Color"
+            }
+          ],
+          "default": "gradient"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button Color",
+          "default": "#5E3BFF",
+          "info": "Used for solid and outline styles"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "textarea",
+          "id": "dropdown_links",
+          "label": "Dropdown Links",
+          "info": "Format: Link Text|Link URL, Link Text|Link URL (e.g., Amazon|/amazon, Barnes & Noble|/bn)",
+          "placeholder": "Amazon|/amazon, Apple Books|/apple, Barnes & Noble|/bn"
+        }
+      ]
     }
   ],
   "presets": [
@@ -655,6 +1026,14 @@
           "type": "feature",
           "settings": {
             "text": "How to boost your energy and focus in 5-minutes flat (it's better than RedBull!)"
+          }
+        },
+        {
+          "type": "cta_button",
+          "settings": {
+            "cta_text": "Get Time Genius",
+            "cta_url": "#",
+            "dropdown_links": "Amazon|/amazon, Apple Books|/apple, Google Play|/google"
           }
         }
       ]

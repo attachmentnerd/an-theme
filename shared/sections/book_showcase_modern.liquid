@@ -1,5 +1,5 @@
 <!-- Book Showcase Section Alt - Modern Z-Pattern Design -->
-<section class="book-showcase-modern py-5 position-relative overflow-hidden bg-white">
+<section id="{{ section.settings.section_id | default: 'book-showcase-modern' }}-{{ section.id }}" class="book-showcase-modern py-5 position-relative overflow-hidden bg-white">
   <div class="container">
     <div class="row align-items-center g-5 flex-lg-row-reverse">
       <!-- Book Visual Column -->
@@ -105,7 +105,18 @@
   "name": "Book - Showcase Modern",
   "elements": [
     {
-      "type": "textarea",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "book-showcase-modern",
+      "info": "Custom ID for internal linking (e.g., #book-showcase-modern)"
+    },
+      {
+        "type": "textarea",
       "id": "book_description",
       "label": "Book Description",
       "default": "A practical workbook featuring 140 insightful prompts, quizzes, and activities to help you understand your attachment history and transform your relationship patterns."

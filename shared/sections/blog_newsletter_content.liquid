@@ -54,7 +54,7 @@
     {% assign sidebar_col_class = "col-lg-3 order-last" %}
 {% endcase %}
 
-<section class="newsletter-post-body">
+<section id="{{ section.settings.section_id | default: 'blog-newsletter-content' }}-{{ section.id }}" class="newsletter-post-body">
   <div class="sizer">
     <div class="container">
       {% if section.settings.show_link_to_newsletter %}
@@ -117,7 +117,18 @@
   "duplicatable": "false",
   "elements": [
     {
-      "type": "checkbox",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "blog-newsletter-content",
+      "info": "Custom ID for internal linking (e.g., #blog-newsletter-content)"
+    },
+      {
+        "type": "checkbox",
       "id": "show_link_to_newsletter",
       "label": "Show link to newsletter",
       "default": "true"

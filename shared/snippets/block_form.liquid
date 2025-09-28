@@ -1,5 +1,5 @@
-{% assign btn_background_color = block.settings.btn_background_color | default: settings.btn_background_color %}
-{% assign btn_text_color = block.settings.btn_text_color | default: settings.btn_text_color %}
+{% assign btn_background_color = block.settings.btn_background_color | default: settings.btn_background_color | default: '#2d3031' %}
+{% assign btn_text_color = block.settings.btn_text_color | default: settings.btn_text_color | default: '#ffffff' %}
 {% assign btn_border_radius = block.settings.btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
 {% assign btn_style = block.settings.btn_style | default: settings.btn_style %}
 {% assign btn_size = block.settings.btn_size | default: settings.btn_size %}
@@ -20,9 +20,20 @@
     background: {{ btn_background_color }};
     color: {{ btn_text_color }};
   }
+  #block-{{ block.id }} .form-btn:hover,
+  #block-{{ block.id }} .form-btn:focus {
+    background: {{ block.settings.btn_bg_hover_color | default: btn_background_color }};
+    border-color: {{ block.settings.btn_bg_hover_color | default: btn_background_color }};
+    color: {{ block.settings.btn_text_hover_color | default: btn_text_color | default: '#ffffff' }};
+  }
   #block-{{ block.id }} .btn--outline {
     color: {{ btn_background_color }};
     background: transparent;
+  }
+  #block-{{ block.id }} .btn-with-states.is-success {
+    background-color: var(--c-accent-teal);
+    border-color: var(--c-accent-teal);
+    color: var(--c-white);
   }
   #block-{{ block.id }} .disclaimer-text {
     font-size: 16px;
@@ -32,9 +43,12 @@
   }
 </style>
 
-{% assign f = current_site.find_form[block.settings.form] %}
+{% assign form_setting = block.settings.form %}
+{% assign form_id = block.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+{% assign f = current_site.find_form[form_id] %}
+{% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
 
-<div class="form">
+<div class="form" id="block-{{ block.id }}" data-form-scope data-success-message="{{ block.settings.success_message | default: 'Success! Your submission has been received.' | escape }}">
   <div
     kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}"
     {% element_attributes "block.settings.text" %}
@@ -42,12 +56,26 @@
     {{ block.settings.text }}
   </div>
   {% if f %}
-    {% form f data-ajax data-form-type="kajabi" %}
+    {% form f %}
       <div class="{% if block.settings.inline and f.fields.size <= 3 %}fields-wrapper{% endif %}">
         <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}">
         {% for field in f.fields %}
-          {{ field | form_input: class: "form-group", input_class: "form-control", label: use_label, placeholder: use_placeholder }}
+          {% if field.input_type == 'email' and user_email != blank and block.settings.hide_email_when_logged_in != false %}
+            <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
+          {% else %}
+            {{ field | form_input: class: "form-group", input_class: "form-control", label: use_label, placeholder: use_placeholder }}
+          {% endif %}
         {% endfor %}
+        {% if block.settings.autofill_names_when_logged_in != false %}
+          {%- capture user_first_name -%}{{ current_member.first_name | default: current_user.first_name | strip }}{%- endcapture -%}
+          {%- capture user_last_name -%}{{ current_member.last_name | default: current_user.last_name | strip }}{%- endcapture -%}
+          {% if user_first_name != blank %}
+            <input type="hidden" name="form_submission[first_name]" value="{{ user_first_name }}">
+          {% endif %}
+          {% if user_last_name != blank %}
+            <input type="hidden" name="form_submission[last_name]" value="{{ user_last_name }}">
+          {% endif %}
+        {% endif %}
         <div>
           {% if use_label and block.settings.inline %}
             <label for="btn">&nbsp;</label>
@@ -85,40 +113,63 @@
       </p>
     {% endif %}
   {% else %}
-    {% if editor %}
-      <div class="editor-null" kjb-settings-id="{{ 'form' | settings_id: section: section, block: block }}">
-        Click here to select a form to display.
-      </div>
+    {% if form_id %}
+      {% form "optin", id: form_id %}
+        <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}">
+        {% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
+        {% if user_email != blank and block.settings.hide_email_when_logged_in != false %}
+          <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
+          <style>
+            #block-{{ block.id }} input[type="email"][name="form_submission[email]"] { display: none !important; }
+          </style>
+        {% endif %}
+        {{ form | fields }}
+        {% if block.settings.autofill_names_when_logged_in != false %}
+          {%- capture user_first_name -%}{{ current_member.first_name | default: current_user.first_name | strip }}{%- endcapture -%}
+          {%- capture user_last_name -%}{{ current_member.last_name | default: current_user.last_name | strip }}{%- endcapture -%}
+          {% if user_first_name != blank %}
+            <input type="hidden" name="form_submission[first_name]" value="{{ user_first_name }}">
+          {% endif %}
+          {% if user_last_name != blank %}
+            <input type="hidden" name="form_submission[last_name]" value="{{ user_last_name }}">
+          {% endif %}
+        {% endif %}
+        <div>
+          {% if use_label and block.settings.inline %}
+            <label for="btn">&nbsp;</label>
+          {% endif %}
+          <button
+            id="form-button-{{ block.id }}"
+            class="form-btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }} btn-with-states"
+            type="submit"
+            role="button"
+            data-loading-text="{{ block.settings.loading_text | default: 'Processing...' }}"
+            kjb-settings-id="{{ 'btn_text' | settings_id: section: section, block: block }}"
+          >
+            <span class="btn-text">
+              {%- element "block.settings.btn_text" -%}
+                {{ block.settings.btn_text }}
+              {%- endelement -%}
+            </span>
+            <span class="btn-spinner"></span>
+            <span class="btn-success-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+      {% endform %}
+    {% else %}
+      {% if editor %}
+        <div class="editor-null" kjb-settings-id="{{ 'form' | settings_id: section: section, block: block }}">
+          No form found. Select a form or paste a Form ID in the block settings.
+        </div>
+      {% endif %}
     {% endif %}
   {% endif %}
 </div>
 
 <script>
-  // Enhanced form validation for block_form
-  document.addEventListener('DOMContentLoaded', function() {
-    const blockForm = document.querySelector('#block-{{ block.id }} form');
-    if (blockForm && !blockForm.hasAttribute('data-enhanced')) {
-      blockForm.setAttribute('data-enhanced', 'true');
-      
-      // Add loading text to button if provided
-      const submitBtn = blockForm.querySelector('#form-button-{{ block.id }}');
-      if (submitBtn && '{{ block.settings.loading_text }}') {
-        submitBtn.setAttribute('data-loading-text', '{{ block.settings.loading_text }}');
-      }
-      
-      // Add success message container
-      const successContainer = document.createElement('div');
-      successContainer.className = 'form-feedback success';
-      successContainer.innerHTML = '<span>{{ block.settings.success_message | default: "Success! Your submission has been received." }}</span>';
-      successContainer.style.display = 'none';
-      blockForm.appendChild(successContainer);
-      
-      // Add error message container
-      const errorContainer = document.createElement('div');
-      errorContainer.className = 'form-feedback error';
-      errorContainer.innerHTML = '<span>Please check your information and try again.</span>';
-      errorContainer.style.display = 'none';
-      blockForm.appendChild(errorContainer);
-    }
-  });
+  // Removed duplicate per-block enhancer; global button/form handler will pick this up.
 </script>

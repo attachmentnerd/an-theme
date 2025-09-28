@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="{{ current_site.locale | default: "en" }}">
+  <head>
+
+    <!-- Title and description ================================================== -->
+    {% csrf_meta_tags %}
+    <title>
+      {% if page_title %}
+        {{ page_title }}
+      {% else %}
+        {{ current_site.title }}
+      {% endif %}
+    </title>
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}" />
+    {% endif %}
+
+    <!-- Helpers ================================================== -->
+    {% include "social_meta_tags" %}
+    <link href="{{ settings.favicon | image_picker_url: 'favicon.png' }}?v=2" rel="shortcut icon" />
+    <link rel="canonical" href="{{ canonical_url }}" />
+    <!-- Performance: preconnect to critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fast.wistia.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <!-- CSS ================================================== -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    {% if settings.font_family ==  settings.heading_font_family%}
+      <link href="https://fonts.googleapis.com/css?family={{ settings.font_family | replace: ' ', '+' }}:400,700,400italic,700italic&display=swap" rel="stylesheet" type="text/css">
+    {% else %}
+      <link href="https://fonts.googleapis.com/css?family={{ settings.font_family | replace: ' ', '+' }}:400,700,400italic,700italic|{{ settings.heading_font_family | replace: ' ', '+' }}:400,700,400italic,700italic&display=swap" rel="stylesheet" type="text/css">
+    {% endif %}
+    {{ 'core.css' | kajabi_asset_url | stylesheet_tag }}
+    {{ 'styles.css' | asset_url | stylesheet_tag }}
+    {{ 'overrides.css' | asset_url | stylesheet_tag }}
+
+    {% assign v-Align = settings.v_align %}
+
+    <!-- Optional Background Image ======================================== -->
+    {% if settings.use_bg_img %}
+      {% assign p-BgImage = settings.page_background_img | image_picker_url: "page.jpg" %}
+      <style>
+        body {
+          background-image: url({{ p-BgImage }});
+          background-position: center center;
+          background-repeat: no-repeat;
+          -webkit-background-size: cover;
+          -moz-background-size: cover;
+          -o-background-size: cover;
+          background-size: cover;
+          background-attachment: fixed;
+        }
+      </style>
+    {% else %}
+      <style>
+        .section--global {
+          background: {{ settings.color_container_bg }};
+        }
+      </style>
+    {% endif %}
+
+    {% if settings.body_width == "small" %}
+      <style>
+        @media (min-width: 768px) {
+          .section__body.col-lg-8 {
+            width: 66.666667%;
+            text-align: left;
+          }
+          .section__sidebar {
+            text-align: left;
+          }
+        }
+      </style>
+    {% endif %}
+
+    <!-- Header hook ================================================== -->
+    {% content_for_header %}
+  </head>
+  <body class="sage-excluded">
+    <div class="container container--main">
+      <div class="content-wrap">
+        <div class="section-wrap section-wrap--{{ v-Align }}">
+          {% section "header" %}
+          {% section "search" %}
+          {{ content_for_layout }}
+          {% unless settings.use_bg_img %}
+            {% section "footer" %}
+          {% endunless %}
+        </div>
+      </div>
+      {% if settings.use_bg_img %}
+        <div class="footer-wrap">
+          {% section "footer" %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Javascripts ================================================== -->
+    <script defer src="{{ 'core.js' | kajabi_asset_url }}"></script>
+    <script defer charset='ISO-8859-1' src='https://fast.wistia.com/assets/external/E-v1.js'></script>
+    <script defer charset='ISO-8859-1' src='https://fast.wistia.com/labs/crop-fill/plugin.js'></script>
+    {%- comment -%} Removed Ouibounce and Slick JS (unused after cleanup). {%- endcomment -%}
+    <script defer src="{{ 'scripts.js' | asset_url }}"></script>
+    {%- comment -%} Removed Tether and Bootstrap JS (unused). Keep Bootstrap CSS. {%- endcomment -%}
+
+    {{ settings.embedded_scripts }}
+  </body>
+</html>

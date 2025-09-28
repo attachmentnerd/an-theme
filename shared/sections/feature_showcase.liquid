@@ -286,14 +286,14 @@
     gap: var(--space-md);
   }
 
-  .feature-item {
+  .feature-showcase .feature-item {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
     font-size: var(--fs-body);
   }
 
-  .feature-item__icon {
+  .feature-showcase .feature-item__icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -431,7 +431,18 @@
   "class": "feature-showcase-section",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-showcase",
+      "info": "Custom ID for internal linking (e.g., #feature-showcase)"
+    },
+      {
+        "type": "header",
       "content": "Background"
     },
     {

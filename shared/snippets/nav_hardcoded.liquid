@@ -1,0 +1,159 @@
+{% include 'nav_default_links' %}
+{% assign current_path = request.path | default: '/' | downcase | replace: '//','/' %}
+{% assign login_url = '/login' %}
+{% assign profile_label = 'Login' %}
+{% assign profile_event = 'nav_login' %}
+{% if current_site_user %}
+  {% assign login_url = '/library' %}
+  {% assign profile_label = current_site_user.name | default: current_site_user.email | default: 'My Library' %}
+  {% assign profile_event = 'nav_library' %}
+{% endif %}
+
+<style>
+  .hc-nav {
+    {% if nav_is_sticky %}position: sticky; top: 0;{% else %}position: relative;{% endif %}
+    z-index: 9999;
+    padding: 0.9rem 0;
+    {% if nav_style == 'transparent' %}
+      background: transparent;
+      border-bottom: none;
+      backdrop-filter: none;
+    {% else %}
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(15,23,42,0.08);
+    {% endif %}
+  }
+  .hc-nav__container{display:flex;align-items:center;gap:1rem;justify-content:space-between}
+  .hc-nav__logo{display:inline-flex;align-items:center;text-decoration:none}
+  .hc-nav__logo img{height:32px;width:auto;display:block}
+  .hc-nav__links{display:flex;align-items:center;gap:0.5rem}
+  .hc-nav__link{display:inline-flex;min-width:60px;padding:0.45rem 0.9rem;border-radius:999px;color:#374151;text-decoration:none;font-weight:500;transition:color .2s ease, background .2s ease}
+  .hc-nav__link:hover{color:#5e3bff;background:rgba(94,59,255,0.08)}
+  .hc-nav__link.is-active{color:#5e3bff;font-weight:600;background:rgba(94,59,255,0.12)}
+  .hc-nav__actions{display:flex;align-items:center;gap:0.75rem;margin-left:auto}
+  .hc-nav__avatar{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:2px solid rgba(94,59,255,0.2);background:#fff;text-decoration:none;color:#1f2937;font-weight:600}
+  .hc-nav__avatar svg{width:18px;height:18px}
+  .hc-nav__cta{display:inline-flex;align-items:center;justify-content:center;padding:0.6rem 1.2rem;border-radius:999px;background:linear-gradient(135deg,#5e3bff 0%,#7b66ff 100%);color:#fff;text-decoration:none;font-weight:600;min-width:120px}
+  .hc-nav__cta--secondary{background:#ffffff;color:#5e3bff;border:1px solid rgba(94,59,255,0.35);box-shadow:none}
+  .hc-nav__toggle{display:none;flex-direction:column;gap:3px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(148,163,184,0.45);background:#fff;position:relative;z-index:10002;box-shadow:0 2px 10px rgba(15,23,42,0.08)}
+  .hc-nav__toggle span{display:block;width:18px;height:2px;background:#1f2937;border-radius:999px;margin:0 auto}
+  .hc-nav__drawer{display:none}
+  .hc-nav__backdrop{display:none}
+  .hc-nav.is-open .hc-nav__backdrop{display:block;position:fixed;inset:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(3px);z-index:994}
+  .hc-nav.is-open .hc-nav__drawer{display:flex;position:fixed;inset:0;z-index:995;flex-direction:column;justify-content:center;align-items:center;gap:1.2rem;background:#ffffff;padding:2rem}
+  @media(max-width:1024px){
+    .hc-nav{padding:0.7rem 0}
+    .hc-nav__links{display:none}
+    .hc-nav__actions{display:none}
+    .hc-nav__toggle{display:flex}
+  }
+</style>
+
+<nav class="hc-nav" role="navigation" aria-label="Main">
+  <div class="container hc-nav__container">
+    <a class="hc-nav__logo" href="{{ current_site.root_url | default: '/' }}">
+      <img src="{{ nav_logo_url }}" alt="Logo">
+    </a>
+
+    <div class="hc-nav__links" aria-label="Primary navigation">
+      {% for raw_item in nav_links %}
+        {% assign parts = raw_item | split: '=>' %}
+        {% assign label = parts[0] | default: '' | strip %}
+        {% assign url = '/' %}
+        {% if parts.size > 1 %}
+          {% assign url = parts[1] | strip | default: '/' %}
+        {% endif %}
+        {% if label != '' %}
+          {% assign normalized_url = url | downcase %}
+          {% assign is_active = false %}
+          {% if current_path == normalized_url or current_path == normalized_url | append: '/' %}
+            {% assign is_active = true %}
+          {% endif %}
+          <a class="hc-nav__link{% if is_active %} is-active{% endif %}" href="{{ url }}"{% if is_active %} aria-current="page"{% endif %} data-evt="nav_link_{{ label | handle }}">{{ label }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="hc-nav__actions">
+      {% if nav_show_login %}
+        {% if current_site_user %}
+          <a class="hc-nav__avatar" href="/library" data-evt="{{ profile_event }}">
+            {% assign avatar_url = current_site_user | avatar_url %}
+            {% if avatar_url %}
+              <img src="{{ avatar_url }}" alt="{{ current_site_user.name | default: 'Account' }}" style="width:100%;height:100%;object-fit:cover;display:block"/>
+            {% else %}
+              {{ profile_label | slice: 0, 1 | upcase }}
+            {% endif %}
+          </a>
+        {% else %}
+          <a class="hc-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}" aria-label="Login">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </a>
+        {% endif %}
+      {% endif %}
+      <a class="hc-nav__cta" href="{{ nav_cta_url }}" data-evt="nav_cta">{{ nav_cta_label }}</a>
+      {% if nav_show_secondary %}
+        <a class="hc-nav__cta hc-nav__cta--secondary" href="{{ nav_secondary_url }}" data-evt="nav_cta_secondary">{{ nav_secondary_label }}</a>
+      {% endif %}
+    </div>
+
+    <button class="hc-nav__toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-hc-toggle>
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="hc-nav__backdrop" data-hc-backdrop></div>
+  <div class="hc-nav__drawer" role="dialog" aria-modal="true" aria-label="Mobile navigation" data-hc-drawer>
+    {% for raw_item in nav_links %}
+      {% assign parts = raw_item | split: '=>' %}
+      {% assign label = parts[0] | default: '' | strip %}
+      {% assign url = '/' %}
+      {% if parts.size > 1 %}
+        {% assign url = parts[1] | strip | default: '/' %}
+      {% endif %}
+      {% if label != '' %}
+        <a href="{{ url }}" data-evt="nav_link_mobile_{{ label | handle }}">{{ label }}</a>
+      {% endif %}
+    {% endfor %}
+    <a class="hc-nav__cta" href="{{ nav_cta_url }}" data-evt="nav_cta_mobile">{{ nav_cta_label }}</a>
+    {% if nav_show_secondary %}
+      <a class="hc-nav__cta hc-nav__cta--secondary" href="{{ nav_secondary_url }}" data-evt="nav_cta_secondary_mobile">{{ nav_secondary_label }}</a>
+    {% endif %}
+    {% if nav_show_login %}
+      {% unless current_site_user %}
+        <a class="hc-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}">{{ profile_label }}</a>
+      {% endunless %}
+    {% endif %}
+  </div>
+</nav>
+
+<script>
+  (function(){
+    var nav=document.querySelector('.hc-nav');
+    if(!nav) return;
+    var t=nav.querySelector('[data-hc-toggle]');
+    var d=nav.querySelector('[data-hc-drawer]');
+    var b=nav.querySelector('[data-hc-backdrop]');
+    if(!t||!d) return;
+    function close(){nav.classList.remove('is-open');t.setAttribute('aria-expanded','false');}
+    t.addEventListener('click',function(){var o=nav.classList.toggle('is-open');t.setAttribute('aria-expanded',o?'true':'false');});
+    d.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close)});
+    document.addEventListener('keyup',function(e){if(e.key==='Escape') close();});
+    if(b){b.addEventListener('click',close)}
+    var ticking=false;
+    function onScroll(){
+      if(ticking) return; ticking=true;
+      window.requestAnimationFrame(function(){
+        var scrolled=window.scrollY>2;
+        if(scrolled){nav.classList.add('is-scrolled')} else {nav.classList.remove('is-scrolled')}
+        ticking=false;
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+    onScroll();
+  })();
+</script>

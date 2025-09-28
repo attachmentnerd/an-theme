@@ -1,0 +1,67 @@
+<li>
+  <details class="course-outline__category {% if category.toplevel? %} course-outline__toplevelcategory {% else %} course-outline__subcategory {% endif %}"
+    {% if block.settings.expanded == "all" %} open {% endif %}
+    {% if block.settings.expanded == "first" and category.first? %} open {% endif %}
+    {% if block.settings.expanded == "first" and category.parent_category_first? %} open {% endif %}
+  >
+    <summary>
+      <div class="course-outline__heading">
+        <span class="course-outline__category__expando"></span>
+
+        <h2 class="course-outline__category__title">
+          {{ category.title }}
+        </h2>
+
+        {% if category.toplevel? and block.settings.show_lesson_count %}
+          <span class="course-outline__category__count">
+            {% if block.settings.displayed_content == "all" %}
+              {{ category.total_posts_count }} {{ category.all_posts.size | pluralize: "lesson" }}
+            {% else %}
+              {{ category.total_published_posts_count }} {{ category.published_posts.size | pluralize: "lesson" }}
+            {% endif %}
+          </span>
+        {% endif %}
+      </div>
+    </summary>
+
+    <ol class="course-outline__posts">
+      {% if block.settings.displayed_content == "all" %}
+        {% for post in category.all_posts %}
+          <li class="course-outline__post {{post.media_type}}">
+            <span class="course-outline__post__icon"></span>
+            <span class="course-outline__post__title">
+              {{ post.title }}
+            </span>
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for post in category.published_posts %}
+          <li class="course-outline__post {{post.media_type}}">
+            <span class="course-outline__post__icon"></span>
+            <span class="course-outline__post__title">
+              {{ post.title }}
+            </span>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ol>
+
+    {% if block.settings.displayed_content == "all" %}
+      {% if category.any_subcategories? %}
+        <ol class="course-outline__subcategories">
+          {% for category in category.all_subcategories %}
+            {% include "course_outline_category" %}
+          {% endfor %}
+        </ol>
+      {% endif %}
+    {% else %}
+      {% if category.any_published_subcategories? %}
+        <ol class="course-outline__subcategories">
+          {% for category in category.published_subcategories %}
+            {% include "course_outline_category" %}
+          {% endfor %}
+        </ol>
+      {% endif %}
+    {% endif %}
+  </details>
+</li>

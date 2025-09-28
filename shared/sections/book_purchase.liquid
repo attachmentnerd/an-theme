@@ -218,7 +218,7 @@
           {% if block.settings.logo != blank and block.settings.link != blank %}
             <a href="{{ block.settings.link }}" class="book-buy__retailer" {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
               <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ {{ block.settings.alt_text | default:  }}" 
+             alt="{{ block.settings.alt_text | default: 'Retailer logo' }}" 
              class="book-buy__retailer-logo"
              loading="lazy"
              style="object-fit: cover;">
@@ -342,7 +342,18 @@
   "name": "Book - Purchase",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "book-purchase",
+      "info": "Custom ID for internal linking (e.g., #book-purchase)"
+    },
+      {
+        "type": "header",
       "content": "Layout"
     },
     {

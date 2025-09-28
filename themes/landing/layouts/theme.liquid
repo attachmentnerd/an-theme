@@ -3,14 +3,14 @@
   {% include "global_head" %}
   {% include "global_background" %}
   <body id="encore-theme" class="background-{{ settings.background_color | color_scheme_class }}">
+    {% include "aria_helpers" %}
+    {% include "navigation_controller", nav_section: "hardcoded_nav_minimal" %}
     {% include "alert_messages" %}
     {% section "header" %}
-    {% if settings.show_navigation %}
-      {% section "nav_static" %}
-    {% endif %}
-    <main>
+    <main id="main-content" role="main">
       {{ content_for_layout }}
     </main>
+    {% include "footer_controller", footer_section: "nav_footer_modern" %}
     {% include "global_scripts" %}
   </body>
 </html>

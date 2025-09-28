@@ -1,0 +1,361 @@
+{% comment %}
+  Support — Help Center (Shared)
+  Layout: Categories grid → Popular Articles → FAQs → Contact panel
+  Notes:
+  - Uses include "icon" only (no render)
+  - Contact form via Kajabi form picker or Manual Form ID
+{% endcomment %}
+
+{% assign sid = section.id %}
+
+<section id="support-hub-{{ sid }}" class="an-section an-theme">
+  <div class="sh-wrap">
+    {% if section.settings.heading or section.settings.subheading %}
+      <header class="sh-head">
+        {% if section.settings.heading %}<h2 class="sh-title">{{ section.settings.heading }}</h2>{% endif %}
+        {% if section.settings.subheading %}<p class="sh-sub">{{ section.settings.subheading }}</p>{% endif %}
+      </header>
+    {% endif %}
+
+    <!-- Categories -->
+    <div class="sh-sec sh-sec--cat{% if section.settings.cat_boxed %} is-box{% endif %}" id="sh-categories-{{ sid }}" style="--sh-bg: {{ section.settings.cat_bg | default: 'transparent' }};">
+      {% if section.settings.cat_heading %}<h3 class="sh-sec-title">{{ section.settings.cat_heading }}</h3>{% endif %}
+      {% if section.settings.cat_subheading %}<p class="sh-sec-sub">{{ section.settings.cat_subheading }}</p>{% endif %}
+      <div class="sh-cat-grid" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% if block.type == 'category' %}
+          <article class="sh-cat" {{ block.shopify_attributes }}>
+            <a class="sh-cat-link" href="{{ block.settings.url }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <div class="sh-cat-head">
+                <div class="sh-cat-icon" style="--sh-accent: {{ block.settings.color | default: '#eef2ff' }}">{% include "icon", icon: block.settings.icon | default: 'book-open', size: 20, color: 'currentColor', aria_label: '' %}</div>
+                {% if block.settings.count %}<span class="sh-cat-count">{{ block.settings.count }}</span>{% endif %}
+              </div>
+              <div class="sh-cat-body">
+                <h4 class="sh-cat-title">{{ block.settings.title }}</h4>
+                {% if block.settings.desc %}<p class="sh-cat-desc">{{ block.settings.desc }}</p>{% endif %}
+              </div>
+            </a>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Popular Articles -->
+    <div class="sh-sec sh-sec--art{% if section.settings.art_boxed %} is-box{% endif %}" id="sh-articles-{{ sid }}" style="--sh-bg: {{ section.settings.art_bg | default: 'transparent' }};">
+      {% if section.settings.art_heading %}<h3 class="sh-sec-title">{{ section.settings.art_heading }}</h3>{% endif %}
+      {% if section.settings.art_subheading %}<p class="sh-sec-sub">{{ section.settings.art_subheading }}</p>{% endif %}
+      <div class="sh-arts" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% if block.type == 'article' %}
+          <article class="sh-art" {{ block.shopify_attributes }}>
+            <a class="sh-art-link" href="{{ block.settings.url }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <div class="sh-art-top">
+                {% if block.settings.badge or block.settings.category %}
+                  <span class="sh-pill">{{ block.settings.category | default: block.settings.badge }}</span>
+                {% endif %}
+                <span class="sh-caret" aria-hidden="true">›</span>
+              </div>
+              <h4 class="sh-art-title">{{ block.settings.title }}</h4>
+              {% if block.settings.desc %}<p class="sh-art-desc">{{ block.settings.desc }}</p>{% endif %}
+              {% assign _meta1 = block.settings.read_time | default: '' | strip %}
+              {% assign _meta2 = block.settings.views | default: '' | strip %}
+              {% assign _meta3 = block.settings.likes | default: '' | strip %}
+              {% if _meta1 != '' or _meta2 != '' or _meta3 != '' %}
+              <div class="sh-art-meta">
+                {% if _meta1 != '' %}<span class="mi">{{ block.settings.read_time }}</span>{% endif %}
+                {% if _meta2 != '' %}<span class="mi">{{ block.settings.views }}</span>{% endif %}
+                {% if _meta3 != '' %}<span class="mi">{{ block.settings.likes }}</span>{% endif %}
+              </div>
+              {% endif %}
+            </a>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if section.settings.art_view_all_url %}
+      <div class="sh-center">
+        <a class="sh-viewall" href="{{ section.settings.art_view_all_url }}" {% if section.settings.art_view_all_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ section.settings.art_view_all_label | default: 'View all articles' }} →</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- FAQs -->
+    <div class="sh-sec sh-sec--faq{% if section.settings.faq_boxed %} is-box{% endif %}" id="sh-faqs-{{ sid }}" style="--sh-bg: {{ section.settings.faq_bg | default: 'transparent' }};">
+      {% if section.settings.faq_heading %}<h3 class="sh-sec-title">{{ section.settings.faq_heading }}</h3>{% endif %}
+      {% if section.settings.faq_subheading %}<p class="sh-sec-sub">{{ section.settings.faq_subheading }}</p>{% endif %}
+      <div class="sh-acc" id="sh-acc-{{ sid }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq' %}
+          <article class="sh-q" {{ block.shopify_attributes }}>
+            <button class="sh-qbtn" type="button" aria-expanded="false" aria-controls="sh-a-{{ block.id }}" id="sh-q-{{ block.id }}">
+              <span class="sh-qtxt">{{ block.settings.question }}</span>
+              <span class="sh-caret" aria-hidden="true">▾</span>
+            </button>
+            <div id="sh-a-{{ block.id }}" class="sh-ans" role="region" aria-labelledby="sh-q-{{ block.id }}" hidden>
+              <div class="sh-ans-body">{{ block.settings.answer }}</div>
+            </div>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if section.settings.faq_view_all_url %}
+      <div class="sh-center">
+        <a class="sh-viewall" href="{{ section.settings.faq_view_all_url }}" {% if section.settings.faq_view_all_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ section.settings.faq_view_all_label | default: 'View all FAQs' }} →</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Contact panel -->
+    <div class="sh-sec sh-sec--panel sh-sec--ct{% if section.settings.ct_boxed %} is-box{% endif %}" id="sh-contact-{{ sid }}" style="--sh-bg: {{ section.settings.ct_bg | default: 'transparent' }};">
+      {% if section.settings.ct_heading %}<h3 class="sh-sec-title">{{ section.settings.ct_heading }}</h3>{% endif %}
+      {% if section.settings.ct_subheading %}<p class="sh-sec-sub">{{ section.settings.ct_subheading }}</p>{% endif %}
+      <div class="sh-contact">
+        <div class="sh-contact-list">
+          {% for block in section.blocks %}
+            {% if block.type == 'contact' %}
+            <article class="sh-ct" {{ block.shopify_attributes }}>
+              <div class="sh-ct-icon">{% include "icon", icon: block.settings.icon | default: 'message-circle', size: 20, color: 'currentColor', aria_label: '' %}</div>
+              <div class="sh-ct-body">
+                <h4 class="sh-ct-title">{{ block.settings.title }}</h4>
+                {% if block.settings.desc %}<p class="sh-ct-desc">{{ block.settings.desc }}</p>{% endif %}
+                {% if block.settings.detail %}<div class="sh-ct-detail">{{ block.settings.detail }}</div>{% endif %}
+                <div class="sh-ct-actions">
+                  {% if block.settings.primary_url %}<a class="sh-btn sh-btn--pri" href="{{ block.settings.primary_url }}" {% if block.settings.primary_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ block.settings.primary_label | default: 'Start' }}</a>{% endif %}
+                </div>
+              </div>
+            </article>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="sh-contact-form">
+          {% assign cf = nil %}
+          {% for block in section.blocks %}
+            {% if block.type == 'contact_form' %}{% assign cf = block %}{% break %}{% endif %}
+          {% endfor %}
+          {% if cf %}
+          <article class="sh-ct sh-ct--form" {{ cf.shopify_attributes }}>
+            <div class="sh-ct-body">
+              <h4 class="sh-ct-title">{{ cf.settings.title }}</h4>
+              {% if cf.settings.intro %}<p class="sh-ct-desc">{{ cf.settings.intro }}</p>{% endif %}
+              <div class="sh-form">
+                {% assign form_setting = cf.settings.form %}
+                {% assign form_id = cf.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+                {% assign f = current_site.find_form[form_id] %}
+                {% if f %}
+                  {% form f %}
+                    {% if cf.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ cf.settings.thank_you_url }}">{% endif %}
+                    {% if cf.settings.hidden_field_name and cf.settings.hidden_field_value %}
+                      <input type="hidden" name="form_submission[{{ cf.settings.hidden_field_name }}]" value="{{ cf.settings.hidden_field_value }}">
+                    {% endif %}
+                    {% for field in f.fields %}
+                      {{ field | form_input: class: "form-group", input_class: "form-control sh-input" }}
+                    {% endfor %}
+                    <button class="sh-submit" name="commit">{{ cf.settings.submit_label | default: 'Send Message' }}</button>
+                  {% endform %}
+                {% elsif form_id %}
+                  {% form "optin", id: form_id %}
+                    {% if cf.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ cf.settings.thank_you_url }}">{% endif %}
+                    {% if cf.settings.hidden_field_name and cf.settings.hidden_field_value %}
+                      <input type="hidden" name="form_submission[{{ cf.settings.hidden_field_name }}]" value="{{ cf.settings.hidden_field_value }}">
+                    {% endif %}
+                    {{ form | fields }}
+                    <button class="sh-submit" name="commit">{{ cf.settings.submit_label | default: 'Send Message' }}</button>
+                  {% endform %}
+                {% else %}
+                  {% if editor %}<div class="editor-null">Add a Contact Form block and choose a form.</div>{% endif %}
+                {% endif %}
+              </div>
+            </div>
+          </article>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Unified type scale for this section */
+    #support-hub-{{ sid }}{--sh-title-size:var(--fs-h2); --sh-title-weight:var(--fw-bold); --sh-sec-title-size:var(--fs-h4); --sh-sec-title-weight:var(--fw-bold); --sh-card-title-size:var(--fs-body); --sh-card-title-weight:var(--fw-semibold); --sh-sub-size:var(--fs-body)}
+    #support-hub-{{ sid }} .sh-wrap{max-width:1100px; margin:0 auto; padding:36px 18px}
+    #support-hub-{{ sid }} .sh-title{margin:0 0 8px; color:var(--c-ink-900); font-weight:var(--sh-title-weight); font-size:var(--sh-title-size); line-height:1.3; text-align:center}
+    #support-hub-{{ sid }} .sh-sub{color:var(--c-ink-700); text-align:center; margin:0 0 16px; font-size:var(--sh-sub-size); line-height:1.6}
+    #support-hub-{{ sid }} .sh-sec{margin:26px 0; background:var(--sh-bg, transparent)}
+    #support-hub-{{ sid }} .sh-sec.is-box{padding:22px 16px; border-radius:16px}
+    #support-hub-{{ sid }} .sh-sec-title{margin:6px 0; color:var(--c-ink-900); font-weight:var(--sh-sec-title-weight); font-size:var(--sh-sec-title-size); line-height:1.35; text-align:center}
+    #support-hub-{{ sid }} .sh-sec-sub{margin:0 0 18px; color:var(--c-ink-600); text-align:center; font-size:var(--fs-body); line-height:1.6}
+
+    /* Categories grid */
+    #support-hub-{{ sid }} .sh-cat-grid{display:grid; grid-template-columns:repeat(3, minmax(0, 1fr))}
+    @media (max-width: 900px){ #support-hub-{{ sid }} .sh-cat-grid{grid-template-columns:1fr 1fr} }
+    @media (max-width: 600px){ #support-hub-{{ sid }} .sh-cat-grid{grid-template-columns:1fr} }
+    #support-hub-{{ sid }} .sh-cat{background:#fff; border:1px solid var(--c-ink-100); border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.05); overflow:hidden; transition:box-shadow .2s, transform .2s, border-color .2s}
+    #support-hub-{{ sid }} .sh-cat:hover{border-color:var(--c-ink-150); box-shadow:0 10px 24px rgba(0,0,0,.08); transform:translateY(-2px)}
+    #support-hub-{{ sid }} .sh-cat-link{display:flex; gap:14px; padding:14px; color:inherit; text-decoration:none; align-items:flex-start}
+    #support-hub-{{ sid }} .sh-cat-link:focus{outline:none; box-shadow:0 0 0 3px rgba(59,130,246,.25); border-radius:12px}
+    #support-hub-{{ sid }} .sh-cat-icon{width:40px; height:40px; border-radius:10px; display:grid; place-items:center; background:var(--sh-accent,#eef2ff); color:var(--c-ink-800); border:1px solid var(--c-ink-100)}
+    #support-hub-{{ sid }} .sh-cat-head{display:flex; align-items:center; gap:10px}
+    #support-hub-{{ sid }} .sh-cat-count{margin-left:auto; padding:4px 8px; border:1px solid var(--c-ink-100); background:var(--c-ink-050); border-radius:9999px; color:var(--c-ink-600); font-size:.82rem}
+    #support-hub-{{ sid }} .sh-cat-title{margin:2px 0 4px; font-weight:var(--sh-card-title-weight); color:var(--c-ink-900); font-size:var(--sh-card-title-size); line-height:1.35}
+    #support-hub-{{ sid }} .sh-cat-desc{margin:0; color:var(--c-ink-600)}
+
+    /* Articles */
+    #support-hub-{{ sid }} .sh-arts{display:grid; grid-template-columns:repeat(3, minmax(0,1fr))}
+    @media (max-width: 900px){ #support-hub-{{ sid }} .sh-arts{grid-template-columns:1fr} }
+    #support-hub-{{ sid }} .sh-art{background:#fff; border:1px solid var(--c-ink-100); border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.05); overflow:hidden; transition:box-shadow .2s, transform .2s, border-color .2s}
+    #support-hub-{{ sid }} .sh-art:hover{border-color:var(--c-ink-150); box-shadow:0 10px 24px rgba(0,0,0,.08); transform:translateY(-2px)}
+    #support-hub-{{ sid }} .sh-art-link{display:block; padding:16px; color:inherit; text-decoration:none}
+    #support-hub-{{ sid }} .sh-art-link:focus{outline:none; box-shadow:0 0 0 3px rgba(59,130,246,.25); border-radius:12px}
+    #support-hub-{{ sid }} .sh-art-top{display:flex; align-items:center; justify-content:space-between}
+    #support-hub-{{ sid }} .sh-pill{display:inline-block; padding:6px 10px; border-radius:9999px; background:#fff; border:1px solid var(--c-ink-150); color:var(--c-ink-700); font-size:.85rem; font-weight:700}
+    #support-hub-{{ sid }} .sh-caret{color:var(--c-ink-300)}
+    #support-hub-{{ sid }} .sh-art-title{margin:10px 0 6px; font-weight:var(--sh-card-title-weight); color:var(--c-ink-900); font-size:var(--sh-card-title-size); line-height:1.35}
+    #support-hub-{{ sid }} .sh-art-desc{margin:0; color:var(--c-ink-600)}
+    #support-hub-{{ sid }} .sh-art-meta{display:flex; gap:14px; align-items:center; color:var(--c-ink-500); margin-top:10px; font-size:.92rem}
+    #support-hub-{{ sid }} .sh-center{text-align:center; margin-top:16px}
+    #support-hub-{{ sid }} .sh-viewall{display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--c-ink-150); text-decoration:none; color:var(--c-ink-800); font-weight:700}
+    #support-hub-{{ sid }} .sh-viewall:hover{background:var(--c-ink-050)}
+
+    /* FAQs */
+    #support-hub-{{ sid }} .sh-acc{display:grid; gap:10px}
+    #support-hub-{{ sid }} .sh-q{border:1px solid var(--c-ink-100); background:#fff; border-radius:12px}
+    #support-hub-{{ sid }} .sh-qbtn{width:100%; text-align:left; padding:14px; border:0; background:#fff; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-weight:var(--sh-card-title-weight); color:var(--c-ink-900); border-radius:12px}
+    #support-hub-{{ sid }} .sh-qbtn:focus{outline:2px solid var(--c-brand-600); outline-offset:2px}
+    #support-hub-{{ sid }} .sh-ans{padding:0 14px 14px; color:var(--c-ink-700)}
+    #support-hub-{{ sid }} .sh-ans-body{line-height:1.6}
+
+    /* Contact panel */
+    #support-hub-{{ sid }} .sh-contact{display:grid; grid-template-columns:38% 1fr; gap:16px}
+    @media (max-width: 900px){ #support-hub-{{ sid }} .sh-contact{grid-template-columns:1fr} }
+    #support-hub-{{ sid }} .sh-contact-list{display:grid; gap:12px}
+    #support-hub-{{ sid }} .sh-ct{display:flex; gap:12px; padding:16px; border:1px solid var(--c-ink-100); background:#fff; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.05); transition:box-shadow .2s, transform .2s, border-color .2s}
+    #support-hub-{{ sid }} .sh-ct:hover{border-color:var(--c-ink-150); box-shadow:0 10px 24px rgba(0,0,0,.08); transform:translateY(-2px)}
+    #support-hub-{{ sid }} .sh-ct-icon{width:40px; height:40px; border-radius:10px; display:grid; place-items:center; background:var(--c-ink-050); color:var(--c-ink-700); border:1px solid var(--c-ink-100)}
+    #support-hub-{{ sid }} .sh-ct-title{margin:2px 0 4px; color:var(--c-ink-900); font-weight:var(--sh-card-title-weight); font-size:var(--sh-card-title-size); line-height:1.35}
+    #support-hub-{{ sid }} .sh-ct-desc{margin:0 0 8px; color:var(--c-ink-600)}
+    #support-hub-{{ sid }} .sh-ct-detail{color:var(--c-ink-800); font-weight:700}
+    #support-hub-{{ sid }} .sh-btn{display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--c-ink-150); text-decoration:none; color:var(--c-ink-800); font-weight:700; transition:background .2s, border-color .2s, box-shadow .2s}
+    #support-hub-{{ sid }} .sh-btn:focus{outline:none; box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+    #support-hub-{{ sid }} .sh-btn--pri{background:var(--g-brand); color:#fff; border-color:transparent}
+    #support-hub-{{ sid }} .sh-contact-form .sh-ct{height:100%}
+    #support-hub-{{ sid }} .sh-form .form-group{margin-bottom:10px}
+    #support-hub-{{ sid }} .sh-input{width:100%}
+    #support-hub-{{ sid }} .sh-submit{appearance:none; background:var(--g-brand); color:#fff; border:0; border-radius:10px; padding:12px 14px; font-weight:800; cursor:pointer; width:100%}
+  </style>
+
+  <script>
+    (function(){
+      var root = document.getElementById('support-hub-{{ sid }}');
+      if(!root || root.dataset.inited==='1') return; root.dataset.inited='1';
+      // Accordion
+      var qs = [].slice.call(root.querySelectorAll('.sh-qbtn'));
+      qs.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var expanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          var region = root.querySelector('#'+this.getAttribute('aria-controls'));
+          if(!region) return; if(expanded){ region.setAttribute('hidden',''); } else { region.removeAttribute('hidden'); }
+        });
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Support — Help Center",
+  "elements": [
+    {"type":"text","id":"heading","label":"Heading","default":"How can we help you?"},
+    {"type":"textarea","id":"subheading","label":"Subheading","default":"Browse our help categories to find the information you need. Our comprehensive guides cover everything from getting started to advanced features."},
+    {"type":"range","id":"grid_gap","label":"Grid gap","min":8,"max":32,"step":2,"unit":"px","default":16},
+
+    {"type":"text","id":"cat_heading","label":"Categories heading","default":""},
+    {"type":"text","id":"cat_subheading","label":"Categories subheading","default":""},
+    {"type":"color","id":"cat_bg","label":"Categories background","default":""},
+    {"type":"checkbox","id":"cat_boxed","label":"Categories boxed (rounded with padding)","default":true},
+
+    {"type":"text","id":"art_heading","label":"Articles heading","default":"Popular Help Articles"},
+    {"type":"text","id":"art_subheading","label":"Articles subheading","default":"Our most helpful articles, curated based on user feedback and views."},
+    {"type":"text","id":"art_view_all_label","label":"Articles: View all label","default":"View all articles"},
+    {"type":"action","id":"art_view_all_url","label":"Articles: View all link","default":""},
+    {"type":"checkbox","id":"art_view_all_new_tab","label":"Articles: View all opens new tab","default":false},
+    {"type":"color","id":"art_bg","label":"Articles background","default":""},
+    {"type":"checkbox","id":"art_boxed","label":"Articles boxed (rounded with padding)","default":false},
+
+    {"type":"text","id":"faq_heading","label":"FAQ heading","default":"Frequently Asked Questions"},
+    {"type":"text","id":"faq_subheading","label":"FAQ subheading","default":"Find quick answers to the most common questions."},
+    {"type":"text","id":"faq_view_all_label","label":"FAQ: View all label","default":"View all FAQs"},
+    {"type":"action","id":"faq_view_all_url","label":"FAQ: View all link","default":""},
+    {"type":"checkbox","id":"faq_view_all_new_tab","label":"FAQ: View all opens new tab","default":false},
+    {"type":"color","id":"faq_bg","label":"FAQ background","default":""},
+    {"type":"checkbox","id":"faq_boxed","label":"FAQ boxed (rounded with padding)","default":true},
+
+    {"type":"text","id":"ct_heading","label":"Contact heading","default":"Still need help?"},
+    {"type":"text","id":"ct_subheading","label":"Contact subheading","default":"Our support team is here to assist you. Choose the method that works best for you."},
+    {"type":"color","id":"ct_bg","label":"Contact background","default":""},
+    {"type":"checkbox","id":"ct_boxed","label":"Contact boxed (rounded with padding)","default":true}
+  ],
+  "blocks": [
+    {"type":"category","name":"Help Category","elements":[
+      {"type":"text","id":"icon","label":"Icon name","default":"book-open"},
+      {"type":"color","id":"color","label":"Accent color","default":"#eef2ff"},
+      {"type":"text","id":"title","label":"Title","default":"Getting Started"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Learn how to begin your journey"},
+      {"type":"text","id":"count","label":"Count label","default":"12 articles"},
+      {"type":"action","id":"url","label":"Link","default":"#"},
+      {"type":"checkbox","id":"new_tab","label":"Open in new tab","default":false}
+    ]},
+    {"type":"article","name":"Article","elements":[
+      {"type":"text","id":"badge","label":"Badge","default":"Getting Started"},
+      {"type":"text","id":"category","label":"Category pill (optional)","default":""},
+      {"type":"text","id":"title","label":"Title","default":"How to prepare for your first session"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Learn what to expect and how to make the most of your first session with practical tips and guidance."},
+      {"type":"text","id":"read_time","label":"Read time","default":"5 min read"},
+      {"type":"text","id":"views","label":"Views","default":"2.1k"},
+      {"type":"text","id":"likes","label":"Likes","default":"89"},
+      {"type":"action","id":"url","label":"Link","default":"#"},
+      {"type":"checkbox","id":"new_tab","label":"Open in new tab","default":false}
+    ]},
+    {"type":"faq","name":"FAQ","elements":[
+      {"type":"text","id":"question","label":"Question","default":"How do I schedule my first session?"},
+      {"type":"rich_text","id":"answer","label":"Answer","default":"<p>You can schedule your first session from your account dashboard under <strong>Sessions</strong>. Choose a time that works best for you.</p>"}
+    ]},
+    {"type":"contact","name":"Contact Method","elements":[
+      {"type":"text","id":"icon","label":"Icon name","default":"message-circle"},
+      {"type":"text","id":"title","label":"Title","default":"Live Chat"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Get instant help from our support team. Available 24/7 for urgent issues."},
+      {"type":"text","id":"detail","label":"Additional detail","default":""},
+      {"type":"text","id":"primary_label","label":"Primary button label","default":"Start Live Chat"},
+      {"type":"action","id":"primary_url","label":"Primary link","default":"#"},
+      {"type":"checkbox","id":"primary_new_tab","label":"Primary opens in new tab","default":false}
+    ]},
+    {"type":"contact_form","name":"Contact Form","elements":[
+      {"type":"text","id":"title","label":"Title","default":"Send us a message"},
+      {"type":"textarea","id":"intro","label":"Intro","default":"Describe your issue and we’ll get back to you."},
+      {"type":"form","id":"form","label":"Form","allow_blank":true},
+      {"type":"text","id":"manual_form_id","label":"Manual Form ID (fallback)"},
+      {"type":"text","id":"thank_you_url","label":"Thank You URL","default":"/thank-you"},
+      {"type":"text","id":"hidden_field_name","label":"Hidden field name (optional)","default":"context"},
+      {"type":"text","id":"hidden_field_value","label":"Hidden field value","default":"Support: Help center"},
+      {"type":"text","id":"submit_label","label":"Submit button label","default":"Send Message"}
+    ]}
+  ],
+  "max_blocks": 60,
+  "presets": [
+    {"name":"Support — Help Center","category":"Content","blocks":[
+      {"type":"category","settings":{"title":"Getting Started","desc":"Learn how to begin your journey","count":"12 articles","icon":"book-open"}},
+      {"type":"category","settings":{"title":"Session Management","desc":"Schedule, join, and manage your sessions","count":"8 articles","icon":"calendar"}},
+      {"type":"category","settings":{"title":"Technical Support","desc":"Troubleshoot technical issues","count":"15 articles","icon":"cpu"}},
+      {"type":"article","settings":{"badge":"Getting Started","title":"How to prepare for your first therapy session","read_time":"5 min read","views":"2.1k","likes":"89"}},
+      {"type":"article","settings":{"badge":"Technical Support","title":"Troubleshooting video call issues","read_time":"3 min read","views":"1.8k","likes":"76"}},
+      {"type":"faq","settings":{"question":"How do I schedule my first session?"}},
+      {"type":"faq","settings":{"question":"What if I need to cancel or reschedule?"}},
+      {"type":"contact","settings":{"title":"Live Chat","primary_label":"Start Live Chat"}},
+      {"type":"contact","settings":{"title":"Phone Support","desc":"Speak directly with our support team.","detail":"1-800-THERAPY"}},
+      {"type":"contact","settings":{"title":"Email Support","desc":"Send us a detailed message and we’ll respond within 24 hours.","detail":"support@example.com"}},
+      {"type":"contact_form","settings":{"title":"Send us a message"}}
+    ]}
+  ]
+}
+{% endschema %}

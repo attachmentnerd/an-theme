@@ -68,7 +68,7 @@
 <div class="page-speaking-middle">
 
     <!-- CREDENTIALS -->
-    <section class="credentials">
+    <section id="{{ section.settings.section_id | default: 'speaking-middle' }}-{{ section.id }}" class="credentials">
         <div class="container">
             <h2>{{ section.settings.h2_not__h3__1_professional_backgro }}</h2>
             <div class="credentials-grid">
@@ -296,7 +296,18 @@
   "class": "page-speaking-middle",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "speaking-middle",
+      "info": "Custom ID for internal linking (e.g., #speaking-middle)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

@@ -346,10 +346,12 @@
       {% endif %}
 
       <!-- Form Integration -->
-      {% assign f = current_site.find_form[section.settings.form] %}
+      {% assign form_setting = section.settings.form %}
+      {% assign form_id = section.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+      {% assign f = current_site.find_form[form_id] %}
       {% if f %}
         <div class="free-resource__form">
-          {% form f data-ajax data-form-type="free-resource" %}
+          {% form f %}
             <input type="hidden" name="thank_you_url" value="{{ section.settings.thank_you_url }}">
             {% for field in f.fields %}
               {% if field.input_type == 'email' %}
@@ -375,6 +377,35 @@
           {% endform %}
         </div>
       {% else %}
+        {% if form_id %}
+          <div class="free-resource__form">
+            {% form "optin", id: form_id %}
+              <input type="hidden" name="thank_you_url" value="{{ section.settings.thank_you_url }}">
+              {% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
+              {% if user_email != blank %}
+                <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
+                <style>
+                  #shopify-section-{{ section.id }} input[type="email"][name="form_submission[email]"] { display: none !important; }
+                </style>
+              {% endif %}
+              {{ form | fields }}
+              <button type="submit" class="free-resource__submit btn-with-states" name="commit" data-loading-text="Processing...">
+                <span class="btn-text">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
+                  </svg>
+                  {{ section.settings.button_text | default: 'Get Free Chapter' }}
+                </span>
+                <span class="btn-spinner"></span>
+                <span class="btn-success-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+            {% endform %}
+          </div>
+        {% else %}
         <!-- Fallback form -->
         <form class="free-resource__form" action="#" method="post" data-ajax data-form-type="free-resource">
           <input type="email"
@@ -398,6 +429,12 @@
             </span>
           </button>
         </form>
+        {% if editor %}
+          <div class="editor-null" kjb-settings-id="{{ 'form' | settings_id: section: section }}">
+            No form found. Select a form or paste a Form ID in the section settings.
+          </div>
+        {% endif %}
+        {% endif %}
       {% endif %}
 
       {% if section.settings.footer_text != blank %}
@@ -425,18 +462,18 @@
   document.addEventListener('DOMContentLoaded', function() {
     const section = document.querySelector('#shopify-section-{{ section.id }}');
     const forms = section.querySelectorAll('.free-resource__form form');
-    
+
     forms.forEach(form => {
       if (!form.hasAttribute('data-enhanced')) {
         form.setAttribute('data-enhanced', 'true');
-        
+
         // Add form message containers
         const successMsg = document.createElement('div');
         successMsg.className = 'form-feedback success';
         successMsg.innerHTML = '<span>{{ section.settings.success_message | default: "Success! Check your email for the download link." }}</span>';
         successMsg.style.display = 'none';
         form.appendChild(successMsg);
-        
+
         const errorMsg = document.createElement('div');
         errorMsg.className = 'form-feedback error';
         errorMsg.innerHTML = '<span>Please enter a valid email address.</span>';
@@ -452,7 +489,18 @@
   "name": "Product - Free Resource",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "cta-free-resource",
+      "info": "Custom ID for internal linking (e.g., #cta-free-resource)"
+    },
+      {
+        "type": "header",
       "content": "Content"
     },
     {
@@ -601,6 +649,12 @@
       "label": "Form",
       "default": "default",
       "allow_blank": true
+    },
+    {
+      "type": "text",
+      "id": "manual_form_id",
+      "label": "Manual Form ID (fallback)",
+      "info": "Paste a Form ID if the picker is empty or broken"
     },
     {
       "type": "text",

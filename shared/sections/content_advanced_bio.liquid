@@ -7,7 +7,7 @@
   - Mobile-responsive design
 {% endcomment %}
 
-<section class="an-advanced-bio py-5" style="background: {{ section.settings.background_gradient | default: 'linear-gradient(135deg, #FFFBF0 0%, #E6F7F0 100%)' }};">
+<section id="{{ section.settings.section_id | default: 'content-advanced-bio' }}-{{ section.id }}" class="an-advanced-bio py-5" style="background: {{ section.settings.background_gradient | default: 'linear-gradient(135deg, #FFFBF0 0%, #E6F7F0 100%)' }};">
   <div class="container">
     <div class="an-advanced-bio__wrapper">
       <div class="row align-items-center">
@@ -47,15 +47,26 @@
               </div>
             {% endif %}
 
-            <!-- CTA Button -->
-            {% if section.settings.cta_text != blank %}
+            <!-- CTAs -->
+            {% if section.settings.show_primary_cta and section.settings.cta_text != blank or section.settings.show_secondary_cta and section.settings.secondary_cta_text != blank %}
               <div class="bio-cta">
-                <a href="{{ section.settings.cta_url | default: '#' }}" 
-                   class="btn-primary-bio"
-                   {% if section.settings.use_custom_colors %}style="background: {{ section.settings.cta_bg_color | default: '#FFD130' }}; color: {{ section.settings.cta_text_color | default: '#000000' }} !important;"{% endif %}
-                   {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-                  {{ section.settings.cta_text }}
-                </a>
+                {% if section.settings.show_primary_cta and section.settings.cta_text != blank %}
+                  <a href="{{ section.settings.cta_url | default: '#' }}" 
+                     class="btn-primary-bio"
+                     {% if section.settings.use_custom_colors %}style="background: {{ section.settings.cta_bg_color | default: '#FFD130' }}; color: {{ section.settings.cta_text_color | default: '#000000' }} !important;"{% endif %}
+                     {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+                    {{ section.settings.cta_text }}
+                  </a>
+                {% endif %}
+
+                {% if section.settings.show_secondary_cta and section.settings.secondary_cta_text != blank %}
+                  <a href="{{ section.settings.secondary_cta_url | default: '#' }}" 
+                     class="btn-secondary-bio"
+                     {% if section.settings.secondary_use_custom_colors %}style="background: {{ section.settings.secondary_cta_bg_color | default: 'transparent' }}; color: {{ section.settings.secondary_cta_text_color | default: 'var(--c-brand-600)' }} !important; border-color: {{ section.settings.secondary_cta_text_color | default: 'var(--c-brand-600)' }};"{% endif %}
+                     {% if section.settings.secondary_cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+                    {{ section.settings.secondary_cta_text }}
+                  </a>
+                {% endif %}
               </div>
             {% endif %}
           </div>
@@ -68,8 +79,10 @@
             {% if section.settings.main_image %}
               <div class="bio-main-image">
                 <img src="{{ section.settings.main_image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ section.settings.main_image_alt | default:  }}" 
+             alt="{{ section.settings.main_image_alt | default: 'Image' }}" 
              class="img-fluid"
+             width="800" height="450"
+             decoding="async"
              loading="lazy"
              style="object-fit: cover;">
               </div>
@@ -79,8 +92,10 @@
             {% if section.settings.overlay_image %}
               <div class="bio-overlay-image" style="bottom: {{ section.settings.overlay_position_bottom | default: '50' }}px; {{ section.settings.overlay_position_side }}: {{ section.settings.overlay_position_offset | default: '-50' }}px;">
                 <img src="{{ section.settings.overlay_image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ section.settings.overlay_image_alt | default:  }}" 
+             alt="{{ section.settings.overlay_image_alt | default: 'Image' }}" 
              class="img-fluid"
+             width="800" height="450"
+             decoding="async"
              loading="lazy"
              style="object-fit: cover;">
                 {% if section.settings.show_overlay_decoration %}
@@ -112,7 +127,7 @@
                   <div class="logo-item" {{ block.shopify_attributes }}>
                     {% if block.settings.logo_image %}
                       <img src="{{ block.settings.logo_image | image_picker_url: '240x80' }}" 
-             alt="{{ {{ block.settings.logo_alt | default:  }}" 
+             alt="{{ block.settings.logo_alt | default: 'Logo' }}" 
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -237,6 +252,13 @@
     overflow: hidden;
   }
 
+  .bio-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
   .btn-primary-bio::before {
     content: '';
     position: absolute;
@@ -246,6 +268,28 @@
     height: 100%;
     background: rgba(255, 255, 255, 0.2);
     transition: left 0.3s ease;
+  }
+
+  /* Secondary CTA (outline/ghost style) */
+  .btn-secondary-bio {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 32px;
+    background: transparent;
+    color: var(--c-brand-600) !important;
+    border: 2px solid var(--c-brand-600);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    text-decoration: none;
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard),
+                box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+                background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .btn-secondary-bio:hover {
+    transform: translateY(-2px);
+    background: rgba(105, 78, 255, 0.06);
   }
 
   .btn-primary-bio:hover {
@@ -414,6 +458,20 @@
       justify-content: center;
     }
 
+    .btn-secondary-bio {
+      padding: 1rem 2rem;
+      font-size: 0.875rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .bio-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+
     .bio-overlay-image {
       position: relative !important;
       bottom: auto !important;
@@ -439,7 +497,18 @@
   "class": "an-advanced-bio",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content-advanced-bio",
+      "info": "Custom ID for internal linking (e.g., #content-advanced-bio)"
+    },
+      {
+        "type": "header",
       "content": "Content"
     },
     {
@@ -581,6 +650,12 @@
       "content": "Call to Action"
     },
     {
+      "type": "checkbox",
+      "id": "show_primary_cta",
+      "label": "Show Primary CTA",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "cta_text",
       "label": "CTA Button Text",
@@ -616,6 +691,52 @@
       "id": "cta_text_color",
       "label": "CTA Text Color",
       "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Secondary Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_cta",
+      "label": "Show Secondary CTA",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Button Text",
+      "default": "Learn more"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_url",
+      "label": "Secondary CTA URL",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_cta_new_tab",
+      "label": "Secondary CTA: Open in New Tab",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_use_custom_colors",
+      "label": "Secondary CTA: Use Custom Colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "secondary_cta_bg_color",
+      "label": "Secondary CTA Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "secondary_cta_text_color",
+      "label": "Secondary CTA Text/Border Color",
+      "default": "#5E3BFF"
     },
     {
       "type": "header",

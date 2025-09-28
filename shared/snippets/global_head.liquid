@@ -23,16 +23,16 @@
 
     <!-- Critical Image CSS for LCP optimization -->
     {% include 'critical_image_css' %}
-    
+
     <!-- Performance Optimizations ========================================= -->
     {% if settings.enable_performance_mode %}
       <!-- Use optimized loading strategy -->
       {% include 'performance_head' %}
-      
+
       <!-- Kajabi CSS - Load async -->
-      <link rel="stylesheet" 
-            href="{{ 'core.css' | kajabi_asset_url }}" 
-            media="print" 
+      <link rel="stylesheet"
+            href="{{ 'core.css' | kajabi_asset_url }}"
+            media="print"
             onload="this.media='all'; this.onload=null;">
       <noscript>
         <link rel="stylesheet" href="{{ 'core.css' | kajabi_asset_url }}">
@@ -53,14 +53,14 @@
       <!-- Icons are now inline SVGs via icon.liquid snippet -->
       <!-- Font Awesome removed for performance improvement -->
 
-      {{ "styles.css" | asset_url | stylesheet_tag }}
+      {{ "styles.scss.liquid" | asset_url | stylesheet_tag }}
 
       <!-- Customer CSS ====================================================== -->
       <!-- Overrides.css contains critical styles and is loaded synchronously -->
       {{ "overrides.css" | asset_url | stylesheet_tag }}
       {% include "animation_utilities" %}
     {% endif %}
-    
+
     {% include "global_custom_css" %}
 
     <!-- Kajabi Editor Only CSS ============================================ -->
@@ -74,13 +74,11 @@
     {% content_for_header %}
 
     <!-- Google Tag Manager -->
-    {% if settings.gtm_id and settings.gtm_id != '' %}
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','{{ settings.gtm_id }}');</script>
-    {% endif %}
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TKCGMPHT');</script>
 
     <!-- Facebook Pixel -->
     {% if settings.facebook_pixel_id and settings.facebook_pixel_id != '' %}

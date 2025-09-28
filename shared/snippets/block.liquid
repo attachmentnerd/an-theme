@@ -1,10 +1,11 @@
 {% include 'block_styles' %}
+{% assign custom_id = block.settings.html_id | default: '' | strip %}
 
 {% if block.settings.make_block %}
   <div class="block-break"></div>
 {% endif %}
 <div
-  id="block-{{ block.id }}"
+  id="{% if custom_id != '' %}{{ custom_id }}{% else %}block-{{ block.id }}{% endif %}"
   class="
   block-type--{{ block.type }}
   text-{{ block.settings.text_align }}

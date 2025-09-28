@@ -1,0 +1,79 @@
+{% assign course = current_site.find_course[block.settings.course] %}
+
+<style>
+  #block-{{ block.id }} .course-outline {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    .course-outline__heading:before {
+      color: {{ block.settings.course_outline_heading_color | default: settings.color_heading }} !important;
+    }
+    color: {{ block.settings.course_outline_body_color | default: settings.color_body }} !important;
+  }
+
+  #block-{{ block.id }} .course-outline__toplevelcategory {
+    border-style: {{ block.settings.category_border_type }};
+    border-color: {{ block.settings.category_border_color | default: settings.color_primary }};
+    border-radius: {{ block.settings.category_border_radius }}px;
+    border-width: {{ block.settings.category_border_width }}px;
+
+  }
+  #block-{{ block.id }} .course-outline__toplevelcategory[open] {
+    > summary > .course-outline__heading {
+      border-style: {{ block.settings.category_border_type }};
+      border-color: {{ block.settings.category_border_color | default: settings.color_primary }};
+      border-width: 0 0 {{ block.settings.category_border_width }}px;
+    }
+  }
+</style>
+
+{% if course != blank %}
+  <div class="course-outline">
+    {% if block.settings.use_course_settings %}
+      {% if course.thumbnail_url != blank %}
+        {{ course.thumbnail_url | image_tag: class: "course-outline__image" }}
+      {% endif %}
+    {% else %}
+      {% if block.settings.image != blank %}
+        {{ block.settings.image | image_picker_url: "placeholder.png" | image_tag: class: "course-outline__image" }}
+      {% endif %}
+    {% endif %}
+
+    <h1 class="course-outline__title">
+      {% if block.settings.use_course_settings %}
+        {{ course.title }}
+      {% else %}
+        {% element "block.settings.title" %}
+          {{ block.settings.title }}
+        {% endelement %}
+      {% endif %}
+    </h1>
+
+    <ol class="course-outline__categories">
+      {% if block.settings.displayed_content == "all" %}
+        {% for category in course.outline.all_categories %}
+          {% include "course_outline_category" %}
+        {% endfor %}
+      {% else %}
+        {% for category in course.outline.published_categories %}
+          {% include "course_outline_category" %}
+        {% endfor %}
+      {% endif %}
+    </ol>
+  </div>
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'course' | settings_id: section: section, block: block }}">
+      Click here to select a course for this outline.
+    </div>
+  {% endif %}
+{% endif %}

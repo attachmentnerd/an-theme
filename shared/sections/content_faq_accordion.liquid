@@ -6,7 +6,7 @@
   - Supports unlimited FAQ items
 {% endcomment %}
 
-<section class="an-faq-section py-5 bg-texture bg-texture--blob-1 bg-texture--gradient-mesh bg-texture--subtle" style="background-color: {{ section.settings.background_color }};">
+<section id="{{ section.settings.section_id | default: 'content-faq-accordion' }}-{{ section.id }}" class="an-faq-section py-5 bg-texture bg-texture--blob-1 bg-texture--gradient-mesh bg-texture--subtle" style="background-color: {{ section.settings.background_color }};">
   <div class="container">
     <!-- Section Header -->
     {% if section.settings.heading != blank or section.settings.subheading != blank %}
@@ -70,7 +70,7 @@
     transition: all 0.3s var(--ease-out);
     background: var(--c-white);
   }
-  
+
   /* Subtle corner decoration for FAQ items */
   .an-faq__item::before {
     content: '';
@@ -91,7 +91,7 @@
     border-color: var(--c-brand-600);
     box-shadow: 0 4px 12px rgba(94, 59, 255, 0.1);
   }
-  
+
   .an-faq__item:hover::before {
     opacity: 1;
   }
@@ -161,7 +161,7 @@
       padding: 1.25rem 1rem;
       font-size: var(--fs-body);
     }
-    
+
     .an-faq__answer-content {
       padding: 0 1rem 1.25rem;
     }
@@ -171,12 +171,12 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const faqItems = document.querySelectorAll('.an-faq__question');
-    
+
     faqItems.forEach(function(item) {
       item.addEventListener('click', function() {
         const isExpanded = this.getAttribute('aria-expanded') === 'true';
         const answer = this.nextElementSibling;
-        
+
         // Close all other items
         faqItems.forEach(function(otherItem) {
           if (otherItem !== item) {
@@ -184,7 +184,7 @@
             otherItem.nextElementSibling.setAttribute('aria-hidden', 'true');
           }
         });
-        
+
         // Toggle current item
         this.setAttribute('aria-expanded', !isExpanded);
         answer.setAttribute('aria-hidden', isExpanded);
@@ -198,7 +198,18 @@
   "name": "Content - FAQ Accordion",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content-faq-accordion",
+      "info": "Custom ID for internal linking (e.g., #content-faq-accordion)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Frequently Asked Questions"
@@ -246,16 +257,18 @@
       "name": "Content - FAQ Accordion",
       "elements": [
         {
-          "type": "text",
+          "type": "textarea",
           "id": "question",
-          "label": "Question",
-          "default": "What is attachment theory?"
+          "label": "Question (HTML supported)",
+          "default": "What is attachment theory?",
+          "info": "HTML allowed for inline formatting."
         },
         {
           "type": "textarea",
           "id": "answer",
-          "label": "Answer",
-          "default": "Attachment theory is the scientific study of how we form and maintain emotional bonds. It helps us understand the patterns we develop in relationships based on our early experiences."
+          "label": "Answer (HTML supported)",
+          "default": "Attachment theory is the scientific study of how we form and maintain emotional bonds. It helps us understand the patterns we develop in relationships based on our early experiences.",
+          "info": "HTML allowed; embeds and links supported."
         }
       ]
     }

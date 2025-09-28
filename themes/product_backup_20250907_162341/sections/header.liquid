@@ -1,0 +1,2405 @@
+ {% include "base_html" %}
+ 
+
+{% schema %}
+{
+  "name": "Base",
+
+  "elements": [
+    {
+      "type": "checkbox",
+      "id": "transparent_header",
+      "label": "Transparent Header",
+      "default": "false"
+    }, 
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": "0",
+      "max": "100",
+      "default": "0"
+    },  
+    {
+      "type": "color",
+      "allow_blank": true,
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000"
+    }, 
+    {
+      "type": "checkbox",
+      "id": "overlay_gradient",
+      "label": "Overlay Gradient",
+      "default": false
+    }, 
+    {
+      "type": "select",
+      "id": "manu_alignment",
+      "label": "Manu Alignment",
+      "default": "center",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label":  "Center"},
+        {"value": "right", "label": "Right"}
+      ]
+    } 
+  ],    
+   
+  "groups": [
+    {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_sticky_menu",
+        "label": "Use Sticky Menu",
+        "default": true
+      },
+      {
+        "type": "select",
+        "label": "Background Color",
+        "id": "sticky_background_color_preset",
+        "options": [
+          {
+            "value": "color_bg_1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "color_bg_2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "color_bg_3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "color_bg_4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "accent_color_1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "accent_color_2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "accent_color_3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "accent_color_4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--accent-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-3",
+            "label": "Accent Color 3"
+          },
+           {
+            "value": "--light-1",
+            "label": "Light Color 1"
+          },
+          {
+            "value": "--light-2",
+            "label": "Light Color 2"
+          },
+          {
+            "value": "--light-3",
+            "label": "Light Color 3"
+          },
+           {
+            "value": "--dark-1",
+            "label": "Dark Color 1"
+          },
+          {
+            "value": "--dark-2",
+            "label": "Dark Color 2"
+          },
+          {
+            "value": "--dark-3",
+            "label": "Dark Color 3"
+          },
+          {
+            "value": "No Background Color",
+            "label": "No Background Color"
+          }
+          
+        ]
+      },
+      {
+        "type": "color",
+        "label": "Custom Background Color",
+        "id": "sticky_background_color",
+        "allow_blank": true,
+        "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+      },
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+  },
+    {
+    "name": "Mobile Menu",
+    "elements": [
+      {
+        "type": "image_picker",
+        "label": "Logo",
+        "id": "mobileM_logo",
+        "default": "" 
+      },
+      {
+        "type": "rich_text",
+        "label": "Text",
+        "id": "mobileM_text",
+        "default": "Lorem Ispum"
+      },
+      {
+        "type": "checkbox",
+        "label": "Hide Social Media Icons",
+        "id": "hide_social_icons",
+        "default": false
+      },   
+      {
+        "type": "textarea",
+        "label": "Social Icons",
+        "id": "mobile_m_social_icons",
+        "default": "facebook-01,https://facebook.com/\ntwitter-01,https://twitter.com/\ninstagram-01,https://instagram.com/"
+      },
+      {
+        "type": "header",
+        "content": "Button"
+      },   
+      {
+        "type": "checkbox",
+        "label": "Hide Button",
+        "id": "hide_mobileM_button",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "mobileM_button_preset",
+        "label": "Button preset",
+        "default": "p1_",
+        "options":[
+          { 
+              "value":"p1_",
+              "label":"Preset 1"
+          },
+          { 
+              "value":"p2_",
+              "label":"Preset 2"
+          },
+          { 
+              "value":"p3_",
+              "label":"Preset 3"
+          },
+          { 
+              "value":"p4_",
+              "label":"Preset 4"
+          }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "mobileM_button_text",
+      "label": "Button Text",
+      "default": "Sign Up"
+     },
+     {
+      "type": "action",
+      "id": "mobileM_cta_action",
+      "label": "Button Action",
+      "default": "#"
+     },
+     {
+      "type": "checkbox",
+      "id": "mobileM_in_new_tab",
+      "label": "Open in new tab",
+      "default": "false"
+     },
+     {
+      "type": "textarea",
+      "id": "mobileM_style",
+      "label": "Mobile Menu Style",
+      "default": "/* -- Desktop Style --*/\n"
+    }
+    ]
+  },
+    {
+  "name": "Columns",
+  "elements": [
+    {
+      "type": "checkbox",
+      "id": "clmn_borders",
+      "label": "Show columns borders (Only in editor)",
+      "default": "true"
+    },       
+   {
+      "type": "select",
+      "id": "number_of_clmns",
+      "label": "Number of columns",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "clmn_with_auto",
+      "label": "Auto columns width",
+      "default": "false"
+    },     
+    {
+      "type": "grid",
+      "id": "clmn_width_1",
+      "label": "Column 1 - Width",
+      "default": "12"
+    },
+    {
+      "type": "grid",
+      "id": "clmn_mobile_width_1",
+      "label": "Column 1 - Mobile Width",
+      "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "position_clmn_1",
+      "label": "Column 1 - Position",
+      "default": "0",
+      "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+    },
+    {
+      "type": "textarea",
+      "id": "clmn_style_1",
+      "label": "Column 1 - Style",
+      "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+    },
+  {
+      "type": "grid",
+      "id": "clmn_width_2",
+      "label": "Column 2 - Width",
+      "default": "12"
+    },
+    {
+      "type": "grid",
+      "id": "clmn_mobile_width_2",
+      "label": "Column 2 - Mobile Width",
+      "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "position_clmn_2",
+      "label": "Column 2 - Position",
+      "default": "0",
+      "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+    },
+    {
+      "type": "textarea",
+      "id": "clmn_style_2",
+      "label": "Column 2 - Style",
+      "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+    },      {
+      "type": "grid",
+      "id": "clmn_width_3",
+      "label": "Column 3 - Width",
+      "default": "12"
+    },
+    {
+      "type": "grid",
+      "id": "clmn_mobile_width_3",
+      "label": "Column 3 - Mobile Width",
+      "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "position_clmn_3",
+      "label": "Column 3 - Position",
+      "default": "0",
+      "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+    },
+    {
+      "type": "textarea",
+      "id": "clmn_style_3",
+      "label": "Column 3 - Style",
+      "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+    },      {
+      "type": "grid",
+      "id": "clmn_width_4",
+      "label": "Column 4 - Width",
+      "default": "12"
+    },
+    {
+      "type": "grid",
+      "id": "clmn_mobile_width_4",
+      "label": "Column 4 - Mobile Width",
+      "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "position_clmn_4",
+      "label": "Column 4 - Position",
+      "default": "0",
+      "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+    },
+    {
+      "type": "textarea",
+      "id": "clmn_style_4",
+      "label": "Column 4 - Style",
+      "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+    },   
+    {
+      "type": "grid",
+      "id": "clmn_width_5",
+      "label": "Column 5 - Width",
+      "default": "12"
+    },
+    {
+      "type": "grid",
+      "id": "clmn_mobile_width_5",
+      "label": "Column 5 - Mobile Width",
+      "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "position_clmn_5",
+      "label": "Column 5 - Position",
+      "default": "0",
+      "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+    },
+    {
+      "type": "textarea",
+      "id": "clmn_style_5",
+      "label": "Column 5 - Style",
+      "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+    },   
+    {
+      "type": "grid",
+      "id": "clmn_width_6",
+      "label": "Column 6 - Width",
+      "default": "12"
+    },
+    {
+      "type": "grid",
+      "id": "clmn_mobile_width_6",
+      "label": "Column 6 - Mobile Width",
+      "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "position_clmn_6",
+      "label": "Column 6 - Position",
+      "default": "0",
+      "options": [
+    {
+      "value": "0",
+      "label": "Within parent container"
+    },
+    {
+        "value": "1",
+        "label": "Within column 1"
+    }, 
+    {
+        "value": "2",
+        "label": "Within column 2"
+    }, 
+    {
+        "value": "3",
+        "label": "Within column 3"
+    }, 
+    {
+        "value": "4",
+        "label": "Within column 4"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }, 
+    {
+        "value": "5"    ,
+        "label": "Within column 5"
+    }
+  ]
+    },
+    {
+      "type": "textarea",
+      "id": "clmn_style_6",
+      "label": "Column 6 - Style",
+      "default": "/* -- Desktop Style --*/\njustify-content: flex-start;\nalign-items: center; \n\n\n/* -- Mobile Style --*/\n\n"
+    }
+  ]
+},
+    {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "select",
+        "label": "Background Color",
+        "id": "background_color_preset",
+        "options": [
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },     
+          {
+            "value": "No Background Color",
+            "label": "No Background Color"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "label": "Custom Background Color",
+        "id": "background_color",
+        "allow_blank": true,
+        "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+      },
+      {
+        "type": "select",
+        "id": "bg_type",
+        "label": "Background Media Type",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "image",
+            "label": "Image"
+          },
+          {
+            "value": "video",
+            "label": "Video"
+          }
+        ]
+      },
+      {
+        "type": "video",
+        "id": "bg_video",
+        "label": "Background Video"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background Image",
+        "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+        "fit": "max",
+        "width": 3000,
+        "height": 3000
+      },
+      {
+        "type": "select",
+        "id": "bg_position",
+        "label": "Background Image Position",
+        "default": "center center",
+        "info": "Positioning of the background image.",
+        "options": [
+          {"value": "left top", "label": "Left Top"},
+          {"value": "left center", "label": "Left Center"},
+          {"value": "left bottom", "label": "Left Bottom"},
+          {"value": "right top", "label": "Right Top"},
+          {"value": "right center", "label": "Right Center"},
+          {"value": "right bottom", "label": "Right Bottom"},
+          {"value": "center top", "label": "Center Top"},
+          {"value": "center center", "label": "Center Center"},
+          {"value": "center bottom", "label": "Center Bottom"}
+        ]
+      },
+
+      {
+        "type": "radio",
+        "id": "bg_size",
+        "label": "Background Size",
+        "default": "cover",
+        "options": [
+          {"value": "contain", "label": "Contain"},
+          {"value": "cover", "label": "Cover"}
+        ]
+      },
+      
+      {
+        "type": "checkbox",
+        "id": "bg_repeat",
+        "label": "Repeat Background",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "id": "bg_precise_position",
+        "label": "Precise Background position - exmp:30% 50%",
+        "default": ""
+      },
+      {
+        "type": "checkbox",
+        "id": "bg_mobie_hide",
+        "label": "Hide Background on mobile",
+        "default": "false"
+      },
+      { 
+        "type": "checkbox",
+        "id": "background_fixed",
+        "label": "Fixed Background Image (Parallax)",
+        "default": "true",
+        "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+      }
+    ]
+  },
+    {
+    "name": "Desktop Layout",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "hide_on_desktop",
+        "label": "Hide Section",
+        "default": "false",
+        "info": "This will hide this section on desktop."
+      },
+      {
+        "type": "spacer",
+        "id": "padding_desktop",
+        "label": "Desktop Section Padding",
+        "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+        "placeholder": {
+          "top": "100",
+          "right": "40",
+          "bottom": "100",
+          "left": "40"
+        }
+      },
+      {
+        "type": "text",
+        "id": "content_width",
+        "label": "Content Width",
+        "default": "",
+        "info": "Leave blank to use theme default."
+      },
+      {
+        "type": "checkbox",
+        "id": "equal_height",
+        "label": "Equal Height Blocks",
+        "default": "false",
+        "info": "Make this section's blocks equal height."
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make Section Full Width",
+        "default": "false",
+        "info": "This section will fill the full width of the browser window."
+      },
+      {
+        "type": "checkbox",
+        "id": "full_height",
+        "label": "Make Section Full Height",
+        "default": "false",
+        "info": "This section will fill the full height of the browser window."
+      }
+    ]
+  },
+    {
+    "name": "Mobile Layout",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "hide_on_mobile",
+        "label": "Hide Section",
+        "default": "false",
+        "info": "This will hide this section on mobile."
+      },
+      {
+        "type": "spacer",
+        "id": "padding_mobile",
+        "label": "Mobile Section Padding",
+        "info": "Adjust padding inside of the section",
+        "placeholder": {
+          "top": "40",
+          "right": "10",
+          "bottom": "40",
+          "left": "10"
+        }
+      }
+    ]
+  },
+    {
+    "name": "Time Reveal",
+    "elements": [
+      {
+        "type": "event",
+        "id": "reveal_event",
+        "label": "Select Your Event",
+        "info": "Hide this section until the selected event and/or the offset time has expired.",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "reveal_offset",
+        "label": "Offset",
+        "default": "",
+        "info": "If no event is selected, this section will time reveal based on page load and offset."
+      },
+      {
+        "type": "select",
+        "id": "reveal_units",
+        "label": "Offset Units",
+        "default": "seconds",
+        "options": [
+          { "label": "Seconds", "value": "seconds" },
+          { "label": "Minutes", "value": "minutes" },
+          { "label": "Hours", "value": "hours" },
+          { "label": "Days", "value": "days" }
+        ]
+      }
+    ]
+  },
+    {
+    "name": "Section Style",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "section_style",
+        "label": "Section Style",
+        "default": "/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n"
+      }
+    ]
+  }
+  ],
+  
+  "blocks": [ 
+    { 
+  "type": "text",
+  "name": "Text",
+  "groups": [
+    {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+    {
+    "name": "Text Animation",
+    "elements": [
+      {
+        "type": "select",
+        "id": "animation_effect",
+        "label": "Animation Effect",
+        "default": "none",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Count Up", "value": "Count Up" },
+          { "label": "Effect 1", "value": "1" },
+          { "label": "Effect 2", "value": "2" },
+          { "label": "Effect 3", "value": "3" },
+          { "label": "Effect 6", "value": "6" },
+          { "label": "Effect 7", "value": "7" },
+          { "label": "Effect 9", "value": "9" },
+          { "label": "Effect 10", "value": "10" },
+          { "label": "Effect 11", "value": "11" },
+          { "label": "Effect 12", "value": "12" },
+          { "label": "Effect 13", "value": "13" },
+          { "label": "Effect 14", "value": "14" },
+          { "label": "Effect 16", "value": "16" }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_animation_loop",
+        "label": "Run in loop",
+        "default": "false"
+      }
+    ]
+},
+    {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+  ],
+  "elements": [
+    { 
+      "type": "header",
+      "content": "Text"
+    },
+    {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+    {
+      "type": "rich_text",
+      "label": "Text",
+      "id": "text",
+      "default": "Lorem ipsum dolor sit amet"
+    },
+    
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+    {
+      "type": "textarea",
+      "id": "style",
+      "label": "Style",
+      "default": "/* -- Desktop Style --*/\n \n\n\n/* -- Mobile Style --*/\n\n  "
+    }
+  ]
+},
+    { 
+    "type": "image",
+    "name": "Image / Icon",
+    "groups": [
+      {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+      {
+        "type": "image_picker",
+        "label": "Image",
+        "id": "image",
+        "default": "https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png"
+      },
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+    "type": "text",
+    "label": "Alt tag",
+    "id": "image_alt",
+    "default": ""
+},
+{
+    "type": "range",
+    "id": "image_radius",
+    "label": "Image Radius",
+    "default": "0",
+    "min": "0",
+    "max": "1000"
+},    
+{
+    "type": "header",
+    "content": "Icon"
+},
+{
+    "type": "checkbox",
+    "label": "Use Icon instead",
+    "id": "use_icon",
+    "default": ""
+},
+{
+    "type": "text",
+    "label": "Icon ID / SVG code / URL",
+    "id": "icon_id",
+    "default": "fas fa-chalkboard-teacher"
+},
+{
+    "type": "color",
+    "label": "Icon Color",
+    "id": "icon_color",
+    "allow_blank":"true",
+    "default": ""
+},
+{
+    "type": "range",
+    "id": "icon_size",
+    "label": "Icon Size",
+    "default": "30",
+    "min": "5",
+    "max": "200"
+}, 
+{
+    "type": "checkbox",
+    "label": "Mask Image",
+    "id": "mask_image",
+    "default": "false"
+},  
+{
+    "type": "text",
+    "label": "Mask - Preset Shape / SVG Code ",
+    "id": "mask_preset_shape",
+    "default": ""
+},
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/ \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+
+    ]
+  }, 
+    { 
+    "type": "button",
+    "name": "Button",
+    "groups": [
+      {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+    "type": "select",
+    "id": "button_preset",
+    "label": "Button preset",
+    "default": "p1_",
+    "options":[
+        { 
+            "value":"p1_",
+            "label":"Preset 1"
+        },
+        { 
+            "value":"p2_",
+            "label":"Preset 2"
+        },
+        { 
+            "value":"p3_",
+            "label":"Preset 3"
+        },
+        { 
+            "value":"p4_",
+            "label":"Preset 4"
+        }
+    ]
+  },
+  {
+    "type": "checkbox",
+    "id": "inherit_defaults",
+    "label": "Inherit Defaults",
+    "default": true
+    },
+ {
+    "type": "text",
+    "id": "button",
+    "label": "text",
+    "default": "Sign Up"
+   },
+   
+   {
+    "type": "action",
+    "id": "cta_action",
+    "label": "Action",
+    "default": "#"
+   },
+   {
+    "type": "checkbox",
+    "id": "in_new_tab",
+    "label": "Open in new tab",
+    "default": "false"
+   }, 
+   
+  {
+    "type": "checkbox",
+    "id": "inherit_defaults",
+    "label": "Inherit Defaults",
+    "default": true
+    },
+   {
+    "type": "header",
+    "content": "Overwrite defaults."   
+  },
+   {
+    "type": "checkbox",
+    "id": "cta_outline",
+    "label": "Outline Only",
+   "default": "false"
+   },
+   {
+    "type": "color",
+    "id": "cta_bg_color",
+    "label": "Background color",
+     "allow_blank": true
+   },
+   {
+    "type": "color",
+    "id": "cta_color",
+    "label": "Color",
+     "allow_blank": true
+   },
+
+   {
+    "type": "text",
+    "id": "cta_min_width",
+    "label": "Minimum width",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_min_height",
+    "label": "Minimum height",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_font_size",
+    "label": "Font size",
+    "default": ""
+   },
+
+   {
+    "type": "text",
+    "id": "cta_min_width_mobile",
+    "label": "Minimum width - Mobile",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_min_height_mobile",
+    "label": "Minimum height - Mobile",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_font_size_mobile",
+    "label": "Font size - Mobile",
+    "default": ""
+   },
+
+   
+   {
+    "type": "text",
+    "id": "cta_border_width",
+    "label": "Border width (outine) ",
+    "default": ""
+   },
+   {
+    "type": "text",
+    "id": "cta_border_radius",
+    "label": "Button radius",
+    "default": ""
+   },
+   
+   {
+    "type": "select",
+    "id": "cta_hide_icon",
+    "label": "Hide Icon",
+    "default": "Use Default",
+    "options":[
+        { 
+        "value":"Use Default",
+        "label":"Use Default"
+        },
+        { 
+            "value":"true",
+            "label":"Hide"
+        },
+        { 
+            "value":"false",
+            "label":"Show"
+        }
+    ]
+  },
+   {
+    "type": "select",
+    "id": "icon_position",
+    "label": "Icon Position",
+    "default": "default",
+    "options":[
+        { 
+            "value":"default",
+            "label":"Default"
+        },
+        { 
+            "value":"left",
+            "label":"Left"
+        },
+        { 
+            "value":"right",
+            "label":"Right"
+        }
+    ]
+  },
+   {
+    "type": "text",
+    "id": "cta_icon",
+    "label": "Icon ID",
+    "default": ""
+   } ,
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\nmargin-left:5px; \n\n\n/* -- Mobile Style --*/\n\n/* -- Child Element Style --*/\n\n "
+      }
+
+    ]
+  },
+    { 
+    "type": "text_n_icon",
+    "name": "Text and Icon",
+    "groups": [
+      {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+      {
+    "name": "Text Animation",
+    "elements": [
+      {
+        "type": "select",
+        "id": "animation_effect",
+        "label": "Animation Effect",
+        "default": "none",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Count Up", "value": "Count Up" },
+          { "label": "Effect 1", "value": "1" },
+          { "label": "Effect 2", "value": "2" },
+          { "label": "Effect 3", "value": "3" },
+          { "label": "Effect 6", "value": "6" },
+          { "label": "Effect 7", "value": "7" },
+          { "label": "Effect 9", "value": "9" },
+          { "label": "Effect 10", "value": "10" },
+          { "label": "Effect 11", "value": "11" },
+          { "label": "Effect 12", "value": "12" },
+          { "label": "Effect 13", "value": "13" },
+          { "label": "Effect 14", "value": "14" },
+          { "label": "Effect 16", "value": "16" }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_animation_loop",
+        "label": "Run in loop",
+        "default": "false"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+      {
+        "type": "rich_text",
+        "label": "Text",
+        "id": "text",
+        "default": "Lorem ipsum dolor sit amet"
+      },
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  }, 
+      {  
+          "type": "text",
+          "label": "Icon ID / SVG code / URL",
+          "id": "icon",
+          "default": "far fa-sign-in-alt"
+      },      
+      {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon Position",
+          "default": "Left",
+          "options":[
+              { 
+                  "value":"left",
+                  "label":"Left"
+              },
+              { 
+                  "value":"right",
+                  "label":"Right"
+              }
+          ]
+      },   
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Icon Style --*/\n\n/* -- Desktop Style --*/\ncolor:#444;\nfont-size:18px; \n\n\n/* -- Mobile Style --*/\n\n   "
+      }
+    ]
+  },
+    { 
+  "type": "social_icons",
+  "name": "Social Icons",
+  "groups": [
+    {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+    {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+  ],
+  "elements": [  
+    {
+      "type": "header",
+      "content": "Social Icons"
+    },
+    {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+    {
+      "type": "textarea",
+      "label": "Social Icons",
+      "id": "social_icons",
+      "default": "facebook-01,https://facebook.com/\ntwitter-01,https://twitter.com/\ninstagram-01,https://instagram.com/"
+    }, 
+    
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+    { 
+      "type": "textarea",
+      "id": "style",
+      "label": "Style",
+      "default": "/* -- Desktop Style --*/\n \n\n\n/* -- Mobile Style --*/\n\n  /* -- Custom Selectors--*/\n #this-block .social-icon, #this-block .social-icon svg{ fill:#444; color:#444;} "
+    }
+  ]
+},
+    { 
+    "type": "link_list",
+    "name": "Link List",
+    "groups": [
+      {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Link List"
+      },
+      {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+      {
+        "type": "link_list",
+        "id": "link_list",
+        "label": "Menu",
+        "info": "Secondary navigation for your site",
+        "default": "main-menu"
+      },
+      {
+    "type": "color",
+    "id": "color_top_menu",
+    "label": "Color - Top Menu",
+    "allow_blank": true,
+    "default": ""
+  },
+  {
+    "type": "color",
+    "id": "color_sticky_menu",
+    "label": "Color - Sticky Menu",
+    "allow_blank": true,
+    "default": ""
+  },
+        {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "Open In New Tab",
+            "default": "false"
+        },
+        
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\ncolor:#444;\nfont-size:18px; \n\n\n/* -- Mobile Style --*/\n\n  /* -- Custom Selectors--*/\n #this-block .social-icon, #this-block .social-icon svg{ fill:#444; color:#444;} "
+      }
+    ]
+  },
+    {
+    "type": "user_menu",
+    "name": "User Menu",
+    "groups": [
+        {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+        {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+      ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "User Dropdown"
+      },
+      {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "color",
+        "id": "default_background_color",
+        "label": "Default Avatar Background Color",
+        "default": "",
+        "allow_blank":true
+      },
+      {
+        "type": "text",
+        "id": "language_login",
+        "label": "Log In Text",
+        "default": "Log In"
+      },
+      {
+        "type": "text",
+        "id": "language_logout",
+        "label": "Logout Text",
+        "default": "Logout"
+      },
+      {
+        "type": "text",
+        "id": "language_settings",
+        "label": "Settings Text",
+        "default": "Settings"
+      },
+      {
+        "type": "text",
+        "id": "language_library",
+        "label": "Library Text",
+        "default": "My Library"
+      },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\n"
+      }
+    ]
+  },
+    {
+    "type": "dropdown",
+    "name": "Dropdown Menu",
+    "groups": [
+        {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+        {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+}
+      ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Dropdown Menu"
+      },
+      {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "text",
+        "id": "dropdown",
+        "label": "Dropdown Text",
+        "default": "Dropdown"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_icon",
+        "label": "Show Icon",
+        "default": "true"
+      },
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "new_tab",
+        "label": "Open In New Tab",
+        "default": ""
+      },
+      {
+    "type": "color",
+    "id": "color_top_menu",
+    "label": "Color - Top Menu",
+    "allow_blank": true,
+    "default": ""
+  },
+  {
+    "type": "color",
+    "id": "color_sticky_menu",
+    "label": "Color - Sticky Menu",
+    "allow_blank": true,
+    "default": ""
+  },
+      {
+        "type": "color",
+        "id": "dropdown_pop_bg_color",
+        "label": "Popup Box Background Color",
+        "default": "#fff"
+      },
+      { 
+        "type": "color",
+        "id": "dropdown_pop_text_color",
+        "label": "Popup Box Text Color",
+        "default": "#595959"
+      },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\n"
+      }
+
+
+    ]
+  },
+    { 
+    "type": "hamburger",
+    "name": "Hamburger Menu",
+    "groups": [
+      {
+    "name": "Sticky Menu Settings",
+    "elements": [
+      {
+        "type": "textarea",
+        "id": "sticky_menu_style",
+        "label": "Sticky Menu Style",
+        "default": "/*-- Desktop Style --*/\n"
+      }
+    ]
+},
+      {
+    "name": "Link",
+    "elements": [
+      {
+        "type": "select",
+        "id": "link_type",
+        "label": "Link type",
+        "default": "no link",
+        "options":[
+            { 
+                "value":"no link",
+                "label":"No link"
+            },
+            { 
+                "value":"Open in same window",
+                "label":"Open in same window"
+            },
+            { 
+                "value":"Open in a new window",
+                "label":"Open in a new window"
+            }
+        ]
+    },
+      {
+        "type": "action",
+        "id": "action",
+        "label": "Action",
+        "anchor": true,
+        "two_step": true,
+        "default": "#"
+      }
+    ]
+  },
+  
+
+  {
+    "name": "Background",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "use_image",
+        "label": "Use Image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background_image",
+        "default": ""
+      }
+  ] 
+} 
+    ],
+    "elements": [
+      {
+        "type": "header",
+        "content": "Hamburger Menu"
+      },
+      {
+    "type": "select",
+    "id": "hide_on_sticky",
+    "label": "Hide on Sticky / Top ",
+    "default": "none",
+    "options": [
+      { "label": "Show on Both", "value": "Show on Both" },
+      { "label": "Hide on Sticky Menu", "value": "Hide on Sticky Menu" },
+      { "label": "Hide on Top Menu", "value": "Hide on Top Menu" }
+    ]
+},
+{
+  "type": "checkbox",
+  "id": "header_hide_on_mobile",
+  "label": "Hide to Mobile",
+  "default": true
+},
+      
+
+  {
+    "type": "grid",
+    "id": "width",
+    "label": "Width",
+    "default": "12"
+  },
+  {
+    "type": "grid",
+    "id": "mobile_width",
+    "label": "Mobile Width",
+    "default": "12"
+  },
+  {
+    "type": "checkbox",
+    "id": "auto_width",
+    "label": "Auto width",
+    "default": "false"
+  },
+      {
+        "type": "textarea",
+        "id": "style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\n"
+      }
+ 
+    ]
+  }
+  ],  
+    "presets": [
+
+  ]
+}
+
+
+{% endschema %}

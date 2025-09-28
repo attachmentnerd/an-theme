@@ -13,7 +13,7 @@
   }
 
   /* Parallax Hero Section */
-  .parallax-hero {
+  #parallax-hero-{{ section.id }}.parallax-hero {
     position: relative;
     width: 100%;
     height: {{ section.settings.height | default: 100 }}vh;
@@ -25,7 +25,7 @@
   }
 
   /* Background Container */
-  .parallax-hero__bg {
+  #parallax-hero-{{ section.id }} .parallax-hero__bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -36,7 +36,7 @@
   }
 
   /* Background Image */
-  .parallax-hero__image {
+  #parallax-hero-{{ section.id }} .parallax-hero__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -44,7 +44,7 @@
   }
 
   /* Gradient Overlay */
-  .parallax-hero__overlay {
+  #parallax-hero-{{ section.id }} .parallax-hero__overlay {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -60,18 +60,18 @@
   }
 
   /* Dynamic background support */
-  .parallax-hero .dynamic-bg {
+  #parallax-hero-{{ section.id }} .dynamic-bg {
     z-index: 1;
   }
 
-  .parallax-hero .parallax-hero__content {
+  #parallax-hero-{{ section.id }} .parallax-hero__content {
     z-index: 2;
   }
 
   /* Additional Color Overlay */
-  {% assign overlay_opacity = section.settings.overlay_opacity | default: 0 | times: 1 %}
+  {% assign overlay_opacity = section.settings.overlay_opacity | default: 0 | plus: 0 %}
   {% if section.settings.color_overlay != blank and overlay_opacity > 0 %}
-  .parallax-hero__color-overlay {
+  #parallax-hero-{{ section.id }} .parallax-hero__color-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -84,7 +84,7 @@
   {% endif %}
 
   /* Content Container */
-  .parallax-hero__content {
+  #parallax-hero-{{ section.id }} .parallax-hero__content {
     position: relative;
     z-index: 1;
     width: 100%;
@@ -95,7 +95,7 @@
   }
 
   /* Typography */
-  .parallax-hero__title {
+  #parallax-hero-{{ section.id }} .parallax-hero__title {
     font-size: {{ section.settings.title_size | default: 72 }}px;
     font-weight: {{ section.settings.title_weight | default: 700 }};
     line-height: {{ section.settings.title_line_height | default: 1.1 }};
@@ -107,7 +107,7 @@
     {% endif %}
   }
 
-  .parallax-hero__subtitle {
+  #parallax-hero-{{ section.id }} .parallax-hero__subtitle {
     font-size: {{ section.settings.subtitle_size | default: 24 }}px;
     font-weight: {{ section.settings.subtitle_weight | default: 400 }};
     line-height: {{ section.settings.subtitle_line_height | default: 1.5 }};
@@ -120,7 +120,7 @@
   }
 
   /* CTA Button */
-  .parallax-hero__cta {
+  #parallax-hero-{{ section.id }} .parallax-hero__cta {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -146,7 +146,7 @@
     {% endif %}
   }
 
-  .parallax-hero__cta:hover {
+  #parallax-hero-{{ section.id }} .parallax-hero__cta:hover {
     transform: translateY(-2px);
     {% if section.settings.cta_style == 'gradient' %}
       box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25) inset,
@@ -162,7 +162,7 @@
 
   /* Scroll Indicator */
   {% if section.settings.show_scroll_indicator %}
-  .parallax-hero__scroll {
+  #parallax-hero-{{ section.id }} .parallax-hero__scroll {
     position: absolute;
     bottom: 30px;
     left: 50%;
@@ -170,7 +170,7 @@
     animation: bounce 2s infinite;
   }
 
-  .parallax-hero__scroll-icon {
+  #parallax-hero-{{ section.id }} .parallax-hero__scroll-icon {
     width: 30px;
     height: 50px;
     border: 2px solid {{ section.settings.scroll_color | default: '#FFFFFF' }};
@@ -179,7 +179,7 @@
     opacity: 0.8;
   }
 
-  .parallax-hero__scroll-icon::before {
+  #parallax-hero-{{ section.id }} .parallax-hero__scroll-icon::before {
     content: '';
     position: absolute;
     top: 8px;
@@ -206,46 +206,47 @@
 
   /* Mobile Responsive */
   @media (max-width: 991px) {
-    .parallax-hero {
+    #parallax-hero-{{ section.id }}.parallax-hero {
       height: {{ section.settings.mobile_height | default: 80 }}vh;
       min-height: {{ section.settings.mobile_min_height | default: 500 }}px;
     }
 
-    .parallax-hero__title {
+    #parallax-hero-{{ section.id }} .parallax-hero__title {
       font-size: {{ section.settings.mobile_title_size | default: 48 }}px;
     }
 
-    .parallax-hero__subtitle {
+    #parallax-hero-{{ section.id }} .parallax-hero__subtitle {
       font-size: {{ section.settings.mobile_subtitle_size | default: 20 }}px;
     }
 
-    .parallax-hero__cta {
+    #parallax-hero-{{ section.id }} .parallax-hero__cta {
       font-size: {{ section.settings.mobile_cta_size | default: 16 }}px;
       padding: {{ section.settings.mobile_cta_padding_y | default: 14 }}px {{ section.settings.mobile_cta_padding_x | default: 28 }}px;
     }
   }
 
   @media (max-width: 767px) {
-    .parallax-hero__title {
+    #parallax-hero-{{ section.id }} .parallax-hero__title {
       font-size: {{ section.settings.mobile_title_size | minus: 12 | default: 36 }}px;
     }
 
-    .parallax-hero__subtitle {
+    #parallax-hero-{{ section.id }} .parallax-hero__subtitle {
       font-size: {{ section.settings.mobile_subtitle_size | minus: 2 | default: 18 }}px;
     }
 
-    .parallax-hero__content {
+    #parallax-hero-{{ section.id }} .parallax-hero__content {
       padding: var(--space-lg) var(--space-md);
     }
   }
 </style>
 
+{% if section.settings.section_id != blank %}<a id="{{ section.settings.section_id | escape }}"></a>{% endif %}
 <section class="parallax-hero" id="parallax-hero-{{ section.id }}">
   <!-- Background with Parallax -->
   <div class="parallax-hero__bg" data-parallax-speed="{{ section.settings.parallax_speed | default: 0.5 }}">
     {% if section.settings.background_image != blank %}
-      <img src="{{ section.settings.background_image | image_picker_url: '1600x900' }}" 
-           alt="{{ section.settings.image_alt | default: 'Hero background' }}" 
+      <img src="{{ section.settings.background_image | image_picker_url: '1600x900' }}"
+           alt="{{ section.settings.image_alt | default: 'Hero background' }}"
            class="parallax-hero__image"
            loading="eager"
            style="aspect-ratio: 16/9; object-fit: cover; width: 100%; height: 100%;">
@@ -261,7 +262,10 @@
   </div>
 
   <!-- Gradient Overlay -->
-  <div class="parallax-hero__overlay"></div>
+  {% assign gh = section.settings.gradient_height | default: 50 | plus: 0 %}
+  {% if section.settings.show_gradient_overlay and gh > 0 %}
+    <div class="parallax-hero__overlay"></div>
+  {% endif %}
 
   <!-- Dynamic Background Effects -->
   {% if section.settings.dynamic_background != 'none' %}
@@ -297,7 +301,7 @@
   {% endif %}
 
   <!-- Color Overlay -->
-  {% assign overlay_opacity = section.settings.overlay_opacity | default: 0 | times: 1 %}
+  {% assign overlay_opacity = section.settings.overlay_opacity | default: 0 | plus: 0 %}
   {% if section.settings.color_overlay != blank and overlay_opacity > 0 %}
     <div class="parallax-hero__color-overlay"></div>
   {% endif %}
@@ -542,6 +546,12 @@
     {
       "type": "header",
       "content": "Gradient Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gradient_overlay",
+      "label": "Show gradient overlay",
+      "default": true
     },
     {
       "type": "range",

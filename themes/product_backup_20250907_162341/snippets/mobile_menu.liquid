@@ -1,0 +1,59 @@
+{%- comment -%}
+  Style removed: we now rely on shared tokens and overrides.css for menu styling.
+  Previous freeform style fields are deprecated in favor of design tokens.
+{%- endcomment -%}
+
+<div class="menu-links">
+  <div class="mobile-menu">
+    <div class="logo-wrap">
+      {% if current_site.logo_image != "" and section.settings.mobileM_logo == "" %}
+        <img class="logo" src="{{ current_site.logo_image | image_picker_url: 'logo.png' }}" />
+      {% else %}
+        <img class="logo" src="{% include "image_patch", img: section.settings.mobileM_logo %}" />
+      {% endif %}
+    </div>
+
+    <div class="hamburger-menu-close">
+      {% include 'icon', icon: 'close', size: 24 %}
+    </div>
+
+    <div class="mobile_menu_tabs">
+      {% for block in section.blocks %}
+        {% if block.type == "p_tabs" %}
+          {% include "nblock_p_tabs" %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="mobile_menu_items">
+      {% for link in current_site.link_lists[section.settings.link_list].links %}
+        <a
+          class="menu-item {% if isFirst %}active_page{% endif %}"
+          href="{{ link.url }}"
+          rel="noopener"
+          target="_blank">{{ link.name }}</a>
+        {% assign isFirst = false %}
+      {% endfor %}
+      {% if current_site_user %}
+        <span class="menu-item login_out" href="https://kajabi-themes.mykajabi.com/">{{ "Logout" | member_logout_link }}</span>
+      {% else %}
+        <span class="menu-item login_out" href="https://kajabi-themes.mykajabi.com/">{{ "Login" | member_login_link }}</span>
+      {% endif %}
+    </div>
+
+  </div>
+  <div class="mobileM_bottom ">
+    <div class="text">
+      {{ section.settings.mobileM_text }}
+    </div>
+    <div class="social-icons hide-{{section.settings.hide_social_icons}}">
+      {% include "nblock_social_icons" is_mobile_menu: true %}
+    </div>
+
+    <a href="{{section.settings.mobileM_cta_action}}" {% if section.settings.mobileM_in_new_tab == true %}target="_blank"{% endif %}class="a_button p1_btn {{section.settings.mobileM_button_preset}}btn hide-{{section.settings.hide_mobileM_button}}">
+      <span>{{ section.settings.mobileM_button_text }}</span>
+    </a>
+
+
+  </div>
+</div>

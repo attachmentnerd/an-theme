@@ -88,7 +88,7 @@
 
     <div class="sa-page">
         <!-- Hero Section -->
-        <section class="sa-hero">
+        <section id="{{ section.settings.section_id | default: 'securely-attached-complete' }}-{{ section.id }}" class="sa-hero">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -404,7 +404,18 @@
   "class": "page-securely-attached-complete",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "securely-attached-complete",
+      "info": "Custom ID for internal linking (e.g., #securely-attached-complete)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

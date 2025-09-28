@@ -9,6 +9,8 @@
     "theme:build": "node scripts/theme-manager.js build",
     "theme:export": "node scripts/theme-manager.js export",
     "theme:version": "node scripts/theme-manager.js version",
+    "theme:export-both": "node scripts/theme-manager.js export-both",
+    "theme:sync": "node scripts/theme-manager.js sync",
     "test": "node scripts/test-themes.js",
     "inject:drafts": "node scripts/inject-schema.js",
     "inject:watch": "npm-watch inject:drafts",

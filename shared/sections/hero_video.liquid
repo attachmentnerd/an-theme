@@ -8,7 +8,7 @@
   - Poster image support for the video thumbnail
 {% endcomment %}
 
-<section class="an-video-hero position-relative overflow-hidden" 
+<section id="{{ section.settings.section_id | default: 'hero-video' }}-{{ section.id }}" class="an-video-hero position-relative overflow-hidden" 
          style="background-color: {{ section.settings.background_color }};
                 {% if section.settings.background_image != blank %}
                   background-image: url('{{ section.settings.background_image | image_picker_url: 'master' }}');
@@ -573,7 +573,18 @@
   "name": "Hero - Video",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "hero-video",
+      "info": "Custom ID for internal linking (e.g., #hero-video)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Transform Your Parenting Journey"

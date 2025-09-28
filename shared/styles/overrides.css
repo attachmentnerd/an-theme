@@ -7,6 +7,95 @@
 /* Import Design Tokens - All colors, spacing, and typography variables */
 @import url("_tokens.css");
 
+/* Download Card (global, shared across themes) */
+.dl-card {
+  --bg: var(--c-white);
+  --accent: var(--c-brand-600);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--c-bg-light);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.06);
+  margin: 16px 0;
+}
+.dl-card__icon-wrap {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  background: rgba(94, 59, 255, 0.08);
+}
+.dl-card__icon {
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+.dl-card__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.dl-card__title {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--c-ink-900); /* Darkest text */
+}
+.dl-card__desc {
+  margin: 0;
+  color: var(--c-ink-700); /* Dark text */
+  font-size: 16px;
+}
+.dl-card__meta {
+  margin-top: 6px;
+  color: var(--c-ink-500); /* Medium text */
+  font-size: 12px;
+}
+.dl-card__cta {
+  flex: 0 0 auto;
+}
+.dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--c-white);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: filter 0.15s ease;
+  white-space: nowrap;
+}
+.dl-btn:hover {
+  filter: brightness(0.96);
+}
+.dl-btn__icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
+@media (max-width: 640px) {
+  .dl-card {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    flex-wrap: wrap;
+  }
+  .dl-card__cta {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+
 /* Table of Contents
    1. Typography Base
    2. Common Button Styles
@@ -19,6 +108,383 @@
 /* Note: All CSS variables have been moved to _tokens.css for easier marketing team access */
 
 /* ==========================================================================
+   0. Essential Layout & Container Styles
+   ========================================================================== */
+/* Container - Essential for proper page layout */
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Row and Columns - Essential grid system */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col, [class*="col-"] {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+/* Column widths */
+.col-12 { flex: 0 0 100%; max-width: 100%; }
+.col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+.col-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+.col-9 { flex: 0 0 75%; max-width: 75%; }
+.col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+.col-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+.col-6 { flex: 0 0 50%; max-width: 50%; }
+.col-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+.col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+.col-3 { flex: 0 0 25%; max-width: 25%; }
+.col-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+.col-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
+  .col-sm-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-sm-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-sm-9 { flex: 0 0 75%; max-width: 75%; }
+  .col-sm-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-sm-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-sm-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-sm-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-sm-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-sm-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-sm-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+  .col-md-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-md-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-md-9 { flex: 0 0 75%; max-width: 75%; }
+  .col-md-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-md-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-md-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-md-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-md-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-md-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .col-lg-12 { flex: 0 0 100%; max-width: 100%; }
+  .col-lg-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-lg-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-lg-9 { flex: 0 0 75%; max-width: 75%; }
+  .col-lg-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-lg-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-lg-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-lg-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-lg-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-lg-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-lg-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .col-xl-12 { flex: 0 0 100%; max-width: 100%; }
+  .col-xl-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-xl-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-xl-9 { flex: 0 0 75%; max-width: 75%; }
+  .col-xl-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-xl-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-xl-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-xl-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-xl-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-xl-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-xl-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-xl-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+}
+
+/* ==========================================================================
+   Text Alignment and Centering Utilities
+   ========================================================================== */
+
+/* Text Alignment */
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+.text-center { text-align: center !important; }
+.text-justify { text-align: justify !important; }
+.text-nowrap { white-space: nowrap !important; }
+
+/* Responsive Text Alignment */
+@media (min-width: 576px) {
+  .text-sm-left { text-align: left !important; }
+  .text-sm-right { text-align: right !important; }
+  .text-sm-center { text-align: center !important; }
+}
+
+@media (min-width: 768px) {
+  .text-md-left { text-align: left !important; }
+  .text-md-right { text-align: right !important; }
+  .text-md-center { text-align: center !important; }
+}
+
+@media (min-width: 992px) {
+  .text-lg-left { text-align: left !important; }
+  .text-lg-right { text-align: right !important; }
+  .text-lg-center { text-align: center !important; }
+}
+
+/* ==========================================================================
+   Flexbox Utilities
+   ========================================================================== */
+
+/* Display */
+.d-none { display: none !important; }
+.d-inline { display: inline !important; }
+.d-inline-block { display: inline-block !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+.d-inline-flex { display: inline-flex !important; }
+
+/* Flexbox Direction */
+.flex-row { flex-direction: row !important; }
+.flex-column { flex-direction: column !important; }
+.flex-row-reverse { flex-direction: row-reverse !important; }
+.flex-column-reverse { flex-direction: column-reverse !important; }
+
+/* Flexbox Justify Content */
+.justify-content-start { justify-content: flex-start !important; }
+.justify-content-end { justify-content: flex-end !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-between { justify-content: space-between !important; }
+.justify-content-around { justify-content: space-around !important; }
+.justify-content-evenly { justify-content: space-evenly !important; }
+
+/* Flexbox Align Items */
+.align-items-start { align-items: flex-start !important; }
+.align-items-end { align-items: flex-end !important; }
+.align-items-center { align-items: center !important; }
+.align-items-baseline { align-items: baseline !important; }
+.align-items-stretch { align-items: stretch !important; }
+
+/* Flexbox Align Self */
+.align-self-auto { align-self: auto !important; }
+.align-self-start { align-self: flex-start !important; }
+.align-self-end { align-self: flex-end !important; }
+.align-self-center { align-self: center !important; }
+.align-self-baseline { align-self: baseline !important; }
+.align-self-stretch { align-self: stretch !important; }
+
+/* Flexbox Wrap */
+.flex-wrap { flex-wrap: wrap !important; }
+.flex-nowrap { flex-wrap: nowrap !important; }
+.flex-wrap-reverse { flex-wrap: wrap-reverse !important; }
+
+/* Flexbox Flex */
+.flex-fill { flex: 1 1 auto !important; }
+.flex-grow-0 { flex-grow: 0 !important; }
+.flex-grow-1 { flex-grow: 1 !important; }
+.flex-shrink-0 { flex-shrink: 0 !important; }
+.flex-shrink-1 { flex-shrink: 1 !important; }
+
+/* ==========================================================================
+   Spacing Utilities
+   ========================================================================== */
+
+/* Margin Utilities */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 0.25rem !important; }
+.m-2 { margin: 0.5rem !important; }
+.m-3 { margin: 1rem !important; }
+.m-4 { margin: 1.5rem !important; }
+.m-5 { margin: 3rem !important; }
+.m-auto { margin: auto !important; }
+
+/* Margin Top */
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: 0.25rem !important; }
+.mt-2 { margin-top: 0.5rem !important; }
+.mt-3 { margin-top: 1rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.mt-5 { margin-top: 3rem !important; }
+.mt-auto { margin-top: auto !important; }
+
+/* Margin Bottom */
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 0.25rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mb-5 { margin-bottom: 3rem !important; }
+.mb-auto { margin-bottom: auto !important; }
+
+/* Margin Left */
+.ml-0 { margin-left: 0 !important; }
+.ml-1 { margin-left: 0.25rem !important; }
+.ml-2 { margin-left: 0.5rem !important; }
+.ml-3 { margin-left: 1rem !important; }
+.ml-4 { margin-left: 1.5rem !important; }
+.ml-5 { margin-left: 3rem !important; }
+.ml-auto { margin-left: auto !important; }
+
+/* Margin Right */
+.mr-0 { margin-right: 0 !important; }
+.mr-1 { margin-right: 0.25rem !important; }
+.mr-2 { margin-right: 0.5rem !important; }
+.mr-3 { margin-right: 1rem !important; }
+.mr-4 { margin-right: 1.5rem !important; }
+.mr-5 { margin-right: 3rem !important; }
+.mr-auto { margin-right: auto !important; }
+
+/* Margin X-axis */
+.mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
+.mx-1 { margin-left: 0.25rem !important; margin-right: 0.25rem !important; }
+.mx-2 { margin-left: 0.5rem !important; margin-right: 0.5rem !important; }
+.mx-3 { margin-left: 1rem !important; margin-right: 1rem !important; }
+.mx-4 { margin-left: 1.5rem !important; margin-right: 1.5rem !important; }
+.mx-5 { margin-left: 3rem !important; margin-right: 3rem !important; }
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+
+/* Margin Y-axis */
+.my-0 { margin-top: 0 !important; margin-bottom: 0 !important; }
+.my-1 { margin-top: 0.25rem !important; margin-bottom: 0.25rem !important; }
+.my-2 { margin-top: 0.5rem !important; margin-bottom: 0.5rem !important; }
+.my-3 { margin-top: 1rem !important; margin-bottom: 1rem !important; }
+.my-4 { margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
+.my-5 { margin-top: 3rem !important; margin-bottom: 3rem !important; }
+
+/* Padding Utilities */
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 0.25rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.p-5 { padding: 3rem !important; }
+
+/* Padding Top */
+.pt-0 { padding-top: 0 !important; }
+.pt-1 { padding-top: 0.25rem !important; }
+.pt-2 { padding-top: 0.5rem !important; }
+.pt-3 { padding-top: 1rem !important; }
+.pt-4 { padding-top: 1.5rem !important; }
+.pt-5 { padding-top: 3rem !important; }
+
+/* Padding Bottom */
+.pb-0 { padding-bottom: 0 !important; }
+.pb-1 { padding-bottom: 0.25rem !important; }
+.pb-2 { padding-bottom: 0.5rem !important; }
+.pb-3 { padding-bottom: 1rem !important; }
+.pb-4 { padding-bottom: 1.5rem !important; }
+.pb-5 { padding-bottom: 3rem !important; }
+
+/* Padding Left */
+.pl-0 { padding-left: 0 !important; }
+.pl-1 { padding-left: 0.25rem !important; }
+.pl-2 { padding-left: 0.5rem !important; }
+.pl-3 { padding-left: 1rem !important; }
+.pl-4 { padding-left: 1.5rem !important; }
+.pl-5 { padding-left: 3rem !important; }
+
+/* Padding Right */
+.pr-0 { padding-right: 0 !important; }
+.pr-1 { padding-right: 0.25rem !important; }
+.pr-2 { padding-right: 0.5rem !important; }
+.pr-3 { padding-right: 1rem !important; }
+.pr-4 { padding-right: 1.5rem !important; }
+.pr-5 { padding-right: 3rem !important; }
+
+/* Padding X-axis */
+.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+.px-1 { padding-left: 0.25rem !important; padding-right: 0.25rem !important; }
+.px-2 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+.px-3 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.px-4 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+.px-5 { padding-left: 3rem !important; padding-right: 3rem !important; }
+
+/* Padding Y-axis */
+.py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+.py-1 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+.py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+.py-3 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.py-4 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+.py-5 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+
+/* ==========================================================================
+   Width and Height Utilities
+   ========================================================================== */
+
+.w-25 { width: 25% !important; }
+.w-50 { width: 50% !important; }
+.w-75 { width: 75% !important; }
+.w-100 { width: 100% !important; }
+.w-auto { width: auto !important; }
+
+.h-25 { height: 25% !important; }
+.h-50 { height: 50% !important; }
+.h-75 { height: 75% !important; }
+.h-100 { height: 100% !important; }
+.h-auto { height: auto !important; }
+
+.mw-100 { max-width: 100% !important; }
+.mh-100 { max-height: 100% !important; }
+
+/* ==========================================================================
+   Position Utilities
+   ========================================================================== */
+
+.position-static { position: static !important; }
+.position-relative { position: relative !important; }
+.position-absolute { position: absolute !important; }
+.position-fixed { position: fixed !important; }
+.position-sticky { position: sticky !important; }
+
+/* ==========================================================================
    1. Typography Base
    ========================================================================== */
 body {
@@ -29,6 +495,26 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* Performance: reduce expensive blur/transparency on mobile */
+@media (max-width: 768px) {
+  /* Trim glassmorphism for mobile paint performance */
+  .an-cta__eyebrow {
+    backdrop-filter: none !important;
+  }
+  .nav-transparent-pill--scrolled {
+    backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+  }
+}
+
+/* Respect reduced motion by disabling backdrop blur */
+@media (prefers-reduced-motion: reduce) {
+  .an-cta__eyebrow,
+  .nav-transparent-pill--scrolled {
+    backdrop-filter: none !important;
+  }
 }
 
 /* Serif headings for warmth and authority */
@@ -291,7 +777,7 @@ a:hover {
 
 /* Mobile Navigation */
 .header__content--mobile {
-  background-color: #ffffff;
+  background-color: var(--c-white);
 }
 
 /* Removed duplicate mobile link styles - see updated version below */
@@ -862,7 +1348,7 @@ a:hover {
 
 /* Modern header styling */
 .header {
-  background-color: #ffffff;
+  background-color: var(--c-white);
   box-shadow: none;
   border-bottom: 1px solid #f0f0f0;
   transition: all var(--motion-duration-base) var(--motion-ease-standard);
@@ -904,7 +1390,7 @@ a:hover {
 /* Main navigation links */
 .header .link-list__link,
 .header__content--desktop .link-list__link {
-  color: #1a1a1a !important;
+  color: var(--c-ink-900) !important;
   font-weight: 400;
   font-size: 16px;
   padding: 8px 0 !important;
@@ -957,7 +1443,7 @@ a:hover {
 
 /* Dropdown trigger styling */
 .header .dropdown__trigger {
-  color: #1a1a1a !important;
+  color: var(--c-ink-900) !important;
   font-weight: 400;
   font-size: 16px;
   padding: 8px 0 !important;
@@ -1006,7 +1492,7 @@ a:hover {
 
 /* Dropdown menu styling */
 .header .dropdown__menu {
-  background-color: #ffffff;
+  background-color: var(--c-white);
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
@@ -1016,7 +1502,7 @@ a:hover {
 }
 
 .header .dropdown__item a {
-  color: #1a1a1a !important;
+  color: var(--c-ink-900) !important;
   padding: 12px 20px !important;
   font-size: 15px;
   display: block;
@@ -1031,7 +1517,7 @@ a:hover {
 
 /* User menu styling */
 .header .user__login a {
-  color: #1a1a1a !important;
+  color: var(--c-ink-900) !important;
   font-weight: 400;
   font-size: 16px;
   padding: 8px 16px !important;
@@ -1111,7 +1597,7 @@ a:hover {
 }
 
 .hamburger__slice {
-  background-color: #1a1a1a;
+  background-color: var(--c-ink-900);
   height: 2px;
   width: 100%;
   border-radius: 2px;
@@ -1138,7 +1624,7 @@ a:hover {
 
 /* Mobile Menu Open State */
 .header__content--mobile-open .hamburger__slice {
-  background-color: #1a1a1a;
+  background-color: var(--c-ink-900);
 }
 
 .header__content--mobile-open .hamburger--slice-1 {
@@ -1165,7 +1651,7 @@ a:hover {
   width: var(--an-mobile-menu-width, 85%);
   max-width: var(--an-mobile-menu-max, 400px);
   height: 100vh;
-  background-color: #ffffff;
+  background-color: var(--c-white);
   z-index: var(--an-z-mobile-menu, 999);
   transform: translateX(100%);
   transition: transform var(--an-transition-smooth);
@@ -2850,6 +3336,16 @@ label {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
+/* Mobile: relax glass effects */
+@media (max-width: 768px) {
+  .glass-layer,
+  .glass-layer--dark {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+  }
+}
+
 /* ==========================================================================
    Background Textures & Decorative Shapes
    Added: 2025-01-20
@@ -3312,7 +3808,7 @@ textarea.error:focus {
   bottom: 20px;
   right: -20px;
   background: #000;
-  color: #fff;
+  color: var(--c-white);
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -3380,7 +3876,7 @@ textarea.error:focus {
 /* CTA Button */
 .book-testimonial-showcase__cta {
   background: #000;
-  color: #fff;
+  color: var(--c-white);
   padding: 16px 32px;
   border-radius: 30px;
   font-weight: 600;
@@ -4172,18 +4668,37 @@ input[type="button"] {
 }
 
 /* Icon sizing */
-.icon-xs { width: 12px; height: 12px; }
-.icon-sm { width: 16px; height: 16px; }
-.icon-md { width: 20px; height: 20px; }
-.icon-lg { width: 24px; height: 24px; }
-.icon-xl { width: 32px; height: 32px; }
-.icon-2xl { width: 48px; height: 48px; }
+.icon-xs {
+  width: 12px;
+  height: 12px;
+}
+.icon-sm {
+  width: 16px;
+  height: 16px;
+}
+.icon-md {
+  width: 20px;
+  height: 20px;
+}
+.icon-lg {
+  width: 24px;
+  height: 24px;
+}
+.icon-xl {
+  width: 32px;
+  height: 32px;
+}
+.icon-2xl {
+  width: 48px;
+  height: 48px;
+}
 
 /* Social icon specific styles */
 .icon-social {
-  transition: transform var(--an-transition-base), 
-              opacity var(--an-transition-base),
-              color var(--an-transition-base);
+  transition:
+    transform var(--an-transition-base),
+    opacity var(--an-transition-base),
+    color var(--an-transition-base);
 }
 
 .icon-social:hover {
@@ -4206,11 +4721,21 @@ input[type="button"] {
 }
 
 /* Icon colors */
-.icon-brand { color: var(--c-brand-600); }
-.icon-teal { color: var(--c-accent-teal); }
-.icon-peach { color: var(--c-accent-peach); }
-.icon-lemon { color: var(--c-accent-lemon); }
-.icon-muted { color: var(--c-ink-400); }
+.icon-brand {
+  color: var(--c-brand-600);
+}
+.icon-teal {
+  color: var(--c-accent-teal);
+}
+.icon-peach {
+  color: var(--c-accent-peach);
+}
+.icon-lemon {
+  color: var(--c-accent-lemon);
+}
+.icon-muted {
+  color: var(--c-ink-400);
+}
 
 /* Icon containers */
 .icon-circle {
@@ -4244,9 +4769,18 @@ input[type="button"] {
   transition: all var(--an-transition-base);
 }
 
-.social-icons__icon--small .icon { width: 16px; height: 16px; }
-.social-icons__icon--medium .icon { width: 20px; height: 20px; }
-.social-icons__icon--large .icon { width: 24px; height: 24px; }
+.social-icons__icon--small .icon {
+  width: 16px;
+  height: 16px;
+}
+.social-icons__icon--medium .icon {
+  width: 20px;
+  height: 20px;
+}
+.social-icons__icon--large .icon {
+  width: 24px;
+  height: 24px;
+}
 
 /* ==========================================================================
    19. Enhanced Background Textures & SVG Shapes
@@ -5573,11 +6107,11 @@ select:focus {
   .aspect-square--mobile {
     aspect-ratio: 1 / 1 !important;
   }
-  
+
   .aspect-video--mobile {
     aspect-ratio: 16 / 9 !important;
   }
-  
+
   .aspect-book--mobile {
     aspect-ratio: 2 / 3 !important;
   }
@@ -5587,11 +6121,11 @@ select:focus {
   .aspect-square--tablet-up {
     aspect-ratio: 1 / 1 !important;
   }
-  
+
   .aspect-video--tablet-up {
     aspect-ratio: 16 / 9 !important;
   }
-  
+
   .aspect-book--tablet-up {
     aspect-ratio: 2 / 3 !important;
   }
@@ -5694,7 +6228,7 @@ select:focus {
   .aspect-square--mobile {
     aspect-ratio: 1 / 1 !important;
   }
-  
+
   .aspect-video--mobile {
     aspect-ratio: 16 / 9 !important;
   }
@@ -5704,11 +6238,11 @@ select:focus {
   .aspect-square--tablet-up {
     aspect-ratio: 1 / 1 !important;
   }
-  
+
   .aspect-video--tablet-up {
     aspect-ratio: 16 / 9 !important;
   }
-  
+
   .aspect-book--tablet-up {
     aspect-ratio: 2 / 3 !important;
   }
@@ -5789,12 +6323,12 @@ select:focus {
 
 /* When section has dark background overlay, use white text */
 .section .section__overlay[style*="background-color: rgba("] {
-  color: #fff;
+  color: var(--c-white);
 }
 
 /* Ensure all text elements inside dark sections use white */
 .section:has(.section__overlay[style*="background-color: rgba("]) {
-  color: #fff;
+  color: var(--c-white);
 }
 
 .section:has(.section__overlay[style*="background-color: rgba("]) h1,
@@ -5806,7 +6340,8 @@ select:focus {
 .section:has(.section__overlay[style*="background-color: rgba("]) p,
 .section:has(.section__overlay[style*="background-color: rgba("]) span,
 .section:has(.section__overlay[style*="background-color: rgba("]) div,
-.section:has(.section__overlay[style*="background-color: rgba("]) .block-type--text {
+.section:has(.section__overlay[style*="background-color: rgba("])
+  .block-type--text {
   color: #fff !important;
 }
 
@@ -5816,7 +6351,7 @@ select:focus {
 .section[style*="background-color: #000"],
 .section[style*="background-color: #111"],
 .section[style*="background-color: #222"] {
-  color: #fff;
+  color: var(--c-white);
 }
 
 .section[style*="background-color: rgba(22, 30, 42"] *,
@@ -5838,14 +6373,18 @@ select:focus {
   transform: none !important;
 }
 
-/* Only hide elements with actual animations */
-[data-aos]:not([data-aos="none"]) {
+/* Fail-open default: visible unless JS is active */
+[data-aos] {
+  opacity: 1;
+  transform: none;
+}
+html.an-js [data-aos]:not([data-aos="none"]) {
   opacity: 0;
   transition-property: transform, opacity;
 }
-
-[data-aos]:not([data-aos="none"]).aos-animate {
+html.an-js [data-aos]:not([data-aos="none"]).aos-animate {
   opacity: 1;
+  transform: none;
 }
 
 /* Ensure all blocks are visible by default */
@@ -5865,6 +6404,59 @@ body:not(.aos-initialized) [data-aos] {
   transform: none !important;
 }
 
+/* Builder/editor safety: force visible in editor/preview */
+[data-kajabi-theme-editor] [data-aos],
+.kajabi-theme-editor [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 /* ==========================================================================
    END OF SHARED STYLES
    ========================================================================== */
+/* ==========================================================================
+   Media Utilities
+   Added: 2025-09-18
+   Description: Utilities for consistent responsive media containers
+   ========================================================================== */
+
+/* Portrait-friendly wrapper for iframes or <video> */
+.an-portrait-video {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16; /* Default: portrait */
+  border-radius: var(--pv-radius, 16px);
+  background: var(--pv-bg, #0d1321);
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+.an-portrait-video iframe,
+.an-portrait-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+  background: transparent;
+  object-fit: var(--pv-fit, contain);
+}
+
+/* Ratio modifiers (opt-in) */
+.an-portrait-video[data-ar="9:16"],
+.an-portrait-video[data-ar="9/16"] { aspect-ratio: 9 / 16; }
+.an-portrait-video[data-ar="2:3"],
+.an-portrait-video[data-ar="2/3"] { aspect-ratio: 2 / 3; }
+.an-portrait-video[data-ar="3:4"],
+.an-portrait-video[data-ar="3/4"] { aspect-ratio: 3 / 4; }
+.an-portrait-video[data-ar="4:5"],
+.an-portrait-video[data-ar="4/5"] { aspect-ratio: 4 / 5; }
+.an-portrait-video[data-ar="1:1"],
+.an-portrait-video[data-ar="1/1"] { aspect-ratio: 1 / 1; }
+.an-portrait-video[data-ar="16:9"],
+.an-portrait-video[data-ar="16/9"] { aspect-ratio: 16 / 9; }
+
+/* Fit helpers for <video> sources */
+.an-portrait-video--cover video { object-fit: cover; }
+.an-portrait-video--contain video { object-fit: contain; }

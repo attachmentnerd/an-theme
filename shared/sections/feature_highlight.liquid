@@ -1,5 +1,6 @@
 {% comment %} Feature Highlight Section - Split layout with gradient accents {% endcomment %}
-<section class="feature-highlight" id="section-{{ section.id }}"
+<section class="feature-highlight" 
+         id="{{ section.settings.section_id | default: 'feature-highlight' }}-{{ section.id }}"
          style="{% if section.settings.background_color %}background-color: {{ section.settings.background_color }};{% endif %}">
   
   <div class="container">
@@ -26,7 +27,7 @@
           </p>
         {% endif %}
 
-        {% comment %} Feature points {% endcomment %}
+        {% comment %} Feature points and additional content blocks {% endcomment %}
         {% if section.blocks.size > 0 %}
           <div class="feature-highlight__points">
             {% for block in section.blocks %}
@@ -46,6 +47,47 @@
                     <p class="feature-point__description">{{ block.settings.description }}</p>
                   {% endif %}
                 </div>
+
+              {% elsif block.type == 'bulleted_list' %}
+                {% assign lines = block.settings.items | default: '' | strip | split: '\n' %}
+                {% assign has_items = false %}
+                {% for l in lines %}
+                  {% assign l_stripped = l | strip %}
+                  {% if l_stripped != '' %}
+                    {% assign has_items = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+                {% if has_items %}
+                <div class="feature-list" {{ block.shopify_attributes }}>
+                  {% if block.settings.title != blank %}
+                    <h3 class="feature-list__title">{{ block.settings.title }}</h3>
+                  {% endif %}
+                  <ul class="feature-list__ul">
+                    {% for l in lines %}
+                      {% assign item = l | strip %}
+                      {% if item != '' %}
+                        {% assign item = item | replace_first: '- ', '' | replace_first: '• ', '' %}
+                        <li class="feature-list__li">{{ item }}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+
+              {% elsif block.type == 'rich_text' %}
+                {% if block.settings.content != blank %}
+                  <div class="feature-richtext" {{ block.shopify_attributes }}>
+                    {{ block.settings.content }}
+                  </div>
+                {% endif %}
+
+              {% elsif block.type == 'custom_html_block' %}
+                {% if block.settings.html != blank %}
+                  <div class="feature-html" {{ block.shopify_attributes }}>
+                    {{ block.settings.html }}
+                  </div>
+                {% endif %}
               {% endif %}
             {% endfor %}
           </div>
@@ -74,7 +116,7 @@
           {% if section.settings.visual_type == 'image' %}
             {% if section.settings.main_image != blank %}
               <img src="{{ section.settings.main_image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ section.settings.main_image_alt }} }}" 
+             alt="{{ section.settings.main_image_alt }}" 
              class="visual-container__image"
              loading="lazy"
              style="object-fit: cover;">
@@ -112,7 +154,7 @@
                   <div class="floating-element__icon">{{ block.settings.icon_content }}</div>
                 {% elsif block.settings.element_type == 'image' and block.settings.element_image != blank %}
                   <img src="{{ block.settings.element_image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ block.settings.element_alt }} }}" 
+             alt="{{ block.settings.element_alt }}" 
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -232,6 +274,15 @@
     color: var(--c-ink-700);
     margin: 0;
   }
+
+  /* Additional blocks: Bulleted list, Rich text, HTML */
+  .feature-list { background: var(--c-white); border: 1px solid var(--c-brand-100); border-radius: var(--radius-md); padding: var(--space-lg); }
+  .feature-list__title { font-size: var(--fs-body-lg); color: var(--c-ink-900); font-weight: 600; margin: 0 0 var(--space-sm); }
+  .feature-list__ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .feature-list__li { position: relative; padding-left: 26px; color: var(--c-ink-700); }
+  .feature-list__li::before { content: "\2713"; /* checkmark */ position: absolute; left: 0; top: 2px; width: 18px; height: 18px; border-radius: 9999px; display: grid; place-items: center; font-size: 12px; color: #fff; background: var(--c-brand-600); box-shadow: 0 2px 6px rgba(94,59,255,.25); }
+  .feature-richtext { color: var(--c-ink-700); font-size: var(--fs-body); line-height: 1.65; background: var(--c-white); border: 1px solid var(--c-brand-100); border-radius: var(--radius-md); padding: var(--space-lg); }
+  .feature-html { background: var(--c-white); border: 1px solid var(--c-brand-100); border-radius: var(--radius-md); padding: var(--space-lg); }
 
   /* CTA */
   .feature-highlight__cta {
@@ -367,6 +418,17 @@
   "name": "Feature - Highlight",
   "class": "feature-highlight-section",
   "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-highlight",
+      "info": "Custom ID for internal linking (e.g., #feature-highlight)"
+    },
     {
       "type": "header",
       "content": "Background"
@@ -514,6 +576,51 @@
       ]
     },
     {
+      "type": "bulleted_list",
+      "name": "Bulleted List",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "List Title",
+          "default": "What you’ll get"
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Items (one per line)",
+          "default": "Fast setup\nUnlimited recordings\nShare instantly\nViewer insights",
+          "info": "Add one list item per line; HTML allowed."
+        }
+      ]
+    },
+    {
+      "type": "rich_text",
+      "name": "Rich Text",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content (HTML supported)",
+          "default": "<p><strong>Pro tip:</strong> Use keyboard shortcuts to start/stop recordings and save time.</p>"
+        }
+      ]
+    },
+    {
+      "type": "custom_html_block",
+      "name": "Custom HTML",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "html",
+          "label": "Custom HTML",
+          "default": "<div style=\"padding:12px;border:1px dashed var(--c-brand-300);border-radius:10px\">Drop any embed or custom markup here.</div>",
+          "info": "Use with care; HTML is injected as-is."
+        }
+      ]
+    }
+  ,
+    {
       "type": "floating_element",
       "name": "Feature - Highlight",
       "elements": [
@@ -603,6 +710,13 @@
             "title": "Easily record your screen and camera",
             "description": "Record on any device using Loom's Chrome extension, desktop app or mobile app.",
             "link_text": "Download app"
+          }
+        },
+        {
+          "type": "bulleted_list",
+          "settings": {
+            "title": "What you’ll get",
+            "items": "Fast setup\nUnlimited recordings\nShare instantly\nViewer insights"
           }
         }
       ]

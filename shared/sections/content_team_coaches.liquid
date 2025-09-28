@@ -7,7 +7,7 @@
   - Mobile-optimized cards
 {% endcomment %}
 
-<section class="an-team py-5" style="background: {{ section.settings.background_color }};">
+<section id="{{ section.settings.section_id | default: 'content-team-coaches' }}-{{ section.id }}" class="an-team py-5" style="background: {{ section.settings.background_color }};">
   <div class="container">
     <!-- Section Header -->
     {% if section.settings.heading != blank or section.settings.subheading != blank %}
@@ -40,7 +40,7 @@
                 <div class="an-team__photo-wrapper card-overlap--top">
                   {% if block.settings.photo != blank %}
                     <img src="{{ block.settings.photo | image_picker_url: '800x450' }}" 
-             alt="{{ {{ block.settings.name }} }}" 
+             alt="{{ block.settings.name }}" 
              class="an-team__photo card-overlap__image shadow-layered"
              loading="lazy"
              style="object-fit: cover;">
@@ -461,7 +461,18 @@
   "name": "Content - Team Coaches",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content-team-coaches",
+      "info": "Custom ID for internal linking (e.g., #content-team-coaches)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Meet Our Expert Coaches"

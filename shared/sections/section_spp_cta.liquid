@@ -1,0 +1,341 @@
+{% comment %}
+  SPP — CTA Offer (Shared)
+  - Two-column offer card: left details + right pricing/CTA
+  - Editable: rating, limited-time badge, heading with [[accent]], quote, bullets
+    sale badge, prices, notes, CTA(s), colors, radius
+  - Accessible, responsive, token-driven; safe in website/landing/product
+{% endcomment %}
+
+{% assign s_id = section.id %}
+{% assign dom_id = section.settings.section_id | default: 'spp-cta' %}
+
+{% assign accent = section.settings.accent_color | default: 'var(--c-brand-600, #1F7AE0)' %}
+{% assign price_color = section.settings.price_color | default: '#11A860' %}
+{% assign note_color = section.settings.note_color | default: '#14883E' %}
+{% assign card_bg = section.settings.card_bg | default: 'linear-gradient(180deg, #F6F9FF 0%, #F1F6FF 100%)' %}
+{% assign radius = section.settings.radius | default: 22 %}
+{% assign secondary_text_color = section.settings.secondary_bar_text_color | default: 'var(--c-ink-700)' %}
+{% assign secondary_link_color = section.settings.secondary_bar_link_color | default: '#1F4BD8' %}
+{% assign guarantee_title_color = section.settings.guarantee_title_color | default: '#2B5AF5' %}
+{% assign guarantee_sub_color = section.settings.guarantee_sub_color | default: '#4B5563' %}
+{% assign guarantee_avatar = section.settings.guarantee_avatar %}
+{% assign bullet_bg = section.settings.bullet_bg_color %}
+{% assign bullet_check = section.settings.bullet_check_color | default: accent %}
+
+<section id="{{ dom_id }}-{{ s_id }}" class="an-section an-theme an-white spp-cta">
+  <div class="spp-cta-wrap">
+    <div class="spp-cta-card{% if section.settings.viewport_reveal %} an-reveal{% endif %}" style="--radius: {{ radius }}px; --accent: {{ accent }}; --price: {{ price_color }}; --note: {{ note_color }}; --card-bg: {{ card_bg }}; --bullet-bg: {{ bullet_bg }}; --bullet-check: {{ bullet_check }}">
+      <div class="spp-cta-grid">
+        <!-- Left: details -->
+        <div class="spp-left">
+          {% if section.settings.show_rating and section.settings.rating_text != blank %}
+          <div class="spp-rating" role="note" aria-label="Rating">
+            <span class="spp-stars" aria-hidden="true" title="Five stars">★★★★★</span>
+            <span class="spp-rating-text">{{ section.settings.rating_text }}</span>
+          </div>
+          {% endif %}
+
+          {% if section.settings.limited_text != blank %}
+          <div class="spp-limited" aria-label="Offer badge">⚡ {{ section.settings.limited_text }}</div>
+          {% endif %}
+
+          {% assign h = section.settings.heading | default: 'The [[Complete Science‑Based]] Program for Secure Attachment' %}
+          {% assign h = h | replace: '[[', '<span class="spp-accent">' | replace: ']]', '</span>' %}
+          <h2 class="spp-title">{{ h }}</h2>
+
+          {% if section.settings.quote_text != blank %}
+          <figure class="spp-quote">
+            <blockquote>“{{ section.settings.quote_text }}”</blockquote>
+            {% if section.settings.quote_attr != blank %}<figcaption>— {{ section.settings.quote_attr }}</figcaption>{% endif %}
+          </figure>
+          {% endif %}
+
+          {% assign _bullet_count = 0 %}
+          {% for block in section.blocks %}
+            {% if block.type == 'feature' %}
+              {% assign bt = block.settings.text | strip %}
+              {% if bt != blank %}{% assign _bullet_count = _bullet_count | plus: 1 %}{% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if _bullet_count > 0 %}
+          <ul class="spp-list" role="list">
+            {% for block in section.blocks %}
+              {% if block.type == 'feature' %}
+                {% assign bt = block.settings.text | strip %}
+                {% if bt != blank %}<li class="spp-li" role="listitem"><span class="spp-check" aria-hidden="true">✔</span><span>{{ bt }}</span></li>{% endif %}
+              {% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+        <!-- Right: pricing + CTA -->
+        <div class="spp-right">
+          {% if section.settings.sale_badge != blank %}<div class="spp-sale">{{ section.settings.sale_badge }}</div>{% endif %}
+
+          <div class="spp-price-wrap">
+            {% if section.settings.compare_at != blank %}<div class="spp-compare">{{ section.settings.compare_at }}</div>{% endif %}
+            {% if section.settings.price != blank %}<div class="spp-price">{{ section.settings.price }}</div>{% endif %}
+          </div>
+
+          {% if section.settings.price_label != blank %}<div class="spp-price-label">{{ section.settings.price_label }}</div>{% endif %}
+          {% if section.settings.price_note != blank %}<div class="spp-price-note">{{ section.settings.price_note }}</div>{% endif %}
+
+          {% if section.settings.cta_text != blank and section.settings.cta_url != blank %}
+          <p class="spp-cta">
+            <a class="spp-btn" href="{{ section.settings.cta_url }}" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ section.settings.cta_text }}</a>
+          </p>
+          {% endif %}
+
+          {% if section.settings.payment_text != blank or section.settings.pwyc_text != blank %}
+          <p class="spp-links">
+            {% if section.settings.payment_text != blank and section.settings.payment_url != blank %}
+              <a href="{{ section.settings.payment_url }}" {% if section.settings.links_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ section.settings.payment_text }}</a>
+            {% endif %}
+            {% if section.settings.payment_text != blank and section.settings.pwyc_text != blank %}<span class="spp-dot">•</span>{% endif %}
+            {% if section.settings.pwyc_text != blank and section.settings.pwyc_url != blank %}
+              <a href="{{ section.settings.pwyc_url }}" {% if section.settings.links_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ section.settings.pwyc_text }}</a>
+            {% endif %}
+          </p>
+          {% endif %}
+
+          {% assign guar_title = section.settings.guarantee_title_text | default: section.settings.guarantee_text %}
+          {% assign guar_sub = section.settings.guarantee_sub_text %}
+          {% if guar_title != blank or guar_sub != blank %}
+          <div class="spp-guarantee" style="--guar-title: {{ guarantee_title_color }}; --guar-sub: {{ guarantee_sub_color }}">
+            {% if guar_title != blank %}
+            <div class="spp-guar-head">
+              {% if guarantee_avatar %}
+                <img class="spp-guar-avatar" src="{{ section.settings.guarantee_avatar | image_picker_url: '80x80' }}" alt="{{ section.settings.guarantee_avatar_alt | default: '' }}" loading="lazy" />
+              {% endif %}
+              <div class="spp-guar-title">{{ guar_title }}</div>
+            </div>
+            {% endif %}
+            {% if guar_sub != blank %}<div class="spp-guar-sub">{{ guar_sub }}</div>{% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.show_secondary_bar and section.settings.secondary_bar_text != blank %}
+    <div class="spp-secondary" style="--secondary-text: {{ secondary_text_color }}; --secondary-link: {{ secondary_link_color }}">
+      <span class="spp-secondary-text">{{ section.settings.secondary_bar_text }}</span>
+      {% if section.settings.secondary_bar_link_text != blank and section.settings.secondary_bar_url != blank %}
+        <a class="spp-secondary-link" href="{{ section.settings.secondary_bar_url }}" {% if section.settings.secondary_bar_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ section.settings.secondary_bar_link_text }}</a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+  <style>
+    #{{ dom_id }}-{{ s_id }}.spp-cta{position:relative}
+    #{{ dom_id }}-{{ s_id }} .spp-cta-wrap{max-width:1120px; margin:0 auto; padding:44px 22px}
+
+    #{{ dom_id }}-{{ s_id }} .spp-cta-card{background:var(--card-bg, #F4F7FF); border:1px solid var(--border-light, #E3E8FF); border-radius:var(--radius, 22px); box-shadow:0 20px 40px rgba(0,0,0,.06); overflow:hidden}
+    #{{ dom_id }}-{{ s_id }} .spp-cta-grid{display:grid; grid-template-columns:1fr 1fr; gap:0}
+    @media(max-width:900px){ #{{ dom_id }}-{{ s_id }} .spp-cta-grid{grid-template-columns:1fr} }
+
+    #{{ dom_id }}-{{ s_id }} .spp-left{padding:28px 28px 32px; border-right:1px solid var(--border-light, #E3E8FF)}
+    @media(max-width:900px){ #{{ dom_id }}-{{ s_id }} .spp-left{border-right:none; border-bottom:1px solid var(--border-light, #E3E8FF)} }
+    #{{ dom_id }}-{{ s_id }} .spp-right{padding:28px 28px 32px; background:#fff}
+
+    /* Rating */
+    #{{ dom_id }}-{{ s_id }} .spp-rating{display:flex; gap:10px; align-items:center; color:var(--c-ink-700); font-weight:700; margin-bottom:8px}
+    #{{ dom_id }}-{{ s_id }} .spp-stars{color:#FFB400; letter-spacing:2px}
+
+    /* Limited badge */
+    #{{ dom_id }}-{{ s_id }} .spp-limited{display:inline-block; font-weight:800; color:var(--accent); background:#EAF2FF; border:1px solid var(--border-light, #E3E8FF); border-radius:9999px; padding:6px 10px; margin:8px 0 14px}
+
+    /* Title */
+    #{{ dom_id }}-{{ s_id }} .spp-title{margin:0 0 16px; font-size:clamp(24px, 4.5vw, 40px); line-height:1.15; color:var(--c-ink-900)}
+    #{{ dom_id }}-{{ s_id }} .spp-accent{color:var(--accent)}
+
+    /* Quote */
+    #{{ dom_id }}-{{ s_id }} .spp-quote{background:#fff; border:1px solid var(--border-light, #E3E8FF); border-radius:18px; padding:16px 16px 12px; margin:0 0 16px; box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    #{{ dom_id }}-{{ s_id }} .spp-quote blockquote{margin:0 0 8px; color:var(--c-ink-800); font-style:italic}
+    #{{ dom_id }}-{{ s_id }} .spp-quote figcaption{color:var(--accent); font-weight:700}
+
+    /* Bullets */
+    #{{ dom_id }}-{{ s_id }} .spp-list{list-style:none; padding:0; margin:0; display:grid; gap:12px}
+    #{{ dom_id }}-{{ s_id }} .spp-li{display:flex; gap:10px; align-items:flex-start; color:var(--c-ink-900); font-weight:800; background:var(--bullet-bg, transparent); padding:8px 10px; border-radius:12px}
+    #{{ dom_id }}-{{ s_id }} .spp-check{width:22px; height:22px; display:grid; place-items:center; border-radius:9999px; background:var(--bullet-check, var(--accent)); color:white; font-size:14px; line-height:1; flex:0 0 22px; margin-top:.2em}
+
+    /* Pricing */
+    #{{ dom_id }}-{{ s_id }} .spp-sale{display:inline-block; margin:0 0 12px; padding:8px 14px; background:#FFEEF0; color:#E23D3D; border-radius:9999px; font-weight:800; border:1px solid #FFD3DA}
+    #{{ dom_id }}-{{ s_id }} .spp-price-wrap{display:flex; gap:12px; align-items:flex-end}
+    #{{ dom_id }}-{{ s_id }} .spp-compare{color:#9AA3B2; text-decoration:line-through; font-size:22px}
+    #{{ dom_id }}-{{ s_id }} .spp-price{color:var(--price); font-size:64px; line-height:1; font-weight:900}
+    #{{ dom_id }}-{{ s_id }} .spp-price-label{color:var(--c-ink-700); margin:6px 0 2px; font-weight:800}
+    #{{ dom_id }}-{{ s_id }} .spp-price-note{color:var(--note); font-style:italic; margin:0 0 16px}
+
+    /* CTA */
+    #{{ dom_id }}-{{ s_id }} .spp-cta{margin:0 0 12px}
+    #{{ dom_id }}-{{ s_id }} .spp-btn{display:block; text-align:center; padding:16px 18px; color:#fff; background:linear-gradient(180deg, #2A6BFF 0%, #2E3DF3 100%); border:1px solid #2546FF; border-radius:16px; font-weight:900; text-decoration:none; box-shadow:0 10px 22px rgba(34,80,255,.25)}
+    #{{ dom_id }}-{{ s_id }} .spp-btn:hover{transform:translateY(-1px)}
+    #{{ dom_id }}-{{ s_id }} .spp-guarantee{display:block; text-align:center; padding:16px 18px; background:linear-gradient(180deg, #F6FAFF 0%, #EDF3FF 100%); border:1px solid var(--border-light, #E3E8FF); border-radius:14px; margin:12px 0 0}
+    #{{ dom_id }}-{{ s_id }} .spp-guar-head{display:inline-flex; align-items:center; gap:10px; justify-content:center}
+    #{{ dom_id }}-{{ s_id }} .spp-guar-avatar{width:40px; height:40px; border-radius:9999px; object-fit:cover; box-shadow:0 0 0 2px #FFF}
+    #{{ dom_id }}-{{ s_id }} .spp-guar-title{font-weight:900; color:var(--guar-title, #2B5AF5)}
+    #{{ dom_id }}-{{ s_id }} .spp-guar-sub{margin-top:6px; font-weight:700; color:var(--guar-sub, var(--c-ink-800)); font-size:.95em; line-height:1.4}
+    #{{ dom_id }}-{{ s_id }} .spp-links{margin:10px 0 0; text-align:center}
+    #{{ dom_id }}-{{ s_id }} .spp-links a{color:#1F4BD8; font-weight:700}
+    #{{ dom_id }}-{{ s_id }} .spp-links .spp-dot{opacity:.6; margin:0 8px}
+
+    /* Secondary helper bar */
+    #{{ dom_id }}-{{ s_id }} .spp-secondary{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; align-items:center; margin:12px 0 0; padding:10px 12px; background:#F5F7FA; border:1px solid var(--border-light, #E3E8FF); border-radius:12px; color:var(--secondary-text, var(--c-ink-700)); font-weight:700}
+    #{{ dom_id }}-{{ s_id }} .spp-secondary a{color:var(--secondary-link, #1F4BD8); text-decoration:underline; font-weight:800}
+
+    /* Reveal (fail-open) */
+    #{{ dom_id }}-{{ s_id }} .an-reveal{opacity:1; transform:none}
+    html.an-js #{{ dom_id }}-{{ s_id }} .an-reveal{opacity:0; transform:translateY(24px); transition:opacity .5s cubic-bezier(.2,.7,.2,1), transform .5s cubic-bezier(.2,.7,.2,1)}
+    html.an-js #{{ dom_id }}-{{ s_id }} .an-reveal.is-in{opacity:1; transform:none}
+    @media (prefers-reduced-motion: reduce){ html.an-js #{{ dom_id }}-{{ s_id }} .an-reveal{transition:none !important; transform:none !important; opacity:1 !important} }
+
+    /* Optional: scroll-triggered CTA visibility tied to another element */
+    #{{ dom_id }}-{{ s_id }}[data-scroll-reveal="1"] .spp-cta-card{opacity:1; transform:none}
+    html.an-js #{{ dom_id }}-{{ s_id }}[data-scroll-reveal="1"] .spp-cta-card{opacity:0; transform:translateY(12px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1)}
+    html.an-js #{{ dom_id }}-{{ s_id }}[data-scroll-reveal="1"] .spp-cta-card.is-on{opacity:1; transform:none}
+    html.an-js #{{ dom_id }}-{{ s_id }}[data-scroll-reveal="1"] .spp-cta-card:not(.is-on){pointer-events:none}
+    @media (prefers-reduced-motion: reduce){ html.an-js #{{ dom_id }}-{{ s_id }}[data-scroll-reveal="1"] .spp-cta-card{transition:none !important} }
+  </style>
+
+  <script>
+    (function(){
+      document.documentElement.classList.add('an-js');
+      var root = document.getElementById('{{ dom_id }}-{{ s_id }}');
+      if(!root || root.dataset.inited==='1') return; root.dataset.inited='1';
+
+      // Reveal on view
+      var items = [].slice.call(root.querySelectorAll('.an-reveal'));
+      function showAll(){ items.forEach(function(n){ n.classList.add('is-in'); }); }
+      var inEditor = location.search.indexOf('preview')>-1 || !!document.querySelector('[data-kajabi-theme-editor],[data-builder],[data-editor]');
+      var animateInEditor = {{ section.settings.animate_in_editor | default: false | json }};
+      if('IntersectionObserver' in window && (!inEditor || animateInEditor)){
+        var io = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target);} }); }, {threshold:.2});
+        items.forEach(function(n){ io.observe(n); });
+        setTimeout(function(){ items.forEach(function(n){ n.classList.add('is-in'); }); }, 1400);
+      } else { showAll(); }
+
+      // Scroll-based CTA reveal tied to another element (e.g., a video)
+      try {
+        var enable = {{ section.settings.enable_scroll_reveal | default: false | json }};
+        if(enable){
+          root.setAttribute('data-scroll-reveal','1');
+          var card = root.querySelector('.spp-cta-card');
+          var sel = {{ section.settings.trigger_selector | default: '' | json }}.trim();
+          var thresholdPct = {{ section.settings.trigger_threshold | default: 50 | json }};
+          var threshold = Math.max(0, Math.min(100, parseInt(thresholdPct,10)||50)) / 100;
+          var target = sel ? document.querySelector(sel) : null;
+          if('IntersectionObserver' in window && target){
+            var obs = new IntersectionObserver(function(entries){
+              var entry = entries[0];
+              if(!entry) return;
+              var ratio = entry.intersectionRatio;
+              if(ratio < threshold){ card.classList.add('is-on'); }
+              else { card.classList.remove('is-on'); }
+            }, {threshold: [threshold]});
+            obs.observe(target);
+          } else {
+            // Fallback: show card
+            card.classList.add('is-on');
+          }
+          // Final fail-safe: force visible after 1500ms if still hidden
+          setTimeout(function(){ if(!card.classList.contains('is-on')){ card.classList.add('is-on'); } }, 1500);
+        }
+      } catch(err) {
+        // Fail-open
+      }
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "SPP — CTA Offer",
+  "elements": [
+    { "type": "text", "id": "section_id", "label": "Section ID", "default": "spp-cta" },
+
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true },
+    { "type": "text", "id": "rating_text", "label": "Rating text", "default": "4.9/5 • 2,847 success stories" },
+
+    { "type": "text", "id": "limited_text", "label": "Limited-time badge text", "default": "LIMITED TIME" },
+
+    { "type": "text", "id": "heading", "label": "Heading (use [[...]] to accent)", "default": "The [[Complete Science‑Based]] Program for Secure Attachment" },
+
+    { "type": "textarea", "id": "quote_text", "label": "Testimonial quote", "default": "I went from yelling daily to having peaceful bedtimes. This program saved our family." },
+    { "type": "text", "id": "quote_attr", "label": "Quote attribution", "default": "Jessica R., Mom of 3" },
+
+    { "type": "text", "id": "sale_badge", "label": "Sale badge text", "default": "FLASH SALE — 50% OFF" },
+    { "type": "text", "id": "compare_at", "label": "Compare at (e.g., $397)", "default": "$397" },
+    { "type": "text", "id": "price", "label": "Current price (e.g., $197)", "default": "$197" },
+    { "type": "text", "id": "price_label", "label": "Price label", "default": "Complete lifetime program" },
+    { "type": "text", "id": "price_note", "label": "Green note under price", "default": "What you'd spend on one month of family therapy — but this lasts a lifetime" },
+
+    { "type": "text", "id": "cta_text", "label": "Primary CTA text", "default": "🚀 Secure your spot now" },
+    { "type": "action", "id": "cta_url", "label": "Primary CTA link", "default": "#" },
+    { "type": "checkbox", "id": "cta_new_tab", "label": "Open primary CTA in new tab", "default": false },
+
+    { "type": "text", "id": "guarantee_text", "label": "Responsive Care (legacy)", "default": "Responsive Care — “We care deeply about you having an impactful learning experience in the Secure Parenting Program. If something goes wrong for you, we want to know. Your process is important to us, and we will do whatever we can to make it right if needed.”" },
+    { "type": "header", "content": "Responsive Care (guarantee)" },
+    { "type": "text", "id": "guarantee_title_text", "label": "Guarantee title", "default": "My Promise to Your Family" },
+    { "type": "textarea", "id": "guarantee_sub_text", "label": "Guarantee subtext", "default": "I genuinely care about your experience in the Secure Parenting Program. If something goes wrong or isn't working for your family, tell me. Your journey matters to me, and I'll do whatever I can to make it right." },
+    { "type": "image_picker", "id": "guarantee_avatar", "label": "Guarantee avatar image (circle)" },
+    { "type": "text", "id": "guarantee_avatar_alt", "label": "Avatar alt text", "default": "" },
+    { "type": "color", "id": "guarantee_title_color", "label": "Guarantee title color", "default": "#2B5AF5" },
+    { "type": "color", "id": "guarantee_sub_color", "label": "Guarantee subtext color", "default": "#4B5563" },
+
+    { "type": "text", "id": "payment_text", "label": "Payment plan link text", "default": "Payment plan: $69 × 3" },
+    { "type": "action", "id": "payment_url", "label": "Payment plan link" , "default": "#" },
+    { "type": "text", "id": "pwyc_text", "label": "Pay‑what‑you‑can link text", "default": "Pay what you can" },
+    { "type": "action", "id": "pwyc_url", "label": "Pay‑what‑you‑can link", "default": "#" },
+    { "type": "checkbox", "id": "links_new_tab", "label": "Open auxiliary links in new tab", "default": false },
+
+    { "type": "header", "content": "Bullets" },
+    { "type": "color", "id": "bullet_bg_color", "label": "Bullet row background", "default": "" },
+    { "type": "color", "id": "bullet_check_color", "label": "Bullet check color", "default": "" },
+
+    { "type": "header", "content": "Helper bar (secondary)" },
+    { "type": "checkbox", "id": "show_secondary_bar", "label": "Show 'Not ready' helper bar", "default": true },
+    { "type": "text", "id": "secondary_bar_text", "label": "Helper text", "default": "Not quite ready? Explore our free resources" },
+    { "type": "text", "id": "secondary_bar_link_text", "label": "Helper link text", "default": "See free resources" },
+    { "type": "action", "id": "secondary_bar_url", "label": "Helper link URL", "default": "#" },
+    { "type": "checkbox", "id": "secondary_bar_new_tab", "label": "Open helper link in new tab", "default": false },
+    { "type": "color", "id": "secondary_bar_text_color", "label": "Helper text color", "default": "#4B5563" },
+    { "type": "color", "id": "secondary_bar_link_color", "label": "Helper link color", "default": "#1F4BD8" },
+
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#1F7AE0" },
+    { "type": "color", "id": "price_color", "label": "Price color", "default": "#11A860" },
+    { "type": "color", "id": "note_color", "label": "Green note color", "default": "#14883E" },
+    { "type": "text", "id": "card_bg", "label": "Card background (color or gradient)", "default": "linear-gradient(180deg, #F6F9FF 0%, #F1F6FF 100%)" },
+    { "type": "range", "id": "radius", "label": "Card radius (px)", "default": 22, "min": 8, "max": 36, "step": 1 },
+
+    { "type": "checkbox", "id": "viewport_reveal", "label": "Fade/slide in when card enters viewport", "default": true },
+    { "type": "checkbox", "id": "animate_in_editor", "label": "Run viewport animation in editor/preview", "default": false },
+
+    { "type": "checkbox", "id": "enable_scroll_reveal", "label": "Reveal card based on scrolling past an element", "default": false },
+    { "type": "text", "id": "trigger_selector", "label": "Trigger element CSS selector (e.g., #video)", "default": "" },
+    { "type": "range", "id": "trigger_threshold", "label": "Trigger when target is less than this visible (%)", "default": 50, "min": 0, "max": 100, "step": 5 }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature bullet",
+      "elements": [
+        { "type": "text", "id": "text", "label": "Text", "default": "6 Science‑Based Modules" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPP — CTA Offer",
+      "category": "SPP",
+      "blocks": [
+        {"type":"feature","settings":{"text":"6 Science‑Based Modules"}},
+        {"type":"feature","settings":{"text":"Live Q&A with Eli"}},
+        {"type":"feature","settings":{"text":"Lifetime Access + Community"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

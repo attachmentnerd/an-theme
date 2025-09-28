@@ -7,7 +7,7 @@
   - Visual flow indicators
 {% endcomment %}
 
-<section class="an-pwyc-pricing py-5" style="background: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};">
+<section id="an-pwyc-{{ section.id }}" class="an-pwyc-pricing py-5" style="background: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};">
   <div class="container">
     <!-- Section Header -->
     <div class="text-center mb-5 animate-fade-up">
@@ -124,6 +124,15 @@
                           aria-hidden="true">
                     {{ block.settings.button_text | default: 'Select This Option' }}
                   </button>
+
+                  <!-- Bullet-proof fallback link (clicked by JS) -->
+                  <a class="an-pwyc-tier__link sr-only"
+                     {% if block.settings.external_checkout_url != blank %}
+                       href="{{ block.settings.external_checkout_url }}"
+                       {% if block.settings.external_checkout_url contains 'http' %}target="_blank" rel="noopener"{% endif %}
+                     {% else %}
+                       href="#"
+                     {% endif %}></a>
                 </div>
               </div>
             </div>
@@ -505,7 +514,7 @@
     flex: 1;
   }
 
-  .feature-item {
+  .an-pwyc-pricing .feature-item {
     display: flex;
     align-items: flex-start;
     margin-bottom: 0.85rem;
@@ -516,24 +525,24 @@
     transition: all 0.3s ease;
   }
 
-  .an-pwyc-tier:hover .feature-item {
+  .an-pwyc-tier:hover .an-pwyc-pricing .feature-item {
     opacity: 1;
     transform: translateX(4px);
   }
 
-  .feature-item:nth-child(1) { transition-delay: 0.05s; }
-  .feature-item:nth-child(2) { transition-delay: 0.1s; }
-  .feature-item:nth-child(3) { transition-delay: 0.15s; }
-  .feature-item:nth-child(4) { transition-delay: 0.2s; }
+  .an-pwyc-pricing .feature-item:nth-child(1) { transition-delay: 0.05s; }
+  .an-pwyc-pricing .feature-item:nth-child(2) { transition-delay: 0.1s; }
+  .an-pwyc-pricing .feature-item:nth-child(3) { transition-delay: 0.15s; }
+  .an-pwyc-pricing .feature-item:nth-child(4) { transition-delay: 0.2s; }
 
-  .feature-icon {
+  .an-pwyc-pricing .feature-icon {
     flex-shrink: 0;
     margin-right: 10px;
     margin-top: 3px;
     transition: transform 0.3s ease;
   }
 
-  .an-pwyc-tier:hover .feature-icon {
+  .an-pwyc-tier:hover .an-pwyc-pricing .feature-icon {
     transform: scale(1.2);
   }
 
@@ -807,12 +816,71 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('#shopify-section-{{ section.id }}');
+    const section = document.getElementById('an-pwyc-{{ section.id }}');
     if (!section) return;
+    
+    // Prevent double initialization on this specific section instance
+    if (section.dataset.inited === '1') return;
+    section.dataset.inited = '1';
 
     const tierCards = section.querySelectorAll('.an-pwyc-tier');
     const customAmountSection = section.querySelector('.an-pwyc-custom-amount');
     let currentIndex = 0;
+    
+    // Modal lock to prevent multiple opens (use window scope for cross-section coordination)
+    if (typeof window.pwycModalLock === 'undefined') {
+      window.pwycModalLock = false;
+    }
+    let pwycLastOpenTs = 0;
+    
+    // Throttled logging to reduce console spam
+    let _pwycLastLog = 0;
+    function pwycLogOncePer500ms(...args) {
+      const now = Date.now();
+      if (now - _pwycLastLog > 500) { console.log(...args); _pwycLastLog = now; }
+    }
+
+    // Heuristic: detect Kajabi modal presence (works across most themes)
+    function isKajabiModalOpen() {
+      return !!document.querySelector(
+        '.modal.is-active, .kjb-modal.is-active, .checkout-modal.is-active, [data-behavior*="modal"].is-active'
+      );
+    }
+
+    // Try to close any existing Kajabi modal pre-emptively (best effort)
+    function tryCloseKajabiModal() {
+      const closeBtn = document.querySelector(
+        '.modal.is-active [data-behavior="modal-close"], .kjb-modal.is-active [data-behavior="modal-close"], .is-active .modal-close, .checkout-modal.is-active .modal-close'
+      );
+      if (closeBtn) closeBtn.click();
+    }
+
+    // Release the lock when modal disappears or after a safety timeout
+    function armModalUnlock() {
+      const SAFETY_MS = 12000; // don't leave the UI locked forever
+      const unlock = () => { window.pwycModalLock = false; };
+
+      // 1) Safety timer
+      setTimeout(unlock, SAFETY_MS);
+
+      // 2) Observe DOM for modal removal/state change
+      const observer = new MutationObserver(() => {
+        if (!isKajabiModalOpen()) {
+          observer.disconnect();
+          unlock();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // 3) Also bind to common close targets immediately (if present later, #2 catches it)
+      ['.modal-close', '[data-behavior="modal-close"]'].forEach(sel => {
+        document.addEventListener('click', e => {
+          if (e.target.matches(sel) || e.target.closest(sel)) {
+            setTimeout(unlock, 0);
+          }
+        }, { capture: true, once: false });
+      });
+    }
 
     // Initialize
     function init() {
@@ -913,14 +981,22 @@
 
     // Handle card selection
     tierCards.forEach((card, index) => {
-      // Click handler
+      if (card.dataset.bound === '1') return; // prevent re-binding if Kajabi re-injects this section
+      card.dataset.bound = '1';
+
+      // Click handler (with modal lock check)
       card.addEventListener('click', function(e) {
+        if (window.pwycModalLock || (typeof isKajabiModalOpen === 'function' && isKajabiModalOpen())) {
+          e.preventDefault();
+          return;
+        }
         e.preventDefault();
         handleCardSelection(card, index);
-      });
+      }, { passive: false });
 
       // Keyboard handler
       card.addEventListener('keydown', function(e) {
+        if (window.pwycModalLock || (typeof isKajabiModalOpen === 'function' && isKajabiModalOpen())) return;
         switch(e.key) {
           case 'Enter':
           case ' ':
@@ -941,6 +1017,9 @@
 
     // Handle selection
     function handleCardSelection(card, index) {
+      // If a modal is open or we're in-flight, ignore additional triggers
+      if (window.pwycModalLock || isKajabiModalOpen()) return;
+      
       setActiveCard(card, index);
 
       // Get checkout info
@@ -957,47 +1036,129 @@
       setTimeout(() => {
         card.style.transform = '';
 
-        // Track selection
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'select_tier', {
-            tier_name: tierName,
-            tier_amount: parseFloat(tierAmount),
-            currency: '{{ section.settings.currency_code | default: "USD" }}',
-            checkout_type: checkoutType
-          });
+        // Track selection (defensive)
+        try {
+          if (window.gtag) {
+            gtag('event', 'select_tier', {
+              tier_name: tierName,
+              tier_amount: parseFloat(tierAmount),
+              currency: '{{ section.settings.currency_code | default: "USD" }}',
+              checkout_type: checkoutType
+            });
+          }
+        } catch(e) {
+          console.log('Analytics not available');
         }
 
+        // Debug logging (throttled)
+        pwycLogOncePer500ms('PWYC Selection Debug:', {
+          tierName,
+          tierAmount,
+          checkoutType,
+          checkoutUrl,
+          kajabiOffer,
+          formId
+        });
+
         // Handle checkout based on type
-        switch(checkoutType) {
-          case 'kajabi':
-            if (kajabiOffer && typeof Kajabi !== 'undefined' && Kajabi.checkout) {
-              Kajabi.checkout.open({
-                offer_id: kajabiOffer
-              });
-            } else {
-              console.error('Kajabi checkout not available or offer not selected');
-            }
-            break;
+        switch (checkoutType) {
+          case 'kajabi': {
+            // prevent double-fires
+            if (window.pwycModalLock) break;
+            window.pwycModalLock = true;
+            pwycLastOpenTs = Date.now();
 
-          case 'external':
-            if (checkoutUrl) {
-              window.location.href = checkoutUrl;
-            } else {
-              console.error('External checkout URL not provided');
-            }
-            break;
+            // Clean up any stale modal before opening a new one
+            tryCloseKajabiModal();
 
-          case 'form':
-            if (formId && typeof Kajabi !== 'undefined' && Kajabi.forms) {
-              // Open Kajabi form modal
-              const formElement = document.querySelector(`[data-form-id="${formId}"]`);
-              if (formElement) {
-                formElement.click();
-              } else {
-                console.error('Form not found');
+            const openViaApi = () => {
+              try {
+                Kajabi.checkout.open({ offer_id: kajabiOffer });
+                armModalUnlock(); // arm unlock watchers now that we asked to open
+              } catch (e) {
+                // If API throws, release lock and fall back to URL path
+                window.pwycModalLock = false;
+                console.error('Kajabi.checkout.open failed, falling back:', e);
+                if (kajabiOffer) {
+                  const candidates = [
+                    `/checkout/offers/${kajabiOffer}`,
+                    `/offers/${kajabiOffer}/checkout`
+                  ];
+                  window.location.assign(candidates[0]);
+                } else {
+                  console.error('Kajabi offer not configured');
+                }
               }
+            };
+
+            if (kajabiOffer && window.Kajabi && Kajabi.checkout && typeof Kajabi.checkout.open === 'function') {
+              openViaApi();
+              break;
+            }
+
+            // Fallbacks if API isn't present:
+            if (kajabiOffer && /^https?:\/\//i.test(kajabiOffer)) {
+              window.location.assign(kajabiOffer);
+              // no modal => unlock quickly
+              setTimeout(() => { window.pwycModalLock = false; }, 500);
+              break;
+            }
+
+            if (kajabiOffer) {
+              const candidates = [
+                `/checkout/offers/${kajabiOffer}`,
+                `/offers/${kajabiOffer}/checkout`
+              ];
+              window.location.assign(candidates[0]);
+              setTimeout(() => { window.pwycModalLock = false; }, 500);
+              break;
+            }
+
+            console.error('Kajabi offer not configured');
+            window.pwycModalLock = false;
+            break;
+          }
+
+          case 'external': {
+            if (!checkoutUrl) { console.error('External checkout URL not provided'); break; }
+
+            const isUrl = /^(https?:\/\/|\/)/i.test(checkoutUrl);
+            if (isUrl) {
+              window.location.assign(checkoutUrl);
+              break;
+            }
+
+            // Action token like "#popup_checkout_ABC..."
+            const actionLink = card.querySelector('.an-pwyc-tier__link');
+            if (actionLink && actionLink.getAttribute('href') && actionLink.getAttribute('href') !== '#') {
+              // Optional: lock if your action opens a modal (prevents rapid re-fires)
+              if (typeof tryCloseKajabiModal === 'function') tryCloseKajabiModal();
+              if (typeof armModalUnlock === 'function') { window.pwycModalLock = true; armModalUnlock(); }
+
+              actionLink.click(); // Let Kajabi runtime open the popup
+            } else {
+              console.error('Action link missing');
             }
             break;
+          }
+
+          case 'form': {
+            // Prefer native action click if action token was chosen
+            const actionLink = card.querySelector('.an-pwyc-tier__link');
+            if (actionLink && actionLink.getAttribute('href') && actionLink.getAttribute('href') !== '#') {
+              actionLink.click();
+              break;
+            }
+            // Otherwise fall back to Kajabi Forms
+            if (formId && window.Kajabi && Kajabi.forms) {
+              const formElement = document.querySelector(`[data-form-id="${formId}"]`);
+              if (formElement) formElement.click();
+              else console.error('Form not found');
+            } else {
+              console.error('Form not configured');
+            }
+            break;
+          }
 
           default:
             console.error('Unknown checkout type:', checkoutType);
@@ -1061,7 +1222,18 @@
   "name": "Pricing - Pay What You Can",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "pricing-pwyc",
+      "info": "Custom ID for internal linking (e.g., #pricing-pwyc)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Choose What Works for You"

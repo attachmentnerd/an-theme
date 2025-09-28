@@ -88,7 +88,7 @@
 <div class="page-about">
 
     <!-- HERO -->
-    <section class="hero">
+    <section id="{{ section.settings.section_id | default: 'about' }}-{{ section.id }}" class="hero">
         <div class="container">
             <div class="hero-content">
                 <h1>{{ section.settings.h1_1_meet_eli_harwood }}</h1>
@@ -262,7 +262,18 @@
   "class": "page-about",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "about",
+      "info": "Custom ID for internal linking (e.g., #about)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

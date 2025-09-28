@@ -63,7 +63,7 @@
 <div class="page-coaching">
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="{{ section.settings.section_id | default: 'coaching' }}-{{ section.id }}" class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
@@ -147,7 +147,18 @@
   "class": "page-coaching",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "coaching",
+      "info": "Custom ID for internal linking (e.g., #coaching)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

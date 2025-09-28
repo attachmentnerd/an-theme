@@ -1,5 +1,5 @@
 <!-- Sticky Mobile CTA Footer -->
-<section class="sticky-mobile-cta hidden--desktop" 
+<section id="{{ section.settings.section_id | default: 'cta-mobile-sticky' }}-{{ section.id }}" class="sticky-mobile-cta hidden--desktop" 
          style="background: {{ section.settings.background_color | default: 'var(--c-white)' }}; 
                 border-top: 1px solid {{ section.settings.border_color | default: 'var(--c-ink-100)' }};">
   <div class="sticky-cta-inner">
@@ -206,7 +206,18 @@
   "name": "CTA - Mobile Sticky",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "cta-mobile-sticky",
+      "info": "Custom ID for internal linking (e.g., #cta-mobile-sticky)"
+    },
+      {
+        "type": "header",
       "content": "Button Settings"
     },
     {

@@ -1,7 +1,7 @@
 {% comment %}
   Auto-generated from raising-securely-attached-kids.html
   Generated: 2025-06-23T23:23:44.829Z
-  
+
   This is a static page section with editable images.
   To use: Create a template with {% section 'page-raising-securely-attached-kids' %}
 {% endcomment %}
@@ -9,7 +9,7 @@
 <style>
 /* Auto-generated styles for page-raising-securely-attached-kids */
 /* Common styles removed - using theme utilities from /shared/styles/overrides.css */
-/* 
+/*
  * Available utilities:
  * - Layout: container, d-flex, gap-3, max-w-xl
  * - Colors: text-navy, bg-lavender, section-peach
@@ -30,7 +30,7 @@
  * mb-3
  * py-5
  */
-.page-raising-securely-attached-kids body{font-family:Inter,-apple-system,sans-serif;color:var(--ink-900);line-height:1.6;overflow-x:hidden}
+.page-raising-securely-attached-kids body{font-family:var(--font-sans);color:var(--ink-900);line-height:1.6;overflow-x:hidden}
 .page-raising-securely-attached-kids .hero{background:linear-gradient(180deg,#FFF9F3 0%,rgba(255,249,243,0) 100%);padding:120px 0 80px;position:relative;overflow:hidden}
 .page-raising-securely-attached-kids .award-badge{display:inline-flex;align-items:center;gap:8px;background:var(--lavender);color:var(--primary);padding:8px 20px;border-radius:100px;font-weight:600;font-size:14px;margin-bottom:24px;margin-left:12px;animation:badge-bounce 0.6s ease-out 0.5s;animation-fill-mode:both}
 .page-raising-securely-attached-kids .hero::before{content:'';position:absolute;top:-20%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,var(--coral) 0%,transparent 70%);opacity:0.08;animation:float-slow 25s infinite ease-in-out}
@@ -122,7 +122,7 @@
 .page-raising-securely-attached-kids .testimonials{background:linear-gradient(180deg,var(--lavender) 0%,rgba(233,230,255,0) 100%);padding:100px 0}
 .page-raising-securely-attached-kids .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:60px}
 .page-raising-securely-attached-kids .testimonial-card{background:white;border-radius:20px;padding:32px;box-shadow:0 10px 40px rgba(0,0,0,0.05);transition:all 0.3s ease;position:relative}
-.page-raising-securely-attached-kids .testimonial-card::before{content:'"';position:absolute;top:-10px;left:20px;font-size:80px;color:var(--coral);font-family:Georgia,serif;line-height:1;opacity:0.2}
+.page-raising-securely-attached-kids .testimonial-card::before{content:'"';position:absolute;top:-10px;left:20px;font-size:80px;color:var(--coral);font-family:var(--font-serif);line-height:1;opacity:0.2}
 .page-raising-securely-attached-kids .testimonial-card:hover{transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,0.1)}
 .page-raising-securely-attached-kids .testimonial-text{font-size:18px;color:var(--ink-700);line-height:1.7;margin-bottom:24px;font-style:italic}
 .page-raising-securely-attached-kids .testimonial-author{display:flex;align-items:center;gap:16px}
@@ -182,9 +182,9 @@
 <div class="page-raising-securely-attached-kids">
 
     <div class="page-raising-securely-attached-kids">
-        
+
         <!-- Hero Section -->
-        <section class="hero">
+        <section id="{{ section.settings.section_id | default: 'rsak' }}-{{ section.id }}" class="hero">
             <div class="container">
                 <div class="hero-content">
                     <div class="hero-text">
@@ -200,8 +200,8 @@
                         <p class="hero-subtitle">{{ section.settings._hero_subtitle_1_learn_how_to_create_ }}</p>
                         <div class="author-intro">
                             <div class="author-avatar">
-                                <img src="{{ section.settings.img_1_eli_harwood | image_picker_url: '800x450' }}" 
-             alt="{{ Eli Harwood }}" 
+                                <img src="{{ section.settings.img_1_eli_harwood | image_picker_url: '800x450' }}"
+             alt="{{ Eli Harwood }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -223,8 +223,8 @@
                     <div class="hero-visual">
                         <div class="book-showcase">
                             <div class="book-main">
-                                <img src="{{ section.settings.img_2_raising_securely_attache | image_picker_url: '400x600' }}" 
-             alt="{{ Raising Securely Attached Kids book cover }}" 
+                                <img src="{{ section.settings.img_2_raising_securely_attache | image_picker_url: '400x600' }}"
+             alt="{{ Raising Securely Attached Kids book cover }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -239,7 +239,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Trust Bar -->
         <section class="trust-bar">
             <div class="container">
@@ -267,7 +267,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- What's Inside Section -->
         <section class="whats-inside" id="inside">
             <div class="container">
@@ -307,7 +307,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Core Concepts -->
         <section class="core-concepts">
             <div class="container">
@@ -339,7 +339,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Testimonials -->
         <section class="testimonials">
             <div class="container">
@@ -353,8 +353,8 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_3_hilary_swank | image_picker_url: '800x450' }}" 
-             alt="{{ Hilary Swank }}" 
+                                <img src="{{ section.settings.img_3_hilary_swank | image_picker_url: '800x450' }}"
+             alt="{{ Hilary Swank }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -371,8 +371,8 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_4_dr_daniel_siegel | image_picker_url: '800x450' }}" 
-             alt="{{ Dr. Daniel Siegel }}" 
+                                <img src="{{ section.settings.img_4_dr_daniel_siegel | image_picker_url: '800x450' }}"
+             alt="{{ Dr. Daniel Siegel }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -389,8 +389,8 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_5_alyssa_blask_campbell | image_picker_url: '800x450' }}" 
-             alt="{{ Alyssa Blask Campbell }}" 
+                                <img src="{{ section.settings.img_5_alyssa_blask_campbell | image_picker_url: '800x450' }}"
+             alt="{{ Alyssa Blask Campbell }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -410,8 +410,8 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_6_tammy_schamuhn | image_picker_url: '800x450' }}" 
-             alt="{{ Tammy Schamuhn }}" 
+                                <img src="{{ section.settings.img_6_tammy_schamuhn | image_picker_url: '800x450' }}"
+             alt="{{ Tammy Schamuhn }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -428,8 +428,8 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_7_dr_galit_atlas | image_picker_url: '800x450' }}" 
-             alt="{{ Dr. Galit Atlas }}" 
+                                <img src="{{ section.settings.img_7_dr_galit_atlas | image_picker_url: '800x450' }}"
+             alt="{{ Dr. Galit Atlas }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -446,8 +446,8 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_8_rachel_samson | image_picker_url: '800x450' }}" 
-             alt="{{ Rachel Samson }}" 
+                                <img src="{{ section.settings.img_8_rachel_samson | image_picker_url: '800x450' }}"
+             alt="{{ Rachel Samson }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -461,7 +461,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Parent Reviews -->
         <section class="parent-reviews">
             <div class="container">
@@ -514,15 +514,15 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- About Eli -->
         <section class="about-eli">
             <div class="container">
                 <div class="about-container">
                     <div class="eli-visual">
                         <div class="eli-image">
-                            <img src="{{ section.settings.img_9_eli_harwood | image_picker_url: '800x450' }}" 
-             alt="{{ Eli Harwood }}" 
+                            <img src="{{ section.settings.img_9_eli_harwood | image_picker_url: '800x450' }}"
+             alt="{{ Eli Harwood }}"
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -585,7 +585,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Final CTA -->
         <section class="final-cta" id="purchase">
             <div class="container">
@@ -603,7 +603,7 @@
                 </div>
             </div>
         </section>
-        
+
     </div>
 
 
@@ -615,7 +615,18 @@
   "class": "page-raising-securely-attached-kids",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "rsak",
+      "info": "Custom ID for internal linking (e.g., #rsak)"
+    },
+      {
+        "type": "header",
       "content": "Headlines"
     },
     {

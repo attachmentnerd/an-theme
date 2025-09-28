@@ -1,0 +1,35 @@
+{% if post.downloads.count > 0 %}
+  <div class="panel__block" id="block-{{ block.id }}" {% block_attributes %}>
+    <h5 class="panel__heading" kjb-settings-id="{{ 'language_downloads' | settings_id: section: section,block: block }}">
+      {%- element "block.settings.language_downloads" -%}
+        {{ block.settings.language_downloads }}
+      {%- endelement -%}
+    </h5>
+    <div class="downloads downloads--cards">
+      {% for download in post.downloads %}
+        {% assign ext = download.extension | default: '' %}
+        {% assign ext_upper = ext | remove: '.' | upcase %}
+        {% assign icon_name = 'download' %}
+        {% if ext == '.pdf' %}
+          {% assign icon_name = 'file-pdf' %}
+        {% endif %}
+
+        {% include "download_card",
+          title: download.display_name,
+          href: download.url,
+          icon: icon_name,
+          label: section.settings.language_downloads,
+          meta: ext_upper,
+          open_in_new: true,
+          download: true
+        %}
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+  {% if editor %}
+    <div class="panel__block editor-null" id="block-{{ block.id }}" kjb-settings-id="{{ 'language_downloads' | settings_id: section: section,block: block }}" {% block_attributes %}>
+      Post Downloads Will Show Here
+    </div>
+  {% endif %}
+{% endif %}

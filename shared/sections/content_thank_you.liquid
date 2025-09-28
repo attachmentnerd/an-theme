@@ -41,7 +41,7 @@
   }
 </style>
 
-<section class="thank-you {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+<section id="{{ section.settings.section_id | default: 'content-thank-you' }}-{{ section.id }}" class="thank-you {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="sizer {% if section.settings.full_height == true %}sizer--full{% endif %}">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}
@@ -74,7 +74,18 @@
   "duplicatable": "false",
   "elements": [
     {
-      "type": "rich_text",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content-thank-you",
+      "info": "Custom ID for internal linking (e.g., #content-thank-you)"
+    },
+      {
+        "type": "rich_text",
       "id": "thank_you_body",
       "label": "Thank You Text",
       "default": "<h1>🎉</h1>\r\n<h1>Thank you!</h1>\r\n<p>Your purchase was successful. You&nbsp;will receive an email shortly with further instructions.</p>",

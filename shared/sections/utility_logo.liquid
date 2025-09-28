@@ -155,7 +155,7 @@
            {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
           {% if section.settings.logo_image %}
             <img src="{{ section.settings.logo_image | image_picker_url: '240x80' }}" 
-             alt="{{ {{ section.settings.image_alt | default: current_site.title }} }}" 
+             alt="{{ section.settings.image_alt | default: current_site.title }}" 
              class="logo-section__image"
              loading="lazy"
              style="object-fit: cover;">
@@ -229,7 +229,18 @@
   "name": "Utility - Logo",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "utility-logo",
+      "info": "Custom ID for internal linking (e.g., #utility-logo)"
+    },
+      {
+        "type": "header",
       "content": "Logo Content"
     },
     {

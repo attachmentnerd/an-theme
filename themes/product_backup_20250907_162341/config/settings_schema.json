@@ -1,0 +1,1696 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "AN Product Theme",
+    "theme_version": "AN-PROD 2025.09.07+23.0.1",
+    "theme_author": "Attachment Nerd",
+    "theme_documentation_url": "https://attachmentnerd.com",
+    "theme_support_url": "https://attachmentnerd.com",
+    "settings_validatable": true
+  },
+  {
+    "name": "Theme Background Images",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "show_theme_top_image",
+        "label": "Show Background Top Image",
+        "default": "false"
+      },
+      {
+        "type": "image_picker",
+        "id": "theme_top_image",
+        "label": "Top Background Image"
+      },
+      {
+        "type": "text",
+        "id": "top_image_height",
+        "label": "Top Background Height",
+        "default": "350"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_theme_bottom_image",
+        "label": "Show Background Bottom Image",
+        "default": "false"
+      },
+      {
+        "type": "image_picker",
+        "id": "theme_bottom_image",
+        "label": "Bottom Background Image"
+      },
+      {
+        "type": "text",
+        "id": "bottom_image_height",
+        "label": "Bottom Background Height",
+        "default": "350"
+      },
+      {
+        "type": "textarea",
+        "id": "background_images_style",
+        "label": "Background Images Style",
+        "default": ""
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "select",
+        "id": "color_mode",
+        "label": "Color Mode",
+        "options": [
+          {
+            "value": "White Mode",
+            "label": "White Mode"
+          },
+          {
+            "value": "Dark Mode",
+            "label": "Dark Mode"
+          },
+          {
+            "value": "Light Mode",
+            "label": "Light Mode"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "accent_color_1",
+        "label": "Accent Color 1"
+      },
+      {
+        "type": "color",
+        "id": "accent_color_2",
+        "label": "Accent Color 2"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_1",
+        "label": "Background color 1"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_2",
+        "label": "Background color 2"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Text Color 1"
+      },
+      {
+        "type": "color",
+        "id": "text_color_2",
+        "label": "Text Color 2"
+      }
+    ]
+  },
+  {
+    "name": "Fonts",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Note: Some changes may not be visible until clicking the SAVE button.",
+        "style": "subheading"
+      },
+      {
+        "type": "header",
+        "content": "Text Font"
+      },
+      {
+        "type": "select",
+        "id": "font_text",
+        "label": "Text Font",
+        "default": "Gilroy",
+        "options": [
+          {
+            "value": "Gilroy",
+            "label": "Gilroy"
+          },
+          {
+            "value": "Alegreya",
+            "label": "Alegreya"
+          },
+          {
+            "value": "B612",
+            "label": "B612"
+          },
+          {
+            "value": "Mulish",
+            "label": "Mulish"
+          },
+          {
+            "value": "Titillium Web",
+            "label": "Titillium Web"
+          },
+          {
+            "value": "Varela",
+            "label": "Varela"
+          },
+          {
+            "value": "Vollkorn",
+            "label": "Vollkorn"
+          },
+          {
+            "value": "IBM Plex Sans",
+            "label": "IBM Plex Sans"
+          },
+          {
+            "value": "Crimson Text",
+            "label": "Crimson Text"
+          },
+          {
+            "value": "Cairo",
+            "label": "Cairo"
+          },
+          {
+            "value": "BioRhyme",
+            "label": "BioRhyme"
+          },
+          {
+            "value": "Karla",
+            "label": "Karla"
+          },
+          {
+            "value": "Lora",
+            "label": "Lora"
+          },
+          {
+            "value": "Frank Ruhl Libre",
+            "label": "Frank Ruhl Libre"
+          },
+          {
+            "value": "Playfair Display",
+            "label": "Playfair Display"
+          },
+          {
+            "value": "Archivo",
+            "label": "Archivo"
+          },
+          {
+            "value": "Spectral",
+            "label": "Spectral"
+          },
+          {
+            "value": "Fjalla One",
+            "label": "Fjalla One"
+          },
+          {
+            "value": "Roboto",
+            "label": "Roboto"
+          },
+          {
+            "value": "Montserrat",
+            "label": "Montserrat"
+          },
+          {
+            "value": "Rubik",
+            "label": "Rubik"
+          },
+          {
+            "value": "Source Sans",
+            "label": "Source Sans"
+          },
+          {
+            "value": "Cardo",
+            "label": "Cardo"
+          },
+          {
+            "value": "Cormorant",
+            "label": "Cormorant"
+          },
+          {
+            "value": "Work Sans",
+            "label": "Work Sans"
+          },
+          {
+            "value": "Rakkas",
+            "label": "Rakkas"
+          },
+          {
+            "value": "Concert One",
+            "label": "Concert One"
+          },
+          {
+            "value": "Yatra One",
+            "label": "Yatra One"
+          },
+          {
+            "value": "Arvo",
+            "label": "Arvo"
+          },
+          {
+            "value": "Lato",
+            "label": "Lato"
+          },
+          {
+            "value": "Abril FatFace",
+            "label": "Abril FatFace"
+          },
+          {
+            "value": "Ubuntu",
+            "label": "Ubuntu"
+          },
+          {
+            "value": "PT Serif",
+            "label": "PT Serif"
+          },
+          {
+            "value": "Old Standard TT",
+            "label": "Old Standard TT"
+          },
+          {
+            "value": "Oswald",
+            "label": "Oswald"
+          },
+          {
+            "value": "PT Sans",
+            "label": "PT Sans"
+          },
+          {
+            "value": "Poppins",
+            "label": "Poppins"
+          },
+          {
+            "value": "Fira Sans",
+            "label": "Fira Sans"
+          },
+          {
+            "value": "Nunito",
+            "label": "Nunito"
+          },
+          {
+            "value": "Oxygen",
+            "label": "Oxygen"
+          },
+          {
+            "value": "Exo 2",
+            "label": "Exo 2"
+          },
+          {
+            "value": "Open Sans",
+            "label": "Open Sans"
+          },
+          {
+            "value": "Merriweather",
+            "label": "Merriweather"
+          },
+          {
+            "value": "Noto Sans",
+            "label": "Noto Sans"
+          },
+          {
+            "value": "Source Sans Pro",
+            "label": "Source Sans Pro"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_font_name_instead",
+        "label": "Enter Google font name instead",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "info": "Enter a name of any Google Fonts fonts.google.com",
+        "id": "text_font_name",
+        "label": "Enter Google font name",
+        "default": ""
+      },
+      {
+        "type": "header",
+        "content": "Heading Font"
+      },
+      {
+        "type": "select",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "Gilroy",
+        "options": [
+          {
+            "value": "Gilroy",
+            "label": "Gilroy"
+          },
+          {
+            "value": "Roboto",
+            "label": "Roboto"
+          },
+          {
+            "value": "Comfortaa",
+            "label": "Comfortaa"
+          },
+          {
+            "value": "Teko",
+            "label": "Teko"
+          },
+          {
+            "value": "Chakra Petch",
+            "label": "Chakra Petch"
+          },
+          {
+            "value": "Medula One",
+            "label": "Medula One"
+          },
+          {
+            "value": "Montserrat Alternates",
+            "label": "Montserrat Alternates"
+          },
+          {
+            "value": "Unica One",
+            "label": "Unica One"
+          },
+          {
+            "value": "Bellota",
+            "label": "Bellota"
+          },
+          {
+            "value": "Cinzel Decorative",
+            "label": "Cinzel Decorative"
+          },
+          {
+            "value": "Poiret One",
+            "label": "Poiret One"
+          },
+          {
+            "value": "Courgette",
+            "label": "Courgette"
+          },
+          {
+            "value": "Concert One",
+            "label": "Concert One"
+          },
+          {
+            "value": "Fugaz One",
+            "label": "Fugaz One"
+          },
+          {
+            "value": "Days One",
+            "label": "Days One"
+          },
+          {
+            "value": "Aclonica",
+            "label": "Aclonica"
+          },
+          {
+            "value": "Oregano",
+            "label": "Oregano"
+          },
+          {
+            "value": "Amatic SC",
+            "label": "Amatic SC"
+          },
+          {
+            "value": "Caesar Dressing",
+            "label": "Caesar Dressing"
+          },
+          {
+            "value": "Neucha",
+            "label": "Neucha"
+          },
+          {
+            "value": "Chelsea Market",
+            "label": "Chelsea Market"
+          },
+          {
+            "value": "Macondo Swash Caps",
+            "label": "Macondo Swash Caps"
+          },
+          {
+            "value": "Fredericka the Great",
+            "label": "Fredericka the Great"
+          },
+          {
+            "value": "Sirin Stencil",
+            "label": "Sirin Stencil"
+          },
+          {
+            "value": "Cabin Sketch",
+            "label": "Cabin Sketch"
+          },
+          {
+            "value": "Finger Paint",
+            "label": "Finger Paint"
+          },
+          {
+            "value": "Emilys Candy",
+            "label": "Emilys Candy"
+          },
+          {
+            "value": "Kranky",
+            "label": "Kranky"
+          },
+          {
+            "value": "Jacques Francois Shadow",
+            "label": "Jacques Francois Shadow"
+          },
+          {
+            "value": "Love Ya Like A Sister",
+            "label": "Love Ya Like A Sister"
+          },
+          {
+            "value": "Playball",
+            "label": "Playball"
+          },
+          {
+            "value": "Galada",
+            "label": "Galada"
+          },
+          {
+            "value": "Lobster Two",
+            "label": "Lobster Two"
+          },
+          {
+            "value": "Oleo Script Swash Caps",
+            "label": "Oleo Script Swash Caps"
+          },
+          {
+            "value": "Bubblegum Sans",
+            "label": "Bubblegum Sans"
+          },
+          {
+            "value": "Aldrich",
+            "label": "Aldrich"
+          },
+          {
+            "value": "Gugi",
+            "label": "Gugi"
+          },
+          {
+            "value": "Righteous",
+            "label": "Righteous"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_font_name_instead_heading",
+        "label": "Enter Google font name instead",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "info": "Enter a name of any Google Fonts fonts.google.com",
+        "id": "text_font_name_heading",
+        "label": "Enter Google font name",
+        "default": ""
+      },
+      {
+        "type": "header",
+        "content": "Custom Fonts"
+      },
+      {
+        "type": "text",
+        "info": "Enter a name of any Google Fonts fonts.google.com",
+        "id": "custom_font1",
+        "label": "Cusotm font 1 - Enter Google font name",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "info": "Enter a name of any Google Fonts fonts.google.com",
+        "id": "custom_font2",
+        "label": "Cusotm font 2 - Enter Google font name",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "info": "Enter a name of any Google Fonts fonts.google.com",
+        "id": "custom_font3",
+        "label": "Cusotm font 3 - Enter Google font name",
+        "default": ""
+      }
+    ]
+  },
+  {
+    "name": "Global Style",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Global Style"
+      },
+      {
+        "type": "textarea",
+        "id": "css",
+        "label": "CSS Code",
+        "default": ""
+      },
+      {
+        "type": "textarea",
+        "id": "paste_css",
+        "label": "Paste CSS",
+        "default": ""
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Dashboard"
+      },
+      {
+        "type": "text",
+        "id": "content_width",
+        "label": "Width (Desktop)",
+        "default": "1260px"
+      },
+      {
+        "type": "text",
+        "id": "content_top_padding",
+        "label": "Top Padding",
+        "default": "0px"
+      },
+      {
+        "type": "text",
+        "id": "content_bottom_padding",
+        "label": "Bottom Padding",
+        "default": "0px"
+      },
+      {
+        "type": "header",
+        "content": "Post Page"
+      },
+      {
+        "type": "text",
+        "id": "content_width_post",
+        "label": "Width (Desktop)",
+        "default": "1362px"
+      },
+      {
+        "type": "text",
+        "id": "content_top_padding_post",
+        "label": "Top Padding",
+        "default": "0px"
+      },
+      {
+        "type": "header",
+        "content": "Type"
+      },
+      {
+        "type": "select",
+        "id": "theme_type",
+        "label": "Theme Type",
+        "default": "Discovery",
+        "options": [
+          {
+            "value": "discovery",
+            "label": "Discovery"
+          },
+          {
+            "value": "explorer",
+            "label": "Explorer"
+          },
+          {
+            "value": "curiosity",
+            "label": "Curiosity"
+          },
+          {
+            "value": "evolution",
+            "label": "Evolution"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Default Button Settings",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "p1_cta_outline",
+        "label": "Outline Only",
+        "default": "false"
+      },
+      {
+        "type": "select",
+        "label": "Background Color",
+        "id": "p1_bg_color_preset",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p1_cta_bg_color",
+        "label": "Background custom color ",
+        "allow_blank": true,
+        "default": "#20ad96"
+      },
+      {
+        "type": "select",
+        "label": "Color",
+        "id": "p1_color_preset",
+        "default": "#default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p1_cta_color",
+        "label": "Cusotm Color",
+        "allow_blank": true,
+        "default": "#ffffff"
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_min_width",
+        "label": "Minimum width",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_min_height",
+        "label": "Minimum height",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_font_size",
+        "label": "Font size",
+        "default": "16px"
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_min_width_mobile",
+        "label": "Minimum width - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_min_height_mobile",
+        "label": "Minimum height - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_font_size_mobile",
+        "label": "Font size - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_border_width",
+        "label": "Border width (outine) ",
+        "default": "1px"
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_border_radius",
+        "label": "Button radius",
+        "default": "5px"
+      },
+      {
+        "type": "select",
+        "id": "p1_cta_hide_icon",
+        "label": "Hide Icon",
+        "default": "false",
+        "options": [
+          {
+            "value": "true",
+            "label": "Hide"
+          },
+          {
+            "value": "false",
+            "label": "Show"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "p1_cta_icon",
+        "label": "Icon Code",
+        "default": "far fa-sign-in-alt"
+      },
+      {
+        "type": "select",
+        "id": "p1_icon_position",
+        "label": "Icon Position",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "p1_cta_style",
+        "label": "Style",
+        "default": "/* -- Button Text --*/\n\n\n/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n"
+      }
+    ]
+  },
+  {
+    "name": "Button Preset 2",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Leave individual settings option blank to inherent Button Default Settings or set a value to overwrite the defaults."
+      },
+      {
+        "type": "checkbox",
+        "id": "p2_inherit_defaults",
+        "label": "Inherit Defaults",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "p2_cta_outline",
+        "label": "Outline Only",
+        "default": "false"
+      },
+      {
+        "type": "select",
+        "label": "Background color overwrite",
+        "id": "p2_bg_color_preset",
+        "default": "#default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p2_cta_bg_color",
+        "label": "Background custom color overwrite",
+        "allow_blank": true
+      },
+      {
+        "type": "select",
+        "label": "Color overwrite",
+        "id": "p2_color_preset",
+        "default": "#default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p2_cta_color",
+        "label": "Custom color overwrite",
+        "allow_blank": true
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_min_width",
+        "label": "Minimum width - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_min_height",
+        "label": "Minimum height - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_font_size",
+        "label": "Font size - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_min_width_mobile",
+        "label": "Minimum width - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_min_height_mobile",
+        "label": "Minimum height - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_font_size_mobile",
+        "label": "Font size - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_border_width",
+        "label": "Border width (outine) - overwrite ",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_border_radius",
+        "label": "Button radius - overwrite",
+        "default": ""
+      },
+      {
+        "type": "select",
+        "id": "p2_cta_hide_icon",
+        "label": "Hide Icon",
+        "default": "true",
+        "options": [
+          {
+            "value": "Use Default",
+            "label": "Use Default"
+          },
+          {
+            "value": "true",
+            "label": "Hide"
+          },
+          {
+            "value": "false",
+            "label": "Show"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "p2_cta_icon",
+        "label": "Icon Code",
+        "default": "far fa-sign-in-alt"
+      },
+      {
+        "type": "select",
+        "id": "p2_icon_position",
+        "label": "Icon Position",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "p2_cta_style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n"
+      }
+    ]
+  },
+  {
+    "name": "Button Preset 3",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Leave individual settings option blank to inherent Button Default Settings or set a value to overwrite the defaults."
+      },
+      {
+        "type": "checkbox",
+        "id": "p3_inherit_defaults",
+        "label": "Inherit Defaults",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "p3_cta_outline",
+        "label": "Outline Only",
+        "default": "false"
+      },
+      {
+        "type": "select",
+        "label": "Background color overwrite",
+        "id": "p3_bg_color_preset",
+        "default": "#default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p3_cta_bg_color",
+        "label": "Background custom color overwrite",
+        "allow_blank": true
+      },
+      {
+        "type": "select",
+        "label": "Color overwrite",
+        "id": "p3_color_preset",
+        "default": "#default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p3_cta_color",
+        "label": "Custom color overwrite",
+        "allow_blank": true
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_min_width",
+        "label": "Minimum width - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_min_height",
+        "label": "Minimum height - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_font_size",
+        "label": "Font size - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_min_width_mobile",
+        "label": "Minimum width - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_min_height_mobile",
+        "label": "Minimum height - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_font_size_mobile",
+        "label": "Font size - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_border_width",
+        "label": "Border width (outine) - overwrite ",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_border_radius",
+        "label": "Button radius - overwrite",
+        "default": ""
+      },
+      {
+        "type": "select",
+        "id": "p3_cta_hide_icon",
+        "label": "Hide Icon",
+        "default": "true",
+        "options": [
+          {
+            "value": "Use Default",
+            "label": "Use Default"
+          },
+          {
+            "value": "true",
+            "label": "Hide"
+          },
+          {
+            "value": "false",
+            "label": "Show"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "p3_cta_icon",
+        "label": "Icon Code",
+        "default": "far fa-sign-in-alt"
+      },
+      {
+        "type": "select",
+        "id": "p3_icon_position",
+        "label": "Icon Position",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "p3_cta_style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n"
+      }
+    ]
+  },
+  {
+    "name": "Button Preset 4",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Leave individual settings option blank to inherent Button Default Settings or set a value to overwrite the defaults."
+      },
+      {
+        "type": "checkbox",
+        "id": "p4_inherit_defaults",
+        "label": "Inherit Defaults",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "p4_cta_outline",
+        "label": "Outline Only",
+        "default": "false"
+      },
+      {
+        "type": "select",
+        "label": "Background color overwrite",
+        "id": "p4_bg_color_preset",
+        "default": "#default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p4_cta_bg_color",
+        "label": "Background custom color overwrite",
+        "allow_blank": true
+      },
+      {
+        "type": "select",
+        "label": "Color overwrite",
+        "id": "p4_color_preset",
+        "default": "#default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "--accent-color-1",
+            "label": "Accent Color 1"
+          },
+          {
+            "value": "--accent-color-2",
+            "label": "Accent Color 2"
+          },
+          {
+            "value": "--accent-color-3",
+            "label": "Accent Color 3"
+          },
+          {
+            "value": "--accent-color-4",
+            "label": "Accent Color 4"
+          },
+          {
+            "value": "--bg-color-1",
+            "label": "Background Color 1"
+          },
+          {
+            "value": "--bg-color-2",
+            "label": "Background Color 2"
+          },
+          {
+            "value": "--bg-color-3",
+            "label": "Background Color 3"
+          },
+          {
+            "value": "--bg-color-4",
+            "label": "Background Color 4"
+          },
+          {
+            "value": "--text-color-1",
+            "label": "Text Color 1"
+          },
+          {
+            "value": "--text-color-2",
+            "label": "Text Color 2"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "p4_cta_color",
+        "label": "Custom color overwrite",
+        "allow_blank": true
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_min_width",
+        "label": "Minimum width - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_min_height",
+        "label": "Minimum height - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_font_size",
+        "label": "Font size - overwrite",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_min_width_mobile",
+        "label": "Minimum width - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_min_height_mobile",
+        "label": "Minimum height - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_font_size_mobile",
+        "label": "Font size - Mobile",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_border_width",
+        "label": "Border width (outine) - overwrite ",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_border_radius",
+        "label": "Button radius - overwrite",
+        "default": ""
+      },
+      {
+        "type": "select",
+        "id": "p4_cta_hide_icon",
+        "label": "Hide Icon",
+        "default": "true",
+        "options": [
+          {
+            "value": "Use Default",
+            "label": "Use Default"
+          },
+          {
+            "value": "true",
+            "label": "Hide"
+          },
+          {
+            "value": "false",
+            "label": "Show"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "p4_cta_icon",
+        "label": "Icon Code",
+        "default": "far fa-sign-in-alt"
+      },
+      {
+        "type": "select",
+        "id": "p4_icon_position",
+        "label": "Icon Position",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "p4_cta_style",
+        "label": "Style",
+        "default": "/* -- Desktop Style --*/\n\n\n/* -- Mobile Style --*/\n\n"
+      }
+    ]
+  },
+  {
+    "name": "List",
+    "elements": [
+      {
+        "type": "select",
+        "id": "font_or_image",
+        "label": "List Icon Type",
+        "default": "Use Font Awesome",
+        "options": [
+          {
+            "value": "Use Image",
+            "label": "Use Image"
+          },
+          {
+            "value": "Use Font Awesome",
+            "label": "Use Font Awesome"
+          },
+          {
+            "value": "Use SVG Code",
+            "label": "Use SVG Code"
+          },
+          {
+            "value": "Use from URL",
+            "label": "Use from URL"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "label": "List Icon ID / SVG code / URL ",
+        "id": "list_icon_id",
+        "default": "far fa-check"
+      },
+      {
+        "type": "color",
+        "label": "Color",
+        "id": "list_icon_color",
+        "allow_blank": true
+      },
+      {
+        "type": "image_picker",
+        "label": "List Image",
+        "id": "list_image",
+        "default": "https://robust-themes.com/aws/img/checked.png"
+      },
+      {
+        "type": "textarea",
+        "id": "list_style",
+        "label": "List Style",
+        "default": "/* -- List Item Style --*/\n line-height:2;\n\n\n/* -- List Icon Style --*/\n margin-right: 9px;\n\n\n"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon Image",
+        "fit": "crop",
+        "width": 32,
+        "height": 32,
+        "default": "https://kajabi-themes.s3.amazonaws.com/images/favicon.png",
+        "info": "Must be a 32x32 PNG file. Transparency is supported. Please allow some time for favicon to change. Learn how to create your own favicon [here](canva_logos)"
+      }
+    ]
+  },
+  {
+    "name": "Comments",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "private_comments",
+        "label": "Private Comments",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "id": "admin_names",
+        "label": "Admin Names (comma seperated)",
+        "default": ""
+      },
+      {
+        "type": "image_picker",
+        "label": "Admin Profile",
+        "id": "admin_profile",
+        "default": "https://kajabi-themes.s3.amazonaws.com/assets/images/placeholder.png"
+      }
+    ]
+  },
+  {
+    "name": "License Key",
+    "elements": [
+      {
+        "type": "header",
+        "content": "License Key"
+      },
+      {
+        "type": "text",
+        "label": "Theme Name",
+        "id": "theme_name"
+      },
+      {
+        "type": "select",
+        "id": "plan",
+        "label": "License Plan",
+        "default": "Premium",
+        "options": [
+          {
+            "value": "Free",
+            "label": "Free"
+          },
+          {
+            "value": "Silver",
+            "label": "Silver"
+          },
+          {
+            "value": "Premium",
+            "label": "Premium"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "license_key",
+        "label": "License Key",
+        "default": "",
+        "info": "Paste your license Key here and click the save button bellow.  if you need to purchase a key follow the \"Purchase\" link at the editor bar."
+      },
+      {
+        "type": "checkbox",
+        "id": "develpoer_mode",
+        "label": "Develpoer Mode",
+        "default": "false"
+      }
+    ]
+  }
+]

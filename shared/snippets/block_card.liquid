@@ -5,7 +5,7 @@
 {% assign btn_size = block.settings.btn_size | default: settings.btn_size %}
 {% assign btn_width = block.settings.btn_width | default: settings.btn_width %}
 {% capture anchor_attrs %}
-  href="{{ block.settings.action }}" 
+  href="{{ block.settings.action }}"
   {% if block.settings.action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %}
   {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}
   {% if block.settings.action == "#cta-popup" %} data-target="#cta-popup-{{ block.id }}" {% endif %}
@@ -36,6 +36,12 @@
     </a>
   {% endif %}
   <div class="card__body">
+    {% if block.settings.heading != blank %}
+      <h3 class="card__heading" kjb-settings-id="{{ 'heading' | settings_id: section: section, block: block }}">{{ block.settings.heading }}</h3>
+    {% endif %}
+    {% if block.settings.subheading != blank %}
+      <p class="card__subheading" kjb-settings-id="{{ 'subheading' | settings_id: section: section, block: block }}">{{ block.settings.subheading }}</p>
+    {% endif %}
     {% if block.settings.description != blank %}
       <div class="card__text" {% element_attributes "block.settings.description" %}>
         {{ block.settings.description }}

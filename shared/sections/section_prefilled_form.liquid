@@ -1,0 +1,151 @@
+{% comment %}
+  Prefilled Kajabi Form Section
+  - Renders a selected Kajabi form
+  - Prefills email from current_user (website) or current_member (product)
+  - Hides the email input when a logged-in email is available
+{% endcomment %}
+
+{% assign section_dom_id = section.settings.section_id | default: 'prefilled-form' %}
+{% assign form_setting = section.settings.form %}
+{% assign form_id = section.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+{% assign f = current_site.find_form[form_id] %}
+{% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
+
+<section id="{{ section_dom_id }}-{{ section.id }}" class="an-prefilled-form">
+  <div class="container">
+    <style>
+      /* Scoped button styles to prevent unreadable hover state */
+      #{{ section_dom_id }}-{{ section.id }} .btn-with-states {
+        background-color: {{ section.settings.button_bg_color | default: 'var(--c-brand-600)' }};
+        color: {{ section.settings.button_text_color | default: 'var(--c-white)' }};
+        border-color: {{ section.settings.button_bg_color | default: 'var(--c-brand-600)' }};
+      }
+      #{{ section_dom_id }}-{{ section.id }} .btn-with-states:hover,
+      #{{ section_dom_id }}-{{ section.id }} .btn-with-states:focus {
+        background-color: {{ section.settings.button_bg_hover_color | default: 'var(--c-brand-700, var(--c-brand-600))' }};
+        color: {{ section.settings.button_text_hover_color | default: 'var(--c-white)' }};
+        border-color: {{ section.settings.button_bg_hover_color | default: 'var(--c-brand-700, var(--c-brand-600))' }};
+      }
+      #{{ section_dom_id }}-{{ section.id }} .btn-with-states.is-success {
+        background-color: var(--c-accent-teal);
+        border-color: var(--c-accent-teal);
+        color: var(--c-white);
+      }
+    </style>
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="mb-4">
+        {% if section.settings.heading != blank %}
+          <h2 kjb-settings-id="{{ 'heading' | settings_id: section: section }}">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if form_id %}
+      <div class="an-prefilled-form__wrapper">
+        {%- comment -%}
+          Use the canonical Kajabi form tag signature to ensure reliable rendering.
+          Avoid passing extra attributes to the tag; add hidden inputs and a standard submit button.
+        {%- endcomment -%}
+        {% form "optin", id: form_id %}
+          {% if section.settings.thank_you_url != blank %}
+            <input type="hidden" name="thank_you_url" value="{{ section.settings.thank_you_url }}">
+          {% endif %}
+
+          {%- capture user_email -%}{{ current_user.email | default: current_member.email | strip }}{%- endcapture -%}
+
+          {%- assign fields_source = form.fields -%}
+          {%- if f and f.fields -%}
+            {%- assign fields_source = f.fields -%}
+          {%- endif -%}
+
+          {% for field in fields_source %}
+            {% if field.input_type == 'email' %}
+              {% if section.settings.hide_email_when_logged_in and user_email != blank %}
+                <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
+              {% else %}
+                {{ field | form_input: class: "form-group", input_class: "form-control", placeholder: section.settings.email_placeholder | default: field.label }}
+              {% endif %}
+            {% else %}
+              {{ field | form_input: class: "form-group", input_class: "form-control", placeholder: field.label }}
+            {% endif %}
+          {% endfor %}
+
+          {% if section.settings.autofill_names_when_logged_in %}
+            {%- capture user_first_name -%}{{ current_member.first_name | default: current_user.first_name | strip }}{%- endcapture -%}
+            {%- capture user_last_name -%}{{ current_member.last_name | default: current_user.last_name | strip }}{%- endcapture -%}
+            {% if user_first_name != blank %}
+              <input type="hidden" name="form_submission[first_name]" value="{{ user_first_name }}">
+            {% endif %}
+            {% if user_last_name != blank %}
+              <input type="hidden" name="form_submission[last_name]" value="{{ user_last_name }}">
+            {% endif %}
+          {% endif %}
+
+          <button type="submit"
+                  name="commit"
+                  class="btn btn-with-states"
+                  data-loading-text="{{ section.settings.loading_text | default: 'Processing...' }}"
+                  kjb-settings-id="{{ 'button_text' | settings_id: section: section }}">
+            <span class="btn-text">{{ section.settings.button_text | default: 'Submit' }}</span>
+            <span class="btn-spinner"></span>
+            <span class="btn-success-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        {% endform %}
+      </div>
+    {% else %}
+      {% if editor %}
+        <div class="editor-null" kjb-settings-id="{{ 'form' | settings_id: section: section }}">
+          No form found. Select a form or paste a Form ID in "Manual Form ID".
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Form - Prefilled Email",
+  "elements": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "prefilled-form",
+      "info": "Custom ID for internal linking (e.g., #prefilled-form)"
+    }
+  ],
+  "groups": [
+    {
+      "name": "Content",
+      "elements": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "" },
+        { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "" }
+      ]
+    },
+    {
+      "name": "Form",
+      "elements": [
+        { "type": "form", "id": "form", "label": "Kajabi Form" },
+        { "type": "text", "id": "manual_form_id", "label": "Manual Form ID (fallback)", "info": "Paste a Form ID if the picker is empty or broken" },
+        { "type": "url", "id": "thank_you_url", "label": "Thank You URL", "allow_blank": "true", "default": "" },
+        { "type": "checkbox", "id": "hide_email_when_logged_in", "label": "Hide email when logged in", "default": true },
+        { "type": "checkbox", "id": "autofill_names_when_logged_in", "label": "Auto-fill first/last name when logged in", "default": true },
+        { "type": "text", "id": "button_bg_color", "label": "Button Background Color", "default": "" },
+        { "type": "text", "id": "button_bg_hover_color", "label": "Button Background Hover Color", "default": "" },
+        { "type": "text", "id": "button_text_color", "label": "Button Text Color", "default": "" },
+        { "type": "text", "id": "button_text_hover_color", "label": "Button Text Hover Color", "default": "" },
+        { "type": "text", "id": "email_placeholder", "label": "Email Placeholder", "default": "Your email" },
+        { "type": "text", "id": "button_text", "label": "Button Text", "default": "Get it" },
+        { "type": "text", "id": "loading_text", "label": "Loading Text", "default": "Processing..." }
+      ]
+    }
+  ]
+}
+{% endschema %}

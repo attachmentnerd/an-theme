@@ -13,7 +13,7 @@
         {% if section.settings.logo %}
           <a href="/">
             <img src="{{ section.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ {{ site.name }} }}" 
+             alt="{{ site.name }}" 
              class="img-fluid"
              loading="lazy"
              style="object-fit: cover;">
@@ -40,7 +40,18 @@
   "name": "Nav - Header Static",
   "elements": [
     {
-      "type": "image_picker",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "header-static",
+      "info": "Custom ID for internal linking (e.g., #header-static)"
+    },
+      {
+        "type": "image_picker",
       "id": "logo",
       "label": "Logo"
     },

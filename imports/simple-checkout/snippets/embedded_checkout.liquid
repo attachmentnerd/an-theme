@@ -1,0 +1,151 @@
+{% assign min_checkout_column_width = nil | embedded_checkout_column_min_width %}
+{% assign checkout_column_width = section.settings.checkout_block_column_width | default: min_checkout_column_width %}
+{% assign checkout_column_width = checkout_column_width | at_least: min_checkout_column_width %}
+{% assign blocks_column_width = 12 | minus: checkout_column_width %}
+
+{% include "section_styles" %}
+
+<style>
+  #section-{{ section.id }} .blocks-column {
+    order: 1;
+  }
+
+  #section-{{ section.id }} .checkout-column {
+    order: 2;
+  }
+
+  @media (min-width: 1024px) {
+    #section-{{ section.id }} .blocks-column {
+      padding-right: 32px;
+      padding-left: 15px;
+    }
+
+    #section-{{ section.id }} .checkout-column {
+      padding-left: 32px;
+      padding-right: 15px;
+    }
+  }
+
+  {% unless section.settings.show_checkout_block_right_on_desktop %}
+    @media (min-width: 1024px) {
+      #section-{{ section.id }} .blocks-column {
+        order: 2;
+        padding-left: 32px;
+        padding-right: 15px;
+      }
+
+      #section-{{ section.id }} .checkout-column {
+        order: 1;
+        padding-left: 15px;
+        padding-right: 32px;
+      }
+    }
+  {% endunless %}
+
+  {% if section.settings.show_checkout_block_first_on_mobile %}
+    @media (max-width: 1023px) {
+      #section-{{ section.id }} .blocks-column {
+        order: 2;
+      }
+
+      #section-{{ section.id }} .checkout-column {
+        order: 1;
+      }
+    }
+  {% endif %}
+</style>
+
+<section kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
+  class="section
+  {% if section.settings.hide_on_desktop == true %}hidden--desktop{% endif %}
+  {% if section.settings.hide_on_mobile == true %}hidden--mobile{% endif %}
+  {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %} {% if section.settings.reveal_event != blank or section.settings.reveal_offset != blank %} reveal {% endif %}"
+  data-reveal-event="{{ current_site.find_event[section.settings.reveal_event].occurs_at | date: '%Y-%jT%T%:z' }}"
+  data-reveal-offset="{{ section.settings.reveal_offset }}"
+  data-reveal-units="{{ section.settings.reveal_units }}">
+  <div class="sizer {% if section.settings.full_height == true %}sizer--full{% endif %}">
+    {% if section.settings.bg_type == "video" %}
+      {% include "global_background_video" %}
+    {% endif %}
+    <div class="section__overlay"></div>
+    <div
+      class="
+        container
+        {% if section.settings.full_width == true %}container--full{% endif %}
+      "
+    >
+      {% if section.blocks.size > 0 %}
+        <div
+          class="
+            row
+            row-for-desktop-and-wide-tablet-only
+            align-items-top
+            justify-content-between
+          "
+        >
+          <div
+            class="
+              blocks-column
+              col-{{ blocks_column_width }}
+            "
+          >
+            <div
+              class="
+                row-{{ blocks_column_width }}
+                align-items-{{ section.settings.vertical }}
+                justify-content-{{ section.settings.horizontal }}
+              "
+            >
+              {% for block in section.blocks %}
+                {% include "block" type: block.type, appended_countdown_class: "countdown--standard" %}
+              {% endfor %}
+            </div>
+          </div>
+          <div
+            class="
+              checkout-column
+              col-{{ checkout_column_width }}
+            "
+          >
+            <div
+              class="kjb-embedded-checkout"
+              kjb-settings-id="{{ 'sync_checkout_block_to_offer' | settings_id: section: section }}"
+            >
+              {{ embedded_checkout_offer | embedded_checkout:
+                   settings: section.settings,
+                   global_settings: settings,
+                   editor_message_element_class: "editor-null"
+              }}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div
+          class="
+            row
+            align-items-top
+            justify-content-center
+          "
+        >
+          <div
+            class="
+              checkout-standalone-column
+              col-{{ section.settings.checkout_block_standalone_width }}
+            "
+          >
+            <div
+              class="kjb-embedded-checkout"
+              kjb-settings-id="{{ 'sync_checkout_block_to_offer' | settings_id: section: section }}"
+            >
+              {{ embedded_checkout_offer | embedded_checkout:
+                   settings: section.settings,
+                   global_settings: settings,
+                   editor_message_element_class: "editor-null"
+              }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>

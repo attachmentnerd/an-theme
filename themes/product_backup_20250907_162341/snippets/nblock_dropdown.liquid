@@ -1,0 +1,31 @@
+  <style>
+      .header-top #block-{{block.id}} .dropdown__trigger{
+         color:{{block.settings.color_top_menu}};
+      }
+      .sticky-header #block-{{block.id}} .dropdown__trigger{
+         color:{{block.settings.color_sticky_menu}};
+      }
+      #block-{{block.id}} .dropdown__item a{
+         color:{{block.settings.dropdown_pop_text_color}};
+      }
+      #block-{{block.id}} .dropdown__menu{
+         background-color:{{block.settings.dropdown_pop_bg_color}};
+      }
+  </style>
+{% capture menu_items %}
+<div class="dropdown dropdown-menu">
+  <a class="dropdown__trigger dropdown-menu-trigger menu-item  dropdown-menu-item ">
+       <span>{{ block.settings.dropdown }}</span>
+    {% if block.settings.show_icon %}
+      {% include 'icon', icon: 'chevron-down', size: 12, class: 'dropdown__icon dropdown-menu-icon' %}
+    {% endif %}
+  </a>
+  <div class="dropdown__menu dropdown__menu--text-{{ block.settings.dropdown_menu_alignment }}">
+    {% for link in current_site.link_lists[block.settings.menu].links %}
+      <span class="dropdown__item dropdown-menu-pop-item"><a href="{{ link.url }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>{{ link.name }}</a></span>
+    {% endfor %}
+  </div>
+</div>
+{% endcapture %}
+{{menu_items}}
+{%- assign mobile_menu_items = mobile_menu_items | append:menu_items -%}

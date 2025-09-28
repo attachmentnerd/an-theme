@@ -30,9 +30,15 @@
       </a>
     {% endif %}
   {% endunless %}
-  <div 
-    class="feature__text" 
-    kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}" 
+  {% if block.settings.heading != blank %}
+    <h3 class="feature__heading" kjb-settings-id="{{ 'heading' | settings_id: section: section, block: block }}">{{ block.settings.heading }}</h3>
+  {% endif %}
+  {% if block.settings.subheading != blank %}
+    <p class="feature__subheading" kjb-settings-id="{{ 'subheading' | settings_id: section: section, block: block }}">{{ block.settings.subheading }}</p>
+  {% endif %}
+  <div
+    class="feature__text"
+    kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}"
     {% element_attributes "block.settings.text" %}
   >
     {{ block.settings.text }}

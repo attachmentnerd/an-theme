@@ -7,7 +7,7 @@
   - Category filtering
 {% endcomment %}
 
-<section class="an-resources py-5" style="background: {{ section.settings.background_color }};">
+<section id="{{ section.settings.section_id | default: 'content-resource-downloads' }}-{{ section.id }}" class="an-resources py-5" style="background: {{ section.settings.background_color }};">
   <div class="container">
     <!-- Section Header -->
     {% if section.settings.heading != blank or section.settings.subheading != blank %}
@@ -60,7 +60,7 @@
                 <div class="an-resources__visual">
                   {% if block.settings.preview_image != blank %}
                     <img src="{{ block.settings.preview_image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ block.settings.title }} }}" 
+             alt="{{ block.settings.title }}" 
              class="an-resources__image"
              loading="lazy"
              style="object-fit: cover;">
@@ -614,7 +614,18 @@
   "name": "Content - Resource Downloads",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content-resource-downloads",
+      "info": "Custom ID for internal linking (e.g., #content-resource-downloads)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Free Resources & Downloads"

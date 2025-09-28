@@ -24,7 +24,7 @@
     z-index: 100;
     min-height: var(--kajabi-nav-height);
     transition: var(--kajabi-nav-transition);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: var(--font-sans);
   }
 
   /* Container following Kajabi standards */
@@ -339,7 +339,7 @@
       background-color: var(--kajabi-nav-bg);
       box-shadow: var(--kajabi-nav-shadow);
     }
-    
+
     .kajabi-nav--transparent-pill .kajabi-nav__pill-container {
       background-color: transparent;
       box-shadow: none;
@@ -446,8 +446,8 @@
       <div class="kajabi-nav__logo">
         <a href="{{ current_site.root_url }}">
           {% if section.settings.logo_type == 'image' and section.settings.logo %}
-            <img src="{{ section.settings.logo | image_picker_url: '360x120' }}" 
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}" 
+            <img src="{{ section.settings.logo | image_picker_url: '360x120' }}"
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
                  loading="lazy">
           {% else %}
             <span class="kajabi-nav__logo-text">
@@ -461,7 +461,7 @@
       {% if section.settings.nav_style == 'transparent_pill' %}
         <div class="kajabi-nav__pill-container">
       {% endif %}
-      
+
       <nav class="kajabi-nav__menu">
         {% if section.settings.menu %}
           {% for link in current_site.link_lists[section.settings.menu].links %}
@@ -479,7 +479,7 @@
           {% endfor %}
         {% endif %}
       </nav>
-      
+
       {% if section.settings.nav_style == 'transparent_pill' %}
         </div>
       {% endif %}
@@ -564,7 +564,18 @@
   "name": "Navigation Static",
   "settings": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "static",
+      "info": "Custom ID for internal linking (e.g., #static)"
+    },
+      {
+        "type": "header",
       "content": "Logo Settings"
     },
     {

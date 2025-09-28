@@ -12,11 +12,11 @@
         {% if section.settings.heading != blank %}
           <h2 class="an-testimonials__heading">{{ section.settings.heading }}</h2>
         {% endif %}
-        
+
         {% if section.settings.subheading != blank %}
           <p class="an-testimonials__subheading">{{ section.settings.subheading }}</p>
         {% endif %}
-        
+
         {% if section.settings.show_stats %}
           <div class="an-testimonials__stats">
             <div class="stat-item">
@@ -50,19 +50,24 @@
                 </svg>
               </div>
             {% endif %}
-            
+
             <!-- Quote Text -->
             <blockquote class="quote-text">{{ block.settings.quote }}</blockquote>
-            
+
             <!-- Author -->
             {% if block.settings.author_name != blank %}
               <div class="quote-author">
                 {% if block.settings.author_image != blank %}
                   <div class="author-image">
-                    <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
-                         alt="{{ block.settings.author_name }}" 
-                         class="rounded-circle img-fluid" 
-                         loading="lazy">
+                    {% render 'responsive-image',
+                      image: block.settings.author_image,
+                      alt: block.settings.author_name | default: 'Customer photo',
+                      sizes: '60px',
+                      aspect_ratio: '1/1',
+                      widths: '60,120,180',
+                      placeholder_type: 'avatar',
+                      class: 'rounded-circle'
+                    %}
                   </div>
                 {% endif %}
                 <div class="author-info">
@@ -81,33 +86,45 @@
     <!-- Layout: Featured Testimonial -->
     {% elsif section.settings.layout_style == 'featured' %}
       {% for block in section.blocks %}
-        {% if block.type == 'featured' or (block.type == 'testimonial' and block.settings.featured) %}
+        {% if block.type == 'featured' %}
+          {% assign show_featured = true %}
+        {% elsif block.type == 'testimonial' and block.settings.featured %}
+          {% assign show_featured = true %}
+        {% else %}
+          {% assign show_featured = false %}
+        {% endif %}
+        {% if show_featured %}
           <div class="an-testimonials__featured animate-fade-up">
             <div class="featured-card">
               <!-- Quote Background -->
               <div class="quote-background">"</div>
-              
+
               <!-- Rating -->
-              {% assign rating = block.settings.rating | default: 5 %}
-              {% if rating > 0 %}
+              {% assign rating_number = block.settings.rating | default: 5 | plus: 0 %}
+              {% if rating_number > 0 %}
                 <div class="featured-rating">
                   {% for i in (1..5) %}
-                    <span class="star {% if i <= rating %}star--filled{% endif %}">★</span>
+                    <span class="star {% if i <= rating_number %}star--filled{% endif %}">★</span>
                   {% endfor %}
                 </div>
               {% endif %}
-              
+
               <!-- Quote -->
               <blockquote class="featured-quote">{{ block.settings.quote }}</blockquote>
-              
+
               <!-- Author -->
               <div class="featured-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    <img src="{{ block.settings.image | image_picker_url: '160x160' }}" 
-                         alt="{{ block.settings.name }}" 
-                         class="rounded-circle img-fluid" 
-                         loading="lazy">
+                    {% render 'responsive-image',
+                      image: block.settings.image,
+                      alt: block.settings.name | default: 'Customer photo',
+                      sizes: '(max-width: 767px) 80px, 120px',
+                      aspect_ratio: '1/1',
+                      widths: '80,120,160,240',
+                      placeholder_type: 'avatar',
+                      class: 'rounded-circle'
+                    %}
                   </div>
                 {% endif %}
                 <div class="author-info">
@@ -128,29 +145,41 @@
       <!-- Featured Testimonial (for mixed layout) -->
       {% if section.settings.layout_style == 'mixed' %}
         {% for block in section.blocks %}
-          {% if block.type == 'featured' or (block.type == 'testimonial' and block.settings.featured) %}
+          {% if block.type == 'featured' %}
+            {% assign show_featured = true %}
+          {% elsif block.type == 'testimonial' and block.settings.featured %}
+            {% assign show_featured = true %}
+          {% else %}
+            {% assign show_featured = false %}
+          {% endif %}
+          {% if show_featured %}
             <div class="an-testimonials__featured-mixed animate-fade-up">
               <div class="featured-card">
                 <div class="row align-items-center">
                   <div class="col-lg-8">
-                    {% assign rating = block.settings.rating | default: 5 %}
-                    {% if rating > 0 %}
+                    {% assign rating_number = block.settings.rating | default: 5 | plus: 0 %}
+                    {% if rating_number > 0 %}
                       <div class="rating mb-3">
                         {% for i in (1..5) %}
-                          <span class="star {% if i <= rating %}star--filled{% endif %}">★</span>
+                          <span class="star {% if i <= rating_number %}star--filled{% endif %}">★</span>
                         {% endfor %}
                       </div>
                     {% endif %}
-                    
+
                     <blockquote class="quote">{{ block.settings.quote }}</blockquote>
-                    
+
                     <div class="author d-flex align-items-center">
                       {% if block.settings.image != blank %}
                         <div class="author-image me-3">
-                          <img src="{{ block.settings.image | image_picker_url: '120x120' }}" 
-                               alt="{{ block.settings.name }}" 
-                               class="rounded-circle img-fluid" 
-                               loading="lazy">
+                          {% render 'responsive-image',
+                            image: block.settings.image,
+                            alt: block.settings.name | default: 'Customer photo',
+                            sizes: '60px',
+                            aspect_ratio: '1/1',
+                            widths: '60,120,180',
+                            placeholder_type: 'avatar',
+                            class: 'rounded-circle'
+                          %}
                         </div>
                       {% endif %}
                       <div>
@@ -181,33 +210,38 @@
             {% if section.settings.layout_style == 'mixed' and block.settings.featured %}
               {% continue %}
             {% endif %}
-            
+
             {% assign grid_count = grid_count | plus: 1 %}
             <div class="testimonial-card {% if block.settings.featured and section.settings.layout_style != 'mixed' %}testimonial-card--featured{% endif %} animate-fade-up hover-lift"
                  data-category="{{ block.settings.category }}"
                  style="animation-delay: {{ grid_count | times: 0.08 }}s;">
-              
+
               <!-- Rating -->
-              {% assign rating = block.settings.rating | default: 5 %}
-              {% if rating > 0 %}
+              {% assign rating_number = block.settings.rating | default: 5 | plus: 0 %}
+              {% if rating_number > 0 %}
                 <div class="card-rating">
                   {% for i in (1..5) %}
-                    <span class="star {% if i <= rating %}star--filled{% endif %}">★</span>
+                    <span class="star {% if i <= rating_number %}star--filled{% endif %}">★</span>
                   {% endfor %}
                 </div>
               {% endif %}
-              
+
               <!-- Quote -->
               <blockquote class="card-quote">"{{ block.settings.quote }}"</blockquote>
-              
+
               <!-- Author -->
               <div class="card-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    <img src="{{ block.settings.image | image_picker_url: '96x96' }}" 
-                         alt="{{ block.settings.name }}" 
-                         class="rounded-circle img-fluid" 
-                         loading="lazy">
+                    {% render 'responsive-image',
+                      image: block.settings.image,
+                      alt: block.settings.name | default: 'Customer photo',
+                      sizes: '48px',
+                      aspect_ratio: '1/1',
+                      widths: '48,96,144',
+                      placeholder_type: 'avatar',
+                      class: 'rounded-circle'
+                    %}
                   </div>
                 {% else %}
                   <div class="author-avatar">
@@ -217,7 +251,7 @@
                     </svg>
                   </div>
                 {% endif %}
-                
+
                 <div class="author-info">
                   <div class="author-name">{{ block.settings.name }}</div>
                   {% if block.settings.details != blank %}
@@ -225,7 +259,7 @@
                   {% endif %}
                 </div>
               </div>
-              
+
               <!-- Category Badge -->
               {% if block.settings.category != blank %}
                 <span class="category-badge">{{ block.settings.category }}</span>
@@ -235,11 +269,11 @@
         {% endfor %}
       </div>
     {% endif %}
-    
+
     <!-- CTA Section -->
     {% if section.settings.show_cta and section.settings.cta_text != blank %}
       <div class="an-testimonials__cta text-center animate-fade-up">
-        <a href="{{ section.settings.cta_url | default: '#' }}" 
+        <a href="{{ section.settings.cta_url | default: '#' }}"
            class="btn btn-primary-modern btn-lg">
           {{ section.settings.cta_text }}
         </a>
@@ -252,6 +286,17 @@
 {
   "name": "AN Testimonials",
   "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "testimonials",
+      "info": "Custom ID for internal linking (e.g., #testimonials)"
+    },
     {
       "type": "header",
       "content": "Section Header"
@@ -718,15 +763,15 @@
     background: #FAFAFA;
     position: relative;
   }
-  
+
   .an-testimonials.section-white {
     background: var(--c-white);
   }
-  
+
   .an-testimonials.section-peach {
     background: var(--c-brand-100);
   }
-  
+
   .an-testimonials.section-navy {
     background: var(--c-ink-900);
     color: var(--c-white);
@@ -737,14 +782,14 @@
     max-width: 800px;
     margin: 0 auto var(--space-3xl);
   }
-  
+
   .an-testimonials__heading {
     font-size: var(--fs-h1);
     font-weight: 500;
     color: var(--c-ink-900);
     margin-bottom: var(--space-md);
   }
-  
+
   .an-testimonials__subheading {
     font-size: var(--fs-body-lg);
     color: var(--c-ink-700);
@@ -756,7 +801,7 @@
   .an-testimonials.section-navy .an-testimonials__heading {
     color: var(--c-white);
   }
-  
+
   .an-testimonials.section-navy .an-testimonials__subheading {
     color: rgba(255, 255, 255, 0.8);
   }
@@ -771,11 +816,11 @@
     border-bottom: 1px solid var(--c-ink-100);
     margin-top: var(--space-2xl);
   }
-  
+
   .stat-item {
     text-align: center;
   }
-  
+
   .stat-number {
     display: block;
     font-size: var(--fs-h1);
@@ -783,7 +828,7 @@
     color: var(--c-brand-600);
     margin-bottom: var(--space-xs);
   }
-  
+
   .stat-label {
     font-size: var(--fs-sm);
     color: var(--c-ink-600);
@@ -1117,7 +1162,7 @@
     .an-testimonials__grid {
       grid-template-columns: 1fr;
     }
-    
+
     .an-testimonials__stats {
       flex-direction: column;
       gap: var(--space-lg);

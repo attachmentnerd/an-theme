@@ -7,47 +7,113 @@
   - Mobile-responsive design
 {% endcomment %}
 
-<section class="an-dark-featured {{ section.settings.section_padding }}" 
-         style="background: {{ section.settings.background_gradient | default: 'linear-gradient(135deg, #1B2937 0%, #0F1922 100%)' }}; 
-                background-color: {{ section.settings.background_color }};">
+{% assign is_light_variant = false %}
+{% if section.settings.style_variant == 'light' %}
+  {% assign is_light_variant = true %}
+{% endif %}
+{% comment %}
+  Compute light/dark-aware values: if the user hasn't changed the dark defaults,
+  switch to light-friendly defaults when variant = light.
+{% endcomment %}
+{% assign bg_grad = section.settings.background_gradient | default: 'linear-gradient(135deg, #1B2937 0%, #0F1922 100%)' %}
+{% if is_light_variant and bg_grad == 'linear-gradient(135deg, #1B2937 0%, #0F1922 100%)' %}
+  {% assign bg_grad = 'linear-gradient(135deg, #F7FAFC 0%, #EDF2F7 100%)' %}
+{% endif %}
+{% assign bg_color = section.settings.background_color | default: '#1B2937' %}
+{% if is_light_variant and bg_color == '#1B2937' %}
+  {% assign bg_color = '#FFFFFF' %}
+{% endif %}
+
+{% assign heading_color_val = section.settings.heading_color | default: '#FFFFFF' %}
+{% if is_light_variant and heading_color_val == '#FFFFFF' %}
+  {% assign heading_color_val = '#0F1922' %}
+{% endif %}
+
+{% assign subheading_color_val = section.settings.subheading_color | default: 'rgba(255, 255, 255, 0.7)' %}
+{% if is_light_variant and subheading_color_val == 'rgba(255, 255, 255, 0.7)' %}
+  {% assign subheading_color_val = 'rgba(15, 25, 34, 0.7)' %}
+{% endif %}
+
+{% assign card_bg_val = section.settings.card_background | default: 'rgba(255, 255, 255, 0.05)' %}
+{% if is_light_variant and card_bg_val == 'rgba(255, 255, 255, 0.05)' %}
+  {% assign card_bg_val = '#FFFFFF' %}
+{% endif %}
+
+{% assign card_border_color_val = section.settings.card_border_color | default: 'rgba(255, 255, 255, 0.1)' %}
+{% if is_light_variant and card_border_color_val == 'rgba(255, 255, 255, 0.1)' %}
+  {% assign card_border_color_val = 'rgba(15, 25, 34, 0.12)' %}
+{% endif %}
+
+{% assign title_color_val = section.settings.title_color | default: '#FFFFFF' %}
+{% if is_light_variant and title_color_val == '#FFFFFF' %}
+  {% assign title_color_val = '#0F1922' %}
+{% endif %}
+
+{% assign description_color_val = section.settings.description_color | default: 'rgba(255, 255, 255, 0.8)' %}
+{% if is_light_variant and description_color_val == 'rgba(255, 255, 255, 0.8)' %}
+  {% assign description_color_val = 'rgba(15, 25, 34, 0.75)' %}
+{% endif %}
+
+{% assign link_color_val = section.settings.link_color | default: '#18D5E4' %}
+{% if is_light_variant and link_color_val == '#18D5E4' %}
+  {% assign link_color_val = '#0F6FFF' %}
+{% endif %}
+
+{% assign link_hover_color_val = section.settings.link_hover_color | default: '#FFFFFF' %}
+{% if is_light_variant and link_hover_color_val == '#FFFFFF' %}
+  {% assign link_hover_color_val = '#0B3AA4' %}
+{% endif %}
+
+{% assign cta_bg_color_val = section.settings.cta_bg_color | default: '#FFFFFF' %}
+{% if is_light_variant and cta_bg_color_val == '#FFFFFF' %}
+  {% assign cta_bg_color_val = '#0F6FFF' %}
+{% endif %}
+
+{% assign cta_text_color_val = section.settings.cta_text_color | default: '#0F1922' %}
+{% if is_light_variant and cta_text_color_val == '#0F1922' %}
+  {% assign cta_text_color_val = '#FFFFFF' %}
+{% endif %}
+
+<section id="{{ section.settings.section_id | default: 'feature-dark-cards' }}-{{ section.id }}" class="an-dark-featured {{ section.settings.section_padding }} variant-{{ section.settings.style_variant }}"
+         style="background: {{ bg_grad }};
+                background-color: {{ bg_color }};">
   <div class="container" style="max-width: {{ section.settings.max_width }}px;">
     <div class="an-dark-featured__wrapper">
       <!-- Section Header -->
       {% if section.settings.heading != blank or section.settings.subheading != blank %}
         <div class="an-dark-featured__header text-center mb-5">
           {% if section.settings.heading != blank %}
-            <h2 class="featured-heading {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
-                style="font-size: {{ section.settings.heading_size }}px; 
-                       color: {{ section.settings.heading_color }};">
+            <h2 class="featured-heading {% if section.settings.enable_animations %}animate-fade-up{% endif %}"
+                style="font-size: {{ section.settings.heading_size }}px;
+                       color: {{ heading_color_val }};">
               {{ section.settings.heading }}
             </h2>
           {% endif %}
 
           {% if section.settings.subheading != blank %}
-            <p class="featured-subheading {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
-               style="{% if section.settings.enable_animations %}animation-delay: 0.1s;{% endif %} 
-                      font-size: {{ section.settings.subheading_size }}px; 
-                      color: {{ section.settings.subheading_color }};">
+            <p class="featured-subheading {% if section.settings.enable_animations %}animate-fade-up{% endif %}"
+               style="{% if section.settings.enable_animations %}animation-delay: 0.1s;{% endif %}
+                      font-size: {{ section.settings.subheading_size }}px;
+                      color: {{ subheading_color_val }};">
               {{ section.settings.subheading }}
             </p>
           {% endif %}
         </div>
       {% endif %}
 
-      <!-- Feature Columns -->
-      {% assign column_count = section.blocks.size %}
-      {% if column_count > 3 %}
-        {% assign column_count = 3 %}
-      {% endif %}
-
-      <div class="an-dark-featured__grid columns-{{ column_count }}" style="gap: {{ section.settings.card_gap }}px;">
-        {% for block in section.blocks limit: 3 %}
-          <div class="featured-column {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
-               style="{% if section.settings.enable_animations %}animation-delay: {{ forloop.index | times: section.settings.animation_delay }}ms;{% endif %}" 
+      <!-- Feature Grid (auto-fit any number of blocks) -->
+      <div class="an-dark-featured__grid" style="gap: {{ section.settings.card_gap }}px; grid-template-columns: repeat(auto-fit, minmax({{ section.settings.card_min_width }}, 1fr));">
+        {% for block in section.blocks %}
+          <div class="featured-column {% if section.settings.enable_animations %}animate-fade-up{% endif %}"
+               style="{% if section.settings.enable_animations %}animation-delay: {{ forloop.index | times: section.settings.animation_delay }}ms;{% endif %}"
                {{ block.shopify_attributes }}>
-            <div class="featured-card" 
-                 style="background: {{ section.settings.card_background }};
-                        border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+            {% assign block_icon_bg = block.settings.icon_bg_color | default: '#2D3E50' %}
+            {% if is_light_variant and block_icon_bg == '#2D3E50' %}
+              {% assign block_icon_bg = '#E6EEF5' %}
+            {% endif %}
+            <div class="featured-card"
+                 style="background: {{ card_bg_val }};
+                        border: {{ section.settings.card_border_width }}px solid {{ card_border_color_val }};
                         border-radius: {{ section.settings.card_border_radius }}px;
                         padding: {{ section.settings.card_padding }}px;
                         {% if section.settings.card_backdrop_blur %}backdrop-filter: blur(10px);{% endif %}">
@@ -55,15 +121,19 @@
               <div class="featured-visual">
                 {% if block.settings.use_image and block.settings.image %}
                   <div class="featured-image" style="margin: -{{ section.settings.card_padding }}px -{{ section.settings.card_padding }}px {{ section.settings.card_padding }}px;">
-                    <img src="{{ block.settings.image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ block.settings.image_alt | default: block.settings.title }} }}" 
-             class="featured-image__img"
-             loading="lazy"
-             style="object-fit: cover;">
+                    {% render 'responsive-image',
+                      image: block.settings.image,
+                      alt: block.settings.image_alt | default: block.settings.title,
+                      class: 'featured-image__img',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
+                      aspect_ratio: '4/3',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                   </div>
                 {% else %}
-                  <div class="featured-icon" 
-                       style="background: {{ block.settings.icon_bg_color | default: '#2D3E50' }};
+                  <div class="featured-icon"
+                       style="background: {{ block_icon_bg }};
                               width: {{ section.settings.icon_size }}px;
                               height: {{ section.settings.icon_size }}px;
                               border-radius: {{ section.settings.icon_border_radius }}px;">
@@ -111,25 +181,25 @@
               <!-- Content -->
               <div class="featured-content">
                 {% if block.settings.title != blank %}
-                  <h3 class="featured-title" 
-                      style="font-size: {{ section.settings.title_size }}px; 
-                             color: {{ section.settings.title_color }};">
+                  <h3 class="featured-title"
+                      style="font-size: {{ section.settings.title_size }}px;
+                             color: {{ title_color_val }};">
                     {{ block.settings.title }}
                   </h3>
                 {% endif %}
 
                 {% if block.settings.description != blank %}
-                  <p class="featured-description" 
-                     style="font-size: {{ section.settings.description_size }}px; 
-                            color: {{ section.settings.description_color }};">
+                  <p class="featured-description"
+                     style="font-size: {{ section.settings.description_size }}px;
+                            color: {{ description_color_val }};">
                     {{ block.settings.description }}
                   </p>
                 {% endif %}
 
-                {% if block.settings.link_text != blank and block.settings.link_url != blank %}
+                {% if block.settings.show_link and block.settings.link_text != blank and block.settings.link_url != blank %}
                   <a href="{{ block.settings.link_url }}"
                      class="featured-link"
-                     style="color: {{ section.settings.link_color }};"
+                     style="color: {{ link_color_val }};"
                      {% if block.settings.link_new_tab %}target="_blank" rel="noopener"{% endif %}>
                     {{ block.settings.link_text }}
                     <svg class="link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -145,12 +215,12 @@
 
       <!-- Optional CTA -->
       {% if section.settings.show_cta and section.settings.cta_text != blank %}
-        <div class="an-dark-featured__cta text-center mt-5 {% if section.settings.enable_animations %}animate-fade-up{% endif %}" 
+        <div class="an-dark-featured__cta text-center mt-5 {% if section.settings.enable_animations %}animate-fade-up{% endif %}"
              style="{% if section.settings.enable_animations %}animation-delay: 0.6s;{% endif %}">
           <a href="{{ section.settings.cta_url | default: '#' }}"
              class="btn-primary-dark"
-             style="background: {{ section.settings.cta_bg_color }}; 
-                    color: {{ section.settings.cta_text_color }} !important;"
+             style="background: {{ cta_bg_color_val }};
+                    color: {{ cta_text_color_val }} !important;"
              {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
             {{ section.settings.cta_text }}
           </a>
@@ -211,21 +281,6 @@
     display: grid;
     gap: 2rem;
     margin-top: 3rem;
-  }
-
-  .an-dark-featured__grid.columns-1 {
-    grid-template-columns: 1fr;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .an-dark-featured__grid.columns-2 {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-
-  .an-dark-featured__grid.columns-3 {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 
   /* Card */
@@ -339,7 +394,7 @@
   }
 
   .featured-link:hover {
-    color: {{ section.settings.link_hover_color }};
+    color: {{ link_hover_color_val }};
     gap: 0.75rem;
   }
 
@@ -375,6 +430,22 @@
     color: var(--c-ink-900) !important;
   }
 
+  /* Light variant overrides */
+  .an-dark-featured.variant-light {
+    color: var(--c-ink-900);
+  }
+  .an-dark-featured.variant-light .featured-heading,
+  .an-dark-featured.variant-light .featured-title {
+    color: var(--c-ink-900);
+  }
+  .an-dark-featured.variant-light .featured-subheading,
+  .an-dark-featured.variant-light .featured-description {
+    color: rgba(15, 25, 34, 0.75);
+  }
+  .an-dark-featured.variant-light .btn-primary-dark {
+    box-shadow: 0 4px 16px rgba(15, 25, 34, 0.1);
+  }
+
   /* Animations */
   @keyframes fadeInUp {
     from {
@@ -404,10 +475,7 @@
   }
 
   @media (max-width: 767px) {
-    .an-dark-featured__grid.columns-2,
-    .an-dark-featured__grid.columns-3 {
-      grid-template-columns: 1fr;
-    }
+    .an-dark-featured__grid { grid-template-columns: 1fr; }
 
     .featured-heading {
       font-size: var(--fs-h2);
@@ -447,7 +515,29 @@
   "class": "an-dark-featured",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-dark-cards",
+      "info": "Custom ID for internal linking (e.g., #feature-dark-cards)"
+    },
+    {
+      "type": "select",
+      "id": "style_variant",
+      "label": "Style Variant",
+      "options": [
+        { "value": "dark", "label": "Dark" },
+        { "value": "light", "label": "Light" }
+      ],
+      "default": "dark",
+      "info": "Switches between dark and light aesthetics"
+    },
+      {
+        "type": "header",
       "content": "Content"
     },
     {
@@ -511,6 +601,13 @@
       "unit": "px",
       "default": 32,
       "info": "Space between cards"
+    },
+    {
+      "type": "text",
+      "id": "card_min_width",
+      "label": "Card Min Width",
+      "default": "280px",
+      "info": "Grid auto-fits cards using this min width (e.g., 260px, 320px)"
     },
     {
       "type": "header",
@@ -775,7 +872,7 @@
     {
       "type": "feature",
       "name": "Feature - Dark Cards",
-      "limit": 3,
+      "limit": 12,
       "elements": [
         {
           "type": "checkbox",
@@ -856,6 +953,12 @@
           "id": "description",
           "label": "Description",
           "default": "Sell face to face and keep offline and online sales in sync with our POS system."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_link",
+          "label": "Show Link CTA",
+          "default": true
         },
         {
           "type": "text",

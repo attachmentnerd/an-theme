@@ -1110,11 +1110,8 @@
           "primary_button_text": "Get started",
           "secondary_button_text": "Learn more →"
         },
-        "blocks": {
-        },
-        "block_order": [
-
-        ]
+        "blocks": {},
+        "block_order": []
       },
       "1748815588016": {
         "name": "3 Feature Cards",
@@ -8140,15 +8137,12 @@
       "1708825317433": {
         "name": "Newsletter Hero",
         "type": "newsletter_hero",
-        "blocks": {
-        },
+        "blocks": {},
         "hidden": "false",
         "settings": {
           "logo_style": "default"
         },
-        "block_order": [
-
-        ]
+        "block_order": []
       },
       "1708825772591": {
         "name": "Newsletter Listings",
@@ -8216,15 +8210,12 @@
       "1708957266932": {
         "name": "Newsletter Hero",
         "type": "newsletter_hero",
-        "blocks": {
-        },
+        "blocks": {},
         "hidden": "false",
         "settings": {
           "logo_style": "inline"
         },
-        "block_order": [
-
-        ]
+        "block_order": []
       },
       "1708958026043": {
         "name": "Newsletter Post Body",
@@ -8281,8 +8272,7 @@
           }
         },
         "hidden": "false",
-        "settings": {
-        },
+        "settings": {},
         "block_order": [
           "1711655476296",
           "1708958026043_0"
@@ -8291,33 +8281,25 @@
       "1708958073693": {
         "name": "Newsletter Recent Posts",
         "type": "newsletter_recent_posts",
-        "blocks": {
-        },
+        "blocks": {},
         "hidden": "false",
-        "settings": {
-        },
-        "block_order": [
-
-        ]
+        "settings": {},
+        "block_order": []
       },
       "1708958049026": {
         "name": "Newsletter Hero",
         "type": "newsletter_hero",
-        "blocks": {
-        },
+        "blocks": {},
         "hidden": "false",
         "settings": {
           "logo_style": "inline"
         },
-        "block_order": [
-
-        ]
+        "block_order": []
       },
       "1715612006959": {
         "name": "Newsletter Hero",
         "type": "newsletter_hero",
-        "blocks": {
-        },
+        "blocks": {},
         "hidden": "false",
         "settings": {
           "text": "<h3>Newsletter Title</h3><h6>Newsletter description</h6>",
@@ -8328,9 +8310,7 @@
           "show_description": true,
           "newsletter_is_linked": true
         },
-        "block_order": [
-
-        ]
+        "block_order": []
       },
       "footer": {
         "name": "Footer",
@@ -8861,6 +8841,41 @@
           "background_fixed": "false",
           "pagination_amount": "10"
         }
+      },
+      "1890000000001": {
+        "name": "Blog — Filtered Listing",
+        "type": "section_blog_filtered",
+        "settings": {
+          "heading": "Blog",
+          "subheading": "Browse our latest articles",
+          "required_tag": "",
+          "include_tags": "",
+          "exclude_tags": "",
+          "match_mode": "any",
+          "limit": 12,
+          "view": "cards",
+          "show_category_pill": true,
+          "enable_search": true,
+          "show_tag_chips": true,
+          "search_placeholder": "Search articles",
+          "grid_gap": 14
+        },
+        "blocks": {}
+      },
+      "1890000000002": {
+        "name": "Blog — Post Simple",
+        "type": "section_blog_post_simple",
+        "settings": {},
+        "blocks": {}
+      },
+      "1890000000003": {
+        "name": "Thin Hero",
+        "type": "section_thin_hero",
+        "settings": {
+          "heading": "Blog",
+          "subheading": "Articles and updates"
+        },
+        "blocks": {}
       }
     },
     "favicon": "",
@@ -8891,15 +8906,17 @@
       "1614111994274"
     ],
     "content_for_blog": [
+      "1890000000003",
       "",
       "1614112228251",
       "1614112289780",
       "1599589855686",
-      "1614112332168"
+      "1614112332168",
+      "1890000000001"
     ],
     "content_for_blog_post": [
       "",
-      "1599688991346"
+      "1890000000002"
     ],
     "content_for_blog_search": [
       "",
@@ -8989,6 +9006,21 @@
     ],
     "content_for_newsletter_subscribe_kjb_internal": [
       "1715612006959"
+    ],
+    "content_for_books": [
+      ""
+    ],
+    "content_for_speaking": [
+      ""
+    ],
+    "content_for_scholarship": [
+      ""
+    ],
+    "content_for_privacy": [
+      ""
+    ],
+    "content_for_secure-parenting-program": [
+      ""
     ],
     "background_color": "#ffffff",
     "background_image": "",

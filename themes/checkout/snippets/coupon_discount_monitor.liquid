@@ -1,0 +1,285 @@
+<script>
+(function() {
+  'use strict';
+
+  console.log('[Coupon Monitor] Script starting...');
+
+  // Simple approach - monitor URL parameters and localStorage
+  function checkForDiscount() {
+    console.log('[Coupon Monitor] Checking for discount...');
+
+    // FIRST: Check for Kajabi's specific coupon element
+    const couponPriceElement = document.querySelector('.embedded-checkout-coupon__price');
+    if (couponPriceElement) {
+      console.log('[Coupon Monitor] Found Kajabi coupon price element:', couponPriceElement.textContent);
+
+      // Get the discount amount from this element
+      const discountText = couponPriceElement.textContent || '';
+      const discountMatch = discountText.match(/\$?([\d,]+\.?\d*)/);
+      const discountAmount = discountMatch ? parseFloat(discountMatch[1].replace(/[$,]/g, '')) : 0;
+
+      // Look for the original price (usually in a different element)
+      let originalPrice = 0;
+      let finalPrice = 0;
+
+      // Check for original price in various places
+      const originalPriceElement = document.querySelector('.embedded-checkout__price:not(.embedded-checkout-coupon__price), .embedded-checkout-order__price, [class*="original"], .strike-through, s');
+      if (originalPriceElement) {
+        const priceMatch = originalPriceElement.textContent.match(/\$?([\d,]+\.?\d*)/);
+        originalPrice = priceMatch ? parseFloat(priceMatch[1].replace(/[$,]/g, '')) : 0;
+      }
+
+      // Check for final/total price
+      const totalElement = document.querySelector('.embedded-checkout-order__total, .embedded-checkout__total, [class*="total"]:not(.embedded-checkout-coupon__price)');
+      if (totalElement) {
+        const totalMatch = totalElement.textContent.match(/\$?([\d,]+\.?\d*)/);
+        finalPrice = totalMatch ? parseFloat(totalMatch[1].replace(/[$,]/g, '')) : 0;
+      }
+
+      // If we don't have original price, try to calculate it
+      if (!originalPrice && finalPrice && discountAmount) {
+        originalPrice = finalPrice + discountAmount;
+      }
+
+      // If we have enough info, show the discount
+      if (discountAmount > 0) {
+        const percentage = originalPrice > 0 ? Math.round((discountAmount / originalPrice) * 100) : 0;
+        const calculatedFinal = originalPrice - discountAmount;
+
+        console.log('[Coupon Monitor] Discount details:', {
+          originalPrice,
+          discountAmount,
+          finalPrice: finalPrice || calculatedFinal,
+          percentage
+        });
+
+        // Get coupon code if available
+        const couponCodeElement = document.querySelector('.embedded-checkout-coupon__code, [class*="coupon-code"], input[name*="discount_code"]');
+        const couponCode = couponCodeElement ?
+          (couponCodeElement.value || couponCodeElement.textContent || '').trim() : '';
+
+        showDiscountDisplay(
+          originalPrice || (finalPrice + discountAmount),
+          finalPrice || calculatedFinal,
+          discountAmount,
+          percentage,
+          couponCode
+        );
+
+        return; // Found discount, exit early
+      }
+    }
+
+    // Fallback: Method 1 - Check URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const couponCode = urlParams.get('discount_code') || urlParams.get('coupon') || urlParams.get('promo');
+
+    // Fallback: Method 2 - Look for price changes in general
+    const priceElements = document.querySelectorAll('[class*="price"], [class*="total"], [class*="amount"]');
+    let prices = [];
+    priceElements.forEach(el => {
+      const text = el.textContent || '';
+      const match = text.match(/\$?[\d,]+\.?\d*/);
+      if (match) {
+        const price = parseFloat(match[0].replace(/[$,]/g, ''));
+        if (price > 0 && !text.includes('shipping') && !text.includes('tax')) {
+          prices.push(price);
+        }
+      }
+    });
+
+    // If we have multiple different prices, assume discount is applied
+    const uniquePrices = [...new Set(prices)].filter(p => p > 0).sort((a, b) => b - a);
+
+    if (uniquePrices.length >= 2) {
+      const originalPrice = uniquePrices[0];
+      const discountedPrice = uniquePrices[uniquePrices.length - 1];
+      const savings = originalPrice - discountedPrice;
+      const percentage = Math.round((savings / originalPrice) * 100);
+
+      console.log('[Coupon Monitor] Detected prices from fallback:', { originalPrice, discountedPrice, savings, percentage });
+
+      // Update our display
+      showDiscountDisplay(originalPrice, discountedPrice, savings, percentage, couponCode);
+    } else if (couponCode) {
+      console.log('[Coupon Monitor] Coupon code in URL:', couponCode);
+      showPendingDiscount(couponCode);
+    }
+  }
+
+  function showDiscountDisplay(original, final, savings, percentage, code) {
+    const container = document.getElementById('coupon-discount-container');
+    if (!container) {
+      console.log('[Coupon Monitor] Container not found, creating one...');
+      createDiscountContainer();
+      return;
+    }
+
+    container.innerHTML = `
+      <div style="background: #e0f2fe; border: 2px solid #0284c7; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+        <div style="font-size: 18px; font-weight: bold; color: #0c4a6e;">
+          🎉 Discount Applied!
+        </div>
+        <div style="margin-top: 8px;">
+          <span style="text-decoration: line-through; color: #64748b;">$${original.toFixed(2)}</span>
+          <span style="font-size: 24px; font-weight: bold; color: #059669; margin: 0 12px;">$${final.toFixed(2)}</span>
+          <span style="background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold;">
+            Save $${savings.toFixed(2)} (${percentage}%)
+          </span>
+        </div>
+        ${code ? `<div style="margin-top: 8px; color: #0284c7; font-size: 14px;">Code: ${code.toUpperCase()}</div>` : ''}
+      </div>
+    `;
+    container.style.display = 'block';
+  }
+
+  function showPendingDiscount(code) {
+    const container = document.getElementById('coupon-discount-container');
+    if (!container) {
+      createDiscountContainer();
+      return;
+    }
+
+    container.innerHTML = `
+      <div style="background: #fef3c7; border: 2px solid #f59e0b; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+        <div style="font-size: 16px; color: #92400e;">
+          ⏳ Coupon code "${code.toUpperCase()}" is being applied...
+        </div>
+      </div>
+    `;
+    container.style.display = 'block';
+  }
+
+  function createDiscountContainer() {
+    // Try to find checkout form and add container
+    const targets = [
+      '.kjb-embedded-checkout',
+      '.sage-frame__content',
+      '[data-testid="checkout-form"]',
+      '.checkout-form',
+      'form[action*="checkout"]',
+      'form[action*="purchase"]',
+      '.order-form',
+      'main'
+    ];
+
+    for (const selector of targets) {
+      const target = document.querySelector(selector);
+      if (target) {
+        const container = document.createElement('div');
+        container.id = 'coupon-discount-container';
+        container.className = 'checkout-discount-summary';
+        container.style.cssText = 'position: relative; z-index: 1000;';
+
+        if (target.firstElementChild) {
+          target.insertBefore(container, target.firstElementChild);
+        } else {
+          target.appendChild(container);
+        }
+
+        console.log('[Coupon Monitor] Created container in:', selector);
+
+        // Re-run check
+        setTimeout(checkForDiscount, 100);
+        break;
+      }
+    }
+  }
+
+  // Alternative: Create floating display
+  function createFloatingDisplay() {
+    if (document.getElementById('floating-discount-display')) return;
+
+    const floater = document.createElement('div');
+    floater.id = 'floating-discount-display';
+    floater.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 99999;
+      max-width: 300px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: none;
+    `;
+    document.body.appendChild(floater);
+
+    return floater;
+  }
+
+  // Run checks periodically
+  function startMonitoring() {
+    checkForDiscount();
+
+    // Check every 2 seconds for changes
+    setInterval(checkForDiscount, 2000);
+
+    // Monitor form submissions
+    document.addEventListener('submit', function(e) {
+      console.log('[Coupon Monitor] Form submitted:', e.target);
+      setTimeout(checkForDiscount, 1000);
+    });
+
+    // Monitor input changes
+    document.addEventListener('change', function(e) {
+      if (e.target && e.target.tagName === 'INPUT') {
+        const name = (e.target.name || '').toLowerCase();
+        const placeholder = (e.target.placeholder || '').toLowerCase();
+        if (name.includes('coupon') || name.includes('discount') ||
+            placeholder.includes('coupon') || placeholder.includes('discount')) {
+          console.log('[Coupon Monitor] Discount field changed:', e.target.value);
+          setTimeout(checkForDiscount, 1000);
+        }
+      }
+    });
+  }
+
+  // Start when ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startMonitoring);
+  } else {
+    startMonitoring();
+  }
+
+  // Also try after a delay in case of dynamic loading
+  setTimeout(startMonitoring, 2000);
+  setTimeout(startMonitoring, 5000);
+
+  // Create floating display as backup
+  setTimeout(function() {
+    const floater = createFloatingDisplay();
+    if (floater) {
+      // Check if we should show floating display
+      setInterval(function() {
+        const hasMainDisplay = document.querySelector('#coupon-discount-container:not(:empty)');
+        if (!hasMainDisplay) {
+          // Try to detect discount and show in floater
+          const prices = [];
+          document.querySelectorAll('[class*="price"], [class*="total"]').forEach(el => {
+            const match = (el.textContent || '').match(/\$?([\d,]+\.?\d*)/);
+            if (match) prices.push(parseFloat(match[1].replace(/,/g, '')));
+          });
+
+          const unique = [...new Set(prices)].filter(p => p > 0).sort((a, b) => b - a);
+          if (unique.length >= 2 && unique[0] !== unique[unique.length - 1]) {
+            const savings = unique[0] - unique[unique.length - 1];
+            floater.innerHTML = `
+              <div style="padding: 12px; background: #e0f2fe; border: 2px solid #0284c7; border-radius: 8px;">
+                <div style="font-weight: bold; color: #0c4a6e; margin-bottom: 8px;">💰 You're Saving!</div>
+                <div style="font-size: 20px; color: #059669; font-weight: bold;">
+                  $${savings.toFixed(2)}
+                </div>
+              </div>
+            `;
+            floater.style.display = 'block';
+          }
+        } else {
+          floater.style.display = 'none';
+        }
+      }, 3000);
+    }
+  }, 3000);
+
+})();
+</script>

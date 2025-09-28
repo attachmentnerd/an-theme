@@ -3,13 +3,13 @@
   {% include "global_head" %}
   {% include "global_background" %}
   <body id="encore-theme" class="background-{{ settings.background_color | color_scheme_class }}">
+    {% include "navigation_controller" %}
     {% include "alert_messages" %}
     {% section "header" %}
     <main>
-      {% content_for_index %}
+      {% dynamic_sections_for "home" %}
     </main>
-    {% section "exit_pop" %}
-    {% section "two_step" %}
+    {% include "footer_controller" %}
     {% include "global_scripts" %}
   </body>
 </html>

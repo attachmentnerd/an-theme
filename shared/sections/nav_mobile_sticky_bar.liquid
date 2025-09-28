@@ -1,5 +1,5 @@
 <!-- Sticky Mobile Bar - Compact CTA -->
-<section class="sticky-mobile-bar hidden--desktop {% if section.settings.style == 'minimal' %}sticky-bar-minimal{% endif %}" 
+<section id="{{ section.settings.section_id | default: 'mobile-sticky-bar' }}-{{ section.id }}" class="sticky-mobile-bar hidden--desktop {% if section.settings.style == 'minimal' %}sticky-bar-minimal{% endif %}" 
          style="background: {{ section.settings.background_color | default: 'var(--c-brand-600)' }};">
   <div class="container-fluid">
     <div class="sticky-bar-inner">
@@ -198,7 +198,18 @@
   "name": "Nav - Mobile Sticky Bar",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "mobile-sticky-bar",
+      "info": "Custom ID for internal linking (e.g., #mobile-sticky-bar)"
+    },
+      {
+        "type": "header",
       "content": "Content"
     },
     {

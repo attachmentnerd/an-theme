@@ -144,17 +144,17 @@
   }
   
   /* Button Overrides for Dark Backgrounds */
-  .slim-cta-section.bg-navy .btn-primary-modern,
-  .slim-cta-section.bg-brand .btn-primary-modern,
-  .slim-cta-section.bg-gradient .btn-primary-modern {
+  .slim-cta-section.bg-navy .slim-cta-section .btn-primary-modern,
+  .slim-cta-section.bg-brand .slim-cta-section .btn-primary-modern,
+  .slim-cta-section.bg-gradient .slim-cta-section .btn-primary-modern {
     background: var(--c-white);
     color: var(--c-brand-600);
     border: 2px solid var(--c-white);
   }
   
-  .slim-cta-section.bg-navy .btn-primary-modern:hover,
-  .slim-cta-section.bg-brand .btn-primary-modern:hover,
-  .slim-cta-section.bg-gradient .btn-primary-modern:hover {
+  .slim-cta-section.bg-navy .slim-cta-section .btn-primary-modern:hover,
+  .slim-cta-section.bg-brand .slim-cta-section .btn-primary-modern:hover,
+  .slim-cta-section.bg-gradient .slim-cta-section .btn-primary-modern:hover {
     background: transparent;
     color: var(--c-white);
     transform: translateY(-2px);
@@ -237,7 +237,18 @@
   "class": "slim-cta-section",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "cta-slim",
+      "info": "Custom ID for internal linking (e.g., #cta-slim)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Ready to transform your parenting journey?"

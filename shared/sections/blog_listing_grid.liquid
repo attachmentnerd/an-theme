@@ -244,7 +244,7 @@
   {% endunless %}
 </style>
 
-<section class="{{ section_class }} {% if section.settings.padding_preset %}section-padding-{{ section.settings.padding_preset }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+<section id="{{ section.settings.section_id | default: 'blog-listing-grid' }}-{{ section.id }}" class="{{ section_class }} {% if section.settings.padding_preset %}section-padding-{{ section.settings.padding_preset }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
   <div class="sizer">
     {% if section.settings.bg_type == "video" %}
       {% include "global_background_video" %}
@@ -280,7 +280,18 @@
   "duplicatable": "false",
   "elements": [
     {
-      "type": "header",
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "blog-listing-grid",
+      "info": "Custom ID for internal linking (e.g., #blog-listing-grid)"
+    },
+      {
+        "type": "header",
       "content": "Style Settings"
     },
     {

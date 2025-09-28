@@ -7,7 +7,7 @@
   - Manual or API integration options
 {% endcomment %}
 
-<section class="an-instagram py-5" style="background: {{ section.settings.background_color }};">
+<section id="{{ section.settings.section_id | default: 'content-instagram-feed' }}-{{ section.id }}" class="an-instagram py-5" style="background: {{ section.settings.background_color }};">
   <div class="container">
     <!-- Section Header -->
     <div class="an-instagram__header animate-fade-up">
@@ -54,7 +54,7 @@
                 <!-- Post Image -->
                 {% if block.settings.image != blank %}
                   <img src="{{ block.settings.image | image_picker_url: '800x450' }}" 
-             alt="{{ {{ block.settings.caption | truncate: 100 }} }}" 
+             alt="{{ block.settings.caption | truncate: 100 }}" 
              class="an-instagram__post-image"
              loading="lazy"
              style="object-fit: cover;">
@@ -403,7 +403,18 @@
   "name": "Content - Instagram Feed",
   "elements": [
     {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "content-instagram-feed",
+      "info": "Custom ID for internal linking (e.g., #content-instagram-feed)"
+    },
+      {
+        "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Follow Along @attachmentnerd"

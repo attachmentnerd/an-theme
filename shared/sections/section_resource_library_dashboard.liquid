@@ -1,0 +1,391 @@
+{% comment %}
+  Resource Library — Dashboard (Shared)
+  Tabs: Guides/Downloads & Tips | Workshops | Q&A
+  Inspired by section_program_dashboard.liquid with tint overlays and adaptive cards.
+{% endcomment %}
+
+{% assign sid = section.id %}
+
+<section id="resource-dashboard-{{ sid }}" class="an-section an-theme">
+  <div class="rd-wrap">
+    {% if section.settings.heading or section.settings.subheading %}
+      <header class="rd-head">
+        {% if section.settings.heading %}<h2 class="rd-title">{{ section.settings.heading }}</h2>{% endif %}
+        {% if section.settings.subheading %}<p class="rd-sub">{{ section.settings.subheading }}</p>{% endif %}
+      </header>
+    {% endif %}
+
+    <div class="rd-tabs" role="tablist" aria-label="Resource Library">
+      <button class="rd-tab is-active" id="rd-tab-g-{{ sid }}" role="tab" aria-controls="rd-panel-g-{{ sid }}" aria-selected="true">{{ section.settings.tab_guides }}</button>
+      <button class="rd-tab" id="rd-tab-w-{{ sid }}" role="tab" aria-controls="rd-panel-w-{{ sid }}" aria-selected="false">{{ section.settings.tab_workshops }}</button>
+      <button class="rd-tab" id="rd-tab-q-{{ sid }}" role="tab" aria-controls="rd-panel-q-{{ sid }}" aria-selected="false">{{ section.settings.tab_qa }}</button>
+    </div>
+
+    <!-- Guides / Downloads & Tips -->
+    <div id="rd-panel-g-{{ sid }}" class="rd-panel is-active" role="tabpanel" aria-labelledby="rd-tab-g-{{ sid }}">
+      <div class="rd-grid" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% assign tab_select = block.settings.tab | default: '' %}
+          {% if tab_select == 'g' or tab_select == '' and block.type == 'guide' %}
+          <article class="rd-card" {{ block.shopify_attributes }} style="--rd-tint-color: {{ block.settings.tint_color | default: section.settings.guides_tint_color }}; --rd-tint-o: {{ block.settings.tint_opacity | default: section.settings.guides_tint_opacity | times: 0.01 }};">
+            <a href="{{ block.settings.url }}" class="rd-link" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <div class="rd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ block.settings.tint_color | default: section.settings.guides_tint_color }}"></div>
+              <div class="rd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
+                {% if block.settings.badge != blank %}<span class="rd-badge">{{ block.settings.badge }}</span>{% endif %}
+                <div class="rd-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'file-text', size: 22, color: 'currentColor', aria_label: '' %}</div>
+                <h3 class="rd-title-sm">{{ block.settings.title }}</h3>
+                {% if block.settings.desc %}<p class="rd-desc">{{ block.settings.desc }}</p>{% endif %}
+                {% if block.settings.meta %}<div class="rd-meta">{% include "icon", icon: 'download', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.meta }}</div>{% endif %}
+                <div class="rd-cta">{{ block.settings.cta | default: section.settings.cta_default }}</div>
+              </div>
+            </a>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Workshops -->
+    <div id="rd-panel-w-{{ sid }}" class="rd-panel{% if section.settings.workshops_layout == 'list' %} rd-panel--list{% endif %}" role="tabpanel" aria-labelledby="rd-tab-w-{{ sid }}">
+      <div class="rd-grid" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% assign tab_select = block.settings.tab | default: '' %}
+          {% if tab_select == 'w' or tab_select == '' and block.type == 'workshop' %}
+          <article class="rd-card rd-card--workshop" {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.url }}" class="rd-link rd-link--workshop" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <div class="rd-media rd-media--workshop" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}">
+                {% if block.settings.badge != blank %}<span class="rd-badge rd-badge--img">{{ block.settings.badge }}</span>{% endif %}
+              </div>
+              <div class="rd-body rd-body--workshop">
+                {% if block.settings.status_label %}<span class="rd-status">{{ block.settings.status_label }}</span>{% endif %}
+                <h3 class="rd-title-lg">{{ block.settings.title }}</h3>
+                {% if block.settings.desc %}<p class="rd-desc rd-desc--muted">{{ block.settings.desc }}</p>{% endif %}
+                {% assign tags_str = block.settings.tags | default: '' %}
+                {% assign tags_list = tags_str | split: ',' %}
+                {% if tags_list.size > 0 and tags_str != '' %}
+                <div class="rd-tags">
+                  {% for t in tags_list %}
+                    {% assign tag = t | strip %}
+                    {% if tag != '' %}<span class="rd-tag">{{ tag }}</span>{% endif %}
+                  {% endfor %}
+                </div>
+                {% endif %}
+                {% assign _dur = block.settings.duration | default: '' | strip %}
+                {% assign _date = block.settings.date | default: '' | strip %}
+                {% assign _spots = block.settings.spots | default: '' | strip %}
+                {% if _dur != '' or _spots != '' or _date != '' %}
+                <div class="rd-meta-row">
+                  {% if _dur != '' %}<span class="rd-meta-i">{% include "icon", icon: 'clock', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.duration }}</span>{% endif %}
+                  {% if _spots != '' %}<span class="rd-meta-i">{% include "icon", icon: 'user', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.spots }} spots</span>{% endif %}
+                  {% if _date != '' %}<span class="rd-meta-i">{% include "icon", icon: 'calendar', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.date }}</span>{% endif %}
+                </div>
+                {% endif %}
+              </div>
+            </a>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Q&A Resources -->
+    <div id="rd-panel-q-{{ sid }}" class="rd-panel{% if section.settings.qa_layout == 'list' %} rd-panel--list{% endif %}" role="tabpanel" aria-labelledby="rd-tab-q-{{ sid }}">
+      <div class="rd-grid" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% assign tab_select = block.settings.tab | default: '' %}
+          {% if tab_select == 'q' or tab_select == '' and block.type == 'qa' %}
+          {% if section.settings.qa_layout == 'list' %}
+            <article class="rd-card rd-card--workshop" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.url }}" class="rd-link rd-link--workshop" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                <div class="rd-media rd-media--workshop" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}">
+                  {% if block.settings.badge != blank %}<span class="rd-badge rd-badge--img">{{ block.settings.badge }}</span>{% endif %}
+                </div>
+                <div class="rd-body rd-body--workshop">
+                  {% if block.settings.status_label %}<span class="rd-status">{{ block.settings.status_label }}</span>{% endif %}
+                  <h3 class="rd-title-lg">{{ block.settings.title }}</h3>
+                  {% if block.settings.desc %}<p class="rd-desc rd-desc--muted">{{ block.settings.desc }}</p>{% endif %}
+                  {% assign qtags_str = block.settings.tags | default: '' %}
+                  {% assign qtags_list = qtags_str | split: ',' %}
+                  {% if qtags_list.size > 0 and qtags_str != '' %}
+                  <div class="rd-tags">
+                    {% for t in qtags_list %}
+                      {% assign tag = t | strip %}
+                      {% if tag != '' %}<span class="rd-tag">{{ tag }}</span>{% endif %}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  {% if block.settings.duration or block.settings.spots or block.settings.date %}
+                  <div class="rd-meta-row">
+                    {% if block.settings.duration %}<span class="rd-meta-i">{% include "icon", icon: 'clock', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.duration }}</span>{% endif %}
+                    {% if block.settings.spots %}<span class="rd-meta-i">{% include "icon", icon: 'user', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.spots }} spots</span>{% endif %}
+                    {% if block.settings.date %}<span class="rd-meta-i">{% include "icon", icon: 'calendar', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.date }}</span>{% endif %}
+                  </div>
+                  {% endif %}
+                </div>
+              </a>
+            </article>
+          {% else %}
+            <article class="rd-card" {{ block.shopify_attributes }} style="--rd-tint-color: {{ block.settings.tint_color | default: section.settings.qa_tint_color }}; --rd-tint-o: {{ block.settings.tint_opacity | default: section.settings.qa_tint_opacity | times: 0.01 }};">
+              <a href="{{ block.settings.url }}" class="rd-link" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                <div class="rd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ block.settings.tint_color | default: section.settings.qa_tint_color }}"></div>
+                <div class="rd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
+                  {% if block.settings.badge != blank %}<span class="rd-badge">{{ block.settings.badge }}</span>{% endif %}
+                  <div class="rd-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'message-circle', size: 22, color: 'currentColor', aria_label: '' %}</div>
+                  <h3 class="rd-title-sm">{{ block.settings.title }}</h3>
+                  {% if block.settings.desc %}<p class="rd-desc">{{ block.settings.desc }}</p>{% endif %}
+                  {% if block.settings.meta %}<div class="rd-meta">{{ block.settings.meta }}</div>{% endif %}
+                  <div class="rd-cta">{{ block.settings.cta | default: section.settings.cta_default }}</div>
+                </div>
+              </a>
+            </article>
+          {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #resource-dashboard-{{ sid }} .rd-wrap{max-width:1100px; margin:0 auto; padding:32px 18px}
+    #resource-dashboard-{{ sid }} .rd-title{margin:0 0 6px; color:var(--c-ink-900); font-weight:700; font-size:1.8rem}
+    #resource-dashboard-{{ sid }} .rd-sub{color:var(--c-ink-700)}
+    #resource-dashboard-{{ sid }} .rd-tabs{display:flex; gap:8px; flex-wrap:wrap; margin:14px 0}
+    #resource-dashboard-{{ sid }} .rd-tab{appearance:none; border:1px solid var(--c-brand-100); background:var(--c-white); color:var(--c-ink-700); padding:10px 14px; border-radius:9999px; font-weight:600; cursor:pointer}
+    #resource-dashboard-{{ sid }} .rd-tab:focus{outline:2px solid var(--c-brand-600); outline-offset:2px}
+    #resource-dashboard-{{ sid }} .rd-tab.is-active{background:var(--g-brand); color:#fff; border-color:transparent; box-shadow:0 0 12px rgba(105,78,255,.25)}
+    #resource-dashboard-{{ sid }} .rd-panel{display:none}
+    #resource-dashboard-{{ sid }} .rd-panel.is-active{display:block}
+
+    #resource-dashboard-{{ sid }} .rd-grid{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr))}
+    @media (max-width: 900px){
+      #resource-dashboard-{{ sid }} .rd-grid{grid-template-columns:1fr}
+    }
+    #resource-dashboard-{{ sid }} .rd-card{position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--c-brand-100); box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    /* Modern interactions */
+    #resource-dashboard-{{ sid }} .rd-card{transition:transform var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease), box-shadow var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease)}
+    #resource-dashboard-{{ sid }} .rd-card:hover{transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.12)}
+    #resource-dashboard-{{ sid }} .rd-card:active{transform:translateY(0) scale(.995)}
+    #resource-dashboard-{{ sid }} .rd-card:focus-within{box-shadow:0 0 0 3px rgba(105,78,255,.25), 0 8px 20px rgba(0,0,0,.08); border-color:var(--c-brand-300, #c3bcff)}
+    #resource-dashboard-{{ sid }} .rd-link{display:grid; min-height:260px; color:inherit; text-decoration:none; aspect-ratio:16/9}
+    #resource-dashboard-{{ sid }} .rd-link:focus{outline:2px solid var(--c-brand-600); outline-offset:2px}
+    #resource-dashboard-{{ sid }} .rd-media{position:absolute; inset:0; background-size:cover; background-position:center; background-color: var(--placeholder-color, #f0f0f0); transition:transform var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease)}
+    #resource-dashboard-{{ sid }} .rd-card:hover .rd-media{transform:scale(1.03)}
+    #resource-dashboard-{{ sid }} .rd-media::after{content:''; position:absolute; inset:0; background: var(--rd-tint-color, #5E3BFF); opacity: var(--rd-tint-o, .68); transition:opacity var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease)}
+    #resource-dashboard-{{ sid }} .rd-card:hover .rd-media::after{opacity:.58}
+    #resource-dashboard-{{ sid }} .rd-body{position:relative; z-index:1; display:grid; gap:8px; align-content:end; padding:16px}
+    #resource-dashboard-{{ sid }} .rd-body.has-contrast::before{content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,var(--text-contrast-o, .35))); pointer-events:none; z-index:-1}
+    #resource-dashboard-{{ sid }} .rd-badge{position:absolute; top:12px; right:12px; background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.35); font-size:.75rem; padding:4px 8px; border-radius:9999px}
+    #resource-dashboard-{{ sid }} .rd-icon{width:34px; height:34px; border-radius:10px; display:grid; place-items:center; color:#fff; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25)}
+    #resource-dashboard-{{ sid }} .rd-title-sm{margin:2px 0 0; color:#fff; font-weight:700; font-size:1.05rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+    #resource-dashboard-{{ sid }} .rd-desc{margin:0; color:rgba(255,255,255,.95); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+    #resource-dashboard-{{ sid }} .rd-meta{margin:2px 0 0; color:rgba(255,255,255,.88); font-size:.9rem; display:inline-flex; gap:6px; align-items:center}
+    #resource-dashboard-{{ sid }} .rd-cta{margin-top:8px; background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.35); color:#fff; text-align:center; padding:10px 14px; border-radius:12px; font-weight:600}
+    #resource-dashboard-{{ sid }} .rd-cta{transition:background .2s ease, border-color .2s ease}
+    #resource-dashboard-{{ sid }} .rd-card:hover .rd-cta{background:rgba(255,255,255,.28); border-color:rgba(255,255,255,.45)}
+    #resource-dashboard-{{ sid }} .rd-chips{display:flex; gap:8px; flex-wrap:wrap}
+    #resource-dashboard-{{ sid }} .rd-chip{display:inline-flex; gap:6px; align-items:center; background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.35); padding:6px 10px; border-radius:9999px; font-size:.9rem}
+
+    /* Workshop variant (image left, content right) */
+    #resource-dashboard-{{ sid }} .rd-card--workshop{background:#fff; border:1px solid var(--c-ink-100, var(--c-brand-100)); overflow:hidden}
+    #resource-dashboard-{{ sid }} .rd-link--workshop{grid-template-columns:36% 1fr; align-items:stretch; min-height:200px; aspect-ratio:auto}
+    #resource-dashboard-{{ sid }} .rd-link--workshop .rd-media{position:relative}
+    #resource-dashboard-{{ sid }} .rd-link--workshop .rd-media::after{display:none}
+    #resource-dashboard-{{ sid }} .rd-media--workshop{background-color:#ddd}
+    #resource-dashboard-{{ sid }} .rd-badge--img{position:absolute; top:12px; left:12px; background:rgba(0,0,0,.75); color:#fff; border:0; padding:6px 10px; border-radius:10px; font-weight:700; font-size:.8rem}
+    #resource-dashboard-{{ sid }} .rd-body--workshop{position:relative; z-index:1; color:var(--c-ink-800); align-content:start; gap:10px; padding:16px 16px}
+    #resource-dashboard-{{ sid }} .rd-title-lg{margin:0; color:var(--c-ink-900); font-weight:700; font-size:1.25rem}
+    #resource-dashboard-{{ sid }} .rd-desc--muted{margin:0; color:var(--c-ink-600)}
+    #resource-dashboard-{{ sid }} .rd-tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px}
+    #resource-dashboard-{{ sid }} .rd-tag{display:inline-flex; align-items:center; padding:6px 10px; background:#fff; border:1px solid var(--c-ink-100, #e7e7e7); color:var(--c-ink-700); border-radius:9999px; font-size:.9rem}
+    #resource-dashboard-{{ sid }} .rd-meta-row{display:flex; gap:18px; align-items:center; color:var(--c-ink-500); margin-top:6px}
+    #resource-dashboard-{{ sid }} .rd-meta-row .rd-meta-i{display:inline-flex; gap:8px; align-items:center; font-size:.95rem; color:var(--c-ink-600)}
+    #resource-dashboard-{{ sid }} .rd-status{position:absolute; top:14px; right:16px; background:var(--c-ink-050, #f6f7fb); color:var(--c-ink-700); border:1px solid var(--c-ink-100, #e7e7e7); padding:6px 10px; border-radius:10px; font-weight:600; font-size:.85rem}
+    #resource-dashboard-{{ sid }} .rd-status{transition:background .2s ease, border-color .2s ease}
+    #resource-dashboard-{{ sid }} .rd-card:hover .rd-status{background:#fff; border-color:var(--c-ink-150, #ddd)}
+    /* List mode for Workshops */
+    #resource-dashboard-{{ sid }} #rd-panel-w-{{ sid }}.rd-panel--list .rd-grid{grid-template-columns:1fr}
+    /* List mode for Q&A */
+    #resource-dashboard-{{ sid }} #rd-panel-q-{{ sid }}.rd-panel--list .rd-grid{grid-template-columns:1fr}
+    @media (max-width: 900px){
+      #resource-dashboard-{{ sid }} .rd-link--workshop{grid-template-columns:40% 1fr}
+    }
+    @media (max-width: 600px){
+      #resource-dashboard-{{ sid }} .rd-link--workshop{grid-template-columns:1fr; min-height:0}
+      #resource-dashboard-{{ sid }} .rd-link--workshop .rd-media{height:180px}
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      #resource-dashboard-{{ sid }} .rd-card{transition:none}
+      #resource-dashboard-{{ sid }} .rd-media{transition:none}
+      #resource-dashboard-{{ sid }} .rd-card:hover{transform:none}
+      #resource-dashboard-{{ sid }} .rd-card:hover .rd-media{transform:none}
+    }
+
+    /* Mobile refinements for Resource cards */
+    @media (max-width: 600px){
+      /* Let aspect-ratio control height and add breathing room */
+      #resource-dashboard-{{ sid }} .rd-link{min-height:0; aspect-ratio:16/10}
+      #resource-dashboard-{{ sid }} .rd-body{padding:14px; gap:12px}
+      #resource-dashboard-{{ sid }} .rd-title-sm{font-size:1.05rem; line-height:1.25; margin-top:2px}
+      #resource-dashboard-{{ sid }} .rd-meta{font-size:.85rem}
+      #resource-dashboard-{{ sid }} .rd-cta{padding:9px 12px}
+      #resource-dashboard-{{ sid }} .rd-icon{width:30px; height:30px}
+      /* Shrink badge so it doesn’t crowd */
+      #resource-dashboard-{{ sid }} .rd-badge{font-size:.7rem; padding:3px 7px}
+    }
+
+    /* Very small phones: increase card height slightly for legibility */
+    @media (max-width: 400px){
+      #resource-dashboard-{{ sid }} .rd-link{aspect-ratio:4/3}
+      #resource-dashboard-{{ sid }} .rd-title-sm{font-size:1rem}
+    }
+  </style>
+
+  <script>
+    (function(){
+      var root = document.getElementById('resource-dashboard-{{ sid }}');
+      if(!root || root.dataset.inited==='1') return; root.dataset.inited='1';
+      var tabs = [].slice.call(root.querySelectorAll('.rd-tab'));
+      var panels = {
+        g: root.querySelector('#rd-panel-g-{{ sid }}'),
+        w: root.querySelector('#rd-panel-w-{{ sid }}'),
+        q: root.querySelector('#rd-panel-q-{{ sid }}')
+      };
+      function activate(which){
+        tabs.forEach(function(t){ t.classList.remove('is-active'); t.setAttribute('aria-selected','false'); });
+        Object.values(panels).forEach(function(p){ p.classList.remove('is-active'); });
+        var tab = root.querySelector('#rd-tab-'+which+'-{{ sid }}');
+        if(!tab) return;
+        tab.classList.add('is-active'); tab.setAttribute('aria-selected','true');
+        root.querySelector('#rd-panel-'+which+'-{{ sid }}').classList.add('is-active');
+        if(history.pushState){ history.replaceState(null,'', location.pathname + '#'+which); }
+      }
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ var which = this.id.split('-')[2]; activate(which); }); });
+      // Arrow key navigation (Left/Right/Home/End) to match program dashboard behavior
+      var tablist = root.querySelector('.rd-tabs');
+      if(tablist){
+        tablist.addEventListener('keydown', function(e){
+          var keys = ['ArrowLeft','ArrowRight','Home','End']; if(keys.indexOf(e.key)===-1) return;
+          e.preventDefault();
+          var current = document.activeElement; var list = tabs; var idx = list.indexOf(current);
+          if(e.key==='Home'){ list[0].focus(); return; }
+          if(e.key==='End'){ list[list.length-1].focus(); return; }
+          if(idx===-1){ list[0].focus(); return; }
+          var next = e.key==='ArrowRight' ? (idx+1)%list.length : (idx-1+list.length)%list.length;
+          list[next].focus();
+        });
+      }
+      var hash = (location.hash||'').replace('#','');
+      if(['g','w','q'].indexOf(hash)>-1){ activate(hash); }
+
+      // Lazy-load with responsive sources and blur-in
+      var lazyNodes = [].slice.call(root.querySelectorAll('#rd-panel-w-{{ sid }} [data-bg-sm], #rd-panel-q-{{ sid }} [data-bg-sm], #rd-panel-g-{{ sid }} [data-bg-sm]'));
+      function setBg(el){
+        if(el.dataset.bgSet==='1') return; el.dataset.bgSet='1';
+        var url = window.matchMedia('(max-width: 900px)').matches ? el.getAttribute('data-bg-sm') : el.getAttribute('data-bg-lg');
+        url = url || el.getAttribute('data-bg-sm') || el.getAttribute('data-bg-lg');
+        if(!url) return; el.style.filter='blur(8px)'; el.style.backgroundImage='url("'+url+'")';
+        el.addEventListener('transitionend', function(){ el.style.filter=''; }, {once:true});
+        setTimeout(function(){ el.style.transition='filter .6s ease-out'; el.style.filter='blur(0px)'; }, 20);
+      }
+      if('IntersectionObserver' in window){
+        var io = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ setBg(e.target); io.unobserve(e.target); }}); }, {rootMargin:'200px'});
+        lazyNodes.forEach(function(n){ io.observe(n); });
+      } else { lazyNodes.forEach(setBg); }
+
+      // Prefetch links on hover/focus/touch
+      function prefetch(url){ try{ var u=new URL(url, location.href); if(u.origin!==location.origin) return; var key='pref-'+u.href; if(document.getElementById(key)) return; var l=document.createElement('link'); l.id=key; l.rel='prefetch'; l.href=u.href; l.as='document'; document.head.appendChild(l);}catch(e){} }
+      var navLinks = [].slice.call(root.querySelectorAll('.rd-link'));
+      navLinks.forEach(function(a){ var url=a.getAttribute('href'); a.addEventListener('mouseenter', function(){prefetch(url);},{passive:true}); a.addEventListener('focus', function(){prefetch(url);},{passive:true}); a.addEventListener('touchstart', function(){prefetch(url);},{passive:true}); });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Resource Library — Dashboard",
+  "elements": [
+    {"type":"text","id":"heading","label":"Heading","default":"Resource Library"},
+    {"type":"textarea","id":"subheading","label":"Subheading","default":"Guides & Downloads, Workshops, and Q&A resources."},
+    {"type":"text","id":"tab_guides","label":"Tab: Guides","default":"Guides / Downloads & Tips"},
+    {"type":"text","id":"tab_workshops","label":"Tab: Workshops","default":"Workshops"},
+    {"type":"text","id":"tab_qa","label":"Tab: Q&A","default":"Q&A"},
+    {"type":"range","id":"grid_gap","label":"Grid gap","min":8,"max":32,"step":2,"unit":"px","default":16},
+    {"type":"text","id":"card_min_width","label":"Card min width","default":"280px"},
+    {"type":"select","id":"workshops_layout","label":"Workshops layout","default":"grid","options":[{"label":"Grid","value":"grid"},{"label":"List","value":"list"}]},
+    {"type":"select","id":"qa_layout","label":"Q&A layout","default":"grid","options":[{"label":"Grid","value":"grid"},{"label":"List","value":"list"}]},
+    {"type":"checkbox","id":"enable_text_contrast","label":"Add subtle contrast gradient behind text","default":true},
+    {"type":"range","id":"text_contrast_opacity","label":"Text contrast opacity (%)","min":0,"max":80,"step":1,"default":35},
+    {"type":"color","id":"guides_tint_color","label":"Guides tint color","default":"#7E6AFF"},
+    {"type":"range","id":"guides_tint_opacity","label":"Guides tint opacity (%)","min":0,"max":100,"step":1,"default":68},
+    {"type":"color","id":"workshops_tint_color","label":"Workshops tint color","default":"#18D5E4"},
+    {"type":"range","id":"workshops_tint_opacity","label":"Workshops tint opacity (%)","min":0,"max":100,"step":1,"default":70},
+    {"type":"color","id":"qa_tint_color","label":"Q&A tint color","default":"#5E3BFF"},
+    {"type":"range","id":"qa_tint_opacity","label":"Q&A tint opacity (%)","min":0,"max":100,"step":1,"default":68},
+    {"type":"text","id":"cta_default","label":"Default CTA text","default":"View"}
+  ],
+  "blocks": [
+    {"type":"guide","name":"Guide / Download","elements":[
+      {"type":"select","id":"tab","label":"Show in tab","default":"g","options":[{"label":"Guides","value":"g"},{"label":"Workshops","value":"w"},{"label":"Q&A","value":"q"}]},
+      {"type":"image_picker","id":"bg","label":"Background image"},
+      {"type":"color","id":"tint_color","label":"Tint color (override)","default":""},
+      {"type":"range","id":"tint_opacity","label":"Tint opacity (%)","min":0,"max":100,"step":1,"default":null},
+      {"type":"text","id":"icon","label":"Icon name","default":"file-text"},
+      {"type":"text","id":"badge","label":"Badge","default":"PDF"},
+      {"type":"text","id":"title","label":"Title","default":"Emergency Regulation Scripts"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Quick reference guide."},
+      {"type":"text","id":"meta","label":"Meta (e.g., downloads)","default":"Downloaded 1,247 times"},
+      {"type":"text","id":"cta","label":"CTA text","default":"Download"},
+      {"type":"action","id":"url","label":"Link","default":"#"},
+      {"type":"checkbox","id":"new_tab","label":"Open in new tab","default":false}
+    ]},
+    {"type":"workshop","name":"Workshop","elements":[
+      {"type":"select","id":"tab","label":"Show in tab","default":"w","options":[{"label":"Guides","value":"g"},{"label":"Workshops","value":"w"},{"label":"Q&A","value":"q"}]},
+      {"type":"image_picker","id":"bg","label":"Background image"},
+      {"type":"color","id":"tint_color","label":"Tint color (override)","default":""},
+      {"type":"range","id":"tint_opacity","label":"Tint opacity (%)","min":0,"max":100,"step":1,"default":null},
+      {"type":"text","id":"icon","label":"Icon name","default":"video"},
+      {"type":"text","id":"badge","label":"Badge","default":"Replay"},
+      {"type":"text","id":"title","label":"Title","default":"Live Workshop Title"},
+      {"type":"textarea","id":"desc","label":"Description","default":"What you’ll learn."},
+      {"type":"text","id":"tags","label":"Tags (comma-separated)","default":""},
+      {"type":"text","id":"date","label":"Date","default":""},
+      {"type":"text","id":"duration","label":"Duration","default":""},
+      {"type":"text","id":"spots","label":"Spots available","default":""},
+      {"type":"text","id":"status_label","label":"Status label (right pill)","default":"Available"},
+      {"type":"text","id":"cta","label":"CTA text","default":"Watch"},
+      {"type":"action","id":"url","label":"Link","default":"#"},
+      {"type":"checkbox","id":"new_tab","label":"Open in new tab","default":false}
+    ]},
+    {"type":"qa","name":"Q&A Resource","elements":[
+      {"type":"select","id":"tab","label":"Show in tab","default":"q","options":[{"label":"Guides","value":"g"},{"label":"Workshops","value":"w"},{"label":"Q&A","value":"q"}]},
+      {"type":"image_picker","id":"bg","label":"Background image"},
+      {"type":"color","id":"tint_color","label":"Tint color (override)","default":""},
+      {"type":"range","id":"tint_opacity","label":"Tint opacity (%)","min":0,"max":100,"step":1,"default":null},
+      {"type":"text","id":"icon","label":"Icon name","default":"message-circle"},
+      {"type":"text","id":"badge","label":"Badge","default":"Q&A"},
+      {"type":"text","id":"title","label":"Title","default":"Ask Eli: Topic"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Top answers on this topic."},
+      {"type":"text","id":"tags","label":"Tags (comma-separated)","default":""},
+      {"type":"text","id":"date","label":"Date","default":""},
+      {"type":"text","id":"duration","label":"Duration","default":""},
+      {"type":"text","id":"spots","label":"Spots available","default":""},
+      {"type":"text","id":"status_label","label":"Status label (right pill)","default":"Available"},
+      {"type":"text","id":"meta","label":"Meta","default":"Updated monthly"},
+      {"type":"text","id":"cta","label":"CTA text","default":"View"},
+      {"type":"action","id":"url","label":"Link","default":"#"},
+      {"type":"checkbox","id":"new_tab","label":"Open in new tab","default":false}
+    ]}
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {"name":"Resource Library — Dashboard","category":"Content","blocks":[
+      {"type":"guide","settings":{"title":"Emergency Regulation Scripts","badge":"PDF","meta":"Downloaded 1,247 times"}},
+      {"type":"guide","settings":{"title":"Age‑Specific Response Cards","badge":"PDF","meta":"Downloaded 892 times"}},
+      {"type":"workshop","settings":{"title":"Co‑Regulation 101","badge":"Replay","date":"Oct 12, 2025","duration":"60 min"}},
+      {"type":"qa","settings":{"title":"Boundaries without Fear","badge":"Q&A","meta":"Updated monthly"}}
+    ]}
+  ]
+}
+{% endschema %}

@@ -1,0 +1,115 @@
+{% comment %}
+  Announcements Page Section
+  - Top banner styled like Announcement Banner, pulls latest announcement via snippet
+  - Optional announcement search (snippet)
+  - Customizable listing of announcements using the canonical snippet
+{% endcomment %}
+
+<section id="{{ section.settings.section_id | default: 'announcements-page' }}-{{ section.id }}" class="announcements-page" style="padding: {{ section.settings.padding_y }}px 0;">
+  <div class="container">
+
+    {% if section.settings.show_banner %}
+      {% paginate announcements by 1 %}
+        {% assign hero_announcement = paginate.collection.first %}
+      {% endpaginate %}
+      {% if hero_announcement %}
+        <div class="ap-banner" style="
+          background: {% if section.settings.bg_type == 'gradient' %}linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_from }} 0%, {{ section.settings.gradient_to }} 100%){% else %}{{ section.settings.bg_color }}{% endif %};
+          border-radius: {{ section.settings.banner_radius }}px;
+          padding: {{ section.settings.banner_padding }}px;
+          {% if section.settings.banner_shadow %}box-shadow: 0 10px 30px rgba(0,0,0,.12);{% endif %}
+        ">
+          {% if section.settings.show_pattern %}<div class="ap-pattern"></div>{% endif %}
+          <div class="ap-grid">
+            <div class="ap-icon" aria-hidden="true" style="background: rgba(255,255,255,.18); color: {{ section.settings.icon_accent }};">🔔</div>
+            <div class="ap-content" style="color: {{ section.settings.text_color }};">
+              {% if section.settings.headline != blank %}
+                <div class="ap-headline" style="color: {{ section.settings.headline_color }};">{{ section.settings.headline }}</div>
+              {% endif %}
+              {% assign announcement = hero_announcement %}
+              {% include "announcement" %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if section.settings.show_search %}
+      <div class="ap-search mt-3">
+        {% include "announcement_search" %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_list %}
+      {% paginate announcements by section.settings.per_page %}
+        <div class="ap-list" style="margin-top: 24px;">
+          {% for announcement in paginate.collection %}
+            <div class="ap-list-item">
+              {% include "announcement" %}
+            </div>
+          {% endfor %}
+        </div>
+        {% if paginate.pages > 1 %}
+          <div class="ap-pagination">
+            {% if paginate.previous %}<a class="ap-page" href="{{ paginate.previous.url }}">‹ Prev</a>{% endif %}
+            <span class="ap-page ap-page--current">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+            {% if paginate.next %}<a class="ap-page" href="{{ paginate.next.url }}">Next ›</a>{% endif %}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  .announcements-page .ap-banner { position: relative; overflow: hidden; }
+  .announcements-page .ap-pattern { position: absolute; inset: 0; background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 20px 20px; color: rgba(255,255,255,.9); opacity: .25; pointer-events: none; }
+  .announcements-page .ap-grid { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+  .announcements-page .ap-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 999px; font-size: 24px; }
+  .announcements-page .ap-headline { font-weight: 700; margin-bottom: 8px; }
+  .announcements-page .ap-list-item + .ap-list-item { margin-top: 20px; }
+  .announcements-page .ap-pagination { display: flex; gap: 12px; justify-content: center; align-items: center; margin-top: 24px; }
+  .announcements-page .ap-page { color: {{ section.settings.pagination_color }}; text-decoration: none; font-weight: 600; }
+  .announcements-page .ap-page--current { opacity: .8; }
+  @media (max-width: 768px) { .announcements-page .ap-grid { grid-template-columns: auto 1fr; gap: 12px; } }
+</style>
+
+{% schema %}
+{
+  "name": "Announcements - Page",
+  "elements": [
+    { "type": "text", "id": "section_id", "label": "Section ID", "default": "announcements-page" },
+    { "type": "range", "id": "padding_y", "label": "Section Padding Y", "min": 8, "max": 80, "step": 4, "unit": "px", "default": 24 },
+
+    { "type": "header", "content": "Banner" },
+    { "type": "checkbox", "id": "show_banner", "label": "Show top banner (latest announcement)", "default": true },
+    { "type": "select", "id": "bg_type", "label": "Banner Background Type", "default": "gradient", "options": [ {"label":"Gradient","value":"gradient"}, {"label":"Solid","value":"solid"} ] },
+    { "type": "color", "id": "bg_color", "label": "Banner Solid Color", "default": "#0CCAD4" },
+    { "type": "color", "id": "gradient_from", "label": "Banner Gradient From", "default": "#6C4CF7" },
+    { "type": "color", "id": "gradient_to", "label": "Banner Gradient To", "default": "#19D6D0" },
+    { "type": "range", "id": "gradient_angle", "label": "Gradient Angle", "min": 0, "max": 360, "step": 5, "unit": "deg", "default": 135 },
+    { "type": "checkbox", "id": "show_pattern", "label": "Show dotted pattern", "default": true },
+    { "type": "color", "id": "icon_accent", "label": "Icon Accent", "default": "#FFFFFF" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "What's new" },
+    { "type": "color", "id": "headline_color", "label": "Headline Color", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Banner Text Color", "default": "#FFFFFF" },
+    { "type": "range", "id": "banner_radius", "label": "Banner Radius", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "banner_padding", "label": "Banner Padding", "min": 8, "max": 64, "step": 4, "unit": "px", "default": 20 },
+    { "type": "checkbox", "id": "banner_shadow", "label": "Banner Shadow", "default": true },
+
+    { "type": "header", "content": "Search" },
+    { "type": "checkbox", "id": "show_search", "label": "Show announcement search", "default": true },
+
+    { "type": "header", "content": "Listing" },
+    { "type": "checkbox", "id": "show_list", "label": "Show announcements listing", "default": true },
+    { "type": "range", "id": "per_page", "label": "Announcements per page", "min": 3, "max": 24, "step": 1, "default": 8 },
+    { "type": "color", "id": "pagination_color", "label": "Pagination Color", "default": "#0F172A" }
+  ],
+  "presets": [
+    { "name": "Announcements - Page", "category": "Utility" }
+  ]
+}
+{% endschema %}
+
+
