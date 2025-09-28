@@ -1,0 +1,329 @@
+<!-- Continue Learning Widget Snippet -->
+<!-- Usage: {% include 'continue_learning_widget', style: 'compact', show_progress: true %} -->
+
+{% assign widget_style = style | default: 'default' %}
+{% assign show_progress_bar = show_progress | default: true %}
+{% assign button_text = button_text | default: 'Continue' %}
+
+{% if member and member.products.size > 0 %}
+  {% comment %} Find the most recent in-progress course {% endcomment %}
+  {% assign current_course = nil %}
+  {% assign highest_progress = 0 %}
+
+  {% for product in member.products %}
+    {% if product.completion.percent > 0 and product.completion.percent < 100 %}
+      {% if product.completion.percent > highest_progress or current_course == nil %}
+        {% assign current_course = product %}
+        {% assign highest_progress = product.completion.percent %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} If no in-progress course, find the most recent not-started course {% endcomment %}
+  {% if current_course == nil %}
+    {% for product in member.products %}
+      {% if product.completion.percent == 0 %}
+        {% assign current_course = product %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if current_course %}
+    {% assign progress = current_course.completion %}
+    {% assign next_url = progress.next_post.url | default: current_course.url %}
+
+    {% case widget_style %}
+      {% when 'compact' %}
+        <!-- Compact Style - for headers/navigation -->
+        <div class="continue-widget continue-widget--compact">
+          <a href="{{ next_url }}" class="continue-widget__link">
+            <span class="continue-widget__icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="10 8 16 12 10 16 10 8"/>
+              </svg>
+            </span>
+            <span class="continue-widget__text">
+              {% if progress.percent == 0 %}
+                Start: {{ current_course.title | truncate: 20 }}
+              {% else %}
+                Continue: {{ current_course.title | truncate: 20 }}
+              {% endif %}
+            </span>
+            {% if show_progress_bar and progress.percent > 0 %}
+              <span class="continue-widget__progress-text">{{ progress.percent }}%</span>
+            {% endif %}
+          </a>
+        </div>
+
+      {% when 'card' %}
+        <!-- Card Style - for sidebars/widgets -->
+        <div class="continue-widget continue-widget--card">
+          <div class="continue-widget__header">
+            <h4 class="continue-widget__title">Continue Learning</h4>
+            {% if progress.percent > 0 %}
+              <span class="continue-widget__badge">{{ progress.percent }}%</span>
+            {% endif %}
+          </div>
+
+          <div class="continue-widget__course">
+            <h5 class="continue-widget__course-title">{{ current_course.title }}</h5>
+            {% if progress.percent > 0 %}
+              <p class="continue-widget__stats">
+                {{ progress.completed }} of {{ progress.total }} lessons
+              </p>
+            {% endif %}
+          </div>
+
+          {% if show_progress_bar and progress.percent > 0 %}
+            <div class="continue-widget__progress-bar">
+              <div class="continue-widget__progress-fill" style="width: {{ progress.percent }}%;"></div>
+            </div>
+          {% endif %}
+
+          <a href="{{ next_url }}" class="continue-widget__button">
+            {% if progress.percent == 0 %}
+              Start Course →
+            {% else %}
+              Continue Learning →
+            {% endif %}
+          </a>
+        </div>
+
+      {% when 'minimal' %}
+        <!-- Minimal Style - just a button -->
+        <a href="{{ next_url }}" class="continue-widget continue-widget--minimal">
+          {% if progress.percent == 0 %}
+            Start Course
+          {% else %}
+            Continue ({{ progress.percent }}%)
+          {% endif %}
+        </a>
+
+      {% else %}
+        <!-- Default Style -->
+        <div class="continue-widget continue-widget--default">
+          <div class="continue-widget__content">
+            <div class="continue-widget__info">
+              <strong>{{ current_course.title }}</strong>
+              {% if progress.percent > 0 %}
+                <span class="continue-widget__meta">
+                  {{ progress.completed }}/{{ progress.total }} lessons • {{ progress.percent }}%
+                </span>
+              {% else %}
+                <span class="continue-widget__meta">Ready to start</span>
+              {% endif %}
+            </div>
+
+            {% if show_progress_bar and progress.percent > 0 %}
+              <div class="continue-widget__progress-bar">
+                <div class="continue-widget__progress-fill" style="width: {{ progress.percent }}%;"></div>
+              </div>
+            {% endif %}
+
+            <a href="{{ next_url }}" class="continue-widget__action">
+              {{ button_text }} →
+            </a>
+          </div>
+        </div>
+    {% endcase %}
+  {% endif %}
+{% endif %}
+
+<style>
+  /* Continue Learning Widget Styles */
+  .continue-widget {
+    font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  }
+
+  /* Compact Style */
+  .continue-widget--compact {
+    display: inline-block;
+  }
+
+  .continue-widget--compact .continue-widget__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--c-brand-100, #E9E6FF);
+    color: var(--c-brand-600, #5E3BFF);
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .continue-widget--compact .continue-widget__link:hover {
+    background: var(--c-brand-600, #5E3BFF);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .continue-widget--compact .continue-widget__icon {
+    display: flex;
+    align-items: center;
+  }
+
+  .continue-widget--compact .continue-widget__progress-text {
+    font-weight: 600;
+    opacity: 0.8;
+  }
+
+  /* Card Style */
+  .continue-widget--card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #E5E7EB;
+  }
+
+  .continue-widget--card .continue-widget__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .continue-widget--card .continue-widget__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  .continue-widget--card .continue-widget__badge {
+    background: var(--c-brand-100, #E9E6FF);
+    color: var(--c-brand-600, #5E3BFF);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .continue-widget--card .continue-widget__course-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A2D4E;
+    margin: 0 0 4px 0;
+  }
+
+  .continue-widget--card .continue-widget__stats {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0;
+  }
+
+  .continue-widget--card .continue-widget__progress-bar {
+    height: 6px;
+    background: #E5E7EB;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+
+  .continue-widget--card .continue-widget__progress-fill {
+    height: 100%;
+    background: var(--c-brand-600, #5E3BFF);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .continue-widget--card .continue-widget__button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: var(--c-brand-600, #5E3BFF);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+
+  .continue-widget--card .continue-widget__button:hover {
+    background: var(--c-brand-800, #4025E0);
+    transform: translateY(-1px);
+  }
+
+  /* Minimal Style */
+  .continue-widget--minimal {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--c-brand-600, #5E3BFF);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+
+  .continue-widget--minimal:hover {
+    background: var(--c-brand-800, #4025E0);
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  /* Default Style */
+  .continue-widget--default {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+  }
+
+  .continue-widget--default .continue-widget__info {
+    margin-bottom: 12px;
+  }
+
+  .continue-widget--default strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .continue-widget--default .continue-widget__meta {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  .continue-widget--default .continue-widget__progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 12px 0;
+  }
+
+  .continue-widget--default .continue-widget__progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .continue-widget--default .continue-widget__action {
+    display: inline-block;
+    padding: 8px 16px;
+    background: white;
+    color: #5E3BFF;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+
+  .continue-widget--default .continue-widget__action:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+</style>
