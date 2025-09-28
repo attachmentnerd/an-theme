@@ -40,7 +40,6 @@
     {% endif %}
 
   <body>
-    <div style="position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#ff0;color:#111;padding:6px 10px;font-weight:600;text-align:center;pointer-events:none;">LAYOUT DIAGNOSTIC</div>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKCGMPHT" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="container container--main">
@@ -62,15 +61,23 @@
       {% endif %}
     </div>
 
-    <!-- Javascripts ================================================== -->
+    <!-- Core Scripts ================================================== -->
     {{ 'core.js' | kajabi_asset_url | script_tag }}
-    <script charset='ISO-8859-1' src='https://fast.wistia.com/assets/external/E-v1.js'></script>
-    <script charset='ISO-8859-1' src='https://fast.wistia.com/labs/crop-fill/plugin.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ouibounce/0.0.12/ouibounce.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
-    {{ 'scripts.js' | asset_url | script_tag }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.8/js/tether.min.js"></script><!-- Tether for Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
+
+    <!-- Video Support -->
+    <script charset='ISO-8859-1' src='https://fast.wistia.com/assets/external/E-v1.js' defer></script>
+    <script charset='ISO-8859-1' src='https://fast.wistia.com/labs/crop-fill/plugin.js' defer></script>
+
+    <!-- Modern Scripts -->
+    {% include 'global_scripts' %}
+
+    <!-- Legacy Support (loaded conditionally) -->
+    {% comment %}
+      Only load heavy libraries when actually needed
+      - Slick carousel: Only if carousel sections exist
+      - Ouibounce: Only if exit popups are configured
+      - Bootstrap 4 Alpha: Should be updated to modern version
+    {% endcomment %}
 
     {{ settings.embedded_scripts }}
   </body>
