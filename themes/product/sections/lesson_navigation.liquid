@@ -1,0 +1,845 @@
+<!-- Lesson Navigation - Next & Previous -->
+<style>
+  .lesson-nav {
+    background: {{ section.settings.background_color | default: '#FFFFFF' }};
+    padding: {{ section.settings.padding_top | default: 40 }}px 0 {{ section.settings.padding_bottom | default: 40 }}px;
+    {% if section.settings.show_border_top %}
+      border-top: 1px solid {{ section.settings.border_color | default: '#E5E7EB' }};
+    {% endif %}
+    {% if section.settings.show_border_bottom %}
+      border-bottom: 1px solid {{ section.settings.border_color | default: '#E5E7EB' }};
+    {% endif %}
+  }
+
+  .lesson-nav__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .lesson-nav__button {
+    flex: 1;
+    min-width: 0;
+    max-width: {{ section.settings.button_max_width | default: 400 }}px;
+  }
+
+  .lesson-nav__link {
+    display: flex;
+    align-items: center;
+    padding: {{ section.settings.button_padding | default: 16 }}px;
+    background: {{ section.settings.button_bg | default: '#F9FAFB' }};
+    border: 2px solid {{ section.settings.button_border | default: '#E5E7EB' }};
+    border-radius: {{ section.settings.button_radius | default: 12 }}px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    height: 100%;
+    {% if section.settings.button_style == 'shadow' %}
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    {% elsif section.settings.button_style == 'gradient' %}
+      background: linear-gradient(135deg, {{ section.settings.gradient_start | default: '#F9FAFB' }}, {{ section.settings.gradient_end | default: '#FFFFFF' }});
+    {% endif %}
+  }
+
+  .lesson-nav__link:hover {
+    background: {{ section.settings.button_hover_bg | default: '#FFFFFF' }};
+    border-color: {{ section.settings.button_hover_border | default: '#5E3BFF' }};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(94, 59, 255, 0.15);
+  }
+
+  .lesson-nav__link--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .lesson-nav__link--completed {
+    {% if section.settings.show_completed_style %}
+      background: {{ section.settings.completed_bg | default: '#F0FDF4' }};
+      border-color: {{ section.settings.completed_border | default: '#BBF7D0' }};
+    {% endif %}
+  }
+
+  .lesson-nav__icon {
+    flex-shrink: 0;
+    width: {{ section.settings.icon_size | default: 24 }}px;
+    height: {{ section.settings.icon_size | default: 24 }}px;
+    color: {{ section.settings.icon_color | default: '#6B7280' }};
+  }
+
+  .lesson-nav__link:hover .lesson-nav__icon {
+    color: {{ section.settings.icon_hover_color | default: '#5E3BFF' }};
+  }
+
+  .lesson-nav__content {
+    flex: 1;
+    min-width: 0;
+    {% if section.settings.layout == 'horizontal' %}
+      margin: 0 16px;
+    {% else %}
+      margin: 0;
+    {% endif %}
+  }
+
+  .lesson-nav__label {
+    font-size: {{ section.settings.label_size | default: 12 }}px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: {{ section.settings.label_color | default: '#6B7280' }};
+    margin-bottom: 4px;
+  }
+
+  .lesson-nav__title {
+    font-size: {{ section.settings.title_size | default: 16 }}px;
+    font-weight: 600;
+    color: {{ section.settings.title_color | default: '#1A2D4E' }};
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    {% if section.settings.title_lines == '1' %}
+      white-space: nowrap;
+    {% else %}
+      display: -webkit-box;
+      -webkit-line-clamp: {{ section.settings.title_lines | default: 2 }};
+      -webkit-box-orient: vertical;
+    {% endif %}
+  }
+
+  .lesson-nav__meta {
+    font-size: {{ section.settings.meta_size | default: 13 }}px;
+    color: {{ section.settings.meta_color | default: '#9CA3AF' }};
+    margin-top: 4px;
+  }
+
+  .lesson-nav__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: {{ section.settings.status_bg | default: '#E9E6FF' }};
+    color: {{ section.settings.status_color | default: '#5E3BFF' }};
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .lesson-nav__status--completed {
+    background: {{ section.settings.completed_status_bg | default: '#D1FAE5' }};
+    color: {{ section.settings.completed_status_color | default: '#065F46' }};
+  }
+
+  .lesson-nav__status svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .lesson-nav__progress {
+    margin: 24px auto;
+    max-width: {{ section.settings.progress_max_width | default: 600 }}px;
+    text-align: center;
+  }
+
+  .lesson-nav__progress-text {
+    font-size: 14px;
+    color: {{ section.settings.progress_text_color | default: '#6B7280' }};
+    margin-bottom: 12px;
+  }
+
+  .lesson-nav__progress-bar {
+    height: 8px;
+    background: #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .lesson-nav__progress-fill {
+    height: 100%;
+    background: {{ section.settings.progress_color | default: '#5E3BFF' }};
+    transition: width 0.5s ease;
+    border-radius: 4px;
+  }
+
+  /* Layout Variations */
+  {% if section.settings.layout == 'vertical' %}
+    .lesson-nav__link {
+      flex-direction: column;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .lesson-nav__content {
+      margin-top: 12px;
+    }
+
+    .lesson-nav__icon {
+      width: 32px;
+      height: 32px;
+    }
+  {% elsif section.settings.layout == 'minimal' %}
+    .lesson-nav__link {
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+    }
+
+    .lesson-nav__link:hover {
+      background: {{ section.settings.button_bg | default: '#F9FAFB' }};
+    }
+
+    .lesson-nav__label {
+      display: none;
+    }
+
+    .lesson-nav__meta {
+      display: none;
+    }
+  {% endif %}
+
+  /* Mobile Styles */
+  @media (max-width: 767px) {
+    .lesson-nav__container {
+      {% if section.settings.mobile_stack %}
+        flex-direction: column;
+      {% endif %}
+    }
+
+    .lesson-nav__button {
+      {% if section.settings.mobile_stack %}
+        max-width: 100%;
+        width: 100%;
+      {% endif %}
+    }
+
+    .lesson-nav__title {
+      font-size: 14px;
+    }
+
+    .lesson-nav__label {
+      font-size: 11px;
+    }
+
+    {% if section.settings.hide_meta_mobile %}
+      .lesson-nav__meta {
+        display: none;
+      }
+    {% endif %}
+  }
+</style>
+
+{% if current_post %}
+  {% assign current_category = current_post.category %}
+  {% assign category_posts = current_category.posts %}
+  {% assign current_index = 0 %}
+  {% assign previous_post = nil %}
+  {% assign next_post = nil %}
+
+  {% comment %} Find current post index and get prev/next {% endcomment %}
+  {% for post in category_posts %}
+    {% if post.id == current_post.id %}
+      {% assign current_index = forloop.index0 %}
+      {% if forloop.index0 > 0 %}
+        {% assign previous_index = forloop.index0 | minus: 1 %}
+        {% assign previous_post = category_posts[previous_index] %}
+      {% endif %}
+      {% unless forloop.last %}
+        {% assign next_index = forloop.index0 | plus: 1 %}
+        {% assign next_post = category_posts[next_index] %}
+      {% endunless %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} Calculate overall progress {% endcomment %}
+  {% assign total_posts = category_posts.size %}
+  {% assign current_position = current_index | plus: 1 %}
+  {% assign progress_percent = current_position | times: 100 | divided_by: total_posts %}
+
+  <section class="lesson-nav" id="lesson-nav-{{ section.id }}">
+    <div class="container">
+      {% if section.settings.show_progress %}
+        <div class="lesson-nav__progress">
+          <div class="lesson-nav__progress-text">
+            Lesson {{ current_position }} of {{ total_posts }}
+            {% if section.settings.show_category_name %}
+              in {{ current_category.name }}
+            {% endif %}
+          </div>
+          <div class="lesson-nav__progress-bar">
+            <div class="lesson-nav__progress-fill" style="width: {{ progress_percent }}%;"></div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="lesson-nav__container">
+        <!-- Previous Button -->
+        <div class="lesson-nav__button">
+          {% if previous_post %}
+            <a href="{{ previous_post.url }}"
+               class="lesson-nav__link {% if previous_post.completed %}lesson-nav__link--completed{% endif %}"
+               title="{{ previous_post.title }}">
+              <div class="lesson-nav__icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+              </div>
+              <div class="lesson-nav__content">
+                <div class="lesson-nav__label">
+                  {{ section.settings.previous_label | default: 'Previous Lesson' }}
+                </div>
+                <div class="lesson-nav__title">
+                  {{ previous_post.title }}
+                </div>
+                {% if section.settings.show_meta %}
+                  <div class="lesson-nav__meta">
+                    {% if previous_post.duration %}
+                      {{ previous_post.duration }} min
+                    {% endif %}
+                    {% if section.settings.show_status and previous_post.completed %}
+                      <span class="lesson-nav__status lesson-nav__status--completed">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Completed
+                      </span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </a>
+          {% else %}
+            {% if section.settings.show_disabled %}
+              <div class="lesson-nav__link lesson-nav__link--disabled">
+                <div class="lesson-nav__icon">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </div>
+                <div class="lesson-nav__content">
+                  <div class="lesson-nav__label">
+                    {{ section.settings.previous_label | default: 'Previous Lesson' }}
+                  </div>
+                  <div class="lesson-nav__title">
+                    {{ section.settings.first_lesson_text | default: 'This is the first lesson' }}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        <!-- Next Button -->
+        <div class="lesson-nav__button" style="text-align: right;">
+          {% if next_post %}
+            <a href="{{ next_post.url }}"
+               class="lesson-nav__link {% if next_post.completed %}lesson-nav__link--completed{% endif %}"
+               title="{{ next_post.title }}"
+               style="flex-direction: row-reverse;">
+              <div class="lesson-nav__icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+              <div class="lesson-nav__content" style="text-align: right;">
+                <div class="lesson-nav__label">
+                  {{ section.settings.next_label | default: 'Next Lesson' }}
+                </div>
+                <div class="lesson-nav__title">
+                  {{ next_post.title }}
+                </div>
+                {% if section.settings.show_meta %}
+                  <div class="lesson-nav__meta">
+                    {% if next_post.duration %}
+                      {{ next_post.duration }} min
+                    {% endif %}
+                    {% if section.settings.show_status %}
+                      {% if next_post.completed %}
+                        <span class="lesson-nav__status lesson-nav__status--completed">
+                          <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                          </svg>
+                          Completed
+                        </span>
+                      {% elsif next_post.locked %}
+                        <span class="lesson-nav__status">
+                          <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                          </svg>
+                          Locked
+                        </span>
+                      {% else %}
+                        <span class="lesson-nav__status">
+                          Up Next
+                        </span>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </a>
+          {% else %}
+            {% if section.settings.show_completion %}
+              <a href="{{ current_product.url }}"
+                 class="lesson-nav__link"
+                 style="flex-direction: row-reverse; background: {{ section.settings.completion_bg | default: '#F0FDF4' }}; border-color: {{ section.settings.completion_border | default: '#BBF7D0' }};">
+                <div class="lesson-nav__icon" style="color: {{ section.settings.completion_icon_color | default: '#10B981' }};">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                  </svg>
+                </div>
+                <div class="lesson-nav__content" style="text-align: right;">
+                  <div class="lesson-nav__label">
+                    {{ section.settings.completion_label | default: 'Course Complete!' }}
+                  </div>
+                  <div class="lesson-nav__title">
+                    {{ section.settings.completion_text | default: 'View All Lessons' }}
+                  </div>
+                </div>
+              </a>
+            {% elsif section.settings.show_disabled %}
+              <div class="lesson-nav__link lesson-nav__link--disabled" style="flex-direction: row-reverse;">
+                <div class="lesson-nav__icon">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+                <div class="lesson-nav__content" style="text-align: right;">
+                  <div class="lesson-nav__label">
+                    {{ section.settings.next_label | default: 'Next Lesson' }}
+                  </div>
+                  <div class="lesson-nav__title">
+                    {{ section.settings.last_lesson_text | default: 'This is the last lesson' }}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Lesson Navigation",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout Style",
+      "options": [
+        { "value": "horizontal", "label": "Horizontal (Default)" },
+        { "value": "vertical", "label": "Vertical" },
+        { "value": "minimal", "label": "Minimal" }
+      ],
+      "default": "horizontal"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress",
+      "label": "Show Progress Bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_name",
+      "label": "Show Category Name in Progress",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_meta",
+      "label": "Show Meta Info (Duration, Status)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_status",
+      "label": "Show Completion Status",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_disabled",
+      "label": "Show Disabled State for First/Last",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_completion",
+      "label": "Show Completion Button at End",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_completed_style",
+      "label": "Different Style for Completed Lessons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_stack",
+      "label": "Stack Buttons on Mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_meta_mobile",
+      "label": "Hide Meta Info on Mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "previous_label",
+      "label": "Previous Button Label",
+      "default": "Previous Lesson"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next Button Label",
+      "default": "Next Lesson"
+    },
+    {
+      "type": "text",
+      "id": "first_lesson_text",
+      "label": "First Lesson Text",
+      "default": "This is the first lesson"
+    },
+    {
+      "type": "text",
+      "id": "last_lesson_text",
+      "label": "Last Lesson Text",
+      "default": "This is the last lesson"
+    },
+    {
+      "type": "text",
+      "id": "completion_label",
+      "label": "Completion Label",
+      "default": "Course Complete!"
+    },
+    {
+      "type": "text",
+      "id": "completion_text",
+      "label": "Completion Button Text",
+      "default": "View All Lessons"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "shadow", "label": "Shadow" },
+        { "value": "gradient", "label": "Gradient" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "range",
+      "id": "button_padding",
+      "label": "Button Padding",
+      "default": 16,
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Border Radius",
+      "default": 12,
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_max_width",
+      "label": "Button Max Width",
+      "default": 400,
+      "min": 200,
+      "max": 600,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Size",
+      "default": 24,
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_lines",
+      "label": "Title Max Lines",
+      "default": 2,
+      "min": 1,
+      "max": 3,
+      "step": 1
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button Background",
+      "default": "#F9FAFB"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Button Hover Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button Border",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border",
+      "label": "Button Hover Border",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient Start (if gradient style)",
+      "default": "#F9FAFB"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient End",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon Hover Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1A2D4E"
+    },
+    {
+      "type": "color",
+      "id": "meta_color",
+      "label": "Meta Color",
+      "default": "#9CA3AF"
+    },
+    {
+      "type": "color",
+      "id": "progress_color",
+      "label": "Progress Bar Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "progress_text_color",
+      "label": "Progress Text Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "status_bg",
+      "label": "Status Badge Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "status_color",
+      "label": "Status Badge Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "completed_bg",
+      "label": "Completed Button Background",
+      "default": "#F0FDF4"
+    },
+    {
+      "type": "color",
+      "id": "completed_border",
+      "label": "Completed Button Border",
+      "default": "#BBF7D0"
+    },
+    {
+      "type": "color",
+      "id": "completed_status_bg",
+      "label": "Completed Status Background",
+      "default": "#D1FAE5"
+    },
+    {
+      "type": "color",
+      "id": "completed_status_color",
+      "label": "Completed Status Color",
+      "default": "#065F46"
+    },
+    {
+      "type": "color",
+      "id": "completion_bg",
+      "label": "Course Complete Background",
+      "default": "#F0FDF4"
+    },
+    {
+      "type": "color",
+      "id": "completion_border",
+      "label": "Course Complete Border",
+      "default": "#BBF7D0"
+    },
+    {
+      "type": "color",
+      "id": "completion_icon_color",
+      "label": "Course Complete Icon Color",
+      "default": "#10B981"
+    },
+    {
+      "type": "header",
+      "content": "Borders"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_top",
+      "label": "Show Top Border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_bottom",
+      "label": "Show Bottom Border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Label Font Size",
+      "default": 12,
+      "min": 10,
+      "max": 14,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "default": 16,
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "meta_size",
+      "label": "Meta Font Size",
+      "default": 13,
+      "min": 11,
+      "max": 15,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Section Padding Top",
+      "default": 40,
+      "min": 0,
+      "max": 80,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Section Padding Bottom",
+      "default": 40,
+      "min": 0,
+      "max": 80,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "progress_max_width",
+      "label": "Progress Bar Max Width",
+      "default": 600,
+      "min": 400,
+      "max": 800,
+      "step": 50,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lesson Navigation",
+      "category": "Navigation",
+      "description": "Next and Previous lesson navigation with progress tracking"
+    }
+  ]
+}
+{% endschema %}
