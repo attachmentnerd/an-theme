@@ -892,9 +892,20 @@
         {% comment %} Render custom link blocks {% endcomment %}
         {% for block in section.blocks %}
           {% if block.type == 'link' %}
+            {% assign current_path = request.path | default: '/' | downcase %}
+            {% assign block_path = block.settings.link_url | downcase %}
+            {% assign is_active = false %}
+            {% if block_path == current_path %}
+              {% assign is_active = true %}
+            {% elsif block_path == '/' and current_path == '/' %}
+              {% assign is_active = true %}
+            {% elsif block_path != '/' and current_path contains block_path %}
+              {% assign is_active = true %}
+            {% endif %}
+
             <li class="nav-transparent-pill__menu-item">
               <a href="{{ block.settings.link_url }}"
-                 class="nav-transparent-pill__menu-link"
+                 class="nav-transparent-pill__menu-link {% if is_active %}nav-transparent-pill__menu-link--active{% endif %}"
                  {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
                 {{ block.settings.link_text }}
               </a>
@@ -1107,11 +1118,39 @@
           {% endfor %}
         {% endif %}
 
-        <!-- Mobile-only menu items -->
+        <!-- Custom link blocks and mobile-only menu items -->
+        {% assign current_path = request.path | default: '/' | downcase %}
         {% for block in section.blocks %}
-          {% if block.type == 'mobile_menu_item' %}
+          {% if block.type == 'link' %}
+            {% assign block_path = block.settings.link_url | downcase %}
+            {% assign is_active = false %}
+            {% if block_path == current_path %}
+              {% assign is_active = true %}
+            {% elsif block_path == '/' and current_path == '/' %}
+              {% assign is_active = true %}
+            {% elsif block_path != '/' and current_path contains block_path %}
+              {% assign is_active = true %}
+            {% endif %}
+            <li>
+              <a href="{{ block.settings.link_url }}"
+                 {% if is_active %}class="active"{% endif %}
+                 {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+                {{ block.settings.link_text }}
+              </a>
+            </li>
+          {% elsif block.type == 'mobile_menu_item' %}
+            {% assign block_path = block.settings.link | downcase %}
+            {% assign is_active = false %}
+            {% if block_path == current_path %}
+              {% assign is_active = true %}
+            {% elsif block_path == '/' and current_path == '/' %}
+              {% assign is_active = true %}
+            {% elsif block_path != '/' and current_path contains block_path %}
+              {% assign is_active = true %}
+            {% endif %}
             <li>
               <a href="{{ block.settings.link }}"
+                 {% if is_active %}class="active"{% endif %}
                  {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
                 {{ block.settings.title }}
               </a>

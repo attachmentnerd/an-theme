@@ -118,7 +118,8 @@
     transition: var(--kajabi-nav-transition);
   }
 
-  .kajabi-nav__menu-link:hover {
+  .kajabi-nav__menu-link:hover,
+  .kajabi-nav__menu-link--active {
     color: var(--kajabi-nav-text-hover);
   }
 
@@ -135,7 +136,8 @@
     transition: transform 0.3s var(--an-ease-spring);
   }
 
-  .kajabi-nav__menu-link:hover::after {
+  .kajabi-nav__menu-link:hover::after,
+  .kajabi-nav__menu-link--active::after {
     transform: scaleX(1);
     transform-origin: bottom left;
   }
@@ -408,7 +410,8 @@
     font-size: 0.875rem;
   }
 
-  .kajabi-nav__dropdown-menu a:hover {
+  .kajabi-nav__dropdown-menu a:hover,
+  .kajabi-nav__dropdown-menu a.active {
     background-color: {{ section.settings.dropdown_hover_bg | default: "#E9E6FF" }};
     color: {{ section.settings.text_color_hover | default: "#5E3BFF" }};
   }
@@ -466,12 +469,12 @@
         {% if section.settings.menu %}
           {% for link in current_site.link_lists[section.settings.menu].links %}
             <div class="kajabi-nav__menu-item {% if link.links.size > 0 %}kajabi-nav__dropdown{% endif %}">
-              <a href="{{ link.url }}" class="kajabi-nav__menu-link">{{ link.name }}</a>
+              <a href="{{ link.url }}" class="kajabi-nav__menu-link {% if link.current %}kajabi-nav__menu-link--active{% endif %}">{{ link.name }}</a>
 
               {% if link.links.size > 0 %}
                 <div class="kajabi-nav__dropdown-menu">
                   {% for child_link in link.links %}
-                    <a href="{{ child_link.url }}">{{ child_link.name }}</a>
+                    <a href="{{ child_link.url }}" {% if child_link.current %}class="active"{% endif %}>{{ child_link.name }}</a>
                   {% endfor %}
                 </div>
               {% endif %}
