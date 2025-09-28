@@ -1,0 +1,38 @@
+{% comment %}
+Navigation Controller (hardcoded variant)
+- Uses hardcoded navigation by default
+- Optional parameters: force_show, force_hide, nav_section
+{% endcomment %}
+
+{% assign should_show_nav = true %}
+{% assign resolved_nav_section = nav_section %}
+{% if resolved_nav_section == blank %}
+  {% assign resolved_nav_section = 'nav_hardcoded' %}
+{% endif %}
+
+{% if force_hide %}
+  {% assign should_show_nav = false %}
+{% elsif force_show %}
+  {% assign should_show_nav = true %}
+{% endif %}
+
+{% if should_show_nav %}
+  {% case resolved_nav_section %}
+    {% when 'nav_hardcoded' %}
+      {% include 'nav_hardcoded' %}
+    {% when 'nav_alt' %}
+      {% section 'nav_alt' %}
+    {% when 'nav_header_static' %}
+      {% section 'nav_header_static' %}
+    {% when 'nav_header' %}
+      {% section 'nav_header' %}
+    {% when 'nav_static' %}
+      {% section 'nav_static' %}
+    {% when 'nav_mobile_sticky_bar' %}
+      {% section 'nav_mobile_sticky_bar' %}
+    {% when 'nav_main' %}
+      {% section 'nav_main' %}
+    {% else %}
+      {% include 'nav_hardcoded' %}
+  {% endcase %}
+{% endif %}

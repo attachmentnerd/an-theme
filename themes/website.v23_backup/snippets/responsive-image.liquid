@@ -1,0 +1,196 @@
+{% comment %}
+  Responsive Image Snippet with Blur-up Placeholders
+  
+  Creates an optimized responsive image with srcset and sizes attributes
+  for better performance across different device sizes. Includes blur-up
+  placeholder support for smooth loading transitions.
+  
+  Parameters:
+  - image: Image URL (required) - from image_picker_url
+  - alt: Alt text (required for accessibility)
+  - class: CSS classes (default: 'img-fluid')
+  - sizes: Sizes attribute for responsive behavior
+  - loading: 'lazy' or 'eager' (default: 'lazy')
+  - priority: boolean - true for hero/LCP images (adds fetchpriority="high")
+  - widths: comma-separated string of widths for srcset (default: "400,600,800,1200,1600,2000")
+  - width: Image width attribute (helps prevent layout shift)
+  - height: Image height attribute (helps prevent layout shift)
+  - aspect_ratio: CSS aspect-ratio value (e.g., "16/9", "4/3", "1/1")
+  - placeholder_type: Type of placeholder ('default', 'avatar', 'book', 'feature', 'logo', 'hero', 'blur')
+  - blur_up: boolean - enable blur-up effect (default: false)
+  
+  Usage:
+  <img src="{{ section.settings.hero_image | image_picker_url: '800x450' }}" 
+             alt="{{ Hero image }}" 
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+{% endcomment %}
+
+{%- liquid
+  # Set defaults
+  if class == blank
+    assign class = 'img-fluid'
+  endif
+  
+  if loading == blank
+    assign loading = 'lazy'
+  endif
+  
+  if widths == blank
+    assign widths = '400,600,800,1200,1600,2000'
+  endif
+  
+  # Convert widths string to array
+  assign width_array = widths | split: ','
+  
+  # Set default sizes if not provided
+  if sizes == blank
+    # Smart defaults based on common layouts
+    assign sizes = '(max-width: 575px) 100vw, (max-width: 767px) 90vw, (max-width: 991px) 50vw, 33vw'
+  endif
+  
+  # Default source for fallback
+  assign default_size = '800x'
+  
+  # Set placeholder type default
+  if placeholder_type == blank
+    assign placeholder_type = 'default'
+  endif
+  
+  # Generate unique ID for blur-up effect
+  assign unique_id = 'img-' | append: section.id | append: '-' | append: forloop.index0
+-%}
+
+{%- if image -%}
+  {%- if blur_up -%}
+    <div class="responsive-image-wrapper" data-blur-up="{{ unique_id }}">
+      {%- comment -%}Low quality placeholder for blur effect{%- endcomment -%}
+      <img
+        src="{{ image | image_picker_url: '50x' }}"
+        alt=""
+        class="{{ class }} responsive-image-placeholder"
+        aria-hidden="true"
+        {%- if width -%}
+          width="{{ width }}"
+        {%- endif -%}
+        {%- if height -%}
+          height="{{ height }}"
+        {%- endif -%}
+        {%- if aspect_ratio -%}
+          style="aspect-ratio: {{ aspect_ratio }}; filter: blur(8px); transform: scale(1.1);"
+        {%- else -%}
+          style="filter: blur(8px); transform: scale(1.1);"
+        {%- endif -%}
+      >
+      
+      {%- comment -%}Full quality image{%- endcomment -%}
+      <img
+        src="{{ image | image_picker_url: default_size }}"
+        srcset="{%- for w in width_array -%}
+          {%- assign width_string = w | append: 'x' -%}
+          {{ image | image_picker_url: width_string }} {{ w }}w
+          {%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}"
+        sizes="{{ sizes }}"
+        alt="{{ alt | escape }}"
+        class="{{ class }} responsive-image-main"
+        loading="{{ loading }}"
+        {%- if priority -%}
+          fetchpriority="high"
+        {%- endif -%}
+        {%- if width -%}
+          width="{{ width }}"
+        {%- endif -%}
+        {%- if height -%}
+          height="{{ height }}"
+        {%- endif -%}
+        {%- if aspect_ratio -%}
+          style="aspect-ratio: {{ aspect_ratio }}; opacity: 0; transition: opacity 0.3s ease-in-out;"
+        {%- else -%}
+          style="opacity: 0; transition: opacity 0.3s ease-in-out;"
+        {%- endif -%}
+        onload="this.style.opacity=1; this.previousElementSibling.style.opacity=0;"
+      >
+    </div>
+    
+    <style>
+      .responsive-image-wrapper {
+        position: relative;
+        overflow: hidden;
+      }
+      .responsive-image-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .responsive-image-placeholder {
+        z-index: 1;
+      }
+      .responsive-image-main {
+        z-index: 2;
+      }
+    </style>
+  {%- else -%}
+    {%- comment -%}Standard responsive image without blur-up{%- endcomment -%}
+    <img
+      src="{{ image | image_picker_url: default_size }}"
+      srcset="{%- for w in width_array -%}
+        {%- assign width_string = w | append: 'x' -%}
+        {{ image | image_picker_url: width_string }} {{ w }}w
+        {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}"
+      sizes="{{ sizes }}"
+      alt="{{ alt | escape }}"
+      class="{{ class }}"
+      loading="{{ loading }}"
+      {%- if priority -%}
+        fetchpriority="high"
+      {%- endif -%}
+      {%- if width -%}
+        width="{{ width }}"
+      {%- endif -%}
+      {%- if height -%}
+        height="{{ height }}"
+      {%- endif -%}
+      {%- if aspect_ratio -%}
+        style="aspect-ratio: {{ aspect_ratio }};"
+      {%- endif -%}
+    >
+  {%- endif -%}
+{%- else -%}
+  {%- comment -%}Fallback with brand SVG placeholders{%- endcomment -%}
+  {%- include 'svg_placeholders' -%}
+  
+  {%- case placeholder_type -%}
+    {%- when 'avatar' -%}
+      {%- assign placeholder_svg = svg_placeholder_avatar -%}
+    {%- when 'book' -%}
+      {%- assign placeholder_svg = svg_placeholder_book -%}
+    {%- when 'feature' -%}
+      {%- assign placeholder_svg = svg_placeholder_feature -%}
+    {%- when 'logo' -%}
+      {%- assign placeholder_svg = svg_placeholder_logo -%}
+    {%- when 'hero' -%}
+      {%- assign placeholder_svg = svg_placeholder_hero -%}
+    {%- else -%}
+      {%- assign placeholder_svg = svg_placeholder_default -%}
+  {%- endcase -%}
+  
+  <div class="responsive-image-placeholder {{ class }}"
+    {%- if width -%}
+      style="width: {{ width }}px;"
+    {%- endif -%}
+    {%- if height -%}
+      style="height: {{ height }}px;"
+    {%- endif -%}
+    {%- if aspect_ratio -%}
+      style="aspect-ratio: {{ aspect_ratio }};"
+    {%- endif -%}
+  >
+    {{ placeholder_svg }}
+  </div>
+{%- endif -%}

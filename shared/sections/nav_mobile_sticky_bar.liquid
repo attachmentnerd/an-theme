@@ -268,6 +268,10 @@
         {
           "value": "outline",
           "label": "Outline"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
         }
       ],
       "default": "solid"
@@ -305,6 +309,21 @@
       "id": "dismissible",
       "label": "Allow Dismiss",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Visibility Settings"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Show Bar For",
+      "default": "all",
+      "options": [
+        { "value": "all", "label": "All Visitors" },
+        { "value": "logged_in", "label": "Logged In Users Only" },
+        { "value": "logged_out", "label": "Logged Out Users Only" }
+      ]
     }
   ],
   "presets": [

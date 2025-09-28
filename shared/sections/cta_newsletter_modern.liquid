@@ -1,3 +1,6 @@
+{% assign selected_form = section.settings.form %}
+{% assign resolved_form_id = section.settings.form_id | default: selected_form.id | default: selected_form %}
+
 <!-- Newsletter CTA Section - Modern Full-Width Footer Style -->
 <section id="{{ section.settings.section_id | default: 'cta-newsletter-modern' }}-{{ section.id }}" class="newsletter-cta-modern py-5 position-relative" style="background-color: #FAFAFA;">
   <div class="container">
@@ -22,17 +25,18 @@
               {{ section.settings.subheading }}
             </p>
 
-            <!-- Form (Kajabi-integrated) -->
-            {% assign form_setting = section.settings.form %}
-            {% assign form_id = section.settings.manual_form_id | default: form_setting.id | default: form_setting %}
-            {% assign f = current_site.find_form[form_id] %}
-            {% if f %}
-              {% form f %}
-                <div class="newsletter-form form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
-                  {% for field in f.fields %}
-                    {{ field | form_input: class: "form-group w-100", input_class: "form-control-modern flex-grow-1 newsletter-email-input", label: false, placeholder: true }}
-                  {% endfor %}
-
+            <!-- Form (Standard HTML for Kajabi) -->
+            {% if section.settings.form_type == 'kajabi' and resolved_form_id != blank %}
+              <form class="newsletter-form" action="/email_lists/{{ resolved_form_id }}/subscribe" method="post" data-form-type="optin">
+                <div class="form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
+                  <input type="email"
+                         class="form-control-modern flex-grow-1 newsletter-email-input"
+                         placeholder="{{ section.settings.email_placeholder }}"
+                         name="email"
+                         required
+                         aria-label="Email address"
+                         aria-required="true"
+                         style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease; background: var(--c-white);">
                   <button type="submit"
                           class="btn btn-primary-modern btn-lg newsletter-submit-btn"
                           style="white-space: nowrap;{% if section.settings.override_submit_button %} background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }}; color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important; border-radius: {{ section.settings.button_radius | default: 999 }}px;{% if section.settings.button_shadow %} box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}{% endif %}"
@@ -40,26 +44,25 @@
                     {{ section.settings.button_text }}
                   </button>
                 </div>
-              {% endform %}
-            {% elsif form_id %}
-              {% form "optin", id: form_id %}
-                <div class="newsletter-form form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
-                  {{ form | fields }}
-                  <button type="submit"
-                          class="btn btn-primary-modern btn-lg newsletter-submit-btn"
-                          style="white-space: nowrap;{% if section.settings.override_submit_button %} background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }}; color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important; border-radius: {{ section.settings.button_radius | default: 999 }}px;{% if section.settings.button_shadow %} box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}{% endif %}"
-                          kjb-settings-id="{{ 'button_text' | settings_id: section: section }}">
-                    {{ section.settings.button_text }}
-                  </button>
-                </div>
-              {% endform %}
-            {% else %}
-              <form class="newsletter-form" action="#" method="post" data-form-type="newsletter">
+              </form>
+            {% elsif section.settings.form_type == 'custom' %}
+              <form class="newsletter-form" action="{{ section.settings.form_action }}" method="post" data-form-type="newsletter">
                 <div class="form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
                   <input type="email" class="form-control-modern flex-grow-1 newsletter-email-input" placeholder="{{ section.settings.email_placeholder }}" name="email" required aria-label="Email address" aria-required="true" style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); transition: all 0.2s ease; background: var(--c-white);">
                   <button type="submit" class="btn btn-primary-modern btn-lg newsletter-submit-btn" style="white-space: nowrap;{% if section.settings.override_submit_button %} background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }}; color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important; border-radius: {{ section.settings.button_radius | default: 999 }}px;{% if section.settings.button_shadow %} box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}{% endif %}">{{ section.settings.button_text }}</button>
                 </div>
               </form>
+            {% else %}
+              <!-- Display only mode or no form configured -->
+              <div class="newsletter-form form-wrapper d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center" style="max-width: 500px; margin: 0 auto;">
+                <input type="email" class="form-control-modern flex-grow-1 newsletter-email-input" placeholder="{{ section.settings.email_placeholder }}" disabled style="min-height: 48px; padding: 14px 20px; border: 1px solid var(--c-brand-100); border-radius: 8px; font-size: var(--fs-body); background: var(--c-white); opacity: 0.7;">
+                <button type="button" class="btn btn-primary-modern btn-lg newsletter-submit-btn" disabled style="white-space: nowrap; opacity: 0.7;{% if section.settings.override_submit_button %} background: {{ section.settings.primary_button_bg | default: '#5E3BFF' }}; color: {{ section.settings.primary_button_text | default: '#FFFFFF' }} !important; border-radius: {{ section.settings.button_radius | default: 999 }}px;{% if section.settings.button_shadow %} box-shadow: 0 4px 12px rgba(0,0,0,0.15);{% endif %}{% endif %}">{{ section.settings.button_text }}</button>
+              </div>
+              {% if editor and section.settings.form_type == 'kajabi' %}
+                <p class="mt-3 mb-0" style="font-size: var(--fs-caption); color: var(--c-ink-500);">
+                  Select a Kajabi form or provide a manual Form ID to enable submissions.
+                </p>
+              {% endif %}
             {% endif %}
 
             {% assign buttons_count = 0 %}
@@ -260,7 +263,7 @@
   }
 </style>
 
-<!-- Removed custom JS; Kajabi handles submission and validation for {% form %} -->
+<!-- Removed custom JS; Kajabi handles submission and validation for forms -->
 
 {% schema %}
 {
@@ -319,9 +322,32 @@
       "label": "Form Action URL",
       "default": "#"
     },
-    { "type": "header", "content": "Form" },
-    { "type": "form", "id": "form", "label": "Select Kajabi Form" },
-    { "type": "text", "id": "manual_form_id", "label": "Manual Form ID (optional)", "info": "Overrides the selected form when provided." },
+    { "type": "header", "content": "Form Settings" },
+    {
+      "type": "select",
+      "id": "form_type",
+      "label": "Form Type",
+      "default": "kajabi",
+      "options": [
+        { "value": "kajabi", "label": "Kajabi Form (picker)" },
+        { "value": "custom", "label": "Custom Action URL" },
+        { "value": "none", "label": "No Form (display only)" }
+      ],
+      "info": "Choose how the form should work. When using Kajabi, pick a form below or provide a manual ID."
+    },
+    {
+      "type": "form",
+      "id": "form",
+      "label": "Kajabi Form",
+      "info": "Select an existing Kajabi form to handle submissions"
+    },
+    {
+      "type": "text",
+      "id": "form_id",
+      "label": "Manual Form ID (fallback)",
+      "default": "",
+      "info": "Paste the Kajabi Form ID if the picker is unavailable or you need to override it. Find IDs in Marketing > Forms."
+    },
     {
       "type": "checkbox",
       "id": "show_benefits",
@@ -354,7 +380,7 @@
   "blocks": [
     {
       "type": "benefit",
-      "name": "CTA - Newsletter Modern",
+      "name": "Benefit",
       "elements": [
         {
           "type": "text",
@@ -366,7 +392,7 @@
     },
     {
       "type": "button",
-      "name": "CTA Button",
+      "name": "Extra Button",
       "elements": [
         { "type": "text", "id": "button_text", "label": "Button Text", "default": "Explore Resources" },
         { "type": "action", "id": "button_link", "label": "Button Link", "anchor": true, "two_step": true },

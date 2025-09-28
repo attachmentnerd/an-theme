@@ -1,0 +1,105 @@
+/* ==========================================================================
+   AN Landing Theme - Custom Overrides
+   ========================================================================== */
+
+/* 
+   This file is intentionally empty in the source.
+   
+   All shared styles are maintained in /shared/styles/overrides.css
+   and copied here during the build process.
+   
+   Theme-specific styles (if any) can be added below.
+*/
+
+/* ==========================================================================
+   Landing Page Specific Styles
+   ========================================================================== */
+
+/* Hero section enhancements */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+
+.hero__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.05;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero__title {
+  font-size: 48px;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: var(--an-navy);
+}
+
+@media (max-width: 767px) {
+  .hero__title {
+    font-size: 32px;
+  }
+}
+
+.hero__subtitle {
+  font-size: 20px;
+  color: var(--an-slate);
+  margin-bottom: 32px;
+}
+
+/* Feature sections */
+.features {
+  padding: 60px 0;
+  background-color: var(--an-grey);
+}
+
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.feature-card {
+  background: var(--an-white);
+  padding: 32px;
+  border-radius: var(--an-radius-lg);
+  box-shadow: var(--an-shadow-sm);
+  transition: all var(--an-transition-base);
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--an-shadow-md);
+}
+
+.feature-card__icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  color: var(--an-teal);
+}
+
+.feature-card__title {
+  font-size: 24px;
+  color: var(--an-navy);
+  margin-bottom: 16px;
+}
+
+.feature-card__description {
+  color: var(--an-slate);
+  line-height: 1.6;
+}

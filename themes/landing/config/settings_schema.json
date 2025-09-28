@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "AN Landing Theme",
-    "theme_version": "AN-LP 2025.09.28+23.10.0",
+    "theme_version": "AN-LP 2025.09.28+33.2.24",
     "theme_author": "AN Themes",
     "theme_documentation_url": "https://anthemes.com/docs",
     "theme_support_url": "https://anthemes.com/support",
@@ -395,14 +395,14 @@
     "elements": [
       {
         "type": "header",
-        "content": "Global Navigation Settings"
+        "content": "Navigation Control"
       },
       {
         "type": "checkbox",
         "id": "show_navigation",
         "label": "Show Main Navigation",
         "default": true,
-        "info": "Toggle the main navigation bar on/off site-wide. When disabled, no navigation will appear on any page."
+        "info": "Toggle navigation visibility site-wide. Pages can override this setting individually."
       }
     ]
   },
@@ -493,6 +493,145 @@
         "label": "Javascript Code",
         "default": "/* Javascript code goes here */",
         "info": "Do not include '<script>' tag."
+      }
+    ]
+  },
+  {
+    "name": "Password Recovery",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Password Recovery"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_forgot_password_header",
+        "label": "Include Header",
+        "default": "true",
+        "info": "Show/hide header on the forgot password page."
+      },
+      {
+        "type": "text",
+        "id": "recover_text",
+        "label": "Recover Text",
+        "default": "Recover Password"
+      },
+      {
+        "type": "text",
+        "id": "email_text",
+        "label": "Email Text",
+        "default": "Email"
+      },
+      {
+        "type": "text",
+        "id": "recovery_text",
+        "label": "Recovery Text",
+        "default": "Send Recovery Info"
+      },
+      {
+        "type": "text",
+        "id": "login_text",
+        "label": "Log In Text",
+        "default": "Log In"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_forgot_password_footer",
+        "label": "Include Footer",
+        "default": "true",
+        "info": "Show/hide footer on the forgot password page."
+      }
+    ]
+  },
+  {
+    "name": "Password Reset",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Password Reset"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_password_reset_header",
+        "label": "Include Header",
+        "default": "true",
+        "info": "Show/hide header on the password reset page."
+      },
+      {
+        "type": "text",
+        "id": "reset_text",
+        "label": "Reset Text",
+        "default": "Create New Password"
+      },
+      {
+        "type": "text",
+        "id": "new_password",
+        "label": "New Password Text",
+        "default": "Enter New Password"
+      },
+      {
+        "type": "text",
+        "id": "confirm_password",
+        "label": "Confirm Password Text",
+        "default": "Confirm Password"
+      },
+      {
+        "type": "text",
+        "id": "reset_btn",
+        "label": "Reset Button Text",
+        "default": "Submit"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_password_reset_footer",
+        "label": "Include Footer",
+        "default": "true",
+        "info": "Show/hide footer on the password reset page."
+      }
+    ]
+  },
+  {
+    "name": "Disqus Comments",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Disqus Comments"
+      },
+      {
+        "type": "checkbox",
+        "label": "Show Disqus Comments",
+        "id": "show_comments",
+        "default": "false",
+        "info": "Display disqus comments thread on the blog post page."
+      },
+      {
+        "type": "text",
+        "id": "short_code",
+        "label": "Disqus Shortname",
+        "default": "",
+        "info": "Learn all about how to sign up for Disqus and where to find your short code in this help article."
+      }
+    ]
+  },
+  {
+    "name": "Disabled Pages",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Disabled Pages",
+        "info": "All pages are enabled by default. Select to disable separate pages."
+      },
+      {
+        "type": "checkbox",
+        "label": "Member Directory",
+        "id": "member_directory_disabled",
+        "default": "false"
+      },
+      {
+        "type": "checkbox",
+        "label": "Announcements",
+        "id": "announcements_disabled",
+        "default": "false"
       }
     ]
   },

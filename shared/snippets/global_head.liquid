@@ -24,42 +24,27 @@
     <!-- Critical Image CSS for LCP optimization -->
     {% include 'critical_image_css' %}
 
-    <!-- Performance Optimizations ========================================= -->
-    {% if settings.enable_performance_mode %}
-      <!-- Use optimized loading strategy -->
-      {% include 'performance_head' %}
+    <!-- Optimized Font Loading ============================================ -->
+    {% include 'font_preload' %}
 
-      <!-- Kajabi CSS - Load async -->
-      <link rel="stylesheet"
-            href="{{ 'core.css' | kajabi_asset_url }}"
-            media="print"
-            onload="this.media='all'; this.onload=null;">
-      <noscript>
-        <link rel="stylesheet" href="{{ 'core.css' | kajabi_asset_url }}">
-      </noscript>
-    {% else %}
-      <!-- Original loading strategy (fallback) -->
-      <!-- Optimized Font Loading ============================================ -->
-      {% include 'font_preload' %}
+    <!-- Kajabi CSS ======================================================== -->
+    {{ "core.css" | kajabi_asset_url | stylesheet_tag }}
 
-      <!-- Kajabi CSS ======================================================== -->
-      {{ "core.css" | kajabi_asset_url | async_style_link }}
+    {% comment %}
+    <!-- Optional Bootstrap CSS - Remove the liquid comment tags to enable -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% endcomment %}
 
-      {% comment %}
-      <!-- Optional Bootstrap CSS - Remove the liquid comment tags to enable -->
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-      {% endcomment %}
+    <!-- Main Theme Styles ================================================ -->
+    <!-- Kajabi compiles styles.scss.liquid to styles.css automatically -->
+    {{ "styles.css" | asset_url | stylesheet_tag }}
 
-      <!-- Icons are now inline SVGs via icon.liquid snippet -->
-      <!-- Font Awesome removed for performance improvement -->
+    <!-- Custom Overrides ================================================= -->
+    <!-- IMPORTANT: This must load AFTER styles.scss.liquid -->
+    {{ "overrides.css" | asset_url | stylesheet_tag }}
 
-      {{ "styles.scss.liquid" | asset_url | stylesheet_tag }}
-
-      <!-- Customer CSS ====================================================== -->
-      <!-- Overrides.css contains critical styles and is loaded synchronously -->
-      {{ "overrides.css" | asset_url | stylesheet_tag }}
-      {% include "animation_utilities" %}
-    {% endif %}
+    <!-- Animation Utilities ============================================== -->
+    {% include "animation_utilities" %}
 
     {% include "global_custom_css" %}
 

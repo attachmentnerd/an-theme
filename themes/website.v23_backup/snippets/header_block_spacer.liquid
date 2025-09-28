@@ -1,0 +1,19 @@
+{% comment %}
+  Spacer Block
+  Adds flexible spacing between navigation elements
+{% endcomment %}
+
+{% assign space_size = block.settings.space_size | default: "medium" %}
+
+{% case space_size %}
+  {% when "small" %}
+    <div class="header__spacer" style="width: 8px; min-width: 8px;"></div>
+  {% when "medium" %}
+    <div class="header__spacer" style="width: 16px; min-width: 16px;"></div>
+  {% when "large" %}
+    <div class="header__spacer" style="width: 32px; min-width: 32px;"></div>
+  {% when "xlarge" %}
+    <div class="header__spacer" style="width: 48px; min-width: 48px;"></div>
+  {% when "auto" %}
+    <div class="header__spacer" style="flex: 1 1 auto;"></div>
+{% endcase %}

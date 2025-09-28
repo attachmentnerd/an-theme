@@ -49,7 +49,7 @@
           Use the canonical Kajabi form tag signature to ensure reliable rendering.
           Avoid passing extra attributes to the tag; add hidden inputs and a standard submit button.
         {%- endcomment -%}
-        {% form "optin", id: form_id %}
+        {% form 'optin', id: form_id %}
           {% if section.settings.thank_you_url != blank %}
             <input type="hidden" name="thank_you_url" value="{{ section.settings.thank_you_url }}">
           {% endif %}

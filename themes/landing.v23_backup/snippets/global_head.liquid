@@ -1,0 +1,107 @@
+<head>
+    {% csrf_meta_tags %}
+    <title>
+      {% if page_title %}
+        {{ page_title }}
+      {% else %}
+        {{ current_site.title }}
+      {% endif %}
+    </title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}" />
+    {% endif %}
+    {% include "global_social_meta_tags" %}
+    {% if settings.favicon and settings.favicon != "" %}
+      <link href="{{ settings.favicon | image_picker_url: 'favicon.png' }}?v=2" rel="shortcut icon" />
+    {% else %}
+      <link href="{{ current_site.favicon_image | image_picker_url: 'favicon.png' }}?v=2" rel="shortcut icon" />
+    {% endif %}
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    <!-- Critical Image CSS for LCP optimization -->
+    {% include 'critical_image_css' %}
+
+    <!-- Performance Optimizations ========================================= -->
+    {% if settings.enable_performance_mode %}
+      <!-- Use optimized loading strategy -->
+      {% include 'performance_head' %}
+
+      <!-- Kajabi CSS - Load async -->
+      <link rel="stylesheet"
+            href="{{ 'core.css' | kajabi_asset_url }}"
+            media="print"
+            onload="this.media='all'; this.onload=null;">
+      <noscript>
+        <link rel="stylesheet" href="{{ 'core.css' | kajabi_asset_url }}">
+      </noscript>
+    {% else %}
+      <!-- Original loading strategy (fallback) -->
+      <!-- Optimized Font Loading ============================================ -->
+      {% include 'font_preload' %}
+
+      <!-- Kajabi CSS ======================================================== -->
+      {{ "core.css" | kajabi_asset_url | async_style_link }}
+
+      {% comment %}
+      <!-- Optional Bootstrap CSS - Remove the liquid comment tags to enable -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      {% endcomment %}
+
+      <!-- Icons are now inline SVGs via icon.liquid snippet -->
+      <!-- Font Awesome removed for performance improvement -->
+
+      {{ "styles.css" | asset_url | stylesheet_tag }}
+
+      <!-- Customer CSS ====================================================== -->
+      <!-- Overrides.css contains critical styles and is loaded synchronously -->
+      {{ "overrides.css" | asset_url | stylesheet_tag }}
+      {% include "animation_utilities" %}
+    {% endif %}
+
+    {% include "global_custom_css" %}
+
+    <!-- Kajabi Editor Only CSS ============================================ -->
+    {% if editor %}
+      {% include "editor_guides" %}
+      {% include "editor_grid" %}
+      {% include "editor_reveal" %}
+    {% endif %}
+
+    <!-- Header hook ======================================================= -->
+    {% content_for_header %}
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TKCGMPHT');</script>
+
+    <!-- Facebook Pixel -->
+    {% if settings.facebook_pixel_id and settings.facebook_pixel_id != '' %}
+      <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '{{ settings.facebook_pixel_id }}');
+        fbq('track', 'PageView');
+      </script>
+      <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id={{ settings.facebook_pixel_id }}&ev=PageView&noscript=1"
+      /></noscript>
+    {% endif %}
+
+    <!-- Custom Scripts -->
+    {% if settings.header_scripts and settings.header_scripts != '' %}
+      {{ settings.header_scripts }}
+    {% endif %}
+
+  </head>

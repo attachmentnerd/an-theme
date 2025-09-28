@@ -1,0 +1,49 @@
+{% comment %}
+  Blog — Post Simple (Shared)
+  Minimal blog post body with title, date, content
+{% endcomment %}
+
+<section id="blog-post-simple-{{ section.id }}" class="an-section an-theme">
+  <div class="bps-wrap">
+    {% if section.settings.show_back_button %}
+      {% assign back_href = section.settings.back_url | default: '' | strip %}
+      {% if back_href == '' %}
+        {% assign back_href = 'javascript:history.back()' %}
+      {% endif %}
+      <p class="bps-back">
+        <a class="bps-back-link" href="{{ back_href }}">{{ section.settings.back_label | default: '← Back' }}</a>
+      </p>
+    {% endif %}
+    <header class="bps-head">
+      <h1 class="bps-title">{{ blog_post.title }}</h1>
+      {% if blog_post.published_at %}<div class="bps-meta">{{ blog_post.published_at | date: "%b %d, %Y" }}</div>{% endif %}
+    </header>
+    <div class="bps-body">{{ blog_post.content }}</div>
+  </div>
+
+  <style>
+    #blog-post-simple-{{ section.id }} .bps-wrap{max-width:800px;margin:0 auto;padding:32px 18px}
+    #blog-post-simple-{{ section.id }} .bps-back{margin:0 0 8px}
+    #blog-post-simple-{{ section.id }} .bps-back-link{text-decoration:none; color:var(--c-ink-700); font-weight:700}
+    #blog-post-simple-{{ section.id }} .bps-back-link:hover{text-decoration:underline}
+    #blog-post-simple-{{ section.id }} .bps-title{margin:0 0 6px;font-weight:800;color:var(--c-ink-900)}
+    #blog-post-simple-{{ section.id }} .bps-meta{color:var(--c-ink-500);margin-bottom:16px}
+    #blog-post-simple-{{ section.id }} .bps-body{color:var(--c-ink-800);line-height:1.7}
+    #blog-post-simple-{{ section.id }} .bps-body img{max-width:100%;height:auto}
+  </style>
+
+  {% schema %}
+  {
+    "name": "Blog — Post Simple",
+    "elements": [
+      {"type":"checkbox","id":"show_back_button","label":"Show back button","default":true},
+      {"type":"text","id":"back_label","label":"Back button label","default":"← Back"},
+      {"type":"action","id":"back_url","label":"Back URL (leave blank to use browser back)","default":""}
+    ],
+    "blocks": [],
+    "presets": [
+      {"name":"Blog — Post Simple","category":"Content"}
+    ]
+  }
+  {% endschema %}
+</section>

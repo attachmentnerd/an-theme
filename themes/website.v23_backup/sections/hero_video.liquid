@@ -1,0 +1,722 @@
+{% comment %}
+  AN Video Hero Section - Kajabi Version
+  - Full-width video hero with play button
+  - Supports Kajabi native video uploads (priority) or external videos
+  - Mobile-optimized with poster image
+  - Overlay text and CTA options
+  - Background image support for the entire section
+  - Poster image support for the video thumbnail
+{% endcomment %}
+
+<section id="{{ section.settings.section_id | default: 'hero-video' }}-{{ section.id }}" class="an-video-hero position-relative overflow-hidden" 
+         style="background-color: {{ section.settings.background_color }};
+                {% if section.settings.background_image != blank %}
+                  background-image: url('{{ section.settings.background_image | image_picker_url: 'master' }}');
+                  background-size: cover;
+                  background-position: {{ section.settings.background_position }} center;
+                  background-repeat: no-repeat;
+                {% endif %}">
+  <div class="an-video-hero__container">
+    <!-- Video Thumbnail/Poster -->
+    <div class="an-video-hero__media position-relative">
+      {% if section.settings.poster_image != blank %}
+        <!-- Use responsive-image snippet for proper Kajabi image handling -->
+        <img src="{{ section.settings.poster_image | image_picker_url: '800x450' }}" 
+             alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}" 
+             class="an-video-hero__poster"
+             loading="lazy"
+             style="object-fit: cover;">
+      {% elsif section.settings.video != blank and section.settings.video.thumbnail_url %}
+        <!-- Use video thumbnail if no poster image specified -->
+        <img
+          src="{{ section.settings.video.thumbnail_url }}"
+          alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}"
+          class="an-video-hero__poster"
+          loading="lazy"
+        >
+      {% else %}
+        <div class="an-video-hero__placeholder" style="background: #E9E6FF;">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="59" stroke="#5E3BFF" stroke-width="2" opacity="0.2"/>
+            <path d="M48 40L80 60L48 80V40Z" fill="#5E3BFF" opacity="0.3"/>
+          </svg>
+        </div>
+      {% endif %}
+
+      <!-- Play Button Overlay -->
+      {% if section.settings.video != blank or section.settings.video_url != blank %}
+        <button class="an-video-hero__play-btn"
+                aria-label="Play video"
+                {% if section.settings.video != blank %}
+                  data-kajabi-video-id="{{ section.settings.video.wistia_id }}"
+                  data-video-type="kajabi"
+                {% elsif section.settings.video_url != blank %}
+                  data-video-url="{{ section.settings.video_url }}"
+                  data-video-type="external"
+                {% endif %}>
+          <div class="an-video-hero__play-icon">
+            <svg width="24" height="28" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 14L0 28V0L24 14Z" fill="white"/>
+            </svg>
+          </div>
+        </button>
+      {% endif %}
+
+      <!-- Gradient Overlay (optional) -->
+      {% if section.settings.show_overlay %}
+        <div class="an-video-hero__overlay"></div>
+      {% endif %}
+    </div>
+
+    <!-- Content Overlay -->
+    <div class="an-video-hero__content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            {% if section.settings.heading != blank %}
+              <h1 class="an-video-hero__heading" style="color: {{ section.settings.text_color }};">
+                {{ section.settings.heading }}
+              </h1>
+            {% endif %}
+
+            {% if section.settings.subheading != blank %}
+              <p class="an-video-hero__subheading" style="color: {{ section.settings.text_color }};">
+                {{ section.settings.subheading }}
+              </p>
+            {% endif %}
+
+            {% if section.settings.show_cta %}
+              <div class="an-video-hero__cta">
+                <a href="{{ section.settings.cta_link }}" class="btn btn-primary-video">
+                  {{ section.settings.cta_text }}
+                </a>
+                {% if section.settings.secondary_cta_text != blank %}
+                  <a href="{{ section.settings.secondary_cta_link }}" class="btn btn-secondary-video ms-3">
+                    {{ section.settings.secondary_cta_text }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div class="an-video-modal" id="videoModal-{{ section.id }}" aria-hidden="true">
+    <div class="an-video-modal__backdrop"></div>
+    <div class="an-video-modal__content">
+      <button class="an-video-modal__close" aria-label="Close video">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="an-video-modal__player" id="videoPlayer-{{ section.id }}"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* CSS Variables */
+  :root {
+    --c-brand-100: #E9E6FF;
+    --c-brand-600: #5E3BFF;
+    --c-brand-800: #4025E0;
+    --c-white: #FFFFFF;
+    --g-brand: linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%);
+  }
+
+  /*
+    Layout Structure:
+    - .an-video-hero: Full section with optional background image
+    - .an-video-hero__container: Flex container for centering
+    - .an-video-hero__media: Video/poster container with aspect ratio
+    - .an-video-hero__content: Overlay content positioned absolutely
+  */
+
+  .an-video-hero {
+    position: relative;
+    min-height: {{ section.settings.section_height }}vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Background Image Overlay for better text contrast */
+  .an-video-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    {% if section.settings.background_image != blank %}
+    background: rgba(0, 0, 0, 0.3);
+    {% endif %}
+    z-index: 0;
+  }
+
+  .an-video-hero__container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .an-video-hero__media {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 8px;
+    aspect-ratio: 16/9;
+  }
+
+  @supports not (aspect-ratio: 16/9) {
+    .an-video-hero__media {
+      height: 60%;
+      max-height: 600px;
+    }
+  }
+
+  .an-video-hero__poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .an-video-hero__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background-color: var(--c-brand-100, #E9E6FF);
+  }
+
+  .an-video-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+    z-index: 2;
+    pointer-events: none;
+    border-radius: 8px;
+  }
+
+  .an-video-hero__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    background: var(--c-brand-600, #5E3BFF);
+    border: none;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(94, 59, 255, 0.3);
+  }
+
+  .an-video-hero__play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 12px 32px rgba(94, 59, 255, 0.4);
+    background: var(--c-brand-800, #4025E0);
+  }
+
+  .an-video-hero__play-icon {
+    position: relative;
+    left: 3px;
+  }
+
+  .an-video-hero__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    padding: 2rem;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .an-video-hero__content a,
+  .an-video-hero__content button {
+    pointer-events: auto;
+  }
+
+  .an-video-hero__heading {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .an-video-hero__subheading {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .an-video-hero__cta {
+    margin-top: 2rem;
+  }
+
+  /* Animations */
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Button Styles */
+  .btn-primary-video {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 36px;
+    background: var(--g-brand, linear-gradient(135deg, #5E3BFF 0%, #7B5BFF 100%));
+    color: var(--c-white, #FFFFFF) !important;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(94, 59, 255, 0.35);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary-video:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(94, 59, 255, 0.4);
+    background: var(--c-brand-800, #4C2FE6);
+  }
+
+  .btn-secondary-video {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 36px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--c-brand-600, #5E3BFF) !important;
+    border: 2px solid var(--c-white, #FFFFFF);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary-video:hover {
+    background: var(--c-white, #FFFFFF);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    color: var(--c-brand-800, #4025E0) !important;
+  }
+
+  /* Utility classes */
+  .ms-3 {
+    margin-left: 1rem;
+  }
+
+  /* Video Modal */
+  .an-video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: none;
+  }
+
+  .an-video-modal[aria-hidden="false"] {
+    display: block;
+  }
+
+  .an-video-modal__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .an-video-modal__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 1200px;
+    aspect-ratio: 16/9;
+    z-index: 2;
+  }
+
+  .an-video-modal__close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    transition: opacity 0.3s ease;
+  }
+
+  .an-video-modal__close:hover {
+    opacity: 0.7;
+  }
+
+  .an-video-modal__player {
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .an-video-modal__player iframe,
+  .an-video-modal__player video {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 767px) {
+    .an-video-hero {
+      min-height: 60vh;
+    }
+
+    .an-video-hero__media {
+      width: 90%;
+      aspect-ratio: 16/9;
+    }
+
+    @supports not (aspect-ratio: 16/9) {
+      .an-video-hero__media {
+        height: 50%;
+        max-height: 400px;
+      }
+    }
+
+    .an-video-hero__heading {
+      font-size: 2rem;
+    }
+
+    .an-video-hero__subheading {
+      font-size: 1rem;
+    }
+
+    .an-video-hero__play-btn {
+      width: 60px;
+      height: 60px;
+    }
+
+    .an-video-hero__cta .btn-primary-video,
+    .an-video-hero__cta .btn-secondary-video {
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto 1rem;
+    }
+
+    .an-video-hero__cta .ms-3 {
+      margin-left: 0 !important;
+    }
+
+    .an-video-hero__content {
+      padding: 1rem;
+    }
+
+    .an-video-modal__content {
+      width: 95%;
+    }
+
+    .an-video-modal__close {
+      top: -30px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('#shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const playBtn = section.querySelector('.an-video-hero__play-btn');
+    const modal = section.querySelector('.an-video-modal');
+    const closeBtn = section.querySelector('.an-video-modal__close');
+    const backdrop = section.querySelector('.an-video-modal__backdrop');
+    const player = section.querySelector('.an-video-modal__player');
+
+    if (!playBtn || !modal || !player) return;
+
+    function openVideo() {
+      const videoType = playBtn.dataset.videoType;
+
+      if (videoType === 'kajabi') {
+        const kajabiVideoId = playBtn.dataset.kajabiVideoId;
+        if (kajabiVideoId && kajabiVideoId !== '' && kajabiVideoId !== 'null') {
+          // For Kajabi videos, use the Wistia embed
+          player.innerHTML = `
+            <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+              <iframe src="https://fast.wistia.net/embed/iframe/${kajabiVideoId}?videoFoam=true&autoPlay=true"
+                      title="Video"
+                      allow="autoplay; fullscreen"
+                      allowtransparency="true"
+                      frameborder="0"
+                      scrolling="no"
+                      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                      name="wistia_embed"
+                      msallowfullscreen
+                      width="100%"
+                      height="100%">
+              </iframe>
+            </div>`;
+
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+      } else if (videoType === 'external') {
+        const videoUrl = playBtn.dataset.videoUrl;
+        if (!videoUrl || videoUrl === '') return;
+
+        // Parse external video URLs
+        let embedUrl = '';
+        if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+          const match = videoUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+          if (match) {
+            const videoId = match[1];
+            embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+          }
+        } else if (videoUrl.includes('vimeo.com')) {
+          const match = videoUrl.match(/vimeo\.com\/(\d+)/);
+          if (match) {
+            const videoId = match[1];
+            embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+          }
+        } else if (videoUrl.includes('wistia.com')) {
+          const match = videoUrl.match(/wistia\.com\/medias\/([a-zA-Z0-9]+)/);
+          if (match) {
+            const videoId = match[1];
+            embedUrl = `https://fast.wistia.net/embed/iframe/${videoId}?autoPlay=true`;
+          }
+        }
+
+        if (embedUrl) {
+          player.innerHTML = `<iframe src="${embedUrl}" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+    }
+
+    function closeVideo() {
+      modal.setAttribute('aria-hidden', 'true');
+      player.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    if (playBtn) playBtn.addEventListener('click', openVideo);
+    if (closeBtn) closeBtn.addEventListener('click', closeVideo);
+    if (backdrop) backdrop.addEventListener('click', closeVideo);
+
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+        closeVideo();
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hero - Video",
+  "elements": [
+    {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "hero-video",
+      "info": "Custom ID for internal linking (e.g., #hero-video)"
+    },
+      {
+        "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Transform Your Parenting Journey"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Join thousands of parents learning the science of secure attachment"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Kajabi Video",
+      "info": "Upload video directly or choose from your Kajabi library"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Optional background image behind the video area",
+      "fit": "max",
+      "width": 3000,
+      "height": 3000
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background Position",
+      "default": "center",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "External Video URL (Optional)",
+      "info": "YouTube, Vimeo, or Wistia URL - only used if no Kajabi video is uploaded",
+      "default": ""
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_image",
+      "label": "Video Poster Image",
+      "info": "Optional: Override video thumbnail with custom image",
+      "fit": "max",
+      "width": 3000,
+      "height": 3000
+    },
+    {
+      "type": "text",
+      "id": "poster_alt_text",
+      "label": "Poster Alt Text",
+      "default": "Watch our introduction video"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height (vh)",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 70,
+      "unit": "vh"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show Gradient Overlay",
+      "default": true,
+      "info": "Adds a gradient overlay on the video thumbnail for better text contrast"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show Call to Action",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Start Your Journey"
+    },
+    {
+      "type": "text",
+      "id": "cta_link",
+      "label": "CTA Link",
+      "default": "/programs"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA Link",
+      "default": "/about"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero - Video",
+      "category": "Hero"
+    }
+  ]
+}
+{% endschema %}

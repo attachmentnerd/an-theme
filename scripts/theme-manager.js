@@ -142,21 +142,34 @@ async function buildTheme(type) {
     console.log(`${type} theme - skipping shared components`);
   } else {
     // Copy shared components for other themes
-    if (fs.existsSync(path.join(sharedDir, "snippets"))) {
-      await fs.copy(
-        path.join(sharedDir, "snippets"),
-        path.join(buildDir, "snippets"),
-        { overwrite: false, filter: shouldInclude }
-      );
-    }
+    // IMPORTANT: overwrite: false means theme-specific files take precedence
 
-    // Copy shared sections
-    if (fs.existsSync(path.join(sharedDir, "sections"))) {
-      await fs.copy(
-        path.join(sharedDir, "sections"),
-        path.join(buildDir, "sections"),
-        { overwrite: false, filter: shouldInclude }
-      );
+    // Check if theme wants to use shared components (default: true for backward compatibility)
+    const useSharedComponents = process.env.USE_SHARED !== 'false';
+
+    if (useSharedComponents) {
+      if (fs.existsSync(path.join(sharedDir, "snippets"))) {
+        const sharedSnippets = await fs.readdir(path.join(sharedDir, "snippets"));
+        console.log(`Copying ${sharedSnippets.length} shared snippets (won't overwrite theme-specific)`);
+        await fs.copy(
+          path.join(sharedDir, "snippets"),
+          path.join(buildDir, "snippets"),
+          { overwrite: false, filter: shouldInclude }
+        );
+      }
+
+      // Copy shared sections
+      if (fs.existsSync(path.join(sharedDir, "sections"))) {
+        const sharedSections = await fs.readdir(path.join(sharedDir, "sections"));
+        console.log(`Copying ${sharedSections.length} shared sections (won't overwrite theme-specific)`);
+        await fs.copy(
+          path.join(sharedDir, "sections"),
+          path.join(buildDir, "sections"),
+          { overwrite: false, filter: shouldInclude }
+        );
+      }
+    } else {
+      console.log('Skipping shared components (USE_SHARED=false)');
     }
 
     // Optionally copy optional sections directory if present and enabled
@@ -192,7 +205,7 @@ async function buildTheme(type) {
     }
 
     // Copy shared styles
-    if (fs.existsSync(path.join(sharedDir, "styles"))) {
+    if (useSharedComponents && fs.existsSync(path.join(sharedDir, "styles"))) {
       const styles = await fs.readdir(path.join(sharedDir, "styles"));
       for (const style of styles) {
         // Skip _tokens.css and README files - tokens are inlined into overrides.css

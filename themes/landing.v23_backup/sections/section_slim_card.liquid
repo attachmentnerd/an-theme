@@ -1,0 +1,164 @@
+{% comment %}
+  Slim Card Section (Shared)
+
+  A horizontally oriented, compact card with image, text, and up to 3 CTAs.
+  Uses design tokens from shared/styles/_tokens.css and shared button/icon styles.
+
+  Blocks: up to 3 CTA buttons.
+{% endcomment %}
+
+{% assign s-id = section.id %}
+{% assign bg = section.settings.bg | default: 'var(--c-white)' %}
+{% assign accent = section.settings.accent | default: 'var(--c-brand-600)' %}
+{% assign invert_text = section.settings.invert_text %}
+
+<style>
+  .slim-card--{{ s-id }} {
+    --bg: {{ bg }};
+    --accent: {{ accent }};
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-md);
+  }
+  .slim-card__inner {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: var(--space-md);
+    align-items: center;
+  }
+  .slim-card__media {
+    width: 120px;
+    height: 80px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--c-bg-light);
+  }
+  .slim-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .slim-card__body {
+    min-width: 0;
+  }
+  .slim-card__title {
+    margin: 0 0 4px 0;
+    font-size: var(--fs-h5);
+    line-height: var(--lh-tight);
+    color: {% if invert_text %}var(--c-white){% else %}var(--c-ink-900){% endif %};
+  }
+  .slim-card__desc {
+    margin: 0;
+    color: {% if invert_text %}rgba(255,255,255,.85){% else %}var(--c-ink-700){% endif %};
+    font-size: var(--fs-body);
+  }
+  .slim-card__ctas {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .slim-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: filter 0.15s ease;
+    white-space: nowrap;
+  }
+  .slim-card__btn:hover { filter: brightness(0.96); }
+  .slim-card__btn--outline { background: transparent; color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .slim-card__inner { grid-template-columns: 1fr; }
+    .slim-card__media { width: 100%; height: 180px; }
+    .slim-card__ctas { justify-content: flex-start; }
+  }
+</style>
+
+<div class="container">
+  <div class="slim-card slim-card--{{ s-id }}">
+    <div class="slim-card__inner">
+      <div class="slim-card__media">
+        {% if section.settings.image %}
+          <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="slim-card__img" />
+        {% else %}
+          <img src="{{ 'placeholder.png' | asset_url }}" alt="{{ section.settings.title }}" class="slim-card__img" />
+        {% endif %}
+      </div>
+      <div class="slim-card__body">
+        {% if section.settings.kicker %}
+          <div class="kicker" style="color:{% if invert_text %}rgba(255,255,255,.85){% else %}var(--c-ink-500){% endif %}; margin-bottom: 4px; font-size: var(--fs-caption);">{{ section.settings.kicker }}</div>
+        {% endif %}
+        <h3 class="slim-card__title">{{ section.settings.title }}</h3>
+        {% if section.settings.description %}
+          <p class="slim-card__desc">{{ section.settings.description }}</p>
+        {% endif %}
+      </div>
+      <div class="slim-card__ctas">
+        {% for block in section.blocks %}
+          {% assign btn_style = block.settings.style | default: 'solid' %}
+          {% assign btn_target = block.settings.open_in_new %}
+          <a href="{{ block.settings.url }}" class="slim-card__btn{% if btn_style == 'outline' %} slim-card__btn--outline{% endif %}"
+             {% if btn_target %}target="_blank" rel="noopener noreferrer"{% endif %}
+             kjb-settings-id="{{ 'cta_text' | settings_id: section: section, block: block }}">
+            {% if block.settings.icon %}
+              {% include "icon", icon: block.settings.icon, size: 18, class: '', color: 'currentColor', aria_label: '' %}
+            {% endif %}
+            {{ block.settings.text }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Slim Card",
+  "elements": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Introducing" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Slim Card Title" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Short supporting copy goes here." },
+    { "type": "image", "id": "image", "label": "Image URL" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "var(--c-white)" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "var(--c-brand-600)" },
+    { "type": "checkbox", "id": "invert_text", "label": "Light text on dark bg", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "cta",
+      "name": "CTA Button",
+      "elements": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Learn more" },
+        { "type": "url", "id": "url", "label": "URL", "default": "#" },
+        { "type": "select", "id": "style", "label": "Style", "default": "solid", "options": [
+          {"label":"Solid","value":"solid"},
+          {"label":"Outline","value":"outline"}
+        ]},
+        { "type": "text", "id": "icon", "label": "Icon (from shared icon)" },
+        { "type": "checkbox", "id": "open_in_new", "label": "Open in new tab", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    { "name": "Slim Card", "category": "Content", "blocks": [ {"type":"cta"} ] }
+  ]
+}
+{% endschema %}
+
+
+
+
+

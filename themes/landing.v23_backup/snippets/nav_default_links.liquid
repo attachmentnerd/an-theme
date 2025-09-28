@@ -1,0 +1,6 @@
+{% comment %}
+Provides a shared list of default navigation links used when no Kajabi menu is configured.
+Each entry uses the format Title|URL|EventKey so downstream templates can build consistent markup.
+{% endcomment %}
+{% assign nav_default_links_string = "About:/about:nav_about|Books:/books:nav_books|Podcast:/podcast:nav_podcast|Speaking:/speaking:nav_speaking|Program:/program/secure-parenting:nav_program|Login:/login:nav_login" %}
+{% assign nav_default_links = nav_default_links_string | split: "|" %}

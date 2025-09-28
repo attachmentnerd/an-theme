@@ -1,0 +1,35 @@
+{% capture __blog_sections %}{% dynamic_sections_for "blog" %}{% endcapture %}
+{% if __blog_sections and __blog_sections != '' %}
+  {{ __blog_sections }}
+{% else %}
+  <section class="website-blog-fallback an-theme">
+    <div class="wb-wrap">
+      <header class="wb-head">
+        <h1 class="wb-title">Blog</h1>
+        <p class="wb-sub">No blog layout sections are assigned yet. Showing a simple fallback list.</p>
+      </header>
+      <div class="wb-list">
+        {% for post in current_site.blog.posts_published %}
+          <article class="wb-item">
+            <a class="wb-link" href="{{ post.url }}">
+              <h2 class="wb-item-title">{{ post.title }}</h2>
+              {% if post.published_at %}<div class="wb-meta">{{ post.published_at | date: "%b %d, %Y" }}</div>{% endif %}
+              {% if post.page_description %}<p class="wb-desc">{{ post.page_description }}</p>{% endif %}
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <style>
+    .website-blog-fallback .wb-wrap{max-width:1100px;margin:0 auto;padding:32px 18px}
+    .website-blog-fallback .wb-title{margin:0 0 6px;font-weight:800;color:var(--c-ink-900)}
+    .website-blog-fallback .wb-sub{margin:0 0 10px;color:var(--c-ink-600)}
+    .website-blog-fallback .wb-list{display:grid;gap:14px}
+    .website-blog-fallback .wb-item{border:1px solid var(--c-ink-100);background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+    .website-blog-fallback .wb-link{display:block;text-decoration:none;color:inherit;padding:14px}
+    .website-blog-fallback .wb-item-title{margin:0 0 6px;font-weight:800;color:var(--c-ink-900)}
+    .website-blog-fallback .wb-meta{color:var(--c-ink-500);font-size:.95rem}
+    .website-blog-fallback .wb-desc{margin:8px 0 0;color:var(--c-ink-700)}
+  </style>
+{% endif %}

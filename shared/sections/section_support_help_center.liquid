@@ -155,7 +155,7 @@
                     <button class="sh-submit" name="commit">{{ cf.settings.submit_label | default: 'Send Message' }}</button>
                   {% endform %}
                 {% elsif form_id %}
-                  {% form "optin", id: form_id %}
+                  {% form 'optin', id: form_id %}
                     {% if cf.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ cf.settings.thank_you_url }}">{% endif %}
                     {% if cf.settings.hidden_field_name and cf.settings.hidden_field_value %}
                       <input type="hidden" name="form_submission[{{ cf.settings.hidden_field_name }}]" value="{{ cf.settings.hidden_field_value }}">

@@ -1,0 +1,249 @@
+{% comment %}
+  SPP_1 — Landing Hero + Benefits (Shared)
+  - Based on Figma "Landing Page for Parents" hero concept
+  - Fully editable: text, links, images, badges, checklist
+  - Accessible, responsive, token-driven; safe in website/landing/product
+{% endcomment %}
+
+{% assign s_id = section.id %}
+{% assign dom_id = section.settings.section_id | default: 'spp-1' %}
+
+<section id="{{ dom_id }}-{{ s_id }}" class="an-section an-theme an-white spp-1">
+  <div class="spp-wrap">
+    <!-- Credibility strip -->
+    {% if section.settings.cred_avatar or section.settings.credibility != blank %}
+    <div class="spp-cred an-reveal">
+      {% if section.settings.cred_avatar %}
+        <img class="spp-cred-avatar" src="{{ section.settings.cred_avatar | image_picker_url: '120x120' }}" alt="{{ section.settings.cred_avatar_alt | default: 'Program creator' }}" loading="lazy">
+      {% endif %}
+      {% assign chips = section.settings.credibility | strip | split: '\n' %}
+      {% if chips.size > 0 and chips[0] != blank %}
+        <div class="spp-cred-row" role="list">
+          {% for c in chips %}
+            {% assign ct = c | strip %}
+            {% if ct != blank %}<span class="spp-cred-chip" role="listitem">{{ ct }}</span>{% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Hero heading -->
+    <header class="spp-hero an-reveal">
+      <h1 class="spp-title">{{ section.settings.heading }}
+        {% if section.settings.show_badge and section.settings.badge_text != blank %}
+          <span class="spp-badge">{{ section.settings.badge_text }}</span>
+        {% endif %}
+      </h1>
+      {% if section.settings.subheading != blank %}
+        <p class="spp-sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </header>
+
+    {% if section.settings.show_trust_cues %}
+      <div class="spp-trust an-reveal" role="note" aria-label="Trust and safety cues">
+        {% if section.settings.lock_text != blank %}
+          <span class="spp-lock" aria-hidden="true">🔒</span>
+          <span class="spp-lock-text">{{ section.settings.lock_text }}</span>
+        {% endif %}
+        {% if section.settings.meta_text != blank %}
+          <span class="spp-sep" aria-hidden="true">•</span>
+          <span class="spp-meta">{{ section.settings.meta_text }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- State cards stack -->
+    {% if section.settings.show_progress and section.settings.progress_text != blank %}
+      <div class="spp-progress an-reveal" role="status" aria-live="polite">{{ section.settings.progress_text }}</div>
+    {% endif %}
+
+    <div class="spp-stack">
+      {% for block in section.blocks %}
+        {% if block.type == 'state' %}
+        <article class="spp-card an-reveal" data-state-index="{{ forloop.index }}" role="button" tabindex="0" aria-pressed="false" style="--grad: {{ block.settings.bg_gradient | default: 'linear-gradient(180deg, #FFFFFF 0%, #F7F6FF 100%)' }}; --ico-bg: {{ block.settings.icon_bg | default: 'linear-gradient(135deg, #FFFFFF, #F2F0FF)' }}; --ico-color: {{ block.settings.icon_color | default: 'var(--c-brand-700, #5E3BFF)' }}; --bullet-color: {{ block.settings.bullet_color | default: block.settings.icon_color | default: 'var(--c-brand-700, #5E3BFF)' }};" {{ block.shopify_attributes }}>
+          <div class="spp-card-head">
+            {% if block.settings.emoji != blank %}<span class="spp-emoji" aria-hidden="true">{{ block.settings.emoji }}</span>{% endif %}
+            <h3 class="spp-card-title">{{ block.settings.title | upcase }}</h3>
+          </div>
+          {% if block.settings.quote != blank %}
+            <p class="spp-quote">“{{ block.settings.quote }}”</p>
+          {% endif %}
+          {% assign lines = block.settings.bullets | strip | newline_to_br | split: '<br />' %}
+          {% assign bullets = '' | split: '' %}
+          {% assign b1 = block.settings.bullet_1 | strip %}
+          {% assign b2 = block.settings.bullet_2 | strip %}
+          {% assign b3 = block.settings.bullet_3 | strip %}
+          {% assign b4 = block.settings.bullet_4 | strip %}
+          {% assign b5 = block.settings.bullet_5 | strip %}
+          {% assign b6 = block.settings.bullet_6 | strip %}
+          {% assign manual = b1 | append: b2 | append: b3 | append: b4 | append: b5 | append: b6 %}
+          {% if manual != '' %}
+            {% assign bullets = bullets | push: b1 | push: b2 | push: b3 | push: b4 | push: b5 | push: b6 %}
+          {% else %}
+            {% assign bullets = lines %}
+          {% endif %}
+          {% if bullets.size > 0 and bullets[0] != blank %}
+          <ul class="spp-points">
+            {% for b in bullets %}
+              {% assign bt = b | strip %}
+              {% if bt != blank %}<li class="spp-point"><span class="spp-dot" aria-hidden="true"></span><span>{{ bt }}</span></li>{% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% if block.settings.cta_text != blank and block.settings.cta_url != blank %}
+            <a class="spp-cta-btn" href="{{ block.settings.cta_url }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ block.settings.cta_text }}<span aria-hidden="true" class="spp-cta-caret">›</span></a>
+          {% endif %}
+        </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.note != blank %}
+      <p class="spp-note an-reveal">{{ section.settings.note }}</p>
+    {% endif %}
+  </div>
+
+  <style>
+    #{{ dom_id }}-{{ s_id }}.spp-1{position:relative}
+    #{{ dom_id }}-{{ s_id }} .spp-wrap{max-width:760px; margin:0 auto; padding:88px 22px}
+
+    /* Reveal (fail-open) */
+    #{{ dom_id }}-{{ s_id }} .an-reveal{opacity:1; transform:none}
+    html.an-js #{{ dom_id }}-{{ s_id }} .an-reveal{opacity:0; transform:translateY(24px); transition:opacity .5s cubic-bezier(.2,.7,.2,1), transform .5s cubic-bezier(.2,.7,.2,1)}
+    html.an-js #{{ dom_id }}-{{ s_id }} .an-reveal.is-in{opacity:1; transform:none}
+    @media (prefers-reduced-motion: reduce){ html.an-js #{{ dom_id }}-{{ s_id }} .an-reveal{transition:none !important; transform:none !important; opacity:1 !important} }
+
+    /* Credibility */
+    #{{ dom_id }}-{{ s_id }} .spp-cred{display:flex; flex-direction:column; align-items:center; gap:8px; margin:0 auto 12px}
+    #{{ dom_id }}-{{ s_id }} .spp-cred-avatar{width:56px; height:56px; border-radius:9999px; object-fit:cover; box-shadow:0 8px 18px rgba(0,0,0,.08)}
+    #{{ dom_id }}-{{ s_id }} .spp-cred-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center}
+    #{{ dom_id }}-{{ s_id }} .spp-cred-chip{font-size:.85rem; color:var(--c-ink-600, #44495c); background:#fff; border:1px solid var(--border-light, #ECEAFA); border-radius:9999px; padding:6px 10px; white-space:normal; overflow-wrap:anywhere; overflow-wrap:break-word; word-break:break-word}
+    @media (max-width: 480px){
+      #{{ dom_id }}-{{ s_id }} .spp-cred-avatar{width:48px; height:48px}
+      #{{ dom_id }}-{{ s_id }} .spp-cred-row{gap:6px}
+      #{{ dom_id }}-{{ s_id }} .spp-cred-chip{font-size:.8rem; padding:4px 8px}
+    }
+
+    /* Hero */
+    #{{ dom_id }}-{{ s_id }} .spp-hero{text-align:center; margin:0 0 26px}
+    #{{ dom_id }}-{{ s_id }} .spp-title{margin:0 0 8px; font-size:clamp(30px, 5.5vw, 44px); line-height:1.12; letter-spacing:-.01em; color:var(--c-ink-900)}
+    #{{ dom_id }}-{{ s_id }} .spp-sub{margin:0; font-size:1.05rem; color:var(--c-ink-600)}
+
+    /* Trust & badge */
+    #{{ dom_id }}-{{ s_id }} .spp-badge{display:inline-block; margin-left:.5ch; padding:.28em .6em; font-size:.6em; line-height:1; font-weight:800; color:var(--c-ink-800); background:var(--badge-bg, #F3F6FF); border:1px solid var(--border-light, #ECEAFA); border-radius:9999px; vertical-align:middle}
+    #{{ dom_id }}-{{ s_id }} .spp-trust{display:flex; gap:10px; align-items:center; justify-content:center; color:var(--c-ink-600); font-size:.95rem; margin:-4px 0 8px}
+    #{{ dom_id }}-{{ s_id }} .spp-trust .spp-lock{width:18px; height:18px; display:inline-grid; place-items:center; border-radius:6px; background:#fff; border:1px solid var(--border-light, #ECEAFA)}
+    #{{ dom_id }}-{{ s_id }} .spp-trust .spp-sep{opacity:.6}
+
+    /* Progress */
+    #{{ dom_id }}-{{ s_id }} .spp-progress{display:inline-block; margin:8px auto 6px; text-align:center; font-size:.9rem; color:var(--c-ink-700); background:#fff; border:1px dashed var(--border-light, #ECEAFA); border-radius:9999px; padding:6px 10px}
+
+    /* Cards */
+    #{{ dom_id }}-{{ s_id }} .spp-stack{display:grid; gap:16px; margin-top:22px}
+    #{{ dom_id }}-{{ s_id }} .spp-card{background:var(--grad, #fff); border:1px solid var(--border-light, #ECEAFA); border-radius:14px; padding:16px 16px 14px; box-shadow:0 4px 12px rgba(0,0,0,.05); transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; cursor:pointer}
+    #{{ dom_id }}-{{ s_id }} .spp-card:focus{outline:none; box-shadow:0 0 0 2px var(--c-brand-200, #DCD7FF) inset, 0 8px 20px rgba(0,0,0,.08)}
+    @media(hover:hover){ #{{ dom_id }}-{{ s_id }} .spp-card:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.08)} }
+    #{{ dom_id }}-{{ s_id }} .spp-card.is-active{border-color:var(--ico-color, var(--c-brand-600, #5E3BFF)); box-shadow:0 10px 26px rgba(105,78,255,.16)}
+
+    #{{ dom_id }}-{{ s_id }} .spp-card-head{display:flex; gap:8px; align-items:center}
+    #{{ dom_id }}-{{ s_id }} .spp-emoji{font-size:18px; width:32px; height:32px; border-radius:10px; display:grid; place-items:center; background:var(--ico-bg); color:var(--ico-color); border:1px solid var(--border-light, #ECEAFA)}
+    #{{ dom_id }}-{{ s_id }} .spp-card-title{margin:0; font-size:1rem; color:var(--c-ink-900); font-weight:800; letter-spacing:.02em}
+
+    #{{ dom_id }}-{{ s_id }} .spp-quote{margin:8px 0 8px; color:var(--c-ink-600); font-style:italic}
+    #{{ dom_id }}-{{ s_id }} .spp-points{list-style:none; padding:0; margin:0 0 10px; display:grid; gap:8px}
+    #{{ dom_id }}-{{ s_id }} .spp-point{display:flex; gap:8px; align-items:flex-start; color:var(--c-ink-700)}
+    #{{ dom_id }}-{{ s_id }} .spp-dot{width:6px; height:6px; border-radius:9999px; background:var(--bullet-color, var(--ico-color, var(--c-brand-500, #6E63FF))); margin-top:.55em; flex:0 0 6px}
+
+    #{{ dom_id }}-{{ s_id }} .spp-cta-btn{display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--border-light, #ECEAFA); border-radius:9999px; padding:8px 12px; text-decoration:none; font-weight:700; color:var(--c-ink-800)}
+    #{{ dom_id }}-{{ s_id }} .spp-cta-btn:hover .spp-cta-caret{transform:translateX(2px)}
+    #{{ dom_id }}-{{ s_id }} .spp-cta-caret{transition:transform .15s ease}
+
+    #{{ dom_id }}-{{ s_id }} .spp-note{margin:20px 0 0; text-align:center; color:var(--c-ink-600); font-size:.95rem}
+  </style>
+
+  <script>
+    (function(){
+      document.documentElement.classList.add('an-js');
+      var root = document.getElementById('{{ dom_id }}-{{ s_id }}');
+      if(!root || root.dataset.inited==='1') return; root.dataset.inited='1';
+
+      // Reveal on view
+      var items = [].slice.call(root.querySelectorAll('.an-reveal'));
+      function showAll(){ items.forEach(function(n){ n.classList.add('is-in'); }); }
+      var inEditor = location.search.indexOf('preview')>-1 || !!document.querySelector('[data-kajabi-theme-editor],[data-builder],[data-editor]');
+      if('IntersectionObserver' in window && !inEditor){
+        var io = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target);} }); }, {threshold:.2});
+        items.forEach(function(n){ io.observe(n); });
+        setTimeout(function(){ items.forEach(function(n){ n.classList.add('is-in'); }); }, 1400);
+      } else { showAll(); }
+
+      // Card interactions: active highlight, keyboard support
+      var cards = [].slice.call(root.querySelectorAll('.spp-card'));
+      function setActive(card){ cards.forEach(function(c){ c.classList.toggle('is-active', c===card); c.setAttribute('aria-pressed', c===card ? 'true':'false'); }); }
+      cards.forEach(function(card){
+        card.addEventListener('click', function(e){ if(e.target.closest('a')) return; setActive(card); });
+        card.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); setActive(card);} if(e.key==='Escape'){ setActive(null);} });
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "SPP_1 — Parenting States",
+  "elements": [
+    { "type": "text", "id": "section_id", "label": "Section ID", "default": "spp-1" },
+    { "type": "image_picker", "id": "cred_avatar", "label": "Avatar (circle)" },
+    { "type": "text", "id": "cred_avatar_alt", "label": "Avatar alt", "default": "Eli Harwood, LPC" },
+    { "type": "textarea", "id": "credibility", "label": "Credibility chips (one per line)", "default": "Eli Harwood, MA, LPC\nUSA TODAY Bestseller\nGood Morning America\n1M+ Parents" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Let’s be real: How’s parenting going?" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "No judgment. Just the right tool for where you are." },
+    { "type": "text", "id": "note", "label": "Footnote", "default": "" },
+    { "type": "checkbox", "id": "show_trust_cues", "label": "Show trust & safety cues", "default": true },
+    { "type": "text", "id": "lock_text", "label": "Security text", "default": "Your journey is private" },
+    { "type": "text", "id": "meta_text", "label": "Helper text", "default": "Takes 30 seconds • No right answers" },
+    { "type": "checkbox", "id": "show_badge", "label": "Show badge near title", "default": true },
+    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "No judgment zone" },
+    { "type": "checkbox", "id": "show_progress", "label": "Show progress indicator", "default": true },
+    { "type": "text", "id": "progress_text", "label": "Progress text", "default": "Step 1 of 3" }
+  ],
+  "blocks": [
+    {
+      "type": "state",
+      "name": "Parenting state",
+      "elements": [
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "🔥" },
+        { "type": "text", "id": "title", "label": "Title", "default": "House is on fire" },
+        { "type": "textarea", "id": "quote", "label": "Italic quote", "default": "I yell daily. Kids are melting down. I’m becoming my mother." },
+        { "type": "textarea", "id": "bullets", "label": "Bullets (fallback list; one per line)", "default": "Morning starts with battles\nCan’t remember the last peaceful day\nScared I’m damaging them" },
+        { "type": "text", "id": "bullet_1", "label": "Bullet 1", "default": "" },
+        { "type": "text", "id": "bullet_2", "label": "Bullet 2", "default": "" },
+        { "type": "text", "id": "bullet_3", "label": "Bullet 3", "default": "" },
+        { "type": "text", "id": "bullet_4", "label": "Bullet 4", "default": "" },
+        { "type": "text", "id": "bullet_5", "label": "Bullet 5", "default": "" },
+        { "type": "text", "id": "bullet_6", "label": "Bullet 6", "default": "" },
+        { "type": "text", "id": "bullet_color", "label": "Bullet dot color (CSS)", "default": "" },
+        { "type": "text", "id": "bg_gradient", "label": "Card background gradient CSS", "default": "linear-gradient(180deg, #FFFFFF 0%, #FFF6F6 100%)" },
+        { "type": "text", "id": "icon_bg", "label": "Icon background CSS", "default": "linear-gradient(135deg, #FFF, #FFECEC)" },
+        { "type": "text", "id": "icon_color", "label": "Icon/text accent color", "default": "#E63D3D" },
+        { "type": "text", "id": "cta_text", "label": "CTA text", "default": "This is me" },
+        { "type": "action", "id": "cta_url", "label": "CTA link", "default": "#" },
+        { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPP_1 — Parenting States",
+      "category": "SPP",
+      "blocks": [
+        {"type":"state","settings":{"emoji":"🔥","title":"House is on fire","quote":"I yell daily. Kids are melting down. I’m becoming my mother.","bullet_1":"Morning starts with battles","bullet_2":"Can’t remember the last peaceful day","bullet_3":"Scared I’m damaging them","bullet_color":"#E63D3D","bg_gradient":"linear-gradient(180deg, #FFFFFF 0%, #FFF6F6 100%)","icon_bg":"linear-gradient(135deg, #FFF, #FFECEC)","icon_color":"#E63D3D","cta_text":"This is me","cta_url":"#"}},
+        {"type":"state","settings":{"emoji":"🥲","title":"Harder than I expected","quote":"Everyone else seems to have it together. What’s wrong with me?","bullet_1":"Instagram makes me feel worse","bullet_2":"Good parent, bad results","bullet_3":"Exhausted and defeated","bullet_color":"#1F7AE0","bg_gradient":"linear-gradient(180deg, #FFFFFF 0%, #F4F8FF 100%)","icon_bg":"linear-gradient(135deg, #FFF, #EAF2FF)","icon_color":"#1F7AE0","cta_text":"This is me","cta_url":"#"}},
+        {"type":"state","settings":{"emoji":"🪜","title":"Some good, some bad","quote":"Great days give me hope. Bad days crush me.","bullet_1":"Inconsistent is my middle name","bullet_2":"When it’s good, it’s great","bullet_3":"When it’s bad, I question everything","bullet_color":"#C59100","bg_gradient":"linear-gradient(180deg, #FFFFFF 0%, #FFFDF2 100%)","icon_bg":"linear-gradient(135deg, #FFF, #FFF5C7)","icon_color":"#C59100","cta_text":"This is me","cta_url":"#"}},
+        {"type":"state","settings":{"emoji":"✨","title":"Actually pretty good","quote":"We’re connected. Just want to deepen it.","bullet_1":"Solid foundation in place","bullet_2":"Ready for next level","bullet_3":"Want to setup for the long-term","bullet_color":"#06A870","bg_gradient":"linear-gradient(180deg, #FFFFFF 0%, #F8FFFB 100%)","icon_bg":"linear-gradient(135deg, #FFF, #E6FFF2)","icon_color":"#06A870","cta_text":"This is me","cta_url":"#"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,10 +1,4 @@
-{% include 'nav_default_links' %}
-{% assign nav_links = nav_links %}
-{% assign cta_label = nav_cta_label %}
-{% assign cta_url = nav_cta_url %}
-{% assign secondary_label = nav_secondary_label %}
-{% assign secondary_url = nav_secondary_url %}
-{% assign show_secondary_cta = nav_show_secondary %}
+{% comment %} Initialize navigation variables {% endcomment %}
 {% assign login_url = '/login' %}
 {% assign profile_label = 'Login' %}
 {% assign profile_event = 'nav_login' %}
@@ -14,20 +8,13 @@
   {% assign profile_event = 'nav_library' %}
 {% endif %}
 {% assign current_path = request.path | default: '/' | downcase %}
-{% assign nav_style = nav_style %}
-{% assign nav_is_sticky = nav_is_sticky %}
-{% assign nav_show_login = nav_show_login %}
-{% assign logo_normal = nav_logo_url %}
-{% assign logo_inverted = nav_logo_url_inverted %}
-{% assign use_inverted = false %}
-{% assign logo_current = logo_normal %}
 
 <style>
   #an-pill-nav-{{ section.id }} {
-    {% if nav_is_sticky %}position: sticky; top: 0;{% else %}position: relative;{% endif %}
+    {% if section.settings.is_sticky %}position: sticky; top: 0;{% else %}position: relative;{% endif %}
     z-index: 9999;
     padding: 1.15rem 0;
-    {% if nav_style == 'transparent' %}
+    {% if section.settings.nav_style == 'transparent' %}
       background: transparent;
       backdrop-filter: none;
       border-bottom: 1px solid rgba(15, 23, 42, 0.06);
@@ -259,35 +246,35 @@
 
 <nav id="an-pill-nav-{{ section.id }}" class="an-pill-nav">
   <div class="container an-pill-nav__container">
-    <a class="an-pill-nav__logo" href="{{ current_site.root_url | default: '/' }}">
-      <img src="{{ logo_current }}" alt="Attachment Nerd logo">
+    <a class="an-pill-nav__logo" href="/">
+      {% if section.settings.logo_image %}
+        <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ current_site.name | default: 'Logo' }}">
+      {% else %}
+        <img src="https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg" alt="Attachment Nerd logo">
+      {% endif %}
     </a>
 
     <div class="an-pill-nav__pill" aria-label="Primary navigation">
-      {% for raw_item in nav_links %}
-        {% assign parts = raw_item | split: '=>' %}
-        {% assign label = parts[0] | default: '' | strip %}
-        {% assign url = '/' %}
-        {% if parts.size > 1 %}
-          {% assign url = parts[1] | strip | default: '/' %}
-        {% endif %}
-        {% if label != '' %}
+      {% for block in section.blocks %}
+        {% if block.type == 'nav_link' %}
+          {% assign url = block.settings.url | default: '/' %}
           {% assign normalized_url = url | downcase %}
+          {% assign normalized_url_with_slash = normalized_url | append: '/' %}
           {% assign is_active = false %}
-          {% if current_path == normalized_url or current_path == normalized_url | append: '/' %}
+          {% if current_path == normalized_url or current_path == normalized_url_with_slash %}
             {% assign is_active = true %}
           {% endif %}
           <a href="{{ url }}"
              class="an-pill-nav__link{% if is_active %} an-pill-nav__link--active{% endif %}"
-             data-evt="nav_link_{{ label | handle }}">
-            {{ label }}
+             data-evt="nav_link_{{ block.settings.label | handle }}">
+            {{ block.settings.label }}
           </a>
         {% endif %}
       {% endfor %}
     </div>
 
     <div class="an-pill-nav__actions">
-      {% if nav_show_login %}
+      {% if section.settings.show_login %}
         {% if current_site_user %}
           <a class="an-pill-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
@@ -306,10 +293,43 @@
           </a>
         {% endif %}
       {% endif %}
-      <a class="an-pill-nav__cta" href="{{ cta_url }}" data-evt="nav_cta">{{ cta_label }}</a>
-      {% if show_secondary_cta %}
-        <a class="an-pill-nav__cta an-pill-nav__cta--secondary" href="{{ secondary_url }}" data-evt="nav_cta_secondary">{{ secondary_label }}</a>
-      {% endif %}
+
+      {% comment %} Render button blocks {% endcomment %}
+      {% for block in section.blocks %}
+        {% if block.type == 'button' %}
+          {% comment %} Check visibility {% endcomment %}
+          {% assign show_button = true %}
+          {% if block.settings.visibility == 'logged_out' and current_site_user %}
+            {% assign show_button = false %}
+          {% elsif block.settings.visibility == 'logged_in' and current_site_user == nil %}
+            {% assign show_button = false %}
+          {% endif %}
+
+          {% if show_button %}
+            <a class="an-pill-nav__cta{% if block.settings.style == 'secondary' %} an-pill-nav__cta--secondary{% endif %}"
+               href="{{ block.settings.url }}"
+               data-evt="nav_cta_{{ forloop.index }}"
+               style="{% if block.settings.style == 'primary' and block.settings.gradient_start and block.settings.gradient_end %}
+                 background: linear-gradient({{ block.settings.gradient_angle }}deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
+               {% elsif block.settings.style == 'solid' %}
+                 background: {{ block.settings.bg_color }};
+               {% elsif block.settings.style == 'secondary' %}
+                 background: {{ block.settings.bg_color | default: '#ffffff' }};
+               {% endif %}
+               color: {{ block.settings.text_color }};
+               border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+               border-radius: {{ block.settings.border_radius }}px;
+               padding: {{ block.settings.padding_y }}px {{ block.settings.padding_x }}px;
+               font-size: {{ block.settings.font_size }}px;
+               font-weight: {{ block.settings.font_weight }};
+               {% if block.settings.shadow %}
+                 box-shadow: 0 16px 35px -18px {{ block.settings.bg_color | default: '#5e3bff' }}70;
+               {% endif %}">
+              {{ block.settings.label }}
+            </a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
     </div>
 
     <button class="an-pill-nav__toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-pill-nav-toggle>
@@ -321,22 +341,36 @@
 
   <div class="an-pill-nav__backdrop" data-pill-nav-backdrop></div>
   <div class="an-pill-nav__drawer" role="dialog" aria-modal="true" aria-label="Mobile navigation" data-pill-nav-drawer>
-    {% for raw_item in nav_links %}
-      {% assign parts = raw_item | split: '=>' %}
-      {% assign label = parts[0] | default: '' | strip %}
-      {% assign url = '/' %}
-      {% if parts.size > 1 %}
-        {% assign url = parts[1] | strip | default: '/' %}
-      {% endif %}
-      {% if label != '' %}
-        <a href="{{ url }}" data-evt="nav_link_mobile_{{ label | handle }}">{{ label }}</a>
+    {% comment %} Render nav links in mobile drawer {% endcomment %}
+    {% for block in section.blocks %}
+      {% if block.type == 'nav_link' %}
+        <a href="{{ block.settings.url }}" data-evt="nav_link_mobile_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
       {% endif %}
     {% endfor %}
-    <a class="an-pill-nav__cta" href="{{ cta_url }}" data-evt="nav_cta_mobile">{{ cta_label }}</a>
-    {% if show_secondary_cta %}
-      <a class="an-pill-nav__cta an-pill-nav__cta--secondary" href="{{ secondary_url }}" data-evt="nav_cta_secondary_mobile">{{ secondary_label }}</a>
-    {% endif %}
-    {% if nav_show_login %}
+
+    {% comment %} Render buttons in mobile drawer {% endcomment %}
+    {% for block in section.blocks %}
+      {% if block.type == 'button' %}
+        {% comment %} Check visibility {% endcomment %}
+        {% assign show_button = true %}
+        {% if block.settings.visibility == 'logged_out' and current_site_user %}
+          {% assign show_button = false %}
+        {% elsif block.settings.visibility == 'logged_in' and current_site_user == nil %}
+          {% assign show_button = false %}
+        {% endif %}
+
+        {% if show_button %}
+          <a class="an-pill-nav__cta{% if block.settings.style == 'secondary' %} an-pill-nav__cta--secondary{% endif %}"
+             href="{{ block.settings.url }}"
+             data-evt="nav_cta_mobile_{{ forloop.index }}">
+            {{ block.settings.label }}
+          </a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% comment %} Show login link if enabled and user not logged in {% endcomment %}
+    {% if section.settings.show_login %}
       {% unless current_site_user %}
         <a class="an-pill-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}">{{ profile_label }}</a>
       {% endunless %}
@@ -397,7 +431,247 @@
 
 {% schema %}
 {
-  "name": "Navigation",
-  "elements": []
+  "name": "Nav - Main",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Navigation Settings"
+    },
+    {
+      "type": "select",
+      "id": "nav_style",
+      "label": "Navigation Style",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default (Blur)" },
+        { "value": "transparent", "label": "Transparent" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "is_sticky",
+      "label": "Sticky Navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_login",
+      "label": "Show Login/Profile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image",
+      "info": "Upload your logo (recommended height: 34px)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Label",
+          "default": "About"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Link URL",
+          "default": "/about"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Button URL",
+          "default": "/pricing"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            { "value": "primary", "label": "Primary (Gradient)" },
+            { "value": "secondary", "label": "Secondary (Outline)" },
+            { "value": "solid", "label": "Solid Color" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "visibility",
+          "label": "Show Button For",
+          "default": "all",
+          "options": [
+            { "value": "all", "label": "All Visitors" },
+            { "value": "logged_in", "label": "Logged In Users Only" },
+            { "value": "logged_out", "label": "Logged Out Users Only" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button Colors"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background Color",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border Color",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "header",
+          "content": "Button Style Settings"
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "label": "Border Width",
+          "default": 1,
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "label": "Border Radius",
+          "default": 999,
+          "min": 0,
+          "max": 999,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "padding_x",
+          "label": "Horizontal Padding",
+          "default": 24,
+          "min": 8,
+          "max": 48,
+          "step": 2,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "padding_y",
+          "label": "Vertical Padding",
+          "default": 12,
+          "min": 4,
+          "max": 24,
+          "step": 2,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "Font Size",
+          "default": 15,
+          "min": 12,
+          "max": 20,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "default": "600",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "shadow",
+          "label": "Add Shadow",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Gradient Settings (Primary Style)"
+        },
+        {
+          "type": "color",
+          "id": "gradient_start",
+          "label": "Gradient Start",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "id": "gradient_end",
+          "label": "Gradient End",
+          "default": "#7B66FF"
+        },
+        {
+          "type": "range",
+          "id": "gradient_angle",
+          "label": "Gradient Angle",
+          "default": 135,
+          "min": 0,
+          "max": 360,
+          "step": 15,
+          "unit": "deg"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nav - Main",
+      "category": "Navigation",
+      "blocks": [
+        { "type": "nav_link", "settings": { "label": "About", "url": "/about" } },
+        { "type": "nav_link", "settings": { "label": "Resources", "url": "/resources" } },
+        { "type": "nav_link", "settings": { "label": "Blog", "url": "/blog" } },
+        { "type": "button", "settings": {
+          "label": "Get Started",
+          "url": "/pricing",
+          "style": "primary",
+          "visibility": "logged_out"
+        }},
+        { "type": "button", "settings": {
+          "label": "My Library",
+          "url": "/library",
+          "style": "secondary",
+          "visibility": "logged_in"
+        }}
+      ]
+    }
+  ]
 }
 {% endschema %}

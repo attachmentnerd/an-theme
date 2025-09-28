@@ -1,0 +1,1043 @@
+{% comment %}
+  AN Feature/Testimonial Section
+  - Module-based feature showcase
+  - Integrated testimonial with star rating
+  - Product mockup display
+  - Brand-aligned design
+{% endcomment %}
+
+<section id="{{ section.settings.section_id | default: 'feature-testimonialbottom' }}-{{ section.id }}" class="an-feature-testimonial py-5" style="background-color: {{ section.settings.background_color | default: '#FAFAFA' }};">
+  <div class="container">
+    <!-- Main Constrained Box -->
+    <div class="an-feature-testimonial__box">
+      <div class="row align-items-center" style="--image-order: {% if section.settings.image_position == 'left' %}1{% else %}2{% endif %}; --content-order: {% if section.settings.image_position == 'left' %}2{% else %}1{% endif %};">
+        <!-- Media Column (Image or Video) -->
+        <div class="col-lg-6 order-1 image-column">
+          <div class="an-feature-testimonial__image" style="background: {{ section.settings.image_bg_color | default: 'linear-gradient(135deg, #F8F9FF 0%, #F0EDFF 100%)' }};">
+            {% if section.settings.media_type == 'video' %}
+              <div class="product-showcase">
+                {% if section.settings.video %}
+                  <div class="product-video-container">
+                    <iframe src="https://fast.wistia.net/embed/iframe/{{ section.settings.video.wistia_id }}?videoFoam=true"
+                            title="Video"
+                            allow="autoplay; fullscreen"
+                            allowfullscreen
+                            frameborder="0"></iframe>
+                  </div>
+                {% elsif section.settings.video_url != blank %}
+                  <div class="product-video-container">
+                    {% if section.settings.video_url contains 'youtube.com' or section.settings.video_url contains 'youtu.be' %}
+                      {% assign yt_id = section.settings.video_url | split: 'v=' | last | split: '&' | first %}
+                      {% if section.settings.video_url contains 'youtu.be' %}
+                        {% assign yt_id = section.settings.video_url | split: '/' | last %}
+                      {% endif %}
+                      <iframe src="https://www.youtube.com/embed/{{ yt_id }}{% if section.settings.video_autoplay %}?autoplay=1{% endif %}"
+                              title="YouTube video"
+                              allow="autoplay; fullscreen"
+                              allowfullscreen
+                              frameborder="0"></iframe>
+                    {% elsif section.settings.video_url contains 'vimeo.com' %}
+                      {% assign vimeo_id = section.settings.video_url | split: '/' | last %}
+                      <iframe src="https://player.vimeo.com/video/{{ vimeo_id }}{% if section.settings.video_autoplay %}?autoplay=1{% endif %}"
+                              title="Vimeo video"
+                              allow="autoplay; fullscreen"
+                              allowfullscreen
+                              frameborder="0"></iframe>
+                    {% elsif section.settings.video_url contains 'wistia' %}
+                      {% assign wistia_id = section.settings.video_url | split: '/' | last %}
+                      <iframe src="https://fast.wistia.net/embed/iframe/{{ wistia_id }}?videoFoam=true"
+                              title="Wistia video"
+                              allow="autoplay; fullscreen"
+                              allowfullscreen
+                              frameborder="0"></iframe>
+                    {% else %}
+                      <video
+                        {% if section.settings.video_autoplay %}autoplay{% endif %}
+                        {% if section.settings.video_muted %}muted{% endif %}
+                        {% if section.settings.video_loop %}loop{% endif %}
+                        {% if section.settings.video_controls %}controls{% endif %}
+                        playsinline
+                        {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_picker_url: '800x450' }}"{% endif %}>
+                        <source src="{{ section.settings.video_url }}" type="video/mp4">
+                      </video>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            {% elsif section.settings.product_image %}
+              <div class="product-showcase">
+                <img src="{{ section.settings.product_image | image_picker_url: '400x600' }}"
+             alt="{{ section.settings.product_image_alt | default: 'Product image' }}"
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Content Column -->
+        <div class="col-lg-6 order-2 content-column">
+          <div class="an-feature-testimonial__content" style="background-color: {{ section.settings.content_bg_color | default: '#FFFFFF' }};">
+          <!-- Module Label -->
+          {% if section.settings.module_label != blank %}
+            <div class="module-label">
+              {{ section.settings.module_label }}
+            </div>
+          {% endif %}
+
+          <!-- Main Heading -->
+          <h2 class="feature-heading">
+            {{ section.settings.heading | default: 'Get It All Done, Joyfully' }}
+          </h2>
+
+          <!-- Subheading -->
+          {% if section.settings.subheading != blank %}
+            <p class="feature-subheading">
+              {{ section.settings.subheading }}
+            </p>
+          {% endif %}
+
+          <!-- Feature List -->
+          <div class="feature-list">
+            {% for block in section.blocks %}
+              {% if block.type == 'feature' %}
+                <div class="feature-item" {{ block.shopify_attributes }}>
+                  <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" fill="{{ section.settings.icon_bg_color | default: '#E9E6FF' }}"/>
+                      <path d="M8 12L11 15L16 9" stroke="{{ section.settings.icon_color | default: '#5E3BFF' }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="feature-text">
+                    {{ block.settings.text }}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="feature-cta-group">
+            {% for block in section.blocks %}
+              {% if block.type == 'cta_button' %}
+                <div class="feature-cta" {{ block.shopify_attributes }}>
+                  <div class="cta-dropdown-wrapper">
+                    <a href="{{ block.settings.cta_url | default: '#' }}"
+                       class="btn-custom btn-{{ block.settings.button_style | default: 'gradient' }} {% if block.settings.dropdown_links != blank %}has-dropdown{% endif %}"
+                       {% if block.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}
+                       style="{% if block.settings.button_style == 'solid' %}background-color: {{ block.settings.button_color }}; color: {{ block.settings.button_text_color }};{% elsif block.settings.button_style == 'outline' %}border-color: {{ block.settings.button_color }}; color: {{ block.settings.button_color }};{% endif %}">
+                      {{ block.settings.cta_text }}
+                      {% if block.settings.dropdown_links != blank %}
+                        <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M4 6L8 10L12 6H4Z"/>
+                        </svg>
+                      {% endif %}
+                    </a>
+
+                    {% if block.settings.dropdown_links != blank %}
+                      <div class="cta-dropdown">
+                        {% assign dropdown_items = block.settings.dropdown_links | split: ',' %}
+                        {% for item in dropdown_items %}
+                          {% assign parts = item | split: '|' %}
+                          {% if parts.size == 2 %}
+                            <a href="{{ parts[1] | strip }}" class="dropdown-link">
+                              {{ parts[0] | strip }}
+                            </a>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Testimonial Section - Inside the box -->
+      {% if section.settings.show_testimonial %}
+        <div class="an-feature-testimonial__testimonial" style="background-color: {{ section.settings.testimonial_bg_color | default: '#F8F9FF' }};">
+          <div class="testimonial-content">
+          <!-- Quote -->
+          <div class="testimonial-quote">
+            "{{ section.settings.testimonial_text | default: 'My morning routine has me giggling as I get out of bed.' }}"
+          </div>
+
+          <!-- Author Info -->
+          <div class="testimonial-author">
+            {% if section.settings.testimonial_image %}
+              <div class="author-image">
+                <img src="{{ section.settings.testimonial_image | image_picker_url: '120x120' }}"
+             alt="{{ section.settings.testimonial_name }}"
+             class="img-fluid"
+             loading="lazy"
+             style="object-fit: cover;">
+              </div>
+            {% endif %}
+
+            <div class="author-info">
+              <!-- Star Rating -->
+              <div class="star-rating">
+                {% for i in (1..5) %}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="{{ section.settings.star_color | default: '#FFD700' }}">
+                    <path d="M8 0L10.163 5.671L16 6.207L11.82 10.002L13.026 16L8 12.671L2.974 16L4.18 10.002L0 6.207L5.837 5.671L8 0Z"/>
+                  </svg>
+                {% endfor %}
+              </div>
+
+              <div class="author-name">
+                {{ section.settings.testimonial_name | default: 'SUIKO MCCALL' }}
+              </div>
+
+              {% if section.settings.testimonial_title != blank %}
+                <div class="author-title">
+                  {{ section.settings.testimonial_title }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .an-feature-testimonial {
+    position: relative;
+    overflow: visible;
+    z-index: 5;
+  }
+
+  /* Main Constrained Box */
+  .an-feature-testimonial__box {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    overflow: visible;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Content Styling */
+  .an-feature-testimonial__content {
+    padding: 4rem;
+  }
+
+  .module-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-ink-600);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .module-label::before {
+    content: '';
+    width: 40px;
+    height: 2px;
+    background: var(--c-brand-600);
+  }
+
+  .feature-heading {
+    font-size: clamp(2rem, 5vw, var(--fs-h1));
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--c-ink-900);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .feature-subheading {
+    font-size: var(--fs-body-lg);
+    line-height: 1.6;
+    color: var(--c-ink-500);
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+    font-weight: var(--fw-light);
+  }
+
+  /* Feature List */
+  .feature-list {
+    margin-bottom: 2.5rem;
+  }
+
+  .an-feature-testimonial .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .an-feature-testimonial .feature-item:nth-child(1) { animation-delay: 0.1s; }
+  .an-feature-testimonial .feature-item:nth-child(2) { animation-delay: 0.2s; }
+  .an-feature-testimonial .feature-item:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  .an-feature-testimonial .feature-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
+
+  .an-feature-testimonial .feature-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--c-ink-800);
+    flex: 1;
+  }
+
+  /* CTA Button Group */
+  .feature-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .feature-cta {
+    position: relative;
+  }
+
+  .cta-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1001;
+  }
+
+  /* CTA Button Base Styles */
+  .btn-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 32px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .btn-custom:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  /* Gradient Style */
+  .btn-gradient {
+    background: var(--g-brand);
+    color: var(--c-white) !important;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+      0 4px 8px rgba(94, 59, 255, 0.35);
+  }
+
+  .btn-gradient:hover {
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+      0 8px 16px rgba(94, 59, 255, 0.4);
+    color: var(--c-white) !important;
+  }
+
+  /* Solid Style */
+  .btn-solid {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-solid:hover {
+    opacity: 0.9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Outline Style */
+  .btn-outline {
+    background: transparent;
+    border-width: 2px;
+    border-style: solid;
+  }
+
+  .btn-outline:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  /* Dropdown Arrow */
+  .dropdown-arrow {
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .has-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  /* Dropdown Menu */
+  .cta-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+    z-index: 9999;
+    min-width: 200px;
+    margin-top: 8px;
+    white-space: nowrap;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .cta-dropdown-wrapper:hover .cta-dropdown,
+  .cta-dropdown-wrapper:focus-within .cta-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Auto-hide dropdown when scrolling or clicking outside */
+  .cta-dropdown-wrapper {
+    isolation: isolate;
+  }
+
+  /* Ensure dropdown doesn't interfere with next section */
+  .an-feature-testimonial {
+    margin-bottom: 2rem;
+  }
+
+  .dropdown-link {
+    display: block;
+    padding: 12px 20px;
+    color: #333 !important;
+    text-decoration: none;
+    font-size: var(--fs-body);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .dropdown-link:last-child {
+    border-bottom: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .dropdown-link:first-child {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .dropdown-link:hover {
+    background-color: #f8f9fa;
+    color: #333 !important;
+  }
+
+  /* Product Showcase */
+  .an-feature-testimonial__image {
+    position: relative;
+    padding: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px;
+    height: 100%;
+  }
+
+  .product-showcase {
+    position: relative;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .product-showcase img {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+    margin: 0 auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* Video container maintains 16:9 aspect ratio */
+  .product-showcase .product-video-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .product-showcase .product-video-container::before {
+    content: '';
+    display: block;
+    padding-bottom: 56.25%;
+  }
+
+  .product-showcase .product-video-container iframe,
+  .product-showcase .product-video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: #000;
+  }
+
+  /* Testimonial Section - Now inside the box */
+  .an-feature-testimonial__testimonial {
+    padding: 3rem 4rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+  }
+
+  .testimonial-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+
+  .testimonial-quote {
+    font-size: 1.375rem;
+    line-height: 1.6;
+    color: var(--c-ink-900);
+    margin-bottom: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    position: relative;
+    font-style: italic;
+  }
+
+  .testimonial-quote::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    font-size: 4rem;
+    color: var(--c-brand-100);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .author-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .author-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .author-info {
+    text-align: left;
+  }
+
+  .star-rating {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .author-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-ink-900);
+    margin-bottom: 0.25rem;
+  }
+
+  .author-title {
+    font-size: 0.875rem;
+    color: var(--c-ink-600);
+    opacity: 0.8;
+  }
+
+  /* Decorative Elements */
+  .an-feature-testimonial__box::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--c-brand-100) 0%, transparent 70%);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Make the box cohesive */
+  .an-feature-testimonial__box .row {
+    margin: 0;
+  }
+
+  .an-feature-testimonial__box .col-lg-6 {
+    padding: 0;
+  }
+
+  /* Dynamic column ordering */
+  @media (min-width: 992px) {
+    .image-column {
+      order: var(--image-order);
+    }
+
+    .content-column {
+      order: var(--content-order);
+    }
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 991px) {
+    .feature-heading {
+      font-size: 2rem;
+    }
+
+    .an-feature-testimonial__content {
+      padding: 2.5rem;
+    }
+
+    .an-feature-testimonial__image {
+      min-height: 400px;
+      padding: 2.5rem;
+    }
+
+    .an-feature-testimonial__testimonial {
+      padding: 2rem 2.5rem;
+    }
+
+    .testimonial-quote {
+      font-size: 1.125rem;
+    }
+
+    .testimonial-author {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .author-info {
+      text-align: center;
+    }
+
+    .star-rating {
+      justify-content: center;
+    }
+
+    /* CTA Group mobile spacing */
+    .feature-cta-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .feature-cta {
+      width: 100%;
+    }
+
+    .btn-gradient {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .an-feature-testimonial__content {
+      padding: 2rem;
+    }
+
+    .an-feature-testimonial__image {
+      padding: 2rem;
+      min-height: 300px;
+    }
+
+    .an-feature-testimonial__testimonial {
+      padding: 1.75rem 2rem;
+    }
+
+    .feature-heading {
+      font-size: 1.75rem;
+    }
+
+    .feature-subheading {
+      font-size: 1rem;
+    }
+
+    .testimonial-quote {
+      font-size: 1rem;
+    }
+
+    .testimonial-quote::before {
+      font-size: 2.5rem;
+      top: -10px;
+      left: -5px;
+    }
+  }
+
+  /* Ensure box stays contained */
+  .an-feature-testimonial__box * {
+    max-width: 100%;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonial - Feature Combo",
+  "class": "an-feature-testimonial",
+  "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-testimonialbottom",
+      "info": "Custom ID for internal linking (e.g., #feature-testimonialbottom)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "module_label",
+      "label": "Module Label",
+      "default": "MODULE 4"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Get It All Done, Joyfully"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Replace stress, exhaustion, and self-sabotage with ease, achievement, and passion."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "header",
+      "content": "Product Showcase"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media Type",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image",
+      "info": "Upload an image showing your product on multiple devices"
+    },
+    {
+      "type": "text",
+      "id": "product_image_alt",
+      "label": "Product Image Alt Text"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Kajabi Video"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "External Video URL (YouTube, Vimeo, Wistia, or MP4)"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Video Poster (for MP4)"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_controls",
+      "label": "Show Controls",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Testimonial"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_testimonial",
+      "label": "Show Testimonial",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial_text",
+      "label": "Testimonial Text",
+      "default": "My morning routine has me giggling as I get out of bed."
+    },
+    {
+      "type": "text",
+      "id": "testimonial_name",
+      "label": "Author Name",
+      "default": "SUIKO MCCALL"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_title",
+      "label": "Author Title/Location",
+      "default": "Artist, Vermont, USA"
+    },
+    {
+      "type": "image_picker",
+      "id": "testimonial_image",
+      "label": "Author Image"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Left Side (Content) Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Right Side (Image) Background",
+      "default": "#F8F9FF"
+    },
+    {
+      "type": "color",
+      "id": "testimonial_bg_color",
+      "label": "Quote Area Background",
+      "default": "#F8F9FF"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Check Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Rating Color",
+      "default": "#FFD700"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Item",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Find out the surprising reason \"hope\" is sabotaging your success."
+        }
+      ]
+    },
+    {
+      "type": "cta_button",
+      "name": "CTA Button",
+      "elements": [
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "text",
+          "id": "cta_url",
+          "label": "Button URL",
+          "default": "#"
+        },
+        {
+          "type": "checkbox",
+          "id": "cta_new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "options": [
+            {
+              "value": "gradient",
+              "label": "Gradient (Primary)"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            },
+            {
+              "value": "solid",
+              "label": "Solid Color"
+            }
+          ],
+          "default": "gradient"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button Color",
+          "default": "#5E3BFF",
+          "info": "Used for solid and outline styles"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "textarea",
+          "id": "dropdown_links",
+          "label": "Dropdown Links",
+          "info": "Format: Link Text|Link URL, Link Text|Link URL (e.g., Amazon|/amazon, Barnes & Noble|/bn)",
+          "placeholder": "Amazon|/amazon, Apple Books|/apple, Barnes & Noble|/bn"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Testimonial Combo",
+      "category": "Content",
+      "description": "Feature showcase with integrated testimonial",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Find out the surprising reason \"hope\" is sabotaging your success."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Get the genius-activating prework ritual that flips your focus switch."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "How to boost your energy and focus in 5-minutes flat (it's better than RedBull!)"
+          }
+        },
+        {
+          "type": "cta_button",
+          "settings": {
+            "cta_text": "Get Time Genius",
+            "cta_url": "#",
+            "dropdown_links": "Amazon|/amazon, Apple Books|/apple, Google Play|/google"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

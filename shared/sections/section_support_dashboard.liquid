@@ -94,7 +94,7 @@
                       <button class="sd-form-submit" name="commit">{{ block.settings.submit_label | default: 'Send' }}</button>
                     {% endform %}
                   {% elsif form_id %}
-                    {% form "optin", id: form_id %}
+                    {% form 'optin', id: form_id %}
                       {% if block.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you_url }}">{% endif %}
                       {% if block.settings.hidden_field_name and block.settings.hidden_field_value %}
                         <input type="hidden" name="form_submission[{{ block.settings.hidden_field_name }}]" value="{{ block.settings.hidden_field_value }}">
@@ -208,7 +208,7 @@
                       <button class="sd-form-submit" name="commit">{{ cf.settings.submit_label | default: 'Send' }}</button>
                     {% endform %}
                   {% elsif form_id %}
-                    {% form "optin", id: form_id %}
+                    {% form 'optin', id: form_id %}
                       {% if cf.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ cf.settings.thank_you_url }}">{% endif %}
                       {% if cf.settings.hidden_field_name and cf.settings.hidden_field_value %}
                         <input type="hidden" name="form_submission[{{ cf.settings.hidden_field_name }}]" value="{{ cf.settings.hidden_field_value }}">
@@ -254,7 +254,7 @@
                       <button class="sd-form-submit" name="commit">{{ block.settings.submit_label | default: 'Send' }}</button>
                     {% endform %}
                   {% elsif form_id %}
-                    {% form "optin", id: form_id %}
+                    {% form 'optin', id: form_id %}
                       {% if block.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you_url }}">{% endif %}
                       {% if block.settings.hidden_field_name and block.settings.hidden_field_value %}
                         <input type="hidden" name="form_submission[{{ block.settings.hidden_field_name }}]" value="{{ block.settings.hidden_field_value }}">

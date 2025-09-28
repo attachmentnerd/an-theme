@@ -18,10 +18,12 @@
     transition: var(--nav-pill-transition);
   }
 
+  /* Keep nav bar transparent when scrolled; only adjust padding */
   .nav-transparent-pill--scrolled {
-    /* Keep transparent; only adjust padding when scrolled */
     padding: var(--nav-pill-padding-y-scrolled) 0;
   }
+
+  /* Sticky behavior removed */
 
   .nav-transparent-pill__container {
     max-width: 1200px;
@@ -169,11 +171,11 @@
 
   .nav-transparent-pill__icon-btn,
   .nav-transparent-pill__mobile-toggle {
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.08);
+    background: none;
+    border: none;
     padding: 8px;
     cursor: pointer;
-    color: {{ section.settings.icon_color | default: '#333333' }};
+    /* Color will be set by inverse logic below */
     transition: all 0.2s ease;
     border-radius: 50%;
     width: 40px;
@@ -184,8 +186,48 @@
     position: relative;
   }
 
-  .nav-transparent-pill__icon-btn:hover,
+  /* Mobile toggle color based on inverse mode */
+  .nav-transparent-pill__mobile-toggle {
+    {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
+    {% assign is_inverse = false %}
+    {% if section.settings.use_inverse_logo %}
+      {% assign is_inverse = true %}
+    {% elsif logo_block and logo_block.settings.use_block_inverse_logo %}
+      {% assign is_inverse = true %}
+    {% endif %}
+
+    {% if is_inverse %}
+      /* White/light style for dark backgrounds (inverted mode) */
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+    {% else %}
+      /* Dark style for light backgrounds (normal mode) */
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.03);
+      color: #333333;
+    {% endif %}
+  }
+
   .nav-transparent-pill__mobile-toggle:hover {
+    {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
+    {% assign is_inverse = false %}
+    {% if section.settings.use_inverse_logo %}
+      {% assign is_inverse = true %}
+    {% elsif logo_block and logo_block.settings.use_block_inverse_logo %}
+      {% assign is_inverse = true %}
+    {% endif %}
+
+    {% if is_inverse %}
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    {% else %}
+      background: rgba(0, 0, 0, 0.08);
+      border-color: rgba(0, 0, 0, 0.2);
+    {% endif %}
+  }
+
+  .nav-transparent-pill__icon-btn:hover {
     background: {{ section.settings.icon_hover_bg | default: '#F5F5F5' }};
     color: {{ section.settings.icon_hover_color | default: '#5E3BFF' }};
   }
@@ -378,6 +420,19 @@
 
   .nav-transparent-pill__button--outline {
     /* Inherit from base button styles */
+  }
+
+  /* Secondary CTA style (for Login) */
+  .nav-transparent-pill__button--secondary {
+    background: transparent;
+    color: {{ section.settings.menu_text_color | default: '#333333' }};
+    border: 2px solid {{ section.settings.menu_text_color | default: '#333333' }};
+  }
+
+  .nav-transparent-pill__button--secondary:hover {
+    background: {{ section.settings.mobile_hover_bg | default: '#E9E6FF' }};
+    color: {{ section.settings.menu_text_hover | default: '#5E3BFF' }} !important;
+    border-color: {{ section.settings.menu_text_hover | default: '#5E3BFF' }};
   }
 
   /* Mobile Toggle */
@@ -749,7 +804,7 @@
   <div class="nav-transparent-pill__container">
     <!-- Logo -->
     <div class="nav-transparent-pill__logo">
-      <a href="{{ current_site.root_url }}">
+      <a href="/">
         {% comment %} Prefer inverse logo when enabled (section-level), else block-level inverse, else defaults {% endcomment %}
         {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
           <img src="{{ section.settings.inverse_logo | image_picker_url: '360x120' }}"
@@ -832,30 +887,6 @@
               {% endif %}
             </li>
           {% endfor %}
-        {% else %}
-          {% include 'nav_default_links' %}
-          {% assign current_path = request.path | default: '/' | downcase %}
-          {% for item in nav_default_links %}
-            {% assign parts = item | split: ":" %}
-            {% assign item_title = parts[0] | strip %}
-            {% assign item_url = parts[1] | default: '/' | strip %}
-            {% assign item_event = parts[2] | default: 'nav_link' | strip %}
-            {% assign normalized_item_url = item_url | downcase %}
-            {% assign is_active = false %}
-            {% if current_path == normalized_item_url or current_path == normalized_item_url | append: '/' %}
-              {% assign is_active = true %}
-            {% endif %}
-            {% if current_site_user and item_event == 'nav_login' %}
-              {% continue %}
-            {% endif %}
-            <li class="nav-transparent-pill__menu-item">
-              <a href="{{ item_url }}"
-                 class="nav-transparent-pill__menu-link {% if is_active %}nav-transparent-pill__menu-link--active{% endif %}"
-                 data-evt="{{ item_event }}">
-                {{ item_title }}
-              </a>
-            </li>
-          {% endfor %}
         {% endif %}
 
         {% comment %} Render custom link blocks {% endcomment %}
@@ -878,6 +909,7 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'button' %}
+            {% comment %} Conditional visibility based on login state {% endcomment %}
             {% assign show_btn = true %}
             {% if current_site_user and block.settings.show_when_logged_in == false %}
               {% assign show_btn = false %}
@@ -888,12 +920,6 @@
             {% if show_btn %}
             {% comment %} Generate unique ID for this button block {% endcomment %}
             {% assign button_id = 'btn-' | append: block.id %}
-            {% assign primary_button_label = block.settings.button_text | default: 'Get Started' %}
-            {% assign primary_button_url = block.settings.button_link | default: '/program/secure-parenting' %}
-            {% if current_site_user %}
-              {% assign primary_button_label = block.settings.auth_button_text | default: 'My Library' %}
-              {% assign primary_button_url = block.settings.auth_button_link | default: '/library' %}
-            {% endif %}
             <style>
               #{{ button_id }} {
                 {% if block.settings.button_style == 'gradient' %}
@@ -929,12 +955,11 @@
                 {% endif %}
               }
             </style>
-            <a href="{{ primary_button_url }}"
+            <a href="{{ block.settings.button_link }}"
                id="{{ button_id }}"
                class="nav-transparent-pill__button"
-               {% if block.settings.new_tab and not current_site_user %}target="_blank" rel="noopener"{% endif %}
-               data-evt="nav_cta_primary">
-              <span>{{ primary_button_label }}</span>
+               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+              <span>{{ block.settings.button_text }}</span>
               {% if block.settings.button_icon %}
                 <i class="{{ block.settings.button_icon }} nav-transparent-pill__button-icon"></i>
               {% endif %}
@@ -942,27 +967,7 @@
             {% endif %}
 
           {% when 'user' %}
-            {% if current_site_user %}
-              <div class="nav-transparent-pill__user">
-                <button class="nav-transparent-pill__user-toggle" aria-label="User menu" aria-expanded="false">
-                  {% if block.settings.show_avatar %}
-                    {{ current_site_user | avatar_url | image_tag: class: "nav-transparent-pill__user-avatar", alt: "User avatar" }}
-                  {% else %}
-                    <span>{{ current_site_user.name | default: current_site_user.email }}</span>
-                  {% endif %}
-                </button>
-                <div class="nav-transparent-pill__user-dropdown">
-                  <a href="/library">{{ block.settings.library_text | default: 'My Library' }}</a>
-                  {{ block.settings.settings_text | default: 'Settings' | member_settings_link }}
-                  <hr>
-                  {{ block.settings.logout_text | default: 'Log Out' | member_logout_link }}
-                </div>
-              </div>
-            {% else %}
-              <a href="/login" class="nav-transparent-pill__button nav-transparent-pill__button--outline" data-evt="nav_login">
-                <span>{{ block.settings.login_text | default: 'Login' }}</span>
-              </a>
-            {% endif %}
+            {% comment %} User/login disabled. Add a Button block for Login if needed. {% endcomment %}
 
           {% when 'cart' %}
             {% if section.settings.enable_cart %}
@@ -977,33 +982,17 @@
             {% endif %}
 
           {% when 'search' %}
-            <button class="nav-transparent-pill__icon-btn"
-                    aria-label="Search"
-                    data-search-trigger
-                    data-evt="nav_search">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-              </svg>
-            </button>
+            {% comment %} Search disabled {% endcomment %}
 
           {% when 'link' %}
             <a href="{{ block.settings.link_url }}"
-               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
-               data-evt="{{ block.settings.link_event | default: 'nav_link_custom' }}">
+               {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
               {{ block.settings.link_text }}
             </a>
         {% endcase %}
       {% endfor %}
 
-      {% comment %} Legacy settings support {% endcomment %}
-      {% if section.settings.show_search and section.blocks.size == 0 %}
-        <button class="nav-transparent-pill__icon-btn" aria-label="Search">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-          </svg>
-        </button>
-      {% endif %}
+      {% comment %} Search disabled {% endcomment %}
 
       {% if section.settings.cta_text != blank and section.blocks.size == 0 %}
         <a href="{{ section.settings.cta_link }}" class="nav-transparent-pill__button nav-transparent-pill__button--primary">
@@ -1028,7 +1017,7 @@
 <div class="nav-transparent-pill__mobile-menu" id="mobile-menu-{{ section.id }}" aria-hidden="true" data-mobile-menu>
   <div class="nav-transparent-pill__mobile-header">
     <div class="nav-transparent-pill__logo">
-      <a href="{{ current_site.root_url }}">
+      <a href="/">
         {% comment %} Prefer inverse logo on mobile (section-level), then block-level inverse mobile/desktop, then defaults {% endcomment %}
         {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
           <img src="{{ section.settings.inverse_logo | image_picker_url: '240x80' }}"
@@ -1116,30 +1105,6 @@
               </a>
             </li>
           {% endfor %}
-        {% else %}
-          {% include 'nav_default_links' %}
-          {% assign current_path = request.path | default: '/' | downcase %}
-          {% for item in nav_default_links %}
-            {% assign parts = item | split: ":" %}
-            {% assign item_title = parts[0] | strip %}
-            {% assign item_url = parts[1] | default: '/' | strip %}
-            {% assign item_event = parts[2] | default: 'nav_link' | strip %}
-            {% assign normalized_item_url = item_url | downcase %}
-            {% assign is_active = false %}
-            {% if current_path == normalized_item_url or current_path == normalized_item_url | append: '/' %}
-              {% assign is_active = true %}
-            {% endif %}
-            {% if current_site_user and item_event == 'nav_login' %}
-              {% continue %}
-            {% endif %}
-            <li>
-              <a href="{{ item_url }}"
-                 {% if is_active %}class="active"{% endif %}
-                 data-evt="{{ item_event }}">
-                {{ item_title }}
-              </a>
-            </li>
-          {% endfor %}
         {% endif %}
 
         <!-- Mobile-only menu items -->
@@ -1167,21 +1132,52 @@
           {% assign show_mobile_btn = false %}
         {% endif %}
         {% if show_mobile_btn %}
-        {% assign mobile_button_label = block.settings.button_text | default: 'Get Started' %}
-        {% assign mobile_button_url = block.settings.button_link | default: '/program/secure-parenting' %}
-        {% if current_site_user %}
-          {% assign mobile_button_label = block.settings.auth_button_text | default: 'My Library' %}
-          {% assign mobile_button_url = block.settings.auth_button_link | default: '/library' %}
-        {% endif %}
-        <a href="{{ mobile_button_url }}"
-           class="nav-transparent-pill__mobile-button nav-transparent-pill__mobile-button--{{ block.settings.button_style }}"
-           {% if block.settings.new_tab and not current_site_user %}target="_blank" rel="noopener"{% endif %}
-           data-evt="nav_mobile_cta">
-          {% if block.settings.icon %}
-            <i class="{{ block.settings.icon }} nav-transparent-pill__mobile-button-icon"></i>
-          {% endif %}
-          {{ mobile_button_label }}
-        </a>
+          {% assign mbtn_id = 'm-btn-' | append: block.id %}
+          <style>
+            #{{ mbtn_id }} {
+              {% if block.settings.button_style == 'gradient' %}
+                background: linear-gradient(135deg, {{ block.settings.button_bg_color | default: '#5E3BFF' }}, {{ block.settings.button_bg_color | default: '#5E3BFF' | color_modify: 'darken', 10 }});
+                color: {{ block.settings.button_text_color | default: '#FFFFFF' }};
+                border: 2px solid transparent;
+              {% elsif block.settings.button_style == 'outline' %}
+                background: transparent;
+                color: {{ block.settings.button_bg_color | default: '#5E3BFF' }};
+                border: 2px solid {{ block.settings.button_bg_color | default: '#5E3BFF' }};
+              {% elsif block.settings.button_style == 'ghost' %}
+                background: transparent;
+                color: {{ block.settings.button_bg_color | default: '#5E3BFF' }};
+                border: none;
+              {% else %}
+                background: {{ block.settings.button_bg_color | default: '#5E3BFF' }};
+                color: {{ block.settings.button_text_color | default: '#FFFFFF' }};
+                border: 2px solid transparent;
+              {% endif %}
+              border-radius: {{ block.settings.button_radius | default: '25px' }};
+              padding: {{ block.settings.button_padding | default: '12px 24px' }};
+            }
+            #{{ mbtn_id }}:hover {
+              {% if block.settings.button_style == 'outline' %}
+                background: {{ block.settings.button_hover_bg | default: block.settings.button_bg_color | default: '#5E3BFF' }};
+                color: {{ block.settings.button_hover_text | default: '#FFFFFF' }} !important;
+                border-color: {{ block.settings.button_hover_bg | default: block.settings.button_bg_color | default: '#5E3BFF' }};
+              {% elsif block.settings.button_style == 'ghost' %}
+                background: {{ block.settings.button_hover_bg | default: 'rgba(94, 59, 255, 0.1)' }};
+                color: {{ block.settings.button_hover_text | default: block.settings.button_bg_color | default: '#5E3BFF' }} !important;
+              {% else %}
+                background: {{ block.settings.button_hover_bg | default: '#4025E0' }};
+                color: {{ block.settings.button_hover_text | default: '#FFFFFF' }} !important;
+              {% endif %}
+            }
+          </style>
+          <a href="{{ block.settings.button_link }}"
+             id="{{ mbtn_id }}"
+             class="nav-transparent-pill__mobile-button"
+             {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+            {% if block.settings.icon %}
+              <i class="{{ block.settings.icon }} nav-transparent-pill__mobile-button-icon"></i>
+            {% endif %}
+            {{ block.settings.button_text }}
+          </a>
         {% endif %}
       {% endif %}
     {% endfor %}
@@ -1253,17 +1249,10 @@
 
     <!-- Mobile CTA -->
     {% if section.settings.show_mobile_cta %}
-      {% assign mobile_cta_label = section.settings.mobile_cta_text | default: 'Get Started' %}
-      {% assign mobile_cta_url = section.settings.mobile_cta_link | default: '/program/secure-parenting' %}
-      {% if current_site_user %}
-        {% assign mobile_cta_label = section.settings.mobile_cta_text_authenticated | default: 'My Library' %}
-        {% assign mobile_cta_url = section.settings.mobile_cta_link_authenticated | default: '/library' %}
-      {% endif %}
-      <a href="{{ mobile_cta_url }}"
+      <a href="{{ section.settings.mobile_cta_link }}"
          class="nav-transparent-pill__mobile-cta"
-         {% if section.settings.mobile_cta_new_tab and not current_site_user %}target="_blank" rel="noopener"{% endif %}
-         data-evt="nav_mobile_cta_primary">
-        {{ mobile_cta_label }}
+         {% if section.settings.mobile_cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+        {{ section.settings.mobile_cta_text }}
       </a>
     {% endif %}
 
@@ -1289,20 +1278,8 @@
   const mobileClose = mobileMenu.querySelector('[data-mobile-close]');
   const overlay = document.querySelector('[data-mobile-overlay]');
   const body = document.body;
-  const searchTriggers = nav ? nav.querySelectorAll('[data-search-trigger]') : [];
-  const searchUrl = '{{ section.settings.search_url | default: "/search" }}';
 
   let scrollPosition = 0;
-
-  // Search icon redirects to configured page
-  if (searchTriggers.length > 0) {
-    searchTriggers.forEach(trigger => {
-      trigger.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = searchUrl;
-      });
-    });
-  }
 
   // Mobile menu functions
   function openMobileMenu() {
@@ -1381,47 +1358,17 @@
   });
 
   // Scroll handling
-  {% if section.settings.sticky %}
-  let lastScrollTop = 0;
-  const navHeight = nav.offsetHeight;
-
-  window.addEventListener('scroll', function() {
+  // Sticky behavior removed; only shrink padding on scroll
+  function applyScrolledOnly() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    // Add scrolled class for transparent pill
     if (scrollTop > 50) {
       nav.classList.add('nav-transparent-pill--scrolled');
     } else {
       nav.classList.remove('nav-transparent-pill--scrolled');
     }
-
-    // Hide/show navigation on scroll
-    if (scrollTop > navHeight) {
-      nav.classList.add('nav-transparent-pill--sticky');
-
-      if (scrollTop > lastScrollTop && scrollTop > navHeight * 2) {
-        nav.classList.add('nav-transparent-pill--hidden');
-      } else {
-        nav.classList.remove('nav-transparent-pill--hidden');
-      }
-    } else {
-      nav.classList.remove('nav-transparent-pill--sticky', 'nav-transparent-pill--hidden');
-    }
-
-    lastScrollTop = scrollTop;
-  });
-  {% else %}
-  // Just handle scrolled state for transparent pill
-  window.addEventListener('scroll', function() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (scrollTop > 50) {
-      nav.classList.add('nav-transparent-pill--scrolled');
-    } else {
-      nav.classList.remove('nav-transparent-pill--scrolled');
-    }
-  });
-  {% endif %}
+  }
+  window.addEventListener('scroll', applyScrolledOnly);
+  applyScrolledOnly();
 })();
 </script>
 
@@ -1444,13 +1391,7 @@
         "type": "header",
       "content": "General Settings"
     },
-    {
-      "type": "checkbox",
-      "id": "sticky",
-      "label": "Enable Sticky Navigation",
-      "default": true,
-      "info": "Navigation sticks to top when scrolling"
-    },
+
     {
       "type": "checkbox",
       "id": "enable_cart",
@@ -1472,8 +1413,7 @@
       "type": "image_picker",
       "id": "inverse_logo",
       "label": "Inverse Logo (for dark hero backgrounds)",
-      "info": "Upload a light/white logo to use when the nav overlays dark hero sections.",
-      "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp"
+      "info": "Upload a light/white logo to use when the nav overlays dark hero sections."
     },
     {
       "type": "checkbox",
@@ -1486,8 +1426,7 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo Image",
-      "info": "Recommended: 180x40px",
-      "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png"
+      "info": "Recommended: 180x40px"
     },
     {
       "type": "text",
@@ -1617,14 +1556,8 @@
       "type": "checkbox",
       "id": "show_search",
       "label": "Show Search Icon",
-      "default": true,
+      "default": false,
       "info": "Legacy setting - use blocks for more control"
-    },
-    {
-      "type": "text",
-      "id": "search_url",
-      "label": "Search Page URL",
-      "default": "/search"
     },
     {
       "type": "color",
@@ -1643,6 +1576,28 @@
       "id": "icon_hover_color",
       "label": "Icon Hover Color",
       "default": "#5E3BFF"
+    },
+    {
+      "type": "header",
+      "content": "Sticky State Colors"
+    },
+    {
+      "type": "color",
+      "id": "sticky_bg_color",
+      "label": "Sticky/Scrolled Background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "sticky_text_color",
+      "label": "Sticky/Scrolled Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "sticky_icon_color",
+      "label": "Sticky/Scrolled Icon Color",
+      "default": "#FFFFFF"
     },
     {
       "type": "color",
@@ -1981,18 +1936,6 @@
       "label": "Mobile CTA Link"
     },
     {
-      "type": "text",
-      "id": "mobile_cta_text_authenticated",
-      "label": "Mobile CTA Text (Logged-in)",
-      "default": "My Library"
-    },
-    {
-      "type": "action",
-      "id": "mobile_cta_link_authenticated",
-      "label": "Mobile CTA Link (Logged-in)",
-      "default": "/library"
-    },
-    {
       "type": "checkbox",
       "id": "mobile_cta_new_tab",
       "label": "Open CTA in New Tab",
@@ -2048,35 +1991,31 @@
           "type": "image_picker",
           "id": "inverse_logo_image",
           "label": "Inverse Logo (Desktop)",
-          "info": "Light/white logo for dark backgrounds (desktop).",
-          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp"
+          "info": "Light/white logo for dark backgrounds (desktop)."
         },
         {
           "type": "image_picker",
           "id": "mobile_inverse_logo_image",
           "label": "Inverse Logo (Mobile)",
-          "info": "Light/white logo for dark backgrounds (mobile).",
-          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp"
+          "info": "Light/white logo for dark backgrounds (mobile)."
         },
         {
           "type": "image_picker",
           "id": "logo_image",
           "label": "Logo Image",
-          "info": "Recommended: 180x40px for desktop",
-          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png"
+          "info": "Recommended: 180x40px for desktop"
         },
         {
           "type": "image_picker",
           "id": "mobile_logo_image",
           "label": "Mobile Logo Image",
-          "info": "Optional: Different logo for mobile (recommended: 120x30px)",
-          "default": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png"
+          "info": "Optional: Different logo for mobile (recommended: 120x30px)"
         },
         {
           "type": "text",
           "id": "alt_text",
           "label": "Alt Text",
-          "default": "Attachment Nerd"
+          "default": "Company Logo"
         },
         {
           "type": "text",
@@ -2096,8 +2035,22 @@
       "type": "button",
       "name": "Button",
       "elements": [
-        { "type": "checkbox", "id": "show_when_logged_in", "label": "Show when logged in", "default": true },
-        { "type": "checkbox", "id": "show_when_logged_out", "label": "Show when logged out", "default": true },
+        {
+          "type": "header",
+          "content": "Visibility"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_when_logged_in",
+          "label": "Show when logged in",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_when_logged_out",
+          "label": "Show when logged out",
+          "default": true
+        },
         {
           "type": "text",
           "id": "button_text",
@@ -2108,30 +2061,6 @@
           "type": "action",
           "id": "button_link",
           "label": "Button Link"
-        },
-        {
-          "type": "text",
-          "id": "auth_button_text",
-          "label": "Button Text (Logged-in)",
-          "default": "My Library"
-        },
-        {
-          "type": "action",
-          "id": "auth_button_link",
-          "label": "Button Link (Logged-in)",
-          "default": "/library"
-        },
-        {
-          "type": "text",
-          "id": "auth_button_text",
-          "label": "Button Text (Logged-in)",
-          "default": "My Library"
-        },
-        {
-          "type": "action",
-          "id": "auth_button_link",
-          "label": "Button Link (Logged-in)",
-          "default": "/library"
         },
         {
           "type": "header",
@@ -2221,42 +2150,7 @@
         }
       ]
     },
-    {
-      "type": "user",
-      "name": "User Account",
-      "elements": [
-        {
-          "type": "checkbox",
-          "id": "show_avatar",
-          "label": "Show Avatar",
-          "default": true
-        },
-        {
-          "type": "text",
-          "id": "login_text",
-          "label": "Login Text",
-          "default": "Log In"
-        },
-        {
-          "type": "text",
-          "id": "logout_text",
-          "label": "Logout Text",
-          "default": "Log Out"
-        },
-        {
-          "type": "text",
-          "id": "settings_text",
-          "label": "Settings Text",
-          "default": "Settings"
-        },
-        {
-          "type": "text",
-          "id": "library_text",
-          "label": "Library Text",
-          "default": "My Library"
-        }
-      ]
-    },
+
     {
       "type": "cart",
       "name": "Shopping Cart",
@@ -2280,13 +2174,6 @@
           "type": "action",
           "id": "link_url",
           "label": "Link URL"
-        },
-        {
-          "type": "text",
-          "id": "link_event",
-          "label": "Analytics Event Key",
-          "info": "Optional event identifier for tracking",
-          "default": "nav_link_custom"
         },
         {
           "type": "checkbox",
@@ -2406,8 +2293,22 @@
       "type": "mobile_button",
       "name": "Mobile Button",
       "elements": [
-        { "type": "checkbox", "id": "show_when_logged_in", "label": "Show when logged in", "default": true },
-        { "type": "checkbox", "id": "show_when_logged_out", "label": "Show when logged out", "default": true },
+        {
+          "type": "header",
+          "content": "Visibility"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_when_logged_in",
+          "label": "Show when logged in",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_when_logged_out",
+          "label": "Show when logged out",
+          "default": true
+        },
         {
           "type": "text",
           "id": "button_text",
@@ -2423,22 +2324,22 @@
           "type": "select",
           "id": "button_style",
           "label": "Button Style",
-          "default": "primary",
+          "default": "solid",
           "options": [
-            {
-              "label": "Primary",
-              "value": "primary"
-            },
-            {
-              "label": "Secondary",
-              "value": "secondary"
-            },
-            {
-              "label": "Outline",
-              "value": "outline"
-            }
+            { "label": "Solid", "value": "solid" },
+            { "label": "Gradient", "value": "gradient" },
+            { "label": "Outline", "value": "outline" },
+            { "label": "Ghost", "value": "ghost" }
           ]
         },
+        { "type": "header", "content": "Colors" },
+        { "type": "color", "id": "button_bg_color", "label": "Background Color", "default": "#5E3BFF" },
+        { "type": "color", "id": "button_text_color", "label": "Text Color", "default": "#FFFFFF" },
+        { "type": "color", "id": "button_hover_bg", "label": "Hover Background", "default": "#4025E0" },
+        { "type": "color", "id": "button_hover_text", "label": "Hover Text Color", "default": "#FFFFFF" },
+        { "type": "header", "content": "Advanced" },
+        { "type": "text", "id": "button_radius", "label": "Border Radius", "default": "25px" },
+        { "type": "text", "id": "button_padding", "label": "Padding", "default": "12px 24px" },
         {
           "type": "checkbox",
           "id": "new_tab",
@@ -2485,11 +2386,7 @@
         {
           "type": "logo_image",
           "settings": {
-            "logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png",
-            "mobile_logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png",
-            "inverse_logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp",
-            "mobile_inverse_logo_image": "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp",
-            "alt_text": "Attachment Nerd",
+            "alt_text": "Company Logo",
             "desktop_height": "40px",
             "mobile_height": "30px"
           }
@@ -2504,12 +2401,7 @@
         {
           "type": "search"
         },
-        {
-          "type": "user",
-          "settings": {
-            "show_avatar": true
-          }
-        },
+
         {
           "type": "button",
           "settings": {

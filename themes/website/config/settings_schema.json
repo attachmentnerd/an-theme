@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "AN Website Theme",
-    "theme_version": "AN-WEB 2025.09.28+23.10.0",
+    "theme_version": "AN-WEB 2025.09.28+33.2.24",
     "theme_author": "AN Themes",
     "theme_documentation_url": "https://anthemes.com/docs",
     "theme_support_url": "https://anthemes.com/support",
@@ -395,14 +395,14 @@
     "elements": [
       {
         "type": "header",
-        "content": "Global Navigation Settings"
+        "content": "Navigation Control"
       },
       {
         "type": "checkbox",
         "id": "show_navigation",
         "label": "Show Main Navigation",
         "default": true,
-        "info": "Toggle the main navigation bar on/off site-wide. When disabled, no navigation will appear on any page."
+        "info": "Toggle navigation visibility site-wide. Pages can override this setting individually."
       }
     ]
   },

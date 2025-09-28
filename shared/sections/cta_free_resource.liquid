@@ -379,7 +379,7 @@
       {% else %}
         {% if form_id %}
           <div class="free-resource__form">
-            {% form "optin", id: form_id %}
+            {% form 'optin', id: form_id %}
               <input type="hidden" name="thank_you_url" value="{{ section.settings.thank_you_url }}">
               {% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
               {% if user_email != blank %}

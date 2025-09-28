@@ -1,0 +1,21 @@
+{% comment %}
+  Utility Helper Snippet
+  Maps Kajabi color settings to utility classes
+  Usage: {% include 'utility_helper', color: section.settings.background_color, type: 'bg' %}
+{% endcomment %}
+
+{% if color %}
+  {% case color %}
+    {% when '#1A2D4E' %}{{ type }}-navy
+    {% when '#2AB3B1' %}{{ type }}-teal
+    {% when '#F57C6F' %}{{ type }}-coral
+    {% when '#FFC63F' %}{{ type }}-gold
+    {% when '#A449A5' %}{{ type }}-plum
+    {% when '#FFF4F0' %}{{ type }}-peach
+    {% when '#FFFFFF' %}{{ type }}-white
+    {% when '#F8F7F5' %}{{ type }}-grey
+    {% when '#3A4A63' %}{{ type }}-slate
+    {% else %}
+      {% comment %}Fallback to inline style for custom colors{% endcomment %}
+  {% endcase %}
+{% endif %}

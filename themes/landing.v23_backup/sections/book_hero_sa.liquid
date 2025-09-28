@@ -1,0 +1,1193 @@
+<section id="{{ section.settings.section_id | default: 'book-hero-sa' }}-{{ section.id }}" 
+         class="sa-book-showcase py-{{ section.settings.padding_y }}"
+         style="background: {{ section.settings.section_background }};">
+  <div class="container">
+    <div class="row align-items-center g-{{ section.settings.column_gap }}">
+      <div class="col-lg-6 {% if section.settings.image_position == 'right' %}order-lg-2{% endif %}">
+        <!-- Book visual -->
+        <div class="position-relative animate-fade-up">
+          <div class="book-showcase-visual">
+            <!-- Background shape -->
+            {% if section.settings.show_background_shape %}
+              <div class="position-absolute" 
+                   style="top: {{ section.settings.shape_top }}px; 
+                          right: {{ section.settings.shape_right }}px; 
+                          width: 100%; 
+                          height: 100%; 
+                          background: {{ section.settings.shape_color }}; 
+                          opacity: {{ section.settings.shape_opacity }}; 
+                          border-radius: {{ section.settings.shape_radius }}px; 
+                          transform: rotate({{ section.settings.shape_rotation }}deg);">
+              </div>
+            {% endif %}
+            
+            <!-- Main image -->
+            <div class="position-relative" 
+                 style="background: {{ section.settings.image_container_bg }}; 
+                        padding: {{ section.settings.image_padding }}px; 
+                        border-radius: {{ section.settings.image_border_radius }}px; 
+                        box-shadow: {{ section.settings.image_shadow }};">
+              <div kjb-settings-id="{{ 'showcase_image' | settings_id: section: section }}">
+                <img src="{{ section.settings.showcase_image | image_picker_url: '600x400' }}" 
+                     alt="{{ section.settings.image_alt }}" 
+                     class="img-fluid"
+                     width="600" height="400"
+                     decoding="async"
+                     {% if section.settings.lazy_load %}
+                       loading="lazy"
+                     {% else %}
+                       loading="eager" fetchpriority="high"
+                     {% endif %}
+                     style="object-fit: {{ section.settings.image_fit }}; 
+                            border-radius: {{ section.settings.inner_image_radius }}px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 {% if section.settings.image_position == 'right' %}order-lg-1{% endif %}">
+        <div class="animate-fade-up" style="animation-delay: 0.1s;">
+          <!-- Section badge -->
+          {% if section.settings.badge_text != blank and section.settings.show_badge %}
+            <div class="d-inline-flex align-items-center mb-{{ section.settings.badge_spacing }}" 
+                 style="background: {{ section.settings.badge_background }}; 
+                        padding: {{ section.settings.badge_padding }}; 
+                        border-radius: {{ section.settings.badge_radius }}px;
+                        border: {{ section.settings.badge_border_width }}px solid {{ section.settings.badge_border_color }};">
+              {% if section.settings.badge_icon != blank and section.settings.show_badge_icon %}
+                <span style="margin-right: 8px; font-size: {{ section.settings.badge_icon_size }}px;">
+                  {{ section.settings.badge_icon }}
+                </span>
+              {% endif %}
+              <span style="color: {{ section.settings.badge_text_color }}; 
+                           font-weight: {{ section.settings.badge_font_weight }}; 
+                           font-size: {{ section.settings.badge_font_size }}px;
+                           text-transform: {{ section.settings.badge_text_transform }};"
+                    kjb-settings-id="{{ 'badge_text' | settings_id: section: section }}">
+                {{ section.settings.badge_text }}
+              </span>
+            </div>
+          {% endif %}
+          
+          <h2 class="mb-{{ section.settings.heading_spacing }}" 
+              style="font-size: var(--{{ section.settings.heading_size }}); 
+                     color: {{ section.settings.heading_color }}; 
+                     font-weight: {{ section.settings.heading_weight }};
+                     line-height: {{ section.settings.heading_line_height }};"
+              kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+            {{ section.settings.heading }}
+          </h2>
+          
+          <p class="mb-{{ section.settings.description_spacing }}" 
+             style="font-size: var(--{{ section.settings.description_size }}); 
+                    color: {{ section.settings.description_color }}; 
+                    line-height: {{ section.settings.description_line_height }};"
+             kjb-settings-id="{{ 'description' | settings_id: section: section }}">
+            {{ section.settings.description }}
+          </p>
+          
+          <!-- Feature list -->
+          <div class="mb-{{ section.settings.features_spacing }}">
+            {% for block in section.blocks %}
+              {% if block.type == 'feature' %}
+                <div class="d-flex align-items-start mb-{{ section.settings.feature_item_spacing }} animate-fade-up" 
+                     style="animation-delay: {{ forloop.index | times: 0.1 | plus: 0.2 }}s;">
+                  {% if section.settings.show_feature_icons %}
+                    <div class="flex-shrink-0 me-3">
+                      <div style="width: {{ section.settings.icon_size }}px; 
+                                  height: {{ section.settings.icon_size }}px; 
+                                  background: {{ section.settings.icon_background }}; 
+                                  border-radius: {{ section.settings.icon_radius }}%; 
+                                  display: flex; 
+                                  align-items: center; 
+                                  justify-content: center;
+                                  border: {{ section.settings.icon_border_width }}px solid {{ section.settings.icon_border_color }};">
+                        {% if block.settings.custom_icon != blank %}
+                          <span style="font-size: {{ section.settings.icon_inner_size }}px; color: {{ section.settings.icon_color }};">
+                            {{ block.settings.custom_icon }}
+                          </span>
+                        {% else %}
+                          <svg width="{{ section.settings.icon_inner_size }}" 
+                               height="{{ section.settings.icon_inner_size }}" 
+                               viewBox="0 0 24 24" 
+                               fill="{{ section.settings.icon_color }}">
+                            <path d="{{ section.settings.icon_svg_path }}"/>
+                          </svg>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                  <div>
+                    <p class="mb-0" 
+                       style="color: {{ section.settings.feature_text_color }}; 
+                              font-weight: {{ section.settings.feature_text_weight }};
+                              font-size: {{ section.settings.feature_text_size }}px;
+                              text-transform: {{ section.settings.feature_text_transform }};"
+                       kjb-settings-id="{{ 'feature_text' | settings_id: section: section, block: block }}">
+                      {{ block.settings.feature_text }}
+                    </p>
+                    {% if block.settings.feature_description != blank %}
+                      <p class="mb-0 mt-1" 
+                         style="font-size: {{ section.settings.feature_desc_size }}px; 
+                                color: {{ section.settings.feature_desc_color }};
+                                line-height: {{ section.settings.feature_desc_line_height }};"
+                         kjb-settings-id="{{ 'feature_description' | settings_id: section: section, block: block }}">
+                        {{ block.settings.feature_description }}
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          
+          <!-- CTA -->
+          {% if section.settings.cta_text != blank and section.settings.show_cta %}
+            <a href="{{ section.settings.cta_url }}" 
+               class="btn"
+               style="background: {{ section.settings.cta_background }};
+                      color: {{ section.settings.cta_text_color }} !important;
+                      padding: {{ section.settings.cta_padding }};
+                      font-size: {{ section.settings.cta_font_size }}px;
+                      font-weight: {{ section.settings.cta_font_weight }};
+                      border-radius: {{ section.settings.cta_radius }}px;
+                      border: {{ section.settings.cta_border_width }}px solid {{ section.settings.cta_border_color }};
+                      text-transform: {{ section.settings.cta_text_transform }};
+                      transition: all {{ section.settings.cta_transition }}ms ease;"
+               onmouseover="this.style.background='{{ section.settings.cta_hover_bg }}'; this.style.transform='translateY({{ section.settings.cta_hover_lift }}px)';"
+               onmouseout="this.style.background='{{ section.settings.cta_background }}'; this.style.transform='translateY(0)';"
+               kjb-settings-id="{{ 'cta_text' | settings_id: section: section }}">
+              {% if section.settings.cta_icon != blank and section.settings.show_cta_icon %}
+                <span style="margin-right: 8px;">{{ section.settings.cta_icon }}</span>
+              {% endif %}
+              {{ section.settings.cta_text }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sa-book-showcase {
+    position: relative;
+    overflow: hidden;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Book - Hero SA",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "book-hero-sa",
+      "info": "Custom ID for the section"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "padding_y",
+      "label": "Section Padding",
+      "options": [
+        {
+          "value": "3",
+          "label": "Small"
+        },
+        {
+          "value": "4",
+          "label": "Medium"
+        },
+        {
+          "value": "5",
+          "label": "Large"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "select",
+      "id": "column_gap",
+      "label": "Column Gap",
+      "options": [
+        {
+          "value": "3",
+          "label": "Small"
+        },
+        {
+          "value": "4",
+          "label": "Medium"
+        },
+        {
+          "value": "5",
+          "label": "Large"
+        }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "header",
+      "content": "Badge Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "The Workbook"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Badge Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "text",
+      "id": "badge_padding",
+      "label": "Badge Padding",
+      "default": "6px 16px"
+    },
+    {
+      "type": "range",
+      "id": "badge_radius",
+      "label": "Badge Border Radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "label": "Badge Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "badge_font_weight",
+      "label": "Badge Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "badge_text_transform",
+      "label": "Badge Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge_icon",
+      "label": "Show Badge Icon",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "badge_icon",
+      "label": "Badge Icon",
+      "default": "📚"
+    },
+    {
+      "type": "range",
+      "id": "badge_icon_size",
+      "label": "Badge Icon Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "badge_border_width",
+      "label": "Badge Border Width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "badge_border_color",
+      "label": "Badge Border Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "select",
+      "id": "badge_spacing",
+      "label": "Badge Bottom Spacing",
+      "options": [
+        {
+          "value": "2",
+          "label": "Small"
+        },
+        {
+          "value": "3",
+          "label": "Medium"
+        },
+        {
+          "value": "4",
+          "label": "Large"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Unlock the Key to Deeply Satisfying Relationships"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "fs-h3",
+          "label": "Small (H3)"
+        },
+        {
+          "value": "fs-h2",
+          "label": "Medium (H2)"
+        },
+        {
+          "value": "fs-h1",
+          "label": "Large (H1)"
+        },
+        {
+          "value": "fs-display",
+          "label": "Extra Large"
+        }
+      ],
+      "default": "fs-h1"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "heading_line_height",
+      "label": "Heading Line Height",
+      "options": [
+        {
+          "value": "1.1",
+          "label": "Tight"
+        },
+        {
+          "value": "1.2",
+          "label": "Normal"
+        },
+        {
+          "value": "1.4",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.2"
+    },
+    {
+      "type": "select",
+      "id": "heading_spacing",
+      "label": "Heading Bottom Spacing",
+      "options": [
+        {
+          "value": "3",
+          "label": "Small"
+        },
+        {
+          "value": "4",
+          "label": "Medium"
+        },
+        {
+          "value": "5",
+          "label": "Large"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "header",
+      "content": "Description Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Grounded in attachment theory research, Securely Attached clearly and gently guides you in delving deeper and overcoming problematic patterns that are holding you back from getting—and keeping—the close, fulfilling relationship you want."
+    },
+    {
+      "type": "select",
+      "id": "description_size",
+      "label": "Description Size",
+      "options": [
+        {
+          "value": "fs-body",
+          "label": "Small"
+        },
+        {
+          "value": "fs-body-lg",
+          "label": "Medium"
+        },
+        {
+          "value": "fs-h5",
+          "label": "Large"
+        }
+      ],
+      "default": "fs-body-lg"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#4A4A4A"
+    },
+    {
+      "type": "select",
+      "id": "description_line_height",
+      "label": "Description Line Height",
+      "options": [
+        {
+          "value": "1.4",
+          "label": "Tight"
+        },
+        {
+          "value": "1.6",
+          "label": "Normal"
+        },
+        {
+          "value": "1.8",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.6"
+    },
+    {
+      "type": "select",
+      "id": "description_spacing",
+      "label": "Description Bottom Spacing",
+      "options": [
+        {
+          "value": "3",
+          "label": "Small"
+        },
+        {
+          "value": "4",
+          "label": "Medium"
+        },
+        {
+          "value": "5",
+          "label": "Large"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "header",
+      "content": "Feature List Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_feature_icons",
+      "label": "Show Feature Icons",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Container Size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "icon_inner_size",
+      "label": "Icon Size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "icon_background",
+      "label": "Icon Background",
+      "default": "#18D5E4"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "icon_radius",
+      "label": "Icon Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "icon_border_width",
+      "label": "Icon Border Width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "icon_border_color",
+      "label": "Icon Border Color",
+      "default": "#18D5E4"
+    },
+    {
+      "type": "text",
+      "id": "icon_svg_path",
+      "label": "Icon SVG Path (Default)",
+      "default": "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
+      "info": "SVG path for default checkmark icon"
+    },
+    {
+      "type": "color",
+      "id": "feature_text_color",
+      "label": "Feature Text Color",
+      "default": "#2A2A2A"
+    },
+    {
+      "type": "range",
+      "id": "feature_text_size",
+      "label": "Feature Text Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "feature_text_weight",
+      "label": "Feature Text Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "feature_text_transform",
+      "label": "Feature Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "feature_desc_color",
+      "label": "Feature Description Color",
+      "default": "#6A6A6A"
+    },
+    {
+      "type": "range",
+      "id": "feature_desc_size",
+      "label": "Feature Description Size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "feature_desc_line_height",
+      "label": "Feature Description Line Height",
+      "options": [
+        {
+          "value": "1.3",
+          "label": "Tight"
+        },
+        {
+          "value": "1.5",
+          "label": "Normal"
+        },
+        {
+          "value": "1.7",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.5"
+    },
+    {
+      "type": "select",
+      "id": "feature_item_spacing",
+      "label": "Feature Item Spacing",
+      "options": [
+        {
+          "value": "2",
+          "label": "Small"
+        },
+        {
+          "value": "3",
+          "label": "Medium"
+        },
+        {
+          "value": "4",
+          "label": "Large"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "features_spacing",
+      "label": "Features Bottom Spacing",
+      "options": [
+        {
+          "value": "3",
+          "label": "Small"
+        },
+        {
+          "value": "4",
+          "label": "Medium"
+        },
+        {
+          "value": "5",
+          "label": "Large"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "showcase_image",
+      "label": "Showcase Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image Alt Text",
+      "default": "Inside pages of Securely Attached workbook"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "checkbox",
+      "id": "lazy_load",
+      "label": "Lazy Load Image",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "image_container_bg",
+      "label": "Image Container Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "image_padding",
+      "label": "Image Container Padding",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Container Border Radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "inner_image_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_shadow",
+      "label": "Image Container Shadow",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "0 4px 12px rgba(0,0,0,0.05)",
+          "label": "Small"
+        },
+        {
+          "value": "0 8px 24px rgba(0,0,0,0.08)",
+          "label": "Medium"
+        },
+        {
+          "value": "0 16px 48px rgba(0,0,0,0.08)",
+          "label": "Large"
+        },
+        {
+          "value": "0 24px 64px rgba(0,0,0,0.1)",
+          "label": "Extra Large"
+        }
+      ],
+      "default": "0 16px 48px rgba(0,0,0,0.08)"
+    },
+    {
+      "type": "header",
+      "content": "Background Shape Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background_shape",
+      "label": "Show Background Shape",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "shape_color",
+      "label": "Shape Color",
+      "default": "#FF8BCB"
+    },
+    {
+      "type": "range",
+      "id": "shape_opacity",
+      "label": "Shape Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "default": 0.1
+    },
+    {
+      "type": "range",
+      "id": "shape_radius",
+      "label": "Shape Border Radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "shape_rotation",
+      "label": "Shape Rotation",
+      "min": -15,
+      "max": 15,
+      "step": 1,
+      "unit": "deg",
+      "default": -3
+    },
+    {
+      "type": "range",
+      "id": "shape_top",
+      "label": "Shape Top Position",
+      "min": -50,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": -20
+    },
+    {
+      "type": "range",
+      "id": "shape_right",
+      "label": "Shape Right Position",
+      "min": -50,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": -20
+    },
+    {
+      "type": "header",
+      "content": "CTA Button Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Start Your Journey"
+    },
+    {
+      "type": "text",
+      "id": "cta_url",
+      "label": "CTA URL"
+    },
+    {
+      "type": "color",
+      "id": "cta_background",
+      "label": "CTA Background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_bg",
+      "label": "CTA Hover Background",
+      "default": "#4A2FCC"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "cta_padding",
+      "label": "CTA Padding",
+      "default": "14px 32px"
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size",
+      "label": "CTA Font Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "cta_font_weight",
+      "label": "CTA Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "cta_radius",
+      "label": "CTA Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "cta_border_width",
+      "label": "CTA Border Width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "cta_border_color",
+      "label": "CTA Border Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "select",
+      "id": "cta_text_transform",
+      "label": "CTA Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_icon",
+      "label": "Show CTA Icon",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_icon",
+      "label": "CTA Icon",
+      "default": "→"
+    },
+    {
+      "type": "range",
+      "id": "cta_hover_lift",
+      "label": "CTA Hover Lift",
+      "min": -5,
+      "max": -1,
+      "step": 1,
+      "unit": "px",
+      "default": -2
+    },
+    {
+      "type": "range",
+      "id": "cta_transition",
+      "label": "CTA Transition Speed",
+      "min": 100,
+      "max": 500,
+      "step": 50,
+      "unit": "ms",
+      "default": 300
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "elements": [
+        {
+          "type": "text",
+          "id": "feature_text",
+          "label": "Feature Text"
+        },
+        {
+          "type": "text",
+          "id": "feature_description",
+          "label": "Feature Description (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "custom_icon",
+          "label": "Custom Icon (Optional)",
+          "info": "Leave blank to use default checkmark"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Book - Hero SA",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "IDENTIFY YOUR ATTACHMENT PATTERNS",
+            "feature_description": "Understand which four categories inform your close relationships and why."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "HEAL PAST WOUNDS",
+            "feature_description": "Reflect and process your unique attachment story for a perspective shift."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "DEVELOP TOOLS FOR GROWTH",
+            "feature_description": "Quizzes, exercises, and tips provide actionable steps to learning secure patterns."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_text": "LOVE SECURELY",
+            "feature_description": "Find, build, and nurture healthy ways of loving—and being loved."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

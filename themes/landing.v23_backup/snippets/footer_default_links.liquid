@@ -1,0 +1,17 @@
+{% comment %}
+  Default Footer Content
+  - Provides fallback navigation data when footer link blocks or menus are not configured.
+  - Link entries use the format Label::URL@@EventKey for safe parsing.
+{% endcomment %}
+
+{% assign footer_default_columns_data = "Explore||Secure Parenting Program::/secure-parenting-program@@footer_primary_program,Podcast::/podcast@@footer_primary_podcast,Workshop::/workshop@@footer_primary_workshop,Newsletter::/newsletters@@footer_primary_newsletter|Books||Raising Securely Attached Kids::/books/raising-securely-attached-kids@@footer_books_rsak,Securely Attached::/books/securely-attached@@footer_books_securely,Uniquely Us::/books/uniquely-us@@footer_books_uniquely,How to Deal with Your ____::/books/how-to-deal-with-your-so-your-kids-dont-have-to@@footer_books_deal|Company||About Eli::/about@@footer_company_about,Speaking::/speaking@@footer_company_speaking,Press::/press@@footer_company_press,Contact::/contact@@footer_company_contact" %}
+{% assign footer_default_columns = footer_default_columns_data | split: '|' %}
+
+{% assign footer_default_socials_string = "youtube::https://youtube.com/@attachmentnerd@@footer_social_youtube|instagram::https://instagram.com/attachmentnerd@@footer_social_instagram|facebook::https://facebook.com/attachmentnerd@@footer_social_facebook|tiktok::https://tiktok.com/@attachmentnerd@@footer_social_tiktok" %}
+{% assign footer_default_socials = footer_default_socials_string | split: '|' %}
+
+{% assign footer_default_legal_string = "Terms & Conditions::/user/legal-pages@@footer_legal_terms|Privacy Policy::/user/legal-pages@@footer_legal_privacy" %}
+{% assign footer_default_legal_links = footer_default_legal_string | split: '|' %}
+
+{% assign footer_default_trust_badges_string = "\ud83d\udd12::Secure Checkout|\ud83d\ude9a::Fast Shipping|\ud83d\udcaf::Satisfaction Guaranteed" %}
+{% assign footer_default_trust_badges = footer_default_trust_badges_string | split: '|' %}

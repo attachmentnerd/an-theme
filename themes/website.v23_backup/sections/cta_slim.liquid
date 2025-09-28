@@ -1,0 +1,371 @@
+{%- comment -%}
+  Attachment Nerd – Slim CTA Bar
+  Compact call-to-action banner with flexible button configuration
+  Inspired by modern SaaS CTAs but with AN brand style
+{%- endcomment -%}
+
+<section id="slim-cta-{{ section.id }}" class="slim-cta-section {{ section.settings.background_style }} {{ section.settings.text_alignment }}">
+  <div class="container">
+    <div class="slim-cta__wrapper">
+      <div class="slim-cta__content">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="slim-cta__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        
+        {%- if section.settings.subheading != blank -%}
+          <p class="slim-cta__subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+      
+      <div class="slim-cta__actions">
+        {%- if section.settings.show_primary_button -%}
+          <a href="{{ section.settings.primary_button_url }}" 
+             class="btn btn-primary-modern slim-cta__btn-primary"
+             {% if section.settings.primary_button_new_tab %}target="_blank" rel="noopener"{% endif %}>
+            {{ section.settings.primary_button_text }}
+          </a>
+        {%- endif -%}
+        
+        {%- if section.settings.show_secondary_button -%}
+          <a href="{{ section.settings.secondary_button_url }}" 
+             class="btn btn-secondary-modern slim-cta__btn-secondary"
+             {% if section.settings.secondary_button_new_tab %}target="_blank" rel="noopener"{% endif %}>
+            {{ section.settings.secondary_button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Slim CTA Section - Using AN Design System */
+  .slim-cta-section {
+    padding: var(--space-lg) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Background Styles */
+  .slim-cta-section.bg-navy {
+    background: var(--c-ink-900);
+    color: var(--c-white);
+  }
+  
+  .slim-cta-section.bg-brand {
+    background: var(--c-brand-600);
+    color: var(--c-white);
+  }
+  
+  .slim-cta-section.bg-gradient {
+    background: var(--g-brand);
+    color: var(--c-white);
+  }
+  
+  .slim-cta-section.bg-lavender {
+    background: var(--c-brand-100);
+    color: var(--c-ink-900);
+  }
+  
+  .slim-cta-section.bg-white {
+    background: var(--c-white);
+    color: var(--c-ink-900);
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+  }
+  
+  /* Wrapper and Layout */
+  .slim-cta__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+  }
+  
+  /* Text Alignment Variations */
+  .slim-cta-section.text-center .slim-cta__wrapper {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .slim-cta-section.text-center .slim-cta__content {
+    flex: none;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: var(--space-lg);
+  }
+  
+  .slim-cta-section.text-center .slim-cta__actions {
+    justify-content: center;
+  }
+  
+  /* Content */
+  .slim-cta__content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .slim-cta__heading {
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-medium);
+    margin: 0;
+    line-height: 1.3;
+    font-family: var(--font-serif);
+  }
+  
+  .slim-cta__subheading {
+    font-size: var(--fs-body-lg);
+    margin: var(--space-xs) 0 0;
+    opacity: 0.9;
+    font-weight: var(--fw-light);
+  }
+  
+  /* Dark background text colors */
+  .slim-cta-section.bg-navy .slim-cta__heading,
+  .slim-cta-section.bg-brand .slim-cta__heading,
+  .slim-cta-section.bg-gradient .slim-cta__heading {
+    color: var(--c-white);
+  }
+  
+  .slim-cta-section.bg-navy .slim-cta__subheading,
+  .slim-cta-section.bg-brand .slim-cta__subheading,
+  .slim-cta-section.bg-gradient .slim-cta__subheading {
+    color: var(--c-white);
+    opacity: 0.85;
+  }
+  
+  /* Actions */
+  .slim-cta__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex-shrink: 0;
+  }
+  
+  /* Button Overrides for Dark Backgrounds */
+  .slim-cta-section.bg-navy .slim-cta-section .btn-primary-modern,
+  .slim-cta-section.bg-brand .slim-cta-section .btn-primary-modern,
+  .slim-cta-section.bg-gradient .slim-cta-section .btn-primary-modern {
+    background: var(--c-white);
+    color: var(--c-brand-600);
+    border: 2px solid var(--c-white);
+  }
+  
+  .slim-cta-section.bg-navy .slim-cta-section .btn-primary-modern:hover,
+  .slim-cta-section.bg-brand .slim-cta-section .btn-primary-modern:hover,
+  .slim-cta-section.bg-gradient .slim-cta-section .btn-primary-modern:hover {
+    background: transparent;
+    color: var(--c-white);
+    transform: translateY(-2px);
+  }
+  
+  .slim-cta-section.bg-navy .btn-secondary-modern,
+  .slim-cta-section.bg-brand .btn-secondary-modern,
+  .slim-cta-section.bg-gradient .btn-secondary-modern {
+    background: transparent;
+    color: var(--c-white);
+    border: 2px solid var(--c-white);
+  }
+  
+  .slim-cta-section.bg-navy .btn-secondary-modern:hover,
+  .slim-cta-section.bg-brand .btn-secondary-modern:hover,
+  .slim-cta-section.bg-gradient .btn-secondary-modern:hover {
+    background: var(--c-white);
+    color: var(--c-brand-600);
+  }
+  
+  /* Decorative Elements */
+  .slim-cta-section.bg-gradient::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 767px) {
+    .slim-cta-section {
+      padding: var(--space-lg) 0;
+    }
+    
+    .slim-cta__wrapper {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--space-lg);
+    }
+    
+    .slim-cta__content {
+      width: 100%;
+    }
+    
+    .slim-cta__heading {
+      font-size: var(--fs-h3);
+    }
+    
+    .slim-cta__subheading {
+      font-size: var(--fs-body);
+    }
+    
+    .slim-cta__actions {
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .slim-cta__actions .btn {
+      min-width: 160px;
+    }
+  }
+  
+  /* Tablet */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .slim-cta__wrapper {
+      gap: var(--space-lg);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "CTA - Slim",
+  "class": "slim-cta-section",
+  "elements": [
+    {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "cta-slim",
+      "info": "Custom ID for internal linking (e.g., #cta-slim)"
+    },
+      {
+        "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready to transform your parenting journey?"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading (optional)",
+      "default": "Join thousands of parents building secure attachments with their children"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background Style",
+      "default": "bg-gradient",
+      "options": [
+        {
+          "value": "bg-navy",
+          "label": "Navy (Dark)"
+        },
+        {
+          "value": "bg-brand",
+          "label": "Brand Purple"
+        },
+        {
+          "value": "bg-gradient",
+          "label": "Gradient"
+        },
+        {
+          "value": "bg-lavender",
+          "label": "Lavender (Light)"
+        },
+        {
+          "value": "bg-white",
+          "label": "White"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Layout Style",
+      "default": "text-left",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Split Layout (Text Left, Buttons Right)"
+        },
+        {
+          "value": "text-center",
+          "label": "Centered Layout"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Primary Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_primary_button",
+      "label": "Show Primary Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary Button Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "action",
+      "id": "primary_button_url",
+      "label": "Primary Button Link",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "primary_button_new_tab",
+      "label": "Open in New Tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Secondary Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_button",
+      "label": "Show Secondary Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "action",
+      "id": "secondary_button_url",
+      "label": "Secondary Button Link",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_button_new_tab",
+      "label": "Open in New Tab",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTA - Slim",
+      "category": "Call to Action",
+      "description": "Compact call-to-action banner with flexible button options"
+    }
+  ]
+}
+{% endschema %}

@@ -20,8 +20,9 @@ Minimal Hardcoded Navigation (CSS-safe)
         {% endif %}
         {% if label != '' %}
           {% assign normalized_url = url | downcase %}
+          {% assign normalized_url_with_slash = normalized_url | append: '/' %}
           {% assign is_active = false %}
-          {% if current_path == normalized_url or current_path == normalized_url | append: '/' %}
+          {% if current_path == normalized_url or current_path == normalized_url_with_slash %}
             {% assign is_active = true %}
           {% endif %}
           <li class="link-list__item">
