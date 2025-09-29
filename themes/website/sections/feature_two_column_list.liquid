@@ -1,0 +1,595 @@
+{% comment %}
+  AN Feature Two Column List Section
+  - Two-column layout for feature lists
+  - Customizable icons/emojis
+  - Flexible heading and intro text
+  - Mobile-responsive design
+  - Brand-aligned styling
+{% endcomment %}
+
+<section id="{{ section.settings.section_id | default: 'feature-two-column-list' }}-{{ section.id }}" class="an-feature-two-column-list py-5" style="background-color: {{ section.settings.background_color | default: '#FFF8F5' }};">
+  <div class="container">
+    <div class="an-feature-two-column-list__wrapper">
+      <!-- Section Header -->
+      <div class="an-feature-two-column-list__header text-center mb-5">
+        <h2 class="feature-list-heading">
+          {{ section.settings.heading | default: 'Are you tired of feeling...' }}
+        </h2>
+
+        {% if section.settings.subheading != blank %}
+          <p class="feature-list-subheading">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Two Column Lists -->
+      <div class="an-feature-two-column-list__content" style="background-color: {{ section.settings.content_bg_color | default: '#FFFFFF' }};">
+        {%- comment -%} Compute how many feature blocks exist and split evenly {%- endcomment -%}
+        {% assign total_features = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'left_feature' or block.type == 'right_feature' %}
+            {% assign total_features = total_features | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+        {% assign left_count = total_features | plus: 1 | divided_by: 2 %}
+
+        <div class="row">
+          <!-- Left Column -->
+          <div class="col-lg-6">
+            <div class="feature-column feature-column--left">
+              {% assign feature_index = 0 %}
+              {% assign left_rendered = 0 %}
+              {% for block in section.blocks %}
+                {% if block.type == 'left_feature' or block.type == 'right_feature' %}
+                  {% assign feature_index = feature_index | plus: 1 %}
+                  {% if feature_index <= left_count %}
+                    {% assign left_rendered = left_rendered | plus: 1 %}
+                    <div class="feature-item animate-fade-up" style="animation-delay: {{ left_rendered | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+                      <div class="feature-icon">
+                        {% if block.settings.use_emoji %}
+                          <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>
+                        {% else %}
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" fill="{{ section.settings.icon_bg_color | default: '#FFE86B' }}" opacity="0.2"/>
+                            <path d="M8 12L11 15L16 9" stroke="{{ section.settings.icon_color | default: '#5E3BFF' }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        {% endif %}
+                      </div>
+                      <div class="feature-text">
+                        {{ block.settings.text }}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="col-lg-6">
+            <div class="feature-column feature-column--right">
+              {% assign feature_index = 0 %}
+              {% assign right_rendered = 0 %}
+              {% for block in section.blocks %}
+                {% if block.type == 'left_feature' or block.type == 'right_feature' %}
+                  {% assign feature_index = feature_index | plus: 1 %}
+                  {% if feature_index > left_count %}
+                    {% assign right_rendered = right_rendered | plus: 1 %}
+                    <div class="feature-item animate-fade-up" style="animation-delay: {{ right_rendered | times: 0.1 | plus: 0.05 }}s;" {{ block.shopify_attributes }}>
+                      <div class="feature-icon">
+                        {% if block.settings.use_emoji %}
+                          <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>
+                        {% else %}
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" fill="{{ section.settings.icon_bg_color | default: '#FFE86B' }}" opacity="0.2"/>
+                            <path d="M8 12L11 15L16 9" stroke="{{ section.settings.icon_color | default: '#5E3BFF' }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        {% endif %}
+                      </div>
+                      <div class="feature-text">
+                        {{ block.settings.text }}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optional Footer Text -->
+      {% if section.settings.footer_text != blank %}
+        <div class="an-feature-two-column-list__footer text-center mt-5">
+          <p class="footer-text">
+            {{ section.settings.footer_text }}
+          </p>
+        </div>
+      {% endif %}
+
+      <!-- Optional CTA -->
+      {% if section.settings.show_cta and section.settings.cta_text != blank %}
+        <div class="an-feature-two-column-list__cta text-center mt-4">
+          <a href="{{ section.settings.cta_url | default: '#' }}"
+             class="btn btn-primary-modern"
+             {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+            {{ section.settings.cta_text }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .an-feature-two-column-list {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background decoration */
+  .an-feature-two-column-list::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, {{ section.settings.accent_color | default: 'rgba(255, 139, 203, 0.1)' }} 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .an-feature-two-column-list__wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Header Styles */
+  .feature-list-heading {
+    font-size: clamp(2rem, 5vw, var(--fs-display));
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--c-ink-900);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .feature-list-subheading {
+    font-size: var(--fs-body-lg);
+    line-height: 1.6;
+    color: var(--c-ink-500);
+    max-width: 700px;
+    margin: 0 auto;
+    font-weight: var(--fw-light);
+  }
+
+  /* Content Container */
+  .an-feature-two-column-list__content {
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(94, 59, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Pink gradient border effect */
+  .an-feature-two-column-list__content::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, #FF8BCB 0%, #FFE86B 50%, #18D5E4 100%);
+    border-radius: 24px;
+    z-index: -1;
+    opacity: 0.15;
+    transition: opacity 0.3s ease;
+  }
+
+  .an-feature-two-column-list__content:hover::after {
+    opacity: 0.25;
+  }
+
+  /* Column Styles */
+  .an-feature-two-column-list .feature-column {
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 992px) {
+    .an-feature-two-column-list .feature-column--left {
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+      padding-right: 2.5rem;
+    }
+
+    .an-feature-two-column-list .feature-column--right {
+      padding-left: 2.5rem;
+    }
+  }
+
+  /* Feature Items */
+  .an-feature-two-column-list .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .an-feature-two-column-list .feature-item:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Icons */
+  .an-feature-two-column-list .feature-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .an-feature-two-column-list .feature-emoji {
+    font-size: 1.5rem;
+    line-height: 1;
+    filter: sepia(20%) saturate(2);
+  }
+
+  /* Pulse animation on hover */
+  .an-feature-two-column-list .feature-item:hover .an-feature-two-column-list .feature-icon {
+    animation: pulse 0.6s ease-out;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  /* Text */
+  .an-feature-two-column-list .feature-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--c-ink-800);
+    flex: 1;
+  }
+
+  .an-feature-two-column-list .feature-text strong {
+    font-weight: 600;
+    color: var(--c-ink-900);
+  }
+
+  /* Footer */
+  .an-feature-two-column-list .footer-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--c-ink-700);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* CTA Button - Using brand styles */
+  .btn-primary-modern {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 32px;
+    background: var(--g-brand);
+    color: var(--c-white) !important;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    text-decoration: none;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+      0 4px 8px rgba(94, 59, 255, 0.35);
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .btn-primary-modern:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.25) inset,
+      0 8px 16px rgba(94, 59, 255, 0.4);
+    color: var(--c-white) !important;
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 991px) {
+    .an-feature-two-column-list__content {
+      padding: 2rem;
+    }
+
+    .an-feature-two-column-list .feature-column--left {
+      border-right: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .an-feature-two-column-list .feature-column {
+      padding: 0;
+    }
+
+    .an-feature-two-column-list .feature-text {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .feature-list-heading {
+      font-size: 1.75rem;
+    }
+
+    .feature-list-subheading {
+      font-size: 1.125rem;
+    }
+
+    .an-feature-two-column-list__content {
+      padding: 1.5rem;
+    }
+
+    .an-feature-two-column-list .feature-item {
+      margin-bottom: 1.25rem;
+    }
+
+    .an-feature-two-column-list .feature-icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .an-feature-two-column-list .feature-emoji {
+      font-size: 1.25rem;
+    }
+
+    .an-feature-two-column-list .footer-text {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Feature - Two Column List",
+  "class": "an-feature-two-column-list",
+  "elements": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "feature-two-column-list",
+      "info": "Custom ID for internal linking (e.g., #feature-two-column-list)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Are you tired of feeling..."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading (optional)"
+    },
+    {
+      "type": "textarea",
+      "id": "footer_text",
+      "label": "Footer Text (optional)",
+      "default": "You're not alone. Millions of smart, hard-working people have been sucked into what I call the 'Time Stress Trap' — constantly scrambling, scattered, and exhausted, with surprisingly little to show for it."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFF8F5"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Content Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#FFE86B"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Check Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "rgba(255, 139, 203, 0.1)"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "text",
+      "id": "cta_url",
+      "label": "CTA URL",
+      "default": "#"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open in New Tab",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "left_feature",
+      "name": "Feature - Two Column List",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "use_emoji",
+          "label": "Use Emoji Instead of Icon",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji",
+          "default": "👉",
+          "info": "Used when 'Use Emoji' is checked"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Constantly exhausted, overwhelmed, and stressed out?"
+        }
+      ]
+    },
+    {
+      "type": "right_feature",
+      "name": "Feature - Two Column List",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "use_emoji",
+          "label": "Use Emoji Instead of Icon",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji",
+          "default": "👉",
+          "info": "Used when 'Use Emoji' is checked"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Always busy, with minimal results and a shrinking bank account?"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature - Two Column List",
+      "category": "Content",
+      "description": "Two-column feature list with icons",
+      "blocks": [
+        {
+          "type": "left_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "Constantly <strong>exhausted, overwhelmed</strong>, and <strong>stressed out</strong>?"
+          }
+        },
+        {
+          "type": "left_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "Confused about what actually deserves your precious time and attention?"
+          }
+        },
+        {
+          "type": "left_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "<strong>Defeated</strong> because you put other people's needs ahead of your own?"
+          }
+        },
+        {
+          "type": "left_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "Weak when you finally take a break – thinking you should be 'more productive'?"
+          }
+        },
+        {
+          "type": "right_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "<strong>Always busy</strong>, with minimal results and a shrinking bank account?"
+          }
+        },
+        {
+          "type": "right_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "Ashamed by how much time vanishes into the <strong>social media void</strong>?"
+          }
+        },
+        {
+          "type": "right_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "Like you're missing out on <strong>precious time</strong> with the people you love?"
+          }
+        },
+        {
+          "type": "right_feature",
+          "settings": {
+            "use_emoji": true,
+            "emoji": "👉",
+            "text": "Depleted because <strong>your mind never turns off</strong> from work?"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

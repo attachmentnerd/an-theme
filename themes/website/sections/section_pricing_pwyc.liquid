@@ -1,0 +1,301 @@
+{% comment %}
+  Pricing — Pay‑What‑You‑Can (V2)
+  - Matches our style and interactions (slider + quick picks)
+  - Slider snaps to closest tier and updates label/description/URL
+  - Quick-pick chips and right-side tier cards both snap the slider
+  - All copy and links are configurable via schema
+  - Section-only CSS and JS keep it self-contained
+{% endcomment %}
+
+<section id="pricing-pwyc-{{ section.id }}" class="an-section an-theme an-white"
+         data-url-floor="{{ section.settings.checkout_url_floor }}"
+         data-url-anchor="{{ section.settings.checkout_url_anchor }}"
+         data-url-forward="{{ section.settings.checkout_url_forward }}">
+  <div class="an-container">
+    <div class="pwyc-grid">
+      <!-- Left: Controls -->
+      <div class="an-card">
+        {% if section.settings.eyebrow != blank %}
+          <div class="an-eyebrow">{{ section.settings.eyebrow }}</div>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="an-title-lg pwyc-heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="pwyc-sub">{{ section.settings.subheading }}</p>
+        {% endif %}
+
+        <!-- Quick pick chips -->
+        <div class="pwyc-chips">
+          <button class="an-chip pwyc-chip" data-kind="floor" data-tier="{{ section.settings.min_value }}">
+            {{ section.settings.currency_symbol }}{{ section.settings.min_value }} — {{ section.settings.floor_title }}
+          </button>
+          <button class="an-chip pwyc-chip pwyc-chip--anchor" data-kind="anchor" data-tier="{{ section.settings.anchor_value }}">
+            {{ section.settings.currency_symbol }}{{ section.settings.anchor_value }} — {{ section.settings.anchor_title }}
+            <span class="pwyc-chip-note">{{ section.settings.anchor_label }}</span>
+          </button>
+          <button class="an-chip pwyc-chip" data-kind="forward" data-tier="{{ section.settings.max_value }}">
+            {{ section.settings.currency_symbol }}{{ section.settings.max_value }} — {{ section.settings.forward_title }}
+          </button>
+        </div>
+
+        <!-- Slider -->
+        <div class="pwyc-slider-wrap">
+          <input id="pwyc-slider-input-{{ section.id }}" type="range" min="{{ section.settings.min_value }}" max="{{ section.settings.max_value }}" step="1" value="{{ section.settings.default_value }}" class="pwyc-slider">
+        </div>
+        <div class="pwyc-scale">
+          <span>{{ section.settings.currency_symbol }}{{ section.settings.min_value }}</span>
+          <span>{{ section.settings.currency_symbol }}{{ section.settings.anchor_value }}</span>
+          <span>{{ section.settings.currency_symbol }}{{ section.settings.max_value }}</span>
+        </div>
+
+        <div class="pwyc-readout" id="pwyc-readout-{{ section.id }}">
+          <div class="pwyc-price" id="pwyc-price-{{ section.id }}">{{ section.settings.currency_symbol }}{{ section.settings.default_value }}</div>
+          <span class="an-chip" id="pwyc-label-{{ section.id }}">{{ section.settings.anchor_label }}</span>
+        </div>
+        <p class="pwyc-desc" id="pwyc-desc-{{ section.id }}">{{ section.settings.anchor_desc }}</p>
+
+        <div class="pwyc-cta">
+          <a id="pwyc-checkout-{{ section.id }}" href="{{ section.settings.checkout_url_anchor }}" class="an-btn-primary" data-evt="pwyc_checkout_click" data-label="slider">{{ section.settings.primary_cta_text }}</a>
+          {% if section.settings.show_scholarship %}
+            <a href="{{ section.settings.scholarship_link }}" class="an-btn-secondary" data-evt="pwyc_cta" data-label="scholarship_link">{{ section.settings.scholarship_text }}</a>
+          {% endif %}
+        </div>
+
+        {% if section.settings.whats_included != blank %}
+          <div class="pwyc-included">
+            <strong>{{ section.settings.whats_included_heading }}</strong> {{ section.settings.whats_included }}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Right: Tier cards -->
+      <div>
+        <div class="pwyc-tiers">
+          <div class="an-card pwyc-tier" data-kind="floor" data-tier-card="{{ section.settings.min_value }}">
+            <div class="pwyc-tier-eyebrow">{{ section.settings.floor_title }}</div>
+            <div class="pwyc-tier-amount">{{ section.settings.currency_symbol }}{{ section.settings.min_value }}</div>
+            <p class="pwyc-tier-desc">{{ section.settings.floor_desc }}</p>
+            <a href="#" class="an-btn-secondary" data-tier="{{ section.settings.min_value }}" data-evt="pwyc_tier_click" data-label="{{ section.settings.min_value }}">{{ section.settings.floor_cta_text }}</a>
+            <a href="{{ section.settings.checkout_url_floor }}" class="pwyc-start-link" data-evt="pwyc_start_click" data-label="floor_start">Start →</a>
+          </div>
+          <div class="an-card pwyc-tier pwyc-tier--anchor" data-kind="anchor" data-tier-card="{{ section.settings.anchor_value }}">
+            <div class="pwyc-tier-eyebrow">{{ section.settings.anchor_title }}</div>
+            <div class="pwyc-tier-amount">{{ section.settings.currency_symbol }}{{ section.settings.anchor_value }}</div>
+            <p class="pwyc-tier-desc">{{ section.settings.anchor_desc }}</p>
+            <a href="#" class="an-btn-secondary" data-tier="{{ section.settings.anchor_value }}" data-evt="pwyc_tier_click" data-label="{{ section.settings.anchor_value }}">{{ section.settings.anchor_cta_text }}</a>
+            <a href="{{ section.settings.checkout_url_anchor }}" class="pwyc-start-link" data-evt="pwyc_start_click" data-label="anchor_start">Start →</a>
+          </div>
+          <div class="an-card pwyc-tier" data-kind="forward" data-tier-card="{{ section.settings.max_value }}">
+            <div class="pwyc-tier-eyebrow">{{ section.settings.forward_title }}</div>
+            <div class="pwyc-tier-amount">{{ section.settings.currency_symbol }}{{ section.settings.max_value }}</div>
+            <p class="pwyc-tier-desc">{{ section.settings.forward_desc }}</p>
+            <a href="#" class="an-btn-secondary" data-tier="{{ section.settings.max_value }}" data-evt="pwyc_tier_click" data-label="{{ section.settings.max_value }}">{{ section.settings.forward_cta_text }}</a>
+            <a href="{{ section.settings.checkout_url_forward }}" class="pwyc-start-link" data-evt="pwyc_start_click" data-label="forward_start">Start →</a>
+          </div>
+        </div>
+        {% if section.settings.show_bottom_note %}
+          <p class="pwyc-note" id="pwyc-scholarship-{{ section.id }}">{{ section.settings.bottom_note | replace: '[[link]]', '<a href="' | append: section.settings.bottom_note_link | append: '" data-evt="pwyc_cta" data-label="scholarship_request">' | append: section.settings.bottom_note_link_text | append: '</a>' }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Per-tier colors (safe fallbacks) */
+    #pricing-pwyc-{{ section.id }}{
+      --pwyc-floor: var(--c-accent-teal, #18D5E4);
+      --pwyc-anchor: var(--c-brand-600, #5E3BFF);
+      --pwyc-forward: var(--c-accent-peach, #FF8BCB);
+    }
+    /* Scoped text color to avoid inversion issues */
+    #pricing-pwyc-{{ section.id }}{color:var(--c-ink-900)}
+    #pricing-pwyc-{{ section.id }} a{color:inherit}
+    .pwyc-grid{display:grid;gap:16px;grid-template-columns:1.2fr .8fr}
+    .pwyc-heading{margin-bottom:4px}
+    .pwyc-sub{font-size:.9rem;color:var(--c-ink-500)}
+
+    /* Quick chips */
+    .pwyc-chips{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 6px}
+    .pwyc-chip{cursor:pointer; background:#fff; border:1px solid var(--c-brand-100); color:var(--c-ink-700)}
+    .pwyc-chip--anchor{}
+    .pwyc-chip.is-selected[data-kind="floor"]{border-color:var(--pwyc-floor); box-shadow:0 0 0 3px rgba(24,213,228,.25)}
+    .pwyc-chip.is-selected[data-kind="anchor"]{border-color:var(--pwyc-anchor); box-shadow:0 0 0 3px rgba(94,59,255,.25)}
+    .pwyc-chip.is-selected[data-kind="forward"]{border-color:var(--pwyc-forward); box-shadow:0 0 0 3px rgba(255,139,203,.25)}
+    .pwyc-chip-note{margin-left:8px;color:var(--c-ink-500);font-size:.85em}
+
+    /* Slider */
+    .pwyc-slider-wrap{margin:10px 0 8px}
+    .pwyc-slider{appearance:none;width:100%;height:8px;border-radius:8px;background:#F0EDFF;outline:none}
+    .pwyc-scale{display:flex;justify-content:space-between;font-size:12px;color:var(--c-ink-500);margin-top:6px}
+
+    /* Readout */
+    .pwyc-readout{display:flex;align-items:center;gap:10px;margin:12px 0 8px}
+    .pwyc-price{font-size:28px;font-weight:700;color:var(--c-ink-900)}
+    .pwyc-desc{font-size:.9rem;color:var(--c-ink-500)}
+
+    /* CTA + included */
+    .pwyc-cta{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+    .pwyc-included{margin-top:14px;background:linear-gradient(145deg,#EDEBFF,#F7F6FF);border-radius:16px;padding:12px}
+
+    /* Right cards */
+    .pwyc-tiers{display:flex;flex-wrap:wrap;gap:10px}
+    .pwyc-tier{flex:1 1 180px; cursor:pointer}
+    .pwyc-tier--anchor{}
+    .pwyc-tier.is-selected[data-kind="floor"]{border:1px solid var(--pwyc-floor); box-shadow:0 0 0 3px rgba(24,213,228,.25)}
+    .pwyc-tier.is-selected[data-kind="anchor"]{border:1px solid var(--pwyc-anchor); box-shadow:0 0 0 3px rgba(94,59,255,.25)}
+    .pwyc-tier.is-selected[data-kind="forward"]{border:1px solid var(--pwyc-forward); box-shadow:0 0 0 3px rgba(255,139,203,.25)}
+    .pwyc-tier.pulse{animation:pwycPulse .9s ease}
+    @keyframes pwycPulse{0%{box-shadow:var(--glow-brand),0 0 0 0 rgba(94,59,255,.35)}60%{box-shadow:var(--glow-brand),0 0 0 8px rgba(94,59,255,0)}100%{box-shadow:var(--glow-brand)}}
+    @media (prefers-reduced-motion: reduce){.pwyc-tier.pulse{animation:none}}
+    .pwyc-tier-eyebrow{font-size:.85rem;color:var(--c-ink-500)}
+    .pwyc-tier-amount{font-size:24px;font-weight:700;color:var(--c-ink-900)}
+    .pwyc-tier-desc{font-size:.9rem;color:var(--c-ink-500)}
+    .pwyc-start-link{display:inline-block;margin-left:8px;font-weight:600;text-decoration:underline;padding:6px 10px;border-radius:9999px}
+    .pwyc-tier[data-kind="floor"] .pwyc-start-link{color:var(--pwyc-floor); background:rgba(24,213,228,.08)}
+    .pwyc-tier[data-kind="anchor"] .pwyc-start-link{color:var(--pwyc-anchor); background:rgba(94,59,255,.08)}
+    .pwyc-tier[data-kind="forward"] .pwyc-start-link{color:var(--pwyc-forward); background:rgba(255,139,203,.12)}
+    .pwyc-note{font-size:.9rem;color:var(--c-ink-500);margin-top:10px}
+    .pwyc-note a{text-decoration:underline;background:rgba(94,59,255,.10);padding:2px 6px;border-radius:6px}
+
+    @media (max-width: 900px){.pwyc-grid{grid-template-columns:1fr}}
+
+    /* Ensure white text on primary CTA */
+    #pricing-pwyc-{{ section.id }} .an-btn-primary{ color:#fff; }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var root = document.getElementById('pricing-pwyc-{{ section.id }}');
+      if(!root || root.dataset.inited === '1') return; root.dataset.inited = '1';
+      var slider = root.querySelector('#pwyc-slider-input-{{ section.id }}');
+      var price = root.querySelector('#pwyc-price-{{ section.id }}');
+      var label = root.querySelector('#pwyc-label-{{ section.id }}');
+      var desc  = root.querySelector('#pwyc-desc-{{ section.id }}');
+      var checkout = root.querySelector('#pwyc-checkout-{{ section.id }}');
+
+      var tiers = [
+        {v: {{ section.settings.min_value | default: 49 }},  label: '{{ section.settings.floor_title | escape }}',       desc:'{{ section.settings.floor_desc | escape }}',  url: root.dataset.urlFloor},
+        {v: {{ section.settings.anchor_value | default: 297 }}, label: '{{ section.settings.anchor_label | escape }}',    desc:'{{ section.settings.anchor_desc | escape }}', url: root.dataset.urlAnchor},
+        {v: {{ section.settings.max_value | default: 449 }},  label: '{{ section.settings.forward_title | escape }}',    desc:'{{ section.settings.forward_desc | escape }}', url: root.dataset.urlForward}
+      ];
+
+      function closestTier(val){
+        return tiers.reduce(function(best,t){ return Math.abs(t.v-val)<Math.abs(best.v-val)?t:best; }, tiers[0]);
+      }
+      var chips = [].slice.call(root.querySelectorAll('.pwyc-chip'));
+      var cards = [].slice.call(root.querySelectorAll('[data-tier-card]'));
+
+      function markSelected(val){
+        chips.forEach(function(c){
+          if(parseInt(c.getAttribute('data-tier'),10) === val){ c.classList.add('is-selected'); }
+          else { c.classList.remove('is-selected'); }
+        });
+        cards.forEach(function(card){
+          if(parseInt(card.getAttribute('data-tier-card'),10) === val){ card.classList.add('is-selected'); }
+          else { card.classList.remove('is-selected'); }
+        });
+      }
+
+      function setTier(t, opts){
+        opts = opts || {};
+        price.textContent = '{{ section.settings.currency_symbol }}'+t.v;
+        label.textContent = t.label;
+        desc.textContent = t.desc;
+        if(t.url) checkout.href = t.url;
+        checkout.setAttribute('data-value', String(t.v));
+        markSelected(t.v);
+        if(opts.pulse){
+          var selected = root.querySelector('[data-tier-card="'+t.v+'"]');
+          if(selected){
+            selected.classList.remove('pulse');
+            // trigger reflow to restart animation
+            void selected.offsetWidth;
+            selected.classList.add('pulse');
+            setTimeout(function(){ selected.classList.remove('pulse'); }, 900);
+          }
+        }
+        if(opts.focus){
+          try{ checkout.focus({preventScroll:true}); }catch(e){ try{ checkout.focus(); }catch(_e){} }
+        }
+        try{ if(window.gtag){ gtag('event','pwyc_view',{value:t.v}); } }catch(e){}
+      }
+
+      setTier(closestTier(parseInt(slider.value,10)));
+      slider.addEventListener('input', function(){ setTier(closestTier(parseInt(slider.value,10))); });
+
+      // Quick tier chips and card buttons
+      root.querySelectorAll('[data-tier]').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          var t = closestTier(parseInt(btn.dataset.tier,10));
+          slider.value = t.v; setTier(t, {focus:true, pulse:true});
+          checkout.scrollIntoView({behavior:'smooth', block:'center'});
+          try{ if(window.gtag){ gtag('event','pwyc_tier_click',{value:t.v, label:btn.dataset.label || 'chip'}); } }catch(e){}
+        });
+      });
+
+      // Make entire tier cards clickable (except inner links)
+      cards.forEach(function(card){
+        card.addEventListener('click', function(e){
+          if(e.target.closest('a')) return; // allow links to work normally
+          var val = parseInt(card.getAttribute('data-tier-card'),10);
+          var t = closestTier(val);
+          slider.value = t.v; setTier(t, {focus:true, pulse:true});
+          checkout.scrollIntoView({behavior:'smooth', block:'center'});
+          try{ if(window.gtag){ gtag('event','pwyc_tier_click',{value:t.v, label:'card'}); } }catch(e){}
+        });
+      });
+    });
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Pricing — PWYC (Slider)",
+  "elements": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pay‑What‑You‑Can" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Choose a price that works for your family" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Every tier includes the full program. Pay‑it‑Forward funds scholarships." },
+
+    { "type": "header", "content": "Tiers & Values" },
+    { "type": "text", "id": "currency_symbol", "label": "Currency Symbol", "default": "$" },
+    { "type": "range", "id": "min_value", "label": "Floor Value", "min": 1, "max": 1000, "step": 1, "default": 49 },
+    { "type": "range", "id": "anchor_value", "label": "Anchor Value", "min": 1, "max": 2000, "step": 1, "default": 297 },
+    { "type": "range", "id": "max_value", "label": "Pay‑It‑Forward Value", "min": 1, "max": 5000, "step": 1, "default": 449 },
+    { "type": "range", "id": "default_value", "label": "Default Slider Value", "min": 1, "max": 5000, "step": 1, "default": 297 },
+
+    { "type": "header", "content": "Labels & Descriptions" },
+    { "type": "text", "id": "floor_title", "label": "Floor Title", "default": "Floor" },
+    { "type": "textarea", "id": "floor_desc", "label": "Floor Description", "default": "Choose this if money is tight. You get everything." },
+    { "type": "text", "id": "anchor_title", "label": "Anchor Title", "default": "Anchor" },
+    { "type": "text", "id": "anchor_label", "label": "Anchor Chip Label", "default": "Recommended" },
+    { "type": "textarea", "id": "anchor_desc", "label": "Anchor Description", "default": "Covers our costs and sustains the pay‑what‑you‑can model." },
+    { "type": "text", "id": "forward_title", "label": "Pay‑It‑Forward Title", "default": "Pay‑It‑Forward" },
+    { "type": "textarea", "id": "forward_desc", "label": "Pay‑It‑Forward Description", "default": "Funds a scholarship seat for another parent." },
+
+    { "type": "header", "content": "CTA & Links" },
+    { "type": "text", "id": "primary_cta_text", "label": "Primary CTA Text", "default": "Get lifetime access" },
+    { "type": "action", "id": "checkout_url_floor", "label": "Checkout URL — Floor", "default": "/checkout/spp-49" },
+    { "type": "action", "id": "checkout_url_anchor", "label": "Checkout URL — Anchor", "default": "/checkout/spp-297" },
+    { "type": "action", "id": "checkout_url_forward", "label": "Checkout URL — Pay‑It‑Forward", "default": "/checkout/spp-449" },
+
+    { "type": "header", "content": "Scholarship/Support" },
+    { "type": "checkbox", "id": "show_scholarship", "label": "Show Scholarship Link", "default": true },
+    { "type": "text", "id": "scholarship_text", "label": "Scholarship Link Text", "default": "Apply for scholarship" },
+    { "type": "action", "id": "scholarship_link", "label": "Scholarship Link", "default": "#" },
+    { "type": "checkbox", "id": "show_bottom_note", "label": "Show Bottom Note", "default": true },
+    { "type": "textarea", "id": "bottom_note", "label": "Bottom Note (use [[link]] placeholder)", "default": "Need help covering even $49? [[link]]" },
+    { "type": "action", "id": "bottom_note_link", "label": "Bottom Note Link", "default": "#" },
+    { "type": "text", "id": "bottom_note_link_text", "label": "Bottom Note Link Text", "default": "Request a free scholarship." },
+
+    { "type": "header", "content": "What's Included" },
+    { "type": "text", "id": "whats_included_heading", "label": "Heading", "default": "What you get:" },
+    { "type": "textarea", "id": "whats_included", "label": "Description", "default": "all 6 modules • printable scripts • monthly Q&A • searchable replays • lifetime access." }
+  ],
+  "presets": [
+    { "name": "Pricing — PWYC (Slider)", "category": "Offers & Pricing" }
+  ]
+}
+{% endschema %}

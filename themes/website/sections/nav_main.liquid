@@ -1,0 +1,677 @@
+{% comment %} Initialize navigation variables {% endcomment %}
+{% assign login_url = '/login' %}
+{% assign profile_label = 'Login' %}
+{% assign profile_event = 'nav_login' %}
+{% if current_site_user %}
+  {% assign login_url = '/library' %}
+  {% assign profile_label = current_site_user.name | default: current_site_user.email | default: 'My Library' %}
+  {% assign profile_event = 'nav_library' %}
+{% endif %}
+{% assign current_path = request.path | default: '/' | downcase %}
+
+<style>
+  #an-pill-nav-{{ section.id }} {
+    {% if section.settings.is_sticky %}position: sticky; top: 0;{% else %}position: relative;{% endif %}
+    z-index: 9999;
+    padding: 1.15rem 0;
+    {% if section.settings.nav_style == 'transparent' %}
+      background: transparent;
+      backdrop-filter: none;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    {% else %}
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.85) 60%, rgba(255, 255, 255, 0.70) 100%);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    {% endif %}
+    transition: box-shadow 0.25s ease;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-scrolled {
+    box-shadow: 0 12px 30px -20px rgba(15, 23, 42, 0.45);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__logo img {
+    height: 34px;
+    width: auto;
+    display: block;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__pill {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    background: #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 12px 35px -18px rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 66px;
+    padding: 0.55rem 1.05rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #374151;
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link:hover,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link:focus {
+    color: #5e3bff;
+    background: rgba(94, 59, 255, 0.08);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link--active {
+    color: #5e3bff;
+    font-weight: 600;
+    background: rgba(94, 59, 255, 0.12);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-left: auto;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(94, 59, 255, 0.2);
+    background: #ffffff;
+    overflow: hidden;
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.45rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #5e3bff 0%, #7b66ff 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    box-shadow: 0 16px 35px -18px rgba(94, 59, 255, 0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 130px;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta:hover,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 38px -16px rgba(94, 59, 255, 0.75);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta--secondary {
+    background: #ffffff;
+    color: #5e3bff;
+    border: 1px solid rgba(94, 59, 255, 0.35);
+    box-shadow: none;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #1f2937;
+    border-radius: 999px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    margin: 0 auto;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__toggle span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__toggle span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__drawer,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__backdrop {
+    display: none;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.2);
+    backdrop-filter: blur(2px);
+    z-index: 290;
+  }
+
+  #an-pill-nav-{{ section.id }}.is-open .an-pill-nav__drawer {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 295;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2.5rem;
+    background: #ffffff;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__drawer a {
+    color: #1f2937;
+    text-decoration: none;
+    font-size: 1.35rem;
+    font-weight: 500;
+  }
+
+  #an-pill-nav-{{ section.id }} .an-pill-nav__drawer a.an-pill-nav__cta {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 1024px) {
+    #an-pill-nav-{{ section.id }} {
+      padding: 0.85rem 0;
+    }
+
+    #an-pill-nav-{{ section.id }} .an-pill-nav__pill {
+      display: none;
+    }
+
+    #an-pill-nav-{{ section.id }} .an-pill-nav__toggle {
+      display: flex;
+    }
+
+    #an-pill-nav-{{ section.id }} .an-pill-nav__actions {
+      display: none;
+    }
+  }
+</style>
+
+<nav id="an-pill-nav-{{ section.id }}" class="an-pill-nav">
+  <div class="container an-pill-nav__container">
+    <a class="an-pill-nav__logo" href="/">
+      {% if section.settings.logo_image %}
+        <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ current_site.name | default: 'Logo' }}">
+      {% else %}
+        <img src="https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg" alt="Attachment Nerd logo">
+      {% endif %}
+    </a>
+
+    <div class="an-pill-nav__pill" aria-label="Primary navigation">
+      {% for block in section.blocks %}
+        {% if block.type == 'nav_link' %}
+          {% assign url = block.settings.url | default: '/' %}
+          {% assign normalized_url = url | downcase %}
+          {% assign normalized_url_with_slash = normalized_url | append: '/' %}
+          {% assign is_active = false %}
+          {% if current_path == normalized_url or current_path == normalized_url_with_slash %}
+            {% assign is_active = true %}
+          {% endif %}
+          <a href="{{ url }}"
+             class="an-pill-nav__link{% if is_active %} an-pill-nav__link--active{% endif %}"
+             data-evt="nav_link_{{ block.settings.label | handle }}">
+            {{ block.settings.label }}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="an-pill-nav__actions">
+      {% if section.settings.show_login %}
+        {% if current_site_user %}
+          <a class="an-pill-nav__avatar" href="/library" data-evt="{{ profile_event }}">
+            {% assign avatar_url = current_site_user | avatar_url %}
+            {% if avatar_url %}
+              <img src="{{ avatar_url }}" alt="{{ current_site_user.name | default: 'Account' }}">
+            {% else %}
+              {{ profile_label | slice: 0, 1 | upcase }}
+            {% endif %}
+          </a>
+        {% else %}
+          <a class="an-pill-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}" aria-label="Login">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </a>
+        {% endif %}
+      {% endif %}
+
+      {% comment %} Render button blocks {% endcomment %}
+      {% for block in section.blocks %}
+        {% if block.type == 'button' %}
+          {% comment %} Check visibility {% endcomment %}
+          {% assign show_button = true %}
+          {% if block.settings.visibility == 'logged_out' and current_site_user %}
+            {% assign show_button = false %}
+          {% elsif block.settings.visibility == 'logged_in' and current_site_user == nil %}
+            {% assign show_button = false %}
+          {% endif %}
+
+          {% if show_button %}
+            <a class="an-pill-nav__cta{% if block.settings.style == 'secondary' %} an-pill-nav__cta--secondary{% endif %}"
+               href="{{ block.settings.url }}"
+               data-evt="nav_cta_{{ forloop.index }}"
+               style="{% if block.settings.style == 'primary' and block.settings.gradient_start and block.settings.gradient_end %}
+                 background: linear-gradient({{ block.settings.gradient_angle }}deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
+               {% elsif block.settings.style == 'solid' %}
+                 background: {{ block.settings.bg_color }};
+               {% elsif block.settings.style == 'secondary' %}
+                 background: {{ block.settings.bg_color | default: '#ffffff' }};
+               {% endif %}
+               color: {{ block.settings.text_color }};
+               border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+               border-radius: {{ block.settings.border_radius }}px;
+               padding: {{ block.settings.padding_y }}px {{ block.settings.padding_x }}px;
+               font-size: {{ block.settings.font_size }}px;
+               font-weight: {{ block.settings.font_weight }};
+               {% if block.settings.shadow %}
+                 box-shadow: 0 16px 35px -18px {{ block.settings.bg_color | default: '#5e3bff' }}70;
+               {% endif %}">
+              {{ block.settings.label }}
+            </a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <button class="an-pill-nav__toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-pill-nav-toggle>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="an-pill-nav__backdrop" data-pill-nav-backdrop></div>
+  <div class="an-pill-nav__drawer" role="dialog" aria-modal="true" aria-label="Mobile navigation" data-pill-nav-drawer>
+    {% comment %} Render nav links in mobile drawer {% endcomment %}
+    {% for block in section.blocks %}
+      {% if block.type == 'nav_link' %}
+        <a href="{{ block.settings.url }}" data-evt="nav_link_mobile_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% comment %} Render buttons in mobile drawer {% endcomment %}
+    {% for block in section.blocks %}
+      {% if block.type == 'button' %}
+        {% comment %} Check visibility {% endcomment %}
+        {% assign show_button = true %}
+        {% if block.settings.visibility == 'logged_out' and current_site_user %}
+          {% assign show_button = false %}
+        {% elsif block.settings.visibility == 'logged_in' and current_site_user == nil %}
+          {% assign show_button = false %}
+        {% endif %}
+
+        {% if show_button %}
+          <a class="an-pill-nav__cta{% if block.settings.style == 'secondary' %} an-pill-nav__cta--secondary{% endif %}"
+             href="{{ block.settings.url }}"
+             data-evt="nav_cta_mobile_{{ forloop.index }}">
+            {{ block.settings.label }}
+          </a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% comment %} Show login link if enabled and user not logged in {% endcomment %}
+    {% if section.settings.show_login %}
+      {% unless current_site_user %}
+        <a class="an-pill-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}">{{ profile_label }}</a>
+      {% endunless %}
+    {% endif %}
+  </div>
+</nav>
+
+<script>
+  (function () {
+    var nav = document.getElementById('an-pill-nav-{{ section.id }}');
+    if (!nav) { return; }
+    var toggle = nav.querySelector('[data-pill-nav-toggle]');
+    var backdrop = nav.querySelector('[data-pill-nav-backdrop]');
+    var drawer = nav.querySelector('[data-pill-nav-drawer]');
+    if (!toggle || !backdrop || !drawer) { return; }
+
+    function closeNav() {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+      var isOpen = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    backdrop.addEventListener('click', closeNav);
+
+    document.addEventListener('keyup', function (event) {
+      if (event.key === 'Escape') {
+        closeNav();
+      }
+    });
+
+    drawer.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeNav);
+    });
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) { return; }
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        var scrolled = window.scrollY > 8;
+        if (scrolled) {
+          nav.classList.add('is-scrolled');
+        } else {
+          nav.classList.remove('is-scrolled');
+        }
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Nav - Main",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Navigation Settings"
+    },
+    {
+      "type": "select",
+      "id": "nav_style",
+      "label": "Navigation Style",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default (Blur)" },
+        { "value": "transparent", "label": "Transparent" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "is_sticky",
+      "label": "Sticky Navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_login",
+      "label": "Show Login/Profile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image",
+      "info": "Upload your logo (recommended height: 34px)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Label",
+          "default": "About"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Link URL",
+          "default": "/about"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button Text",
+          "default": "Get Started"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Button URL",
+          "default": "/pricing"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            { "value": "primary", "label": "Primary (Gradient)" },
+            { "value": "secondary", "label": "Secondary (Outline)" },
+            { "value": "solid", "label": "Solid Color" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "visibility",
+          "label": "Show Button For",
+          "default": "all",
+          "options": [
+            { "value": "all", "label": "All Visitors" },
+            { "value": "logged_in", "label": "Logged In Users Only" },
+            { "value": "logged_out", "label": "Logged Out Users Only" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button Colors"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background Color",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border Color",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "header",
+          "content": "Button Style Settings"
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "label": "Border Width",
+          "default": 1,
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "label": "Border Radius",
+          "default": 999,
+          "min": 0,
+          "max": 999,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "padding_x",
+          "label": "Horizontal Padding",
+          "default": 24,
+          "min": 8,
+          "max": 48,
+          "step": 2,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "padding_y",
+          "label": "Vertical Padding",
+          "default": 12,
+          "min": 4,
+          "max": 24,
+          "step": 2,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "Font Size",
+          "default": 15,
+          "min": 12,
+          "max": 20,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "default": "600",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "shadow",
+          "label": "Add Shadow",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Gradient Settings (Primary Style)"
+        },
+        {
+          "type": "color",
+          "id": "gradient_start",
+          "label": "Gradient Start",
+          "default": "#5E3BFF"
+        },
+        {
+          "type": "color",
+          "id": "gradient_end",
+          "label": "Gradient End",
+          "default": "#7B66FF"
+        },
+        {
+          "type": "range",
+          "id": "gradient_angle",
+          "label": "Gradient Angle",
+          "default": 135,
+          "min": 0,
+          "max": 360,
+          "step": 15,
+          "unit": "deg"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nav - Main",
+      "category": "Navigation",
+      "blocks": [
+        { "type": "nav_link", "settings": { "label": "About", "url": "/about" } },
+        { "type": "nav_link", "settings": { "label": "Resources", "url": "/resources" } },
+        { "type": "nav_link", "settings": { "label": "Blog", "url": "/blog" } },
+        { "type": "button", "settings": {
+          "label": "Get Started",
+          "url": "/pricing",
+          "style": "primary",
+          "visibility": "logged_out"
+        }},
+        { "type": "button", "settings": {
+          "label": "My Library",
+          "url": "/library",
+          "style": "secondary",
+          "visibility": "logged_in"
+        }}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+{% comment %}
+Centralized hardcoded navigation defaults. Include this snippet to expose:
+- nav_links          (array of Label=>URL strings)
+- nav_cta_label      (string)
+- nav_cta_url        (string)
+- nav_secondary_label
+- nav_secondary_url
+- nav_show_secondary (boolean)
+- nav_logo_url       (string)
+- nav_logo_url_inverted (string)
+- nav_is_sticky      (boolean)
+- nav_style          (string: 'solid' or 'transparent')
+- nav_show_login     (boolean)
+{% endcomment %}
+
+{% assign nav_links_string = 'About=>/about|Books=>/books|Podcast=>/podcast|Speaking=>/speaking|Program=>/program/secure-parenting|Free Downloads=>/downloads' %}
+{% assign nav_links = nav_links_string | split: '|' %}
+{% assign nav_cta_label = 'Get Started' %}
+{% assign nav_cta_url = '/program/secure-parenting' %}
+{% assign nav_secondary_label = 'Free Downloads' %}
+{% assign nav_secondary_url = '/downloads' %}
+{% assign nav_show_secondary = false %}
+{% assign nav_logo_url = 'https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png' %}
+{% assign nav_logo_url_inverted = 'https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp' %}
+{% assign nav_is_sticky = true %}
+{% assign nav_style = 'solid' %}
+{% assign nav_show_login = true %}

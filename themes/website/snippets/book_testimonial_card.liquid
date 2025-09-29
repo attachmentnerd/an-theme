@@ -1,0 +1,43 @@
+<!-- Book Testimonial Card Snippet -->
+<!-- Used by book_showcase_unified.liquid for testimonial layout -->
+
+<div class="testimonial-card text-center">
+  {% if show_stars and testimonial.settings.rating %}
+    <div class="star-rating mb-2" aria-label="{{ testimonial.settings.rating }} out of 5 stars">
+      {% for i in (1..5) %}
+        {% if i <= testimonial.settings.rating %}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--c-accent-lemon)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+        {% else %}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--c-grey-400)" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  <blockquote class="testimonial-quote mb-3">
+    <p class="text-muted fst-italic mb-0">"{{ testimonial.settings.quote }}"</p>
+  </blockquote>
+  
+  <div class="testimonial-author">
+    {% if testimonial.settings.author_image %}
+      <div class="mb-2">
+        <img src="{{ testimonial.settings.author_image | image_picker_url: '120x120' }}" 
+             alt="{{ testimonial.settings.author }}" 
+             class="rounded-circle mx-auto"
+             loading="lazy"
+             style="aspect-ratio: 1/1; object-fit: cover; width: 60px; height: 60px;">
+      </div>
+    {% endif %}
+    
+    <div class="author-info">
+      <h6 class="mb-0 fw-bold">{{ testimonial.settings.author }}</h6>
+      {% if testimonial.settings.author_title %}
+        <small class="text-muted">{{ testimonial.settings.author_title }}</small>
+      {% endif %}
+    </div>
+  </div>
+</div>

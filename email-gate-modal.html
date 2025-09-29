@@ -1,0 +1,429 @@
+<!-- Email Gate Modal - Drop into any Kajabi page -->
+<!-- Place this in a Custom HTML block where you want the download button -->
+
+<div class="email-gate-container">
+  <!-- Trigger Button -->
+  <button class="email-gate-trigger" onclick="openEmailGate()">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 4H9v5h2V6zm0 6H9v2h2v-2z"/>
+    </svg>
+    Download Free Resource
+  </button>
+
+  <!-- Modal Overlay -->
+  <div id="emailGateModal" class="email-gate-modal" style="display: none;">
+    <div class="email-gate-modal__overlay" onclick="closeEmailGate()"></div>
+    <div class="email-gate-modal__content">
+      <button class="email-gate-modal__close" onclick="closeEmailGate()">×</button>
+
+      <!-- Modal Header -->
+      <div class="email-gate-modal__header">
+        <div class="email-gate-modal__icon">
+          <svg width="60" height="60" fill="#5E3BFF" viewBox="0 0 24 24">
+            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+            <path fill="white" d="M9 12l2 2 4-4" stroke="white" stroke-width="2"/>
+          </svg>
+        </div>
+        <h2>Get Your Free Resource!</h2>
+        <p>Enter your email to unlock instant access to our exclusive parenting toolkit.</p>
+      </div>
+
+      <!-- What You'll Get -->
+      <div class="email-gate-modal__benefits">
+        <div class="benefit">
+          <svg width="20" height="20" fill="#5E3BFF">
+            <circle cx="10" cy="10" r="10" opacity="0.2"/>
+            <path d="M14.7 7.3a1 1 0 010 1.4l-5 5a1 1 0 01-1.4 0l-2-2a1 1 0 111.4-1.4l1.3 1.3 4.3-4.3a1 1 0 011.4 0z"/>
+          </svg>
+          <span>10+ Printable Scripts & Worksheets</span>
+        </div>
+        <div class="benefit">
+          <svg width="20" height="20" fill="#5E3BFF">
+            <circle cx="10" cy="10" r="10" opacity="0.2"/>
+            <path d="M14.7 7.3a1 1 0 010 1.4l-5 5a1 1 0 01-1.4 0l-2-2a1 1 0 111.4-1.4l1.3 1.3 4.3-4.3a1 1 0 011.4 0z"/>
+          </svg>
+          <span>Science-backed parenting strategies</span>
+        </div>
+        <div class="benefit">
+          <svg width="20" height="20" fill="#5E3BFF">
+            <circle cx="10" cy="10" r="10" opacity="0.2"/>
+            <path d="M14.7 7.3a1 1 0 010 1.4l-5 5a1 1 0 01-1.4 0l-2-2a1 1 0 111.4-1.4l1.3 1.3 4.3-4.3a1 1 0 011.4 0z"/>
+          </svg>
+          <span>Weekly parenting tips & updates</span>
+        </div>
+      </div>
+
+      <!-- Email Form -->
+      <form id="emailGateForm" onsubmit="handleEmailGateSubmit(event)">
+        <div class="email-gate-modal__form">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email address"
+            required
+            class="email-gate-modal__input"
+          >
+          <input
+            type="text"
+            name="first_name"
+            placeholder="First name (optional)"
+            class="email-gate-modal__input"
+          >
+          <button type="submit" class="email-gate-modal__submit">
+            <span class="button-text">Get Instant Access</span>
+            <span class="button-loading" style="display: none;">
+              <svg class="spin" width="20" height="20" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25"/>
+                <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity="0.75"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <p class="email-gate-modal__privacy">
+          🔒 Your information is 100% secure. We'll never spam you.
+        </p>
+      </form>
+
+      <!-- Success State (hidden initially) -->
+      <div id="emailGateSuccess" class="email-gate-modal__success" style="display: none;">
+        <svg width="80" height="80" fill="#5E3BFF" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+        </svg>
+        <h3>Success! Check Your Email</h3>
+        <p>We've sent your free resource to your inbox.</p>
+        <a href="#" id="downloadLink" class="email-gate-modal__download">Download Now</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .email-gate-container {
+    display: inline-block;
+  }
+
+  .email-gate-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #5E3BFF 0%, #7c5fff 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(94, 59, 255, 0.3);
+  }
+
+  .email-gate-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(94, 59, 255, 0.4);
+  }
+
+  .email-gate-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .email-gate-modal__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+  }
+
+  .email-gate-modal__content {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .email-gate-modal__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #f3f4f6;
+    border-radius: 50%;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #6b7280;
+  }
+
+  .email-gate-modal__close:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+  }
+
+  .email-gate-modal__header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .email-gate-modal__icon {
+    margin-bottom: 20px;
+  }
+
+  .email-gate-modal__header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 10px;
+  }
+
+  .email-gate-modal__header p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .email-gate-modal__benefits {
+    background: #faf9ff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .benefit {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #4b5563;
+  }
+
+  .benefit:last-child {
+    margin-bottom: 0;
+  }
+
+  .email-gate-modal__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .email-gate-modal__input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+
+  .email-gate-modal__input:focus {
+    outline: none;
+    border-color: #5E3BFF;
+    box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.1);
+  }
+
+  .email-gate-modal__submit {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #5E3BFF 0%, #7c5fff 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .email-gate-modal__submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(94, 59, 255, 0.3);
+  }
+
+  .email-gate-modal__submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .email-gate-modal__privacy {
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    margin: 16px 0 0;
+  }
+
+  .email-gate-modal__success {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .email-gate-modal__success h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 20px 0 10px;
+  }
+
+  .email-gate-modal__success p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 24px;
+  }
+
+  .email-gate-modal__download {
+    display: inline-block;
+    padding: 14px 32px;
+    background: #5E3BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .email-gate-modal__download:hover {
+    background: #4025E0;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 640px) {
+    .email-gate-modal__content {
+      padding: 30px 20px;
+    }
+
+    .email-gate-modal__header h2 {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<script>
+  // Configuration - Update these values
+  const RESOURCE_URL = 'https://your-domain.com/path-to-resource.pdf';
+  const KAJABI_FORM_ACTION = '/opt-in'; // Or your specific Kajabi form endpoint
+  const KAJABI_FORM_ID = 'YOUR_FORM_ID'; // Optional: specific Kajabi form ID
+
+  function openEmailGate() {
+    document.getElementById('emailGateModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEmailGate() {
+    document.getElementById('emailGateModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  function handleEmailGateSubmit(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const submitBtn = form.querySelector('.email-gate-modal__submit');
+    const buttonText = submitBtn.querySelector('.button-text');
+    const buttonLoading = submitBtn.querySelector('.button-loading');
+
+    // Show loading state
+    buttonText.style.display = 'none';
+    buttonLoading.style.display = 'inline-block';
+    submitBtn.disabled = true;
+
+    // Get form data
+    const formData = new FormData(form);
+    const email = formData.get('email');
+    const firstName = formData.get('first_name');
+
+    // Here you would normally submit to Kajabi
+    // For demo, we'll simulate a submission
+    setTimeout(() => {
+      // Hide form, show success
+      form.style.display = 'none';
+      document.querySelector('.email-gate-modal__benefits').style.display = 'none';
+      document.getElementById('emailGateSuccess').style.display = 'block';
+
+      // Set download link
+      document.getElementById('downloadLink').href = RESOURCE_URL;
+
+      // Optional: Auto-download after 2 seconds
+      setTimeout(() => {
+        window.open(RESOURCE_URL, '_blank');
+      }, 2000);
+
+      // Optional: Close modal after 5 seconds
+      setTimeout(() => {
+        closeEmailGate();
+      }, 5000);
+    }, 1500);
+
+    // In production, you would submit to Kajabi like this:
+    /*
+    fetch(KAJABI_FORM_ACTION, {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (response.ok) {
+        // Show success state
+        form.style.display = 'none';
+        document.getElementById('emailGateSuccess').style.display = 'block';
+      }
+    });
+    */
+  }
+
+  // Close modal on ESC key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeEmailGate();
+    }
+  });
+</script>

@@ -1,0 +1,440 @@
+{% comment %}
+  Sidebar Lesson Navigation Block
+  Shows Next and Previous buttons for navigating between lessons within the same category
+{% endcomment %}
+
+{% if current_post and current_post.category %}
+  {% comment %} Handle checkbox values that might be strings {% endcomment %}
+  {% assign show_previous = block.settings.show_previous %}
+  {% if show_previous == blank or show_previous == 'true' or show_previous == true %}
+    {% assign show_previous = true %}
+  {% else %}
+    {% assign show_previous = false %}
+  {% endif %}
+
+  {% assign show_next = block.settings.show_next %}
+  {% if show_next == blank or show_next == 'true' or show_next == true %}
+    {% assign show_next = true %}
+  {% else %}
+    {% assign show_next = false %}
+  {% endif %}
+
+  {% assign show_lesson_titles = block.settings.show_lesson_titles %}
+  {% if show_lesson_titles == blank or show_lesson_titles == 'true' or show_lesson_titles == true %}
+    {% assign show_lesson_titles = true %}
+  {% else %}
+    {% assign show_lesson_titles = false %}
+  {% endif %}
+
+  {% assign button_style = block.settings.button_style | default: 'solid' %}
+  {% assign button_size = block.settings.button_size | default: 'med' %}
+  {% assign button_layout = block.settings.button_layout | default: 'stacked' %}
+  {% assign bg_color = block.settings.background_color | default: '#f8f9fa' %}
+  {% assign button_color = block.settings.button_color | default: settings.color_button %}
+  {% assign icon_position = block.settings.icon_position | default: 'outside' %}
+
+  {% comment %} Find previous and next posts within the same category {% endcomment %}
+  {% assign prev_post = nil %}
+  {% assign next_post = nil %}
+  {% assign current_found = false %}
+  {% assign current_index = 0 %}
+
+  {% for p in current_post.category.posts %}
+    {% if current_found == false %}
+      {% if p.id == current_post.id %}
+        {% assign current_found = true %}
+        {% assign current_index = forloop.index %}
+      {% else %}
+        {% assign prev_post = p %}
+      {% endif %}
+    {% elsif next_post == nil %}
+      {% assign next_post = p %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} Check if there's a next category {% endcomment %}
+  {% assign has_next_category = false %}
+  {% if current_post.category.next %}
+    {% assign has_next_category = true %}
+  {% endif %}
+
+  {% if show_previous or show_next %}
+    <div class="sidebar-block lesson-navigation-block layout-{{ button_layout }}" style="background-color: {{ bg_color }};">
+      {% if block.settings.heading %}
+        <h3 class="sidebar-block__title">{{ block.settings.heading }}</h3>
+      {% endif %}
+
+      {% if block.settings.show_category_info %}
+        <div class="lesson-nav-category-info">
+          <span class="category-name">{{ current_post.category.title }}</span>
+          <span class="category-progress">
+            Lesson {{ current_index }} of {{ current_post.category.posts.count }}
+          </span>
+        </div>
+      {% endif %}
+
+      <div class="lesson-nav-buttons {{ button_layout }}">
+        {% if show_previous %}
+          <div class="nav-button-wrapper nav-button--prev">
+            {% if prev_post %}
+              <a href="{{ prev_post.url }}" class="btn btn-{{ button_size }} btn-{{ button_style }} nav-button">
+                {% if icon_position == 'outside' %}
+                  <svg class="nav-icon nav-icon--prev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                  </svg>
+                {% endif %}
+                <span class="nav-button-content">
+                  {% if icon_position == 'inside' %}
+                    <svg class="nav-icon nav-icon--inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                  {% endif %}
+                  <span class="nav-label">{{ block.settings.previous_text | default: 'Previous' }}</span>
+                  {% if show_lesson_titles %}
+                    <span class="nav-lesson-title">{{ prev_post.title | truncate: 30 }}</span>
+                  {% endif %}
+                </span>
+              </a>
+            {% else %}
+              <button class="btn btn-{{ button_size }} btn-{{ button_style }} nav-button disabled" disabled>
+                {% if icon_position == 'outside' %}
+                  <svg class="nav-icon nav-icon--prev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                  </svg>
+                {% endif %}
+                <span class="nav-button-content">
+                  {% if icon_position == 'inside' %}
+                    <svg class="nav-icon nav-icon--inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                  {% endif %}
+                  <span class="nav-label">{{ block.settings.previous_text | default: 'Previous' }}</span>
+                  <span class="nav-lesson-title">First lesson</span>
+                </span>
+              </button>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if show_next %}
+          <div class="nav-button-wrapper nav-button--next">
+            {% if next_post %}
+              <a href="{{ next_post.url }}" class="btn btn-{{ button_size }} btn-{{ button_style }} nav-button">
+                <span class="nav-button-content">
+                  <span class="nav-label">{{ block.settings.next_text | default: 'Next' }}</span>
+                  {% if show_lesson_titles %}
+                    <span class="nav-lesson-title">{{ next_post.title | truncate: 30 }}</span>
+                  {% endif %}
+                  {% if icon_position == 'inside' %}
+                    <svg class="nav-icon nav-icon--inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  {% endif %}
+                </span>
+                {% if icon_position == 'outside' %}
+                  <svg class="nav-icon nav-icon--next" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {% elsif has_next_category and block.settings.show_next_category %}
+              {% comment %} Show link to next category {% endcomment %}
+              {% assign next_category_first_post = current_post.category.next.posts.first %}
+              {% if next_category_first_post %}
+                <a href="{{ next_category_first_post.url }}" class="btn btn-{{ button_size }} btn-{{ button_style }} nav-button nav-button--next-category">
+                  <span class="nav-button-content">
+                    <svg class="nav-icon nav-icon--inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                    <span class="nav-label">{{ block.settings.next_category_text | default: 'Next Module' }}</span>
+                    <span class="nav-lesson-title">{{ current_post.category.next.title | truncate: 30 }}</span>
+                  </span>
+                </a>
+              {% endif %}
+            {% elsif block.settings.show_complete_button %}
+              {% comment %} Show complete button when at the end of all lessons {% endcomment %}
+              <a href="{{ current_product.url | default: '/library' }}" class="btn btn-{{ button_size }} btn-{{ button_style }} nav-button nav-button--complete">
+                <span class="nav-button-content">
+                  <svg class="nav-icon nav-icon--inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                  <span class="nav-label">{{ block.settings.complete_text | default: 'Complete Course' }}</span>
+                </span>
+              </a>
+            {% else %}
+              <button class="btn btn-{{ button_size }} btn-{{ button_style }} nav-button disabled" disabled>
+                <span class="nav-button-content">
+                  <span class="nav-label">{{ block.settings.next_text | default: 'Next' }}</span>
+                  <span class="nav-lesson-title">Last lesson</span>
+                  {% if icon_position == 'inside' %}
+                    <svg class="nav-icon nav-icon--inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  {% endif %}
+                </span>
+                {% if icon_position == 'outside' %}
+                  <svg class="nav-icon nav-icon--next" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                {% endif %}
+              </button>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% if block.settings.show_progress and current_post.category %}
+        {% comment %} Calculate category progress {% endcomment %}
+        {% assign completed_count = 0 %}
+        {% for p in current_post.category.posts %}
+          {% if p.completed? %}
+            {% assign completed_count = completed_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+        {% assign progress_percent = completed_count | times: 100.0 | divided_by: current_post.category.posts.count %}
+
+        <div class="lesson-nav-progress">
+          <div class="progress-text">{{ completed_count }} of {{ current_post.category.posts.count }} lessons complete</div>
+          <div class="progress-bar-mini">
+            <div class="progress-fill-mini" style="width: {{ progress_percent }}%;"></div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <style>
+    .lesson-navigation-block {
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .lesson-navigation-block .sidebar-block__title {
+      margin: 0 0 15px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* Category Info */
+    .lesson-nav-category-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      background: rgba(0,0,0,0.02);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .category-name {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .category-progress {
+      color: #666;
+    }
+
+    /* Button Layouts */
+    .lesson-nav-buttons.stacked {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .lesson-nav-buttons.inline {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .lesson-nav-buttons.inline .nav-button-wrapper {
+      flex: 1;
+    }
+
+    .lesson-nav-buttons.split {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* Navigation Buttons */
+    .nav-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-button:hover:not(.disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .nav-button.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .nav-button-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .nav-button--next .nav-button-content {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .nav-icon {
+      flex-shrink: 0;
+    }
+
+    .nav-icon--inline {
+      margin: 0 4px;
+    }
+
+    .nav-label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .nav-lesson-title {
+      font-size: 12px;
+      opacity: 0.8;
+      line-height: 1.3;
+    }
+
+    /* Button Sizes */
+    .btn-small .nav-label {
+      font-size: 13px;
+    }
+
+    .btn-small .nav-lesson-title {
+      font-size: 11px;
+    }
+
+    .btn-large .nav-label {
+      font-size: 15px;
+    }
+
+    .btn-large .nav-lesson-title {
+      font-size: 13px;
+    }
+
+    /* Button Styles */
+    .btn-solid {
+      {% if button_color %}
+        background-color: {{ button_color }};
+        border-color: {{ button_color }};
+      {% endif %}
+    }
+
+    .btn-solid:hover:not(.disabled) {
+      {% if button_color %}
+        background-color: {{ button_color | color_darken: 10 }};
+        border-color: {{ button_color | color_darken: 10 }};
+      {% endif %}
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      {% if button_color %}
+        color: {{ button_color }};
+        border-color: {{ button_color }};
+      {% endif %}
+    }
+
+    .btn-outline:hover:not(.disabled) {
+      {% if button_color %}
+        background-color: {{ button_color }};
+        color: white;
+      {% endif %}
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      border-color: transparent;
+      {% if button_color %}
+        color: {{ button_color }};
+      {% endif %}
+    }
+
+    .btn-ghost:hover:not(.disabled) {
+      background-color: rgba(0,0,0,0.05);
+    }
+
+    /* Special button styles */
+    .nav-button--next-category {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-color: #667eea;
+      color: white;
+    }
+
+    .nav-button--next-category:hover {
+      background: linear-gradient(135deg, #5a67d8, #6b4299);
+    }
+
+    .nav-button--complete {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-color: #059669;
+      color: white;
+    }
+
+    .nav-button--complete:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      border-color: #047857;
+    }
+
+    /* Progress Bar */
+    .lesson-nav-progress {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .progress-text {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .progress-bar-mini {
+      height: 4px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill-mini {
+      height: 100%;
+      background: {{ button_color | default: '#2AB3B1' }};
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+      .lesson-nav-buttons.split {
+        flex-direction: column;
+      }
+    }
+  </style>
+{% else %}
+  {% comment %} Show message when not on a lesson page or category not available {% endcomment %}
+  <div class="sidebar-block lesson-navigation-block" style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+    <p style="color: #666; font-size: 14px; margin: 0;">Lesson navigation is only available on lesson pages.</p>
+  </div>
+{% endif %}

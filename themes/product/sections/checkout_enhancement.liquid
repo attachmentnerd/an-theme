@@ -1,0 +1,459 @@
+<div class="checkout-enhancement-block" style="background: linear-gradient(135deg, {{ section.settings.bg_color_start | default: '#FFF4F0' }} 0%, {{ section.settings.bg_color_end | default: '#FFFFFF' }} 100%); padding: 32px 24px; border-radius: 16px; position: relative; overflow: hidden; margin: 24px 0;">
+  
+  {% if section.settings.show_sale_banner %}
+    <!-- Sale Banner -->
+    <div style="position: absolute; top: 20px; right: -45px; background: linear-gradient(135deg, {{ section.settings.banner_color_1 | default: '#FF8BCB' }} 0%, {{ section.settings.banner_color_2 | default: '#5E3BFF' }} 100%); color: white; padding: 8px 60px; transform: rotate(45deg); font-weight: 700; font-size: 14px; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(94,59,255,0.3); z-index: 10;">
+      {{ section.settings.sale_text | default: '50% OFF LAUNCH' }}
+    </div>
+  {% endif %}
+
+  <!-- What's Included -->
+  <div style="margin-bottom: 28px;">
+    <h3 style="font-size: 22px; color: {{ section.settings.heading_color | default: '#1A2D4E' }}; font-weight: 700; margin-bottom: 16px;">
+      {{ section.settings.included_icon | default: '✨' }} {{ section.settings.included_heading | default: "What You're Getting Today" }}
+    </h3>
+    
+    <div style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(26,45,78,0.08);">
+      {% for block in section.blocks %}
+        {% if block.type == 'feature' %}
+          <div style="display: flex; align-items: flex-start; {% unless forloop.last %}margin-bottom: 14px;{% endunless %}">
+            <div style="background: linear-gradient(135deg, {{ section.settings.check_color_1 | default: '#18D5E4' }} 0%, {{ section.settings.check_color_2 | default: '#5E3BFF' }} 100%); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-right: 12px;">
+              <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+                <path d="M1 4L4 7L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <strong style="color: {{ section.settings.feature_title_color | default: '#1A2D4E' }}; font-size: 15px;">{{ block.settings.title }}</strong>
+              {% if block.settings.description != blank %}
+                <div style="color: {{ section.settings.feature_desc_color | default: '#6B7280' }}; font-size: 13px; margin-top: 2px;">{{ block.settings.description }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.settings.show_promise %}
+    <!-- Promise Section with Image -->
+    <div style="background: linear-gradient(135deg, {{ section.settings.promise_bg_1 | default: '#FFF4F0' }} 0%, {{ section.settings.promise_bg_2 | default: '#FFE86B15' }} 100%); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid {{ section.settings.promise_border | default: '#FF8BCB30' }};">
+      <div style="display: flex; gap: 16px; align-items: center;">
+        {% if section.settings.promise_image %}
+          <div style="flex-shrink: 0;">
+            <img src="{{ section.settings.promise_image | image_picker_url: '120x120' }}"
+                 alt="{{ section.settings.promise_image_alt | default: 'Eli Harwood' }}"
+                 style="width: {{ section.settings.promise_image_size | default: '80' }}px; height: {{ section.settings.promise_image_size | default: '80' }}px; border-radius: {{ section.settings.promise_image_rounded }}%; object-fit: cover; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          </div>
+        {% endif %}
+        <div style="flex: 1;">
+          <h4 style="color: {{ section.settings.promise_heading_color | default: '#FF8BCB' }}; font-size: 17px; font-weight: 700; margin-bottom: 10px;">
+            {{ section.settings.promise_icon | default: '💝' }} {{ section.settings.promise_heading | default: 'My Promise to Your Family' }}
+          </h4>
+          <p style="color: {{ section.settings.promise_text_color | default: '#3A4A63' }}; font-size: 14px; line-height: 1.6; margin: 0;">
+            {{ section.settings.promise_text | default: "I genuinely care about your experience in the Secure Parenting Program. If something goes wrong or isn't working for your family, tell me. Your journey matters to me, and I'll do whatever I can to make it right." }}
+          </p>
+          {% if section.settings.promise_signature %}
+            <div style="margin-top: 12px; font-style: italic; color: {{ section.settings.promise_signature_color | default: '#5E3BFF' }}; font-size: 14px; font-weight: 600;">
+              — {{ section.settings.promise_signature }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_payment_options %}
+    <!-- Payment Options -->
+    <div style="background: white; border-radius: 12px; padding: 18px; box-shadow: 0 2px 12px rgba(26,45,78,0.08);">
+      {% if section.settings.payment_intro != blank %}
+        <p style="color: {{ section.settings.payment_intro_color | default: '#6B7280' }}; font-size: 13px; margin-bottom: 14px; text-align: center;">{{ section.settings.payment_intro }}</p>
+      {% endif %}
+      
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        {% if section.settings.pwyc_url != blank %}
+          <a href="{{ section.settings.pwyc_url }}" 
+             target="_blank"
+             style="background: white; border: 2px solid {{ section.settings.pwyc_border | default: '#5E3BFF' }}; color: {{ section.settings.pwyc_text_color | default: '#5E3BFF' }}; padding: 10px 18px; border-radius: 8px; text-align: center; font-weight: 600; text-decoration: none; transition: all 0.3s ease; display: block; font-size: 14px;"
+             onmouseover="this.style.background='{{ section.settings.pwyc_hover_bg | default: '#5E3BFF' }}'; this.style.color='white';" 
+             onmouseout="this.style.background='white'; this.style.color='{{ section.settings.pwyc_text_color | default: '#5E3BFF' }}';">
+            {{ section.settings.pwyc_icon | default: '🎁' }} {{ section.settings.pwyc_text | default: 'Pay-What-You-Can Option' }}
+          </a>
+        {% endif %}
+        
+        {% if section.settings.promise_url != blank %}
+          <a href="{{ section.settings.promise_url }}" 
+             target="_blank"
+             style="background: linear-gradient(135deg, {{ section.settings.promise_btn_bg_1 | default: '#FF8BCB' }} 0%, {{ section.settings.promise_btn_bg_2 | default: '#5E3BFF' }} 100%); color: white; padding: 10px 18px; border-radius: 8px; text-align: center; font-weight: 600; text-decoration: none; transition: transform 0.3s ease; display: block; box-shadow: 0 4px 15px rgba(94,59,255,0.2); font-size: 14px;"
+             onmouseover="this.style.transform='translateY(-2px)';" 
+             onmouseout="this.style.transform='translateY(0)';">
+            {{ section.settings.promise_btn_icon | default: '✨' }} {{ section.settings.promise_btn_text | default: 'Learn About Our Promise' }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_trust_badges %}
+    <!-- Trust Badges -->
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid {{ section.settings.trust_border_color | default: '#E9E6FF' }};">
+      <div style="display: flex; justify-content: center; align-items: center; gap: 24px;">
+        {% for block in section.blocks %}
+          {% if block.type == 'trust_badge' %}
+            <div style="text-align: center;">
+              <div style="font-size: 20px;">{{ block.settings.icon }}</div>
+              <span style="font-size: 11px; color: {{ section.settings.trust_text_color | default: '#6B7280' }};">{{ block.settings.label }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Checkout Enhancement",
+  "class": "checkout-enhancement",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Sale Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_banner",
+      "label": "Show Sale Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sale_text",
+      "label": "Sale Text",
+      "default": "50% OFF LAUNCH"
+    },
+    {
+      "type": "color",
+      "id": "banner_color_1",
+      "label": "Banner Gradient Start",
+      "default": "#FF8BCB"
+    },
+    {
+      "type": "color",
+      "id": "banner_color_2",
+      "label": "Banner Gradient End",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "header",
+      "content": "What's Included Section"
+    },
+    {
+      "type": "text",
+      "id": "included_icon",
+      "label": "Section Icon",
+      "default": "✨"
+    },
+    {
+      "type": "text",
+      "id": "included_heading",
+      "label": "Section Heading",
+      "default": "What You're Getting Today"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1A2D4E"
+    },
+    {
+      "type": "color",
+      "id": "check_color_1",
+      "label": "Checkmark Gradient Start",
+      "default": "#18D5E4"
+    },
+    {
+      "type": "color",
+      "id": "check_color_2",
+      "label": "Checkmark Gradient End",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "header",
+      "content": "Promise Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promise",
+      "label": "Show Promise Section",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "promise_image",
+      "label": "Author Image (Eli)",
+      "info": "Upload an image of Eli or the author"
+    },
+    {
+      "type": "text",
+      "id": "promise_image_alt",
+      "label": "Image Alt Text",
+      "default": "Eli Harwood"
+    },
+    {
+      "type": "range",
+      "id": "promise_image_size",
+      "label": "Image Size",
+      "min": 60,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "promise_image_rounded",
+      "label": "Image Roundness",
+      "min": 0,
+      "max": 50,
+      "step": 10,
+      "unit": "%",
+      "default": 50,
+      "info": "50% for circle, 0% for square"
+    },
+    {
+      "type": "text",
+      "id": "promise_icon",
+      "label": "Promise Icon",
+      "default": "💝"
+    },
+    {
+      "type": "text",
+      "id": "promise_heading",
+      "label": "Promise Heading",
+      "default": "My Promise to Your Family"
+    },
+    {
+      "type": "textarea",
+      "id": "promise_text",
+      "label": "Promise Text",
+      "default": "I genuinely care about your experience in the Secure Parenting Program. If something goes wrong or isn't working for your family, tell me. Your journey matters to me, and I'll do whatever I can to make it right."
+    },
+    {
+      "type": "text",
+      "id": "promise_signature",
+      "label": "Signature (optional)",
+      "placeholder": "Eli Harwood",
+      "info": "Add a signature below the promise"
+    },
+    {
+      "type": "color",
+      "id": "promise_heading_color",
+      "label": "Promise Heading Color",
+      "default": "#FF8BCB"
+    },
+    {
+      "type": "color",
+      "id": "promise_signature_color",
+      "label": "Signature Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "header",
+      "content": "Payment Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_options",
+      "label": "Show Payment Options",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "payment_intro",
+      "label": "Payment Intro Text",
+      "default": "Need a different payment option?"
+    },
+    {
+      "type": "action",
+      "id": "pwyc_url",
+      "label": "Pay-What-You-Can URL",
+      "default": "https://attachmentnerd.mykajabi.com/offers/iWQFFjpH/checkout"
+    },
+    {
+      "type": "text",
+      "id": "pwyc_icon",
+      "label": "PWYC Button Icon",
+      "default": "🎁"
+    },
+    {
+      "type": "text",
+      "id": "pwyc_text",
+      "label": "PWYC Button Text",
+      "default": "Pay-What-You-Can Option"
+    },
+    {
+      "type": "action",
+      "id": "promise_url",
+      "label": "Promise URL",
+      "default": "https://attachmentnerd.mykajabi.com/offers/iWQFFjpH/checkout"
+    },
+    {
+      "type": "text",
+      "id": "promise_btn_icon",
+      "label": "Promise Button Icon",
+      "default": "✨"
+    },
+    {
+      "type": "text",
+      "id": "promise_btn_text",
+      "label": "Promise Button Text",
+      "default": "Learn About Our Promise"
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show Trust Badges",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "trust_text_color",
+      "label": "Trust Badge Text Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "header",
+      "content": "Background Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_start",
+      "label": "Background Gradient Start",
+      "default": "#FFF4F0"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_end",
+      "label": "Background Gradient End",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title",
+          "default": "Complete Program Access"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Feature Description",
+          "default": "Lifetime access to all content"
+        }
+      ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Badge Icon (Emoji)",
+          "default": "🔒"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Badge Label",
+          "default": "Secure"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Checkout Enhancement",
+      "category": "Content",
+      "description": "Add trust elements and special offers to checkout page",
+      "settings": {
+        "sale_text": "50% OFF LAUNCH",
+        "included_heading": "What You're Getting Today",
+        "promise_heading": "My Promise to Your Family",
+        "promise_text": "I genuinely care about your experience in the Secure Parenting Program. If something goes wrong or isn't working for your family, tell me. Your journey matters to me, and I'll do whatever I can to make it right.",
+        "payment_intro": "Need a different payment option?",
+        "pwyc_url": "https://attachmentnerd.mykajabi.com/offers/iWQFFjpH/checkout",
+        "promise_url": "https://attachmentnerd.mykajabi.com/offers/iWQFFjpH/checkout"
+      },
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Complete Secure Parenting Program",
+            "description": "12 modules with lifetime access"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Weekly Live Q&A Sessions",
+            "description": "Direct expert guidance"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Private Community Access",
+            "description": "Connect with other parents"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Downloadable Resources",
+            "description": "Worksheets & practical tools"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "30-Day Money Back Guarantee",
+            "description": "Risk-free enrollment"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "🔒",
+            "label": "Secure"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "💳",
+            "label": "Safe Payment"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "⭐",
+            "label": "5-Star Reviews"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

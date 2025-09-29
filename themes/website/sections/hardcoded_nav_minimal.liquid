@@ -1,0 +1,48 @@
+{% comment %}
+Minimal Hardcoded Navigation (CSS-safe)
+- Uses existing header classes: `.header`, `.header__nav`, `.link-list`
+- No inline <style> or <script>; relies on shared/styles/overrides.css and theme CSS
+- Links are hardcoded via `nav_default_links` snippet variables
+{% endcomment %}
+
+{% include 'nav_default_links' %}
+{% assign current_path = request.path | default: '/' | downcase | replace: '//','/' %}
+
+<nav class="header__nav" aria-label="Main">
+  <div class="container">
+    <ul class="link-list" role="list">
+      {% for raw_item in nav_links %}
+        {% assign parts = raw_item | split: '=>' %}
+        {% assign label = parts[0] | default: '' | strip %}
+        {% assign url = '/' %}
+        {% if parts.size > 1 %}
+          {% assign url = parts[1] | strip | default: '/' %}
+        {% endif %}
+        {% if label != '' %}
+          {% assign normalized_url = url | downcase %}
+          {% assign normalized_url_with_slash = normalized_url | append: '/' %}
+          {% assign is_active = false %}
+          {% if current_path == normalized_url or current_path == normalized_url_with_slash %}
+            {% assign is_active = true %}
+          {% endif %}
+          <li class="link-list__item">
+            <a class="link-list__link{% if is_active %} is-active{% endif %}" href="{{ url }}"{% if is_active %} aria-current="page"{% endif %}>{{ label }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Hardcoded Navigation (Minimal)",
+  "elements": [],
+  "presets": [
+    {"name": "Hardcoded Nav (Minimal)", "category": "Navigation"}
+  ]
+}
+{% endschema %}
+
+
+

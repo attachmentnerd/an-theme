@@ -123,7 +123,14 @@
 
 {% if member and current_product %}
   {% assign completion = current_product.completion %}
-  {% assign next_post = completion.next_post %}
+  {% comment %} Find next uncompleted post {% endcomment %}
+  {% assign next_post = nil %}
+  {% for post in current_product.posts %}
+    {% unless post.is_completed %}
+      {% assign next_post = post %}
+      {% break %}
+    {% endunless %}
+  {% endfor %}
   {% assign progress_percent = completion.percent %}
 
   <section class="continue-learning">
@@ -170,7 +177,7 @@
               </div>
             {% endif %}
 
-            <a href="{% if progress_percent == 100 %}{{ current_product.categories.first.posts.first.url }}{% else %}{{ next_post.url }}{% endif %}"
+            <a href="{% if progress_percent == 100 %}{{ current_product.url }}{% elsif next_post %}{{ next_post.url }}{% elsif current_product.posts.size > 0 %}{{ current_product.posts.first.url }}{% else %}{{ current_product.url }}{% endif %}"
                class="continue-learning__button">
               {% if progress_percent == 0 %}
                 {{ section.settings.button_start | default: 'Start Course' }}

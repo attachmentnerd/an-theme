@@ -1,0 +1,584 @@
+{% comment %}
+  Support — Dashboard & Knowledge (Shared)
+  Tabs: FAQs | Articles | Contact
+  - Search + tag filter for FAQs and Articles
+  - Accessible accordion for FAQs
+  - Uses include "icon" (no render)
+{% endcomment %}
+
+{% assign sid = section.id %}
+
+<section id="support-dashboard-{{ sid }}" class="an-section an-theme">
+  <div class="sd-wrap">
+    {% if section.settings.heading or section.settings.subheading %}
+      <header class="sd-head">
+        {% if section.settings.heading %}<h2 class="sd-title">{{ section.settings.heading }}</h2>{% endif %}
+        {% if section.settings.subheading %}<p class="sd-sub">{{ section.settings.subheading }}</p>{% endif %}
+      </header>
+    {% endif %}
+
+    {% if section.settings.enable_search %}
+    <div class="sd-controls" role="search">
+      <div class="sd-search">
+        <label class="sr-only" for="sd-search-{{ sid }}">Search support</label>
+        <input id="sd-search-{{ sid }}" type="search" placeholder="{{ section.settings.search_placeholder }}" autocomplete="off" />
+        <div class="sd-search-ico" aria-hidden="true">{% include "icon", icon: 'search', size: 18, color: 'currentColor', aria_label: '' %}</div>
+      </div>
+      <div class="sd-chips" id="sd-chips-{{ sid }}" aria-label="Filters"></div>
+    </div>
+    {% endif %}
+
+    <nav class="sd-jumps" aria-label="Jump to">
+      <a class="sd-jump" href="#sd-sec-cat-{{ sid }}">{{ section.settings.tab_categories }}</a>
+      <a class="sd-jump" href="#sd-sec-art-{{ sid }}">{{ section.settings.tab_articles }}</a>
+      <a class="sd-jump" href="#sd-sec-faq-{{ sid }}">{{ section.settings.tab_faqs }}</a>
+      <a class="sd-jump" href="#sd-sec-ct-{{ sid }}">{{ section.settings.tab_contact }}</a>
+    </nav>
+
+    <!-- Categories -->
+    <div id="sd-sec-cat-{{ sid }}" class="sd-section" aria-label="{{ section.settings.tab_categories }}">
+      <h3 class="sd-sec-title">{{ section.settings.tab_categories }}</h3>
+      <div class="sd-cat-grid" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% if block.type == 'category' %}
+          <article class="sd-cat-card" {{ block.shopify_attributes }}>
+            <a class="sd-cat-link" href="{{ block.settings.url }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <div class="sd-cat-head">
+                <div class="sd-cat-icon" style="--sd-cat-accent: {{ block.settings.color | default: '#e9eefc' }}">{% include "icon", icon: block.settings.icon | default: 'book-open', size: 22, color: 'currentColor', aria_label: '' %}</div>
+                {% if block.settings.count %}<span class="sd-cat-count">{{ block.settings.count }}</span>{% endif %}
+              </div>
+              <div class="sd-cat-body">
+                <h4 class="sd-cat-title">{{ block.settings.title }}</h4>
+                {% if block.settings.desc %}<p class="sd-cat-desc">{{ block.settings.desc }}</p>{% endif %}
+              </div>
+            </a>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- FAQs -->
+    <div id="sd-sec-faq-{{ sid }}" class="sd-section" aria-label="{{ section.settings.tab_faqs }}">
+      <h3 class="sd-sec-title">{{ section.settings.tab_faqs }}</h3>
+      <div class="sd-accordion" id="sd-acc-{{ sid }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq' or block.type == 'faq_form' %}
+          {% assign _tags = block.settings.tags | default: '' | strip %}
+          <article class="sd-faq" {{ block.shopify_attributes }} data-title="{{ block.settings.question | escape }}" data-tags="{{ _tags | escape }}" data-category="{{ block.settings.category | default: '' | escape }}">
+            <h3 class="sd-faq-q">
+              <button class="sd-acc-btn" type="button" aria-expanded="{% if block.settings.open %}true{% else %}false{% endif %}" aria-controls="sd-faq-a-{{ block.id }}" id="sd-faq-q-{{ block.id }}">
+                <span class="sd-acc-ico" aria-hidden="true">{% include "icon", icon: 'chevron-down', size: 18, color: 'currentColor', aria_label: '' %}</span>
+                <span class="sd-acc-text">{{ block.settings.question }}</span>
+              </button>
+            </h3>
+            <div id="sd-faq-a-{{ block.id }}" class="sd-faq-a" role="region" aria-labelledby="sd-faq-q-{{ block.id }}" {% unless block.settings.open %}hidden{% endunless %}>
+              {% if block.type == 'faq' %}
+              <div class="sd-faq-body">{{ block.settings.answer }}</div>
+              {% else %}
+              <div class="sd-faq-body">
+                {% if block.settings.intro %}<div class="sd-faq-intro">{{ block.settings.intro }}</div>{% endif %}
+                <div class="sd-form">
+                  {% assign form_setting = block.settings.form %}
+                  {% assign form_id = block.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+                  {% assign f = current_site.find_form[form_id] %}
+                  {% if f %}
+                    {% form f %}
+                      {% if block.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you_url }}">{% endif %}
+                      {% if block.settings.hidden_field_name and block.settings.hidden_field_value %}
+                        <input type="hidden" name="form_submission[{{ block.settings.hidden_field_name }}]" value="{{ block.settings.hidden_field_value }}">
+                      {% endif %}
+                      {% for field in f.fields %}
+                        {{ field | form_input: class: "form-group", input_class: "form-control sd-form-input" }}
+                      {% endfor %}
+                      <button class="sd-form-submit" name="commit">{{ block.settings.submit_label | default: 'Send' }}</button>
+                    {% endform %}
+                  {% elsif form_id %}
+                    {% form 'optin', id: form_id %}
+                      {% if block.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you_url }}">{% endif %}
+                      {% if block.settings.hidden_field_name and block.settings.hidden_field_value %}
+                        <input type="hidden" name="form_submission[{{ block.settings.hidden_field_name }}]" value="{{ block.settings.hidden_field_value }}">
+                      {% endif %}
+                      {{ form | fields }}
+                      <button class="sd-form-submit" name="commit">{{ block.settings.submit_label | default: 'Send' }}</button>
+                    {% endform %}
+                  {% else %}
+                    {% if editor %}
+                      <div class="editor-null">No form selected. Choose a Form or add a Manual Form ID.</div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </div>
+              {% endif %}
+              {% assign _tag_list = _tags | split: ',' %}
+              {% if _tag_list.size > 0 and _tags != '' %}
+              <div class="sd-tags">
+                {% for t in _tag_list %}
+                  {% assign tag = t | strip %}
+                  {% if tag != '' %}<span class="sd-tag">{{ tag }}</span>{% endif %}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Articles / Guides -->
+    <div id="sd-sec-art-{{ sid }}" class="sd-section" aria-label="{{ section.settings.tab_articles }}">
+      <h3 class="sd-sec-title">{{ section.settings.articles_heading | default: section.settings.tab_articles }}</h3>
+      <div class="sd-grid" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% if block.type == 'article' %}
+          {% assign _tags = block.settings.tags | default: '' | strip %}
+          <article class="sd-card" {{ block.shopify_attributes }} data-title="{{ block.settings.title | escape }}" data-tags="{{ _tags | escape }}" data-category="{{ block.settings.category | default: '' | escape }}">
+            <a href="{{ block.settings.url }}" class="sd-link" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <div class="sd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ section.settings.card_tint_color }}"></div>
+              <div class="sd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
+                {% if block.settings.category %}<span class="sd-badge sd-badge--pill">{{ block.settings.category }}</span>{% elsif block.settings.badge != blank %}<span class="sd-badge sd-badge--pill">{{ block.settings.badge }}</span>{% endif %}
+                <div class="sd-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'file-text', size: 22, color: 'currentColor', aria_label: '' %}</div>
+                <h3 class="sd-title-sm">{{ block.settings.title }}</h3>
+                {% if block.settings.desc %}<p class="sd-desc">{{ block.settings.desc }}</p>{% endif %}
+                <div class="sd-cta">{{ block.settings.cta | default: section.settings.cta_default }}</div>
+              </div>
+            </a>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if section.settings.articles_view_all_url %}
+      <div class="sd-center">
+        <a class="sd-view-all" href="{{ section.settings.articles_view_all_url }}" {% if section.settings.articles_view_all_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ section.settings.articles_view_all_label | default: 'View all articles' }} →</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Contact -->
+    <div id="sd-sec-ct-{{ sid }}" class="sd-section" aria-label="{{ section.settings.tab_contact }}">
+      <h3 class="sd-sec-title">{{ section.settings.contact_heading | default: section.settings.tab_contact }}</h3>
+      {% assign contact_layout = section.settings.contact_layout | default: 'cards' %}
+      {% if contact_layout == 'panel' %}
+      <div class="sd-contact-panel" style="gap: {{ section.settings.grid_gap }}px;">
+        <div class="sd-contact-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'contact' %}
+          <article class="sd-ct" {{ block.shopify_attributes }}>
+            <div class="sd-ct-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'help-circle', size: 24, color: 'currentColor', aria_label: '' %}</div>
+            <div class="sd-ct-body">
+              <h3 class="sd-ct-title">{{ block.settings.title }}</h3>
+              {% if block.settings.desc %}<p class="sd-ct-desc">{{ block.settings.desc }}</p>{% endif %}
+              <div class="sd-ct-actions">
+                {% if block.settings.primary_url %}
+                  <a href="{{ block.settings.primary_url }}" class="sd-ct-btn sd-ct-btn--pri" {% if block.settings.primary_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ block.settings.primary_label | default: 'Contact' }}</a>
+                {% endif %}
+                {% if block.settings.secondary_url %}
+                  <a href="{{ block.settings.secondary_url }}" class="sd-ct-btn" {% if block.settings.secondary_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ block.settings.secondary_label | default: 'Learn more' }}</a>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+          {% endif %}
+        {% endfor %}
+        </div>
+        <div class="sd-contact-form">
+          {% assign cf = nil %}
+          {% for block in section.blocks %}
+            {% if block.type == 'contact_form' %}{% assign cf = block %}{% break %}{% endif %}
+          {% endfor %}
+          {% if cf %}
+            <article class="sd-ct sd-ct--form" {{ cf.shopify_attributes }}>
+              <div class="sd-ct-body">
+                <h3 class="sd-ct-title">{{ cf.settings.title }}</h3>
+                {% if cf.settings.intro %}<p class="sd-ct-desc">{{ cf.settings.intro }}</p>{% endif %}
+                <div class="sd-form">
+                  {% assign form_setting = cf.settings.form %}
+                  {% assign form_id = cf.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+                  {% assign f = current_site.find_form[form_id] %}
+                  {% if f %}
+                    {% form f %}
+                      {% if cf.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ cf.settings.thank_you_url }}">{% endif %}
+                      {% if cf.settings.hidden_field_name and cf.settings.hidden_field_value %}
+                        <input type="hidden" name="form_submission[{{ cf.settings.hidden_field_name }}]" value="{{ cf.settings.hidden_field_value }}">
+                      {% endif %}
+                      {% for field in f.fields %}
+                        {{ field | form_input: class: "form-group", input_class: "form-control sd-form-input" }}
+                      {% endfor %}
+                      <button class="sd-form-submit" name="commit">{{ cf.settings.submit_label | default: 'Send' }}</button>
+                    {% endform %}
+                  {% elsif form_id %}
+                    {% form 'optin', id: form_id %}
+                      {% if cf.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ cf.settings.thank_you_url }}">{% endif %}
+                      {% if cf.settings.hidden_field_name and cf.settings.hidden_field_value %}
+                        <input type="hidden" name="form_submission[{{ cf.settings.hidden_field_name }}]" value="{{ cf.settings.hidden_field_value }}">
+                      {% endif %}
+                      {{ form | fields }}
+                      <button class="sd-form-submit" name="commit">{{ cf.settings.submit_label | default: 'Send' }}</button>
+                    {% endform %}
+                  {% else %}
+                    {% if editor %}
+                      <div class="editor-null">Add a Contact Form block and choose a form.</div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <div class="sd-grid sd-grid--contact" style="gap: {{ section.settings.grid_gap }}px;">
+        {% for block in section.blocks %}
+          {% if block.type == 'contact' %}
+          <article class="sd-ct" {{ block.shopify_attributes }}>
+            <div class="sd-ct-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'help-circle', size: 24, color: 'currentColor', aria_label: '' %}</div>
+            <div class="sd-ct-body">
+              <h3 class="sd-ct-title">{{ block.settings.title }}</h3>
+              {% if block.settings.desc %}<p class="sd-ct-desc">{{ block.settings.desc }}</p>{% endif %}
+              {% assign show_form = block.settings.show_form %}
+              {% if show_form %}
+                <div class="sd-form">
+                  {% assign form_setting = block.settings.form %}
+                  {% assign form_id = block.settings.manual_form_id | default: form_setting.id | default: form_setting %}
+                  {% assign f = current_site.find_form[form_id] %}
+                  {% if f %}
+                    {% form f %}
+                      {% if block.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you_url }}">{% endif %}
+                      {% if block.settings.hidden_field_name and block.settings.hidden_field_value %}
+                        <input type="hidden" name="form_submission[{{ block.settings.hidden_field_name }}]" value="{{ block.settings.hidden_field_value }}">
+                      {% endif %}
+                      {% for field in f.fields %}
+                        {{ field | form_input: class: "form-group", input_class: "form-control sd-form-input" }}
+                      {% endfor %}
+                      <button class="sd-form-submit" name="commit">{{ block.settings.submit_label | default: 'Send' }}</button>
+                    {% endform %}
+                  {% elsif form_id %}
+                    {% form 'optin', id: form_id %}
+                      {% if block.settings.thank_you_url %}<input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you_url }}">{% endif %}
+                      {% if block.settings.hidden_field_name and block.settings.hidden_field_value %}
+                        <input type="hidden" name="form_submission[{{ block.settings.hidden_field_name }}]" value="{{ block.settings.hidden_field_value }}">
+                      {% endif %}
+                      {{ form | fields }}
+                      <button class="sd-form-submit" name="commit">{{ block.settings.submit_label | default: 'Send' }}</button>
+                    {% endform %}
+                  {% else %}
+                    {% if editor %}
+                      <div class="editor-null">No form selected. Choose a Form or add a Manual Form ID.</div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              {% endif %}
+              {% unless show_form and block.settings.hide_links_when_form %}
+                <div class="sd-ct-actions">
+                  {% if block.settings.primary_url %}
+                    <a href="{{ block.settings.primary_url }}" class="sd-ct-btn sd-ct-btn--pri" {% if block.settings.primary_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ block.settings.primary_label | default: 'Contact' }}</a>
+                  {% endif %}
+                  {% if block.settings.secondary_url %}
+                    <a href="{{ block.settings.secondary_url }}" class="sd-ct-btn" {% if block.settings.secondary_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ block.settings.secondary_label | default: 'Learn more' }}</a>
+                  {% endif %}
+                </div>
+              {% endunless %}
+            </div>
+          </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <style>
+    #support-dashboard-{{ sid }} .sd-wrap{max-width:1100px; margin:0 auto; padding:32px 18px}
+    #support-dashboard-{{ sid }} .sd-title{margin:0 0 6px; color:var(--c-ink-900); font-weight:700; font-size:1.8rem}
+    #support-dashboard-{{ sid }} .sd-sub{color:var(--c-ink-700)}
+    #support-dashboard-{{ sid }} .sd-controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:16px 0}
+    #support-dashboard-{{ sid }} .sd-search{position:relative; flex:1 1 340px}
+    #support-dashboard-{{ sid }} .sd-search input{width:100%; appearance:none; border:1px solid var(--c-ink-100); background:#fff; color:var(--c-ink-800); padding:10px 34px 10px 12px; border-radius:10px}
+    #support-dashboard-{{ sid }} .sd-search-ico{position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--c-ink-500)}
+    #support-dashboard-{{ sid }} .sd-chips{display:flex; gap:8px; flex-wrap:wrap}
+    #support-dashboard-{{ sid }} .sd-chip{display:inline-flex; gap:6px; align-items:center; background:var(--c-ink-050, #f6f7fb); color:var(--c-ink-700); border:1px solid var(--c-ink-100); padding:6px 10px; border-radius:9999px; font-size:.9rem; cursor:pointer}
+    #support-dashboard-{{ sid }} .sd-chip.is-active{background:var(--g-brand); color:#fff; border-color:transparent}
+
+    #support-dashboard-{{ sid }}{scroll-behavior:smooth}
+    #support-dashboard-{{ sid }} .sd-jumps{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 18px}
+    #support-dashboard-{{ sid }} .sd-jump{display:inline-block; border:1px solid var(--c-brand-100); background:var(--c-white); color:var(--c-ink-700); padding:10px 14px; border-radius:9999px; font-weight:600; text-decoration:none}
+    #support-dashboard-{{ sid }} .sd-jump:focus{outline:2px solid var(--c-brand-600); outline-offset:2px}
+    #support-dashboard-{{ sid }} .sd-jump:hover{background:var(--g-brand); color:#fff; border-color:transparent; box-shadow:0 0 12px rgba(105,78,255,.25)}
+    #support-dashboard-{{ sid }} .sd-section{margin:22px 0; scroll-margin-top:80px}
+    #support-dashboard-{{ sid }} .sd-sec-title{margin:0 0 10px; font-size:1.25rem; font-weight:800; color:var(--c-ink-900)}
+
+    /* Categories */
+    #support-dashboard-{{ sid }} .sd-cat-grid{display:grid; grid-template-columns:repeat(3, minmax(0,1fr))}
+    @media (max-width: 900px){ #support-dashboard-{{ sid }} .sd-cat-grid{grid-template-columns:1fr 1fr} }
+    @media (max-width: 600px){ #support-dashboard-{{ sid }} .sd-cat-grid{grid-template-columns:1fr} }
+    #support-dashboard-{{ sid }} .sd-cat-card{background:#fff; border:1px solid var(--c-ink-100); border-radius:14px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.04)}
+    #support-dashboard-{{ sid }} .sd-cat-link{display:flex; gap:12px; padding:14px; text-decoration:none; color:inherit; align-items:flex-start}
+    #support-dashboard-{{ sid }} .sd-cat-head{display:flex; align-items:center; gap:10px}
+    #support-dashboard-{{ sid }} .sd-cat-icon{width:38px; height:38px; border-radius:10px; display:grid; place-items:center; background:var(--sd-cat-accent, #eef2ff); color:var(--c-ink-800); border:1px solid var(--c-ink-100)}
+    #support-dashboard-{{ sid }} .sd-cat-count{margin-left:auto; padding:4px 8px; background:var(--c-ink-050); border:1px solid var(--c-ink-100); color:var(--c-ink-600); border-radius:9999px; font-size:.8rem}
+    #support-dashboard-{{ sid }} .sd-cat-body{flex:1}
+    #support-dashboard-{{ sid }} .sd-cat-title{margin:2px 0 4px; font-weight:700; color:var(--c-ink-900)}
+    #support-dashboard-{{ sid }} .sd-cat-desc{margin:0; color:var(--c-ink-600); font-size:.95rem}
+
+    /* Accordion */
+    #support-dashboard-{{ sid }} .sd-accordion{display:grid; gap:10px}
+    #support-dashboard-{{ sid }} .sd-faq{border:1px solid var(--c-ink-100); background:#fff; border-radius:12px; overflow:hidden}
+    #support-dashboard-{{ sid }} .sd-acc-btn{width:100%; text-align:left; display:flex; gap:10px; align-items:center; padding:14px 14px; background:#fff; border:0; cursor:pointer; font-weight:700; color:var(--c-ink-900)}
+    #support-dashboard-{{ sid }} .sd-acc-btn:focus{outline:2px solid var(--c-brand-600); outline-offset:2px}
+    #support-dashboard-{{ sid }} .sd-acc-ico{display:inline-grid; place-items:center; width:28px; height:28px; border-radius:8px; border:1px solid var(--c-ink-100); color:var(--c-ink-600)}
+    #support-dashboard-{{ sid }} .sd-faq-a{padding:0 14px 14px; color:var(--c-ink-700)}
+    #support-dashboard-{{ sid }} .sd-faq-body{line-height:1.6}
+    #support-dashboard-{{ sid }} .sd-faq[open] .sd-acc-ico{}
+    #support-dashboard-{{ sid }} .sd-tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    #support-dashboard-{{ sid }} .sd-tag{display:inline-flex; align-items:center; padding:4px 8px; background:var(--c-ink-050, #f6f7fb); border:1px solid var(--c-ink-100); color:var(--c-ink-700); border-radius:9999px; font-size:.85rem}
+    #support-dashboard-{{ sid }} .sd-faq-intro{margin:0 0 10px}
+    #support-dashboard-{{ sid }} .sd-form{margin-top:6px}
+    #support-dashboard-{{ sid }} .sd-form .form-group{margin-bottom:10px}
+    #support-dashboard-{{ sid }} .sd-form-input{width:100%}
+    #support-dashboard-{{ sid }} .sd-form-submit{appearance:none; background:var(--g-brand); color:#fff; border:0; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer}
+
+    /* Cards */
+    #support-dashboard-{{ sid }} .sd-grid{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr))}
+    @media (max-width: 900px){
+      #support-dashboard-{{ sid }} .sd-grid{grid-template-columns:1fr}
+    }
+    #support-dashboard-{{ sid }} .sd-card{position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--c-brand-100); box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    #support-dashboard-{{ sid }} .sd-card{transition:transform var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease), box-shadow var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease)}
+    #support-dashboard-{{ sid }} .sd-card:hover{transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.12)}
+    #support-dashboard-{{ sid }} .sd-card:active{transform:translateY(0) scale(.995)}
+    #support-dashboard-{{ sid }} .sd-card:focus-within{box-shadow:0 0 0 3px rgba(105,78,255,.25), 0 8px 20px rgba(0,0,0,.08); border-color:var(--c-brand-300, #c3bcff)}
+    #support-dashboard-{{ sid }} .sd-link{display:grid; min-height:220px; color:inherit; text-decoration:none; aspect-ratio:16/9}
+    #support-dashboard-{{ sid }} .sd-link:focus{outline:2px solid var(--c-brand-600); outline-offset:2px}
+    #support-dashboard-{{ sid }} .sd-media{position:absolute; inset:0; background-size:cover; background-position:center; background-color: var(--placeholder-color, #f0f0f0); transition:transform var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease)}
+    #support-dashboard-{{ sid }} .sd-card:hover .sd-media{transform:scale(1.03)}
+    #support-dashboard-{{ sid }} .sd-media::after{content:''; position:absolute; inset:0; background: {{ section.settings.card_tint_color }}; opacity: {{ section.settings.card_tint_opacity | times: 0.01 }}; transition:opacity var(--motion-duration-fast, .2s) var(--motion-ease-standard, ease)}
+    #support-dashboard-{{ sid }} .sd-card:hover .sd-media::after{opacity:.58}
+    #support-dashboard-{{ sid }} .sd-body{position:relative; z-index:1; display:grid; gap:8px; align-content:end; padding:16px}
+    #support-dashboard-{{ sid }} .sd-body.has-contrast::before{content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,var(--text-contrast-o, .35))); pointer-events:none; z-index:-1}
+    #support-dashboard-{{ sid }} .sd-badge{position:absolute; top:12px; right:12px; background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.35); font-size:.75rem; padding:4px 8px; border-radius:9999px}
+    #support-dashboard-{{ sid }} .sd-badge--pill{position:static; justify-self:start; background:#fff; color:var(--c-ink-700); border:1px solid var(--c-ink-150); font-weight:700}
+    #support-dashboard-{{ sid }} .sd-icon{width:34px; height:34px; border-radius:10px; display:grid; place-items:center; color:#fff; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25)}
+    #support-dashboard-{{ sid }} .sd-title-sm{margin:2px 0 0; color:#fff; font-weight:700; font-size:1.05rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+    #support-dashboard-{{ sid }} .sd-desc{margin:0; color:rgba(255,255,255,.95); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+    #support-dashboard-{{ sid }} .sd-cta{margin-top:8px; background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.35); color:#fff; text-align:center; padding:10px 14px; border-radius:12px; font-weight:600}
+    #support-dashboard-{{ sid }} .sd-center{text-align:center; margin-top:14px}
+    #support-dashboard-{{ sid }} .sd-view-all{display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--c-ink-150); text-decoration:none; color:var(--c-ink-800); font-weight:700}
+    #support-dashboard-{{ sid }} .sd-view-all:hover{background:var(--c-ink-050)}
+
+    /* Contact cards */
+    #support-dashboard-{{ sid }} .sd-grid--contact{grid-template-columns:repeat(2, minmax(0, 1fr))}
+    #support-dashboard-{{ sid }} .sd-ct{display:flex; gap:12px; padding:14px; border:1px solid var(--c-ink-100); background:#fff; border-radius:12px}
+    #support-dashboard-{{ sid }} .sd-ct-icon{width:38px; height:38px; border-radius:10px; display:grid; place-items:center; background:var(--c-ink-050); color:var(--c-ink-700); border:1px solid var(--c-ink-100)}
+    #support-dashboard-{{ sid }} .sd-ct-title{margin:2px 0 4px; color:var(--c-ink-900); font-weight:700; font-size:1.05rem}
+    #support-dashboard-{{ sid }} .sd-ct-desc{margin:0; color:var(--c-ink-600)}
+    #support-dashboard-{{ sid }} .sd-ct-actions{display:flex; gap:10px; margin-top:8px}
+    #support-dashboard-{{ sid }} .sd-ct-btn{display:inline-block; padding:8px 12px; border-radius:10px; border:1px solid var(--c-ink-150); color:var(--c-ink-800); text-decoration:none; font-weight:600}
+    #support-dashboard-{{ sid }} .sd-ct-btn--pri{background:var(--g-brand); color:#fff; border-color:transparent}
+
+    /* Contact panel layout */
+    #support-dashboard-{{ sid }} .sd-contact-panel{display:grid; grid-template-columns:38% 1fr}
+    #support-dashboard-{{ sid }} .sd-contact-list{display:grid; gap:12px}
+    #support-dashboard-{{ sid }} .sd-contact-form .sd-ct{height:100%}
+    @media (max-width: 900px){ #support-dashboard-{{ sid }} .sd-contact-panel{grid-template-columns:1fr; gap:16px} }
+
+    @media (max-width: 600px){
+      #support-dashboard-{{ sid }} .sd-grid--contact{grid-template-columns:1fr}
+      #support-dashboard-{{ sid }} .sd-link{min-height:0; aspect-ratio:16/10}
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      #support-dashboard-{{ sid }} .sd-card{transition:none}
+      #support-dashboard-{{ sid }} .sd-media{transition:none}
+      #support-dashboard-{{ sid }} .sd-card:hover{transform:none}
+      #support-dashboard-{{ sid }} .sd-card:hover .sd-media{transform:none}
+    }
+
+    /* Screen reader only */
+    #support-dashboard-{{ sid }} .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+
+  <script>
+    (function(){
+      var root = document.getElementById('support-dashboard-{{ sid }}');
+      if(!root || root.dataset.inited==='1') return; root.dataset.inited='1';
+      // No tabs — sections are stacked with jump links
+
+      // Accordion logic
+      var accBtns = [].slice.call(root.querySelectorAll('.sd-acc-btn'));
+      accBtns.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var expanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          var region = root.querySelector('#'+this.getAttribute('aria-controls'));
+          if(!region) return; if(expanded){ region.setAttribute('hidden',''); } else { region.removeAttribute('hidden'); }
+        });
+      });
+
+      // Search + tag filters
+      var searchInput = root.querySelector('#sd-search-{{ sid }}');
+      var chipsWrap = root.querySelector('#sd-chips-{{ sid }}');
+      var activeTag = '';
+      function norm(s){ return (s||'').toLowerCase(); }
+      function allItems(){ return [].slice.call(root.querySelectorAll('[data-title]')); }
+      function applyFilters(){
+        var q = norm(searchInput ? searchInput.value : '');
+        allItems().forEach(function(el){
+          var title = norm(el.getAttribute('data-title'));
+          var tags = norm(el.getAttribute('data-tags'));
+          var cat = norm(el.getAttribute('data-category'));
+          var hitQ = !q || title.indexOf(q)>-1 || tags.indexOf(q)>-1 || cat.indexOf(q)>-1 || (el.textContent && norm(el.textContent).indexOf(q)>-1);
+          var hitTag = !activeTag || tags.split(',').map(function(s){return s.trim();}).indexOf(activeTag)>-1;
+          el.style.display = (hitQ && hitTag) ? '' : 'none';
+        });
+      }
+      if(searchInput){ searchInput.addEventListener('input', applyFilters); }
+
+      // Build chips from tags found in both panels
+      function collectTags(){
+        var set = Object.create(null);
+        [].slice.call(root.querySelectorAll('[data-tags]')).forEach(function(n){
+          (n.getAttribute('data-tags')||'').split(',').forEach(function(t){ t=t.trim(); if(t){ set[t]=true; }});
+        });
+        return Object.keys(set).sort();
+      }
+      function renderChips(){
+        if(!chipsWrap) return;
+        chipsWrap.innerHTML='';
+        var tags = collectTags();
+        if(tags.length===0) return;
+        var clear = document.createElement('button'); clear.type='button'; clear.className='sd-chip'+(activeTag===''?' is-active':''); clear.textContent='All'; clear.setAttribute('aria-pressed', activeTag===''?'true':'false'); clear.addEventListener('click', function(){ activeTag=''; renderChips(); applyFilters(); }); chipsWrap.appendChild(clear);
+        tags.forEach(function(tag){
+          var b=document.createElement('button'); b.type='button'; b.className='sd-chip'+(activeTag===tag?' is-active':''); b.textContent=tag; b.setAttribute('aria-pressed', activeTag===tag?'true':'false');
+          b.addEventListener('click', function(){ activeTag = (activeTag===tag?'':tag); renderChips(); applyFilters(); }); chipsWrap.appendChild(b);
+        });
+      }
+      renderChips();
+
+      // Lazy-load card images
+      var lazyNodes = [].slice.call(root.querySelectorAll('#sd-sec-art-{{ sid }} [data-bg-sm]'));
+      function setBg(el){
+        if(el.dataset.bgSet==='1') return; el.dataset.bgSet='1';
+        var url = window.matchMedia('(max-width: 900px)').matches ? el.getAttribute('data-bg-sm') : el.getAttribute('data-bg-lg');
+        url = url || el.getAttribute('data-bg-sm') || el.getAttribute('data-bg-lg');
+        if(!url) return; el.style.filter='blur(8px)'; el.style.backgroundImage='url("'+url+'")';
+        el.addEventListener('transitionend', function(){ el.style.filter=''; }, {once:true});
+        setTimeout(function(){ el.style.transition='filter .6s ease-out'; el.style.filter='blur(0px)'; }, 20);
+      }
+      if('IntersectionObserver' in window){
+        var io = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ setBg(e.target); io.unobserve(e.target); }}); }, {rootMargin:'200px'});
+        lazyNodes.forEach(function(n){ io.observe(n); });
+      } else { lazyNodes.forEach(setBg); }
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Support — Dashboard & Knowledge",
+  "elements": [
+    {"type":"text","id":"heading","label":"Heading","default":"How can we help?"},
+    {"type":"textarea","id":"subheading","label":"Subheading","default":"Search FAQs, browse articles, or contact support."},
+    {"type":"checkbox","id":"enable_search","label":"Enable search and tag chips","default":true},
+    {"type":"text","id":"search_placeholder","label":"Search placeholder","default":"Search FAQs and articles"},
+    {"type":"range","id":"grid_gap","label":"Grid gap","min":8,"max":32,"step":2,"unit":"px","default":16},
+    {"type":"checkbox","id":"enable_text_contrast","label":"Add subtle contrast gradient behind card text","default":true},
+    {"type":"range","id":"text_contrast_opacity","label":"Text contrast opacity (%)","min":0,"max":80,"step":1,"default":35},
+    {"type":"color","id":"card_tint_color","label":"Card tint color","default":"#5E3BFF"},
+    {"type":"range","id":"card_tint_opacity","label":"Card tint opacity (%)","min":0,"max":100,"step":1,"default":62},
+    {"type":"text","id":"tab_faqs","label":"Tab: FAQs","default":"FAQs"},
+    {"type":"text","id":"tab_articles","label":"Tab: Articles","default":"Articles"},
+    {"type":"text","id":"tab_categories","label":"Tab: Categories","default":"Help Categories"},
+    {"type":"text","id":"tab_contact","label":"Tab: Contact","default":"Contact"},
+    {"type":"text","id":"articles_heading","label":"Articles heading","default":"Popular Help Articles"},
+    {"type":"text","id":"articles_view_all_label","label":"Articles: View all label","default":"View all articles"},
+    {"type":"action","id":"articles_view_all_url","label":"Articles: View all link","default":""},
+    {"type":"checkbox","id":"articles_view_all_new_tab","label":"Articles: View all opens new tab","default":false},
+    {"type":"select","id":"contact_layout","label":"Contact layout","default":"panel","options":[{"label":"Panel (cards + form)","value":"panel"},{"label":"Cards grid","value":"cards"}]},
+    {"type":"text","id":"cta_default","label":"Default CTA text","default":"View"}
+  ],
+  "blocks": [
+    {"type":"category","name":"Help Category","elements":[
+      {"type":"text","id":"icon","label":"Icon name","default":"book-open"},
+      {"type":"color","id":"color","label":"Accent color","default":"#eef2ff"},
+      {"type":"text","id":"title","label":"Title","default":"Getting Started"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Learn how to begin your journey"},
+      {"type":"text","id":"count","label":"Count label","default":"12 articles"},
+      {"type":"action","id":"url","label":"Link","default":"#"},
+      {"type":"checkbox","id":"new_tab","label":"Open in new tab","default":false}
+    ]},
+    {"type":"faq","name":"FAQ","elements":[
+      {"type":"text","id":"question","label":"Question","default":"How do I access my course?"},
+      {"type":"rich_text","id":"answer","label":"Answer","default":"<p>You can access all your courses from the library after logging in. If you need help, contact support.</p>"},
+      {"type":"text","id":"category","label":"Category","default":"Account"},
+      {"type":"text","id":"tags","label":"Tags (comma-separated)","default":"account, login"},
+      {"type":"checkbox","id":"open","label":"Open by default","default":false}
+    ]},
+    {"type":"faq_form","name":"FAQ with Form","elements":[
+      {"type":"text","id":"question","label":"Question","default":"I need help with billing"},
+      {"type":"rich_text","id":"intro","label":"Intro (above form)","default":"<p>Tell us a bit about your issue and we’ll get back to you.</p>"},
+      {"type":"form","id":"form","label":"Form","allow_blank":true},
+      {"type":"text","id":"manual_form_id","label":"Manual Form ID (fallback)","info":"Paste a Form ID if the picker is empty or broken"},
+      {"type":"text","id":"thank_you_url","label":"Thank You URL","default":"/thank-you"},
+      {"type":"text","id":"hidden_field_name","label":"Hidden field name (optional)","default":"context","info":"Must exist on the Kajabi form (e.g., a hidden or text field)."},
+      {"type":"text","id":"hidden_field_value","label":"Hidden field value","default":"Support: Billing question"},
+      {"type":"text","id":"submit_label","label":"Submit button label","default":"Send"},
+      {"type":"text","id":"category","label":"Category","default":"Support"},
+      {"type":"text","id":"tags","label":"Tags (comma-separated)","default":"billing, account"},
+      {"type":"checkbox","id":"open","label":"Open by default","default":false}
+    ]},
+    {"type":"article","name":"Article / Guide","elements":[
+      {"type":"image_picker","id":"bg","label":"Background image"},
+      {"type":"text","id":"icon","label":"Icon name","default":"file-text"},
+      {"type":"text","id":"badge","label":"Badge","default":"Guide"},
+      {"type":"text","id":"title","label":"Title","default":"Getting Started"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Quick start checklist and common tasks."},
+      {"type":"text","id":"category","label":"Category","default":"Basics"},
+      {"type":"text","id":"tags","label":"Tags (comma-separated)","default":"getting started"},
+      {"type":"text","id":"cta","label":"CTA text","default":"Read"},
+      {"type":"action","id":"url","label":"Link","default":"#"},
+      {"type":"checkbox","id":"new_tab","label":"Open in new tab","default":false}
+    ]},
+    {"type":"contact","name":"Contact card","elements":[
+      {"type":"text","id":"icon","label":"Icon name","default":"help-circle"},
+      {"type":"text","id":"title","label":"Title","default":"Contact Support"},
+      {"type":"textarea","id":"desc","label":"Description","default":"Can’t find what you need? We’re here to help."},
+      {"type":"checkbox","id":"show_form","label":"Show form inside card","default":false},
+      {"type":"form","id":"form","label":"Form","allow_blank":true},
+      {"type":"text","id":"manual_form_id","label":"Manual Form ID (fallback)","info":"Paste a Form ID if the picker is empty or broken"},
+      {"type":"text","id":"thank_you_url","label":"Thank You URL","default":"/thank-you"},
+      {"type":"text","id":"hidden_field_name","label":"Hidden field name (optional)","default":"context","info":"Must exist on the Kajabi form."},
+      {"type":"text","id":"hidden_field_value","label":"Hidden field value","default":"Support: Contact card"},
+      {"type":"text","id":"submit_label","label":"Submit button label","default":"Send"},
+      {"type":"checkbox","id":"hide_links_when_form","label":"Hide action links when form shown","default":false},
+      {"type":"text","id":"primary_label","label":"Primary button label","default":"Email Us"},
+      {"type":"action","id":"primary_url","label":"Primary link","default":"mailto:support@example.com"},
+      {"type":"checkbox","id":"primary_new_tab","label":"Primary opens in new tab","default":false},
+      {"type":"text","id":"secondary_label","label":"Secondary button label","default":"Help Center"},
+      {"type":"action","id":"secondary_url","label":"Secondary link","default":"#"},
+      {"type":"checkbox","id":"secondary_new_tab","label":"Secondary opens in new tab","default":false}
+    ]}
+    ,{"type":"contact_form","name":"Contact Form (panel)","elements":[
+      {"type":"text","id":"title","label":"Title","default":"Send us a message"},
+      {"type":"textarea","id":"intro","label":"Intro","default":"Our support team is here to help."},
+      {"type":"form","id":"form","label":"Form","allow_blank":true},
+      {"type":"text","id":"manual_form_id","label":"Manual Form ID (fallback)"},
+      {"type":"text","id":"thank_you_url","label":"Thank You URL","default":"/thank-you"},
+      {"type":"text","id":"hidden_field_name","label":"Hidden field name (optional)","default":"context"},
+      {"type":"text","id":"hidden_field_value","label":"Hidden field value","default":"Support: Contact form"},
+      {"type":"text","id":"submit_label","label":"Submit button label","default":"Send Message"}
+    ]}
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {"name":"Support — Dashboard & Knowledge","category":"Content","blocks":[
+      {"type":"faq","settings":{"question":"How do I access my course?","tags":"account, login","category":"Account"}},
+      {"type":"faq","settings":{"question":"How do I reset my password?","tags":"account, password","category":"Account"}},
+      {"type":"faq_form","settings":{"question":"Ask a billing question","tags":"billing, account","category":"Support","hidden_field_value":"Support: Billing question"}},
+      {"type":"article","settings":{"title":"Getting Started","badge":"Guide","category":"Basics"}},
+      {"type":"contact","settings":{"title":"Contact Support","primary_label":"Email Us","secondary_label":"Help Center"}}
+    ]}
+  ]
+}
+{% endschema %}

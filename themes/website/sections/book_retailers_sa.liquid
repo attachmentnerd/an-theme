@@ -1,0 +1,182 @@
+<section id="{{ section.settings.section_id | default: 'book-retailers-sa' }}-{{ section.id }}" class="sa-retailers py-5" style="background: white;">
+  <div class="container">
+    <div class="text-center">
+      <div style="max-width: 800px; margin: 0 auto; background: white; border-radius: 24px; padding: 60px; box-shadow: 0 0 0 1px rgba(0,0,0,0.05) inset, 0 4px 12px rgba(0,0,0,0.05);">
+        <h2 class="mb-4 animate-fade-up" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+          {{ section.settings.heading }}
+        </h2>
+        
+        <p class="mb-5 animate-fade-up" style="font-size: var(--fs-body-lg); color: var(--c-ink-700); animation-delay: 0.1s;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+          {{ section.settings.subheading }}
+        </p>
+        
+        <!-- Primary CTA -->
+        {% if section.settings.primary_cta_text != blank %}
+          <div class="mb-4 animate-fade-up" style="animation-delay: 0.2s;">
+            <a href="{{ section.settings.primary_cta_url }}" 
+               class="btn btn-primary-modern btn-lg"
+               kjb-settings-id="{{ 'primary_cta_text' | settings_id: section: section }}">
+              {{ section.settings.primary_cta_text }}
+            </a>
+          </div>
+        {% endif %}
+        
+        <!-- Retailer links -->
+        {% if section.settings.show_retailers %}
+          <div class="animate-fade-up" style="animation-delay: 0.3s;">
+            <p style="color: var(--c-ink-600); margin-bottom: 16px;">{{ section.settings.retailers_label }}</p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+              {% for block in section.blocks %}
+                {% if block.type == 'retailer' %}
+                  <a href="{{ block.settings.retailer_url }}" 
+                     class="d-inline-flex align-items-center"
+                     style="background: #F8F8F8; padding: 12px 24px; border-radius: 12px; color: var(--c-ink-700); text-decoration: none; transition: all 0.2s ease; border: 1px solid transparent;"
+                     onmouseover="this.style.background='var(--c-brand-100)'; this.style.borderColor='var(--c-brand-200)';"
+                     onmouseout="this.style.background='#F8F8F8'; this.style.borderColor='transparent';">
+                    {% if block.settings.retailer_icon != blank %}
+                      <span class="me-2">{{ block.settings.retailer_icon }}</span>
+                    {% endif %}
+                    <span kjb-settings-id="{{ 'retailer_name' | settings_id: section: section, block: block }}">{{ block.settings.retailer_name }}</span>
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+        
+        <!-- Guarantee text -->
+        {% if section.settings.guarantee_text != blank %}
+          <div class="mt-5 animate-fade-up" style="animation-delay: 0.4s;">
+            <p style="font-size: 14px; color: var(--c-ink-600);" kjb-settings-id="{{ 'guarantee_text' | settings_id: section: section }}">
+              {{ section.settings.guarantee_text }}
+            </p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Book - Retailers SA",
+  "elements": [
+    {
+    "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "book-retailers-sa",
+      "info": "Custom ID for internal linking (e.g., #book-retailers-sa)"
+    },
+      {
+        "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready to Transform Your Relationships?"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Join thousands creating secure, lasting love with science-backed tools that actually work."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA Text",
+      "default": "Get Your Copy on Amazon"
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_url",
+      "label": "Primary CTA URL",
+      "default": "https://www.amazon.com/Securely-Attached"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_retailers",
+      "label": "Show Other Retailers",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "retailers_label",
+      "label": "Retailers Label",
+      "default": "Choose Your Retailer:"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_text",
+      "label": "Guarantee Text",
+      "default": "30-Day Money-Back Guarantee • Lifetime Access to Updates • Join Our Supportive Community"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "retailer",
+      "name": "Book - Retailers SA",
+      "elements": [
+        {
+          "type": "text",
+          "id": "retailer_name",
+          "label": "Retailer Name"
+        },
+        {
+          "type": "text",
+          "id": "retailer_url",
+          "label": "Retailer URL"
+        },
+        {
+          "type": "text",
+          "id": "retailer_icon",
+          "label": "Icon/Emoji (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Book - Retailers SA",
+      "category": "CTA",
+      "blocks": [
+        {
+          "type": "retailer",
+          "settings": {
+            "retailer_name": "Amazon - Paperback & Kindle",
+            "retailer_url": "https://www.amazon.com",
+            "retailer_icon": "📚"
+          }
+        },
+        {
+          "type": "retailer",
+          "settings": {
+            "retailer_name": "Barnes & Noble - Paperback",
+            "retailer_url": "https://www.barnesandnoble.com",
+            "retailer_icon": "📖"
+          }
+        },
+        {
+          "type": "retailer",
+          "settings": {
+            "retailer_name": "Sasquatch Books - Direct Order",
+            "retailer_url": "https://sasquatchbooks.com",
+            "retailer_icon": "🛒"
+          }
+        },
+        {
+          "type": "retailer",
+          "settings": {
+            "retailer_name": "PRH - Global Shipping",
+            "retailer_url": "https://www.penguinrandomhouse.com",
+            "retailer_icon": "🌍"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

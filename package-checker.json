@@ -1,0 +1,14 @@
+{
+  "name": "kajabi-launch-validator",
+  "version": "1.0.0",
+  "description": "Kajabi pre-launch validation tool",
+  "main": "kajabi-api-checker.js",
+  "scripts": {
+    "check": "node kajabi-api-checker.js",
+    "install-deps": "npm install axios chalk"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2"
+  }
+}

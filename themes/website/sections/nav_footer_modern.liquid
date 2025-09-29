@@ -1,0 +1,352 @@
+{% comment %} Footer visibility is controlled globally via footer_controller {% endcomment %}
+{% comment %} Load navigation menus from theme settings {% endcomment %}
+
+{% comment %} Get menus from settings (selected in Theme Settings > Footer) {% endcomment %}
+{% assign about_menu = current_site.link_lists[settings.footer_menu_about] %}
+{% assign offerings_menu = current_site.link_lists[settings.footer_menu_offerings] %}
+{% assign support_menu = current_site.link_lists[settings.footer_menu_support] %}
+
+{% comment %} Debug output - remove after testing {% endcomment %}
+<!-- Footer Debug:
+Settings footer_menu_about: {{ settings.footer_menu_about }}
+Settings footer_menu_offerings: {{ settings.footer_menu_offerings }}
+Settings footer_menu_support: {{ settings.footer_menu_support }}
+about_menu found: {% if about_menu %}yes ({{ about_menu.links.size }} links){% else %}no{% endif %}
+offerings_menu found: {% if offerings_menu %}yes ({{ offerings_menu.links.size }} links){% else %}no{% endif %}
+support_menu found: {% if support_menu %}yes ({{ support_menu.links.size }} links){% else %}no{% endif %}
+-->
+
+{% comment %} Social links remain hardcoded as they're not typically in Kajabi menus {% endcomment %}
+{% assign social_links_string = 'Instagram=>https://www.instagram.com/attachmentnerd/|TikTok=>https://www.tiktok.com/@attachmentnerd|YouTube=>https://www.youtube.com/@attachmentnerd|Facebook=>https://www.facebook.com/attachmentnerd' %}
+{% assign social_links = social_links_string | split: '|' %}
+
+  <style>
+    #an-footer-{{ section.id }} {
+      position: relative;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 3.5rem 0 2.5rem;
+      overflow: hidden;
+    }
+
+    #an-footer-{{ section.id }}::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.18), transparent 55%);
+      pointer-events: none;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__grid {
+      position: relative;
+      display: grid;
+      gap: 2.5rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #an-footer-{{ section.id }} .an-footer__column {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__logo {
+      font-family: var(--font-heading, var(--font-sans));
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__description {
+      margin-top: 1rem;
+      max-width: 22rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #cbd5f5;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__social {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__social a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #f8fafc;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__social a:hover,
+    #an-footer-{{ section.id }} .an-footer__social a:focus {
+      background: rgba(99, 102, 241, 0.18);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: #ffffff;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__heading {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #f8fafc;
+      margin-bottom: 0.25rem;
+    }
+
+    #an-footer-{{ section.id }} a.an-footer__link {
+      color: #cbd5f5;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    #an-footer-{{ section.id }} a.an-footer__link:hover,
+    #an-footer-{{ section.id }} a.an-footer__link:focus {
+      color: #ffffff;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(148, 163, 184, 0.08);
+      color: #f1f5f9;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__form-input:focus {
+      outline: none;
+      border-color: rgba(99, 102, 241, 0.6);
+      background: rgba(99, 102, 241, 0.12);
+    }
+
+    #an-footer-{{ section.id }} .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__form-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(135deg, #4338ca, #6366f1);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__form-button:hover,
+    #an-footer-{{ section.id }} .an-footer__form-button:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px -12px rgba(79, 70, 229, 0.7);
+    }
+
+    #an-footer-{{ section.id }} .an-footer__disclaimer {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__divider {
+      position: relative;
+      margin: 3rem 0 2rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    #an-footer-{{ section.id }} .an-footer__bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__legal {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__legal a {
+      color: #cbd5f5;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #an-footer-{{ section.id }} .an-footer__legal a:hover,
+    #an-footer-{{ section.id }} .an-footer__legal a:focus {
+      color: #ffffff;
+    }
+
+    @media (max-width: 1024px) {
+      #an-footer-{{ section.id }} .an-footer__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      #an-footer-{{ section.id }} {
+        padding: 3rem 0 2rem;
+      }
+
+      #an-footer-{{ section.id }} .an-footer__grid {
+        grid-template-columns: 1fr;
+      }
+
+      #an-footer-{{ section.id }} .an-footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  <footer id="an-footer-{{ section.id }}" class="an-footer">
+    <div class="container">
+      <div class="an-footer__grid">
+        <div class="an-footer__column">
+          <div class="an-footer__logo"><img src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp" alt="Attachment Nerd" style="height: 48px; width: auto; display: block;"/></div>
+          <p class="an-footer__description"></p>
+          <div class="an-footer__social">
+            {% for social_item in social_links %}
+              {% assign social_parts = social_item | split: '=>' %}
+              {% assign social_label = social_parts[0] | strip %}
+              {% assign social_url = social_parts[1] | strip %}
+              {% assign s = social_label | downcase %}
+              <a href="{{ social_url }}" target="_blank" rel="noopener" aria-label="{{ social_label }}" data-evt="footer_social_{{ social_label | handle }}">
+                {% if s == 'instagram' %}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z" stroke="currentColor" stroke-width="2"/><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
+                {% elsif s == 'tiktok' %}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 3h3.1c.3 2.1 1.7 3.7 4.4 3.9v3.1c-1.6.1-3-.4-4.4-1.2v6.7a7 7 0 11-7-7c.5 0 1 .1 1.5.2v3.2c-.5-.2-1-.3-1.5-.3a3 3 0 103 3V3z"/></svg>
+                {% elsif s == 'youtube' %}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.5 31.5 0 000 12a31.5 31.5 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31.5 31.5 0 0024 12a31.5 31.5 0 00-.5-5.8zM9.8 15.5v-7L16 12l-6.2 3.5z"/></svg>
+                {% elsif s == 'facebook' %}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5H17V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2V11H7v3h3.6v8h2.9z"/></svg>
+                {% else %}
+                  {{ social_label | slice: 0, 2 | upcase }}
+                {% endif %}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="an-footer__column">
+          <div class="an-footer__heading">About</div>
+          {% if about_menu and about_menu.links.size > 0 %}
+            {% for link in about_menu.links %}
+              <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_about_{{ link.name | handle }}">{{ link.name }}</a>
+            {% endfor %}
+          {% else %}
+            {% comment %} Minimal fallback if menu not found {% endcomment %}
+            <a href="/about" class="an-footer__link">About Us</a>
+            <a href="/contact" class="an-footer__link">Contact</a>
+          {% endif %}
+        </div>
+
+        <div class="an-footer__column">
+          <div class="an-footer__heading">Offerings</div>
+          {% if offerings_menu and offerings_menu.links.size > 0 %}
+            {% for link in offerings_menu.links %}
+              <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_offerings_{{ link.name | handle }}">{{ link.name }}</a>
+            {% endfor %}
+          {% else %}
+            {% comment %} Minimal fallback if menu not found {% endcomment %}
+            <a href="/products" class="an-footer__link">Products</a>
+            <a href="/resources" class="an-footer__link">Resources</a>
+          {% endif %}
+        </div>
+
+        <div class="an-footer__column">
+          <div class="an-footer__heading">Support</div>
+          {% if support_menu and support_menu.links.size > 0 %}
+            {% for link in support_menu.links %}
+              <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_support_{{ link.name | handle }}">{{ link.name }}</a>
+            {% endfor %}
+          {% else %}
+            {% comment %} Minimal fallback if menu not found {% endcomment %}
+            <a href="/help" class="an-footer__link">Help</a>
+            <a href="/user/legal-pages" class="an-footer__link">Privacy</a>
+          {% endif %}
+          <div class="an-footer__heading" style="margin-top: 1.5rem;">Get Free Updates</div>
+          {% assign footer_form_id = 2149141675 %}
+          {% assign f = current_site.find_form[footer_form_id] %}
+          {% if f %}
+            {% form f %}
+              <div class="an-footer__form">
+                <label class="sr-only" for="an-footer-email-{{ section.id }}">Email address</label>
+                {% for field in f.fields %}
+                  {% assign input_class = 'an-footer__form-input' %}
+                  {{ field | form_input: class: 'form-group', input_class: input_class, label: false, placeholder: true }}
+                {% endfor %}
+                <button type="submit" class="an-footer__form-button" data-evt="footer_newsletter_submit" aria-label="Send me free resources">
+                  <span>Send me free resources</span>
+                  <svg style="margin-left: 8px" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            {% endform %}
+          {% else %}
+            {% form 'optin', id: footer_form_id %}
+              <div class="an-footer__form">
+                {{ form | fields }}
+                <button type="submit" class="an-footer__form-button" data-evt="footer_newsletter_submit" aria-label="Send me free resources">
+                  <span>Send me free resources</span>
+                  <svg style="margin-left: 8px" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            {% endform %}
+          {% endif %}
+          <p class="an-footer__disclaimer">We respect your inbox. Unsubscribe at any time.</p>
+        </div>
+      </div>
+
+      <div class="an-footer__divider"></div>
+
+      <div class="an-footer__bottom">
+        <p>© {{ 'now' | date: '%Y' }} Attachment Nerd. All rights reserved.</p>
+        <div class="an-footer__legal">
+          <a href="/user/legal-pages" data-evt="footer_privacy">Privacy</a>
+          <a href="/contact" data-evt="footer_contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+{% schema %}
+{
+  "name": "Footer Modern"
+}
+{% endschema %}

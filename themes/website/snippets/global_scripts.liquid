@@ -1,0 +1,27 @@
+<!-- Javascripts ======================================================= -->
+{{ "encore_core.js" | kajabi_asset_url | script_tag }}
+
+{% comment %}
+  Modern AN Theme Scripts - Lightweight and performant
+  Old scripts.js (980KB) replaced with modular approach
+{% endcomment %}
+{% include "an_scripts" %}
+
+{% comment %}
+  Image Performance Optimization
+  Fixes LCP issues by ensuring proper image loading
+{% endcomment %}
+{% include "image_performance_fix" %}
+
+{% comment %}
+<!-- Optional Bootstrap Javascript - Remove the liquid comment tags to enable -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{% endcomment %}
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKCGMPHT" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Custom Body Scripts -->
+{% if settings.body_scripts and settings.body_scripts != '' %}
+  {{ settings.body_scripts }}
+{% endif %}

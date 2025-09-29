@@ -61,6 +61,9 @@
       if (!window.Kajabi?.theme?.editor) {
         this.initMarketing(); // Exit intent popups
       }
+
+      // Handle hash navigation on page load
+      this.handleInitialHash();
     },
 
     /**
@@ -377,6 +380,36 @@
     },
 
     /**
+     * Handle initial page load with hash in URL
+     */
+    handleInitialHash() {
+      if (!window.location.hash || window.location.hash.length <= 1) return;
+
+      // Wait for DOM to be fully loaded
+      setTimeout(() => {
+        const hash = window.location.hash;
+        let target = document.querySelector(hash);
+
+        // If exact match not found, try to find section with ID starting with the hash
+        if (!target && hash.length > 1) {
+          const baseId = hash.substring(1); // Remove the #
+          target = document.querySelector(`[id^="${baseId}-"]`);
+        }
+
+        if (target) {
+          // Scroll to the target with offset for sticky header
+          const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
+          const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100); // Small delay to ensure DOM is ready
+    },
+
+    /**
      * Smooth Scroll Handler
      */
     initSmoothScroll() {
@@ -395,13 +428,27 @@
         )
           return;
 
-        const target = document.querySelector(targetId);
-        if (!target) return;
+        let target = document.querySelector(targetId);
+
+        // If exact match not found, try to find section with ID starting with the target
+        // This handles Kajabi sections that append unique IDs (e.g., #spp-cta-xxxxx)
+        if (!target && targetId.length > 1) {
+          const baseId = targetId.substring(1); // Remove the #
+          target = document.querySelector(`[id^="${baseId}-"]`);
+        }
+
+        if (!target) {
+          // If target doesn't exist, let the browser handle it normally
+          // This allows navigation to sections that may not be loaded yet
+          return;
+        }
 
         e.preventDefault();
 
+        // Account for sticky header
+        const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
         const targetPosition =
-          target.getBoundingClientRect().top + window.scrollY;
+          target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
         const startPosition = window.scrollY;
         const distance = targetPosition - startPosition;
         const duration = 500;

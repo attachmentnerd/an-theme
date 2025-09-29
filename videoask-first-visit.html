@@ -1,0 +1,132 @@
+<!-- VideoAsk Widget - Auto-opens on First Visit Only -->
+<script>
+(function() {
+  // Configuration
+  const AUTO_OPEN_DELAY = 3000; // Wait 3 seconds before auto-opening
+  const RESET_AFTER_DAYS = 30; // Reset after 30 days (set to 0 to never reset)
+  
+  // Check if user has visited before
+  const storageKey = 'videoask_first_visit';
+  const expirationKey = 'videoask_visit_expiration';
+  const hasVisited = localStorage.getItem(storageKey);
+  
+  // Check expiration if needed
+  if (hasVisited && RESET_AFTER_DAYS > 0) {
+    const expiration = localStorage.getItem(expirationKey);
+    if (expiration && new Date() > new Date(expiration)) {
+      // Expired, clear the flag
+      localStorage.removeItem(storageKey);
+      localStorage.removeItem(expirationKey);
+    }
+  }
+  
+  // VideoAsk Configuration
+  window.VIDEOASK_EMBED_CONFIG = {
+    "kind": "widget",
+    "url": "https://www.videoask.com/f50gxt7hd",
+    "options": {
+      "widgetType": "VideoThumbnailWindowTall",
+      "text": "",
+      "backgroundColor": "#5CD6C8",
+      "position": "bottom-right",
+      "dismissible": true,
+      "videoPosition": "center center"
+    }
+  };
+  
+  // Load VideoAsk script
+  const script = document.createElement('script');
+  script.src = 'https://www.videoask.com/embed/embed.js';
+  
+  // Handle auto-open on first visit
+  script.onload = function() {
+    // Only auto-open if this is the first visit
+    if (!localStorage.getItem(storageKey)) {
+      
+      // Wait for the specified delay
+      setTimeout(function() {
+        
+        // Try to find and open the VideoAsk widget
+        // VideoAsk creates different elements depending on configuration
+        const possibleSelectors = [
+          '[data-videoask-widget]',
+          '.videoask-widget',
+          '.videoask-popup-button',
+          '[class*="videoask"][role="button"]',
+          'iframe[src*="videoask"]',
+          '.va-widget',
+          '.va-thumbnail'
+        ];
+        
+        let widget = null;
+        for (const selector of possibleSelectors) {
+          widget = document.querySelector(selector);
+          if (widget) break;
+        }
+        
+        if (widget) {
+          console.log('Opening VideoAsk widget for first-time visitor');
+          
+          // Try clicking the widget
+          widget.click();
+          
+          // Alternative: dispatch click event
+          const clickEvent = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true
+          });
+          widget.dispatchEvent(clickEvent);
+          
+          // Mark as visited
+          localStorage.setItem(storageKey, 'true');
+          
+          // Set expiration if configured
+          if (RESET_AFTER_DAYS > 0) {
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + RESET_AFTER_DAYS);
+            localStorage.setItem(expirationKey, expirationDate.toISOString());
+          }
+        } else {
+          console.log('VideoAsk widget not found. It may still be loading.');
+          
+          // Try again after a short delay
+          setTimeout(function() {
+            const retryWidget = document.querySelector('[data-videoask-widget]') || 
+                               document.querySelector('.videoask-widget');
+            if (retryWidget) {
+              retryWidget.click();
+              localStorage.setItem(storageKey, 'true');
+            }
+          }, 2000);
+        }
+        
+      }, AUTO_OPEN_DELAY);
+      
+    } else {
+      console.log('VideoAsk: Returning visitor - widget available but not auto-opening');
+    }
+  };
+  
+  // Add script to page
+  document.body.appendChild(script);
+  
+})();
+</script>
+
+<!-- 
+Usage Instructions:
+1. Add this code to your page where you want the VideoAsk widget
+2. The widget will automatically open after 3 seconds on first visit
+3. On subsequent visits, the widget will be available but won't auto-open
+4. Users can still click the widget to open it manually
+5. After 30 days, it will treat them as a new visitor again (configurable)
+
+To customize:
+- Change AUTO_OPEN_DELAY to adjust wait time (in milliseconds)
+- Change RESET_AFTER_DAYS to control when to show again (0 = never)
+- Update the VideoAsk URL in the configuration
+
+To test/reset:
+Run this in browser console: localStorage.removeItem('videoask_first_visit');
+-->

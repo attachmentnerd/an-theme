@@ -1,0 +1,127 @@
+{% comment %}
+  Redirect Manager
+  Include this snippet in your theme layout to enable redirects
+  Usage: {% include 'redirect_manager' %}
+{% endcomment %}
+
+{% comment %} Only load on non-admin pages {% endcomment %}
+{% unless request.path contains '/admin' or request.path contains '/editor' %}
+  
+  {% comment %} Option 1: Inline redirect rules (easier to manage in Kajabi) {% endcomment %}
+  <script>
+    (function() {
+      'use strict';
+      
+      // Redirect configuration
+      const redirects = [
+        // Add your redirects here
+        // Examples:
+
+        // Simple redirect
+        // { from: '/old-page', to: '/new-page' },
+
+        // Redirect to full URL (external site or different subdomain)
+        // { from: '/instagram', to: 'https://instagram.com/attachmentnerd' },
+        // { from: '/youtube', to: 'https://youtube.com/@attachmentnerd' },
+        // { from: '/book', to: 'https://www.amazon.com/your-book-link' },
+
+        // Redirect old course URLs to new product URLs
+        // { from: '/courses/secure-parenting', to: '/products/secure-parenting-program' },
+
+        // Redirect old checkout to new offer
+        // { from: '/checkout', to: '/offers/iWQFFjpH/checkout' },
+
+        // Redirect with pattern matching
+        // { from: '/blog/old-', to: '/blog/new-', type: 'starts' },
+
+        // Temporary sale redirect
+        // { from: '/black-friday', to: '/offers/black-friday-2024', permanent: false },
+
+        // Redirect to different Kajabi site
+        // { from: '/community', to: 'https://community.attachmentnerd.com' },
+
+        // Redirect with UTM parameters
+        // { from: '/promo', to: 'https://attachmentnerd.mykajabi.com/offers/special?utm_source=social&utm_campaign=launch' },
+      ];
+      
+      // Get current path
+      const currentPath = window.location.pathname;
+      
+      // Helper function to determine if URL is external
+      function isExternalUrl(url) {
+        return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//');
+      }
+
+      // Helper function to build full URL
+      function buildTargetUrl(to, currentHost) {
+        if (isExternalUrl(to)) {
+          return to; // Already a full URL
+        } else {
+          // Relative URL - prepend current origin if needed
+          return to.startsWith('/') ? to : '/' + to;
+        }
+      }
+
+      // Check each redirect rule
+      redirects.forEach(function(rule) {
+        let shouldRedirect = false;
+        let targetUrl = buildTargetUrl(rule.to, window.location.host);
+
+        // Check match type
+        if (rule.type === 'starts') {
+          shouldRedirect = currentPath.startsWith(rule.from);
+          if (shouldRedirect && !isExternalUrl(rule.to)) {
+            targetUrl = currentPath.replace(rule.from, rule.to);
+          }
+        } else if (rule.type === 'contains') {
+          shouldRedirect = currentPath.includes(rule.from);
+        } else {
+          // Default: exact match
+          shouldRedirect = currentPath === rule.from;
+        }
+
+        // Perform redirect
+        if (shouldRedirect) {
+          console.log('Redirecting from', currentPath, 'to', targetUrl);
+
+          // For external URLs, always use location.href
+          if (isExternalUrl(targetUrl)) {
+            window.location.href = targetUrl;
+          } else if (rule.permanent === false) {
+            window.location.href = targetUrl;
+          } else {
+            window.location.replace(targetUrl);
+          }
+        }
+      });
+    })();
+  </script>
+  
+  {% comment %} Option 2: Load external redirect manager (if you prefer) {% endcomment %}
+  {% comment %}
+  {{ 'redirect-manager.js' | asset_url | script_tag }}
+  {% endcomment %}
+  
+{% endunless %}
+
+{% comment %}
+  Alternative: Settings-based redirects
+  You can also use theme settings to manage redirects
+{% endcomment %}
+{% if settings.enable_redirects %}
+  {% if settings.redirect_1_from and settings.redirect_1_to %}
+    <script>
+      if (window.location.pathname === '{{ settings.redirect_1_from }}') {
+        window.location.replace('{{ settings.redirect_1_to }}');
+      }
+    </script>
+  {% endif %}
+  
+  {% if settings.redirect_2_from and settings.redirect_2_to %}
+    <script>
+      if (window.location.pathname === '{{ settings.redirect_2_from }}') {
+        window.location.replace('{{ settings.redirect_2_to }}');
+      }
+    </script>
+  {% endif %}
+{% endif %}

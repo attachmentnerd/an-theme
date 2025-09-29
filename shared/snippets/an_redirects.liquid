@@ -1,0 +1,147 @@
+{% comment %}
+  Attachment Nerd Redirect Configuration
+  Include this in your theme layout: {% include 'an_redirects' %}
+{% endcomment %}
+
+<script>
+(function() {
+  'use strict';
+  
+  const redirects = [
+    // ============================================
+    // SOCIAL MEDIA REDIRECTS
+    // ============================================
+    { from: '/instagram', to: 'https://instagram.com/attachmentnerd' },
+    { from: '/ig', to: 'https://instagram.com/attachmentnerd' },
+    { from: '/youtube', to: 'https://youtube.com/@attachmentnerd' },
+    { from: '/yt', to: 'https://youtube.com/@attachmentnerd' },
+    { from: '/facebook', to: 'https://facebook.com/attachmentnerd' },
+    { from: '/fb', to: 'https://facebook.com/attachmentnerd' },
+    { from: '/tiktok', to: 'https://tiktok.com/@attachmentnerd' },
+    { from: '/pinterest', to: 'https://pinterest.com/attachmentnerd' },
+    
+    // ============================================
+    // CHECKOUT & OFFER REDIRECTS
+    // ============================================
+    { from: '/checkout', to: '/offers/iWQFFjpH/checkout' },
+    { from: '/buy', to: '/offers/iWQFFjpH/checkout' },
+    { from: '/purchase', to: '/offers/iWQFFjpH/checkout' },
+    { from: '/join', to: '/offers/iWQFFjpH/checkout' },
+    { from: '/start', to: '/offers/iWQFFjpH/checkout' },
+    { from: '/enroll', to: '/offers/iWQFFjpH/checkout' },
+    
+    // Pay What You Can
+    { from: '/pay-what-you-can', to: 'https://attachmentnerd.mykajabi.com/offers/aLCCMYCf' },
+    { from: '/pwyc', to: 'https://attachmentnerd.mykajabi.com/offers/aLCCMYCf' },
+    { from: '/scholarship', to: 'https://attachmentnerd.mykajabi.com/offers/aLCCMYCf' },
+    { from: '/free', to: 'https://attachmentnerd.mykajabi.com/offers/aLCCMYCf' },
+    
+    // ============================================
+    // BOOK & AMAZON REDIRECTS
+    // ============================================
+    { from: '/book', to: 'https://www.amazon.com/Securely-Attached-Transform-Parenting-Connection/dp/1668012448' },
+    { from: '/securely-attached', to: 'https://www.amazon.com/Securely-Attached-Transform-Parenting-Connection/dp/1668012448' },
+    { from: '/amazon', to: 'https://www.amazon.com/Securely-Attached-Transform-Parenting-Connection/dp/1668012448' },
+    { from: '/book-club', to: 'https://www.amazon.com/Securely-Attached-Transform-Parenting-Connection/dp/1668012448' },
+    
+    // ============================================
+    // COURSE/PRODUCT REDIRECTS
+    // ============================================
+    { from: '/course', to: '/products/secure-parenting-program' },
+    { from: '/program', to: '/products/secure-parenting-program' },
+    { from: '/spp', to: '/products/secure-parenting-program' },
+    { from: '/courses/secure-parenting', to: '/products/secure-parenting-program' },
+    { from: '/courses/attachment', to: '/products/secure-parenting-program' },
+    
+    // ============================================
+    // LANDING PAGE REDIRECTS
+    // ============================================
+    { from: '/quiz', to: 'https://quiz.tryinteract.com/attachment-style' },
+    { from: '/attachment-quiz', to: 'https://quiz.tryinteract.com/attachment-style' },
+    { from: '/workshop', to: '/pages/free-workshop' },
+    { from: '/webinar', to: '/pages/free-workshop' },
+    
+    // ============================================
+    // RESOURCE REDIRECTS
+    // ============================================
+    { from: '/resources', to: '/pages/free-resources' },
+    { from: '/freebies', to: '/pages/free-resources' },
+    { from: '/downloads', to: '/pages/free-resources' },
+    { from: '/printables', to: '/pages/free-resources' },
+    
+    // ============================================
+    // SUPPORT REDIRECTS
+    // ============================================
+    { from: '/help', to: 'https://help.attachmentnerd.com' },
+    { from: '/support', to: 'https://help.attachmentnerd.com' },
+    { from: '/contact', to: '/pages/contact' },
+    { from: '/faq', to: '/pages/frequently-asked-questions' },
+    
+    // ============================================
+    // SEASONAL/PROMOTIONAL REDIRECTS
+    // ============================================
+    // Uncomment and update dates as needed
+    // { from: '/black-friday', to: '/offers/black-friday-2024', expires: '2024-12-01' },
+    // { from: '/holiday', to: '/offers/holiday-special', expires: '2025-01-02' },
+    // { from: '/new-year', to: '/offers/new-year-2025', expires: '2025-01-31' },
+    // { from: '/mothers-day', to: '/offers/mothers-day-special', expires: '2025-05-12' },
+    
+    // ============================================
+    // EMAIL CAMPAIGN REDIRECTS
+    // ============================================
+    // These are useful for tracking email campaigns
+    { from: '/email-offer', to: '/offers/iWQFFjpH/checkout?utm_source=email&utm_campaign=nurture' },
+    { from: '/welcome-email', to: '/offers/iWQFFjpH/checkout?utm_source=email&utm_campaign=welcome' },
+    
+    // ============================================
+    // LEGACY/OLD URL REDIRECTS
+    // ============================================
+    // Add any old URLs that need to redirect to new ones
+    // { from: '/old-blog-post', to: '/blog/new-blog-post' },
+    // { from: '/old-page', to: '/pages/new-page' },
+  ];
+  
+  // Get current path
+  const currentPath = window.location.pathname.toLowerCase(); // Case-insensitive matching
+  
+  // Helper function to check if URL is external
+  function isExternalUrl(url) {
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//');
+  }
+  
+  // Helper function to check if redirect has expired
+  function isExpired(expiryDate) {
+    if (!expiryDate) return false;
+    const expiry = new Date(expiryDate);
+    const now = new Date();
+    return now > expiry;
+  }
+  
+  // Check each redirect
+  for (const rule of redirects) {
+    // Skip expired redirects
+    if (rule.expires && isExpired(rule.expires)) {
+      continue;
+    }
+    
+    // Check for match (case-insensitive)
+    if (currentPath === rule.from.toLowerCase()) {
+      console.log('Redirecting from', currentPath, 'to', rule.to);
+      
+      // Perform redirect
+      if (isExternalUrl(rule.to)) {
+        // External URL - always use href
+        window.location.href = rule.to;
+      } else if (rule.permanent === false) {
+        // Temporary redirect
+        window.location.href = rule.to;
+      } else {
+        // Permanent redirect (default)
+        window.location.replace(rule.to);
+      }
+      
+      break; // Stop after first match
+    }
+  }
+})();
+</script>

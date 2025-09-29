@@ -1,0 +1,458 @@
+<!-- Success Experience Section -->
+<section id="{{ section.settings.section_id | default: 'success-experience' }}-{{ section.id }}" class="success-experience position-relative">
+  <!-- Confetti Container -->
+  <div id="confetti-container-{{ section.id }}" class="confetti-container position-fixed w-100 h-100" style="inset: 0; pointer-events: none; z-index: 50;"></div>
+
+  <div class="container py-6 py-md-7 py-lg-8">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-xl-9">
+
+        <!-- Success Header -->
+        <div class="text-center section-head mb-5" data-testid="success-header">
+          <div class="success-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M20 6L9 17L4 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <h1 class="headline mb-2" kjb-settings-id="{{ 'headline' | settings_id: section: section }}" data-testid="success-headline">
+            {{ section.settings.headline }}
+          </h1>
+
+          <div class="success-badge mx-auto d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span kjb-settings-id="{{ 'purchase_tier' | settings_id: section: section }}" data-testid="purchase-tier">{{ section.settings.purchase_tier }}</span>
+            <span aria-hidden="true">•</span>
+            <span kjb-settings-id="{{ 'purchase_price' | settings_id: section: section }}" data-testid="purchase-price">{{ section.settings.purchase_price }}</span>
+          </div>
+
+          <p class="eyebrow mb-0" kjb-settings-id="{{ 'access_details' | settings_id: section: section }}" data-testid="access-details">
+            {{ section.settings.access_details }}
+          </p>
+        </div>
+
+        <!-- 60-Second Setup -->
+        <div class="card-soft mb-4" data-testid="setup-section">
+          <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            <div>
+              <h2 class="subheadline mb-1" kjb-settings-id="{{ 'setup_headline' | settings_id: section: section }}" data-testid="setup-headline">{{ section.settings.setup_headline }}</h2>
+              <p class="body-muted mb-0" kjb-settings-id="{{ 'setup_subtext' | settings_id: section: section }}">{{ section.settings.setup_subtext }}</p>
+            </div>
+            <a href="{{ section.settings.skip_link | default: '/' }}" class="link-brand" data-testid="skip-link">{{ section.settings.skip_text }}</a>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress progress-thin rounded-pill mb-4">
+            <div class="progress-bar rounded-pill" role="progressbar" aria-valuemin="0" aria-valuemax="100" data-testid="progress-bar"></div>
+          </div>
+
+          <!-- Questions (configured via blocks) -->
+          <div class="setup-questions">
+            {% assign q_index = 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'question' %}
+                {% assign q_index = q_index | plus: 1 %}
+                {% assign type = block.settings.type %}
+                {% assign raw_options = block.settings.options | default: '' %}
+                {% assign options = raw_options | split: '|' %}
+
+                <div class="setup-question mb-4" data-question-id="{{ q_index }}" data-type="{{ type }}" data-testid="question-{{ q_index }}" {% if q_index > 1 %}data-disabled="true"{% endif %}>
+                  <h3 class="question-title mb-2">
+                    {{ q_index }}. <span kjb-settings-id="{{ 'question_text' | settings_id: section: section, block: block }}">{{ block.settings.question_text }}</span>
+                  </h3>
+
+                  {% if type == 'emoji' %}
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                      {% for opt in options %}
+                        {% assign opt_trim = opt | strip %}
+                        {% if opt_trim != '' %}
+                          <button type="button" class="emoji-scale" data-option="{{ opt_trim }}" data-testid="emoji-option-{{ forloop.index0 }}">{{ opt_trim }}</button>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="d-flex gap-2 flex-wrap">
+                      {% for opt in options %}
+                        {% assign opt_trim = opt | strip %}
+                        {% if opt_trim != '' %}
+                          <button type="button" class="setup-chip" data-option="{{ opt_trim }}" data-testid="chip-option-{{ forloop.index0 }}">{{ opt_trim }}</button>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            <!-- SMS Opt-in -->
+            <div class="sms-optin border-top pt-3 mt-4">
+              <label class="d-flex align-items-start gap-3" style="cursor: pointer;">
+                <input type="checkbox" class="form-check-input mt-1 sms-checkbox" data-testid="sms-checkbox"/>
+                <div class="flex-1">
+                  <span class="d-block fw-semibold" style="color: var(--c-ink-900);" kjb-settings-id="{{ 'sms_headline' | settings_id: section: section }}">{{ section.settings.sms_headline }}</span>
+                  <p class="mb-2 body-muted" kjb-settings-id="{{ 'sms_subtext' | settings_id: section: section }}">{{ section.settings.sms_subtext }}</p>
+                  <input type="tel" class="form-control phone-input" placeholder="{{ section.settings.sms_placeholder }}" data-testid="phone-input" disabled />
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick-Win Pack -->
+        <div class="card-soft alt mb-4" data-testid="quick-win-section">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="icon-tile">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M20 12c0 4.418-3.582 8-8 8s-8-3.582-8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M4 12c0-4.418 3.582-8 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="subheadline mb-0" kjb-settings-id="{{ 'quickwin_headline' | settings_id: section: section }}" data-testid="quick-win-headline">{{ section.settings.quickwin_headline }}</h2>
+              <p class="mb-0 body-muted" kjb-settings-id="{{ 'quickwin_subtext' | settings_id: section: section }}">{{ section.settings.quickwin_subtext }}</p>
+            </div>
+          </div>
+
+          <!-- C.A.L.M. Scripts Preview -->
+          <div class="rounded-3 p-3 mb-3 bg-white" data-testid="calm-preview">
+            <h3 class="eyebrow-strong mb-3">{{ section.settings.calm_title }}</h3>
+            <div class="row g-3">
+              {% assign calm_index = 0 %}
+              {% for block in section.blocks %}
+                {% if block.type == 'calm_step' %}
+                  <div class="col-md-6" data-testid="calm-step-preview-{{ calm_index }}">
+                    <div class="p-3 border-start" style="border-left: 4px solid {{ block.settings.color | default: 'var(--c-accent-teal)' }};">
+                      <h4 class="mb-1" style="color: var(--c-ink-900);">
+                        <span kjb-settings-id="{{ 'letter' | settings_id: section: section, block: block }}">{{ block.settings.letter }}</span>
+                        —
+                        <span kjb-settings-id="{{ 'word' | settings_id: section: section, block: block }}">{{ block.settings.word }}</span>
+                      </h4>
+                      <p class="mb-0 fst-italic body-muted" kjb-settings-id="{{ 'script' | settings_id: section: section, block: block }}">{{ block.settings.script }}</p>
+                    </div>
+                  </div>
+                  {% assign calm_index = calm_index | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{{ section.settings.download_link }}" class="btn btn-primary-modern d-inline-flex align-items-center gap-2" data-testid="download-pdf-button">
+              <span class="icon" aria-hidden="true">⬇️</span>
+              <span kjb-settings-id="{{ 'download_text' | settings_id: section: section }}">{{ section.settings.download_text }}</span>
+            </a>
+            <a href="{{ section.settings.text_me_link }}" class="btn btn-secondary-modern d-inline-flex align-items-center gap-2" data-testid="text-scripts-button">
+              <span class="icon" aria-hidden="true">💬</span>
+              <span kjb-settings-id="{{ 'textme_text' | settings_id: section: section }}">{{ section.settings.textme_text }}</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Live Q&A -->
+        <div class="card-soft mb-4" data-testid="live-qa-section">
+          <div class="d-flex align-items-start gap-3">
+            <div class="qa-icon">👥</div>
+            <div class="flex-1">
+              <h2 class="subheadline-sm mb-1">{{ section.settings.qa_title }}</h2>
+              <p class="mb-2 eyebrow">{{ section.settings.qa_subtitle }}</p>
+              <p class="mb-3 body">{{ section.settings.qa_description }}</p>
+              <a href="{{ section.settings.qa_calendar_link }}" class="btn btn-secondary-modern d-inline-flex align-items-center gap-2" data-testid="add-calendar-button">
+                <span class="icon" aria-hidden="true">📅</span>
+                {{ section.settings.qa_button_text }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Get Started CTA -->
+        <div class="text-center" data-testid="get-started-cta">
+          <a href="{{ section.settings.start_link }}" class="btn btn-primary-modern btn-lg d-inline-flex align-items-center gap-2 px-5 py-3" data-testid="start-learning-button">
+            <span class="icon" aria-hidden="true">▶️</span>
+            <span kjb-settings-id="{{ 'start_text' | settings_id: section: section }}">{{ section.settings.start_text }}</span>
+          </a>
+          <p class="mt-2 mb-0 eyebrow">
+            {{ section.settings.alt_text_prefix }} <a href="{{ section.settings.library_link }}" class="text-decoration-none" style="color: var(--c-brand-600);">{{ section.settings.library_text }}</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Background */
+  #shopify-section-{{ section.id }}.success-experience { background: linear-gradient(180deg, #FFFFFF 0%, #F8F6FF 50%, #E9E6FF 100%); }
+
+  /* Headings & text helpers aligned to tokens */
+  #shopify-section-{{ section.id }} .headline { font-size: var(--fs-h2); font-weight: 700; color: var(--c-ink-900); }
+  #shopify-section-{{ section.id }} .subheadline { font-size: var(--fs-h4); font-weight: 700; color: var(--c-ink-900); }
+  #shopify-section-{{ section.id }} .subheadline-sm { font-size: var(--fs-h5); font-weight: 700; color: var(--c-ink-900); }
+  #shopify-section-{{ section.id }} .eyebrow { color: var(--c-ink-500); font-size: var(--fs-caption); }
+  #shopify-section-{{ section.id }} .eyebrow-strong { color: var(--c-brand-600); font-weight: 700; font-size: var(--fs-body-lg); }
+  #shopify-section-{{ section.id }} .body { color: var(--c-ink-700); }
+  #shopify-section-{{ section.id }} .body-muted { color: var(--c-ink-500); }
+  #shopify-section-{{ section.id }} .link-brand { color: var(--c-brand-600); text-decoration: none; font-weight: 500; }
+  #shopify-section-{{ section.id }} .link-brand:hover { text-decoration: underline; }
+
+  /* Icon & badge */
+  #shopify-section-{{ section.id }} .success-icon { width: 96px; height: 96px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--c-brand-600), var(--c-accent-teal)); box-shadow: 0 10px 30px rgba(94,59,255,0.15); }
+  #shopify-section-{{ section.id }} .success-badge { background: var(--c-brand-50); color: var(--c-ink-800); }
+
+  /* Soft card styles */
+  #shopify-section-{{ section.id }} .card-soft {
+    background: var(--c-white);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset, 0 8px 32px rgba(0,0,0,.04);
+  }
+  #shopify-section-{{ section.id }} .card-soft.alt {
+    background: linear-gradient(135deg, var(--c-white) 0%, var(--c-brand-50) 100%);
+  }
+
+  /* Progress */
+  #shopify-section-{{ section.id }} .progress-thin { height: 8px; background: var(--c-brand-100); }
+  #shopify-section-{{ section.id }} .progress-thin .progress-bar { width: 0%; background: linear-gradient(90deg, var(--c-brand-600), var(--c-accent-teal)); transition: width .4s ease; }
+
+  /* Setup chips */
+  #shopify-section-{{ section.id }} .setup-chip {
+    border: 1px solid var(--c-brand-200);
+    background: var(--c-white);
+    color: var(--c-ink-900);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: var(--fs-body-sm);
+    transition: all .2s ease;
+  }
+  #shopify-section-{{ section.id }} .setup-chip:hover { border-color: var(--c-brand-400); transform: translateY(-1px); }
+  #shopify-section-{{ section.id }} .setup-chip.selected { background: var(--c-brand-600); color: #fff; border-color: var(--c-brand-600); }
+
+  /* Emoji options */
+  #shopify-section-{{ section.id }} .emoji-scale { font-size: 24px; line-height: 1; background: var(--c-white); border: 1px solid var(--c-brand-200); border-radius: 12px; padding: 8px 10px; transition: transform .15s ease, border-color .2s; }
+  #shopify-section-{{ section.id }} .emoji-scale:hover { transform: scale(1.05); border-color: var(--c-brand-400); }
+  #shopify-section-{{ section.id }} .emoji-scale.selected { border-color: var(--c-brand-600); box-shadow: 0 0 0 2px rgba(94,59,255,.15); }
+
+  /* Questions */
+  #shopify-section-{{ section.id }} .question-title { font-weight: 600; font-size: var(--fs-body-lg); color: var(--c-ink-900); }
+  #shopify-section-{{ section.id }} .setup-question[data-disabled="true"] { opacity: .4; pointer-events: none; }
+
+  /* Confetti */
+  #shopify-section-{{ section.id }} .confetti-piece { position: absolute; top: -10px; width: 8px; height: 14px; opacity: 0.85; border-radius: 2px; animation: confetti-fall 3s ease-in forwards; }
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(720deg); }
+  }
+
+  /* Inputs */
+  #shopify-section-{{ section.id }} .sms-optin { border-color: var(--c-border, #E5E7EB) !important; }
+  #shopify-section-{{ section.id }} .phone-input { max-width: 280px; }
+  #shopify-section-{{ section.id }} .phone-input:disabled { background: var(--c-ink-50, #f9fafb); cursor: not-allowed; }
+
+  /* Icon tile */
+  #shopify-section-{{ section.id }} .icon-tile { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--c-accent-lemon); color: var(--c-ink-900); }
+
+  /* QA icon */
+  #shopify-section-{{ section.id }} .qa-icon { width: 40px; height: 40px; border-radius: 50%; background: rgba(24, 213, 228, 0.2); color: var(--c-accent-teal); display: flex; align-items: center; justify-content: center; }
+
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .card-soft { padding: 18px; border-radius: 20px; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const root = document.querySelector('#shopify-section-{{ section.id }}');
+    if (!root) return;
+
+    // Confetti
+    const confettiContainer = document.getElementById('confetti-container-{{ section.id }}');
+    if (confettiContainer) {
+      const colors = ['#5E3BFF', '#18D5E4', '#FFB3C7', '#FFD66B', '#B8F5D0'];
+      const spawn = () => {
+        for (let i = 0; i < 50; i++) {
+          const div = document.createElement('div');
+          div.className = 'confetti-piece';
+          div.style.left = Math.random() * 100 + '%';
+          div.style.background = colors[Math.floor(Math.random() * colors.length)];
+          div.style.animationDelay = (Math.random() * 0.8) + 's';
+          confettiContainer.appendChild(div);
+          setTimeout(() => div.remove(), 3200);
+        }
+      };
+      spawn();
+      setTimeout(() => { /* one-shot confetti */ }, 3000);
+    }
+
+    // Setup questions logic
+    const questions = Array.from(root.querySelectorAll('.setup-question'));
+    const progressEl = root.querySelector('.progress-bar');
+    const smsCheckbox = root.querySelector('.sms-checkbox');
+    const phoneInput = root.querySelector('.phone-input');
+    const total = questions.length;
+    let current = 1;
+    const answers = {};
+
+    const updateProgress = () => {
+      const answered = Object.keys(answers).length;
+      const pct = total ? Math.round((answered / total) * 100) : 0;
+      if (progressEl) {
+        progressEl.style.width = pct + '%';
+        progressEl.setAttribute('aria-valuenow', String(pct));
+      }
+    };
+
+    const setActive = (qNum) => {
+      questions.forEach((q) => {
+        const id = Number(q.getAttribute('data-question-id'));
+        if (id <= qNum) { q.removeAttribute('data-disabled'); } else { q.setAttribute('data-disabled', 'true'); }
+      });
+    };
+
+    questions.forEach((q) => {
+      q.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (!target.matches('.setup-chip, .emoji-scale')) return;
+
+        const qId = Number(q.getAttribute('data-question-id'));
+        const type = q.getAttribute('data-type');
+        const option = target.getAttribute('data-option');
+        if (!option) return;
+
+        // Toggle selected in this question
+        q.querySelectorAll('.setup-chip, .emoji-scale').forEach(btn => btn.classList.remove('selected'));
+        target.classList.add('selected');
+        answers[qId] = option;
+        updateProgress();
+
+        if (qId < total) {
+          setTimeout(() => { current = qId + 1; setActive(current); }, 250);
+        }
+      });
+    });
+
+    setActive(current);
+    updateProgress();
+
+    if (smsCheckbox && phoneInput) {
+      smsCheckbox.addEventListener('change', () => {
+        const on = smsCheckbox.checked;
+        phoneInput.disabled = !on;
+        if (on) phoneInput.focus();
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Success Experience",
+  "elements": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "section_id", "label": "Section ID", "default": "success-experience" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "You're In! Welcome to Your Transformation" },
+    { "type": "text", "id": "purchase_tier", "label": "Purchase Tier", "default": "Pay-It-Forward" },
+    { "type": "text", "id": "purchase_price", "label": "Purchase Price", "default": "$449" },
+    { "type": "text", "id": "access_details", "label": "Access Details", "default": "You have lifetime access • All updates included • 30-day guarantee" },
+
+    { "type": "header", "content": "60-Second Setup" },
+    { "type": "text", "id": "setup_headline", "label": "Setup Headline", "default": "60-Second Setup" },
+    { "type": "text", "id": "setup_subtext", "label": "Setup Subtext", "default": "Help us tailor your first week (5 quick taps)" },
+    { "type": "action", "id": "skip_link", "label": "Skip Link", "default": "/" },
+    { "type": "text", "id": "skip_text", "label": "Skip Text", "default": "Skip for now →" },
+
+    { "type": "header", "content": "SMS Opt-in" },
+    { "type": "text", "id": "sms_headline", "label": "SMS Headline", "default": "Text me the Pocket Scripts" },
+    { "type": "text", "id": "sms_subtext", "label": "SMS Subtext", "default": "We'll send calm scripts to your phone when you need them most" },
+    { "type": "text", "id": "sms_placeholder", "label": "Phone Placeholder", "default": "Your phone number" },
+
+    { "type": "header", "content": "Quick-Win Pack" },
+    { "type": "text", "id": "quickwin_headline", "label": "Quick-Win Headline", "default": "Your Quick-Win Pack" },
+    { "type": "text", "id": "quickwin_subtext", "label": "Quick-Win Subtext", "default": "Start using these tonight" },
+    { "type": "text", "id": "calm_title", "label": "CALM Title", "default": "The C.A.L.M. Method™ Pocket Scripts" },
+    { "type": "action", "id": "download_link", "label": "Download PDF Link", "default": "#" },
+    { "type": "text", "id": "download_text", "label": "Download Button Text", "default": "Download PDF" },
+    { "type": "action", "id": "text_me_link", "label": "Text Me Link", "default": "#" },
+    { "type": "text", "id": "textme_text", "label": "Text Me Button Text", "default": "Text Me These" },
+
+    { "type": "header", "content": "Live Q&A" },
+    { "type": "text", "id": "qa_title", "label": "Q&A Title", "default": "Live Q&A with Eli" },
+    { "type": "text", "id": "qa_subtitle", "label": "Q&A Subtitle", "default": "Next session: Thursday 8pm ET" },
+    { "type": "textarea", "id": "qa_description", "label": "Q&A Description", "default": "Bring your real-life moments and get personalized guidance. No question too messy." },
+    { "type": "action", "id": "qa_calendar_link", "label": "Add to Calendar Link", "default": "#" },
+    { "type": "text", "id": "qa_button_text", "label": "Calendar Button Text", "default": "Add to Calendar" },
+
+    { "type": "header", "content": "Get Started CTA" },
+    { "type": "action", "id": "start_link", "label": "Start Link", "default": "/" },
+    { "type": "text", "id": "start_text", "label": "Start Button Text", "default": "Start Learning Now" },
+    { "type": "text", "id": "alt_text_prefix", "label": "Alt Text Prefix", "default": "Or jump straight to the" },
+    { "type": "action", "id": "library_link", "label": "Library Link", "default": "/" },
+    { "type": "text", "id": "library_text", "label": "Library Link Text", "default": "full library" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Setup Question",
+      "elements": [
+        { "type": "text", "id": "question_text", "label": "Question Text", "default": "Which kid-stage is your biggest focus right now?" },
+        { "type": "radio", "id": "type", "label": "Question Type", "default": "chips", "options": [ { "label": "Chips", "value": "chips" }, { "label": "Emoji", "value": "emoji" } ] },
+        { "type": "text", "id": "options", "label": "Options (use | separator)", "default": "Baby|Toddler|Preschooler|School-age|Tween-Teen" }
+      ]
+    },
+    {
+      "type": "calm_step",
+      "name": "CALM Step",
+      "elements": [
+        { "type": "text", "id": "letter", "label": "Letter", "default": "C" },
+        { "type": "text", "id": "word", "label": "Word", "default": "Contain" },
+        { "type": "text", "id": "script", "label": "Script", "default": "\"Pause. We're safe. I'm with you.\"" },
+        { "type": "color", "id": "color", "label": "Accent Color", "default": "var(--c-brand-600)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Success Experience",
+      "category": "Post-Purchase",
+      "blocks": [
+        { "type": "question", "settings": { "question_text": "Which kid-stage is your biggest focus right now?", "type": "chips", "options": "Baby|Toddler|Preschooler|School-age|Tween-Teen" } },
+        { "type": "question", "settings": { "question_text": "Pick the challenge that makes mornings hardest:", "type": "chips", "options": "Meltdowns|Sibling fights|Getting out the door|Screen battles" } },
+        { "type": "question", "settings": { "question_text": "How confident do you feel handling that challenge today?", "type": "emoji", "options": "😟|😕|😐|🙂|😄" } },
+        { "type": "question", "settings": { "question_text": "What kind of support sounds most helpful?", "type": "chips", "options": "DIY videos|Group community|1-on-1 coaching" } },
+        { "type": "question", "settings": { "question_text": "How do you like to learn?", "type": "chips", "options": "Watch|Read|Listen|Quick cards" } },
+
+        { "type": "calm_step", "settings": { "letter": "C", "word": "Contain", "script": "\"Pause. We're safe. I'm with you.\"", "color": "var(--c-brand-600)" } },
+        { "type": "calm_step", "settings": { "letter": "A", "word": "Attune", "script": "\"Your feelings make sense. This is big.\"", "color": "var(--c-accent-peach)" } },
+        { "type": "calm_step", "settings": { "letter": "L", "word": "Listen", "script": "\"Tell me with words or show me. I'm here.\"", "color": "var(--c-accent-teal)" } },
+        { "type": "calm_step", "settings": { "letter": "M", "word": "Melt", "script": "Lower tone • Soften face • Slow body", "color": "var(--c-accent-lemon)" } }
+      ],
+      "settings": {
+        "headline": "You're In! Welcome to Your Transformation",
+        "purchase_tier": "Pay-It-Forward",
+        "purchase_price": "$449",
+        "access_details": "You have lifetime access • All updates included • 30-day guarantee",
+        "setup_headline": "60-Second Setup",
+        "setup_subtext": "Help us tailor your first week (5 quick taps)",
+        "skip_text": "Skip for now →",
+        "sms_headline": "Text me the Pocket Scripts",
+        "sms_subtext": "We'll send calm scripts to your phone when you need them most",
+        "sms_placeholder": "Your phone number",
+        "quickwin_headline": "Your Quick-Win Pack",
+        "quickwin_subtext": "Start using these tonight",
+        "calm_title": "The C.A.L.M. Method™ Pocket Scripts",
+        "download_text": "Download PDF",
+        "textme_text": "Text Me These",
+        "qa_title": "Live Q&A with Eli",
+        "qa_subtitle": "Next session: Thursday 8pm ET",
+        "qa_description": "Bring your real-life moments and get personalized guidance. No question too messy.",
+        "qa_button_text": "Add to Calendar",
+        "start_text": "Start Learning Now",
+        "alt_text_prefix": "Or jump straight to the",
+        "library_text": "full library"
+      }
+    }
+  ]
+}
+{% endschema %}

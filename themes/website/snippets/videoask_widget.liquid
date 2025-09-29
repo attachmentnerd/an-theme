@@ -1,0 +1,86 @@
+{% comment %}
+  VideoAsk Widget with First Visit Auto-Open
+  The widget will automatically open on first visit only
+  After that, it remains available but closed unless user clicks it
+{% endcomment %}
+
+<script>
+(function() {
+  // Check if user has visited before
+  const hasVisited = localStorage.getItem('videoask_visited');
+  const autoOpenDelay = {{ settings.videoask_auto_open_delay | default: 3000 }}; // Delay in milliseconds
+  
+  window.VIDEOASK_EMBED_CONFIG = {
+    "kind": "widget",
+    "url": "{{ settings.videoask_url | default: 'https://www.videoask.com/f50gxt7hd' }}",
+    "options": {
+      "widgetType": "VideoThumbnailWindowTall",
+      "text": "{{ settings.videoask_text | default: '' }}",
+      "backgroundColor": "{{ settings.videoask_color | default: '#5CD6C8' }}",
+      "position": "{{ settings.videoask_position | default: 'bottom-right' }}",
+      "dismissible": true,
+      "videoPosition": "center center"
+    }
+  };
+  
+  // Load VideoAsk script
+  const script = document.createElement('script');
+  script.src = 'https://www.videoask.com/embed/embed.js';
+  script.onload = function() {
+    // Auto-open only on first visit
+    if (!hasVisited) {
+      setTimeout(function() {
+        // Find and click the widget to open it
+        const widget = document.querySelector('[data-videoask-widget]') || 
+                      document.querySelector('.videoask-widget') ||
+                      document.querySelector('[class*="videoask"]');
+        
+        if (widget) {
+          // Simulate click to open
+          widget.click();
+          
+          // Mark as visited
+          localStorage.setItem('videoask_visited', 'true');
+          
+          // Optional: Set expiration (e.g., show again after 30 days)
+          const expirationDays = {{ settings.videoask_reset_days | default: 0 }};
+          if (expirationDays > 0) {
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + expirationDays);
+            localStorage.setItem('videoask_expiration', expirationDate.toISOString());
+          }
+        }
+      }, autoOpenDelay);
+    } else {
+      // Check if we should reset based on expiration
+      const expiration = localStorage.getItem('videoask_expiration');
+      if (expiration) {
+        const expirationDate = new Date(expiration);
+        if (new Date() > expirationDate) {
+          // Reset for next visit
+          localStorage.removeItem('videoask_visited');
+          localStorage.removeItem('videoask_expiration');
+        }
+      }
+    }
+  };
+  
+  document.body.appendChild(script);
+})();
+</script>
+
+{% comment %}
+  Usage in theme:
+  {% include 'videoask_widget' %}
+  
+  Or with custom settings:
+  {% include 'videoask_widget', auto_open_delay: 5000, reset_days: 7 %}
+  
+  Theme Settings to add:
+  - videoask_url: The VideoAsk form URL
+  - videoask_text: Widget text (optional)
+  - videoask_color: Widget background color
+  - videoask_position: Widget position (bottom-right, bottom-left, etc.)
+  - videoask_auto_open_delay: Delay before auto-opening in milliseconds
+  - videoask_reset_days: Days before showing auto-open again (0 = never)
+{% endcomment %}

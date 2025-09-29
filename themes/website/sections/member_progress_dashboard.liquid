@@ -1,0 +1,727 @@
+<!-- Member Progress Dashboard -->
+<style>
+  .progress-dashboard {
+    background: {{ section.settings.background_color | default: '#FAFAFA' }};
+    padding: {{ section.settings.padding_top | default: 60 }}px 0 {{ section.settings.padding_bottom | default: 60 }}px;
+  }
+
+  .progress-dashboard__header {
+    text-align: {{ section.settings.header_alignment | default: 'center' }};
+    margin-bottom: 48px;
+  }
+
+  .progress-dashboard__title {
+    font-size: var(--fs-h1);
+    color: {{ section.settings.title_color | default: '#1A2D4E' }};
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .progress-dashboard__subtitle {
+    font-size: var(--fs-body-lg);
+    color: {{ section.settings.subtitle_color | default: '#6B7280' }};
+  }
+
+  .progress-card {
+    background: {{ section.settings.card_bg | default: '#FFFFFF' }};
+    border-radius: {{ section.settings.card_radius | default: 16 }}px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    {% if section.settings.show_card_border %}
+      border: 1px solid {{ section.settings.card_border_color | default: '#E5E7EB' }};
+    {% endif %}
+  }
+
+  .progress-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .progress-card__image {
+    width: 100%;
+    height: {{ section.settings.image_height | default: 180 }}px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .progress-card__badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: {{ section.settings.badge_bg | default: '#E9E6FF' }};
+    color: {{ section.settings.badge_color | default: '#5E3BFF' }};
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .progress-card__badge--completed {
+    background: {{ section.settings.completed_badge_bg | default: '#D1FAE5' }};
+    color: {{ section.settings.completed_badge_color | default: '#065F46' }};
+  }
+
+  .progress-card__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: {{ section.settings.card_title_color | default: '#1A2D4E' }};
+    margin-bottom: 12px;
+    flex-grow: 1;
+  }
+
+  .progress-card__stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: {{ section.settings.stats_color | default: '#6B7280' }};
+  }
+
+  .progress-card__progress {
+    background: #E5E7EB;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .progress-card__progress-fill {
+    height: 100%;
+    background: {{ section.settings.progress_color | default: '#5E3BFF' }};
+    transition: width 0.5s ease;
+    border-radius: 3px;
+  }
+
+  .progress-card__progress-fill--complete {
+    background: {{ section.settings.complete_color | default: '#10B981' }};
+  }
+
+  .progress-card__button {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 24px;
+    background: {{ section.settings.button_bg | default: '#5E3BFF' }};
+    color: {{ section.settings.button_color | default: '#FFFFFF' }};
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .progress-card__button:hover {
+    background: {{ section.settings.button_hover_bg | default: '#4025E0' }};
+    transform: translateY(-1px);
+    color: {{ section.settings.button_color | default: '#FFFFFF' }};
+  }
+
+  .progress-card__button--secondary {
+    background: transparent;
+    color: {{ section.settings.button_bg | default: '#5E3BFF' }};
+    border: 2px solid {{ section.settings.button_bg | default: '#5E3BFF' }};
+  }
+
+  .progress-card__button--secondary:hover {
+    background: {{ section.settings.button_bg | default: '#5E3BFF' }};
+    color: {{ section.settings.button_color | default: '#FFFFFF' }};
+  }
+
+  .progress-card__next-lesson {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #E5E7EB;
+  }
+
+  .progress-card__next-title {
+    font-size: 12px;
+    color: #6B7280;
+    margin-bottom: 4px;
+  }
+
+  .progress-card__next-name {
+    font-size: 14px;
+    color: {{ section.settings.card_title_color | default: '#1A2D4E' }};
+    font-weight: 500;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .empty-state__icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: {{ section.settings.empty_icon_bg | default: '#E9E6FF' }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .empty-state__icon svg {
+    width: 40px;
+    height: 40px;
+    fill: {{ section.settings.empty_icon_color | default: '#5E3BFF' }};
+  }
+
+  .empty-state__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: {{ section.settings.title_color | default: '#1A2D4E' }};
+    margin-bottom: 12px;
+  }
+
+  .empty-state__text {
+    font-size: 16px;
+    color: {{ section.settings.subtitle_color | default: '#6B7280' }};
+    margin-bottom: 24px;
+  }
+
+  .empty-state__button {
+    display: inline-block;
+    padding: 12px 32px;
+    background: {{ section.settings.button_bg | default: '#5E3BFF' }};
+    color: {{ section.settings.button_color | default: '#FFFFFF' }};
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .empty-state__button:hover {
+    background: {{ section.settings.button_hover_bg | default: '#4025E0' }};
+    transform: translateY(-2px);
+    color: {{ section.settings.button_color | default: '#FFFFFF' }};
+  }
+
+  @media (max-width: 767px) {
+    .progress-dashboard__title {
+      font-size: 28px;
+    }
+
+    .progress-card {
+      padding: 20px;
+    }
+
+    .progress-card__title {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<section class="progress-dashboard" id="{{ section.settings.section_id | default: 'progress-dashboard' }}">
+  <div class="container">
+    {% if section.settings.show_header %}
+      <div class="progress-dashboard__header">
+        <h2 class="progress-dashboard__title">
+          {{ section.settings.title | default: 'Your Learning Journey' }}
+        </h2>
+        {% if section.settings.subtitle != blank %}
+          <p class="progress-dashboard__subtitle">
+            {{ section.settings.subtitle }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if member %}
+      {% assign enrolled_products = member.products %}
+
+      {% if enrolled_products.size > 0 %}
+        <div class="row g-4">
+          {% for product in enrolled_products limit: section.settings.max_products %}
+            {% assign product_progress = product.completion %}
+            {% assign next_post = product_progress.next_post %}
+
+            <div class="col-12 col-md-6 col-lg-{{ section.settings.columns | default: 4 }}">
+              <div class="progress-card">
+                {% if product.poster_image_url and section.settings.show_images %}
+                  <img src="{{ product.poster_image_url | image_url: '400x225' }}"
+                       alt="{{ product.title }}"
+                       class="progress-card__image"
+                       loading="lazy">
+                {% elsif section.settings.show_images %}
+                  <div class="progress-card__image"></div>
+                {% endif %}
+
+                {% if product_progress.percent == 100 %}
+                  <span class="progress-card__badge progress-card__badge--completed">
+                    {{ section.settings.completed_label | default: 'Completed' }}
+                  </span>
+                {% elsif product_progress.percent > 0 %}
+                  <span class="progress-card__badge">
+                    {{ section.settings.in_progress_label | default: 'In Progress' }}
+                  </span>
+                {% else %}
+                  <span class="progress-card__badge">
+                    {{ section.settings.not_started_label | default: 'Not Started' }}
+                  </span>
+                {% endif %}
+
+                <h3 class="progress-card__title">{{ product.title }}</h3>
+
+                {% if section.settings.show_stats %}
+                  <div class="progress-card__stats">
+                    <span>{{ product_progress.completed }} / {{ product_progress.total }} lessons</span>
+                    <span>{{ product_progress.percent }}%</span>
+                  </div>
+                {% endif %}
+
+                {% if section.settings.show_progress_bar %}
+                  <div class="progress-card__progress">
+                    <div class="progress-card__progress-fill {% if product_progress.percent == 100 %}progress-card__progress-fill--complete{% endif %}"
+                         style="width: {{ product_progress.percent }}%;"></div>
+                  </div>
+                {% endif %}
+
+                {% if product_progress.percent == 0 %}
+                  <a href="{{ product.url }}" class="progress-card__button">
+                    {{ section.settings.start_button | default: 'Start Learning' }}
+                  </a>
+                {% elsif product_progress.percent == 100 %}
+                  {% if section.settings.show_review_button %}
+                    <a href="{{ product.url }}" class="progress-card__button progress-card__button--secondary">
+                      {{ section.settings.review_button | default: 'Review Course' }}
+                    </a>
+                  {% endif %}
+                {% else %}
+                  <a href="{{ next_post.url }}" class="progress-card__button">
+                    {{ section.settings.continue_button | default: 'Continue Learning' }}
+                  </a>
+
+                  {% if section.settings.show_next_lesson and next_post %}
+                    <div class="progress-card__next-lesson">
+                      <div class="progress-card__next-title">Next:</div>
+                      <div class="progress-card__next-name">{{ next_post.title }}</div>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if section.settings.show_view_all and enrolled_products.size > section.settings.max_products %}
+          <div class="text-center mt-5">
+            <a href="{{ routes.library_url }}" class="progress-card__button">
+              {{ section.settings.view_all_text | default: 'View All Courses' }}
+            </a>
+          </div>
+        {% endif %}
+      {% else %}
+        <!-- Empty state for members with no enrollments -->
+        <div class="empty-state">
+          <div class="empty-state__icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.967 8.967 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18c-2.305 0-4.408.867-6 2.292m0-14.25v14.25" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <h3 class="empty-state__title">
+            {{ section.settings.empty_title | default: 'Start Your Learning Journey' }}
+          </h3>
+          <p class="empty-state__text">
+            {{ section.settings.empty_text | default: 'Explore our courses and begin your transformation today.' }}
+          </p>
+          <a href="{{ section.settings.empty_button_link | default: routes.products_url }}" class="empty-state__button">
+            {{ section.settings.empty_button_text | default: 'Browse Courses' }}
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <!-- Non-member state -->
+      <div class="empty-state">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <h3 class="empty-state__title">
+          {{ section.settings.login_title | default: 'Members Only' }}
+        </h3>
+        <p class="empty-state__text">
+          {{ section.settings.login_text | default: 'Log in to view your course progress and continue learning.' }}
+        </p>
+        <a href="{{ routes.login_url }}" class="empty-state__button">
+          {{ section.settings.login_button | default: 'Log In' }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Member Progress Dashboard",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "progress-dashboard"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show Section Header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Your Learning Journey"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Pick up where you left off or start something new"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (Desktop)",
+      "default": 4,
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "info": "Number of columns on desktop (12 / this number)"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Maximum Products to Show",
+      "default": 6,
+      "min": 3,
+      "max": 12,
+      "step": 1
+    },
+    {
+      "type": "header",
+      "content": "Card Display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_images",
+      "label": "Show Course Images",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image Height",
+      "default": 180,
+      "min": 120,
+      "max": 300,
+      "step": 20,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_bar",
+      "label": "Show Progress Bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Lesson Stats",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_next_lesson",
+      "label": "Show Next Lesson Name",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_border",
+      "label": "Show Card Border",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_review_button",
+      "label": "Show Review Button for Completed",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Labels & Text"
+    },
+    {
+      "type": "text",
+      "id": "not_started_label",
+      "label": "Not Started Label",
+      "default": "Not Started"
+    },
+    {
+      "type": "text",
+      "id": "in_progress_label",
+      "label": "In Progress Label",
+      "default": "In Progress"
+    },
+    {
+      "type": "text",
+      "id": "completed_label",
+      "label": "Completed Label",
+      "default": "Completed"
+    },
+    {
+      "type": "text",
+      "id": "start_button",
+      "label": "Start Button Text",
+      "default": "Start Learning"
+    },
+    {
+      "type": "text",
+      "id": "continue_button",
+      "label": "Continue Button Text",
+      "default": "Continue Learning"
+    },
+    {
+      "type": "text",
+      "id": "review_button",
+      "label": "Review Button Text",
+      "default": "Review Course"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Button Text",
+      "default": "View All Courses"
+    },
+    {
+      "type": "header",
+      "content": "Empty State"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Empty State Title (Members)",
+      "default": "Start Your Learning Journey"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty State Text (Members)",
+      "default": "Explore our courses and begin your transformation today."
+    },
+    {
+      "type": "text",
+      "id": "empty_button_text",
+      "label": "Empty State Button (Members)",
+      "default": "Browse Courses"
+    },
+    {
+      "type": "action",
+      "id": "empty_button_link",
+      "label": "Empty State Button Link",
+      "default": "/products"
+    },
+    {
+      "type": "text",
+      "id": "login_title",
+      "label": "Login Title (Non-Members)",
+      "default": "Members Only"
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "Login Text (Non-Members)",
+      "default": "Log in to view your course progress and continue learning."
+    },
+    {
+      "type": "text",
+      "id": "login_button",
+      "label": "Login Button Text",
+      "default": "Log In"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1A2D4E"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#1A2D4E"
+    },
+    {
+      "type": "color",
+      "id": "stats_color",
+      "label": "Stats Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg",
+      "label": "Badge Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "completed_badge_bg",
+      "label": "Completed Badge Background",
+      "default": "#D1FAE5"
+    },
+    {
+      "type": "color",
+      "id": "completed_badge_color",
+      "label": "Completed Badge Color",
+      "default": "#065F46"
+    },
+    {
+      "type": "color",
+      "id": "progress_color",
+      "label": "Progress Bar Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "complete_color",
+      "label": "Complete Progress Color",
+      "default": "#10B981"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button Background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Button Hover Background",
+      "default": "#4025E0"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "empty_icon_bg",
+      "label": "Empty Icon Background",
+      "default": "#E9E6FF"
+    },
+    {
+      "type": "color",
+      "id": "empty_icon_color",
+      "label": "Empty Icon Color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Section Padding Top",
+      "default": 60,
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Section Padding Bottom",
+      "default": 60,
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Border Radius",
+      "default": 16,
+      "min": 0,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Member Progress Dashboard",
+      "category": "Content",
+      "description": "Display enrolled courses with progress tracking"
+    }
+  ]
+}
+{% endschema %}

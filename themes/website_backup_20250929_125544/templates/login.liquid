@@ -1,0 +1,13 @@
+{% layout "minimal" %}
+
+{%- comment -%}
+  Website Login Template (builder-editable)
+  - Primary: dynamic sections area with handle "login"
+  - Fallback: renders Utility - Login section if no content configured
+{%- endcomment -%}
+
+{% if settings.content_for_login and settings.content_for_login.size > 1 %}
+  {% dynamic_sections_for "login" %}
+{% else %}
+  {% section "utility_login" %}
+{% endif %}

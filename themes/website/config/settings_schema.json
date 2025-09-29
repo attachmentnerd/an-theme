@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "AN Website Theme",
-    "theme_version": "AN-WEB 2025.09.28+33.4.0",
+    "theme_version": "AN-WEB 2025.09.29+33.12.0",
     "theme_author": "AN Themes",
     "theme_documentation_url": "https://anthemes.com/docs",
     "theme_support_url": "https://anthemes.com/support",
@@ -421,28 +421,33 @@
         "info": "Toggle the global footer on/off site-wide. When disabled, no footer will appear on any page."
       },
       {
-        "type": "select",
-        "id": "global_footer_section",
-        "label": "Footer Layout",
-        "default": "nav_footer_modern",
-        "info": "Select which footer section file renders globally. Update the matching section in code for structural changes.",
-        "options": [
-          {
-            "value": "nav_footer_modern",
-            "label": "Modern Footer (Default)"
-          },
-          {
-            "value": "nav_footer_bio",
-            "label": "Bio Footer"
-          }
-        ]
-      },
-      {
         "type": "textarea",
         "id": "footer_hide_paths",
         "label": "Hide Footer On Paths",
         "default": "",
         "info": "One path per line (for example: /opt-in/thank-you). Supports wildcard entries with * to match prefixes (for example: /webinar/*)."
+      },
+      {
+        "type": "header",
+        "content": "Footer Navigation Menus"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_menu_about",
+        "label": "About Menu",
+        "info": "Select the navigation menu to display in the About column"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_menu_offerings",
+        "label": "Offerings Menu",
+        "info": "Select the navigation menu to display in the Offerings column"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_menu_support",
+        "label": "Support Menu",
+        "info": "Select the navigation menu to display in the Support column"
       }
     ]
   },

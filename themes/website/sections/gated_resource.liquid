@@ -1,0 +1,572 @@
+{% comment %}
+  Email-Gated Resource Section
+  Displays a resource preview with email capture before download
+{% endcomment %}
+
+<section id="gated-resource-{{ section.id }}" class="gated-resource" style="background: {{ section.settings.background }};">
+  <div class="container">
+    <div class="gated-resource__wrapper">
+      <!-- Resource Preview -->
+      <div class="gated-resource__preview">
+        {% if section.settings.resource_image %}
+          <div class="gated-resource__image">
+            <img src="{{ section.settings.resource_image | image_picker_url: '600x' }}"
+                 alt="{{ section.settings.title }}"
+                 loading="lazy">
+            {% if section.settings.show_badge %}
+              <span class="gated-resource__badge">{{ section.settings.badge_text }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="gated-resource__info">
+          {% if section.settings.category %}
+            <span class="gated-resource__category">{{ section.settings.category }}</span>
+          {% endif %}
+
+          <h2 class="gated-resource__title">{{ section.settings.title }}</h2>
+
+          {% if section.settings.description %}
+            <p class="gated-resource__description">{{ section.settings.description }}</p>
+          {% endif %}
+
+          {% if section.settings.features %}
+            <ul class="gated-resource__features">
+              {% assign features = section.settings.features | split: '|' %}
+              {% for feature in features %}
+                <li>
+                  <svg width="20" height="20" fill="#5E3BFF" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                  {{ feature | strip }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Email Gate Form -->
+      <div class="gated-resource__form-wrapper" id="gate-{{ section.id }}">
+        <div class="gated-resource__form-header">
+          <h3>{{ section.settings.form_title | default: 'Get Your Free Resource' }}</h3>
+          <p>{{ section.settings.form_subtitle | default: 'Enter your email to get instant access' }}</p>
+        </div>
+
+        {% if section.settings.kajabi_form_id != blank %}
+          <!-- Use Kajabi Form -->
+          {% assign form_id = section.settings.kajabi_form_id %}
+          {% assign f = current_site.find_form[form_id] %}
+
+          {% if f %}
+            {% form f %}
+              <div class="gated-resource__form">
+                {% for field in f.fields %}
+                  <div class="form-group">
+                    {{ field | form_input: class: 'form-control gated-resource__input', label: false, placeholder: true }}
+                  </div>
+                {% endfor %}
+
+                <button type="submit" class="gated-resource__submit" data-resource-url="{{ section.settings.resource_url }}">
+                  <span class="btn-text">{{ section.settings.button_text | default: 'Get Instant Access' }}</span>
+                  <span class="btn-spinner" style="display: none;">
+                    <svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                  </span>
+                </button>
+
+                {% if section.settings.privacy_text %}
+                  <p class="gated-resource__privacy">{{ section.settings.privacy_text }}</p>
+                {% endif %}
+              </div>
+            {% endform %}
+          {% else %}
+            <!-- Fallback if form not found -->
+            <p class="text-center">Form not configured. Please add a Kajabi form ID in settings.</p>
+          {% endif %}
+
+        {% else %}
+          <!-- Manual Email Capture (redirects to Kajabi thank you page) -->
+          <form action="{{ section.settings.form_action | default: '/opt-in' }}"
+                method="post"
+                class="gated-resource__form"
+                data-resource-url="{{ section.settings.resource_url }}">
+
+            <div class="form-group">
+              <input type="email"
+                     name="email"
+                     class="gated-resource__input"
+                     placeholder="{{ section.settings.email_placeholder | default: 'Enter your email address' }}"
+                     required>
+            </div>
+
+            {% if section.settings.collect_name %}
+              <div class="form-group">
+                <input type="text"
+                       name="first_name"
+                       class="gated-resource__input"
+                       placeholder="First name"
+                       required>
+              </div>
+            {% endif %}
+
+            <!-- Hidden field for resource URL to pass to thank you page -->
+            <input type="hidden" name="resource_url" value="{{ section.settings.resource_url }}">
+            <input type="hidden" name="resource_title" value="{{ section.settings.title }}">
+
+            <button type="submit" class="gated-resource__submit">
+              <span class="btn-text">{{ section.settings.button_text | default: 'Get Instant Access' }}</span>
+              <span class="btn-spinner" style="display: none;">
+                <svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+              </span>
+            </button>
+
+            {% if section.settings.privacy_text %}
+              <p class="gated-resource__privacy">{{ section.settings.privacy_text }}</p>
+            {% endif %}
+          </form>
+        {% endif %}
+
+        <!-- Success Message (hidden by default) -->
+        <div class="gated-resource__success" style="display: none;">
+          <svg width="60" height="60" fill="#5E3BFF" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <h3>Success! Check your email</h3>
+          <p>We've sent {{ section.settings.title }} to your inbox.</p>
+          {% if section.settings.resource_url %}
+            <a href="{{ section.settings.resource_url }}" class="gated-resource__download-btn" download>
+              Download Now
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gated-resource {
+    padding: 60px 0;
+    position: relative;
+  }
+
+  .gated-resource__wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  /* Preview Side */
+  .gated-resource__preview {
+    position: relative;
+  }
+
+  .gated-resource__image {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+
+  .gated-resource__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .gated-resource__badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #FFE86B;
+    color: #1a1a1a;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .gated-resource__category {
+    display: inline-block;
+    background: #5E3BFF;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  .gated-resource__title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 16px;
+    line-height: 1.2;
+  }
+
+  .gated-resource__description {
+    font-size: 18px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0 0 24px;
+  }
+
+  .gated-resource__features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .gated-resource__features li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #4b5563;
+  }
+
+  /* Form Side */
+  .gated-resource__form-wrapper {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border: 1px solid rgba(94,59,255,0.1);
+  }
+
+  .gated-resource__form-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .gated-resource__form-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 8px;
+  }
+
+  .gated-resource__form-header p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .gated-resource__form .form-group {
+    margin-bottom: 16px;
+  }
+
+  .gated-resource__input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.2s;
+    background: #fafafa;
+  }
+
+  .gated-resource__input:focus {
+    outline: none;
+    border-color: #5E3BFF;
+    background: white;
+  }
+
+  .gated-resource__submit {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #5E3BFF 0%, #7c5fff 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .gated-resource__submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(94,59,255,0.3);
+  }
+
+  .gated-resource__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .gated-resource__privacy {
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    margin: 16px 0 0;
+  }
+
+  .gated-resource__success {
+    text-align: center;
+    padding: 40px;
+  }
+
+  .gated-resource__success h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 20px 0 10px;
+  }
+
+  .gated-resource__success p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 24px;
+  }
+
+  .gated-resource__download-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: #5E3BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .gated-resource__download-btn:hover {
+    background: #4025E0;
+    transform: translateY(-2px);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .gated-resource__wrapper {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .gated-resource__title {
+      font-size: 24px;
+    }
+
+    .gated-resource__form-wrapper {
+      padding: 30px 20px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('.gated-resource__form');
+
+    forms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        const submitBtn = form.querySelector('.gated-resource__submit');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnSpinner = submitBtn.querySelector('.btn-spinner');
+        const resourceUrl = form.dataset.resourceUrl;
+
+        // Show loading state
+        btnText.style.display = 'none';
+        btnSpinner.style.display = 'inline-block';
+        submitBtn.disabled = true;
+
+        // If we have a resource URL and it's a Kajabi form, handle AJAX
+        if (resourceUrl && form.getAttribute('data-kjb-form')) {
+          e.preventDefault();
+
+          // Simulate form submission (Kajabi will handle the actual submission)
+          setTimeout(() => {
+            // Show success state
+            const wrapper = form.closest('.gated-resource__form-wrapper');
+            const success = wrapper.querySelector('.gated-resource__success');
+
+            form.style.display = 'none';
+            wrapper.querySelector('.gated-resource__form-header').style.display = 'none';
+            success.style.display = 'block';
+
+            // Optional: Auto-download after delay
+            if (resourceUrl) {
+              setTimeout(() => {
+                window.open(resourceUrl, '_blank');
+              }, 2000);
+            }
+          }, 1500);
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Gated Resource",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Resource Details"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Resource Title",
+      "default": "Free Parenting Scripts & Worksheets"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Resource Description",
+      "default": "Get instant access to our collection of evidence-based scripts and printable worksheets."
+    },
+    {
+      "type": "text",
+      "id": "category",
+      "label": "Category Label",
+      "default": "FREE RESOURCE"
+    },
+    {
+      "type": "image_picker",
+      "id": "resource_image",
+      "label": "Resource Preview Image"
+    },
+    {
+      "type": "textarea",
+      "id": "features",
+      "label": "Features List",
+      "default": "10+ Conversation Scripts|Age-Appropriate Worksheets|Science-Based Strategies|Printable PDF Format",
+      "info": "Separate features with | character"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "FREE"
+    },
+    {
+      "type": "header",
+      "content": "Form Settings"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Get Your Free Resource"
+    },
+    {
+      "type": "text",
+      "id": "form_subtitle",
+      "label": "Form Subtitle",
+      "default": "Enter your email to get instant access"
+    },
+    {
+      "type": "text",
+      "id": "kajabi_form_id",
+      "label": "Kajabi Form ID",
+      "info": "Enter the Kajabi form ID to use their email capture"
+    },
+    {
+      "type": "action",
+      "id": "form_action",
+      "label": "Form Action URL",
+      "default": "/opt-in",
+      "info": "Where to submit if not using Kajabi form"
+    },
+    {
+      "type": "checkbox",
+      "id": "collect_name",
+      "label": "Collect First Name",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Submit Button Text",
+      "default": "Get Instant Access"
+    },
+    {
+      "type": "textarea",
+      "id": "privacy_text",
+      "label": "Privacy Text",
+      "default": "We respect your privacy. Unsubscribe at any time."
+    },
+    {
+      "type": "header",
+      "content": "Resource Delivery"
+    },
+    {
+      "type": "action",
+      "id": "resource_url",
+      "label": "Resource Download URL",
+      "info": "Direct link to the resource file"
+    },
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "text",
+      "id": "background",
+      "label": "Section Background",
+      "default": "linear-gradient(135deg, #f8f6ff 0%, #fff 100%)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gated Resource",
+      "category": "Content",
+      "settings": {
+        "title": "Free Parenting Scripts & Worksheets",
+        "description": "Get instant access to our collection of evidence-based scripts and printable worksheets.",
+        "category": "FREE RESOURCE",
+        "features": "10+ Conversation Scripts|Age-Appropriate Worksheets|Science-Based Strategies|Printable PDF Format",
+        "show_badge": true,
+        "badge_text": "FREE",
+        "form_title": "Get Your Free Resource",
+        "form_subtitle": "Enter your email to get instant access",
+        "button_text": "Get Instant Access",
+        "privacy_text": "We respect your privacy. Unsubscribe at any time."
+      }
+    }
+  ]
+}
+{% endschema %}

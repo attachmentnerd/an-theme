@@ -1,0 +1,845 @@
+{% comment %}
+  Fully Editable Speaking Page Section
+  All text content can be customized through section settings
+{% endcomment %}
+
+<style>
+/* Use theme CSS variables and utilities */
+.speaking-page-editable {
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+}
+
+.speaking-page-editable body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: var(--c-ink-700);
+  font-weight: 400;
+}
+
+.speaking-page-editable .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.speaking-page-editable h1, .speaking-page-editable h2, .speaking-page-editable h3, .speaking-page-editable h4 {
+  color: var(--c-ink-900);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Hero Section */
+.speaking-page-editable .hero {
+  background: var(--c-brand-100);
+  padding: var(--space-3xl) 0;
+  text-align: center;
+}
+
+.speaking-page-editable .hero h1 {
+  font-size: var(--fs-display);
+  margin-bottom: var(--space-lg);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.speaking-page-editable .hero-subtitle {
+  font-size: var(--fs-body-lg);
+  color: var(--c-ink-700);
+  max-width: 600px;
+  margin: 0 auto var(--space-xl);
+}
+
+.speaking-page-editable .hero-subtitle .highlight {
+  color: var(--c-brand-600);
+  font-weight: 500;
+}
+
+/* Video Section */
+.speaking-page-editable .video-section {
+  padding: var(--space-3xl) 0;
+  background: var(--c-white);
+}
+
+.speaking-page-editable .video-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+
+.speaking-page-editable .video-placeholder {
+  position: relative;
+  padding-bottom: 56.25%;
+  background: var(--c-ink-900);
+  overflow: hidden;
+}
+
+.speaking-page-editable .video-placeholder img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.speaking-page-editable .play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: var(--c-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.speaking-page-editable .play-button:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.speaking-page-editable .play-icon {
+  width: 0;
+  height: 0;
+  border-left: 20px solid var(--c-brand-600);
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  margin-left: 5px;
+}
+
+/* Content Section */
+.speaking-page-editable .content-section {
+  padding: var(--space-3xl) 0;
+  background: var(--c-white);
+}
+
+.speaking-page-editable .content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3xl);
+  align-items: center;
+}
+
+.speaking-page-editable .content-image {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+
+.speaking-page-editable .content-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.speaking-page-editable .content-text h2 {
+  font-size: var(--fs-h1);
+  margin-bottom: var(--space-lg);
+}
+
+.speaking-page-editable .content-text p {
+  font-size: var(--fs-body);
+  margin-bottom: var(--space-md);
+  color: var(--c-ink-700);
+}
+
+.speaking-page-editable .content-card {
+  background: var(--c-brand-100);
+  padding: var(--space-lg);
+  border-radius: 16px;
+  margin-top: var(--space-lg);
+}
+
+.speaking-page-editable .btn-primary {
+  background: linear-gradient(135deg, #6757FF 0%, #7B4DFF 100%);
+  color: var(--c-white);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: 9999px;
+  font-size: var(--fs-body);
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(94, 59, 255, 0.25);
+  border: none;
+  cursor: pointer;
+}
+
+.speaking-page-editable .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(94, 59, 255, 0.35);
+}
+
+/* Event Section */
+.speaking-page-editable .event-section {
+  background: linear-gradient(135deg, var(--c-brand-600) 0%, var(--c-brand-800) 100%);
+  color: var(--c-white);
+  padding: var(--space-2xl) 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.speaking-page-editable .event-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="white" fill-opacity="0.05"/></svg>');
+  background-size: 200px 200px;
+}
+
+.speaking-page-editable .event-content {
+  position: relative;
+  z-index: 1;
+}
+
+.speaking-page-editable .event-section h2 {
+  font-size: var(--fs-h1);
+  color: var(--c-white);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.speaking-page-editable .event-subtitle {
+  font-size: var(--fs-body-lg);
+  opacity: 0.9;
+}
+
+/* Ready Section */
+.speaking-page-editable .ready-section {
+  padding: var(--space-3xl) 0;
+  background: var(--c-white);
+}
+
+.speaking-page-editable .ready-header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.speaking-page-editable .ready-header h2 {
+  font-size: var(--fs-h1);
+  margin-bottom: var(--space-md);
+}
+
+.speaking-page-editable .ready-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+.speaking-page-editable .ready-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.speaking-page-editable .ready-item {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.speaking-page-editable .ready-number {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: var(--c-brand-100);
+  color: var(--c-brand-600);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-h2);
+  font-weight: 500;
+}
+
+.speaking-page-editable .ready-content h3 {
+  font-size: var(--fs-body-lg);
+  color: var(--c-brand-600);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-sm);
+}
+
+.speaking-page-editable .ready-content p {
+  color: var(--c-ink-700);
+  font-size: var(--fs-body);
+}
+
+.speaking-page-editable .ready-image {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+
+.speaking-page-editable .ready-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.speaking-page-editable .ready-cta {
+  margin-top: var(--space-xl);
+  display: flex;
+  gap: var(--space-md);
+}
+
+.speaking-page-editable .btn-secondary {
+  background: var(--c-white);
+  color: var(--c-brand-600);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: 9999px;
+  font-size: var(--fs-body);
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: 2px solid var(--c-brand-600);
+}
+
+.speaking-page-editable .btn-secondary:hover {
+  background: var(--c-brand-100);
+  transform: translateY(-2px);
+}
+
+/* Why Section */
+.speaking-page-editable .why-section {
+  background: var(--c-brand-100);
+  padding: var(--space-3xl) 0;
+}
+
+.speaking-page-editable .why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3xl);
+  align-items: center;
+}
+
+.speaking-page-editable .why-image {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.speaking-page-editable .why-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.speaking-page-editable .why-content {
+  background: var(--c-white);
+  padding: var(--space-2xl);
+  border-radius: 24px;
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+
+.speaking-page-editable .why-content h2 {
+  font-size: var(--fs-h1);
+  margin-bottom: var(--space-lg);
+  color: var(--c-brand-600);
+}
+
+.speaking-page-editable .why-content h3 {
+  font-size: var(--fs-h2);
+  margin-bottom: var(--space-md);
+}
+
+.speaking-page-editable .why-content p {
+  margin-bottom: var(--space-lg);
+  color: var(--c-ink-700);
+}
+
+.speaking-page-editable .why-quote {
+  padding: var(--space-lg);
+  background: var(--c-brand-100);
+  border-radius: 16px;
+  font-style: italic;
+  font-size: var(--fs-body-lg);
+  color: var(--c-brand-800);
+  border-left: 4px solid var(--c-brand-600);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .speaking-page-editable .content-grid,
+  .speaking-page-editable .ready-steps,
+  .speaking-page-editable .why-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+  
+  .speaking-page-editable .ready-cta {
+    flex-direction: column;
+  }
+  
+  .speaking-page-editable .btn-primary,
+  .speaking-page-editable .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
+</style>
+
+<div class="speaking-page-editable">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>{{ section.settings.hero_title }}</h1>
+      <p class="hero-subtitle">{{ section.settings.hero_subtitle }}</p>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  {% if section.settings.show_video %}
+  <section class="video-section">
+    <div class="container">
+      <div class="video-wrapper">
+        <div class="video-placeholder">
+          {% if section.settings.video_thumbnail %}
+            {% assign image = section.settings.video_thumbnail %}
+            {% assign alt = section.settings.video_alt %}
+            {% assign sizes = '(max-width: 767px) 100vw, 800px' %}
+            {% assign priority = true %}
+            {% include 'responsive-image' %}
+          {% endif %}
+          {% if section.settings.video_url %}
+          <a href="{{ section.settings.video_url }}" class="play-button" aria-label="Play video">
+            <div class="play-icon"></div>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <div class="container">
+      <div class="content-grid">
+        <div class="content-image">
+          {% if section.settings.content_image %}
+            {% assign image = section.settings.content_image %}
+            {% assign alt = section.settings.content_image_alt %}
+            {% assign sizes = '(max-width: 767px) 100vw, 600px' %}
+            {% include 'responsive-image' %}
+          {% endif %}
+        </div>
+        <div class="content-text">
+          <h2>{{ section.settings.content_title }}</h2>
+          <p>{{ section.settings.content_text_1 }}</p>
+          <p>{{ section.settings.content_text_2 }}</p>
+          {% if section.settings.content_highlight %}
+          <div class="content-card">
+            <p>{{ section.settings.content_highlight }}</p>
+          </div>
+          {% endif %}
+          {% if section.settings.content_button_text %}
+          <a href="{{ section.settings.content_button_url }}" class="btn-primary">
+            {{ section.settings.content_button_text }}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event Section -->
+  {% if section.settings.show_event_banner %}
+  <section class="event-section">
+    <div class="container">
+      <div class="event-content">
+        <h2>{{ section.settings.event_title }}</h2>
+        <p class="event-subtitle">{{ section.settings.event_subtitle }}</p>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Ready Section -->
+  <section class="ready-section">
+    <div class="container">
+      <div class="ready-header">
+        <h2>{{ section.settings.ready_title }}</h2>
+      </div>
+      <div class="ready-steps">
+        <div class="ready-list">
+          <!-- Step 1 -->
+          <div class="ready-item">
+            <div class="ready-number">01</div>
+            <div class="ready-content">
+              <h3>{{ section.settings.step_1_title }}</h3>
+              <p>{{ section.settings.step_1_text }}</p>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div class="ready-item">
+            <div class="ready-number">02</div>
+            <div class="ready-content">
+              <h3>{{ section.settings.step_2_title }}</h3>
+              <p>{{ section.settings.step_2_text }}</p>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="ready-item">
+            <div class="ready-number">03</div>
+            <div class="ready-content">
+              <h3>{{ section.settings.step_3_title }}</h3>
+              <p>{{ section.settings.step_3_text }}</p>
+            </div>
+          </div>
+          <div class="ready-cta">
+            {% if section.settings.ready_button_1_text %}
+            <a href="{{ section.settings.ready_button_1_url }}" class="btn-primary">
+              {{ section.settings.ready_button_1_text }}
+            </a>
+            {% endif %}
+            {% if section.settings.ready_button_2_text %}
+            <a href="{{ section.settings.ready_button_2_url }}" class="btn-secondary">
+              {{ section.settings.ready_button_2_text }}
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="ready-image">
+          {% if section.settings.ready_image %}
+            {% assign image = section.settings.ready_image %}
+            {% assign alt = section.settings.ready_image_alt %}
+            {% assign sizes = '(max-width: 767px) 100vw, 600px' %}
+            {% include 'responsive-image' %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Section -->
+  <section class="why-section">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-image">
+          {% if section.settings.why_image %}
+            {% assign image = section.settings.why_image %}
+            {% assign alt = section.settings.why_image_alt %}
+            {% assign sizes = '(max-width: 767px) 100vw, 600px' %}
+            {% include 'responsive-image' %}
+            %}
+          {% endif %}
+        </div>
+        <div class="why-content">
+          <h2>{{ section.settings.why_title }}</h2>
+          <h3>{{ section.settings.why_subtitle }}</h3>
+          <p>{{ section.settings.why_text_1 }}</p>
+          <p>{{ section.settings.why_text_2 }}</p>
+          <p>{{ section.settings.why_text_3 }}</p>
+          {% if section.settings.why_quote %}
+          <div class="why-quote">
+            {{ section.settings.why_quote }}
+          </div>
+          {% endif %}
+          {% if section.settings.why_button_text %}
+          <a href="{{ section.settings.why_button_url }}" class="btn-primary">
+            {{ section.settings.why_button_text }}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Speaking Page - Editable",
+  "class": "speaking-page-editable",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "Eli helps overwhelmed caregivers find their calm in the chaos—with science-backed tools that lead to deeper connection"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "Transform your audience with practical attachment science they can actually remember when their nervous system is flooded"
+    },
+    {
+      "type": "header",
+      "content": "Video Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video",
+      "label": "Show Video Section",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "video_thumbnail",
+      "label": "Video Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "video_alt",
+      "label": "Video Alt Text",
+      "default": "Eli Harwood Speaker Reel"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "header",
+      "content": "Content Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "content_image",
+      "label": "Content Image"
+    },
+    {
+      "type": "text",
+      "id": "content_image_alt",
+      "label": "Content Image Alt Text",
+      "default": "Eli Harwood speaking on stage"
+    },
+    {
+      "type": "text",
+      "id": "content_title",
+      "label": "Content Title",
+      "default": "Breaking cycles starts with understanding why"
+    },
+    {
+      "type": "textarea",
+      "id": "content_text_1",
+      "label": "Content Text 1",
+      "default": "Using brain science, clinical wisdom, and real-life stories, Eli helps audiences understand why they react the way they do—and gives them practical scripts to respond differently."
+    },
+    {
+      "type": "textarea",
+      "id": "content_text_2",
+      "label": "Content Text 2",
+      "default": "Your attendees leave with more than inspiration. They get science-backed micro-tools they can use tonight when bedtime goes sideways or tomorrow when their trauma gets triggered."
+    },
+    {
+      "type": "textarea",
+      "id": "content_highlight",
+      "label": "Content Highlight Box",
+      "default": "Translation: No more \"I know better but I keep yelling anyway.\" Eli bridges the gap between knowing and doing with tools that stick when everything's falling apart."
+    },
+    {
+      "type": "text",
+      "id": "content_button_text",
+      "label": "Content Button Text",
+      "default": "Book Eli to Speak"
+    },
+    {
+      "type": "action",
+      "id": "content_button_url",
+      "label": "Content Button URL",
+      "default": "#book"
+    },
+    {
+      "type": "header",
+      "content": "Event Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_event_banner",
+      "label": "Show Event Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "event_title",
+      "label": "Event Title",
+      "default": "Transform Your Event"
+    },
+    {
+      "type": "text",
+      "id": "event_subtitle",
+      "label": "Event Subtitle",
+      "default": "Science + Heart + Practical Tools = Real Change"
+    },
+    {
+      "type": "header",
+      "content": "Ready Section"
+    },
+    {
+      "type": "text",
+      "id": "ready_title",
+      "label": "Ready Section Title",
+      "default": "ELI'S READY TO SERVE YOUR AUDIENCE"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Step 1 Title",
+      "default": "SYNC SCHEDULES"
+    },
+    {
+      "type": "textarea",
+      "id": "step_1_text",
+      "label": "Step 1 Text",
+      "default": "Virtual or in-person, Eli brings the same warm energy and practical wisdom. We'll work together to customize content perfectly for your unique audience—whether that's burned-out parents, helping professionals, or entire organizations."
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Step 2 Title",
+      "default": "SHARE THE VISION"
+    },
+    {
+      "type": "textarea",
+      "id": "step_2_text",
+      "label": "Step 2 Text",
+      "default": "You know your people best. Share their struggles, their language, their dreams. Eli crafts every talk to meet them exactly where they are—with stories and scripts that resonate deeply."
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Step 3 Title",
+      "default": "LET'S LOCK IT IN"
+    },
+    {
+      "type": "textarea",
+      "id": "step_3_text",
+      "label": "Step 3 Text",
+      "default": "From pre-event connection to follow-up resources, we handle the details so you can focus on your people. Your attendees get tools they'll use for years, not just inspiration that fades."
+    },
+    {
+      "type": "text",
+      "id": "ready_button_1_text",
+      "label": "Ready Button 1 Text",
+      "default": "Schedule Speaker Call"
+    },
+    {
+      "type": "action",
+      "id": "ready_button_1_url",
+      "label": "Ready Button 1 URL",
+      "default": "#schedule"
+    },
+    {
+      "type": "text",
+      "id": "ready_button_2_text",
+      "label": "Ready Button 2 Text",
+      "default": "View Topics"
+    },
+    {
+      "type": "action",
+      "id": "ready_button_2_url",
+      "label": "Ready Button 2 URL",
+      "default": "#topics"
+    },
+    {
+      "type": "image_picker",
+      "id": "ready_image",
+      "label": "Ready Section Image"
+    },
+    {
+      "type": "text",
+      "id": "ready_image_alt",
+      "label": "Ready Image Alt Text",
+      "default": "Eli connecting with audience"
+    },
+    {
+      "type": "header",
+      "content": "Why Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "why_image",
+      "label": "Why Section Image"
+    },
+    {
+      "type": "text",
+      "id": "why_image_alt",
+      "label": "Why Image Alt Text",
+      "default": "Eli Harwood professional headshot"
+    },
+    {
+      "type": "text",
+      "id": "why_title",
+      "label": "Why Title",
+      "default": "WHY ELI?"
+    },
+    {
+      "type": "text",
+      "id": "why_subtitle",
+      "label": "Why Subtitle",
+      "default": "Because your audience deserves more than fleeting inspiration"
+    },
+    {
+      "type": "textarea",
+      "id": "why_text_1",
+      "label": "Why Text 1",
+      "default": "With 17+ years of clinical experience, two bestselling books, and a gift for making complex science feel like common sense, Eli transforms how people understand themselves and their relationships."
+    },
+    {
+      "type": "textarea",
+      "id": "why_text_2",
+      "label": "Why Text 2",
+      "default": "She's the therapist-friend to 622K+ followers who trust her to translate attachment research into actual words they can say when their child is melting down or their partner is pulling away."
+    },
+    {
+      "type": "textarea",
+      "id": "why_text_3",
+      "label": "Why Text 3",
+      "default": "Eli doesn't just explain why relationships matter. She gives your audience the exact scripts to build them—even when their nervous system is screaming and old patterns are pulling hard."
+    },
+    {
+      "type": "textarea",
+      "id": "why_quote",
+      "label": "Why Quote",
+      "default": "Connection is possible, repair is powerful, and it's never too late to earn secure attachment. Let me show your people how."
+    },
+    {
+      "type": "text",
+      "id": "why_button_text",
+      "label": "Why Button Text",
+      "default": "Start the Conversation"
+    },
+    {
+      "type": "action",
+      "id": "why_button_url",
+      "label": "Why Button URL",
+      "default": "#contact"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Speaking Page - Editable",
+      "category": "Pages",
+      "description": "Fully editable speaking page with hero, video, content sections, 3-step process, and bio"
+    }
+  ]
+}
+{% endschema %}

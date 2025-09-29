@@ -1,13 +1,11 @@
-{% assign footer_visible = section.settings.show_footer %}
-{% if footer_visible != false %}
-  {% assign social_links_string = 'Instagram=>https://www.instagram.com/attachmentnerd/|TikTok=>https://www.tiktok.com/@attachmentnerd|YouTube=>https://www.youtube.com/@attachmentnerd|Facebook=>https://www.facebook.com/attachmentnerd' %}
-  {% assign social_links = social_links_string | split: '|' %}
-  {% assign explore_links_string = 'Homepage=>/|About=>/about|Secure Parenting Program Overview=>/secure-parenting-program|Eli Speaking & Booking Page=>/speaking|Attachment Labs=>/attachment-labs|Press=>/press' %}
-  {% assign explore_links = explore_links_string | split: '|' %}
-  {% assign resources_links_string = 'Books=>/books|Book - Securely Attached=>/books/securely-attached|Book - Raising Securely Attached Kids=>/books/raising-securely-attached-kids|Book - Uniquely Us=>/books/uniquely-us|Book - How to Deal=>/books/how-to-deal-with-your-so-your-kids-dont-have-to|Podcast=>/podcast|Free Resources=>/free|Ask Eli=>/phone|Onboarding=>/onboarding' %}
-  {% assign resources_links = resources_links_string | split: '|' %}
-  {% assign support_links_string = 'Contact=>/contact|Privacy=>/user/legal-pages' %}
-  {% assign support_links = support_links_string | split: '|' %}
+{% comment %}
+  Hardcoded Footer - All links and content are fixed
+  Only visibility is controlled via global settings
+{% endcomment %}
+
+{% comment %} Social links remain hardcoded as they're not typically in Kajabi menus {% endcomment %}
+{% assign social_links_string = 'Instagram=>https://www.instagram.com/attachmentnerd/|TikTok=>https://www.tiktok.com/@attachmentnerd|YouTube=>https://www.youtube.com/@attachmentnerd|Facebook=>https://www.facebook.com/attachmentnerd' %}
+{% assign social_links = social_links_string | split: '|' %}
 
   <style>
     #an-footer-{{ section.id }} {
@@ -250,33 +248,38 @@
         </div>
 
         <div class="an-footer__column">
-          <div class="an-footer__heading">Explore</div>
-          {% for link_item in explore_links %}
-            {% assign parts = link_item | split: '=>' %}
-            {% assign label = parts[0] | strip %}
-            {% assign url = parts[1] | strip %}
-            <a href="{{ url }}" class="an-footer__link" data-evt="footer_link_explore_{{ label | handle }}">{{ label }}</a>
-          {% endfor %}
+          <div class="an-footer__heading">About</div>
+          <a href="/about" class="an-footer__link" data-evt="footer_link_about">About</a>
+          <a href="/blog" class="an-footer__link" data-evt="footer_link_blog">Blog</a>
+          <a href="/podcast" class="an-footer__link" data-evt="footer_link_podcast">Podcast</a>
+          <a href="/contact" class="an-footer__link" data-evt="footer_link_contact">Contact</a>
+
+          <div class="an-footer__heading" style="margin-top: 1.5rem;">Programs</div>
+          <a href="/products/sa-program" class="an-footer__link" data-evt="footer_link_sa_program">The SA Program</a>
+          <a href="/products/co-regulation" class="an-footer__link" data-evt="footer_link_coregulation">Co-Regulation Course</a>
+          <a href="/products/parenting-community" class="an-footer__link" data-evt="footer_link_community">Parenting Community</a>
         </div>
 
         <div class="an-footer__column">
-          <div class="an-footer__heading">Resources</div>
-          {% for link_item in resources_links %}
-            {% assign parts = link_item | split: '=>' %}
-            {% assign label = parts[0] | strip %}
-            {% assign url = parts[1] | strip %}
-            <a href="{{ url }}" class="an-footer__link" data-evt="footer_link_resources_{{ label | handle }}">{{ label }}</a>
-          {% endfor %}
+          <div class="an-footer__heading">Offerings</div>
+          <a href="/products/securely-attached-book" class="an-footer__link" data-evt="footer_link_sa_book">Securely Attached Book</a>
+          <a href="/products/raising-secure-kids-book" class="an-footer__link" data-evt="footer_link_rsk_book">Raising Secure Kids</a>
+          <a href="/products/workbook" class="an-footer__link" data-evt="footer_link_workbook">Attachment Workbook</a>
+          <a href="/products/planner" class="an-footer__link" data-evt="footer_link_planner">90-Day Planner</a>
+
+          <div class="an-footer__heading" style="margin-top: 1.5rem;">Free Resources</div>
+          <a href="/free-resources" class="an-footer__link" data-evt="footer_link_free_resources">Free Downloads</a>
+          <a href="/quiz" class="an-footer__link" data-evt="footer_link_quiz">Attachment Quiz</a>
+          <a href="/newsletter" class="an-footer__link" data-evt="footer_link_newsletter">Newsletter</a>
         </div>
 
         <div class="an-footer__column">
           <div class="an-footer__heading">Support</div>
-          {% for link_item in support_links %}
-            {% assign parts = link_item | split: '=>' %}
-            {% assign label = parts[0] | strip %}
-            {% assign url = parts[1] | strip %}
-            <a href="{{ url }}" class="an-footer__link" data-evt="footer_link_support_{{ label | handle }}">{{ label }}</a>
-          {% endfor %}
+          <a href="/help" class="an-footer__link" data-evt="footer_link_help">Help Center</a>
+          <a href="/faq" class="an-footer__link" data-evt="footer_link_faq">FAQ</a>
+          <a href="/user/legal-pages" class="an-footer__link" data-evt="footer_link_privacy">Privacy Policy</a>
+          <a href="/terms" class="an-footer__link" data-evt="footer_link_terms">Terms of Service</a>
+          <a href="/refund-policy" class="an-footer__link" data-evt="footer_link_refunds">Refund Policy</a>
           <div class="an-footer__heading" style="margin-top: 1.5rem;">Get Free Updates</div>
           {% assign footer_form_id = 2149141675 %}
           {% assign f = current_site.find_form[footer_form_id] %}
@@ -324,18 +327,9 @@
       </div>
     </div>
   </footer>
-{% endif %}
 
 {% schema %}
 {
-  "name": "Footer",
-  "elements": [
-    {
-      "type": "checkbox",
-      "id": "show_footer",
-      "label": "Show footer",
-      "default": true
-    }
-  ]
+  "name": "Footer Modern"
 }
 {% endschema %}

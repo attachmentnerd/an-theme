@@ -1,4 +1,12 @@
+{% comment %}
+  IMPORTANT: Custom JS from theme settings
+  WARNING: Avoid using eval(), new Function(), or string-based setTimeout/setInterval
+  as they will cause CSP violations and break the theme in Kajabi.
+{% endcomment %}
+{% if settings.js and settings.js != '' %}
 <script>
   /* Custom JS Added Via Theme Settings */
+  /* WARNING: Ensure no eval(), new Function(), or string-based timeouts are used */
   {{ settings.js }}
 </script>
+{% endif %}

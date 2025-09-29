@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect Examples - AN Theme</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        h1 { color: #1A2D4E; }
+        h2 { color: #5E3BFF; margin-top: 40px; }
+        .code-block {
+            background: #F8F7F5;
+            border-left: 4px solid #5E3BFF;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            background: #E9E6FF;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #5E3BFF;
+        }
+        .example {
+            background: white;
+            border: 1px solid #E9E6FF;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #FFE86B;
+            color: #1A2D4E;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔄 Redirect Setup for AN Kajabi Theme</h1>
+    
+    <h2>Quick Setup (Recommended)</h2>
+    <p>Add this snippet to your theme's main layout file (<code>theme.liquid</code>) before the closing <code>&lt;/body&gt;</code> tag:</p>
+    
+    <div class="code-block">
+        <pre>{% include 'redirect_manager' %}</pre>
+    </div>
+    
+    <h2>Common Redirect Scenarios</h2>
+    
+    <div class="example">
+        <h3>1. Old Course URL → New Product URL</h3>
+        <span class="tag">EXACT MATCH</span>
+        <div class="code-block">
+            <pre>{ from: '/courses/secure-parenting', to: '/products/secure-parenting-program' }</pre>
+        </div>
+    </div>
+    
+    <div class="example">
+        <h3>2. Checkout Redirect to Specific Offer</h3>
+        <span class="tag">CHECKOUT</span>
+        <div class="code-block">
+            <pre>{ from: '/checkout', to: '/offers/iWQFFjpH/checkout' }</pre>
+        </div>
+    </div>
+    
+    <div class="example">
+        <h3>3. Limited-Time Sale Redirect</h3>
+        <span class="tag">TEMPORARY</span>
+        <div class="code-block">
+            <pre>{ 
+  from: '/black-friday', 
+  to: '/offers/black-friday-50-off',
+  permanent: false,
+  expires: '2024-12-01'
+}</pre>
+        </div>
+    </div>
+    
+    <div class="example">
+        <h3>4. Pay-What-You-Can Redirect</h3>
+        <span class="tag">PWYC</span>
+        <div class="code-block">
+            <pre>{ from: '/pay-what-you-can', to: '/offers/aLCCMYCf' }</pre>
+        </div>
+    </div>
+    
+    <div class="example">
+        <h3>5. Mobile App Redirect</h3>
+        <span class="tag">CONDITIONAL</span>
+        <div class="code-block">
+            <pre>{ 
+  from: '/app', 
+  to: '/mobile-download',
+  condition: 'mobile'
+}</pre>
+        </div>
+    </div>
+    
+    <h2>Complete Implementation Example</h2>
+    <div class="code-block">
+        <pre>&lt;script&gt;
+(function() {
+  const redirects = [
+    // Redirect old course URLs
+    { from: '/courses/secure-parenting', to: '/products/secure-parenting-program' },
+    { from: '/course/attachment', to: '/products/attachment-course' },
+    
+    // Checkout redirects
+    { from: '/checkout', to: '/offers/iWQFFjpH/checkout' },
+    { from: '/pay-what-you-can', to: '/offers/aLCCMYCf' },
+    
+    // Sale/promo redirects
+    { from: '/sale', to: '/offers/launch-special' },
+    { from: '/50off', to: '/offers/half-price' },
+    
+    // Old blog redirects (pattern matching)
+    { from: '/blog/old-', to: '/blog/', type: 'starts' },
+  ];
+  
+  const currentPath = window.location.pathname;
+  
+  redirects.forEach(rule => {
+    if (currentPath === rule.from || 
+        (rule.type === 'starts' && currentPath.startsWith(rule.from))) {
+      window.location.replace(rule.to);
+    }
+  });
+})();
+&lt;/script&gt;</pre>
+    </div>
+    
+    <h2>Testing Your Redirects</h2>
+    <ol>
+        <li>Add the redirect rules to <code>redirect_manager.liquid</code></li>
+        <li>Include the snippet in your theme layout</li>
+        <li>Visit the old URL to test the redirect</li>
+        <li>Check browser console for any errors</li>
+    </ol>
+    
+    <h2>Debug Mode</h2>
+    <p>To see what's happening with your redirects, enable debug mode:</p>
+    <div class="code-block">
+        <pre>const config = {
+  debugMode: true, // Shows redirect attempts in console
+};</pre>
+    </div>
+    
+    <h2>Best Practices</h2>
+    <ul>
+        <li>✅ Always test redirects on a staging site first</li>
+        <li>✅ Use <code>permanent: false</code> for temporary/seasonal redirects</li>
+        <li>✅ Keep redirect rules organized and documented</li>
+        <li>✅ Use pattern matching for multiple similar URLs</li>
+        <li>⚠️ Avoid redirect chains (A→B→C)</li>
+        <li>⚠️ Don't redirect admin or editor pages</li>
+    </ul>
+    
+    <h2>Your Specific Use Cases</h2>
+    <div class="example">
+        <h3>Attachment Nerd Redirects</h3>
+        <div class="code-block">
+            <pre>const redirects = [
+  // Main offer redirect
+  { from: '/secure-parenting', to: '/offers/iWQFFjpH/checkout' },
+  
+  // Pay what you can
+  { from: '/pwyc', to: '/offers/aLCCMYCf' },
+  { from: '/scholarship', to: '/offers/aLCCMYCf' },
+  
+  // Old course URLs
+  { from: '/courses/secure-attachment', to: '/products/secure-parenting-program' },
+  
+  // Landing pages to offers
+  { from: '/join', to: '/offers/iWQFFjpH/checkout' },
+  { from: '/start', to: '/offers/iWQFFjpH/checkout' },
+];</pre>
+        </div>
+    </div>
+</body>
+</html>

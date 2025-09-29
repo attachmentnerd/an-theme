@@ -1,0 +1,343 @@
+{% comment %}
+Hardcoded Navigation Section - Uses existing theme CSS styles
+All navigation items and settings are hardcoded here
+{% endcomment %}
+
+{% assign current_path = request.path | default: '/' | downcase %}
+
+<style>
+  #an-pill-nav-hardcoded {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    padding: 1.15rem 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.85) 60%, rgba(255, 255, 255, 0.70) 100%);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    transition: box-shadow 0.25s ease;
+    --nav-pill-item-height: 48px;
+    --nav-pill-horizontal-padding: 1.05rem;
+  }
+
+  #an-pill-nav-hardcoded.is-scrolled {
+    box-shadow: 0 12px 30px -20px rgba(15, 23, 42, 0.45);
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__container {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: var(--nav-pill-item-height);
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nav-pill-item-height);
+    text-decoration: none;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__logo img {
+    height: 34px;
+    width: auto;
+    display: block;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__pill {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0 0.75rem;
+    max-width: calc(100% - 420px);
+    background: #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 12px 35px -18px rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 66px;
+    min-height: var(--nav-pill-item-height);
+    padding: 0 var(--nav-pill-horizontal-padding);
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #374151;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__link:hover,
+  #an-pill-nav-hardcoded .an-pill-nav__link:focus {
+    color: #5e3bff;
+    background: rgba(94, 59, 255, 0.08);
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__link--active {
+    color: #5e3bff;
+    font-weight: 600;
+    background: rgba(94, 59, 255, 0.12);
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__actions {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nav-pill-item-height);
+    gap: 0.85rem;
+    margin-left: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--nav-pill-item-height);
+    padding: 0 1.45rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #5e3bff 0%, #7b66ff 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: 0 16px 35px -18px rgba(94, 59, 255, 0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 130px;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__cta:hover,
+  #an-pill-nav-hardcoded .an-pill-nav__cta:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 38px -16px rgba(94, 59, 255, 0.75);
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    width: var(--nav-pill-item-height);
+    height: var(--nav-pill-item-height);
+    border-radius: 50%;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #1f2937;
+    border-radius: 999px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    margin: 0 auto;
+  }
+
+  #an-pill-nav-hardcoded.is-open .an-pill-nav__toggle span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  #an-pill-nav-hardcoded.is-open .an-pill-nav__toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  #an-pill-nav-hardcoded.is-open .an-pill-nav__toggle span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 9997;
+  }
+
+  #an-pill-nav-hardcoded.is-open .an-pill-nav__backdrop {
+    display: block;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__drawer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 2rem;
+  }
+
+  #an-pill-nav-hardcoded.is-open .an-pill-nav__drawer {
+    display: flex;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__drawer a {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #374151;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+  }
+
+  #an-pill-nav-hardcoded .an-pill-nav__drawer a:hover {
+    color: #5e3bff;
+    background: rgba(94, 59, 255, 0.08);
+  }
+
+  @media (max-width: 991px) {
+    #an-pill-nav-hardcoded .an-pill-nav__pill {
+      display: none;
+    }
+
+    #an-pill-nav-hardcoded .an-pill-nav__actions .an-pill-nav__cta {
+      display: none;
+    }
+
+    #an-pill-nav-hardcoded .an-pill-nav__toggle {
+      display: flex;
+    }
+  }
+</style>
+
+<nav id="an-pill-nav-hardcoded" class="an-pill-nav">
+  <div class="container">
+    <div class="an-pill-nav__container">
+      <a href="/" class="an-pill-nav__logo">
+        <img src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png"
+             alt="{{ current_site.name | default: 'Logo' }}">
+      </a>
+
+      <div class="an-pill-nav__pill">
+        <a href="/about" class="an-pill-nav__link {% if current_path == '/about' or current_path == '/about/' %}an-pill-nav__link--active{% endif %}">
+          About
+        </a>
+        <a href="/books" class="an-pill-nav__link {% if current_path == '/books' or current_path == '/books/' %}an-pill-nav__link--active{% endif %}">
+          Books
+        </a>
+        <a href="/podcast" class="an-pill-nav__link {% if current_path == '/podcast' or current_path == '/podcast/' %}an-pill-nav__link--active{% endif %}">
+          Podcast
+        </a>
+        <a href="/speaking" class="an-pill-nav__link {% if current_path == '/speaking' or current_path == '/speaking/' %}an-pill-nav__link--active{% endif %}">
+          Speaking
+        </a>
+        <a href="/program/secure-parenting" class="an-pill-nav__link {% if current_path contains '/program' %}an-pill-nav__link--active{% endif %}">
+          Program
+        </a>
+        <a href="/downloads" class="an-pill-nav__link {% if current_path == '/downloads' or current_path == '/downloads/' %}an-pill-nav__link--active{% endif %}">
+          Free Downloads
+        </a>
+      </div>
+
+      <div class="an-pill-nav__actions">
+        <a class="an-pill-nav__cta" href="/program/secure-parenting">Get Started</a>
+      </div>
+
+      <button class="an-pill-nav__toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="an-pill-nav__backdrop"></div>
+  <div class="an-pill-nav__drawer" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <a href="/about">About</a>
+    <a href="/books">Books</a>
+    <a href="/podcast">Podcast</a>
+    <a href="/speaking">Speaking</a>
+    <a href="/program/secure-parenting">Program</a>
+    <a href="/downloads">Free Downloads</a>
+    <a class="an-pill-nav__cta" href="/program/secure-parenting">Get Started</a>
+  </div>
+</nav>
+
+<script>
+  (function () {
+    var nav = document.getElementById('an-pill-nav-hardcoded');
+    if (!nav) return;
+
+    var toggle = nav.querySelector('.an-pill-nav__toggle');
+    var backdrop = nav.querySelector('.an-pill-nav__backdrop');
+    var drawer = nav.querySelector('.an-pill-nav__drawer');
+
+    if (!toggle || !backdrop || !drawer) return;
+
+    function closeNav() {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+      var isOpen = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    backdrop.addEventListener('click', closeNav);
+
+    document.addEventListener('keyup', function (event) {
+      if (event.key === 'Escape') {
+        closeNav();
+      }
+    });
+
+    // Close on link click
+    var links = drawer.querySelectorAll('a');
+    links.forEach(function(link) {
+      link.addEventListener('click', closeNav);
+    });
+
+    // Add scroll detection
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function() {
+        if (window.scrollY > 2) {
+          nav.classList.add('is-scrolled');
+        } else {
+          nav.classList.remove('is-scrolled');
+        }
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hardcoded Navigation",
+  "elements": [],
+  "presets": [
+    {
+      "name": "Hardcoded Navigation",
+      "category": "Navigation"
+    }
+  ]
+}
+{% endschema %}

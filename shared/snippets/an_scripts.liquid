@@ -14,41 +14,17 @@
 
 {% comment %} jQuery removed - saves 90KB per page load! {% endcomment %}
 
-{% comment %} AOS - Animate On Scroll (load only if elements exist) {% endcomment %}
-{% if page.content contains 'data-aos' or section.settings.enable_animations %}
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
-  <script>
-    // Lazy load AOS when needed
-    if (document.querySelector('[data-aos]')) {
-      const aosScript = document.createElement('script');
-      aosScript.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';
-      aosScript.onload = () => {
-        AOS.init({
-          duration: 800,
-          once: true,
-          offset: 100,
-          disable: window.innerWidth < 768
-        });
-      };
-      document.head.appendChild(aosScript);
-    }
-  </script>
-{% endif %}
+{% comment %}
+  AOS - DISABLED DUE TO CSP VIOLATIONS
+  The AOS library uses 'new Function' which violates Kajabi's Content Security Policy.
+  Animations now handled by CSS classes directly (animate-fade-up, animate-fade-in, etc.)
+{% endcomment %}
 
-{% comment %} Moment.js - Only for countdown sections {% endcomment %}
-{% assign has_countdown = false %}
-{% for section in sections %}
-  {% for block in section.blocks %}
-    {% if block.type == 'countdown' or block.type == 'event_countdown' %}
-      {% assign has_countdown = true %}
-    {% endif %}
-  {% endfor %}
-{% endfor %}
-
-{% if has_countdown %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.40/moment-timezone-with-data-10-year-range.min.js" defer></script>
-{% endif %}
+{% comment %}
+  Moment.js - DISABLED DUE TO CSP VIOLATIONS
+  Moment.js uses 'new Function' which violates Kajabi's Content Security Policy.
+  Countdown functionality now uses native Date API in an-core.js
+{% endcomment %}
 
 {% comment %} Slick Carousel removed - no longer needed! {% endcomment %}
 
