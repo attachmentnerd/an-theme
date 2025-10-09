@@ -200,7 +200,15 @@
                         <p class="hero-subtitle">{{ section.settings._hero_subtitle_1_learn_how_to_create_ }}</p>
                         <div class="author-intro">
                             <div class="author-avatar">
-                                <img src="{{ section.settings.img_1_eli_harwood | image_picker_url: '2000x' }}" alt="Eli Harwood" loading="lazy">
+                                {% render 'responsive-image',
+                                  image: section.settings.img_1_eli_harwood,
+                                  alt: 'Eli Harwood',
+                                  sizes: '64px',
+                                  aspect_ratio: '1/1',
+                                  widths: '64,128',
+                                  placeholder_type: 'avatar',
+                                  class: 'author-avatar-img'
+                                %}
                             </div>
                             <div class="author-details">
                                 <h3>{{ section.settings._hero_h3_1_eli_harwood__lpc }}</h3>
@@ -219,7 +227,16 @@
                     <div class="hero-visual">
                         <div class="book-showcase">
                             <div class="book-main">
-                                <img src="{{ section.settings.img_2_raising_securely_attache | image_picker_url: '2000x' }}" alt="Raising Securely Attached Kids book cover" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_2_raising_securely_attache,
+                                  alt: 'Raising Securely Attached Kids book cover',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                             </div>
                             <div class="floating-hearts">
                                 <span class="heart">💝</span>
@@ -345,7 +362,16 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_3_hilary_swank | image_picker_url: '2000x' }}" alt="Hilary Swank" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_3_hilary_swank,
+                                  alt: 'Hilary Swank',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                             </div>
                             <div class="author-info">
                                 <h4>Hilary Swank</h4>
@@ -359,7 +385,16 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_4_dr_daniel_siegel | image_picker_url: '2000x' }}" alt="Dr. Daniel Siegel" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_4_dr_daniel_siegel,
+                                  alt: 'Dr. Daniel Siegel',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                             </div>
                             <div class="author-info">
                                 <h4>Dr. Daniel J. Siegel</h4>
@@ -373,7 +408,16 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_5_alyssa_blask_campbell | image_picker_url: '2000x' }}" alt="Alyssa Blask Campbell" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_5_alyssa_blask_campbell,
+                                  alt: 'Alyssa Blask Campbell',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                             </div>
                             <div class="author-info">
                                 <h4>Alyssa Blask Campbell, M.Ed.</h4>
@@ -390,7 +434,16 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_6_tammy_schamuhn | image_picker_url: '2000x' }}" alt="Tammy Schamuhn" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_6_tammy_schamuhn,
+                                  alt: 'Tammy Schamuhn',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                             </div>
                             <div class="author-info">
                                 <h4>Tammy Schamuhn</h4>
@@ -404,7 +457,16 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_7_dr_galit_atlas | image_picker_url: '2000x' }}" alt="Dr. Galit Atlas" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_7_dr_galit_atlas,
+                                  alt: 'Dr. Galit Atlas',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                             </div>
                             <div class="author-info">
                                 <h4>Dr. Galit Atlas</h4>
@@ -418,7 +480,16 @@
                         </p>
                         <div class="testimonial-author">
                             <div class="author-image">
-                                <img src="{{ section.settings.img_8_rachel_samson | image_picker_url: '2000x' }}" alt="Rachel Samson" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_8_rachel_samson,
+                                  alt: 'Rachel Samson',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                             </div>
                             <div class="author-info">
                                 <h4>Rachel Samson</h4>
@@ -489,7 +560,16 @@
                 <div class="about-container">
                     <div class="eli-visual">
                         <div class="eli-image">
-                            <img src="{{ section.settings.img_9_eli_harwood | image_picker_url: '2000x' }}" alt="Eli Harwood" loading="lazy">
+                                                        {% render 'responsive-image',
+                              image: section.settings.img_9_eli_harwood,
+                              alt: 'Eli Harwood',
+                              class: 'img-fluid',
+                              sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                              aspect_ratio: '16/9',
+                              widths: '400,600,800,1200',
+                              placeholder_type: 'feature',
+                              blur_up: true
+                            %}
                         </div>
                         <div class="eli-stats">
                             <div class="stat-item">

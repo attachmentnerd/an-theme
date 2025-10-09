@@ -1,0 +1,66 @@
+{% comment %}
+  Footer Test with Form - Testing if form handling causes save issues
+{% endcomment %}
+
+<style>
+  .footer-test-form {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 2rem 0;
+  }
+</style>
+
+<footer class="footer-test-form">
+  <div class="container">
+    <h4>Newsletter</h4>
+    {% assign footer_form_id = section.settings.form_id %}
+    {% if footer_form_id %}
+      {% assign f = current_site.find_form[footer_form_id] %}
+      {% if f %}
+        {% form f %}
+          <div>
+            {% for field in f.fields %}
+              {{ field | form_input }}
+            {% endfor %}
+            <button type="submit">Subscribe</button>
+          </div>
+        {% endform %}
+      {% else %}
+        {% form 'optin', id: footer_form_id %}
+          <div>
+            {{ form | fields }}
+            <button type="submit">Subscribe</button>
+          </div>
+        {% endform %}
+      {% endif %}
+    {% endif %}
+    <p>{{ section.settings.copyright_text }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer Test Form",
+  "elements": [
+    {
+      "type": "text",
+      "id": "form_id",
+      "label": "Form ID",
+      "default": "2149141675"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2024 Test. All rights reserved."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Test Form",
+      "category": "Footer",
+      "description": "Footer with form testing"
+    }
+  ]
+}
+{% endschema %}

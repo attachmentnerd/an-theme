@@ -73,7 +73,16 @@
                 </div>
                 <div class="hero-image">
                     <!--@id=hero_coaching-->
-                    <img src="{{ section.settings.img_1_parent_and_child_playing | image_picker_url: '2000x' }}" alt="Parent and child playing together happily" loading="lazy">
+                    {% render 'responsive-image',
+                      image: section.settings.img_1_parent_and_child_playing,
+                      alt: 'Parent and child playing together happily',
+                      sizes: '(max-width: 767px) 100vw, 50vw',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200,1600',
+                      placeholder_type: 'hero',
+                      blur_up: true,
+                      priority: true
+                    %}
                 </div>
             </div>
         </div>
@@ -86,19 +95,46 @@
             <div class="services-grid">
                 <div class="service-card">
                     <!--@id=service_1_icon-->
-                    <img src="{{ section.settings.img_2_one_on_one_coaching_icon | image_picker_url: '2000x' }}" alt="One-on-one coaching icon" loading="lazy">
+                                        {% render 'responsive-image',
+                      image: section.settings.img_2_one_on_one_coaching_icon,
+                      alt: 'One-on-one coaching icon',
+                      class: 'img-fluid',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                     <h3>1:1 Coaching</h3>
                     <p>Personalized sessions tailored to your family's unique needs and challenges.</p>
                 </div>
                 <div class="service-card">
                     <!--@id=service_2_icon-->
-                    <img src="{{ section.settings.img_3_group_coaching_icon | image_picker_url: '2000x' }}" alt="Group coaching icon" loading="lazy">
+                                        {% render 'responsive-image',
+                      image: section.settings.img_3_group_coaching_icon,
+                      alt: 'Group coaching icon',
+                      class: 'img-fluid',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                     <h3>Group Programs</h3>
                     <p>Join a supportive community of parents on the same journey as you.</p>
                 </div>
                 <div class="service-card">
                     <!--@id=service_3_icon-->
-                    <img src="{{ section.settings.img_4_emergency_support_icon | image_picker_url: '2000x' }}" alt="Emergency support icon" loading="lazy">
+                                        {% render 'responsive-image',
+                      image: section.settings.img_4_emergency_support_icon,
+                      alt: 'Emergency support icon',
+                      class: 'img-fluid',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                     <h3>Crisis Support</h3>
                     <p>Get immediate guidance when you need it most with on-demand sessions.</p>
                 </div>
@@ -112,7 +148,16 @@
             <div class="coach-content">
                 <div class="coach-image">
                     <!--@id=coach_photo-->
-                    <img src="{{ section.settings.img_5_dr_sarah_mitchell_certif | image_picker_url: '2000x' }}" alt="Dr. Sarah Mitchell, Certified Parenting Coach" loading="lazy">
+                                        {% render 'responsive-image',
+                      image: section.settings.img_5_dr_sarah_mitchell_certif,
+                      alt: 'Dr. Sarah Mitchell, Certified Parenting Coach',
+                      class: 'img-fluid',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                 </div>
                 <div class="coach-text">
                     <h2>{{ section.settings.h2_not__h3__2_meet_your_coach }}</h2>

@@ -390,10 +390,22 @@
         const hash = window.location.hash;
         let target = document.querySelector(hash);
 
-        // If exact match not found, try to find section with ID starting with the hash
+        // If exact match not found, try multiple strategies
         if (!target && hash.length > 1) {
           const baseId = hash.substring(1); // Remove the #
+
+          // Strategy 1: Look for sections with ID starting with the base ID
           target = document.querySelector(`[id^="${baseId}-"]`);
+
+          // Strategy 2: Look for sections where section_id setting matches
+          if (!target) {
+            target = document.querySelector(`[id*="${baseId}"]`);
+          }
+
+          // Strategy 3: Look for data attributes
+          if (!target) {
+            target = document.querySelector(`[data-section-id="${baseId}"]`);
+          }
         }
 
         if (target) {
@@ -413,9 +425,8 @@
      * Smooth Scroll Handler
      */
     initSmoothScroll() {
-      // Only init if not natively supported
-      if (supports.smoothScroll) return;
-
+      // Handle all anchor links, regardless of native support
+      // This ensures Kajabi's dynamic section IDs work properly
       document.addEventListener("click", (e) => {
         const link = e.target.closest('a[href^="#"]');
         if (!link) return;
@@ -430,14 +441,63 @@
 
         let target = document.querySelector(targetId);
 
-        // If exact match not found, try to find section with ID starting with the target
-        // This handles Kajabi sections that append unique IDs (e.g., #spp-cta-xxxxx)
+        // If exact match not found, try multiple strategies
         if (!target && targetId.length > 1) {
           const baseId = targetId.substring(1); // Remove the #
+
+          // Strategy 1: Look for sections with ID starting with the base ID
           target = document.querySelector(`[id^="${baseId}-"]`);
+
+          // Strategy 2: Look for sections with data-section-id attribute
+          if (!target) {
+            target = document.querySelector(`[data-section-id="${baseId}"]`);
+          }
+
+          // Strategy 3: Look for sections where id contains the base ID
+          if (!target) {
+            // This will match things like "hero-video-abc123" when searching for "hero-video"
+            const allSections = document.querySelectorAll('[id*="-"]');
+            for (let section of allSections) {
+              if (section.id.startsWith(baseId + '-')) {
+                target = section;
+                break;
+              }
+            }
+          }
+
+          // Strategy 4: Look for data-anchor attribute
+          if (!target) {
+            target = document.querySelector(`[data-anchor="${baseId}"]`);
+          }
+
+          // Strategy 5: Case-insensitive search
+          if (!target) {
+            const lowerBaseId = baseId.toLowerCase();
+            const allElements = document.querySelectorAll('[id]');
+            for (let element of allElements) {
+              if (element.id.toLowerCase().startsWith(lowerBaseId)) {
+                target = element;
+                break;
+              }
+            }
+          }
         }
 
         if (!target) {
+          // Debug mode: Log helpful information
+          if (window.location.hostname === 'localhost' || window.anDebugScroll) {
+            console.warn(`Anchor target not found: ${targetId}`);
+            console.log('Available section IDs:');
+            document.querySelectorAll('section[id]').forEach(section => {
+              console.log(`  - #${section.id}`);
+              if (section.dataset.sectionId) {
+                console.log(`    (data-section-id: ${section.dataset.sectionId})`);
+              }
+              if (section.dataset.anchor) {
+                console.log(`    (data-anchor: ${section.dataset.anchor})`);
+              }
+            });
+          }
           // If target doesn't exist, let the browser handle it normally
           // This allows navigation to sections that may not be loaded yet
           return;
@@ -449,28 +509,48 @@
         const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
         const targetPosition =
           target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
-        const startPosition = window.scrollY;
-        const distance = targetPosition - startPosition;
-        const duration = 500;
-        let start = null;
 
-        const animation = (currentTime) => {
-          if (start === null) start = currentTime;
-          const timeElapsed = currentTime - start;
-          const run = ease(timeElapsed, startPosition, distance, duration);
-          window.scrollTo(0, run);
-          if (timeElapsed < duration) requestAnimationFrame(animation);
-        };
+        // Use native smooth scroll if available, otherwise use custom animation
+        if (supports.smoothScroll) {
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        } else {
+          // Custom smooth scroll animation for older browsers
+          const startPosition = window.scrollY;
+          const distance = targetPosition - startPosition;
+          const duration = 500;
+          let start = null;
 
-        const ease = (t, b, c, d) => {
-          t /= d / 2;
-          if (t < 1) return (c / 2) * t * t + b;
-          t--;
-          return (-c / 2) * (t * (t - 2) - 1) + b;
-        };
+          const animation = (currentTime) => {
+            if (start === null) start = currentTime;
+            const timeElapsed = currentTime - start;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
 
-        requestAnimationFrame(animation);
+          const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+          };
+
+          requestAnimationFrame(animation);
+        }
       });
+
+      // Handle hash on page load
+      if (window.location.hash) {
+        setTimeout(() => {
+          const hash = window.location.hash;
+          const link = document.createElement('a');
+          link.href = hash;
+          link.click();
+        }, 100); // Small delay to ensure DOM is ready
+      }
     },
 
     /**
@@ -804,6 +884,17 @@
 
   // Export for use in other scripts
   window.ANTheme = ANTheme;
+
+  // Add global scrollToSection helper
+  window.scrollToSection = function(sectionId) {
+    // Remove # if present
+    const cleanId = sectionId.replace('#', '');
+
+    // Create a temporary anchor and trigger click
+    const tempLink = document.createElement('a');
+    tempLink.href = '#' + cleanId;
+    tempLink.click();
+  };
 
   // Initialize animations on window load (for elements that might be added later)
   window.addEventListener("load", () => {

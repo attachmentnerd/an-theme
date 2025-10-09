@@ -1,11 +1,7 @@
 {% comment %}
-  Hardcoded Footer - All links and content are fixed
-  Only visibility is controlled via global settings
+  Footer Modern - Fully editable through settings
+  All content, links, and social media can be configured
 {% endcomment %}
-
-{% comment %} Social links remain hardcoded as they're not typically in Kajabi menus {% endcomment %}
-{% assign social_links_string = 'Instagram=>https://www.instagram.com/attachmentnerd/|TikTok=>https://www.tiktok.com/@attachmentnerd|YouTube=>https://www.youtube.com/@attachmentnerd|Facebook=>https://www.facebook.com/attachmentnerd' %}
-{% assign social_links = social_links_string | split: '|' %}
 
   <style>
     #an-footer-{{ section.id }} {
@@ -222,66 +218,146 @@
     <div class="container">
       <div class="an-footer__grid">
         <div class="an-footer__column">
-          <div class="an-footer__logo"><img src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production//sites/2148666703/images/1d1d2ffe-9376-4248-b082-df05323d5e0b.webp" alt="Attachment Nerd" style="height: 48px; width: auto; display: block;"/></div>
-          <p class="an-footer__description"></p>
+          {% if section.settings.logo_image %}
+            <div class="an-footer__logo">
+              <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ section.settings.logo_alt }}" style="height: {{ section.settings.logo_height }}px; width: auto; display: block;"/>
+            </div>
+          {% endif %}
+          {% if section.settings.description %}
+            <p class="an-footer__description">{{ section.settings.description }}</p>
+          {% endif %}
           <div class="an-footer__social">
-            {% for social_item in social_links %}
-              {% assign social_parts = social_item | split: '=>' %}
-              {% assign social_label = social_parts[0] | strip %}
-              {% assign social_url = social_parts[1] | strip %}
-              {% assign s = social_label | downcase %}
-              <a href="{{ social_url }}" target="_blank" rel="noopener" aria-label="{{ social_label }}" data-evt="footer_social_{{ social_label | handle }}">
-                {% if s == 'instagram' %}
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z" stroke="currentColor" stroke-width="2"/><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
-                {% elsif s == 'tiktok' %}
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 3h3.1c.3 2.1 1.7 3.7 4.4 3.9v3.1c-1.6.1-3-.4-4.4-1.2v6.7a7 7 0 11-7-7c.5 0 1 .1 1.5.2v3.2c-.5-.2-1-.3-1.5-.3a3 3 0 103 3V3z"/></svg>
-                {% elsif s == 'youtube' %}
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.5 31.5 0 000 12a31.5 31.5 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31.5 31.5 0 0024 12a31.5 31.5 0 00-.5-5.8zM9.8 15.5v-7L16 12l-6.2 3.5z"/></svg>
-                {% elsif s == 'facebook' %}
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5H17V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2V11H7v3h3.6v8h2.9z"/></svg>
-                {% else %}
-                  {{ social_label | slice: 0, 2 | upcase }}
-                {% endif %}
-              </a>
+            {% for block in section.blocks %}
+              {% if block.type == 'social_link' %}
+                {% assign s = block.settings.platform | downcase %}
+                <a href="{{ block.settings.url }}" target="_blank" rel="noopener" aria-label="{{ block.settings.platform }}" data-evt="footer_social_{{ block.settings.platform | handle }}">
+                  {% if s == 'instagram' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z" stroke="currentColor" stroke-width="2"/><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
+                  {% elsif s == 'tiktok' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 3h3.1c.3 2.1 1.7 3.7 4.4 3.9v3.1c-1.6.1-3-.4-4.4-1.2v6.7a7 7 0 11-7-7c.5 0 1 .1 1.5.2v3.2c-.5-.2-1-.3-1.5-.3a3 3 0 103 3V3z"/></svg>
+                  {% elsif s == 'youtube' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.5 31.5 0 000 12a31.5 31.5 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31.5 31.5 0 0024 12a31.5 31.5 0 00-.5-5.8zM9.8 15.5v-7L16 12l-6.2 3.5z"/></svg>
+                  {% elsif s == 'facebook' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5H17V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2V11H7v3h3.6v8h2.9z"/></svg>
+                  {% elsif s == 'linkedin' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 9v11H3V9h4zm.25-3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zM21 20h-4v-6.5c0-1.5-.7-2.5-2-2.5s-2 1-2 2.5V20H9V9h4v1.5c.5-1 1.8-2 3.5-2 2.5 0 4.5 1.5 4.5 5V20z"/></svg>
+                  {% elsif s == 'twitter' or s == 'x' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  {% elsif s == 'pinterest' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.3 2.7 7.9 6.4 9.3-.1-.8-.2-2.1 0-3 .2-.8 1.3-5.5 1.3-5.5s-.3-.7-.3-1.6c0-1.5.9-2.6 2-2.6.9 0 1.3.7 1.3 1.5 0 .9-.6 2.3-.9 3.5-.3 1.1.5 1.9 1.5 1.9 1.8 0 3.2-1.9 3.2-4.7 0-2.5-1.8-4.2-4.3-4.2-2.9 0-4.6 2.2-4.6 4.5 0 .9.3 1.8.7 2.3.1.1.1.2 0 .3-.1.3-.2.9-.3 1.1 0 .2-.1.2-.3.1-1.3-.6-2.1-2.5-2.1-4 0-3.3 2.4-6.3 6.8-6.3 3.6 0 6.4 2.6 6.4 6 0 3.6-2.3 6.4-5.4 6.4-1 0-2-.5-2.3-1.1l-.6 2.3c-.2.9-.9 2-1.3 2.7 1 .3 2 .5 3.1.5 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+                  {% else %}
+                    {{ block.settings.platform | slice: 0, 2 | upcase }}
+                  {% endif %}
+                </a>
+              {% endif %}
             {% endfor %}
           </div>
         </div>
 
         <div class="an-footer__column">
-          <div class="an-footer__heading">About</div>
-          <a href="/about" class="an-footer__link" data-evt="footer_link_about">About</a>
-          <a href="/blog" class="an-footer__link" data-evt="footer_link_blog">Blog</a>
-          <a href="/podcast" class="an-footer__link" data-evt="footer_link_podcast">Podcast</a>
-          <a href="/contact" class="an-footer__link" data-evt="footer_link_contact">Contact</a>
+          {% if section.settings.column2_heading1 %}
+            <div class="an-footer__heading">{{ section.settings.column2_heading1 }}</div>
+          {% endif %}
+          {% if section.settings.column2_menu1 %}
+            {% assign menu1 = current_site.link_lists[section.settings.column2_menu1] %}
+            {% if menu1 %}
+              {% for link in menu1.links %}
+                <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_{{ link.name | handle }}">{{ link.name }}</a>
+              {% endfor %}
+            {% endif %}
+          {% else %}
+            {% comment %} Fallback to legacy blocks if no menu {% endcomment %}
+            {% for block in section.blocks %}
+              {% if block.type == 'column2_link' and block.settings.section == '1' %}
+                <a href="{{ block.settings.url }}" class="an-footer__link" data-evt="footer_link_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
 
-          <div class="an-footer__heading" style="margin-top: 1.5rem;">Programs</div>
-          <a href="/products/sa-program" class="an-footer__link" data-evt="footer_link_sa_program">The SA Program</a>
-          <a href="/products/co-regulation" class="an-footer__link" data-evt="footer_link_coregulation">Co-Regulation Course</a>
-          <a href="/products/parenting-community" class="an-footer__link" data-evt="footer_link_community">Parenting Community</a>
+          {% if section.settings.column2_heading2 %}
+            <div class="an-footer__heading" style="margin-top: 1.5rem;">{{ section.settings.column2_heading2 }}</div>
+          {% endif %}
+          {% if section.settings.column2_menu2 %}
+            {% assign menu2 = current_site.link_lists[section.settings.column2_menu2] %}
+            {% if menu2 %}
+              {% for link in menu2.links %}
+                <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_{{ link.name | handle }}">{{ link.name }}</a>
+              {% endfor %}
+            {% endif %}
+          {% else %}
+            {% comment %} Fallback to legacy blocks if no menu {% endcomment %}
+            {% for block in section.blocks %}
+              {% if block.type == 'column2_link' and block.settings.section == '2' %}
+                <a href="{{ block.settings.url }}" class="an-footer__link" data-evt="footer_link_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         </div>
 
         <div class="an-footer__column">
-          <div class="an-footer__heading">Offerings</div>
-          <a href="/products/securely-attached-book" class="an-footer__link" data-evt="footer_link_sa_book">Securely Attached Book</a>
-          <a href="/products/raising-secure-kids-book" class="an-footer__link" data-evt="footer_link_rsk_book">Raising Secure Kids</a>
-          <a href="/products/workbook" class="an-footer__link" data-evt="footer_link_workbook">Attachment Workbook</a>
-          <a href="/products/planner" class="an-footer__link" data-evt="footer_link_planner">90-Day Planner</a>
+          {% if section.settings.column3_heading1 %}
+            <div class="an-footer__heading">{{ section.settings.column3_heading1 }}</div>
+          {% endif %}
+          {% if section.settings.column3_menu1 %}
+            {% assign menu1 = current_site.link_lists[section.settings.column3_menu1] %}
+            {% if menu1 %}
+              {% for link in menu1.links %}
+                <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_{{ link.name | handle }}">{{ link.name }}</a>
+              {% endfor %}
+            {% endif %}
+          {% else %}
+            {% comment %} Fallback to legacy blocks if no menu {% endcomment %}
+            {% for block in section.blocks %}
+              {% if block.type == 'column3_link' and block.settings.section == '1' %}
+                <a href="{{ block.settings.url }}" class="an-footer__link" data-evt="footer_link_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
 
-          <div class="an-footer__heading" style="margin-top: 1.5rem;">Free Resources</div>
-          <a href="/free-resources" class="an-footer__link" data-evt="footer_link_free_resources">Free Downloads</a>
-          <a href="/quiz" class="an-footer__link" data-evt="footer_link_quiz">Attachment Quiz</a>
-          <a href="/newsletter" class="an-footer__link" data-evt="footer_link_newsletter">Newsletter</a>
+          {% if section.settings.column3_heading2 %}
+            <div class="an-footer__heading" style="margin-top: 1.5rem;">{{ section.settings.column3_heading2 }}</div>
+          {% endif %}
+          {% if section.settings.column3_menu2 %}
+            {% assign menu2 = current_site.link_lists[section.settings.column3_menu2] %}
+            {% if menu2 %}
+              {% for link in menu2.links %}
+                <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_{{ link.name | handle }}">{{ link.name }}</a>
+              {% endfor %}
+            {% endif %}
+          {% else %}
+            {% comment %} Fallback to legacy blocks if no menu {% endcomment %}
+            {% for block in section.blocks %}
+              {% if block.type == 'column3_link' and block.settings.section == '2' %}
+                <a href="{{ block.settings.url }}" class="an-footer__link" data-evt="footer_link_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         </div>
 
         <div class="an-footer__column">
-          <div class="an-footer__heading">Support</div>
-          <a href="/help" class="an-footer__link" data-evt="footer_link_help">Help Center</a>
-          <a href="/faq" class="an-footer__link" data-evt="footer_link_faq">FAQ</a>
-          <a href="/user/legal-pages" class="an-footer__link" data-evt="footer_link_privacy">Privacy Policy</a>
-          <a href="/terms" class="an-footer__link" data-evt="footer_link_terms">Terms of Service</a>
-          <a href="/refund-policy" class="an-footer__link" data-evt="footer_link_refunds">Refund Policy</a>
-          <div class="an-footer__heading" style="margin-top: 1.5rem;">Get Free Updates</div>
-          {% assign footer_form_id = 2149141675 %}
+          {% if section.settings.column4_heading1 %}
+            <div class="an-footer__heading">{{ section.settings.column4_heading1 }}</div>
+          {% endif %}
+          {% if section.settings.column4_menu1 %}
+            {% assign menu1 = current_site.link_lists[section.settings.column4_menu1] %}
+            {% if menu1 %}
+              {% for link in menu1.links %}
+                <a href="{{ link.url }}" class="an-footer__link" data-evt="footer_link_{{ link.name | handle }}">{{ link.name }}</a>
+              {% endfor %}
+            {% endif %}
+          {% else %}
+            {% comment %} Fallback to legacy blocks if no menu {% endcomment %}
+            {% for block in section.blocks %}
+              {% if block.type == 'column4_link' and block.settings.section == '1' %}
+                <a href="{{ block.settings.url }}" class="an-footer__link" data-evt="footer_link_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% if section.settings.newsletter_heading %}
+            <div class="an-footer__heading" style="margin-top: 1.5rem;">{{ section.settings.newsletter_heading }}</div>
+          {% endif %}
+          {% assign footer_form_id = section.settings.form_id %}
           {% assign f = current_site.find_form[footer_form_id] %}
           {% if f %}
             {% form f %}
@@ -291,8 +367,8 @@
                   {% assign input_class = 'an-footer__form-input' %}
                   {{ field | form_input: class: 'form-group', input_class: input_class, label: false, placeholder: true }}
                 {% endfor %}
-                <button type="submit" class="an-footer__form-button" data-evt="footer_newsletter_submit" aria-label="Send me free resources">
-                  <span>Send me free resources</span>
+                <button type="submit" class="an-footer__form-button" data-evt="footer_newsletter_submit" aria-label="{{ section.settings.button_text }}">
+                  <span>{{ section.settings.button_text }}</span>
                   <svg style="margin-left: 8px" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -303,8 +379,8 @@
             {% form 'optin', id: footer_form_id %}
               <div class="an-footer__form">
                 {{ form | fields }}
-                <button type="submit" class="an-footer__form-button" data-evt="footer_newsletter_submit" aria-label="Send me free resources">
-                  <span>Send me free resources</span>
+                <button type="submit" class="an-footer__form-button" data-evt="footer_newsletter_submit" aria-label="{{ section.settings.button_text }}">
+                  <span>{{ section.settings.button_text }}</span>
                   <svg style="margin-left: 8px" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -312,17 +388,32 @@
               </div>
             {% endform %}
           {% endif %}
-          <p class="an-footer__disclaimer">We respect your inbox. Unsubscribe at any time.</p>
+          {% if section.settings.disclaimer_text %}
+            <p class="an-footer__disclaimer">{{ section.settings.disclaimer_text }}</p>
+          {% endif %}
         </div>
       </div>
 
       <div class="an-footer__divider"></div>
 
       <div class="an-footer__bottom">
-        <p>© {{ 'now' | date: '%Y' }} Attachment Nerd. All rights reserved.</p>
+        <p>© {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text }}</p>
         <div class="an-footer__legal">
-          <a href="/user/legal-pages" data-evt="footer_privacy">Privacy</a>
-          <a href="/contact" data-evt="footer_contact">Contact</a>
+          {% if section.settings.legal_menu %}
+            {% assign legal_menu = current_site.link_lists[section.settings.legal_menu] %}
+            {% if legal_menu %}
+              {% for link in legal_menu.links %}
+                <a href="{{ link.url }}" data-evt="footer_{{ link.name | handle }}">{{ link.name }}</a>
+              {% endfor %}
+            {% endif %}
+          {% else %}
+            {% comment %} Fallback to manual links if no menu selected {% endcomment %}
+            {% for block in section.blocks %}
+              {% if block.type == 'legal_link' %}
+                <a href="{{ block.settings.url }}" data-evt="footer_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -330,6 +421,319 @@
 
 {% schema %}
 {
-  "name": "Footer Modern"
+  "name": "Footer Modern",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Column 1 - Logo & Social"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Logo Alt Text",
+      "default": "Site Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo Height",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Equipping every caregiver with science-backed, relationship-building tools."
+    },
+    {
+      "type": "header",
+      "content": "Column 2 - Links"
+    },
+    {
+      "type": "text",
+      "id": "column2_heading1",
+      "label": "Column 2 First Heading",
+      "default": "About"
+    },
+    {
+      "type": "link_list",
+      "id": "column2_menu1",
+      "label": "Column 2 First Menu"
+    },
+    {
+      "type": "text",
+      "id": "column2_heading2",
+      "label": "Column 2 Second Heading",
+      "default": "Programs"
+    },
+    {
+      "type": "link_list",
+      "id": "column2_menu2",
+      "label": "Column 2 Second Menu"
+    },
+    {
+      "type": "header",
+      "content": "Column 3 - Links"
+    },
+    {
+      "type": "text",
+      "id": "column3_heading1",
+      "label": "Column 3 First Heading",
+      "default": "Offerings"
+    },
+    {
+      "type": "link_list",
+      "id": "column3_menu1",
+      "label": "Column 3 First Menu"
+    },
+    {
+      "type": "text",
+      "id": "column3_heading2",
+      "label": "Column 3 Second Heading",
+      "default": "Free Resources"
+    },
+    {
+      "type": "link_list",
+      "id": "column3_menu2",
+      "label": "Column 3 Second Menu"
+    },
+    {
+      "type": "header",
+      "content": "Column 4 - Support & Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "column4_heading1",
+      "label": "Column 4 First Heading",
+      "default": "Support"
+    },
+    {
+      "type": "link_list",
+      "id": "column4_menu1",
+      "label": "Column 4 Menu"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Get Free Updates"
+    },
+    {
+      "type": "text",
+      "id": "form_id",
+      "label": "Newsletter Form ID",
+      "default": "2149141675"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Newsletter Button Text",
+      "default": "Send me free resources"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer_text",
+      "label": "Newsletter Disclaimer",
+      "default": "We respect your inbox. Unsubscribe at any time."
+    },
+    {
+      "type": "header",
+      "content": "Footer Bottom"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "Attachment Nerd. All rights reserved."
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Legal Links Menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "social_link",
+      "name": "Social Link",
+      "elements": [
+        {
+          "type": "select",
+          "id": "platform",
+          "label": "Platform",
+          "default": "instagram",
+          "options": [
+            {"value": "instagram", "label": "Instagram"},
+            {"value": "facebook", "label": "Facebook"},
+            {"value": "tiktok", "label": "TikTok"},
+            {"value": "youtube", "label": "YouTube"},
+            {"value": "twitter", "label": "X (Twitter)"},
+            {"value": "linkedin", "label": "LinkedIn"},
+            {"value": "pinterest", "label": "Pinterest"}
+          ]
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL",
+          "default": "https://"
+        }
+      ]
+    },
+    {
+      "type": "column2_link",
+      "name": "Column 2 Link (Legacy)",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Text"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL",
+          "default": "/"
+        },
+        {
+          "type": "select",
+          "id": "section",
+          "label": "Section",
+          "default": "1",
+          "options": [
+            {"value": "1", "label": "First Section"},
+            {"value": "2", "label": "Second Section"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "column3_link",
+      "name": "Column 3 Link (Legacy)",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Text"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL",
+          "default": "/"
+        },
+        {
+          "type": "select",
+          "id": "section",
+          "label": "Section",
+          "default": "1",
+          "options": [
+            {"value": "1", "label": "First Section"},
+            {"value": "2", "label": "Second Section"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "column4_link",
+      "name": "Column 4 Link (Legacy)",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Text"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL",
+          "default": "/"
+        },
+        {
+          "type": "select",
+          "id": "section",
+          "label": "Section",
+          "default": "1",
+          "options": [
+            {"value": "1", "label": "First Section"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "legal_link",
+      "name": "Legal Link (Fallback)",
+      "elements": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Text"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL",
+          "default": "/"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Modern",
+      "category": "Footer",
+      "description": "Modern footer with newsletter signup and navigation menus",
+      "settings": {
+        "column2_heading1": "About",
+        "column2_heading2": "Programs",
+        "column3_heading1": "Offerings",
+        "column3_heading2": "Free Resources",
+        "column4_heading1": "Support",
+        "newsletter_heading": "Get Free Updates",
+        "button_text": "Send me free resources",
+        "disclaimer_text": "We respect your inbox. Unsubscribe at any time.",
+        "copyright_text": "Attachment Nerd. All rights reserved."
+      },
+      "blocks": [
+        {
+          "type": "social_link",
+          "settings": {
+            "platform": "instagram",
+            "url": "https://www.instagram.com/attachmentnerd/"
+          }
+        },
+        {
+          "type": "social_link",
+          "settings": {
+            "platform": "tiktok",
+            "url": "https://www.tiktok.com/@attachmentnerd"
+          }
+        },
+        {
+          "type": "social_link",
+          "settings": {
+            "platform": "youtube",
+            "url": "https://www.youtube.com/@attachmentnerd"
+          }
+        },
+        {
+          "type": "social_link",
+          "settings": {
+            "platform": "facebook",
+            "url": "https://www.facebook.com/attachmentnerd"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

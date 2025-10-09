@@ -69,11 +69,16 @@
              style="{% if section.settings.layout_style == 'modern' and section.settings.enable_glow %}border-radius: 16px; box-shadow: 0 0 48px rgba(94,59,255,.15);{% endif %}">
           
           {% if section.settings.book_image %}
-            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
-                 alt="{{ section.settings.book_title | default: 'Book cover' }}" 
-                 class="img-fluid {% if section.settings.enable_hover_effects %}hover-lift{% endif %}"
-                 loading="{% if section.settings.image_priority %}eager{% else %}lazy{% endif %}"
-                 style="aspect-ratio: 2/3; object-fit: cover;">
+            {% render 'responsive-image',
+              image: section.settings.book_image,
+              alt: section.settings.book_title | default: 'Book cover',
+              class: 'img-fluid {% if section.settings.enable_hover_effects %}hover-lift{% endif %}',
+              sizes: '(max-width: 767px) 280px, 400px',
+              aspect_ratio: '2/3',
+              widths: '280,400,600,800',
+              placeholder_type: 'book',
+              blur_up: true
+            %}
           {% else %}
             <!-- Fallback Placeholder -->
             <div class="book-placeholder d-flex align-items-center justify-content-center" 
@@ -98,11 +103,15 @@
         <!-- Award Badge (for RSAK style) -->
         {% if section.settings.award_badge_image %}
           <div class="award-badge position-absolute" style="bottom: 10px; right: 10px; z-index: 2;">
-            <img src="{{ section.settings.award_badge_image | image_picker_url: '240x80' }}" 
-             alt="Award badge" 
-             class="img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
+                        {% render 'responsive-image',
+              image: section.settings.award_badge_image,
+              alt: 'Award badge',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           </div>
         {% endif %}
       </div>
@@ -202,11 +211,15 @@
                 {% if section.settings.testimonial_author %}
                   <footer class="blockquote-footer">
                     {% if section.settings.testimonial_author_image %}
-                      <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
-             alt="{{ section.settings.testimonial_author }}" 
-             class="rounded-circle me-2 d-inline-block"
-             loading="lazy"
-             style="object-fit: cover;">
+                                            {% render 'responsive-image',
+                        image: section.settings.testimonial_author_image,
+                        alt: '{{ section.settings.testimonial_author }}',
+                        class: 'rounded-circle me-2 d-inline-block',
+                        sizes: '120px',
+                        aspect_ratio: '16/9',
+                        widths: '60,120,180,240',
+                        placeholder_type: 'avatar'
+                      %}
                     {% endif %}
                     <cite>{{ section.settings.testimonial_author }}</cite>
                     {% if section.settings.testimonial_author_title %}

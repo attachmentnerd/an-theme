@@ -1,0 +1,790 @@
+{% comment %}
+  Product Post - Thin Hero Section
+  Fully editable hero with customizable breadcrumbs (including links)
+  Based on shared thin_hero but optimized for Product Post pages
+{% endcomment %}
+
+{% assign s_id = section.id %}
+{% assign dom_id = section.settings.section_id | default: 'post-thin-hero' %}
+
+{% assign title_color = section.settings.title_color | default: '#ffffff' %}
+{% assign sub_color = section.settings.sub_color | default: 'rgba(255,255,255,0.92)' %}
+{% assign overlay_from = section.settings.overlay_color_from | default: '#000000' %}
+{% assign overlay_to = section.settings.overlay_color_to | default: '#000000' %}
+{% assign overlay_angle = section.settings.overlay_angle | default: 180 %}
+{% assign overlay_opacity_percent = section.settings.overlay_opacity | default: 70 | plus: 0 %}
+{% assign overlay_opacity = overlay_opacity_percent | divided_by: 100.0 %}
+{% assign bg_color = section.settings.bg_color | default: '#0d1321' %}
+{% assign breadcrumb_color = section.settings.breadcrumb_color | default: 'rgba(255,255,255,0.82)' %}
+
+{% comment %} Style Presets {% endcomment %}
+{% assign preset = section.settings.style_preset | default: 'custom' %}
+{% if preset != 'custom' %}
+  {% case preset %}
+    {% when 'module_page' %}
+      {% assign overlay_from = '#F4F2FF' %}
+      {% assign overlay_to = '#F4F2FF' %}
+      {% assign overlay_opacity_percent = 80 %}
+      {% assign bg_color = '#F4F2FF' %}
+      {% assign title_color = '#111827' %}
+      {% assign sub_color = '#6B7280' %}
+      {% assign breadcrumb_color = '#5E3BFF' %}
+    {% when 'lesson_page' %}
+      {% assign overlay_from = '#E9E6FF' %}
+      {% assign overlay_to = '#E9E6FF' %}
+      {% assign overlay_opacity_percent = 100 %}
+      {% assign bg_color = '#E9E6FF' %}
+      {% assign title_color = '#111827' %}
+      {% assign sub_color = '#6B7280' %}
+      {% assign breadcrumb_color = '#5E3BFF' %}
+    {% when 'resource_page' %}
+      {% assign overlay_from = '#FFFBF0' %}
+      {% assign overlay_to = '#FFFBF0' %}
+      {% assign overlay_opacity_percent = 100 %}
+      {% assign bg_color = '#FFFBF0' %}
+      {% assign title_color = '#111827' %}
+      {% assign sub_color = '#6B7280' %}
+      {% assign breadcrumb_color = '#D97706' %}
+    {% when 'dark_gradient' %}
+      {% assign overlay_from = '#1F2937' %}
+      {% assign overlay_to = '#111827' %}
+      {% assign overlay_opacity_percent = 90 %}
+      {% assign bg_color = '#111827' %}
+      {% assign title_color = '#FFFFFF' %}
+      {% assign sub_color = '#E5E7EB' %}
+      {% assign breadcrumb_color = '#9CA3AF' %}
+    {% when 'brand_gradient' %}
+      {% assign overlay_from = '#5E3BFF' %}
+      {% assign overlay_to = '#4C1D95' %}
+      {% assign overlay_opacity_percent = 85 %}
+      {% assign bg_color = '#5E3BFF' %}
+      {% assign title_color = '#FFFFFF' %}
+      {% assign sub_color = '#E9E6FF' %}
+      {% assign breadcrumb_color = '#E9E6FF' %}
+  {% endcase %}
+  {% assign overlay_opacity = overlay_opacity_percent | divided_by: 100.0 %}
+{% endif %}
+
+{% assign min_h_desktop = section.settings.min_h_desktop | default: 280 %}
+{% assign min_h_mobile = section.settings.min_h_mobile | default: 180 %}
+
+<section id="{{ dom_id }}-{{ s_id }}" class="post-thin-hero" aria-label="Hero">
+  <div class="pth-media" aria-hidden="true">
+    {% if section.settings.bg_image != blank %}
+      {% assign bg_w = section.settings.bg_width | default: 2400 %}
+      <div class="pth-img" style="background-image:url('{{ section.settings.bg_image | image_url: width: bg_w }}');"></div>
+    {% elsif section.settings.use_pattern %}
+      <div class="pth-pattern pth-pattern--{{ section.settings.pattern_type }}"></div>
+    {% else %}
+      <div class="pth-fallback" style="background:{{ bg_color }}"></div>
+    {% endif %}
+    <div class="pth-overlay"></div>
+  </div>
+
+  <div class="pth-wrap">
+    {% if section.settings.show_breadcrumbs %}
+      <nav class="pth-crumbs" aria-label="Breadcrumbs">
+        {% comment %} Custom breadcrumb blocks for full editability {% endcomment %}
+        {% for block in section.blocks %}
+          {% if block.type == 'breadcrumb' %}
+            {% if block.settings.url != blank %}
+              <a href="{{ block.settings.url }}" class="pth-crumb-link">{{ block.settings.text }}</a>
+            {% else %}
+              <span class="pth-crumb-text">{{ block.settings.text }}</span>
+            {% endif %}
+            {% unless forloop.last %}
+              <span class="pth-sep" aria-hidden="true">{{ section.settings.breadcrumb_sep | default: '›' }}</span>
+            {% endunless %}
+          {% endif %}
+        {% endfor %}
+
+        {% comment %} Fallback to automatic breadcrumbs if no blocks {% endcomment %}
+        {% assign has_breadcrumb_blocks = false %}
+        {% for block in section.blocks %}
+          {% if block.type == 'breadcrumb' %}
+            {% assign has_breadcrumb_blocks = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+
+        {% unless has_breadcrumb_blocks %}
+          {% if section.settings.auto_breadcrumbs %}
+            {% if current_product %}
+              <a href="{{ routes.library_url }}" class="pth-crumb-link">My Library</a>
+              <span class="pth-sep" aria-hidden="true">{{ section.settings.breadcrumb_sep | default: '›' }}</span>
+              <a href="{{ current_product.url }}" class="pth-crumb-link">{{ current_product.title }}</a>
+              {% if current_post %}
+                <span class="pth-sep" aria-hidden="true">{{ section.settings.breadcrumb_sep | default: '›' }}</span>
+                <span class="pth-crumb-text">{{ current_post.title | truncate: 30 }}</span>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endunless %}
+      </nav>
+    {% endif %}
+
+    <header class="pth-header">
+      {% comment %} Dynamic title options {% endcomment %}
+      {% assign title_text = section.settings.heading %}
+      {% if section.settings.use_dynamic_title %}
+        {% if current_post %}
+          {% assign title_text = current_post.title %}
+        {% elsif current_product %}
+          {% assign title_text = current_product.title %}
+        {% endif %}
+      {% endif %}
+
+      <h1 class="pth-title">{{ title_text | default: 'Welcome Back' }}</h1>
+
+      {% if section.settings.subheading != blank %}
+        <p class="pth-sub">{{ section.settings.subheading }}</p>
+      {% elsif section.settings.show_progress and current_product %}
+        {% assign completion = current_product.completion %}
+        <p class="pth-sub">{{ completion.percent }}% Complete</p>
+      {% endif %}
+
+      {% comment %} Optional CTA buttons {% endcomment %}
+      {% if section.settings.show_cta %}
+        <div class="pth-actions">
+          {% if section.settings.cta1_text != blank %}
+            <a href="{{ section.settings.cta1_url }}" class="pth-btn pth-btn--primary">
+              {{ section.settings.cta1_text }}
+            </a>
+          {% endif %}
+          {% if section.settings.cta2_text != blank %}
+            <a href="{{ section.settings.cta2_url }}" class="pth-btn pth-btn--secondary">
+              {{ section.settings.cta2_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% comment %} Optional metadata {% endcomment %}
+      {% if section.settings.show_metadata %}
+        <div class="pth-meta">
+          {% if current_post %}
+            {% if current_post.author %}
+              <span class="pth-meta-item">By {{ current_post.author }}</span>
+            {% endif %}
+            {% if current_post.published_at %}
+              <span class="pth-meta-item">{{ current_post.published_at | date: '%B %d, %Y' }}</span>
+            {% endif %}
+            {% if current_post.reading_time %}
+              <span class="pth-meta-item">{{ current_post.reading_time }} min read</span>
+            {% endif %}
+          {% endif %}
+        </div>
+      {% endif %}
+    </header>
+  </div>
+
+  <style>
+    #{{ dom_id }}-{{ s_id }} {
+      position: relative;
+      isolation: isolate;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-img {
+      position: absolute;
+      inset: 0;
+      background-size: {{ section.settings.bg_fit | default: 'cover' }};
+      background-repeat: no-repeat;
+      background-position: {{ section.settings.focal_point | default: '50% 50%' }};
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-fallback {
+      position: absolute;
+      inset: 0;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.1;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-pattern--dots {
+      background-image: radial-gradient(circle, {{ overlay_from }} 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-pattern--grid {
+      background-image:
+        linear-gradient({{ overlay_from }}40 1px, transparent 1px),
+        linear-gradient(90deg, {{ overlay_from }}40 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient({{ overlay_angle }}deg, {{ overlay_from }}, {{ overlay_to }});
+      opacity: {{ overlay_opacity }};
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: {{ section.settings.max_width | default: '1200px' }};
+      margin: 0 auto;
+      padding: {{ section.settings.padding_y_mobile | default: '28px' }} {{ section.settings.padding_x | default: '22px' }};
+      min-height: {{ min_h_mobile }}px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: {{ section.settings.align | default: 'flex-start' }};
+      text-align: {{ section.settings.text_align | default: 'left' }};
+    }
+
+    @media (min-width: 768px) {
+      #{{ dom_id }}-{{ s_id }} .pth-wrap {
+        padding: {{ section.settings.padding_y_desktop | default: '56px' }} {{ section.settings.padding_x | default: '22px' }};
+        min-height: {{ min_h_desktop }}px;
+      }
+    }
+
+    /* Breadcrumbs */
+    #{{ dom_id }}-{{ s_id }} .pth-crumbs {
+      color: {{ breadcrumb_color }};
+      font-size: 0.95rem;
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-crumb-link {
+      color: inherit;
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-crumb-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-crumb-text {
+      opacity: 0.95;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-sep {
+      margin: 0 6px;
+      opacity: 0.7;
+    }
+
+    /* Header */
+    #{{ dom_id }}-{{ s_id }} .pth-header {
+      max-width: {{ section.settings.text_max_width | default: '860px' }};
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-title {
+      margin: 0;
+      color: {{ title_color }};
+      font-weight: {{ section.settings.title_weight | default: 800 }};
+      letter-spacing: -0.01em;
+      line-height: 1.12;
+      font-size: clamp(28px, 3.8vw, {{ section.settings.title_max_px | default: 56 }}px);
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-sub {
+      margin: 10px 0 0;
+      color: {{ sub_color }};
+      font-size: clamp(15px, 2.1vw, {{ section.settings.sub_max_px | default: 20 }}px);
+      line-height: 1.5;
+    }
+
+    /* Actions */
+    #{{ dom_id }}-{{ s_id }} .pth-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-btn--primary {
+      background: {{ section.settings.cta1_bg | default: '#5E3BFF' }};
+      color: {{ section.settings.cta1_color | default: '#FFFFFF' }};
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-btn--primary:hover {
+      background: {{ section.settings.cta1_hover_bg | default: '#4C1D95' }};
+      transform: translateY(-1px);
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-btn--secondary {
+      background: transparent;
+      color: {{ section.settings.cta2_color | default: title_color }};
+      border: 1px solid {{ section.settings.cta2_border | default: title_color }}40;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-btn--secondary:hover {
+      background: {{ section.settings.cta2_hover_bg | default: title_color }}10;
+    }
+
+    /* Metadata */
+    #{{ dom_id }}-{{ s_id }} .pth-meta {
+      margin-top: 12px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: {{ sub_color }};
+      opacity: 0.85;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-meta-item::before {
+      content: '•';
+      margin-right: 16px;
+      opacity: 0.5;
+    }
+
+    #{{ dom_id }}-{{ s_id }} .pth-meta-item:first-child::before {
+      display: none;
+    }
+
+    /* Text shadow for readability */
+    {% if section.settings.enable_text_shadow %}
+    #{{ dom_id }}-{{ s_id }} .pth-title,
+    #{{ dom_id }}-{{ s_id }} .pth-sub,
+    #{{ dom_id }}-{{ s_id }} .pth-crumbs,
+    #{{ dom_id }}-{{ s_id }} .pth-meta {
+      text-shadow: 0 1px 3px rgba(0,0,0,0.35);
+    }
+    {% endif %}
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Post - Thin Hero",
+  "elements": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "post-thin-hero"
+    },
+    {
+      "type": "header",
+      "content": "Style Preset"
+    },
+    {
+      "type": "select",
+      "id": "style_preset",
+      "label": "Style preset",
+      "default": "custom",
+      "options": [
+        { "value": "custom", "label": "Custom" },
+        { "value": "module_page", "label": "Module Page (Purple)" },
+        { "value": "lesson_page", "label": "Lesson Page (Light Purple)" },
+        { "value": "resource_page", "label": "Resource Page (Warm)" },
+        { "value": "dark_gradient", "label": "Dark Gradient" },
+        { "value": "brand_gradient", "label": "Brand Gradient" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_pattern",
+      "label": "Use pattern instead of image",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "pattern_type",
+      "label": "Pattern type",
+      "default": "dots",
+      "options": [
+        { "value": "dots", "label": "Dots" },
+        { "value": "grid", "label": "Grid" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#0d1321"
+    },
+    {
+      "type": "text",
+      "id": "focal_point",
+      "label": "Image focal point",
+      "default": "50% 50%",
+      "info": "e.g., 50% 30% for upper center"
+    },
+    {
+      "type": "select",
+      "id": "bg_fit",
+      "label": "Background fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "auto", "label": "Auto" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "bg_width",
+      "label": "Image request width (px)",
+      "default": 2400,
+      "min": 800,
+      "max": 4000,
+      "step": 100
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color_from",
+      "label": "Overlay start color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color_to",
+      "label": "Overlay end color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_angle",
+      "label": "Overlay angle (deg)",
+      "default": 180,
+      "min": 0,
+      "max": 360,
+      "step": 15
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity (%)",
+      "default": 70,
+      "min": 0,
+      "max": 100,
+      "step": 5
+    },
+    {
+      "type": "header",
+      "content": "Breadcrumbs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_breadcrumbs",
+      "label": "Use automatic breadcrumbs",
+      "default": true,
+      "info": "Automatically generates breadcrumbs based on current product/post"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_sep",
+      "label": "Breadcrumb separator",
+      "default": "›"
+    },
+    {
+      "type": "color",
+      "id": "breadcrumb_color",
+      "label": "Breadcrumb color",
+      "default": "rgba(255,255,255,0.82)"
+    },
+    {
+      "type": "header",
+      "content": "Title & Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_dynamic_title",
+      "label": "Use post/product title",
+      "default": false,
+      "info": "Automatically uses the current post or product title"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome Back to Your Journey"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Continue where you left off"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress",
+      "label": "Show course progress",
+      "default": false,
+      "info": "Shows completion percentage as subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_metadata",
+      "label": "Show post metadata",
+      "default": false,
+      "info": "Shows author, date, and reading time for posts"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "sub_color",
+      "label": "Subheading color",
+      "default": "rgba(255,255,255,0.92)"
+    },
+    {
+      "type": "range",
+      "id": "title_weight",
+      "label": "Title font weight",
+      "default": 800,
+      "min": 400,
+      "max": 900,
+      "step": 100
+    },
+    {
+      "type": "range",
+      "id": "title_max_px",
+      "label": "Max title size (px)",
+      "default": 56,
+      "min": 24,
+      "max": 84,
+      "step": 2
+    },
+    {
+      "type": "range",
+      "id": "sub_max_px",
+      "label": "Max subheading size (px)",
+      "default": 20,
+      "min": 14,
+      "max": 28,
+      "step": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_text_shadow",
+      "label": "Add text shadow for readability",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA buttons",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "Primary button text",
+      "default": "Continue Learning"
+    },
+    {
+      "type": "action",
+      "id": "cta1_url",
+      "label": "Primary button URL",
+      "default": "#"
+    },
+    {
+      "type": "color",
+      "id": "cta1_bg",
+      "label": "Primary button background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "cta1_color",
+      "label": "Primary button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cta1_hover_bg",
+      "label": "Primary button hover background",
+      "default": "#4C1D95"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "Secondary button text",
+      "default": "View Resources"
+    },
+    {
+      "type": "action",
+      "id": "cta2_url",
+      "label": "Secondary button URL",
+      "default": "#"
+    },
+    {
+      "type": "color",
+      "id": "cta2_color",
+      "label": "Secondary button text color"
+    },
+    {
+      "type": "color",
+      "id": "cta2_border",
+      "label": "Secondary button border color"
+    },
+    {
+      "type": "color",
+      "id": "cta2_hover_bg",
+      "label": "Secondary button hover background"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "text",
+      "id": "max_width",
+      "label": "Content max width",
+      "default": "1200px"
+    },
+    {
+      "type": "text",
+      "id": "text_max_width",
+      "label": "Text block max width",
+      "default": "860px"
+    },
+    {
+      "type": "text",
+      "id": "padding_x",
+      "label": "Horizontal padding",
+      "default": "22px"
+    },
+    {
+      "type": "text",
+      "id": "padding_y_mobile",
+      "label": "Vertical padding (mobile)",
+      "default": "28px"
+    },
+    {
+      "type": "text",
+      "id": "padding_y_desktop",
+      "label": "Vertical padding (desktop)",
+      "default": "56px"
+    },
+    {
+      "type": "range",
+      "id": "min_h_mobile",
+      "label": "Min height mobile (px)",
+      "default": 180,
+      "min": 120,
+      "max": 360,
+      "step": 10
+    },
+    {
+      "type": "range",
+      "id": "min_h_desktop",
+      "label": "Min height desktop (px)",
+      "default": 280,
+      "min": 160,
+      "max": 560,
+      "step": 10
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Vertical alignment",
+      "default": "flex-start",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "elements": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Home"
+        },
+        {
+          "type": "action",
+          "id": "url",
+          "label": "Link URL",
+          "default": "",
+          "info": "Leave blank for non-clickable text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Post - Thin Hero",
+      "category": "Hero",
+      "settings": {
+        "heading": "Welcome Back to Your Journey",
+        "subheading": "Continue where you left off",
+        "show_breadcrumbs": true,
+        "auto_breadcrumbs": true,
+        "enable_text_shadow": true,
+        "style_preset": "module_page"
+      },
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

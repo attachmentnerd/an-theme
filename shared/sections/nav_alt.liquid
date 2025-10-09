@@ -814,19 +814,35 @@
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
-            <img src="{{ logo_block.settings.inverse_logo_image | image_picker_url: '360x120' }}"
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
-                 loading="eager"
-                 style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
+                        {% render 'responsive-image',
+              image: logo_block.settings.inverse_logo_image,
+              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% elsif logo_block and logo_block.settings.logo_image %}
-            <img src="{{ logo_block.settings.logo_image | image_picker_url: '360x120' }}"
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
-                 loading="eager"
-                 style="max-height: {{ logo_block.settings.desktop_height | default: '40px' }}; width: auto;">
+                        {% render 'responsive-image',
+              image: logo_block.settings.logo_image,
+              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% elsif section.settings.logo %}
-            <img src="{{ section.settings.logo | image_picker_url: '360x120' }}"
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
-                 loading="eager">
+                        {% render 'responsive-image',
+              image: section.settings.logo,
+              alt: '{{ section.settings.logo_alt | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% else %}
             <span class="nav-transparent-pill__logo-text">
               {{ section.settings.logo_text | default: current_site.title }}
@@ -1031,42 +1047,77 @@
       <a href="/">
         {% comment %} Prefer inverse logo on mobile (section-level), then block-level inverse mobile/desktop, then defaults {% endcomment %}
         {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
-          <img src="{{ section.settings.inverse_logo | image_picker_url: '240x80' }}"
-               alt="{{ section.settings.logo_alt | default: current_site.title }}"
-               loading="lazy"
-               style="max-height: {{ section.settings.logo_height_scrolled | default: 32 }}px; width: auto;">
+                    {% render 'responsive-image',
+            image: section.settings.inverse_logo,
+            alt: '{{ section.settings.logo_alt | default: current_site.title }}',
+            class: 'img-fluid',
+            sizes: '120px',
+            aspect_ratio: '16/9',
+            widths: '60,120,180,240',
+            placeholder_type: 'logo'
+          %}
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.mobile_inverse_logo_image %}
-            <img src="{{ logo_block.settings.mobile_inverse_logo_image | image_picker_url: '240x80' }}"
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
-                 loading="lazy"
-                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+                        {% render 'responsive-image',
+              image: logo_block.settings.mobile_inverse_logo_image,
+              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% elsif logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
-            <img src="{{ logo_block.settings.inverse_logo_image | image_picker_url: '240x80' }}"
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
-                 loading="lazy"
-                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+                        {% render 'responsive-image',
+              image: logo_block.settings.inverse_logo_image,
+              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% elsif logo_block and logo_block.settings.mobile_logo_image %}
-            <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: '240x80' }}"
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
-                 loading="lazy"
-                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+                        {% render 'responsive-image',
+              image: logo_block.settings.mobile_logo_image,
+              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% elsif logo_block and logo_block.settings.logo_image %}
-            <img src="{{ logo_block.settings.logo_image | image_picker_url: '240x80' }}"
-                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
-                 loading="lazy"
-                 style="max-height: {{ logo_block.settings.mobile_height | default: '30px' }}; width: auto;">
+                        {% render 'responsive-image',
+              image: logo_block.settings.logo_image,
+              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% elsif section.settings.mobile_logo %}
-            <img src="{{ section.settings.mobile_logo | image_picker_url: '240x80' }}"
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
-                 loading="lazy"
-                 style="max-height: 30px; width: auto;">
+                        {% render 'responsive-image',
+              image: section.settings.mobile_logo,
+              alt: '{{ section.settings.logo_alt | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% elsif section.settings.logo %}
-            <img src="{{ section.settings.logo | image_picker_url: '240x80' }}"
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
-                 loading="lazy"
-                 style="max-height: 30px; width: auto;">
+                        {% render 'responsive-image',
+              image: section.settings.logo,
+              alt: '{{ section.settings.logo_alt | default: current_site.title }}',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           {% else %}
             <span class="nav-transparent-pill__logo-text" style="font-size: 20px;">
               {{ section.settings.logo_text | default: current_site.title }}
@@ -1250,10 +1301,16 @@
                          class="nav-transparent-pill__mobile-card {% unless nested_block.settings.card_image %}nav-transparent-pill__mobile-card--colored{% endunless %}"
                          {% if nested_block.settings.card_bg_color and nested_block.settings.card_image == blank %}style="background-color: {{ nested_block.settings.card_bg_color }};"{% endif %}>
                         {% if nested_block.settings.card_image %}
-                          <img src="{{ nested_block.settings.card_image | image_picker_url: '300x390' }}"
-                               alt="{{ nested_block.settings.card_title }}"
-                               class="nav-transparent-pill__mobile-card-image"
-                               loading="lazy">
+                                                    {% render 'responsive-image',
+                            image: nested_block.settings.card_image,
+                            alt: '{{ nested_block.settings.card_title }}',
+                            class: 'nav-transparent-pill__mobile-card-image',
+                            sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                            aspect_ratio: '16/9',
+                            widths: '400,600,800,1200',
+                            placeholder_type: 'feature',
+                            blur_up: true
+                          %}
                         {% endif %}
                         <div class="nav-transparent-pill__mobile-card-content">
                           <h3 class="nav-transparent-pill__mobile-card-title">{{ nested_block.settings.card_title }}</h3>

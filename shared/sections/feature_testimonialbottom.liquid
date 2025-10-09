@@ -111,11 +111,16 @@
               </div>
             {% elsif section.settings.product_image %}
               <div class="product-showcase">
-                <img src="{{ section.settings.product_image | image_picker_url: '400x600' }}"
-             alt="{{ section.settings.product_image_alt | default: 'Product image' }}"
-             class="img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
+                                {% render 'responsive-image',
+                  image: section.settings.product_image,
+                  alt: '{{ section.settings.product_image_alt | default: ',
+                  class: 'img-fluid',
+                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                  aspect_ratio: '16/9',
+                  widths: '400,600,800,1200',
+                  placeholder_type: 'feature',
+                  blur_up: true
+                %}
               </div>
             {% endif %}
           </div>
@@ -216,11 +221,16 @@
           <div class="testimonial-author">
             {% if section.settings.testimonial_image %}
               <div class="author-image">
-                <img src="{{ section.settings.testimonial_image | image_picker_url: '120x120' }}"
-             alt="{{ section.settings.testimonial_name }}"
-             class="img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
+                                {% render 'responsive-image',
+                  image: section.settings.testimonial_image,
+                  alt: '{{ section.settings.testimonial_name }}',
+                  class: 'img-fluid',
+                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                  aspect_ratio: '16/9',
+                  widths: '400,600,800,1200',
+                  placeholder_type: 'feature',
+                  blur_up: true
+                %}
               </div>
             {% endif %}
 

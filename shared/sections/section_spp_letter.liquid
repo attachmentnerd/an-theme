@@ -54,7 +54,15 @@
                   <div class="col avatar-col" style="text-align:center;">
                     {% if block.settings.avatar != blank %}
                       <div class="avatar">
-                        <img src="{{ block.settings.avatar | image_picker_url: '400x' }}" alt="{{ block.settings.avatar_alt | escape }}" loading="lazy" decoding="async">
+                        {% render 'responsive-image',
+                          image: block.settings.avatar,
+                          alt: block.settings.avatar_alt,
+                          sizes: '180px',
+                          aspect_ratio: '1/1',
+                          widths: '180,360',
+                          placeholder_type: 'avatar',
+                          class: 'avatar-img'
+                        %}
                         {% if block.settings.show_dots %}
                           <span class="decor-dot dot-1"></span>
                           <span class="decor-dot dot-2"></span>

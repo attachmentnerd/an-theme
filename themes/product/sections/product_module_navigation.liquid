@@ -1,0 +1,1090 @@
+{% comment %}
+  Product Theme - Module Navigation Sidebar
+  Links to other modules with intelligent current module detection
+  Auto-hides current module from navigation
+{% endcomment %}
+
+{% assign sid = section.id %}
+{% assign current_url = request.path %}
+{% assign open_new_window = section.settings.open_new_window | default: false %}
+
+<aside id="product-module-nav-{{ sid }}" class="an-module-nav">
+  <div class="mn-wrap">
+    {% if section.settings.heading %}
+      <header class="mn-header">
+        <h3 class="mn-title">{{ section.settings.heading }}</h3>
+        {% if section.settings.subheading %}
+          <p class="mn-subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </header>
+    {% endif %}
+
+    <nav class="mn-nav" role="navigation" aria-label="Module navigation">
+      <ul class="mn-list" id="mn-list-{{ sid }}">
+        {% assign item_count = 0 %}
+        {% assign visible_count = section.settings.initial_items | default: 3 | plus: 0 %}
+        {% for block in section.blocks %}
+          {% assign is_current = false %}
+          {% assign block_url = block.settings.url | strip %}
+
+          {% comment %} Check if this is the current module {% endcomment %}
+          {% if block_url == current_url %}
+            {% assign is_current = true %}
+          {% elsif block_url != '' and block_url != '/' %}
+            {% comment %} Check if current URL contains block URL or vice versa {% endcomment %}
+            {% if current_url contains block_url %}
+              {% assign is_current = true %}
+            {% elsif block_url contains current_url and current_url != '/' %}
+              {% assign is_current = true %}
+            {% endif %}
+          {% endif %}
+
+          {% unless is_current and section.settings.hide_current %}
+            {% assign item_count = item_count | plus: 1 %}
+            <li class="mn-item{% if is_current %} is-current{% endif %}{% if item_count > visible_count and section.settings.enable_expand %} mn-item-hidden{% endif %}" data-item-index="{{ item_count }}" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.url }}"
+                 class="mn-link{% if is_current %} is-active{% endif %}{% if block.settings.status == 'complete' %} is-complete{% endif %}{% if block.settings.status == 'locked' %} is-locked{% endif %}"
+                 {% if is_current %}aria-current="page"{% endif %}
+                 {% if block.settings.status == 'locked' %}aria-disabled="true"{% endif %}
+                 {% if open_new_window %}target="_blank" rel="noopener noreferrer"{% endif %}>
+
+                <div class="mn-link-content">
+                  {% if block.settings.show_icon %}
+                    <span class="mn-icon" aria-hidden="true">
+                      {% case block.settings.icon_type %}
+                        {% when 'emoji' %}
+                          {{ block.settings.emoji | default: '📚' }}
+                        {% when 'number' %}
+                          <span class="mn-number">{{ block.settings.module_number }}</span>
+                        {% when 'checkmark' %}
+                          {% if block.settings.status == 'complete' %}
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          {% else %}
+                            <span class="mn-number">{{ block.settings.module_number }}</span>
+                          {% endif %}
+                        {% else %}
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 12H16M12 8V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          </svg>
+                      {% endcase %}
+                    </span>
+                  {% endif %}
+
+                  <div class="mn-text">
+                    {% if block.settings.label %}
+                      <span class="mn-label">{{ block.settings.label }}</span>
+                    {% endif %}
+                    <span class="mn-module-title">{{ block.settings.title }}</span>
+                    {% if block.settings.subtitle and section.settings.show_subtitles %}
+                      <span class="mn-module-subtitle">{{ block.settings.subtitle }}</span>
+                    {% endif %}
+                  </div>
+
+                  {% if block.settings.show_duration and block.settings.duration %}
+                    <span class="mn-duration">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6V12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                      {{ block.settings.duration }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                {% case block.settings.status %}
+                  {% when 'locked' %}
+                    <span class="mn-status-icon" aria-label="Locked">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M7 11V7C7 4.79086 8.79086 3 11 3H13C15.2091 3 17 4.79086 17 7V11" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </span>
+                  {% when 'complete' %}
+                    <span class="mn-status-icon mn-status-complete" aria-label="Completed">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="currentColor"/>
+                        <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  {% when 'in_progress' %}
+                    <span class="mn-status-icon mn-status-progress" aria-label="In progress">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                      </svg>
+                    </span>
+                {% endcase %}
+              </a>
+
+              {% if block.settings.show_progress and block.settings.progress > 0 and block.settings.status == 'in_progress' %}
+                <div class="mn-progress-bar">
+                  <div class="mn-progress-fill" style="width: {{ block.settings.progress }}%"></div>
+                </div>
+              {% endif %}
+            </li>
+          {% endunless %}
+        {% endfor %}
+      </ul>
+
+      {% comment %} Show More/Less Button {% endcomment %}
+      {% if section.settings.enable_expand and item_count > visible_count %}
+        <button type="button" class="mn-expand-btn" id="mn-expand-{{ sid }}" aria-expanded="false">
+          <span class="mn-expand-text">{{ section.settings.expand_text | default: 'Show all modules' }}</span>
+          <span class="mn-collapse-text" style="display: none;">{{ section.settings.collapse_text | default: 'Show less' }}</span>
+          <svg class="mn-expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {% endif %}
+    </nav>
+
+    {% if section.settings.show_cta and section.settings.cta_text %}
+      <div class="mn-cta">
+        <a href="{{ section.settings.cta_url }}" class="mn-cta-btn"{% if open_new_window %} target="_blank" rel="noopener noreferrer"{% endif %}>
+          {{ section.settings.cta_text }}
+        </a>
+        {% if section.settings.cta_note %}
+          <p class="mn-cta-note">{{ section.settings.cta_note }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_progress_summary %}
+      <div class="mn-summary">
+        <div class="mn-summary-progress">
+          <span class="mn-summary-label">Overall Progress</span>
+          <div class="mn-summary-bar">
+            <div class="mn-summary-fill" style="width: {{ section.settings.overall_progress }}%"></div>
+          </div>
+          <span class="mn-summary-percent">{{ section.settings.overall_progress }}% Complete</span>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</aside>
+
+<style>
+  /* Module Navigation Container */
+  #product-module-nav-{{ sid }} {
+    background: {{ section.settings.bg_color | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.border_color | default: '#E5E7EB' }};
+    border-radius: {{ section.settings.border_radius | default: 12 }}px;
+    padding: {{ section.settings.padding | default: 20 }}px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* Header */
+  #product-module-nav-{{ sid }} .mn-header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid {{ section.settings.border_color | default: '#E5E7EB' }};
+  }
+
+  #product-module-nav-{{ sid }} .mn-title {
+    margin: 0 0 4px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: {{ section.settings.heading_color | default: '#111827' }};
+  }
+
+  #product-module-nav-{{ sid }} .mn-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: {{ section.settings.text_color | default: '#6B7280' }};
+  }
+
+  /* Navigation List */
+  #product-module-nav-{{ sid }} .mn-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #product-module-nav-{{ sid }} .mn-item {
+    margin-bottom: {{ section.settings.item_spacing | default: 8 }}px;
+  }
+
+  #product-module-nav-{{ sid }} .mn-item:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Link Styles */
+  #product-module-nav-{{ sid }} .mn-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: {{ section.settings.item_padding | default: 12 }}px;
+    background: {{ section.settings.item_bg | default: '#F9FAFB' }};
+    border: 1px solid transparent;
+    border-radius: {{ section.settings.item_radius | default: 8 }}px;
+    text-decoration: none;
+    color: {{ section.settings.text_color | default: '#111827' }};
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  #product-module-nav-{{ sid }} .mn-link:hover:not(.is-locked) {
+    background: {{ section.settings.item_hover_bg | default: '#F3F4F6' }};
+    border-color: {{ section.settings.accent_color | default: '#5E3BFF' }}20;
+    transform: translateX(2px);
+  }
+
+  #product-module-nav-{{ sid }} .mn-link:focus {
+    outline: 2px solid {{ section.settings.accent_color | default: '#5E3BFF' }};
+    outline-offset: 2px;
+  }
+
+  /* Active/Current State */
+  #product-module-nav-{{ sid }} .mn-link.is-active {
+    background: {{ section.settings.active_bg | default: '#5E3BFF' }};
+    color: {{ section.settings.active_color | default: '#FFFFFF' }};
+    border-color: {{ section.settings.accent_color | default: '#5E3BFF' }};
+    font-weight: 600;
+  }
+
+  #product-module-nav-{{ sid }} .mn-link.is-active:hover {
+    background: {{ section.settings.active_hover_bg | default: '#4C1D95' }};
+    transform: none;
+  }
+
+  /* Locked State */
+  #product-module-nav-{{ sid }} .mn-link.is-locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  #product-module-nav-{{ sid }} .mn-link.is-locked:hover {
+    transform: none;
+    background: {{ section.settings.item_bg | default: '#F9FAFB' }};
+    border-color: transparent;
+  }
+
+  /* Complete State */
+  #product-module-nav-{{ sid }} .mn-link.is-complete:not(.is-active) .mn-module-title {
+    opacity: 0.8;
+  }
+
+  /* Link Content */
+  #product-module-nav-{{ sid }} .mn-link-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  /* Icon Styles */
+  #product-module-nav-{{ sid }} .mn-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: {{ section.settings.icon_bg | default: 'rgba(0,0,0,0.05)' }};
+    border-radius: 8px;
+    font-size: 1.2rem;
+  }
+
+  #product-module-nav-{{ sid }} .mn-link.is-active .mn-icon {
+    background: rgba(255,255,255,0.2);
+  }
+
+  #product-module-nav-{{ sid }} .mn-number {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: {{ section.settings.accent_color | default: '#5E3BFF' }};
+  }
+
+  #product-module-nav-{{ sid }} .mn-link.is-active .mn-number {
+    color: inherit;
+  }
+
+  /* Text Content */
+  #product-module-nav-{{ sid }} .mn-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #product-module-nav-{{ sid }} .mn-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+    margin-bottom: 2px;
+  }
+
+  #product-module-nav-{{ sid }} .mn-module-title {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  #product-module-nav-{{ sid }} .mn-module-subtitle {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  /* Duration */
+  #product-module-nav-{{ sid }} .mn-duration {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    white-space: nowrap;
+    margin-left: 8px;
+  }
+
+  /* Status Icons */
+  #product-module-nav-{{ sid }} .mn-status-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
+  }
+
+  #product-module-nav-{{ sid }} .mn-status-complete {
+    color: {{ section.settings.success_color | default: '#10B981' }};
+    opacity: 1;
+  }
+
+  #product-module-nav-{{ sid }} .mn-status-progress {
+    color: {{ section.settings.accent_color | default: '#5E3BFF' }};
+    opacity: 1;
+  }
+
+  /* Progress Bar */
+  #product-module-nav-{{ sid }} .mn-progress-bar {
+    height: 3px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin-top: 8px;
+    margin-left: 44px;
+    margin-right: 12px;
+    overflow: hidden;
+  }
+
+  #product-module-nav-{{ sid }} .mn-progress-fill {
+    height: 100%;
+    background: {{ section.settings.accent_color | default: '#5E3BFF' }};
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  /* CTA Section */
+  #product-module-nav-{{ sid }} .mn-cta {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid {{ section.settings.border_color | default: '#E5E7EB' }};
+    text-align: center;
+  }
+
+  #product-module-nav-{{ sid }} .mn-cta-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: {{ section.settings.cta_bg | default: '#5E3BFF' }};
+    color: {{ section.settings.cta_color | default: '#FFFFFF' }};
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  #product-module-nav-{{ sid }} .mn-cta-btn:hover {
+    background: {{ section.settings.cta_hover_bg | default: '#4C1D95' }};
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(94,59,255,0.25);
+  }
+
+  #product-module-nav-{{ sid }} .mn-cta-note {
+    margin: 8px 0 0;
+    font-size: 0.85rem;
+    color: {{ section.settings.text_color | default: '#6B7280' }};
+  }
+
+  /* Progress Summary */
+  #product-module-nav-{{ sid }} .mn-summary {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid {{ section.settings.border_color | default: '#E5E7EB' }};
+  }
+
+  #product-module-nav-{{ sid }} .mn-summary-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: {{ section.settings.text_color | default: '#6B7280' }};
+    margin-bottom: 8px;
+  }
+
+  #product-module-nav-{{ sid }} .mn-summary-bar {
+    height: 8px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  #product-module-nav-{{ sid }} .mn-summary-fill {
+    height: 100%;
+    background: linear-gradient(90deg, {{ section.settings.accent_color | default: '#5E3BFF' }}, {{ section.settings.success_color | default: '#10B981' }});
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  #product-module-nav-{{ sid }} .mn-summary-percent {
+    display: block;
+    font-size: 0.75rem;
+    color: {{ section.settings.text_color | default: '#6B7280' }};
+    text-align: right;
+  }
+
+  /* Expand/Collapse Functionality */
+  #product-module-nav-{{ sid }} .mn-item-hidden {
+    display: none;
+  }
+
+  #product-module-nav-{{ sid }} .mn-item-hidden.is-expanded {
+    display: block;
+    animation: slideDown 0.3s ease-out forwards;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #product-module-nav-{{ sid }} .mn-expand-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 16px;
+    background: {{ section.settings.expand_bg | default: 'transparent' }};
+    border: 1px solid {{ section.settings.border_color | default: '#E5E7EB' }};
+    border-radius: {{ section.settings.item_radius | default: 8 }}px;
+    color: {{ section.settings.accent_color | default: '#5E3BFF' }};
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  #product-module-nav-{{ sid }} .mn-expand-btn:hover {
+    background: {{ section.settings.expand_hover_bg | default: '#F9FAFB' }};
+    border-color: {{ section.settings.accent_color | default: '#5E3BFF' }};
+  }
+
+  #product-module-nav-{{ sid }} .mn-expand-btn:focus {
+    outline: 2px solid {{ section.settings.accent_color | default: '#5E3BFF' }};
+    outline-offset: 2px;
+  }
+
+  #product-module-nav-{{ sid }} .mn-expand-icon {
+    transition: transform 0.3s ease;
+  }
+
+  #product-module-nav-{{ sid }} .mn-expand-btn[aria-expanded="true"] .mn-expand-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #product-module-nav-{{ sid }} {
+      padding: {{ section.settings.padding | default: 20 | divided_by: 1.5 }}px;
+    }
+
+    #product-module-nav-{{ sid }} .mn-link {
+      padding: {{ section.settings.item_padding | default: 12 | divided_by: 1.2 }}px;
+    }
+
+    #product-module-nav-{{ sid }} .mn-icon {
+      width: 28px;
+      height: 28px;
+      font-size: 1rem;
+    }
+
+    #product-module-nav-{{ sid }} .mn-module-title {
+      font-size: 0.9rem;
+    }
+
+    #product-module-nav-{{ sid }} .mn-duration {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const nav = document.getElementById('product-module-nav-{{ sid }}');
+    if (!nav || nav.dataset.initialized) return;
+    nav.dataset.initialized = 'true';
+
+    // Add keyboard navigation support
+    const links = nav.querySelectorAll('.mn-link:not(.is-locked)');
+    links.forEach((link, index) => {
+      link.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' && links[index + 1]) {
+          e.preventDefault();
+          links[index + 1].focus();
+        } else if (e.key === 'ArrowUp' && links[index - 1]) {
+          e.preventDefault();
+          links[index - 1].focus();
+        }
+      });
+    });
+
+    // Prevent clicks on locked items
+    nav.querySelectorAll('.mn-link.is-locked').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+    });
+
+    // Expand/Collapse functionality
+    const expandBtn = document.getElementById('mn-expand-{{ sid }}');
+    const list = document.getElementById('mn-list-{{ sid }}');
+
+    if (expandBtn && list) {
+      const hiddenItems = list.querySelectorAll('.mn-item-hidden');
+      const expandText = expandBtn.querySelector('.mn-expand-text');
+      const collapseText = expandBtn.querySelector('.mn-collapse-text');
+
+      expandBtn.addEventListener('click', function() {
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+        if (!isExpanded) {
+          // Expand
+          hiddenItems.forEach(item => {
+            item.classList.add('is-expanded');
+          });
+          this.setAttribute('aria-expanded', 'true');
+          expandText.style.display = 'none';
+          collapseText.style.display = 'inline';
+        } else {
+          // Collapse
+          hiddenItems.forEach(item => {
+            item.classList.remove('is-expanded');
+          });
+          this.setAttribute('aria-expanded', 'false');
+          expandText.style.display = 'inline';
+          collapseText.style.display = 'none';
+        }
+      });
+
+      // Auto-expand if current module is hidden
+      const currentItem = list.querySelector('.mn-item.is-current');
+      if (currentItem && currentItem.classList.contains('mn-item-hidden')) {
+        expandBtn.click();
+      }
+    }
+
+    // Mark viewed modules (optional feature)
+    if ({{ section.settings.track_viewed | default: false | json }}) {
+      const currentActive = nav.querySelector('.mn-link.is-active');
+      if (currentActive) {
+        const moduleId = currentActive.closest('.mn-item').dataset.blockId;
+        if (moduleId) {
+          const viewedModules = JSON.parse(localStorage.getItem('viewedModules') || '[]');
+          if (!viewedModules.includes(moduleId)) {
+            viewedModules.push(moduleId);
+            localStorage.setItem('viewedModules', JSON.stringify(viewedModules));
+          }
+        }
+      }
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product - Module Navigation",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Course Modules"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Navigate through your learning journey"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_current",
+      "label": "Hide current module from list",
+      "default": true,
+      "info": "Automatically hides the module you're currently viewing"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_new_window",
+      "label": "Open links in new window",
+      "default": false,
+      "info": "Opens all module links and CTA in a new browser tab"
+    },
+    {
+      "type": "header",
+      "content": "Expand/Collapse Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_expand",
+      "label": "Enable expand/collapse",
+      "default": true,
+      "info": "Shows limited items initially with option to show all"
+    },
+    {
+      "type": "range",
+      "id": "initial_items",
+      "label": "Number of items to show initially",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "info": "How many modules to show before 'Show all' button"
+    },
+    {
+      "type": "text",
+      "id": "expand_text",
+      "label": "Expand button text",
+      "default": "Show all modules"
+    },
+    {
+      "type": "text",
+      "id": "collapse_text",
+      "label": "Collapse button text",
+      "default": "Show less"
+    },
+    {
+      "type": "color",
+      "id": "expand_bg",
+      "label": "Expand button background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "expand_hover_bg",
+      "label": "Expand button hover background",
+      "default": "#F9FAFB"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtitles",
+      "label": "Show module subtitles",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "track_viewed",
+      "label": "Track viewed modules",
+      "default": false,
+      "info": "Uses browser storage to remember viewed modules"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Item Styling"
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "label": "Spacing between items",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "label": "Item padding",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "item_radius",
+      "label": "Item border radius",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "item_bg",
+      "label": "Item background",
+      "default": "#F9FAFB"
+    },
+    {
+      "type": "color",
+      "id": "item_hover_bg",
+      "label": "Item hover background",
+      "default": "#F3F4F6"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg",
+      "label": "Icon background",
+      "default": "rgba(0,0,0,0.05)"
+    },
+    {
+      "type": "header",
+      "content": "Active State"
+    },
+    {
+      "type": "color",
+      "id": "active_bg",
+      "label": "Active background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "active_color",
+      "label": "Active text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "active_hover_bg",
+      "label": "Active hover background",
+      "default": "#4C1D95"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "success_color",
+      "label": "Success color",
+      "default": "#10B981"
+    },
+    {
+      "type": "header",
+      "content": "Progress Summary"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_summary",
+      "label": "Show overall progress",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "overall_progress",
+      "label": "Overall progress percentage",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA section",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "Back to Dashboard"
+    },
+    {
+      "type": "action",
+      "id": "cta_url",
+      "label": "CTA URL",
+      "default": "/"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_note",
+      "label": "CTA note",
+      "default": "Track your overall progress"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg",
+      "label": "CTA background",
+      "default": "#5E3BFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_color",
+      "label": "CTA text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_bg",
+      "label": "CTA hover background",
+      "default": "#4C1D95"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "module",
+      "name": "Module Link",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Module title",
+          "default": "Module Title"
+        },
+        {
+          "type": "textarea",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label (e.g., Week 1, Module 1)",
+          "default": "Module 1"
+        },
+        {
+          "type": "action",
+          "id": "url",
+          "label": "Module URL",
+          "default": "#"
+        },
+        {
+          "type": "header",
+          "content": "Icon Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon type",
+          "default": "number",
+          "options": [
+            { "label": "Module number", "value": "number" },
+            { "label": "Emoji", "value": "emoji" },
+            { "label": "Checkmark (when complete)", "value": "checkmark" },
+            { "label": "Icon", "value": "icon" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "module_number",
+          "label": "Module number",
+          "default": "1",
+          "info": "Used when icon type is 'Module number'"
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji",
+          "default": "📚",
+          "info": "Used when icon type is 'Emoji'"
+        },
+        {
+          "type": "header",
+          "content": "Status & Progress"
+        },
+        {
+          "type": "select",
+          "id": "status",
+          "label": "Module status",
+          "default": "none",
+          "options": [
+            { "label": "None", "value": "none" },
+            { "label": "Locked", "value": "locked" },
+            { "label": "In Progress", "value": "in_progress" },
+            { "label": "Complete", "value": "complete" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_progress",
+          "label": "Show progress bar",
+          "default": false,
+          "info": "Only shows for 'In Progress' modules"
+        },
+        {
+          "type": "range",
+          "id": "progress",
+          "label": "Progress percentage",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Additional Info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_duration",
+          "label": "Show duration",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Duration",
+          "default": "45 min"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Product - Module Navigation",
+      "category": "Product",
+      "blocks": [
+        {
+          "type": "module",
+          "settings": {
+            "title": "Welcome & Introduction",
+            "subtitle": "Get started with the fundamentals",
+            "label": "Module 1",
+            "module_number": "1",
+            "url": "/products/your-course/categories/module-1",
+            "status": "complete",
+            "show_duration": true,
+            "duration": "15 min"
+          }
+        },
+        {
+          "type": "module",
+          "settings": {
+            "title": "Understanding Attachment",
+            "subtitle": "Core concepts and theory",
+            "label": "Module 2",
+            "module_number": "2",
+            "url": "/products/your-course/categories/module-2",
+            "status": "in_progress",
+            "show_progress": true,
+            "progress": 65,
+            "show_duration": true,
+            "duration": "45 min"
+          }
+        },
+        {
+          "type": "module",
+          "settings": {
+            "title": "Building Secure Connections",
+            "subtitle": "Practical application techniques",
+            "label": "Module 3",
+            "module_number": "3",
+            "url": "/products/your-course/categories/module-3",
+            "status": "none",
+            "show_duration": true,
+            "duration": "52 min"
+          }
+        },
+        {
+          "type": "module",
+          "settings": {
+            "title": "Advanced Techniques",
+            "subtitle": "Master level strategies",
+            "label": "Module 4",
+            "module_number": "4",
+            "url": "/products/your-course/categories/module-4",
+            "status": "locked",
+            "show_duration": true,
+            "duration": "60 min"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

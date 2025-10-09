@@ -53,11 +53,15 @@
                       </svg>
                     {% when 'custom' %}
                       {% if block.settings.custom_icon != blank %}
-                        <img src="{{ block.settings.custom_icon | image_picker_url: '120x68' }}" 
-             alt="{{ block.settings.label | default: 'Stat icon' }}" 
-             class="img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
+                        {% render 'responsive-image',
+                          image: block.settings.custom_icon,
+                          alt: block.settings.label,
+                          sizes: '48px',
+                          aspect_ratio: '1/1',
+                          widths: '48,96',
+                          placeholder_type: 'logo',
+                          class: 'img-fluid'
+                        %}
                       {% else %}
                         <!-- Placeholder custom icon -->
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">

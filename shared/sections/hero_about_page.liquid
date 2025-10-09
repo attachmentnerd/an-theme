@@ -1,14 +1,14 @@
-{% if section.settings.background_image != blank %}
-  {% capture unique_id %}about-hero-{{ section.id }}{% endcapture %}
-  {% assign image = section.settings.background_image %}
-  {% assign mobile_image = section.settings.mobile_background_image %}
-  {% assign overlay = section.settings.use_overlay %}
-  {% assign overlay_color = 'rgba(94, 59, 255, 0.1)' %}
-  {% include 'responsive-background' %}
-{% endif %}
-
-<section id="{{ section.settings.section_id | default: 'hero-about-page' }}-{{ section.id }}" class="about-hero-section {% if section.settings.background_image != blank %}about-hero-{{ section.id }}{% endif %}" 
-         style="{% if section.settings.background_image == blank %}background-color: var(--c-brand-100);{% endif %}">
+<section id="{{ section.settings.section_id | default: 'hero-about-page' }}-{{ section.id }}"
+         class="about-hero-section"
+         style="{% if section.settings.background_image != blank %}
+                  background-image: url('{{ section.settings.background_image | image_picker_url: 'master' }}');
+                  background-size: {{ section.settings.background_size | default: 'cover' }};
+                  background-position: {{ section.settings.background_position | default: 'center center' }};
+                  background-repeat: {{ section.settings.background_repeat | default: 'no-repeat' }};
+                  background-attachment: {{ section.settings.background_attachment | default: 'scroll' }};
+                {% else %}
+                  background-color: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};
+                {% endif %}">
 
   <!-- Decorative elements for warmth and trust -->
   <div class="about-hero-decorative">
@@ -19,7 +19,9 @@
     <div class="about-hero-sparkle about-hero-sparkle--3">⭐</div>
   </div>
 
-  {% comment %} Overlay is now handled by responsive-background snippet {% endcomment %}
+  {% if section.settings.background_image != blank and section.settings.use_overlay %}
+    <div class="about-hero-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: {{ section.settings.overlay_color | default: 'rgba(94, 59, 255, 0.1)' }}; pointer-events: none; z-index: 1;"></div>
+  {% endif %}
 
   <div class="container">
     <div class="about-hero-content animate-fade-up">
@@ -385,6 +387,136 @@
       "id": "use_overlay",
       "label": "Add overlay to background image",
       "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "rgba(94, 59, 255, 0.1)",
+      "info": "Color with transparency for overlay"
+    },
+    {
+      "type": "header",
+      "content": "Background Display Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#E9E6FF",
+      "info": "Used when no background image is set"
+    },
+    {
+      "type": "select",
+      "id": "background_size",
+      "label": "Background Size",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover (fills container)"
+        },
+        {
+          "value": "contain",
+          "label": "Contain (shows entire image)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto (original size)"
+        },
+        {
+          "value": "100% 100%",
+          "label": "Stretch to Fill"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background Position",
+      "default": "center center",
+      "options": [
+        {
+          "value": "left top",
+          "label": "Left Top"
+        },
+        {
+          "value": "left center",
+          "label": "Left Center"
+        },
+        {
+          "value": "left bottom",
+          "label": "Left Bottom"
+        },
+        {
+          "value": "center top",
+          "label": "Center Top"
+        },
+        {
+          "value": "center center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center bottom",
+          "label": "Center Bottom"
+        },
+        {
+          "value": "right top",
+          "label": "Right Top"
+        },
+        {
+          "value": "right center",
+          "label": "Right Center"
+        },
+        {
+          "value": "right bottom",
+          "label": "Right Bottom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_repeat",
+      "label": "Background Repeat",
+      "default": "no-repeat",
+      "options": [
+        {
+          "value": "no-repeat",
+          "label": "No Repeat"
+        },
+        {
+          "value": "repeat",
+          "label": "Repeat Both"
+        },
+        {
+          "value": "repeat-x",
+          "label": "Repeat Horizontally"
+        },
+        {
+          "value": "repeat-y",
+          "label": "Repeat Vertically"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_attachment",
+      "label": "Background Attachment",
+      "default": "scroll",
+      "options": [
+        {
+          "value": "scroll",
+          "label": "Scroll with Page"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed (Parallax Effect)"
+        },
+        {
+          "value": "local",
+          "label": "Local"
+        }
+      ]
     },
     {
       "type": "divider"

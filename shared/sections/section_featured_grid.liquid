@@ -121,7 +121,16 @@
       <div class="col-lg-5">
         {% if section.settings.right_image != blank %}
           <div class="media-wrap">
-            <img src="{{ section.settings.right_image | image_picker_url: '1200x' }}" alt="{{ section.settings.right_image_alt | escape }}" loading="lazy" decoding="async">
+                        {% render 'responsive-image',
+              image: section.settings.right_image,
+              alt: '{{ section.settings.right_image_alt | escape }}',
+              class: 'img-fluid',
+              sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+              aspect_ratio: '16/9',
+              widths: '400,600,800,1200',
+              placeholder_type: 'feature',
+              blur_up: true
+            %}
             
             <div class="chips">
               {% for block in section.blocks %}

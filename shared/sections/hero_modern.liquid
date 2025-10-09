@@ -1,4 +1,15 @@
-<section id="{{ section.settings.section_id | default: 'hero-modern' }}-{{ section.id }}" class="sa-hero-modern position-relative overflow-hidden" style="background: var(--c-brand-100); padding: 80px 0 100px;">
+<section id="{{ section.settings.section_id | default: 'hero-modern' }}-{{ section.id }}"
+         class="sa-hero-modern position-relative overflow-hidden"
+         style="{% if section.settings.background_image != blank %}
+                  background-image: url('{{ section.settings.background_image | image_picker_url: 'master' }}');
+                  background-size: {{ section.settings.background_size | default: 'cover' }};
+                  background-position: {{ section.settings.background_position | default: 'center center' }};
+                  background-repeat: {{ section.settings.background_repeat | default: 'no-repeat' }};
+                  background-attachment: {{ section.settings.background_attachment | default: 'scroll' }};
+                {% else %}
+                  background: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};
+                {% endif %}
+                padding: 80px 0 100px;">
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
@@ -65,13 +76,25 @@
           <div class="text-center">
             <div style="display: inline-block; position: relative;">
               <div style="position: absolute; inset: -20px; background: radial-gradient(circle at center, rgba(94,59,255,0.15) 0%, transparent 70%); filter: blur(40px);"></div>
-              <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}" style="max-width: 400px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); overflow: hidden;">
+              <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}"
+                   style="{% if section.settings.image_container_width %}max-width: {{ section.settings.image_container_width }}px;{% else %}max-width: 400px;{% endif %}
+                          {% if section.settings.image_container_height %}height: {{ section.settings.image_container_height }}px;{% endif %}
+                          border-radius: {{ section.settings.image_radius | default: '16px' }};
+                          box-shadow: {% if section.settings.image_shadow %}0 20px 40px rgba(0,0,0,0.15){% else %}none{% endif %};
+                          overflow: hidden;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;">
                 {% if section.settings.book_image != blank %}
-                  <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}"
+                  <img src="{{ section.settings.book_image | image_picker_url: 'master' }}"
                        alt="{{ section.settings.book_alt | default: 'Book cover' }}"
                        class="img-fluid position-relative"
-                       loading="lazy"
-                       style="aspect-ratio: 2/3; object-fit: cover;">
+                       {% if section.settings.image_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                       style="width: {% if section.settings.image_width %}{{ section.settings.image_width }}{% else %}100%{% endif %};
+                              height: {% if section.settings.image_height %}{{ section.settings.image_height }}{% else %}auto{% endif %};
+                              {% if section.settings.image_aspect_ratio and section.settings.image_container_height == blank %}aspect-ratio: {{ section.settings.image_aspect_ratio }};{% else %}aspect-ratio: 2/3;{% endif %}
+                              object-fit: {{ section.settings.image_fit | default: 'contain' }};
+                              object-position: {{ section.settings.image_position | default: 'center' }};">
                 {% else %}
                   <div style="width: 100%; aspect-ratio: 2/3; background: var(--c-brand-100); display: flex; align-items: center; justify-content: center;">
                     <svg width="120" height="180" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -213,6 +236,187 @@
       "default": "Securely Attached book cover by Eli Harwood"
     },
     {
+      "type": "header",
+      "content": "Image Display Settings"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "default": "contain",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain (shows entire image)"
+        },
+        {
+          "value": "cover",
+          "label": "Cover (fills container, may crop)"
+        },
+        {
+          "value": "fill",
+          "label": "Fill (stretches to fit)"
+        },
+        {
+          "value": "none",
+          "label": "None (original size)"
+        },
+        {
+          "value": "scale-down",
+          "label": "Scale Down"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "default": "center",
+      "info": "Where to position the image when using 'cover' fit",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "default": "2/3",
+      "options": [
+        {
+          "value": "",
+          "label": "Auto (natural aspect)"
+        },
+        {
+          "value": "1/1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4/3",
+          "label": "Standard (4:3)"
+        },
+        {
+          "value": "16/9",
+          "label": "Widescreen (16:9)"
+        },
+        {
+          "value": "2/3",
+          "label": "Book Portrait (2:3)"
+        },
+        {
+          "value": "3/4",
+          "label": "Portrait (3:4)"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_container_width",
+      "label": "Container Max Width",
+      "default": 400,
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_container_height",
+      "label": "Container Height",
+      "info": "Leave empty for auto height based on aspect ratio",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "label": "Image Width",
+      "default": "100%",
+      "options": [
+        {
+          "value": "100%",
+          "label": "Full Width (100%)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "75%",
+          "label": "75%"
+        },
+        {
+          "value": "50%",
+          "label": "50%"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image Height",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "100%",
+          "label": "Full Height (100%)"
+        },
+        {
+          "value": "75%",
+          "label": "75%"
+        },
+        {
+          "value": "50%",
+          "label": "50%"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "image_priority",
+      "label": "High Priority Loading",
+      "default": false,
+      "info": "Enable for above-fold images"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_shadow",
+      "label": "Image Shadow",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "image_radius",
+      "label": "Image Corner Radius",
+      "default": "16px",
+      "info": "e.g., 0, 8px, 16px, 50%"
+    },
+    {
       "type": "text",
       "id": "award_text",
       "label": "Award Badge Text",
@@ -241,6 +445,135 @@
       "id": "secondary_cta_url",
       "label": "Secondary CTA URL",
       "default": "#reviews"
+    },
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#E9E6FF",
+      "info": "Used when no background image is set"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Optional background image for the section"
+    },
+    {
+      "type": "select",
+      "id": "background_size",
+      "label": "Background Size",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover (fills container)"
+        },
+        {
+          "value": "contain",
+          "label": "Contain (shows entire image)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto (original size)"
+        },
+        {
+          "value": "100% 100%",
+          "label": "Stretch to Fill"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background Position",
+      "default": "center center",
+      "options": [
+        {
+          "value": "left top",
+          "label": "Left Top"
+        },
+        {
+          "value": "left center",
+          "label": "Left Center"
+        },
+        {
+          "value": "left bottom",
+          "label": "Left Bottom"
+        },
+        {
+          "value": "center top",
+          "label": "Center Top"
+        },
+        {
+          "value": "center center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center bottom",
+          "label": "Center Bottom"
+        },
+        {
+          "value": "right top",
+          "label": "Right Top"
+        },
+        {
+          "value": "right center",
+          "label": "Right Center"
+        },
+        {
+          "value": "right bottom",
+          "label": "Right Bottom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_repeat",
+      "label": "Background Repeat",
+      "default": "no-repeat",
+      "options": [
+        {
+          "value": "no-repeat",
+          "label": "No Repeat"
+        },
+        {
+          "value": "repeat",
+          "label": "Repeat Both"
+        },
+        {
+          "value": "repeat-x",
+          "label": "Repeat Horizontally"
+        },
+        {
+          "value": "repeat-y",
+          "label": "Repeat Vertically"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_attachment",
+      "label": "Background Attachment",
+      "default": "scroll",
+      "options": [
+        {
+          "value": "scroll",
+          "label": "Scroll with Page"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed (Parallax Effect)"
+        },
+        {
+          "value": "local",
+          "label": "Local"
+        }
+      ]
     }
   ],
   "blocks": [

@@ -246,10 +246,15 @@
             <div class="col-12 col-md-6 col-lg-{{ section.settings.columns | default: 4 }}">
               <div class="progress-card">
                 {% if product.poster_image_url and section.settings.show_images %}
-                  <img src="{{ product.poster_image_url | image_url: '400x225' }}"
-                       alt="{{ product.title }}"
-                       class="progress-card__image"
-                       loading="lazy">
+                  {% render 'responsive-image',
+                    image: product.poster_image_url,
+                    alt: product.title,
+                    sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
+                    aspect_ratio: '16/9',
+                    widths: '400,600,800',
+                    placeholder_type: 'feature',
+                    class: 'progress-card__image'
+                  %}
                 {% elsif section.settings.show_images %}
                   <div class="progress-card__image"></div>
                 {% endif %}

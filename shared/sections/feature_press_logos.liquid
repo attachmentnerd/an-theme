@@ -61,11 +61,15 @@
                 {% endif %}
 
                 {% if block.settings.logo != blank %}
-                  <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ block.settings.name }}" 
-             class="an-media-press__logo"
-             loading="lazy"
-             style="object-fit: cover;">
+                  {% render 'responsive-image',
+                    image: block.settings.logo,
+                    alt: block.settings.name,
+                    sizes: '150px',
+                    aspect_ratio: '16/9',
+                    widths: '150,300',
+                    placeholder_type: 'logo',
+                    class: 'an-media-press__logo'
+                  %}
                 {% else %}
                   <div class="an-media-press__logo-placeholder">
                     <svg width="160" height="48" viewBox="0 0 160 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,11 +101,15 @@
                 {% endif %}
 
                 {% if block.settings.logo != blank %}
-                  <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ block.settings.name }}" 
-             class="an-media-press__logo"
-             loading="lazy"
-             style="object-fit: cover;">
+                  {% render 'responsive-image',
+                    image: block.settings.logo,
+                    alt: block.settings.name,
+                    sizes: '150px',
+                    aspect_ratio: '16/9',
+                    widths: '150,300',
+                    placeholder_type: 'logo',
+                    class: 'an-media-press__logo'
+                  %}
                 {% else %}
                   <div class="an-media-press__logo-placeholder">
                     <svg width="160" height="48" viewBox="0 0 160 48" fill="none" xmlns="http://www.w3.org/2000/svg">

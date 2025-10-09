@@ -1,0 +1,552 @@
+{% comment %}
+  VideoAsk First-Visit Popup Section
+  Shows VideoAsk iframe in modal or widget only to first-time visitors
+  Uses sessionStorage to track if user has already seen it
+{% endcomment %}
+
+{% assign sid = section.id %}
+{% assign display_mode = section.settings.display_mode | default: 'modal' %}
+{% assign videoask_url = section.settings.videoask_url | default: 'https://www.videoask.com/f50gxt7hd' %}
+{% assign delay_seconds = section.settings.delay_seconds | default: 3 %}
+{% assign session_key = section.settings.session_key | default: 'videoask_shown' %}
+
+{% if display_mode == 'modal' %}
+<!-- Modal Display Mode -->
+<div id="videoask-modal-{{ sid }}" class="videoask-modal" style="display: none;">
+  <div class="videoask-overlay"></div>
+  <div class="videoask-content">
+    <button class="videoask-close" aria-label="Close">&times;</button>
+    <iframe 
+      src="{{ videoask_url }}" 
+      allow="camera *; microphone *; autoplay *; encrypted-media *; fullscreen *; display-capture *;" 
+      width="100%" 
+      height="100%" 
+      style="border: none; border-radius: 24px">
+    </iframe>
+  </div>
+</div>
+
+<style>
+  .videoask-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: none;
+  }
+  
+  .videoask-modal.active {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .videoask-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+  }
+  
+  .videoask-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    height: 80vh;
+    max-height: 600px;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  
+  .videoask-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .videoask-close:hover {
+    transform: scale(1.1);
+  }
+  
+  @media (max-width: 767px) {
+    .videoask-content {
+      width: 95%;
+      height: 70vh;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const modalId = 'videoask-modal-{{ sid }}';
+  const storageKey = '{{ session_key }}';
+  const delayMs = {{ delay_seconds }} * 1000;
+  const storageType = '{{ section.settings.storage_type | default: "localStorage" }}';
+  const expirationDays = {{ section.settings.expiration_days | default: 30 }};
+  const trackingScope = '{{ section.settings.tracking_scope | default: "global" }}';
+
+  // Helper functions for storage with expiration
+  const storage = {
+    set: function(key, value, days) {
+      const expires = new Date();
+      expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+
+      const data = {
+        value: value,
+        expires: expires.getTime(),
+        timestamp: new Date().getTime()
+      };
+
+      if (storageType === 'localStorage') {
+        localStorage.setItem(key, JSON.stringify(data));
+      } else if (storageType === 'sessionStorage') {
+        sessionStorage.setItem(key, JSON.stringify(data));
+      } else if (storageType === 'cookie') {
+        document.cookie = key + '=' + JSON.stringify(data) + ';expires=' + expires.toUTCString() + ';path=/';
+      }
+    },
+
+    get: function(key) {
+      let data = null;
+
+      if (storageType === 'localStorage') {
+        data = localStorage.getItem(key);
+      } else if (storageType === 'sessionStorage') {
+        data = sessionStorage.getItem(key);
+      } else if (storageType === 'cookie') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          const [name, value] = cookie.trim().split('=');
+          if (name === key) {
+            data = value;
+            break;
+          }
+        }
+      }
+
+      if (!data) return null;
+
+      try {
+        const parsed = JSON.parse(data);
+        // Check if expired
+        if (parsed.expires && new Date().getTime() > parsed.expires) {
+          this.remove(key);
+          return null;
+        }
+        return parsed.value;
+      } catch (e) {
+        return data; // Return raw value if not JSON
+      }
+    },
+
+    remove: function(key) {
+      if (storageType === 'localStorage') {
+        localStorage.removeItem(key);
+      } else if (storageType === 'sessionStorage') {
+        sessionStorage.removeItem(key);
+      } else if (storageType === 'cookie') {
+        document.cookie = key + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+      }
+    }
+  };
+
+  // Build the actual storage key based on scope
+  let finalKey = storageKey;
+  if (trackingScope === 'page') {
+    finalKey += '_' + window.location.pathname.replace(/\//g, '_');
+  } else if (trackingScope === 'domain') {
+    finalKey += '_' + window.location.hostname;
+  }
+
+  // Check if already shown
+  const alreadyShown = storage.get(finalKey);
+  if (alreadyShown) {
+    console.log('VideoAsk already shown for key:', finalKey);
+    return;
+  }
+
+  // Show modal after delay
+  setTimeout(function() {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.add('active');
+      storage.set(finalKey, 'true', expirationDays);
+      console.log('VideoAsk shown and tracked with key:', finalKey);
+
+      // Get iframe element
+      const iframe = modal.querySelector('iframe');
+      const iframeSrc = iframe ? iframe.src : '';
+
+      // Close button handler
+      const closeBtn = modal.querySelector('.videoask-close');
+      const overlay = modal.querySelector('.videoask-overlay');
+
+      const closeModal = function() {
+        modal.classList.remove('active');
+
+        // Stop video/audio by resetting iframe src
+        if (iframe) {
+          iframe.src = 'about:blank';
+          // Restore src after a small delay if user reopens
+          setTimeout(function() {
+            if (!modal.classList.contains('active')) {
+              iframe.src = iframeSrc;
+            }
+          }, 100);
+        }
+      };
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (overlay && {{ section.settings.close_on_overlay_click }}) {
+        overlay.addEventListener('click', closeModal);
+      }
+
+      // ESC key to close
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+    }
+  }, delayMs);
+})();
+</script>
+
+{% elsif display_mode == 'widget' %}
+<!-- Widget Display Mode -->
+<script>
+(function() {
+  const storageKey = '{{ session_key }}';
+  const delayMs = {{ delay_seconds }} * 1000;
+  const storageType = '{{ section.settings.storage_type | default: "localStorage" }}';
+  const expirationDays = {{ section.settings.expiration_days | default: 30 }};
+  const trackingScope = '{{ section.settings.tracking_scope | default: "global" }}';
+
+  // Same storage helpers as modal
+  const storage = {
+    set: function(key, value, days) {
+      const expires = new Date();
+      expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+
+      const data = {
+        value: value,
+        expires: expires.getTime(),
+        timestamp: new Date().getTime()
+      };
+
+      if (storageType === 'localStorage') {
+        localStorage.setItem(key, JSON.stringify(data));
+      } else if (storageType === 'sessionStorage') {
+        sessionStorage.setItem(key, JSON.stringify(data));
+      } else if (storageType === 'cookie') {
+        document.cookie = key + '=' + JSON.stringify(data) + ';expires=' + expires.toUTCString() + ';path=/';
+      }
+    },
+
+    get: function(key) {
+      let data = null;
+
+      if (storageType === 'localStorage') {
+        data = localStorage.getItem(key);
+      } else if (storageType === 'sessionStorage') {
+        data = sessionStorage.getItem(key);
+      } else if (storageType === 'cookie') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          const [name, value] = cookie.trim().split('=');
+          if (name === key) {
+            data = value;
+            break;
+          }
+        }
+      }
+
+      if (!data) return null;
+
+      try {
+        const parsed = JSON.parse(data);
+        if (parsed.expires && new Date().getTime() > parsed.expires) {
+          this.remove(key);
+          return null;
+        }
+        return parsed.value;
+      } catch (e) {
+        return data;
+      }
+    },
+
+    remove: function(key) {
+      if (storageType === 'localStorage') {
+        localStorage.removeItem(key);
+      } else if (storageType === 'sessionStorage') {
+        sessionStorage.removeItem(key);
+      } else if (storageType === 'cookie') {
+        document.cookie = key + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+      }
+    }
+  };
+
+  // Build the actual storage key based on scope
+  let finalKey = storageKey;
+  if (trackingScope === 'page') {
+    finalKey += '_' + window.location.pathname.replace(/\//g, '_');
+  } else if (trackingScope === 'domain') {
+    finalKey += '_' + window.location.hostname;
+  }
+
+  // Check if already shown
+  const alreadyShown = storage.get(finalKey);
+  if (alreadyShown) {
+    console.log('VideoAsk widget already shown for key:', finalKey);
+    return;
+  }
+
+  // Configure and load widget after delay
+  setTimeout(function() {
+    window.VIDEOASK_EMBED_CONFIG = {
+      "kind": "widget",
+      "url": "{{ videoask_url }}",
+      "options": {
+        "widgetType": "{{ section.settings.widget_type | default: 'VideoThumbnailExtraLarge' }}",
+        "text": "{{ section.settings.widget_text }}",
+        "backgroundColor": "{{ section.settings.widget_color | default: '#7D00FE' }}",
+        "position": "{{ section.settings.widget_position | default: 'bottom-right' }}",
+        "dismissible": {{ section.settings.widget_dismissible | default: false }},
+        "videoPosition": "center center"
+      }
+    };
+
+    // Load VideoAsk embed script
+    const script = document.createElement('script');
+    script.src = 'https://www.videoask.com/embed/embed.js';
+    document.body.appendChild(script);
+
+    // Mark as shown
+    storage.set(finalKey, 'true', expirationDays);
+    console.log('VideoAsk widget shown and tracked with key:', finalKey);
+
+    // Optional: Auto-hide widget after interaction
+    {% if section.settings.auto_hide_after_interaction %}
+    script.onload = function() {
+      // Listen for widget interaction
+      setTimeout(function() {
+        const widget = document.querySelector('.videoask-widget');
+        if (widget) {
+          widget.addEventListener('click', function() {
+            setTimeout(function() {
+              widget.style.display = 'none';
+            }, 500);
+          });
+        }
+      }, 1000);
+    };
+    {% endif %}
+  }, delayMs);
+})();
+</script>
+{% endif %}
+
+{% if section.settings.reset_button_enabled %}
+<!-- Debug/Testing: Reset Button -->
+<button
+  onclick="
+    // Clear all possible storage locations
+    const key = '{{ session_key }}';
+    const variations = [key, key + '_' + window.location.pathname.replace(/\//g, '_'), key + '_' + window.location.hostname];
+    variations.forEach(function(k) {
+      localStorage.removeItem(k);
+      sessionStorage.removeItem(k);
+      document.cookie = k + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    });
+    alert('VideoAsk tracking cleared from all storage. It will show again on next page load.');
+    location.reload();
+  "
+  style="position: fixed; bottom: 10px; left: 10px; z-index: 9999; padding: 10px; background: #ff0000; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+  Reset VideoAsk (Debug)
+</button>
+{% endif %}
+
+{% schema %}
+{
+  "name": "VideoAsk First Visit",
+  "elements": [
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display Mode",
+      "default": "modal",
+      "options": [
+        { "value": "modal", "label": "Modal Popup" },
+        { "value": "widget", "label": "Widget" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "videoask_url",
+      "label": "VideoAsk URL",
+      "default": "https://www.videoask.com/f50gxt7hd",
+      "info": "Your VideoAsk embed URL"
+    },
+    {
+      "type": "range",
+      "id": "delay_seconds",
+      "label": "Delay Before Showing (seconds)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "session_key",
+      "label": "Session Storage Key",
+      "default": "videoask_shown",
+      "info": "Change this to reset the 'shown' status for all users"
+    },
+    {
+      "type": "header",
+      "content": "Tracking Settings"
+    },
+    {
+      "type": "select",
+      "id": "storage_type",
+      "label": "Storage Type",
+      "default": "localStorage",
+      "options": [
+        { "value": "localStorage", "label": "Local Storage (Persistent)" },
+        { "value": "sessionStorage", "label": "Session Storage (Until browser closes)" },
+        { "value": "cookie", "label": "Cookie (Cross-subdomain)" }
+      ],
+      "info": "localStorage persists across browser sessions"
+    },
+    {
+      "type": "select",
+      "id": "tracking_scope",
+      "label": "Tracking Scope",
+      "default": "global",
+      "options": [
+        { "value": "global", "label": "Global (Entire site)" },
+        { "value": "page", "label": "Per Page (This page only)" },
+        { "value": "domain", "label": "Per Domain" }
+      ],
+      "info": "Control whether to track globally or per-page"
+    },
+    {
+      "type": "range",
+      "id": "expiration_days",
+      "label": "Remember for (days)",
+      "min": 1,
+      "max": 365,
+      "step": 1,
+      "default": 30,
+      "info": "How long to remember that user has seen VideoAsk"
+    },
+    {
+      "type": "header",
+      "content": "Modal Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "close_on_overlay_click",
+      "label": "Close on Overlay Click",
+      "default": true,
+      "info": "Allow closing modal by clicking outside"
+    },
+    {
+      "type": "header",
+      "content": "Widget Settings"
+    },
+    {
+      "type": "select",
+      "id": "widget_type",
+      "label": "Widget Type",
+      "default": "VideoThumbnailExtraLarge",
+      "options": [
+        { "value": "VideoThumbnailExtraLarge", "label": "Extra Large Thumbnail" },
+        { "value": "VideoThumbnailLarge", "label": "Large Thumbnail" },
+        { "value": "VideoThumbnailSmall", "label": "Small Thumbnail" },
+        { "value": "CircleThumbail", "label": "Circle Thumbnail" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "widget_text",
+      "label": "Widget Text",
+      "default": "",
+      "info": "Optional text to display on widget"
+    },
+    {
+      "type": "color",
+      "id": "widget_color",
+      "label": "Widget Color",
+      "default": "#7D00FE"
+    },
+    {
+      "type": "select",
+      "id": "widget_position",
+      "label": "Widget Position",
+      "default": "bottom-right",
+      "options": [
+        { "value": "bottom-right", "label": "Bottom Right" },
+        { "value": "bottom-left", "label": "Bottom Left" },
+        { "value": "top-right", "label": "Top Right" },
+        { "value": "top-left", "label": "Top Left" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "widget_dismissible",
+      "label": "Widget Dismissible",
+      "default": false,
+      "info": "Allow users to dismiss the widget"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_hide_after_interaction",
+      "label": "Auto-hide After Interaction",
+      "default": false,
+      "info": "Hide widget after user clicks on it"
+    },
+    {
+      "type": "header",
+      "content": "Debug Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_button_enabled",
+      "label": "Show Reset Button",
+      "default": false,
+      "info": "Shows a button to reset the 'shown' status for testing"
+    }
+  ],
+  "presets": [
+    {
+      "name": "VideoAsk First Visit",
+      "category": "Popups",
+      "settings": {
+        "display_mode": "modal",
+        "delay_seconds": 3
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,91 @@
+{% comment %}
+  Footer Test with Blocks - Testing if blocks cause save issues
+{% endcomment %}
+
+<style>
+  .footer-test-blocks {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 2rem 0;
+  }
+  .footer-test-blocks__social {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+  .footer-test-blocks__social a {
+    color: #e2e8f0;
+    text-decoration: none;
+  }
+</style>
+
+<footer class="footer-test-blocks">
+  <div class="container">
+    <div class="footer-test-blocks__social">
+      {% for block in section.blocks %}
+        {% if block.type == 'social_link' %}
+          <a href="{{ block.settings.url }}" target="_blank">
+            {{ block.settings.platform }}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <p>{{ section.settings.copyright_text }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer Test Blocks",
+  "elements": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2024 Test. All rights reserved."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "social_link",
+      "name": "Social Link",
+      "elements": [
+        {
+          "type": "select",
+          "id": "platform",
+          "label": "Platform",
+          "default": "instagram",
+          "options": [
+            {"value": "instagram", "label": "Instagram"},
+            {"value": "facebook", "label": "Facebook"},
+            {"value": "twitter", "label": "Twitter"}
+          ]
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL",
+          "default": "https://"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Test Blocks",
+      "category": "Footer",
+      "description": "Footer with blocks for testing",
+      "blocks": [
+        {
+          "type": "social_link",
+          "settings": {
+            "platform": "instagram",
+            "url": "https://instagram.com"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

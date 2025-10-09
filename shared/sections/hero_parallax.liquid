@@ -35,12 +35,25 @@
     will-change: transform;
   }
 
-  /* Background Image */
-  #parallax-hero-{{ section.id }} .parallax-hero__image {
+  /* Background Image Container */
+  #parallax-hero-{{ section.id }} .parallax-hero__image-wrapper {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    {% if section.settings.image_container_width %}max-width: {{ section.settings.image_container_width }}px; margin: 0 auto;{% endif %}
+    {% if section.settings.image_container_height %}height: {{ section.settings.image_container_height }}px;{% endif %}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Background Image */
+  #parallax-hero-{{ section.id }} .parallax-hero__image {
+    width: {% if section.settings.image_width %}{{ section.settings.image_width }}{% else %}100%{% endif %};
+    height: {% if section.settings.image_height %}{{ section.settings.image_height }}{% else %}100%{% endif %};
+    object-fit: {{ section.settings.image_fit | default: 'cover' }};
     object-position: {{ section.settings.image_position | default: 'center center' }};
+    {% if section.settings.image_aspect_ratio and section.settings.image_container_height == blank %}aspect-ratio: {{ section.settings.image_aspect_ratio }};{% endif %}
   }
 
   /* Gradient Overlay */
@@ -244,13 +257,14 @@
 <section class="parallax-hero" id="parallax-hero-{{ section.id }}">
   <!-- Background with Parallax -->
   <div class="parallax-hero__bg" data-parallax-speed="{{ section.settings.parallax_speed | default: 0.5 }}">
-    {% if section.settings.background_image != blank %}
-      <img src="{{ section.settings.background_image | image_picker_url: '1600x900' }}"
-           alt="{{ section.settings.image_alt | default: 'Hero background' }}"
-           class="parallax-hero__image"
-           loading="eager"
-           style="aspect-ratio: 16/9; object-fit: cover; width: 100%; height: 100%;">
-    {% else %}
+    <div class="parallax-hero__image-wrapper">
+      {% if section.settings.background_image != blank %}
+        <img src="{{ section.settings.background_image | image_picker_url: 'master' }}"
+             alt="{{ section.settings.image_alt | default: 'Hero background' }}"
+             class="parallax-hero__image"
+             {% if section.settings.image_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+             decoding="async">
+      {% else %}
       <div class="parallax-hero__image" style="width: 100%; height: 100%; background: var(--c-brand-100, #E9E6FF); display: flex; align-items: center; justify-content: center;">
         <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="20" width="160" height="160" rx="8" stroke="var(--c-brand-600, #5E3BFF)" stroke-width="2" fill="none" opacity="0.3"/>
@@ -258,7 +272,8 @@
           <circle cx="100" cy="100" r="30" stroke="var(--c-brand-600, #5E3BFF)" stroke-width="2" fill="none" opacity="0.3"/>
         </svg>
       </div>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
 
   <!-- Gradient Overlay -->
@@ -396,10 +411,43 @@
       "default": "Hero background"
     },
     {
+      "type": "header",
+      "content": "Image Display Settings"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover (fills container, may crop)"
+        },
+        {
+          "value": "contain",
+          "label": "Contain (shows entire image)"
+        },
+        {
+          "value": "fill",
+          "label": "Fill (stretches to fit)"
+        },
+        {
+          "value": "none",
+          "label": "None (original size)"
+        },
+        {
+          "value": "scale-down",
+          "label": "Scale Down"
+        }
+      ]
+    },
+    {
       "type": "select",
       "id": "image_position",
       "label": "Image Position",
       "default": "center center",
+      "info": "Where to position the image when using 'cover' fit",
       "options": [
         {
           "value": "left top",
@@ -438,6 +486,117 @@
           "label": "Right Bottom"
         }
       ]
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "Auto (natural aspect)"
+        },
+        {
+          "value": "1/1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4/3",
+          "label": "Standard (4:3)"
+        },
+        {
+          "value": "16/9",
+          "label": "Widescreen (16:9)"
+        },
+        {
+          "value": "21/9",
+          "label": "Ultra Wide (21:9)"
+        },
+        {
+          "value": "3/2",
+          "label": "Classic (3:2)"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Image Container Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_container_width",
+      "label": "Container Max Width",
+      "info": "Leave empty for full width",
+      "min": 800,
+      "max": 2400,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_container_height",
+      "label": "Container Height",
+      "info": "Leave empty for auto height",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "label": "Image Width",
+      "default": "100%",
+      "options": [
+        {
+          "value": "100%",
+          "label": "Full Width (100%)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "75%",
+          "label": "75%"
+        },
+        {
+          "value": "50%",
+          "label": "50%"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image Height",
+      "default": "100%",
+      "options": [
+        {
+          "value": "100%",
+          "label": "Full Height (100%)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "75%",
+          "label": "75%"
+        },
+        {
+          "value": "50%",
+          "label": "50%"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "image_priority",
+      "label": "High Priority Loading",
+      "default": true,
+      "info": "Enable for above-fold images"
     },
     {
       "type": "range",

@@ -1,0 +1,233 @@
+{
+  "imageOptimization": [
+    {
+      "file": "content_instagram_feed.liquid",
+      "line": 369,
+      "tag": "<img src=\"${mediaUrl}\" alt=\"${post.caption ? post.caption.substring(0, 100) : 'Instagram post'}\" cla"
+    },
+    {
+      "file": "nav_main.liquid",
+      "line": 290,
+      "tag": "<img src=\"{{ avatar_url }}\" alt=\"{{ current_site_user.name | default: 'Account' }}\">"
+    },
+    {
+      "file": "section_accordion.liquid",
+      "line": 47,
+      "tag": "<img src=\"{{ 'placeholder.png' | asset_url }}\" alt=\"{{ block.settings.title }}\" class=\"slim-card__im"
+    },
+    {
+      "file": "section_slim_card.liquid",
+      "line": 96,
+      "tag": "<img src=\"{{ 'placeholder.png' | asset_url }}\" alt=\"{{ section.settings.title }}\" class=\"slim-card__"
+    }
+  ],
+  "missingPriority": [
+    {
+      "file": "hero_clean.liquid",
+      "line": 20,
+      "context": "Hero section without priority: true"
+    }
+  ],
+  "missingAspectRatio": [
+    {
+      "file": "book_showcase_unified.liquid",
+      "line": 72,
+      "context": "No aspect_ratio specified"
+    }
+  ],
+  "missingAlt": [],
+  "missingAria": [
+    {
+      "file": "content_contact_form.liquid",
+      "line": 217,
+      "tag": "<input type=\"checkbox\" name=\"newsletter_signup\" value=\"yes\">"
+    },
+    {
+      "file": "cta_free_resource.liquid",
+      "line": 355,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ section.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "cta_free_resource.liquid",
+      "line": 383,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ section.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "cta_free_resource.liquid",
+      "line": 386,
+      "tag": "<input type=\"hidden\" name=\"form_submission[email]\" value=\"{{ user_email }}\">"
+    },
+    {
+      "file": "gated_resource.liquid",
+      "line": 118,
+      "tag": "<input type=\"hidden\" name=\"resource_url\" value=\"{{ section.settings.resource_url }}\">"
+    },
+    {
+      "file": "gated_resource.liquid",
+      "line": 119,
+      "tag": "<input type=\"hidden\" name=\"resource_title\" value=\"{{ section.settings.title }}\">"
+    },
+    {
+      "file": "section_prefilled_form.liquid",
+      "line": 54,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ section.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_prefilled_form.liquid",
+      "line": 67,
+      "tag": "<input type=\"hidden\" name=\"form_submission[email]\" value=\"{{ user_email }}\">"
+    },
+    {
+      "file": "section_prefilled_form.liquid",
+      "line": 80,
+      "tag": "<input type=\"hidden\" name=\"form_submission[first_name]\" value=\"{{ user_first_name }}\">"
+    },
+    {
+      "file": "section_prefilled_form.liquid",
+      "line": 83,
+      "tag": "<input type=\"hidden\" name=\"form_submission[last_name]\" value=\"{{ user_last_name }}\">"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 87,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ block.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 89,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ block.settings.hidden_field_name }}]\" value=\"{{ block."
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 98,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ block.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 100,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ block.settings.hidden_field_name }}]\" value=\"{{ block."
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 201,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ cf.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 203,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ cf.settings.hidden_field_name }}]\" value=\"{{ cf.settin"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 212,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ cf.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 214,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ cf.settings.hidden_field_name }}]\" value=\"{{ cf.settin"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 247,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ block.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 249,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ block.settings.hidden_field_name }}]\" value=\"{{ block."
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 258,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ block.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_dashboard.liquid",
+      "line": 260,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ block.settings.hidden_field_name }}]\" value=\"{{ block."
+    },
+    {
+      "file": "section_support_help_center.liquid",
+      "line": 148,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ cf.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_help_center.liquid",
+      "line": 150,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ cf.settings.hidden_field_name }}]\" value=\"{{ cf.settin"
+    },
+    {
+      "file": "section_support_help_center.liquid",
+      "line": 159,
+      "tag": "<input type=\"hidden\" name=\"thank_you_url\" value=\"{{ cf.settings.thank_you_url }}\">"
+    },
+    {
+      "file": "section_support_help_center.liquid",
+      "line": 161,
+      "tag": "<input type=\"hidden\" name=\"form_submission[{{ cf.settings.hidden_field_name }}]\" value=\"{{ cf.settin"
+    }
+  ],
+  "noBlurUp": [
+    {
+      "file": "an_testimonials.liquid",
+      "line": 62,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "an_testimonials.liquid",
+      "line": 119,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "an_testimonials.liquid",
+      "line": 174,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "an_testimonials.liquid",
+      "line": 236,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "book_details.liquid",
+      "line": 51,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "book_details.liquid",
+      "line": 114,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "book_showcase_unified.liquid",
+      "line": 72,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "book_showcase_unified.liquid",
+      "line": 106,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "content_advanced_bio.liquid",
+      "line": 132,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "nav_footer_bio.liquid",
+      "line": 50,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "nav_main.liquid",
+      "line": 251,
+      "context": "No blur_up enabled"
+    },
+    {
+      "file": "testimonial_book_split_layout.liquid",
+      "line": 59,
+      "context": "No blur_up enabled"
+    }
+  ]
+}

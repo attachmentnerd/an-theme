@@ -112,7 +112,16 @@
             <div class="content-grid">
                 <div class="content-image">
                     <!--@id=eli_speaking_stage-->
-                    <img src="{{ section.settings.img_2_eli_harwood_speaking_on_ | image_picker_url: '2000x' }}" alt="Eli Harwood speaking on stage" loading="lazy">
+                                        {% render 'responsive-image',
+                      image: section.settings.img_2_eli_harwood_speaking_on_,
+                      alt: 'Eli Harwood speaking on stage',
+                      class: 'img-fluid',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                 </div>
                 <div class="content-text">
                     <h2>{{ section.settings.h2_not__h3__1_breaking_cycles_star }}</h2>
@@ -173,7 +182,16 @@
                 </div>
                 <div class="ready-image">
                     <!--@id=eli_audience_connection-->
-                    <img src="{{ section.settings.img_3_eli_connecting_with_audi | image_picker_url: '2000x' }}" alt="Eli connecting with audience" loading="lazy">
+                                        {% render 'responsive-image',
+                      image: section.settings.img_3_eli_connecting_with_audi,
+                      alt: 'Eli connecting with audience',
+                      class: 'img-fluid',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                 </div>
             </div>
         </div>
@@ -185,7 +203,16 @@
             <div class="why-grid">
                 <div class="why-image">
                     <!--@id=eli_professional_headshot-->
-                    <img src="{{ section.settings.img_4_eli_harwood_professional | image_picker_url: '2000x' }}" alt="Eli Harwood professional headshot" loading="lazy">
+                                        {% render 'responsive-image',
+                      image: section.settings.img_4_eli_harwood_professional,
+                      alt: 'Eli Harwood professional headshot',
+                      class: 'img-fluid',
+                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                      aspect_ratio: '16/9',
+                      widths: '400,600,800,1200',
+                      placeholder_type: 'feature',
+                      blur_up: true
+                    %}
                 </div>
                 <div class="why-content">
                     <h2>{{ section.settings.h2_not__h3__4_why_eli_ }}</h2>

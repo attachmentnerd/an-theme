@@ -1,6 +1,8 @@
 {% include "section_styles" %}
 
-<section id="{{ section.settings.section_id | default: 'section' }}-{{ section.id }}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
+<section id="{{ section.settings.section_id | default: 'section' }}-{{ section.id }}"
+  data-section-id="{{ section.settings.section_id | default: 'section' }}"
+  kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
   class="section
   {% if section.settings.hide_on_desktop == true %}hidden--desktop{% endif %}
   {% if section.settings.hide_on_mobile == true %}hidden--mobile{% endif %}
@@ -103,6 +105,70 @@
             {
               "value": "bottom",
               "label": "Bottom"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "bg_size",
+          "label": "Background Size",
+          "default": "cover",
+          "options": [
+            {
+              "value": "cover",
+              "label": "Cover (fills container, may crop)"
+            },
+            {
+              "value": "contain",
+              "label": "Contain (shows entire image)"
+            },
+            {
+              "value": "auto",
+              "label": "Auto (original size)"
+            },
+            {
+              "value": "100% 100%",
+              "label": "Stretch to Fill"
+            },
+            {
+              "value": "50%",
+              "label": "50% Size"
+            },
+            {
+              "value": "25%",
+              "label": "25% Size (for patterns)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "bg_repeat",
+          "label": "Background Repeat",
+          "default": "no-repeat",
+          "options": [
+            {
+              "value": "no-repeat",
+              "label": "No Repeat"
+            },
+            {
+              "value": "repeat",
+              "label": "Repeat Both"
+            },
+            {
+              "value": "repeat-x",
+              "label": "Repeat Horizontally"
+            },
+            {
+              "value": "repeat-y",
+              "label": "Repeat Vertically"
+            },
+            {
+              "value": "space",
+              "label": "Space Between"
+            },
+            {
+              "value": "round",
+              "label": "Round (fit evenly)"
             }
           ]
         },

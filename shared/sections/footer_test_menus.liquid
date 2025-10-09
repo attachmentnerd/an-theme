@@ -1,0 +1,73 @@
+{% comment %}
+  Footer Test with Menus - Testing if menu references cause save issues
+{% endcomment %}
+
+<style>
+  .footer-test-menus {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 2rem 0;
+  }
+  .footer-test-menus a {
+    color: #e2e8f0;
+    text-decoration: none;
+    display: block;
+    padding: 0.25rem 0;
+  }
+</style>
+
+<footer class="footer-test-menus">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>{{ section.settings.menu_heading }}</h4>
+        {% if section.settings.menu_handle %}
+          {% assign menu = current_site.link_lists[section.settings.menu_handle] %}
+          {% if menu %}
+            {% for link in menu.links %}
+              <a href="{{ link.url }}">{{ link.name }}</a>
+            {% endfor %}
+          {% else %}
+            <p>Menu not found</p>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="col-md-6">
+        <p>{{ section.settings.copyright_text }}</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer Test Menus",
+  "elements": [
+    {
+      "type": "text",
+      "id": "menu_heading",
+      "label": "Menu Heading",
+      "default": "Quick Links"
+    },
+    {
+      "type": "text",
+      "id": "menu_handle",
+      "label": "Menu Handle",
+      "default": "footer-menu"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2024 Test. All rights reserved."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Test Menus",
+      "category": "Footer",
+      "description": "Footer with menu testing"
+    }
+  ]
+}
+{% endschema %}

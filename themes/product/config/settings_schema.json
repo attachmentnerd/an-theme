@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "AN Product Theme",
-    "theme_version": "AN-PROD 2025.09.28+26.2.6",
+    "theme_version": "AN-PROD 2025.09.30+26.5.7",
     "theme_author": "Kajabi",
     "theme_documentation_url": "https://themes.kajabi.com/changelog/product-themes/premier",
     "theme_support_url": "https://learn.kajabi.com",
@@ -306,6 +306,644 @@
         "id": "body_scripts",
         "label": "Body Scripts",
         "info": "Scripts to add before closing </body> tag. Do not include <script> tags."
+      }
+    ]
+  },
+  {
+    "name": "Thin Hero",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Template Visibility"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_thin_hero_post",
+        "label": "Show on Post Pages",
+        "default": "true",
+        "info": "Display thin hero on individual post/lesson pages"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_thin_hero_category",
+        "label": "Show on Category Pages",
+        "default": "false",
+        "info": "Display thin hero on category listing pages"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_thin_hero_product",
+        "label": "Show on Product Overview",
+        "default": "true",
+        "info": "Display thin hero on main product page"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_thin_hero_categories",
+        "label": "Show on Categories List",
+        "default": "false",
+        "info": "Display thin hero on all categories page"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_thin_hero_announcements",
+        "label": "Show on Announcements",
+        "default": "false",
+        "info": "Display thin hero on announcements page"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_thin_hero_search",
+        "label": "Show on Search Page",
+        "default": "false",
+        "info": "Display thin hero on search results page"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "hero_bg_image",
+        "label": "Background Image",
+        "info": "Leave blank to use solid color or pattern"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_use_pattern",
+        "label": "Use Pattern Background",
+        "default": "false",
+        "info": "Shows a subtle pattern instead of solid color"
+      },
+      {
+        "type": "select",
+        "id": "hero_pattern_type",
+        "label": "Pattern Type",
+        "default": "dots",
+        "options": [
+          {
+            "label": "Dots",
+            "value": "dots"
+          },
+          {
+            "label": "Grid",
+            "value": "grid"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "hero_bg_color",
+        "label": "Background Color",
+        "default": "#E9E6FF"
+      },
+      {
+        "type": "select",
+        "id": "hero_bg_size",
+        "label": "Background Size",
+        "default": "cover",
+        "options": [
+          {
+            "label": "Cover",
+            "value": "cover"
+          },
+          {
+            "label": "Contain",
+            "value": "contain"
+          },
+          {
+            "label": "Auto",
+            "value": "auto"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "hero_bg_position",
+        "label": "Background Position",
+        "default": "center center",
+        "options": [
+          {
+            "label": "Center",
+            "value": "center center"
+          },
+          {
+            "label": "Top",
+            "value": "top center"
+          },
+          {
+            "label": "Bottom",
+            "value": "bottom center"
+          },
+          {
+            "label": "Left",
+            "value": "left center"
+          },
+          {
+            "label": "Right",
+            "value": "right center"
+          }
+        ]
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Overlay"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_overlay_gradient",
+        "label": "Use Gradient Overlay",
+        "default": "false"
+      },
+      {
+        "type": "color",
+        "id": "hero_overlay_from",
+        "label": "Gradient Start Color"
+      },
+      {
+        "type": "color",
+        "id": "hero_overlay_to",
+        "label": "Gradient End Color"
+      },
+      {
+        "type": "range",
+        "id": "hero_overlay_angle",
+        "label": "Gradient Angle",
+        "default": 180,
+        "min": 0,
+        "max": 360,
+        "step": 15,
+        "unit": "deg"
+      },
+      {
+        "type": "range",
+        "id": "hero_overlay_opacity",
+        "label": "Overlay Opacity",
+        "default": 80,
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "text",
+        "id": "hero_title",
+        "label": "Hero Title (Optional)",
+        "default": "",
+        "info": "Leave blank to automatically use the page title. Enter text here to override the page title."
+      },
+      {
+        "type": "textarea",
+        "id": "hero_subtitle",
+        "label": "Hero Subtitle",
+        "default": "Continue where you left off"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_show_progress",
+        "label": "Show Course Progress",
+        "default": "false",
+        "info": "Replace subtitle with completion percentage"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_show_metadata",
+        "label": "Show Post Metadata",
+        "default": "false",
+        "info": "Display author and date for posts"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Breadcrumbs"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_show_breadcrumbs",
+        "label": "Show Breadcrumbs",
+        "default": "true"
+      },
+      {
+        "type": "select",
+        "id": "hero_breadcrumb_style",
+        "label": "Breadcrumb Style",
+        "default": "auto",
+        "options": [
+          {
+            "label": "Automatic",
+            "value": "auto"
+          },
+          {
+            "label": "Custom",
+            "value": "custom"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "hero_breadcrumb_separator",
+        "label": "Breadcrumb Separator",
+        "default": "›"
+      },
+      {
+        "type": "header",
+        "content": "Automatic Breadcrumb Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_auto_breadcrumb_new_tab",
+        "label": "Open automatic breadcrumb links in new tab",
+        "default": "false",
+        "info": "Applies to all automatic breadcrumb links"
+      },
+      {
+        "type": "header",
+        "content": "Custom Breadcrumbs",
+        "info": "Configure up to 3 levels of breadcrumb navigation"
+      },
+      {
+        "type": "header",
+        "content": "Breadcrumb 1"
+      },
+      {
+        "type": "text",
+        "id": "hero_breadcrumb_1_text",
+        "label": "Text",
+        "default": "Home"
+      },
+      {
+        "type": "action",
+        "id": "hero_breadcrumb_1_url",
+        "label": "URL",
+        "default": "/",
+        "info": "Leave blank to make non-clickable"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_breadcrumb_1_new_tab",
+        "label": "Open in new tab",
+        "default": "false"
+      },
+      {
+        "type": "header",
+        "content": "Breadcrumb 2"
+      },
+      {
+        "type": "text",
+        "id": "hero_breadcrumb_2_text",
+        "label": "Text"
+      },
+      {
+        "type": "action",
+        "id": "hero_breadcrumb_2_url",
+        "label": "URL",
+        "info": "Leave blank to make non-clickable"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_breadcrumb_2_new_tab",
+        "label": "Open in new tab",
+        "default": "false"
+      },
+      {
+        "type": "header",
+        "content": "Breadcrumb 3 (Current Page)"
+      },
+      {
+        "type": "text",
+        "id": "hero_breadcrumb_3_text",
+        "label": "Text",
+        "info": "Usually the current page - leave URL blank"
+      },
+      {
+        "type": "action",
+        "id": "hero_breadcrumb_3_url",
+        "label": "URL",
+        "info": "Usually left blank for current page"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_breadcrumb_3_new_tab",
+        "label": "Open in new tab",
+        "default": "false"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Call to Action"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_show_cta",
+        "label": "Show CTA Buttons",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "id": "hero_cta_text",
+        "label": "Primary Button Text",
+        "default": "Continue Learning"
+      },
+      {
+        "type": "action",
+        "id": "hero_cta_url",
+        "label": "Primary Button URL",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "hero_cta2_text",
+        "label": "Secondary Button Text"
+      },
+      {
+        "type": "action",
+        "id": "hero_cta2_url",
+        "label": "Secondary Button URL"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "color",
+        "id": "hero_title_color",
+        "label": "Title Color",
+        "default": "#111827"
+      },
+      {
+        "type": "color",
+        "id": "hero_text_color",
+        "label": "Text Color",
+        "default": "#6B7280"
+      },
+      {
+        "type": "color",
+        "id": "hero_breadcrumb_color",
+        "label": "Breadcrumb Color",
+        "default": "#5E3BFF"
+      },
+      {
+        "type": "range",
+        "id": "hero_title_size",
+        "label": "Title Size (Mobile)",
+        "default": 32,
+        "min": 24,
+        "max": 48,
+        "step": 2,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_title_size_desktop",
+        "label": "Title Size (Desktop)",
+        "default": 48,
+        "min": 32,
+        "max": 72,
+        "step": 2,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_title_weight",
+        "label": "Title Font Weight",
+        "default": 700,
+        "min": 400,
+        "max": 900,
+        "step": 100
+      },
+      {
+        "type": "range",
+        "id": "hero_subtitle_size",
+        "label": "Subtitle Size",
+        "default": 18,
+        "min": 14,
+        "max": 24,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "checkbox",
+        "id": "hero_text_shadow",
+        "label": "Add Text Shadow",
+        "default": "false",
+        "info": "Improves readability over images"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Button Styles"
+      },
+      {
+        "type": "color",
+        "id": "hero_cta_bg",
+        "label": "Primary Button Background",
+        "default": "#5E3BFF"
+      },
+      {
+        "type": "color",
+        "id": "hero_cta_color",
+        "label": "Primary Button Text Color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "hero_cta_hover_bg",
+        "label": "Primary Button Hover Background",
+        "default": "#4C1D95"
+      },
+      {
+        "type": "color",
+        "id": "hero_cta2_color",
+        "label": "Secondary Button Text Color"
+      },
+      {
+        "type": "color",
+        "id": "hero_cta2_border",
+        "label": "Secondary Button Border Color"
+      },
+      {
+        "type": "color",
+        "id": "hero_cta2_hover_bg",
+        "label": "Secondary Button Hover Background"
+      },
+      {
+        "type": "range",
+        "id": "hero_btn_radius",
+        "label": "Button Border Radius",
+        "default": 6,
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "range",
+        "id": "hero_max_width",
+        "label": "Max Content Width",
+        "default": 1200,
+        "min": 800,
+        "max": 1600,
+        "step": 50,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_text_max_width",
+        "label": "Max Text Width",
+        "default": 800,
+        "min": 400,
+        "max": 1000,
+        "step": 50,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_padding_x",
+        "label": "Horizontal Padding",
+        "default": 20,
+        "min": 10,
+        "max": 60,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_padding_y",
+        "label": "Vertical Padding (Mobile)",
+        "default": 40,
+        "min": 20,
+        "max": 80,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_padding_y_desktop",
+        "label": "Vertical Padding (Desktop)",
+        "default": 60,
+        "min": 30,
+        "max": 120,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_min_height",
+        "label": "Min Height (Mobile)",
+        "default": 200,
+        "min": 150,
+        "max": 400,
+        "step": 10,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_min_height_desktop",
+        "label": "Min Height (Desktop)",
+        "default": 280,
+        "min": 200,
+        "max": 500,
+        "step": 10,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "hero_margin_bottom",
+        "label": "Margin Bottom",
+        "default": 30,
+        "min": 0,
+        "max": 80,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "hero_align_x",
+        "label": "Horizontal Alignment",
+        "default": "flex-start",
+        "options": [
+          {
+            "label": "Left",
+            "value": "flex-start"
+          },
+          {
+            "label": "Center",
+            "value": "center"
+          },
+          {
+            "label": "Right",
+            "value": "flex-end"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "hero_align_y",
+        "label": "Vertical Alignment",
+        "default": "center",
+        "options": [
+          {
+            "label": "Top",
+            "value": "flex-start"
+          },
+          {
+            "label": "Center",
+            "value": "center"
+          },
+          {
+            "label": "Bottom",
+            "value": "flex-end"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "hero_text_align",
+        "label": "Text Alignment",
+        "default": "left",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left"
+          },
+          {
+            "label": "Center",
+            "value": "center"
+          },
+          {
+            "label": "Right",
+            "value": "right"
+          }
+        ]
       }
     ]
   }

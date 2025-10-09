@@ -47,11 +47,15 @@
             <div class="an-footer__avatar-glow"></div>
             <div class="an-footer__avatar-wrapper" kjb-settings-id="{{ 'avatar_image' | settings_id: section: section }}">
               {% if section.settings.avatar_image != blank %}
-                <img src="{{ section.settings.avatar_image | image_picker_url: '120x120' }}" 
-             alt="{{ section.settings.author_name | default: 'Avatar' }}" 
-             class="an-footer__avatar"
-             loading="lazy"
-             style="object-fit: cover;">
+                                {% render 'responsive-image',
+                  image: section.settings.avatar_image,
+                  alt: '{{ section.settings.author_name | default: ',
+                  class: 'an-footer__avatar',
+                  sizes: '120px',
+                  aspect_ratio: '16/9',
+                  widths: '60,120,180,240',
+                  placeholder_type: 'avatar'
+                %}
               {% else %}
                 <div class="an-footer__avatar-placeholder">
                   <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
@@ -982,6 +986,13 @@
           "default": false
         }
       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Bio - Brand Aligned",
+      "category": "Footer",
+      "description": "Footer with bio, newsletter signup, and social links"
     }
   ]
 }

@@ -4,7 +4,8 @@
   Responsive design that adapts based on number of blocks
 {%- endcomment -%}
 
-<section id="{{ section.settings.section_id | default: 'books-showcase' }}-{{ section.id }}" 
+<section id="{{ section.settings.section_id | default: 'books-showcase' }}-{{ section.id }}"
+         data-section-id="{{ section.settings.section_id | default: 'books-showcase' }}"
          class="books-showcase-grid py-{{ section.settings.padding_y }}" 
          style="background: {{ section.settings.section_background }};">
   <div class="container">

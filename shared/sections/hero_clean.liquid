@@ -7,27 +7,35 @@
   - Modern, clean design
 {% endcomment %}
 
-<section id="{{ section.settings.section_id | default: 'hero' }}-{{ section.id }}" 
-         class="hero-clean section--{{ section.id }}" 
-         style="background-color: {{ section.settings.background_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+<section id="{{ section.settings.section_id | default: 'hero' }}-{{ section.id }}"
+         data-section-id="{{ section.settings.section_id | default: 'hero' }}"
+         class="hero-clean section--{{ section.id }}"
+         style="
+           {% if section.settings.background_image %}
+             background-image: url('{{ section.settings.background_image | image_picker_url: 'master' }}');
+             background-size: {{ section.settings.background_size | default: 'cover' }};
+             background-position: {{ section.settings.background_position | default: 'center center' }};
+             background-repeat: {{ section.settings.background_repeat | default: 'no-repeat' }};
+             background-attachment: {{ section.settings.background_attachment | default: 'scroll' }};
+           {% else %}
+             background-color: {{ section.settings.background_color }};
+           {% endif %}
+           padding-top: {{ section.settings.padding_top }}px;
+           padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container">
     <div class="row align-items-center {% if section.settings.image_position == 'right' %}flex-lg-row-reverse{% endif %}">
       
       <!-- Image Column -->
       {% if section.settings.image %}
         <div class="col-lg-6 {% if section.settings.image_position == 'right' %}ps-lg-5{% else %}pe-lg-5{% endif %} mb-4 mb-lg-0">
-          <div class="hero-clean__image-wrapper animate-fade-up">
-            {% render 'responsive-image',
-              image: section.settings.image,
-              alt: section.settings.image_alt | default: 'Hero image',
-              class: 'img-fluid rounded',
-              sizes: '(max-width: 767px) 100vw, 50vw',
-              priority: section.settings.image_priority,
-              aspect_ratio: '4/3',
-              placeholder_type: 'hero',
-              blur_up: true,
-              style: 'box-shadow: ' | append: section.settings.image_shadow | append: ';'
-            %}
+          <div class="hero-clean__image-wrapper animate-fade-up" style="{% if section.settings.image_container_height %}height: {{ section.settings.image_container_height }}px;{% endif %} {% if section.settings.image_container_width %}max-width: {{ section.settings.image_container_width }}px; margin: 0 auto;{% endif %}">
+            <img
+              src="{{ section.settings.image | image_picker_url: 'master' }}"
+              alt="{{ section.settings.image_alt | default: 'Hero image' }}"
+              class="img-fluid rounded"
+              {% if section.settings.image_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+              style="width: {% if section.settings.image_width %}{{ section.settings.image_width }}{% else %}100%{% endif %}; height: {% if section.settings.image_height %}{{ section.settings.image_height }}{% else %}auto{% endif %}; object-fit: {{ section.settings.image_fit | default: 'cover' }}; object-position: {{ section.settings.image_position | default: 'center' }}; {% if section.settings.image_aspect_ratio and section.settings.image_container_height == blank %}aspect-ratio: {{ section.settings.image_aspect_ratio }};{% endif %} box-shadow: {{ section.settings.image_shadow }};"
+            >
           </div>
         </div>
       {% endif %}
@@ -139,6 +147,9 @@
   
   .hero-clean__image-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .hero-clean__image-wrapper img {
@@ -468,6 +479,187 @@
     },
     {
       "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "default": "contain",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain (shows entire image)"
+        },
+        {
+          "value": "cover",
+          "label": "Cover (fills container, may crop)"
+        },
+        {
+          "value": "fill",
+          "label": "Fill (stretches to fit)"
+        },
+        {
+          "value": "none",
+          "label": "None (original size)"
+        },
+        {
+          "value": "scale-down",
+          "label": "Scale Down (smaller of contain or none)"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "default": "center",
+      "info": "Where to position the image when using 'cover' fit",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "top left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top right",
+          "label": "Top Right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "default": "4/3",
+      "options": [
+        {
+          "value": "",
+          "label": "Auto (natural aspect)"
+        },
+        {
+          "value": "1/1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4/3",
+          "label": "Standard (4:3)"
+        },
+        {
+          "value": "16/9",
+          "label": "Widescreen (16:9)"
+        },
+        {
+          "value": "21/9",
+          "label": "Ultra Wide (21:9)"
+        },
+        {
+          "value": "3/2",
+          "label": "Classic (3:2)"
+        },
+        {
+          "value": "2/3",
+          "label": "Portrait (2:3)"
+        },
+        {
+          "value": "3/4",
+          "label": "Portrait (3:4)"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_container_height",
+      "label": "Image Container Height",
+      "info": "Leave empty for auto height based on aspect ratio",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_container_width",
+      "label": "Image Container Max Width",
+      "info": "Leave empty for full column width",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "label": "Image Width",
+      "default": "100%",
+      "options": [
+        {
+          "value": "100%",
+          "label": "Full Width (100%)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "75%",
+          "label": "75%"
+        },
+        {
+          "value": "50%",
+          "label": "50%"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image Height",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "100%",
+          "label": "Full Height (100%)"
+        },
+        {
+          "value": "75%",
+          "label": "75%"
+        },
+        {
+          "value": "50%",
+          "label": "50%"
+        }
+      ]
+    },
+    {
+      "type": "select",
       "id": "image_shadow",
       "label": "Image Shadow",
       "default": "0 20px 40px rgba(0,0,0,0.1)",
@@ -781,6 +973,142 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Optional background image instead of solid color"
+    },
+    {
+      "type": "select",
+      "id": "background_size",
+      "label": "Background Size",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover (fills container, may crop)"
+        },
+        {
+          "value": "contain",
+          "label": "Contain (fits entire image)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto (original size)"
+        },
+        {
+          "value": "100% 100%",
+          "label": "Stretch to Fill"
+        },
+        {
+          "value": "50%",
+          "label": "50% Size"
+        },
+        {
+          "value": "25%",
+          "label": "25% Size (for patterns)"
+        }
+      ],
+      "info": "How the background image should be sized"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background Position",
+      "default": "center center",
+      "options": [
+        {
+          "value": "left top",
+          "label": "Left Top"
+        },
+        {
+          "value": "left center",
+          "label": "Left Center"
+        },
+        {
+          "value": "left bottom",
+          "label": "Left Bottom"
+        },
+        {
+          "value": "center top",
+          "label": "Center Top"
+        },
+        {
+          "value": "center center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center bottom",
+          "label": "Center Bottom"
+        },
+        {
+          "value": "right top",
+          "label": "Right Top"
+        },
+        {
+          "value": "right center",
+          "label": "Right Center"
+        },
+        {
+          "value": "right bottom",
+          "label": "Right Bottom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_repeat",
+      "label": "Background Repeat",
+      "default": "no-repeat",
+      "options": [
+        {
+          "value": "no-repeat",
+          "label": "No Repeat"
+        },
+        {
+          "value": "repeat",
+          "label": "Repeat Both"
+        },
+        {
+          "value": "repeat-x",
+          "label": "Repeat Horizontally"
+        },
+        {
+          "value": "repeat-y",
+          "label": "Repeat Vertically"
+        },
+        {
+          "value": "space",
+          "label": "Space Between"
+        },
+        {
+          "value": "round",
+          "label": "Round (fit evenly)"
+        }
+      ],
+      "info": "How the background image should repeat"
+    },
+    {
+      "type": "select",
+      "id": "background_attachment",
+      "label": "Background Attachment",
+      "default": "scroll",
+      "options": [
+        {
+          "value": "scroll",
+          "label": "Scroll with Page"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed (Parallax Effect)"
+        },
+        {
+          "value": "local",
+          "label": "Local"
+        }
+      ]
     },
     {
       "type": "header",

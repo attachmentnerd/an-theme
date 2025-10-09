@@ -1,8 +1,10 @@
 <style>
   {% if section.settings.bg_type == "image" %}
     #section-{{ section.id }} {
-      background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
-      background-position: {{ section.settings.bg_position }};
+      background-image: url({{ section.settings.bg_image | image_picker_url: "master" }});
+      background-position: {{ section.settings.bg_position | default: 'center' }} center;
+      background-size: {{ section.settings.bg_size | default: 'cover' }};
+      background-repeat: {{ section.settings.bg_repeat | default: 'no-repeat' }};
     }
   {% endif %}
   #section-{{ section.id }} .section__overlay {

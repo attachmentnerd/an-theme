@@ -1,0 +1,484 @@
+{% comment %}
+  Product Theme - Built-in Thin Hero
+  Controlled via theme settings, not as a section
+  Displays on all product post pages when enabled
+{% endcomment %}
+
+{% comment %} Determine if thin hero should be shown for this template {% endcomment %}
+{% assign show_hero = false %}
+{% if template == 'post' and settings.show_thin_hero_post %}
+  {% assign show_hero = true %}
+{% elsif template == 'category' and settings.show_thin_hero_category %}
+  {% assign show_hero = true %}
+{% elsif template == 'product' and settings.show_thin_hero_product %}
+  {% assign show_hero = true %}
+{% elsif template == 'categories' and settings.show_thin_hero_categories %}
+  {% assign show_hero = true %}
+{% elsif template == 'announcements' and settings.show_thin_hero_announcements %}
+  {% assign show_hero = true %}
+{% elsif template == 'search' and settings.show_thin_hero_search %}
+  {% assign show_hero = true %}
+{% endif %}
+
+{% if show_hero %}
+  {% assign hero_bg_color = settings.hero_bg_color | default: '#E9E6FF' %}
+  {% assign hero_overlay_opacity = settings.hero_overlay_opacity | default: 80 | divided_by: 100.0 %}
+  {% assign hero_title_color = settings.hero_title_color | default: '#111827' %}
+  {% assign hero_text_color = settings.hero_text_color | default: '#6B7280' %}
+  {% assign hero_breadcrumb_color = settings.hero_breadcrumb_color | default: '#5E3BFF' %}
+
+  {% comment %} Determine title - use page title by default, allow override {% endcomment %}
+  {% assign hero_title = '' %}
+
+  {% comment %} First try to get the actual page title {% endcomment %}
+  {% if post %}
+    {% assign hero_title = post.title %}
+  {% elsif product %}
+    {% assign hero_title = product.title %}
+  {% elsif category %}
+    {% assign hero_title = category.name %}
+  {% elsif template == 'categories' %}
+    {% assign hero_title = 'All Categories' %}
+  {% elsif template == 'announcements' %}
+    {% assign hero_title = 'Announcements' %}
+  {% elsif template == 'search' %}
+    {% assign hero_title = 'Search Results' %}
+  {% endif %}
+
+  {% comment %} Allow manual override if set in settings {% endcomment %}
+  {% if settings.hero_title and settings.hero_title != '' %}
+    {% assign hero_title = settings.hero_title %}
+  {% endif %}
+
+  {% comment %} Determine subtitle {% endcomment %}
+  {% assign hero_subtitle = settings.hero_subtitle %}
+  {% if settings.hero_show_progress and product %}
+    {% assign completion = product.completion %}
+    {% assign hero_subtitle = completion.percent | append: '% Complete' %}
+  {% endif %}
+
+  <section class="product-thin-hero" aria-label="Hero">
+    <div class="pth-media" aria-hidden="true">
+      {% if settings.hero_bg_image %}
+        <div class="pth-img" style="background-image: url('{{ settings.hero_bg_image | image_picker_url: 'xlarge' }}');"></div>
+      {% elsif settings.hero_use_pattern %}
+        <div class="pth-pattern pth-pattern--{{ settings.hero_pattern_type | default: 'dots' }}"></div>
+      {% else %}
+        <div class="pth-fallback"></div>
+      {% endif %}
+      <div class="pth-overlay"></div>
+    </div>
+
+    <div class="pth-container">
+      <div class="pth-wrap">
+        {% if settings.hero_show_breadcrumbs %}
+          <nav class="pth-breadcrumbs" aria-label="Breadcrumbs">
+            {% comment %} Use custom breadcrumbs if any custom text is entered, otherwise use auto {% endcomment %}
+            {% assign use_custom = false %}
+            {% if settings.hero_breadcrumb_1_text or settings.hero_breadcrumb_2_text or settings.hero_breadcrumb_3_text %}
+              {% assign use_custom = true %}
+            {% endif %}
+
+            {% if settings.hero_breadcrumb_style == 'auto' and use_custom == false %}
+              {% comment %} Automatic breadcrumbs (only if no custom text entered) {% endcomment %}
+              {% if product %}
+                {% comment %} Home/Dashboard link {% endcomment %}
+                <a href="{{ routes.root_url }}"
+                   class="pth-crumb-link"
+                   {% if settings.hero_auto_breadcrumb_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                  Home
+                </a>
+                <span class="pth-sep" aria-hidden="true">{{ settings.hero_breadcrumb_separator | default: '›' }}</span>
+
+                {% comment %} Library link {% endcomment %}
+                <a href="{{ routes.library_url }}"
+                   class="pth-crumb-link"
+                   {% if settings.hero_auto_breadcrumb_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                  My Library
+                </a>
+                <span class="pth-sep" aria-hidden="true">{{ settings.hero_breadcrumb_separator | default: '›' }}</span>
+
+                {% comment %} Current product link {% endcomment %}
+                {% if post %}
+                  <a href="{{ product.url }}"
+                     class="pth-crumb-link"
+                     {% if settings.hero_auto_breadcrumb_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                    {{ product.title | truncate: 30 }}
+                  </a>
+                  <span class="pth-sep" aria-hidden="true">{{ settings.hero_breadcrumb_separator | default: '›' }}</span>
+                  <span class="pth-crumb-text">{{ post.title | truncate: 30 }}</span>
+                {% else %}
+                  <span class="pth-crumb-text">{{ product.title | truncate: 30 }}</span>
+                {% endif %}
+              {% endif %}
+
+            {% else %}
+              {% comment %} Custom breadcrumbs (works for both 'custom' style and as fallback) {% endcomment %}
+              {% if settings.hero_breadcrumb_1_text %}
+                {% if settings.hero_breadcrumb_1_url %}
+                  <a href="{{ settings.hero_breadcrumb_1_url }}"
+                     class="pth-crumb-link"
+                     {% if settings.hero_breadcrumb_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                    {{ settings.hero_breadcrumb_1_text }}
+                  </a>
+                {% else %}
+                  <span class="pth-crumb-text">{{ settings.hero_breadcrumb_1_text }}</span>
+                {% endif %}
+              {% endif %}
+
+              {% if settings.hero_breadcrumb_2_text %}
+                <span class="pth-sep" aria-hidden="true">{{ settings.hero_breadcrumb_separator | default: '›' }}</span>
+                {% if settings.hero_breadcrumb_2_url %}
+                  <a href="{{ settings.hero_breadcrumb_2_url }}"
+                     class="pth-crumb-link"
+                     {% if settings.hero_breadcrumb_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                    {{ settings.hero_breadcrumb_2_text }}
+                  </a>
+                {% else %}
+                  <span class="pth-crumb-text">{{ settings.hero_breadcrumb_2_text }}</span>
+                {% endif %}
+              {% endif %}
+
+              {% if settings.hero_breadcrumb_3_text %}
+                <span class="pth-sep" aria-hidden="true">{{ settings.hero_breadcrumb_separator | default: '›' }}</span>
+                {% if settings.hero_breadcrumb_3_url %}
+                  <a href="{{ settings.hero_breadcrumb_3_url }}"
+                     class="pth-crumb-link"
+                     {% if settings.hero_breadcrumb_3_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                    {{ settings.hero_breadcrumb_3_text }}
+                  </a>
+                {% else %}
+                  <span class="pth-crumb-text">{{ settings.hero_breadcrumb_3_text }}</span>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          </nav>
+        {% endif %}
+
+        <header class="pth-header">
+          {% if hero_title %}
+            <h1 class="pth-title">{{ hero_title }}</h1>
+          {% endif %}
+
+          {% if hero_subtitle %}
+            <p class="pth-subtitle">{{ hero_subtitle }}</p>
+          {% endif %}
+
+          {% if settings.hero_show_metadata and post %}
+            <div class="pth-metadata">
+              {% if post.author %}
+                <span class="pth-meta-item">By {{ post.author }}</span>
+              {% endif %}
+              {% if post.published_at %}
+                <span class="pth-meta-item">{{ post.published_at | date: '%B %d, %Y' }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if settings.hero_show_cta %}
+            <div class="pth-actions">
+              {% if settings.hero_cta_text %}
+                <a href="{{ settings.hero_cta_url | default: '#' }}" class="pth-btn pth-btn--primary">
+                  {{ settings.hero_cta_text }}
+                </a>
+              {% endif %}
+              {% if settings.hero_cta2_text %}
+                <a href="{{ settings.hero_cta2_url | default: '#' }}" class="pth-btn pth-btn--secondary">
+                  {{ settings.hero_cta2_text }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </header>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .product-thin-hero {
+      position: relative;
+      isolation: isolate;
+      margin-bottom: {{ settings.hero_margin_bottom | default: 30 }}px;
+    }
+
+    .product-thin-hero .pth-media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .product-thin-hero .pth-img {
+      position: absolute;
+      inset: 0;
+      background-size: {{ settings.hero_bg_size | default: 'cover' }};
+      background-position: {{ settings.hero_bg_position | default: 'center center' }};
+      background-repeat: no-repeat;
+    }
+
+    .product-thin-hero .pth-fallback {
+      position: absolute;
+      inset: 0;
+      background: {{ hero_bg_color }};
+    }
+
+    .product-thin-hero .pth-pattern {
+      position: absolute;
+      inset: 0;
+      background: {{ hero_bg_color }};
+    }
+
+    .product-thin-hero .pth-pattern--dots::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, {{ hero_title_color }}20 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.3;
+    }
+
+    .product-thin-hero .pth-pattern--grid::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient({{ hero_title_color }}10 1px, transparent 1px),
+        linear-gradient(90deg, {{ hero_title_color }}10 1px, transparent 1px);
+      background-size: 30px 30px;
+      opacity: 0.5;
+    }
+
+    .product-thin-hero .pth-overlay {
+      position: absolute;
+      inset: 0;
+      {% if settings.hero_overlay_gradient %}
+        background: linear-gradient(
+          {{ settings.hero_overlay_angle | default: 180 }}deg,
+          {{ settings.hero_overlay_from | default: hero_bg_color }},
+          {{ settings.hero_overlay_to | default: hero_bg_color }}
+        );
+      {% else %}
+        background: {{ hero_bg_color }};
+      {% endif %}
+      opacity: {{ hero_overlay_opacity }};
+    }
+
+    .product-thin-hero .pth-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .product-thin-hero .pth-wrap {
+      max-width: {{ settings.hero_max_width | default: 1200 }}px;
+      margin: 0 auto;
+      padding: {{ settings.hero_padding_y_mobile | default: 20 }}px {{ settings.hero_padding_x_mobile | default: 15 }}px;
+      min-height: {{ settings.hero_min_height_mobile | default: 120 }}px;
+      display: flex;
+      flex-direction: column;
+      justify-content: {{ settings.hero_align_y | default: 'center' }};
+      align-items: {{ settings.hero_align_x | default: 'flex-start' }};
+      text-align: {{ settings.hero_text_align | default: 'left' }};
+    }
+
+    @media (min-width: 768px) {
+      .product-thin-hero .pth-wrap {
+        padding: {{ settings.hero_padding_y_desktop | default: 40 }}px {{ settings.hero_padding_x_desktop | default: 20 }}px;
+        min-height: {{ settings.hero_min_height_desktop | default: 200 }}px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .product-thin-hero .pth-wrap {
+        padding: {{ settings.hero_padding_y_desktop | default: 60 }}px {{ settings.hero_padding_x_desktop | default: 20 }}px;
+        min-height: {{ settings.hero_min_height_desktop | default: 280 }}px;
+      }
+    }
+
+    /* Breadcrumbs */
+    .product-thin-hero .pth-breadcrumbs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+      color: {{ hero_breadcrumb_color }};
+      line-height: 1.4;
+    }
+
+    @media (min-width: 768px) {
+      .product-thin-hero .pth-breadcrumbs {
+        gap: 4px;
+        margin-bottom: 12px;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .product-thin-hero .pth-breadcrumbs {
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+      }
+    }
+
+    .product-thin-hero .pth-crumb-link {
+      color: inherit;
+      text-decoration: none;
+      opacity: 0.85;
+      transition: all 0.2s ease;
+    }
+
+    .product-thin-hero .pth-crumb-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* External link indicator */
+    .product-thin-hero .pth-crumb-link[target="_blank"]::after {
+      content: ' ↗';
+      font-size: 0.8em;
+      margin-left: 2px;
+      opacity: 0.7;
+    }
+
+    .product-thin-hero .pth-crumb-text {
+      opacity: 1;
+    }
+
+    .product-thin-hero .pth-sep {
+      margin: 0 3px;
+      opacity: 0.6;
+      font-size: 0.8em;
+    }
+
+    @media (min-width: 768px) {
+      .product-thin-hero .pth-sep {
+        margin: 0 6px;
+      }
+    }
+
+    /* Header */
+    .product-thin-hero .pth-header {
+      max-width: {{ settings.hero_text_max_width | default: 800 }}px;
+    }
+
+    .product-thin-hero .pth-title {
+      margin: 0 0 8px;
+      color: {{ hero_title_color }};
+      font-size: {{ settings.hero_title_size_mobile | default: 22 }}px;
+      font-weight: {{ settings.hero_title_weight | default: 700 }};
+      line-height: 1.15;
+      {% if settings.hero_text_shadow %}
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      {% endif %}
+    }
+
+    @media (min-width: 768px) {
+      .product-thin-hero .pth-title {
+        margin: 0 0 10px;
+        font-size: {{ settings.hero_title_size_tablet | default: 32 }}px;
+        line-height: 1.2;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .product-thin-hero .pth-title {
+        margin: 0 0 12px;
+        font-size: {{ settings.hero_title_size_desktop | default: 48 }}px;
+      }
+    }
+
+    .product-thin-hero .pth-subtitle {
+      margin: 0 0 8px;
+      color: {{ hero_text_color }};
+      font-size: {{ settings.hero_subtitle_size_mobile | default: 14 }}px;
+      line-height: 1.4;
+      {% if settings.hero_text_shadow %}
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      {% endif %}
+    }
+
+    @media (min-width: 768px) {
+      .product-thin-hero .pth-subtitle {
+        margin: 0 0 12px;
+        font-size: {{ settings.hero_subtitle_size | default: 16 }}px;
+        line-height: 1.45;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .product-thin-hero .pth-subtitle {
+        margin: 0 0 16px;
+        font-size: {{ settings.hero_subtitle_size | default: 18 }}px;
+        line-height: 1.5;
+      }
+    }
+
+    .product-thin-hero .pth-metadata {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin: 12px 0;
+      font-size: 0.9rem;
+      color: {{ hero_text_color }};
+      opacity: 0.9;
+    }
+
+    .product-thin-hero .pth-meta-item:not(:first-child)::before {
+      content: '•';
+      margin-right: 16px;
+      opacity: 0.5;
+    }
+
+    /* Actions */
+    .product-thin-hero .pth-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .product-thin-hero .pth-btn {
+      padding: 10px 20px;
+      border-radius: {{ settings.hero_btn_radius | default: 6 }}px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .product-thin-hero .pth-btn--primary {
+      background: {{ settings.hero_cta_bg | default: '#5E3BFF' }};
+      color: {{ settings.hero_cta_color | default: '#FFFFFF' }};
+    }
+
+    .product-thin-hero .pth-btn--primary:hover {
+      background: {{ settings.hero_cta_hover_bg | default: '#4C1D95' }};
+      transform: translateY(-1px);
+    }
+
+    .product-thin-hero .pth-btn--secondary {
+      background: transparent;
+      color: {{ settings.hero_cta2_color | default: hero_title_color }};
+      border: 1px solid {{ settings.hero_cta2_border | default: hero_title_color }}40;
+    }
+
+    .product-thin-hero .pth-btn--secondary:hover {
+      background: {{ settings.hero_cta2_hover_bg | default: hero_title_color }}10;
+    }
+
+    @media (max-width: 767px) {
+      .product-thin-hero .pth-title {
+        font-size: 28px;
+      }
+
+      .product-thin-hero .pth-subtitle {
+        font-size: 16px;
+      }
+
+      .product-thin-hero .pth-breadcrumbs {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+{% endif %}

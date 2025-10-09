@@ -87,6 +87,8 @@
         <div class="section-wrap section-wrap--{{ v-Align }}">
           {% section "header" %}
           {% section "search" %}
+          {% comment %} Built-in Thin Hero (controlled via theme settings) {% endcomment %}
+          {% include "product_thin_hero" %}
           {{ content_for_layout }}
           {% unless settings.use_bg_img %}
             {% section "footer" %}

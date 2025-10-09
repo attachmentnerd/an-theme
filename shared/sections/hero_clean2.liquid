@@ -9,8 +9,9 @@
 
 {% assign s = section.settings %}
 
-<section id="{{ s.section_id | default: 'hero' }}-{{ section.id }}" 
-         class="an-clean-hero {% if s.invert %}is-invert{% endif %} pos-{{ s.image_position | default: 'left' }}" 
+<section id="{{ s.section_id | default: 'hero' }}-{{ section.id }}"
+         data-section-id="{{ s.section_id | default: 'hero' }}"
+         class="an-clean-hero {% if s.invert %}is-invert{% endif %} pos-{{ s.image_position | default: 'left' }}"
          data-clean-hero="{{ section.id }}">
   <style>
     [data-clean-hero="{{ section.id }}"]{
@@ -23,11 +24,23 @@
       --radius:16px;
       --space:clamp(16px,2vw,28px);
       padding: clamp(32px,6vw,80px) 0;
-      background: var(--bg);
+      {% if s.background_image != blank %}
+        background-image: url('{{ s.background_image | image_picker_url: 'master' }}');
+        background-size: {{ s.background_size | default: 'cover' }};
+        background-position: {{ s.background_position | default: 'center center' }};
+        background-repeat: {{ s.background_repeat | default: 'no-repeat' }};
+        background-attachment: {{ s.background_attachment | default: 'scroll' }};
+      {% else %}
+        background: var(--bg);
+      {% endif %}
       color: var(--text);
     }
     [data-clean-hero="{{ section.id }}"].is-invert{
-      background: var(--bg-invert);
+      {% if s.background_image != blank %}
+        /* Keep background image if set */
+      {% else %}
+        background: var(--bg-invert);
+      {% endif %}
       color: var(--text-invert);
     }
     [data-clean-hero="{{ section.id }}"] .container{
@@ -41,9 +54,22 @@
     [data-clean-hero="{{ section.id }}"].pos-right .grid{ grid-template-columns: 1.1fr 1fr; }
     [data-clean-hero="{{ section.id }}"] .media{ order: {% if s.image_position == 'right' %}2{% else %}1{% endif %}; }
     [data-clean-hero="{{ section.id }}"] .content{ order: {% if s.image_position == 'right' %}1{% else %}2{% endif %}; }
+    [data-clean-hero="{{ section.id }}"] .media-wrapper{
+      position: relative;
+      {% if s.image_container_height %}height: {{ s.image_container_height }}px;{% endif %}
+      {% if s.image_container_width %}max-width: {{ s.image_container_width }}px; margin: 0 auto;{% endif %}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     [data-clean-hero="{{ section.id }}"] .cover{
-      width:100%; display:block; border-radius: {{ s.image_radius | default: '16px' }};
+      width: {% if s.image_width %}{{ s.image_width }}{% else %}100%{% endif %};
+      height: {% if s.image_height %}{{ s.image_height }}{% else %}auto{% endif %};
+      display:block; border-radius: {{ s.image_radius | default: '16px' }};
       box-shadow: {% if s.image_shadow %}0 22px 45px rgba(0,0,0,.18){% else %}none{% endif %};
+      object-fit: {{ s.image_fit | default: 'contain' }};
+      object-position: {{ s.image_position | default: 'center' }};
+      {% if s.image_aspect_ratio and s.image_container_height == blank %}aspect-ratio: {{ s.image_aspect_ratio }};{% endif %}
     }
     [data-clean-hero="{{ section.id }}"] .eyebrow{
       text-transform:uppercase; letter-spacing:.08em; font-weight:700; font-size:12px;
@@ -109,7 +135,13 @@
     <div class="grid">
       {% if s.show_image and s.image != blank %}
         <div class="media">
-          <img class="cover" src="{{ s.image }}" alt="{{ s.image_alt | default: s.headline | escape }}" loading="eager" fetchpriority="high" decoding="async">
+          <div class="media-wrapper">
+            <img class="cover"
+                 src="{{ s.image | image_picker_url: 'master' }}"
+                 alt="{{ s.image_alt | default: s.headline | escape }}"
+                 {% if s.image_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                 decoding="async">
+          </div>
         </div>
       {% endif %}
 
@@ -222,6 +254,54 @@
         { "value": "right", "label": "Right" }
       ], "default": "left"
     },
+    { "type": "select", "id": "image_fit", "label": "Image Fit", "default": "contain", "options": [
+        { "value": "contain", "label": "Contain (shows entire image)" },
+        { "value": "cover", "label": "Cover (fills container, may crop)" },
+        { "value": "fill", "label": "Fill (stretches to fit)" },
+        { "value": "none", "label": "None (original size)" },
+        { "value": "scale-down", "label": "Scale Down" }
+      ]
+    },
+    { "type": "select", "id": "image_position", "label": "Image Position", "default": "center", "info": "Where to position the image when using 'cover' fit", "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "top left", "label": "Top Left" },
+        { "value": "top right", "label": "Top Right" },
+        { "value": "bottom left", "label": "Bottom Left" },
+        { "value": "bottom right", "label": "Bottom Right" }
+      ]
+    },
+    { "type": "select", "id": "image_aspect_ratio", "label": "Image Aspect Ratio", "default": "", "options": [
+        { "value": "", "label": "Auto (natural aspect)" },
+        { "value": "1/1", "label": "Square (1:1)" },
+        { "value": "4/3", "label": "Standard (4:3)" },
+        { "value": "16/9", "label": "Widescreen (16:9)" },
+        { "value": "21/9", "label": "Ultra Wide (21:9)" },
+        { "value": "3/2", "label": "Classic (3:2)" },
+        { "value": "2/3", "label": "Portrait (2:3)" },
+        { "value": "3/4", "label": "Portrait (3:4)" }
+      ]
+    },
+    { "type": "range", "id": "image_container_height", "label": "Container Height", "info": "Leave empty for auto height", "min": 200, "max": 800, "step": 10, "unit": "px" },
+    { "type": "range", "id": "image_container_width", "label": "Container Max Width", "info": "Leave empty for full width", "min": 200, "max": 800, "step": 10, "unit": "px" },
+    { "type": "select", "id": "image_width", "label": "Image Width", "default": "100%", "options": [
+        { "value": "100%", "label": "Full Width (100%)" },
+        { "value": "auto", "label": "Auto" },
+        { "value": "75%", "label": "75%" },
+        { "value": "50%", "label": "50%" }
+      ]
+    },
+    { "type": "select", "id": "image_height", "label": "Image Height", "default": "auto", "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "100%", "label": "Full Height (100%)" },
+        { "value": "75%", "label": "75%" },
+        { "value": "50%", "label": "50%" }
+      ]
+    },
+    { "type": "checkbox", "id": "image_priority", "label": "High Priority Loading", "default": true, "info": "Enable for above-fold images" },
     { "type": "checkbox", "id": "image_shadow", "label": "Image shadow", "default": true },
     { "type": "text", "id": "image_radius", "label": "Image corner radius (e.g., 0, 12px, 24px)", "default": "16px" },
 
@@ -234,7 +314,46 @@
         { "value": "wide", "label": "Wide" }
       ], "default": "wide"
     },
-    { "type": "checkbox", "id": "invert", "label": "Dark background", "default": false },
+    { "type": "checkbox", "id": "invert", "label": "Dark mode", "default": false },
+
+    { "type": "header", "content": "Background Settings" },
+    { "type": "image_picker", "id": "background_image", "label": "Background Image", "info": "Optional background image for the section" },
+    { "type": "select", "id": "background_size", "label": "Background Size", "default": "cover", "options": [
+        { "value": "cover", "label": "Cover (fills container)" },
+        { "value": "contain", "label": "Contain (shows entire image)" },
+        { "value": "auto", "label": "Auto (original size)" },
+        { "value": "100% 100%", "label": "Stretch to Fill" },
+        { "value": "50%", "label": "50% Size" },
+        { "value": "25%", "label": "25% Size (for patterns)" }
+      ]
+    },
+    { "type": "select", "id": "background_position", "label": "Background Position", "default": "center center", "options": [
+        { "value": "left top", "label": "Left Top" },
+        { "value": "left center", "label": "Left Center" },
+        { "value": "left bottom", "label": "Left Bottom" },
+        { "value": "center top", "label": "Center Top" },
+        { "value": "center center", "label": "Center Center" },
+        { "value": "center bottom", "label": "Center Bottom" },
+        { "value": "right top", "label": "Right Top" },
+        { "value": "right center", "label": "Right Center" },
+        { "value": "right bottom", "label": "Right Bottom" }
+      ]
+    },
+    { "type": "select", "id": "background_repeat", "label": "Background Repeat", "default": "no-repeat", "options": [
+        { "value": "no-repeat", "label": "No Repeat" },
+        { "value": "repeat", "label": "Repeat Both" },
+        { "value": "repeat-x", "label": "Repeat Horizontally" },
+        { "value": "repeat-y", "label": "Repeat Vertically" },
+        { "value": "space", "label": "Space Between" },
+        { "value": "round", "label": "Round (fit evenly)" }
+      ]
+    },
+    { "type": "select", "id": "background_attachment", "label": "Background Attachment", "default": "scroll", "options": [
+        { "value": "scroll", "label": "Scroll with Page" },
+        { "value": "fixed", "label": "Fixed (Parallax Effect)" },
+        { "value": "local", "label": "Local" }
+      ]
+    },
 
     { "type": "text", "id": "primary_label", "label": "Primary label", "default": "Get the book" },
     { "type": "url", "id": "primary_url", "label": "Primary URL" },
@@ -260,9 +379,9 @@
     {
       "type": "link",
       "name": "Dropdown link",
-      "settings": [
+      "elements": [
         { "type": "text", "id": "label", "label": "Label", "default": "Buy on Amazon" },
-        { "type": "url", "id": "url", "label": "URL" },
+        { "type": "text", "id": "url", "label": "URL" },
         { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": true }
       ]
     }

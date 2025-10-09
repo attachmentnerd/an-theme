@@ -12,11 +12,17 @@
           {% endif %}
           
           <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
-            <img src="{{ section.settings.book_image | image_picker_url: '400x600' }}" 
-             alt="Raising Securely Attached Kids" 
-             class="img-fluid rounded-lg shadow-lg hover-lift"
-             loading="lazy"
-             style="object-fit: cover;">
+            {% render 'responsive-image',
+              image: section.settings.book_image,
+              alt: 'Raising Securely Attached Kids',
+              sizes: '(max-width: 767px) 280px, 400px',
+              aspect_ratio: '2/3',
+              widths: '280,400,600,800',
+              placeholder_type: 'book',
+              blur_up: true,
+              priority: true,
+              class: 'img-fluid rounded-lg shadow-lg hover-lift'
+            %}
           </div>
           
           {% if section.settings.show_award_badge %}

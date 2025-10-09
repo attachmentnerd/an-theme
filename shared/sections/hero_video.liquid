@@ -8,26 +8,34 @@
   - Poster image support for the video thumbnail
 {% endcomment %}
 
-<section id="{{ section.settings.section_id | default: 'hero-video' }}-{{ section.id }}" class="an-video-hero position-relative overflow-hidden" 
+<section id="{{ section.settings.section_id | default: 'hero-video' }}-{{ section.id }}"
+         data-section-id="{{ section.settings.section_id | default: 'hero-video' }}"
+         class="an-video-hero position-relative overflow-hidden" 
          style="background-color: {{ section.settings.background_color }};
                 {% if section.settings.background_image != blank %}
                   background-image: url('{{ section.settings.background_image | image_picker_url: 'master' }}');
-                  background-size: cover;
-                  background-position: {{ section.settings.background_position }} center;
-                  background-repeat: no-repeat;
+                  background-size: {{ section.settings.background_size | default: 'cover' }};
+                  background-position: {{ section.settings.background_position | default: 'center' }} center;
+                  background-repeat: {{ section.settings.background_repeat | default: 'no-repeat' }};
                 {% endif %}">
   <div class="an-video-hero__container">
     <!-- Video Thumbnail/Poster -->
     <div class="an-video-hero__media position-relative">
       {% if section.settings.poster_image != blank %}
-        <!-- Use responsive-image snippet for proper Kajabi image handling -->
-        <img src="{{ section.settings.poster_image | image_picker_url: '800x450' }}" 
-             alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}" 
-             class="an-video-hero__poster"
-             loading="lazy"
-             style="object-fit: cover;">
+        <!-- Direct img tag for Kajabi compatibility -->
+        <img
+          src="{{ section.settings.poster_image | image_picker_url: 'master' }}"
+          alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}"
+          class="an-video-hero__poster"
+          {% if section.settings.poster_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+          style="width: {% if section.settings.poster_width %}{{ section.settings.poster_width }}{% else %}100%{% endif %};
+                 height: {% if section.settings.poster_height %}{{ section.settings.poster_height }}{% else %}auto{% endif %};
+                 object-fit: {{ section.settings.poster_fit | default: 'cover' }};
+                 object-position: {{ section.settings.poster_position | default: 'center' }};
+                 {% if section.settings.poster_aspect_ratio %}aspect-ratio: {{ section.settings.poster_aspect_ratio }};{% else %}aspect-ratio: 16/9;{% endif %}"
+        >
       {% elsif section.settings.video != blank and section.settings.video.thumbnail_url %}
-        <!-- Use video thumbnail if no poster image specified -->
+        <!-- Use video thumbnail if no poster image specified - keep as basic img for dynamic URL -->
         <img
           src="{{ section.settings.video.thumbnail_url }}"
           alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}"

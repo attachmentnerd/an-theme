@@ -248,9 +248,26 @@
   <div class="container an-pill-nav__container">
     <a class="an-pill-nav__logo" href="/">
       {% if section.settings.logo_image %}
-        <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ current_site.name | default: 'Logo' }}">
+        {% render 'responsive-image',
+          image: section.settings.logo_image,
+          alt: current_site.name | default: 'Logo',
+          class: 'nav-logo',
+          sizes: '240px',
+          aspect_ratio: '3/1',
+          widths: '240,480',
+          placeholder_type: 'logo'
+        %}
       {% else %}
-        <img src="https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg" alt="Attachment Nerd logo">
+        {% render 'responsive-image',
+          image: 'https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg',
+          alt: 'Attachment Nerd logo',
+          sizes: '240px',
+          aspect_ratio: '3/1',
+          widths: '240,480',
+          placeholder_type: 'logo',
+          priority: true,
+          class: 'nav-logo'
+        %}
       {% endif %}
     </a>
 
@@ -279,7 +296,15 @@
           <a class="an-pill-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
-              <img src="{{ avatar_url }}" alt="{{ current_site_user.name | default: 'Account' }}">
+              {% render 'responsive-image',
+                image: avatar_url,
+                alt: current_site_user.name | default: 'Account',
+                sizes: '44px',
+                aspect_ratio: '1/1',
+                widths: '44,88,132',
+                placeholder_type: 'avatar',
+                class: ''
+              %}
             {% else %}
               {{ profile_label | slice: 0, 1 | upcase }}
             {% endif %}

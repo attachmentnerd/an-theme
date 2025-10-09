@@ -53,7 +53,15 @@
 <nav class="hc-nav" role="navigation" aria-label="Main">
   <div class="container hc-nav__container">
     <a class="hc-nav__logo" href="{{ current_site.root_url | default: '/' }}">
-      <img src="{{ nav_logo_url }}" alt="Logo">
+      {% render 'responsive-image',
+        image: nav_logo_url,
+        alt: 'Logo',
+        sizes: '200px',
+        aspect_ratio: '16/9',
+        widths: '200,400',
+        placeholder_type: 'logo',
+        priority: true
+      %}
     </a>
 
     <div class="hc-nav__links" aria-label="Primary navigation">
@@ -81,7 +89,15 @@
           <a class="hc-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
-              <img src="{{ avatar_url }}" alt="{{ current_site_user.name | default: 'Account' }}" style="width:100%;height:100%;object-fit:cover;display:block"/>
+              {% render 'responsive-image',
+                image: avatar_url,
+                alt: current_site_user.name,
+                sizes: '44px',
+                aspect_ratio: '1/1',
+                widths: '44,88',
+                placeholder_type: 'avatar',
+                class: 'hc-nav__avatar-img'
+              %}
             {% else %}
               {{ profile_label | slice: 0, 1 | upcase }}
             {% endif %}

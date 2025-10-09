@@ -261,7 +261,16 @@
                             </p>
                             <div class="d-flex align-items-center">
                                 <!--@id=expert_lepera-->
-                                <img src="{{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '2000x' }}" alt="Dr. Nicole LePera" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 16px;" loading="lazy">
+                                                                {% render 'responsive-image',
+                                  image: section.settings.img_2_dr_nicole_lepera,
+                                  alt: 'Dr. Nicole LePera',
+                                  class: 'img-fluid',
+                                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                                  aspect_ratio: '16/9',
+                                  widths: '400,600,800,1200',
+                                  placeholder_type: 'feature',
+                                  blur_up: true
+                                %}
                                 <div>
                                     <div style="font-weight: 600; font-size: 18px;">Dr. Nicole LePera</div>
                                     <div style="color: #6E6F7B;">NYT Bestselling Author of How to Do the Work</div>
@@ -284,7 +293,16 @@
                     <div class="col-lg-4">
                         <div class="text-center">
                             <!--@id=eli_harwood-->
-                            <img src="{{ section.settings.img_3_eli_harwood_the_attachme | image_picker_url: '2000x' }}" alt="Eli Harwood, The Attachment Nerd" class="sa-author-img" loading="lazy">
+                                                        {% render 'responsive-image',
+                              image: section.settings.img_3_eli_harwood_the_attachme,
+                              alt: 'Eli Harwood, The Attachment Nerd',
+                              class: 'sa-author-img',
+                              sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                              aspect_ratio: '16/9',
+                              widths: '400,600,800,1200',
+                              placeholder_type: 'feature',
+                              blur_up: true
+                            %}
                         </div>
                     </div>
                     <div class="col-lg-8">

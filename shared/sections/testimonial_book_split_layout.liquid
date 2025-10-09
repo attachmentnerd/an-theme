@@ -56,11 +56,15 @@
       <div class="book-testimonial-showcase__testimonials">
         {% if section.settings.testimonial_logo %}
           <div class="testimonial-logo">
-            <img src="{{ section.settings.testimonial_logo | image_picker_url: '240x80' }}" 
-             alt="{{ section.settings.testimonial_logo_alt | default: 'Logo' }}" 
-             class="img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
+                        {% render 'responsive-image',
+              image: section.settings.testimonial_logo,
+              alt: '{{ section.settings.testimonial_logo_alt | default: ',
+              class: 'img-fluid',
+              sizes: '120px',
+              aspect_ratio: '16/9',
+              widths: '60,120,180,240',
+              placeholder_type: 'logo'
+            %}
           </div>
         {% endif %}
         
@@ -94,11 +98,15 @@
                     </div>
                     {% if block.settings.author_image %}
                       <div class="testimonial-author__avatar">
-                        <img src="{{ block.settings.author_image | image_picker_url: '120x120' }}" 
-               alt="{{ block.settings.author_name }}" 
-               class="testimonial-author__avatar-img"
-               loading="lazy"
-               style="object-fit: cover;">
+                                                {% render 'responsive-image',
+                          image: block.settings.author_image,
+                          alt: '{{ block.settings.author_name }}',
+                          class: 'testimonial-author__avatar-img',
+                          sizes: '120px',
+                          aspect_ratio: '16/9',
+                          widths: '60,120,180,240',
+                          placeholder_type: 'avatar'
+                        %}
                       </div>
                     {% endif %}
                   </div>

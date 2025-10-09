@@ -91,13 +91,16 @@
             <!-- Overlay Product Image -->
             {% if section.settings.overlay_image %}
               <div class="bio-overlay-image" style="bottom: {{ section.settings.overlay_position_bottom | default: '50' }}px; {{ section.settings.overlay_position_side }}: {{ section.settings.overlay_position_offset | default: '-50' }}px;">
-                <img src="{{ section.settings.overlay_image | image_picker_url: '800x450' }}" 
-             alt="{{ section.settings.overlay_image_alt | default: 'Image' }}" 
-             class="img-fluid"
-             width="800" height="450"
-             decoding="async"
-             loading="lazy"
-             style="object-fit: cover;">
+                                {% render 'responsive-image',
+                  image: section.settings.overlay_image,
+                  alt: '{{ section.settings.overlay_image_alt | default: ',
+                  class: 'img-fluid',
+                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
+                  aspect_ratio: '16/9',
+                  widths: '400,600,800,1200',
+                  placeholder_type: 'feature',
+                  blur_up: true
+                %}
                 {% if section.settings.show_overlay_decoration %}
                   <div class="overlay-decoration">
                     <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
@@ -126,11 +129,15 @@
                 {% if block.type == 'logo' %}
                   <div class="logo-item" {{ block.shopify_attributes }}>
                     {% if block.settings.logo_image %}
-                      <img src="{{ block.settings.logo_image | image_picker_url: '240x80' }}" 
-             alt="{{ block.settings.logo_alt | default: 'Logo' }}" 
-             class="img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
+                                            {% render 'responsive-image',
+                        image: block.settings.logo_image,
+                        alt: '{{ block.settings.logo_alt | default: ',
+                        class: 'img-fluid',
+                        sizes: '120px',
+                        aspect_ratio: '16/9',
+                        widths: '60,120,180,240',
+                        placeholder_type: 'logo'
+                      %}
                     {% elsif block.settings.logo_text %}
                       <span class="logo-text" style="font-size: {{ section.settings.logo_text_size | default: '18' }}px;">
                         {{ block.settings.logo_text }}

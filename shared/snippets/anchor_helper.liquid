@@ -1,0 +1,31 @@
+{% comment %}
+  Anchor Helper - Makes sections linkable via anchor tags
+  Usage: {% include 'anchor_helper', anchor_id: 'my-section' %}
+
+  This adds a hidden anchor element and data attribute to help with smooth scrolling
+{% endcomment %}
+
+{% if anchor_id %}
+  <a id="{{ anchor_id }}" class="anchor-helper" aria-hidden="true"></a>
+  <script>
+    // Add data attribute to parent section for better targeting
+    (function() {
+      const anchor = document.getElementById('{{ anchor_id }}');
+      if (anchor && anchor.parentElement) {
+        const section = anchor.closest('section');
+        if (section) {
+          section.setAttribute('data-anchor', '{{ anchor_id }}');
+        }
+      }
+    })();
+  </script>
+{% endif %}
+
+<style>
+  .anchor-helper {
+    position: absolute;
+    top: -80px; /* Account for sticky header */
+    left: 0;
+    visibility: hidden;
+  }
+</style>

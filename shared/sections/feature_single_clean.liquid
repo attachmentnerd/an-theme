@@ -124,11 +124,15 @@
                 <p>"{{ section.settings.testimonial_text }}"</p>
                 <footer>
                   {% if section.settings.testimonial_author_image %}
-                    <img src="{{ section.settings.testimonial_author_image | image_picker_url: '120x120' }}" 
-             alt="{{ section.settings.testimonial_author }}" 
-             class="testimonial__avatar"
-             loading="lazy"
-             style="object-fit: cover;">
+                                        {% render 'responsive-image',
+                      image: section.settings.testimonial_author_image,
+                      alt: '{{ section.settings.testimonial_author }}',
+                      class: 'testimonial__avatar',
+                      sizes: '120px',
+                      aspect_ratio: '16/9',
+                      widths: '60,120,180,240',
+                      placeholder_type: 'avatar'
+                    %}
                   {% endif %}
                   <div>
                     <cite>{{ section.settings.testimonial_author }}</cite>

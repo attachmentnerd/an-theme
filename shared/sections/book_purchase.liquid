@@ -217,11 +217,15 @@
         {% for block in section.blocks %}
           {% if block.settings.logo != blank and block.settings.link != blank %}
             <a href="{{ block.settings.link }}" class="book-buy__retailer" {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-              <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ block.settings.alt_text | default: 'Retailer logo' }}" 
-             class="book-buy__retailer-logo"
-             loading="lazy"
-             style="object-fit: cover;">
+              {% render 'responsive-image',
+                image: block.settings.logo,
+                alt: block.settings.alt_text | default: 'Retailer logo',
+                sizes: '150px',
+                aspect_ratio: '16/9',
+                widths: '150,300',
+                placeholder_type: 'logo',
+                class: 'book-buy__retailer-logo'
+              %}
               {% if block.settings.show_text and block.settings.text != blank %}
                 <div class="book-buy__retailer-text">{{ block.settings.text }}</div>
               {% endif %}
