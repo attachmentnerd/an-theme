@@ -1,8 +1,0 @@
-{% if post.assessment %}
-  <div class="main-content-assessment">
-    {{ post.assessment | assessment: color: settings.primary_color  }}
-  </div>
-{% else %}
-  {% include "nblock_video" %}
-{% endif %}
-

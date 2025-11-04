@@ -22,18 +22,17 @@
     <!-- Video Thumbnail/Poster -->
     <div class="an-video-hero__media position-relative">
       {% if section.settings.poster_image != blank %}
-        <!-- Direct img tag for Kajabi compatibility -->
-        <img
-          src="{{ section.settings.poster_image | image_picker_url: 'master' }}"
-          alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}"
-          class="an-video-hero__poster"
-          {% if section.settings.poster_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-          style="width: {% if section.settings.poster_width %}{{ section.settings.poster_width }}{% else %}100%{% endif %};
-                 height: {% if section.settings.poster_height %}{{ section.settings.poster_height }}{% else %}auto{% endif %};
-                 object-fit: {{ section.settings.poster_fit | default: 'cover' }};
-                 object-position: {{ section.settings.poster_position | default: 'center' }};
-                 {% if section.settings.poster_aspect_ratio %}aspect-ratio: {{ section.settings.poster_aspect_ratio }};{% else %}aspect-ratio: 16/9;{% endif %}"
-        >
+        {% render 'responsive-image',
+          image: section.settings.poster_image,
+          alt: section.settings.poster_alt_text | default: 'Video thumbnail',
+          class: 'an-video-hero__poster',
+          sizes: '100vw',
+          priority: true,
+          aspect_ratio: section.settings.poster_aspect_ratio | default: '16/9',
+          widths: '800,1200,1600,2000',
+          placeholder_type: 'hero',
+          blur_up: true
+        %}
       {% elsif section.settings.video != blank and section.settings.video.thumbnail_url %}
         <!-- Use video thumbnail if no poster image specified - keep as basic img for dynamic URL -->
         <img

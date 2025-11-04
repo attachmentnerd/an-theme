@@ -86,15 +86,17 @@
                           align-items: center;
                           justify-content: center;">
                 {% if section.settings.book_image != blank %}
-                  <img src="{{ section.settings.book_image | image_picker_url: 'master' }}"
-                       alt="{{ section.settings.book_alt | default: 'Book cover' }}"
-                       class="img-fluid position-relative"
-                       {% if section.settings.image_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-                       style="width: {% if section.settings.image_width %}{{ section.settings.image_width }}{% else %}100%{% endif %};
-                              height: {% if section.settings.image_height %}{{ section.settings.image_height }}{% else %}auto{% endif %};
-                              {% if section.settings.image_aspect_ratio and section.settings.image_container_height == blank %}aspect-ratio: {{ section.settings.image_aspect_ratio }};{% else %}aspect-ratio: 2/3;{% endif %}
-                              object-fit: {{ section.settings.image_fit | default: 'contain' }};
-                              object-position: {{ section.settings.image_position | default: 'center' }};">
+                  {% render 'responsive-image',
+                    image: section.settings.book_image,
+                    alt: section.settings.book_alt | default: 'Book cover',
+                    class: 'img-fluid position-relative',
+                    sizes: '(max-width: 767px) 280px, 400px',
+                    priority: section.settings.image_priority,
+                    aspect_ratio: section.settings.image_aspect_ratio | default: '2/3',
+                    widths: '280,400,600,800',
+                    placeholder_type: 'book',
+                    blur_up: true
+                  %}
                 {% else %}
                   <div style="width: 100%; aspect-ratio: 2/3; background: var(--c-brand-100); display: flex; align-items: center; justify-content: center;">
                     <svg width="120" height="180" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
