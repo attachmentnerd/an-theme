@@ -1,10 +1,10 @@
 <section id="{{ section.settings.section_id | default: 'book-workbook-preview-sa' }}-{{ section.id }}" class="sa-workbook-preview py-5" style="background: linear-gradient(180deg, #FFFFFF 0%, var(--c-brand-100) 100%);">
   <div class="container">
     <div class="text-center mb-5 animate-fade-up">
-      <h2 class="mb-3" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
+      <h2 class="mb-3 text-h1 text-ink-900 font-medium" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">
         {{ section.settings.heading | default: 'A Guided Journey, Not Just a Book' }}
       </h2>
-      <p style="font-size: var(--fs-body-lg); color: var(--c-ink-700); max-width: 600px; margin: 0 auto;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
+      <p class="text-body-lg text-ink-700 mx-auto" style="max-width: 600px;" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">
         {{ section.settings.subheading | default: 'This informative guided journal combines education with self-discovery' }}
       </p>
     </div>
@@ -15,16 +15,20 @@
           {% if section.settings.left_image != blank %}
             <div class="position-relative">
               <div kjb-settings-id="{{ 'left_image' | settings_id: section: section }}">
-                <img src="{{ section.settings.left_image | image_picker_url: '1200x' }}"
-                     alt="{{ section.settings.left_image_alt | escape }}"
-                     class="img-fluid rounded-lg shadow-lg"
-                     loading="lazy"
-                     decoding="async"
-                     style="width:100%; height:auto; object-fit:cover;" />
+                {% render 'responsive-image',
+                  image: section.settings.left_image,
+                  alt: section.settings.left_image_alt | default: 'Workbook preview',
+                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',
+                  aspect_ratio: '4/3',
+                  widths: '400,600,800,1200',
+                  placeholder_type: 'feature',
+                  blur_up: true,
+                  class: 'img-fluid rounded-lg shadow-lg'
+                %}
               </div>
               {% if section.settings.show_left_badge and section.settings.left_badge_text != blank %}
-                <div class="position-absolute animate-float" style="top: -20px; right: -20px; background: white; padding: 16px 24px; border-radius: 100px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" kjb-settings-id="{{ 'left_badge_text' | settings_id: section: section }}">
-                  <span style="font-size: 14px; font-weight: 600; color: var(--c-ink-800);">{{ section.settings.left_badge_text }}</span>
+                <div class="position-absolute animate-float bg-white px-4 py-3 rounded-pill shadow-lg" style="top: -20px; right: -20px;" kjb-settings-id="{{ 'left_badge_text' | settings_id: section: section }}">
+                  <span class="text-sm font-semibold text-ink-800">{{ section.settings.left_badge_text }}</span>
                 </div>
               {% endif %}
             </div>
@@ -32,26 +36,26 @@
             <!-- Preview mockup (fallback when no image set) -->
             <div class="position-relative">
               <!-- Browser-like frame -->
-              <div style="background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden;">
+              <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                 <!-- Browser top bar -->
-                <div style="background: #F5F5F5; padding: 12px 16px; display: flex; align-items: center; gap: 8px;">
-                  <div style="width: 12px; height: 12px; background: #FF5F57; border-radius: 50%;"></div>
-                  <div style="width: 12px; height: 12px; background: #FFBD2E; border-radius: 50%;"></div>
-                  <div style="width: 12px; height: 12px; background: #28CA42; border-radius: 50%;"></div>
+                <div class="d-flex align-items-center gap-2 px-3 py-2" style="background: #F5F5F5;">
+                  <div class="rounded-circle" style="width: 12px; height: 12px; background: #FF5F57;"></div>
+                  <div class="rounded-circle" style="width: 12px; height: 12px; background: #FFBD2E;"></div>
+                  <div class="rounded-circle" style="width: 12px; height: 12px; background: #28CA42;"></div>
                 </div>
                 
                 <!-- Preview content -->
-                <div style="padding: 40px;">
-                  <h3 class="mb-3" style="font-size: 24px; color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'preview_title' | settings_id: section: section }}">
+                <div class="p-5">
+                  <h3 class="mb-3 text-2xl text-ink-900 font-medium" kjb-settings-id="{{ 'preview_title' | settings_id: section: section }}">
                     {{ section.settings.preview_title | default: 'Sample Prompt #47' }}
                   </h3>
-                  <div style="background: var(--c-brand-100); padding: 24px; border-radius: 8px; margin-bottom: 24px;">
-                    <p style="color: var(--c-ink-800); font-style: italic; margin-bottom: 0;" kjb-settings-id="{{ 'preview_quote' | settings_id: section: section }}">
+                  <div class="p-4 rounded mb-4" style="background: var(--c-brand-100);">
+                    <p class="mb-0 text-ink-800" style="font-style: italic;" kjb-settings-id="{{ 'preview_quote' | settings_id: section: section }}">
                       "{{ section.settings.preview_quote | default: 'Think about a time when you felt truly safe and connected in a relationship. What made that moment special? How did your body feel? What thoughts went through your mind?' }}"
                     </p>
                   </div>
-                  <div style="border-left: 3px solid var(--c-accent-teal); padding-left: 20px;">
-                    <p style="color: var(--c-ink-600); line-height: 2;">
+                  <div class="ps-3" style="border-left: 3px solid var(--c-accent-teal);">
+                    <p class="text-ink-600" style="line-height: 2;">
                       <span style="opacity: 0.4;" kjb-settings-id="{{ 'preview_placeholder' | settings_id: section: section }}">{{ section.settings.preview_placeholder | default: 'Write your reflection here...' }}</span>
                     </p>
                   </div>
@@ -60,8 +64,8 @@
               
               <!-- Floating elements -->
               {% if section.settings.show_left_badge %}
-                <div class="position-absolute animate-float" style="top: -20px; right: -20px; background: white; padding: 16px 24px; border-radius: 100px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-                  <span style="font-size: 14px; font-weight: 600; color: var(--c-ink-800);">{{ section.settings.left_badge_text | default: 'Interactive' }}</span>
+                <div class="position-absolute animate-float bg-white px-4 py-3 rounded-pill shadow-lg" style="top: -20px; right: -20px;">
+                  <span class="text-sm font-semibold text-ink-800">{{ section.settings.left_badge_text | default: 'Interactive' }}</span>
                 </div>
               {% endif %}
             </div>
@@ -71,7 +75,7 @@
       
       <div class="col-lg-6">
         <div class="animate-fade-up" style="animation-delay: 0.1s;">
-          <h3 class="mb-4" style="font-size: var(--fs-h2); color: var(--c-ink-900); font-weight: 500;" kjb-settings-id="{{ 'content_heading' | settings_id: section: section }}">
+          <h3 class="mb-4 text-h2 text-ink-900 font-medium" kjb-settings-id="{{ 'content_heading' | settings_id: section: section }}">
             {{ section.settings.content_heading | default: 'How This Workbook Works' }}
           </h3>
           
@@ -80,15 +84,15 @@
             {% if block.type == 'step' %}
               <div class="d-flex align-items-start mb-4 animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 | plus: 0.2 }}s;">
                 <div class="flex-shrink-0 me-3">
-                  <div style="width: 40px; height: 40px; background: var(--g-brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                  <div class="d-flex align-items-center justify-content-center rounded-circle text-white font-semibold" style="width: 40px; height: 40px; background: var(--g-brand);">
                     {{ forloop.index }}
                   </div>
                 </div>
                 <div>
-                  <h4 class="mb-2" style="font-size: 18px; color: var(--c-ink-900); font-weight: 500;">
+                  <h4 class="mb-2 text-body-lg text-ink-900 font-medium">
                     {{ block.settings.title }}
                   </h4>
-                  <p style="color: var(--c-ink-600); line-height: 1.6;">
+                  <p class="text-ink-600" style="line-height: 1.6;">
                     {{ block.settings.description }}
                   </p>
                 </div>
@@ -98,14 +102,14 @@
           
           <!-- Nerd Alert callout -->
           {% if section.settings.show_nerd_alert %}
-            <div class="mt-4 p-4" style="background: var(--c-accent-lemon); background-opacity: 0.2; border-radius: 12px; border: 2px dashed var(--c-accent-lemon);">
+            <div class="mt-4 p-4 rounded-lg" style="background: var(--c-accent-lemon); background-opacity: 0.2; border: 2px dashed var(--c-accent-lemon);">
               <div class="d-flex align-items-start">
                 <div class="me-3">
-                  <span style="font-size: 24px;">🤓</span>
+                  <span class="text-2xl">🤓</span>
                 </div>
                 <div>
-                  <p class="mb-0" style="font-weight: 600; color: var(--c-ink-900);" kjb-settings-id="{{ 'nerd_alert_heading' | settings_id: section: section }}">{{ section.settings.nerd_alert_heading | default: 'Nerd Alert!' }}</p>
-                  <p class="mb-0 mt-1" style="font-size: 14px; color: var(--c-ink-700);" kjb-settings-id="{{ 'nerd_alert_text' | settings_id: section: section }}">
+                  <p class="mb-0 font-semibold text-ink-900" kjb-settings-id="{{ 'nerd_alert_heading' | settings_id: section: section }}">{{ section.settings.nerd_alert_heading | default: 'Nerd Alert!' }}</p>
+                  <p class="mb-0 mt-1 text-sm text-ink-700" kjb-settings-id="{{ 'nerd_alert_text' | settings_id: section: section }}">
                     {{ section.settings.nerd_alert_text | default: 'Throughout the book, I share "Nerd Alerts" to help you understand the rich data behind attachment research and how it applies to your life.' }}
                   </p>
                 </div>

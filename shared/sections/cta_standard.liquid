@@ -6,13 +6,16 @@
     <div class="an-cta__wrapper animate-fade-up">
       {% if section.settings.image != blank %}
         <div class="an-cta__image">
-          <img src="{{ section.settings.image | image_picker_url: '800x450' }}"
-             alt="{{ section.settings.image_alt }}"
-             class="an-cta__img"
-             width="800" height="450"
-             decoding="async"
-             loading="lazy"
-             style="object-fit: cover;">
+          {% render 'responsive-image',
+            image: section.settings.image,
+            alt: section.settings.image_alt | default: 'CTA image',
+            sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',
+            aspect_ratio: '16/9',
+            widths: '400,600,800,1200',
+            placeholder_type: 'feature',
+            blur_up: true,
+            class: 'an-cta__img'
+          %}
         </div>
       {% endif %}
 

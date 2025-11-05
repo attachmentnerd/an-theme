@@ -53,11 +53,16 @@
                 
                 <!-- Post Image -->
                 {% if block.settings.image != blank %}
-                  <img src="{{ block.settings.image | image_picker_url: '800x450' }}" 
-             alt="{{ block.settings.caption | truncate: 100 }}" 
-             class="an-instagram__post-image"
-             loading="lazy"
-             style="object-fit: cover;">
+                  {% render 'responsive-image',
+                    image: block.settings.image,
+                    alt: block.settings.caption | truncate: 100 | default: 'Instagram post',
+                    sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 300px',
+                    aspect_ratio: '1/1',
+                    widths: '300,400,600,800',
+                    placeholder_type: 'feature',
+                    blur_up: true,
+                    class: 'an-instagram__post-image'
+                  %}
                 {% else %}
                   <div class="an-instagram__post-placeholder">
                     <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">

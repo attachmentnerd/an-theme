@@ -220,7 +220,13 @@
         <div class="an-footer__column">
           {% if section.settings.logo_image %}
             <div class="an-footer__logo">
-              <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ section.settings.logo_alt }}" style="height: {{ section.settings.logo_height }}px; width: auto; display: block;"/>
+              {% render 'responsive-image',
+                image: section.settings.logo_image,
+                alt: section.settings.logo_alt | default: 'Site logo',
+                sizes: '200px',
+                widths: '200,400,600',
+                placeholder_type: 'logo'
+              %}
             </div>
           {% endif %}
           {% if section.settings.description %}
