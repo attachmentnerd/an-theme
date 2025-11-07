@@ -91,18 +91,42 @@
 
 <section id="{{ section.settings.section_id | default: 'cta-full-width' }}-{{ section.id }}" class="full-width-cta-section"
   style="
-    {% if section.settings.background_type == 'image' and section.settings.background_image != blank %}
-      background-image: url('{{ section.settings.background_image | image_picker_url: '2000x' }}');
-      background-size: {{ section.settings.background_size | default: 'cover' }};
-      background-position: {{ section.settings.background_position | default: 'center' }};
-    {% elsif section.settings.background_type == 'solid' %}
+    {% if section.settings.background_type == 'solid' or section.settings.background_image == blank %}
       background-color: {{ section.settings.background_color | default: '#F3F0FF' }};
-    {% else %}
+    {% elsif section.settings.background_type == 'gradient' %}
       background: linear-gradient({{ section.settings.gradient_angle | default: 135 }}deg, {{ section.settings.gradient_start | default: '#EAE6FF' }} 0%, {{ section.settings.gradient_end | default: '#5E3BFF' }} 100%);
     {% endif %}
     padding-top: {{ section.settings.padding_top | default: 96 }}px;
     padding-bottom: {{ section.settings.padding_bottom | default: 96 }}px;
   ">
+
+  <!-- Responsive Background Image -->
+  {% if section.settings.background_type == 'image' and section.settings.background_image != blank %}
+    <div class="cta-bg-image" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; overflow: hidden;">
+      {% render 'responsive-image',
+        image: section.settings.background_image,
+        alt: '',
+        sizes: '100vw',
+        priority: true,
+        widths: '800,1200,1600,2000,2400',
+        placeholder_type: 'hero',
+        blur_up: true,
+        class: 'cta-bg-img'
+      %}
+    </div>
+    <style>
+      #{{ section.settings.section_id | default: 'cta-full-width' }}-{{ section.id }} .cta-bg-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: {{ section.settings.background_size | default: 'cover' }};
+        object-position: {{ section.settings.background_position | default: 'center' }};
+      }
+    </style>
+  {% endif %}
+
   {% if section.settings.enable_overlay and section.settings.overlay_opacity > 0 %}
     <div class="full-width-cta-overlay" style="background-color: {{ section.settings.overlay_color | default: '#000000' }}; opacity: {{ section.settings.overlay_opacity | default: 30 | divided_by: 100.0 }};"></div>
   {% endif %}
