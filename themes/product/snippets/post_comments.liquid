@@ -61,9 +61,9 @@
       </h5>
       {% if post.comments_mode_locked? %}
         <h4 kjb-settings-id="{{ 'language_comment_locked' | settings_id: section: section }}">
-          <i class="fa fa-lock"></i>
+          {% include 'icon', icon: 'lock', size: 20, class: 'mr-2' %}
           {% element "section.settings.language_comment_locked" %}
-            {{ section.settings.language_comment_locked }}
+            {{ section.settings.language_comment_locked %}
           {% endelement %}
         </h4>
       {% elsif current_site_user.muted? != true %}
