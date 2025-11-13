@@ -7,6 +7,7 @@
   - Mobile-responsive design
 {% endcomment %}
 
+{% include 'site_url' %}
 {% assign is_light_variant = false %}
 {% if section.settings.style_variant == 'light' %}
   {% assign is_light_variant = true %}
@@ -196,7 +197,12 @@
                 {% endif %}
 
                 {% if block.settings.show_link and block.settings.link_text != blank and block.settings.link_url != blank %}
-                  <a href="{{ block.settings.link_url | canonical_url }}"
+                  {% if block.settings.link_url contains 'http' %}
+                    {% assign link_href = block.settings.link_url %}
+                  {% else %}
+                    {% assign link_href = site_url | append: block.settings.link_url %}
+                  {% endif %}
+                  <a href="{{ link_href }}"
                      class="featured-link"
                      style="color: {{ link_color_val }};"
                      {% if block.settings.link_new_tab %}target="_blank" rel="noopener"{% endif %}>
@@ -216,7 +222,13 @@
       {% if section.settings.show_cta and section.settings.cta_text != blank %}
         <div class="an-dark-featured__cta text-center mt-5 {% if section.settings.enable_animations %}animate-fade-up{% endif %}"
              style="{% if section.settings.enable_animations %}animation-delay: 0.6s;{% endif %}">
-          <a href="{{ section.settings.cta_url | default: '#' | canonical_url }}"
+          {% assign cta_url_val = section.settings.cta_url | default: '#' %}
+          {% if cta_url_val contains 'http' %}
+            {% assign cta_href = cta_url_val %}
+          {% else %}
+            {% assign cta_href = site_url | append: cta_url_val %}
+          {% endif %}
+          <a href="{{ cta_href }}"
              class="btn-primary-dark"
              style="background: {{ cta_bg_color_val }};
                     color: {{ cta_text_color_val }} !important;"

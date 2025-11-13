@@ -1,0 +1,11 @@
+{% comment %}
+  Site URL Helper
+  Defines the canonical domain for the site.
+  Use this instead of relying on Kajabi's canonical_url filter.
+
+  Usage:
+    {% include 'site_url' %}
+    <a href="{{ site_url }}/about">About</a>
+{% endcomment %}
+
+{% assign site_url = 'https://www.attachmentnerd.com' %}
