@@ -196,7 +196,7 @@
                 {% endif %}
 
                 {% if block.settings.show_link and block.settings.link_text != blank and block.settings.link_url != blank %}
-                  <a href="{{ block.settings.link_url }}"
+                  <a href="{{ block.settings.link_url | canonical_url }}"
                      class="featured-link"
                      style="color: {{ link_color_val }};"
                      {% if block.settings.link_new_tab %}target="_blank" rel="noopener"{% endif %}>
@@ -216,7 +216,7 @@
       {% if section.settings.show_cta and section.settings.cta_text != blank %}
         <div class="an-dark-featured__cta text-center mt-5 {% if section.settings.enable_animations %}animate-fade-up{% endif %}"
              style="{% if section.settings.enable_animations %}animation-delay: 0.6s;{% endif %}">
-          <a href="{{ section.settings.cta_url | default: '#' }}"
+          <a href="{{ section.settings.cta_url | default: '#' | canonical_url }}"
              class="btn-primary-dark"
              style="background: {{ cta_bg_color_val }};
                     color: {{ cta_text_color_val }} !important;"
