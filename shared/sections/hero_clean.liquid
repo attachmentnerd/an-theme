@@ -29,17 +29,19 @@
       {% if section.settings.image %}
         <div class="col-lg-6 {% if section.settings.image_position == 'right' %}ps-lg-5{% else %}pe-lg-5{% endif %} mb-4 mb-lg-0">
           <div class="hero-clean__image-wrapper animate-fade-up" style="{% if section.settings.image_container_height %}height: {{ section.settings.image_container_height }}px;{% endif %} {% if section.settings.image_container_width %}max-width: {{ section.settings.image_container_width }}px; margin: 0 auto;{% endif %}">
-            {% include 'responsive-image',
-              image: section.settings.image,
-              alt: section.settings.image_alt | default: 'Hero image',
-              class: 'img-fluid rounded',
-              sizes: '(max-width: 767px) 100vw, 50vw',
-              priority: section.settings.image_priority,
-              aspect_ratio: section.settings.image_aspect_ratio | default: '16/9',
-              widths: '400,600,800,1200',
-              placeholder_type: 'hero',
-              blur_up: true
-            %}
+            <img
+              src="{{ section.settings.image | image_picker_url: '800x' }}"
+              srcset="{{ section.settings.image | image_picker_url: '400x' }} 400w,
+                      {{ section.settings.image | image_picker_url: '600x' }} 600w,
+                      {{ section.settings.image | image_picker_url: '800x' }} 800w,
+                      {{ section.settings.image | image_picker_url: '1200x' }} 1200w"
+              sizes="(max-width: 767px) 100vw, 50vw"
+              alt="{{ section.settings.image_alt | default: 'Hero image' }}"
+              class="img-fluid rounded"
+              loading="{% if section.settings.image_priority %}eager{% else %}lazy{% endif %}"
+              {% if section.settings.image_priority %}fetchpriority="high"{% endif %}
+              {% if section.settings.image_aspect_ratio %}style="aspect-ratio: {{ section.settings.image_aspect_ratio }};"{% endif %}
+            >
           </div>
         </div>
       {% endif %}
