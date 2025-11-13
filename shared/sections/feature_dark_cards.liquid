@@ -7,7 +7,9 @@
   - Mobile-responsive design
 {% endcomment %}
 
-{% include 'site_url' %}
+{% comment %} Define site URL - change this to update your domain {% endcomment %}
+{% assign site_url = 'https://www.attachmentnerd.com' %}
+
 {% assign is_light_variant = false %}
 {% if section.settings.style_variant == 'light' %}
   {% assign is_light_variant = true %}
