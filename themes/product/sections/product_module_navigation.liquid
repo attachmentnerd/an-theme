@@ -119,9 +119,10 @@
                 {% endcase %}
               </a>
 
-              {% if block.settings.show_progress and block.settings.progress > 0 and block.settings.status == 'in_progress' %}
+              {% assign progress_value = block.settings.progress | default: 0 | plus: 0 %}
+              {% if block.settings.show_progress and progress_value > 0 and block.settings.status == 'in_progress' %}
                 <div class="mn-progress-bar">
-                  <div class="mn-progress-fill" style="width: {{ block.settings.progress }}%"></div>
+                  <div class="mn-progress-fill" style="width: {{ progress_value }}%"></div>
                 </div>
               {% endif %}
             </li>

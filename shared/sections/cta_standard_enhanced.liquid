@@ -24,14 +24,16 @@
              {% if section.settings.background_fixed %}background-attachment: fixed;{% endif %}
            {% endif %}
 
-           {% if section.settings.border_width > 0 %}
-             border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+           {% assign border_width_value = section.settings.border_width | default: 0 | plus: 0 %}
+           {% if border_width_value > 0 %}
+             border: {{ border_width_value }}px solid {{ section.settings.border_color }};
            {% endif %}
            border-radius: {{ section.settings.border_radius }}px;
          ">
 
-  {% if section.settings.background_type == 'image' and section.settings.background_overlay_opacity > 0 %}
-    <div class="bg-overlay" style="opacity: {{ section.settings.background_overlay_opacity | divided_by: 100.0 }};"></div>
+  {% assign overlay_opacity_value = section.settings.background_overlay_opacity | default: 0 | plus: 0 %}
+  {% if section.settings.background_type == 'image' and overlay_opacity_value > 0 %}
+    <div class="bg-overlay" style="opacity: {{ overlay_opacity_value | divided_by: 100.0 }};"></div>
   {% endif %}
 
   <div class="container position-relative" style="z-index: 1;">
@@ -51,9 +53,10 @@
       {% if section.settings.show_image and section.settings.image != blank %}
         <div class="an-cta__image
                     {% if section.settings.image_position == 'top' %}order-1{% elsif section.settings.image_position == 'right' %}order-3{% else %}order-1{% endif %}">
+          {% assign image_container_width_value = section.settings.image_container_width | default: 0 | plus: 0 %}
           <div class="image-wrapper shadow-{{ section.settings.image_shadow }}"
                style="
-                 {% if section.settings.image_container_width > 0 %}max-width: {{ section.settings.image_container_width }}px;{% endif %}
+                 {% if image_container_width_value > 0 %}max-width: {{ image_container_width_value }}px;{% endif %}
                  border-radius: {{ section.settings.image_radius }}px;
                  {% if section.settings.image_glow %}box-shadow: 0 0 48px {{ section.settings.gradient_start }}40;{% endif %}
                ">
@@ -108,14 +111,15 @@
         {% endif %}
 
         {% if section.settings.show_subheading and section.settings.subheading != blank %}
+          {% assign subheading_max_width_value = section.settings.subheading_max_width | default: 0 | plus: 0 %}
           <p class="an-cta__subheading text-{{ section.settings.subheading_alignment }}"
              style="
                font-size: var(--fs-body-{{ section.settings.subheading_size }});
                color: {{ section.settings.subheading_color }};
                line-height: {{ section.settings.line_height }};
                margin-bottom: {{ section.settings.subheading_margin_bottom }}px;
-               {% if section.settings.subheading_max_width > 0 %}
-                 max-width: {{ section.settings.subheading_max_width }}px;
+               {% if subheading_max_width_value > 0 %}
+                 max-width: {{ subheading_max_width_value }}px;
                  {% if section.settings.subheading_alignment == 'center' %}margin-left: auto; margin-right: auto;{% endif %}
                {% endif %}
              "

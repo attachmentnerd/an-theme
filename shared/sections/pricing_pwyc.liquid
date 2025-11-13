@@ -69,7 +69,8 @@
 
                   <div class="an-pwyc-tier__amount-wrapper">
                     <div class="an-pwyc-tier__amount">
-                      {% if block.settings.amount == 0 %}
+                      {% assign amount_value = block.settings.amount | default: 0 | plus: 0 %}
+                      {% if amount_value == 0 %}
                         <span class="an-pwyc-tier__free">
                           <span class="free-text">{{ section.settings.free_text | default: 'FREE' }}</span>
                           <span class="free-heart">❤️</span>

@@ -26,14 +26,16 @@
              background: {{ section.settings.background_color }};
            {% endif %}
 
-           {% if section.settings.border_width > 0 %}
-             border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+           {% assign border_width_value = section.settings.border_width | default: 0 | plus: 0 %}
+           {% if border_width_value > 0 %}
+             border: {{ border_width_value }}px solid {{ section.settings.border_color }};
            {% endif %}
            border-radius: {{ section.settings.border_radius }}px;
          ">
 
-  {% if section.settings.background_type == 'image' and section.settings.background_overlay_opacity > 0 %}
-    <div class="bg-overlay" style="opacity: {{ section.settings.background_overlay_opacity | divided_by: 100.0 }};"></div>
+  {% assign overlay_opacity_value = section.settings.background_overlay_opacity | default: 0 | plus: 0 %}
+  {% if section.settings.background_type == 'image' and overlay_opacity_value > 0 %}
+    <div class="bg-overlay" style="opacity: {{ overlay_opacity_value | divided_by: 100.0 }};"></div>
   {% endif %}
 
   <div class="container position-relative" style="z-index: 1;">

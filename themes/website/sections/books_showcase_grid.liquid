@@ -51,12 +51,13 @@
               <div class="book-showcase__image-wrapper"
                    style="padding: {{ section.settings.image_padding }}px; margin: {{ section.settings.image_margin }}px;">
                 {% if block.settings.book_image != blank %}
-                  <img src="{{ block.settings.book_image | image_picker_url: '400x600' }}" 
-                       alt="{{ block.settings.title }}" 
+                  {% assign image_border_width_value = section.settings.image_border_width | default: 0 | plus: 0 %}
+                  <img src="{{ block.settings.book_image | image_picker_url: '400x600' }}"
+                       alt="{{ block.settings.title }}"
                        class="book-showcase__image"
                        loading="lazy"
-                       style="border-radius: {{ section.settings.image_border_radius }}px; 
-                              {% if section.settings.image_border_width > 0 %}border: {{ section.settings.image_border_width }}px solid {{ section.settings.image_border_color }};{% endif %}
+                       style="border-radius: {{ section.settings.image_border_radius }}px;
+                              {% if image_border_width_value > 0 %}border: {{ image_border_width_value }}px solid {{ section.settings.image_border_color }};{% endif %}
                               transform: rotate({{ section.settings.image_rotation }}deg);
                               box-shadow: {{ section.settings.image_shadow }};"
                        srcset="{{ block.settings.book_image | image_picker_url: '280x420' }} 280w,
