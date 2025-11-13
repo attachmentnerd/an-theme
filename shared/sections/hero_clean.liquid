@@ -158,8 +158,16 @@
   }
   
   .hero-clean__image-wrapper img {
-    width: 100%;
-    height: auto;
+    width: {{ section.settings.image_width | default: '100%' }};
+    height: {{ section.settings.image_height | default: 'auto' }};
+    object-fit: {{ section.settings.image_fit | default: 'contain' }};
+    object-position: {{ section.settings.image_object_position | default: 'center' }};
+    {% if section.settings.image_aspect_ratio != blank %}
+    aspect-ratio: {{ section.settings.image_aspect_ratio }};
+    {% endif %}
+    {% if section.settings.image_shadow and section.settings.image_shadow != 'none' %}
+    box-shadow: {{ section.settings.image_shadow }};
+    {% endif %}
   }
   
   /* CTA Wrapper */
@@ -512,10 +520,10 @@
     },
     {
       "type": "select",
-      "id": "image_position",
-      "label": "Image Position",
+      "id": "image_object_position",
+      "label": "Image Object Position",
       "default": "center",
-      "info": "Where to position the image when using 'cover' fit",
+      "info": "Where to position the image within its container (CSS object-position)",
       "options": [
         {
           "value": "center",
