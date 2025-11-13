@@ -265,7 +265,7 @@
   <div class="container an-pill-nav__container">
     <a class="an-pill-nav__logo" href="/">
       {% if section.settings.logo_image %}
-        <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ current_site.name | default: 'Logo' }}" style="height: 34px; width: auto;">
+        <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ current_site.name | default: 'Logo' }}"  class="nav-logo">
       {% else %}
         <img src="https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg" alt="Attachment Nerd logo" style="height: 34px; width: auto;">
       {% endif %}

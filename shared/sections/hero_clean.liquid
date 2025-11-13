@@ -40,7 +40,6 @@
               class="img-fluid rounded"
               loading="{% if section.settings.image_priority %}eager{% else %}lazy{% endif %}"
               {% if section.settings.image_priority %}fetchpriority="high"{% endif %}
-              {% if section.settings.image_aspect_ratio %}style="aspect-ratio: {{ section.settings.image_aspect_ratio }};"{% endif %}
             >
           </div>
         </div>
