@@ -807,42 +807,30 @@
       <a href="/">
         {% comment %} Prefer inverse logo when enabled (section-level), else block-level inverse, else defaults {% endcomment %}
         {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
-          <img src="{{ section.settings.inverse_logo | image_picker_url: '360x120' }}"
+          <img src="{{ section.settings.inverse_logo | image_picker_url: 'master' }}"
                alt="{{ section.settings.logo_alt | default: current_site.title }}"
                loading="eager"
                style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
-                        {% include 'responsive-image',
-              image: logo_block.settings.inverse_logo_image,
-              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ logo_block.settings.inverse_logo_image | image_picker_url: 'master' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager"
+                 style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
           {% elsif logo_block and logo_block.settings.logo_image %}
-                        {% include 'responsive-image',
-              image: logo_block.settings.logo_image,
-              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ logo_block.settings.logo_image | image_picker_url: 'master' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager"
+                 style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
           {% elsif section.settings.logo %}
-                        {% include 'responsive-image',
-              image: section.settings.logo,
-              alt: '{{ section.settings.logo_alt | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ section.settings.logo | image_picker_url: 'master' }}"
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager"
+                 style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
           {% else %}
             <span class="nav-transparent-pill__logo-text">
               {{ section.settings.logo_text | default: current_site.title }}
@@ -1047,77 +1035,42 @@
       <a href="/">
         {% comment %} Prefer inverse logo on mobile (section-level), then block-level inverse mobile/desktop, then defaults {% endcomment %}
         {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
-                    {% include 'responsive-image',
-            image: section.settings.inverse_logo,
-            alt: '{{ section.settings.logo_alt | default: current_site.title }}',
-            class: 'img-fluid',
-            sizes: '120px',
-            aspect_ratio: '16/9',
-            widths: '60,120,180,240',
-            placeholder_type: 'logo'
-          %}
+          <img src="{{ section.settings.inverse_logo | image_picker_url: 'master' }}"
+               alt="{{ section.settings.logo_alt | default: current_site.title }}"
+               class="img-fluid"
+               loading="eager">
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.mobile_inverse_logo_image %}
-                        {% include 'responsive-image',
-              image: logo_block.settings.mobile_inverse_logo_image,
-              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ logo_block.settings.mobile_inverse_logo_image | image_picker_url: 'master' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager">
           {% elsif logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
-                        {% include 'responsive-image',
-              image: logo_block.settings.inverse_logo_image,
-              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ logo_block.settings.inverse_logo_image | image_picker_url: 'master' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager">
           {% elsif logo_block and logo_block.settings.mobile_logo_image %}
-                        {% include 'responsive-image',
-              image: logo_block.settings.mobile_logo_image,
-              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: 'master' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager">
           {% elsif logo_block and logo_block.settings.logo_image %}
-                        {% include 'responsive-image',
-              image: logo_block.settings.logo_image,
-              alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ logo_block.settings.logo_image | image_picker_url: 'master' }}"
+                 alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager">
           {% elsif section.settings.mobile_logo %}
-                        {% include 'responsive-image',
-              image: section.settings.mobile_logo,
-              alt: '{{ section.settings.logo_alt | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ section.settings.mobile_logo | image_picker_url: 'master' }}"
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager">
           {% elsif section.settings.logo %}
-                        {% include 'responsive-image',
-              image: section.settings.logo,
-              alt: '{{ section.settings.logo_alt | default: current_site.title }}',
-              class: 'img-fluid',
-              sizes: '120px',
-              aspect_ratio: '16/9',
-              widths: '60,120,180,240',
-              placeholder_type: 'logo'
-            %}
+            <img src="{{ section.settings.logo | image_picker_url: 'master' }}"
+                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
+                 class="img-fluid"
+                 loading="eager">
           {% else %}
             <span class="nav-transparent-pill__logo-text" style="font-size: 20px;">
               {{ section.settings.logo_text | default: current_site.title }}
@@ -1301,16 +1254,10 @@
                          class="nav-transparent-pill__mobile-card {% unless nested_block.settings.card_image %}nav-transparent-pill__mobile-card--colored{% endunless %}"
                          {% if nested_block.settings.card_bg_color and nested_block.settings.card_image == blank %}style="background-color: {{ nested_block.settings.card_bg_color }};"{% endif %}>
                         {% if nested_block.settings.card_image %}
-                                                    {% include 'responsive-image',
-                            image: nested_block.settings.card_image,
-                            alt: '{{ nested_block.settings.card_title }}',
-                            class: 'nav-transparent-pill__mobile-card-image',
-                            sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                            aspect_ratio: '16/9',
-                            widths: '400,600,800,1200',
-                            placeholder_type: 'feature',
-                            blur_up: true
-                          %}
+                          <img src="{{ nested_block.settings.card_image | image_picker_url: 'master' }}"
+                               alt="{{ nested_block.settings.card_title }}"
+                               class="nav-transparent-pill__mobile-card-image"
+                               loading="lazy">
                         {% endif %}
                         <div class="nav-transparent-pill__mobile-card-content">
                           <h3 class="nav-transparent-pill__mobile-card-title">{{ nested_block.settings.card_title }}</h3>
