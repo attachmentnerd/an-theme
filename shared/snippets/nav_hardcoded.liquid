@@ -53,15 +53,14 @@
 <nav class="hc-nav" role="navigation" aria-label="Main">
   <div class="container hc-nav__container">
     <a class="hc-nav__logo" href="{{ current_site.root_url | default: '/' }}">
-      {% include 'responsive-image',
-        image: nav_logo_url,
-        alt: 'Logo',
-        sizes: '200px',
-        aspect_ratio: '16/9',
-        widths: '200,400',
-        placeholder_type: 'logo',
-        priority: true
-      %}
+      <img
+        src="{{ nav_logo_url | image_picker_url: '200x' }}"
+        srcset="{{ nav_logo_url | image_picker_url: '200x' }} 200w,
+                {{ nav_logo_url | image_picker_url: '400x' }} 400w"
+        sizes="200px"
+        alt="Logo"
+        loading="eager"
+      >
     </a>
 
     <div class="hc-nav__links" aria-label="Primary navigation">
@@ -89,15 +88,16 @@
           <a class="hc-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
-              {% include 'responsive-image',
-                image: avatar_url,
-                alt: current_site_user.name,
-                sizes: '44px',
-                aspect_ratio: '1/1',
-                widths: '44,88',
-                placeholder_type: 'avatar',
-                class: 'hc-nav__avatar-img'
-              %}
+              <img
+                src="{{ avatar_url | image_picker_url: '44x' }}"
+                srcset="{{ avatar_url | image_picker_url: '44x' }} 44w,
+                        {{ avatar_url | image_picker_url: '88x' }} 88w"
+                sizes="44px"
+                alt="{{ current_site_user.name }}"
+                class="hc-nav__avatar-img"
+                loading="lazy"
+                style="width:40px;height:40px;border-radius:50%;object-fit:cover;"
+              >
             {% else %}
               {{ profile_label | slice: 0, 1 | upcase }}
             {% endif %}

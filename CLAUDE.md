@@ -10,14 +10,13 @@ Kajabi does NOT support Shopify's `{% render %}` tag. You MUST use `{% include %
 
 ```liquid
 <!-- ❌ WRONG - Will cause errors in Kajabi -->
-{% render 'responsive-image', image: hero_image %}
+{% render 'icon', icon: 'heart' %}
 
 <!-- ✅ CORRECT - Use include instead -->
-{% include 'responsive-image', image: hero_image %}
+{% include 'icon', icon: 'heart' %}
 ```
 
 **This applies to ALL snippet calls:**
-- `{% include 'responsive-image' %}`
 - `{% include 'icon' %}`
 - `{% include 'element_button' %}`
 - `{% include 'navigation_controller' %}`
@@ -2115,111 +2114,74 @@ Example:
 }
 ```
 
-## Responsive Images System (v17.0.0+)
+## Responsive Images in Kajabi
 
-### Overview
-The AN themes include a comprehensive responsive image system that automatically serves optimized images based on device size and screen density. This significantly improves performance, especially on mobile devices.
+### ✅ CORRECT: Use Direct `<img>` Tags with srcset
 
-### responsive-image.liquid Snippet
+**IMPORTANT**: Kajabi works best with direct `<img>` tags. DO NOT use snippet-based responsive image systems.
 
-The `responsive-image` snippet creates optimized `<img>` tags with:
-- **srcset**: Multiple image sizes for different screen densities
-- **sizes**: Instructions for browsers on which size to use
-- **Lazy loading**: Deferred loading for below-fold images
-- **Priority loading**: fetchpriority="high" for LCP images
-- **Aspect ratios**: Prevents layout shift during loading
-
-#### Basic Usage
+#### ✅ ALWAYS Use This Pattern:
 ```liquid
-{% render 'responsive-image',
-  image: section.settings.hero_image,
-  alt: 'Hero image description',
-  class: 'hero-image',
-  sizes: '100vw',
-  priority: true
-%}
+<img
+  src="{{ section.settings.hero_image | image_picker_url: '800x' }}"
+  srcset="{{ section.settings.hero_image | image_picker_url: '400x' }} 400w,
+          {{ section.settings.hero_image | image_picker_url: '800x' }} 800w,
+          {{ section.settings.hero_image | image_picker_url: '1200x' }} 1200w,
+          {{ section.settings.hero_image | image_picker_url: '1600x' }} 1600w"
+  sizes="(max-width: 767px) 100vw, 800px"
+  alt="Hero description"
+  class="img-fluid"
+  loading="lazy"
+>
 ```
-
-#### Parameters
-- `image` (required): Image URL from image_picker_url
-- `alt` (required): Alt text for accessibility
-- `class`: CSS classes (default: 'img-fluid')
-- `sizes`: Responsive sizes attribute
-- `loading`: 'lazy' or 'eager' (default: 'lazy')
-- `priority`: boolean - true for hero/LCP images
-- `widths`: Comma-separated string of widths (default: "400,600,800,1200,1600,2000")
-- `width`/`height`: Dimensions to prevent layout shift
-- `aspect_ratio`: CSS aspect-ratio (e.g., "16/9", "2/3")
 
 ### Common Image Patterns
 
 #### Hero Images (Above-fold)
 ```liquid
-{% render 'responsive-image',
-  image: section.settings.hero_image,
-  alt: 'Hero image',
-  sizes: '100vw',
-  priority: true,
-  aspect_ratio: '16/9'
-%}
+<img
+  src="{{ section.settings.hero_image | image_picker_url: '1200x' }}"
+  srcset="{{ section.settings.hero_image | image_picker_url: '800x' }} 800w,
+          {{ section.settings.hero_image | image_picker_url: '1200x' }} 1200w,
+          {{ section.settings.hero_image | image_picker_url: '1600x' }} 1600w,
+          {{ section.settings.hero_image | image_picker_url: '2000x' }} 2000w"
+  sizes="100vw"
+  alt="Hero image"
+  class="img-fluid"
+  loading="eager"
+>
 ```
 
 #### Book Covers
 ```liquid
-{% render 'responsive-image',
-  image: section.settings.book_image,
-  alt: book_title,
-  sizes: '(max-width: 767px) 280px, 400px',
-  aspect_ratio: '2/3',
-  widths: '280,400,600,800'
-%}
+<img
+  src="{{ section.settings.book_image | image_picker_url: '400x' }}"
+  srcset="{{ section.settings.book_image | image_picker_url: '280x' }} 280w,
+          {{ section.settings.book_image | image_picker_url: '400x' }} 400w,
+          {{ section.settings.book_image | image_picker_url: '600x' }} 600w,
+          {{ section.settings.book_image | image_picker_url: '800x' }} 800w"
+  sizes="(max-width: 767px) 280px, 400px"
+  alt="{{ book_title }}"
+  class="img-fluid"
+  loading="lazy"
+>
 ```
 
 #### Avatar Images
 ```liquid
-{% render 'responsive-image',
-  image: author_image,
-  alt: author_name,
-  class: 'avatar rounded-circle',
-  sizes: '60px',
-  aspect_ratio: '1/1',
-  widths: '60,120,180'
-%}
+<img
+  src="{{ author_image | image_picker_url: '120x' }}"
+  srcset="{{ author_image | image_picker_url: '60x' }} 60w,
+          {{ author_image | image_picker_url: '120x' }} 120w,
+          {{ author_image | image_picker_url: '180x' }} 180w"
+  sizes="60px"
+  alt="{{ author_name }}"
+  class="rounded-circle"
+  loading="lazy"
+>
 ```
 
-#### Content Images
-```liquid
-{% render 'responsive-image',
-  image: block.settings.image,
-  alt: block.settings.alt_text,
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  loading: 'lazy'
-%}
-```
-
-### Aspect Ratio CSS Utilities
-
-Use these classes to maintain consistent aspect ratios:
-
-- `.aspect-square` - 1:1 ratio (avatars, logos)
-- `.aspect-video` - 16:9 ratio (videos, hero images)
-- `.aspect-book` - 2:3 ratio (book covers)
-- `.aspect-landscape` - 4:3 ratio (general images)
-- `.aspect-portrait` - 3:4 ratio (portrait images)
-- `.aspect-wide` - 21:9 ratio (ultra-wide banners)
-- `.aspect-golden` - 1.618:1 ratio (golden ratio)
-
-#### Responsive Aspect Ratios
-- `.aspect-square--mobile` - Square on mobile only
-- `.aspect-video--tablet-up` - 16:9 on tablet and up
-
-#### Object-fit Utilities
-- `.object-cover` - Cover container (may crop)
-- `.object-contain` - Fit within container
-- `.object-center` - Center the focal point
-- `.object-top` - Align to top (for headshots)
-
-### Performance Best Practices
+### Best Practices
 
 1. **Use appropriate sizes attribute**:
    - Full-width: `sizes="100vw"`
@@ -2228,205 +2190,15 @@ Use these classes to maintain consistent aspect ratios:
 
 2. **Prioritize hero images**:
    ```liquid
-   priority: true  # Adds fetchpriority="high"
+   loading="eager"  # For above-fold images
    ```
 
-3. **Specify dimensions**:
+3. **Use lazy loading** for below-fold images:
    ```liquid
-   width: 800,
-   height: 600  # Prevents layout shift
+   loading="lazy"  # Default for most images
    ```
 
-4. **Use lazy loading** for below-fold images:
-   ```liquid
-   loading: 'lazy'  # Default behavior
-   ```
-
-5. **Optimize widths array** based on usage:
-   - Small images: "100,200,400"
-   - Medium images: "400,600,800,1200"
-   - Full-width: "400,600,800,1200,1600,2000"
-
-### Migration Guide
-
-To migrate existing images to responsive:
-
-1. **Replace img tags**:
-   ```liquid
-   <!-- Before -->
-   <img src="{{ image | image_picker_url: '800x' }}" 
-        alt="Description" 
-        class="img-fluid">
-   
-   <!-- After -->
-   {% render 'responsive-image',
-     image: image,
-     alt: 'Description',
-     sizes: '(max-width: 767px) 100vw, 800px'
-   %}
-   ```
-
-2. **Add aspect ratios** to prevent shift:
-   ```liquid
-   aspect_ratio: '16/9'  # or use CSS class
-   ```
-
-3. **Set priority** for LCP images:
-   ```liquid
-   priority: true  # For hero/above-fold images
-   ```
-
-### Browser Support
-- All modern browsers support srcset/sizes
-- Older browsers fall back to src attribute
-- aspect-ratio CSS has 96%+ browser support
-- object-fit has 98%+ browser support
-
-### Testing Responsive Images
-
-1. **Chrome DevTools**:
-   - Network tab shows which image size loaded
-   - Lighthouse reports image optimization score
-
-2. **Responsive Design Mode**:
-   - Test different viewport sizes
-   - Verify correct image loads
-
-3. **Performance Metrics**:
-   - Check Core Web Vitals (LCP)
-   - Monitor total image payload
-   - Verify no layout shift (CLS)
-
-## 🚨 IMPORTANT: Image Optimization Requirements (v18.0.0+)
-
-### ALWAYS Use responsive-image Snippet for ALL Images
-
-**DO NOT use basic `<img>` tags anymore!** The theme now has a comprehensive responsive image system that MUST be used for all images to maintain performance standards.
-
-#### ❌ NEVER Do This:
-```liquid
-<img src="{{ image | image_picker_url: '800x' }}" 
-     alt="Description" 
-     class="img-fluid">
-```
-
-#### ✅ ALWAYS Do This:
-```liquid
-{% render 'responsive-image',
-  image: image,
-  alt: 'Description',
-  sizes: '(max-width: 767px) 100vw, 800px',
-  aspect_ratio: '16/9',
-  placeholder_type: 'default',
-  blur_up: true
-%}
-```
-
-### Critical Requirements for New Sections:
-
-1. **Hero/Above-fold Images**: MUST use `priority: true`
-   ```liquid
-   {% render 'responsive-image',
-     image: hero_image,
-     priority: true,        # REQUIRED for LCP
-     sizes: '100vw',
-     aspect_ratio: '16/9',
-     blur_up: true
-   %}
-   ```
-
-2. **Always Specify aspect_ratio**: Prevents layout shift (CLS)
-   - Heroes: `'16/9'`
-   - Books: `'2/3'`
-   - Avatars: `'1/1'`
-   - Features: `'4/3'`
-
-3. **Use Appropriate placeholder_type**:
-   - `'hero'` - Hero sections
-   - `'book'` - Book covers
-   - `'avatar'` - Profile images
-   - `'feature'` - Feature images
-   - `'logo'` - Logo/badge images
-
-4. **Enable blur_up for Better UX**: Especially for larger images
-   ```liquid
-   blur_up: true
-   ```
-
-5. **Optimize widths Array**:
-   - Avatars: `'60,120,180'`
-   - Books: `'280,400,600,800'`
-   - Heroes: `'800,1200,1600,2000,2400'`
-   - Don't include unnecessary large sizes
-
-### Quick Reference for Common Patterns:
-
-```liquid
-{# Hero Image - Full Width, High Priority #}
-{% render 'responsive-image',
-  image: section.settings.hero_image,
-  alt: 'Hero description',
-  sizes: '100vw',
-  priority: true,
-  aspect_ratio: '16/9',
-  widths: '800,1200,1600,2000,2400',
-  placeholder_type: 'hero',
-  blur_up: true
-%}
-
-{# Book Cover - Fixed Width #}
-{% render 'responsive-image',
-  image: book_image,
-  alt: book_title,
-  sizes: '(max-width: 767px) 280px, 400px',
-  aspect_ratio: '2/3',
-  widths: '280,400,600,800',
-  placeholder_type: 'book',
-  blur_up: true
-%}
-
-{# Avatar - Small Fixed Size #}
-{% render 'responsive-image',
-  image: author_photo,
-  alt: author_name,
-  class: 'rounded-circle',
-  sizes: '60px',
-  aspect_ratio: '1/1',
-  widths: '60,120,180',
-  placeholder_type: 'avatar'
-%}
-
-{# Content Image - Responsive Columns #}
-{% render 'responsive-image',
-  image: content_image,
-  alt: 'Content description',
-  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-  aspect_ratio: '4/3',
-  placeholder_type: 'feature',
-  blur_up: true
-%}
-```
-
-### Migration Checklist for New Development:
-
-- [ ] Replace ALL `<img>` tags with responsive-image snippet
-- [ ] Set `priority: true` for first 3-4 images
-- [ ] Add appropriate `aspect_ratio` to every image
-- [ ] Choose correct `placeholder_type`
-- [ ] Enable `blur_up` for images > 200px
-- [ ] Optimize `widths` array for use case
-- [ ] Test on slow 3G to verify blur-up works
-- [ ] Check DevTools Network tab for correct image loading
-- [ ] Verify CLS score is 0 in Lighthouse
-
-### Performance Impact:
-
-Using the responsive-image system properly results in:
-- **75-95% smaller images on mobile** (serves 400px instead of 2000px)
-- **0 CLS score** from proper aspect ratios
-- **Faster LCP** with priority loading
-- **Better perceived performance** with blur-up placeholders
-
-**Remember**: Every `<img>` tag without responsive-image is a performance regression!
-
-For detailed migration examples, see `/IMAGE_OPTIMIZATION_GUIDE.md`
+4. **Optimize srcset widths** based on usage:
+   - Small images (avatars): 60, 120, 180
+   - Medium images (books): 280, 400, 600, 800
+   - Large images (heroes): 800, 1200, 1600, 2000
