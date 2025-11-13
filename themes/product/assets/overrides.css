@@ -277,3 +277,87 @@ h6 {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+
+/* ==========================================================================
+   16. Video Player Playlist Enhancements (CSS Only)
+   ========================================================================== */
+
+/* Smooth transitions for all track interactions */
+.track {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+/* Subtle hover effect on playlist tracks */
+.track:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(94, 59, 255, 0.08);
+}
+
+/* Active track gets a subtle glow */
+.track--active {
+  box-shadow: 0 2px 8px rgba(94, 59, 255, 0.12);
+  border-left: 3px solid var(--c-brand-600, #5e3bff);
+}
+
+/* Thumbnail zoom effect on hover */
+.track__thumb {
+  transition: transform 0.3s ease-in-out;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.track:hover .track__thumb {
+  transform: scale(1.05);
+}
+
+/* Better focus states for keyboard navigation */
+.track:focus {
+  outline: 2px solid var(--c-brand-600, #5e3bff);
+  outline-offset: 2px;
+}
+
+/* Track title gets subtle color change on hover */
+.track__title {
+  transition: color 0.2s ease-in-out;
+}
+
+.track:hover .track__title {
+  color: var(--c-brand-600, #5e3bff);
+}
+
+/* Play icon pulse animation on active track */
+.track--active .icon-play {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Mobile: Increase touch target size and reduce transforms */
+@media (max-width: 767px) {
+  .track {
+    padding: 12px 16px;
+    min-height: 72px; /* Better touch target */
+  }
+
+  .track:hover {
+    transform: translateY(-1px); /* Smaller lift on mobile */
+  }
+
+  /* Disable thumbnail zoom on mobile for performance */
+  .track:hover .track__thumb {
+    transform: scale(1.02);
+  }
+}
+
+/* Smooth transition for progress bars within tracks */
+.track .progress__bar {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.track:hover .progress__bar {
+  opacity: 1;
+}
