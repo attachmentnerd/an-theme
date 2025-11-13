@@ -12,6 +12,8 @@
     "theme:export-both": "node scripts/theme-manager.js export-both",
     "theme:sync": "node scripts/theme-manager.js sync",
     "test": "node scripts/test-themes.js",
+    "validate": "node scripts/validate-liquid.cjs",
+    "validate:quick": "node scripts/validate-liquid.cjs shared/sections shared/snippets",
     "inject:drafts": "node scripts/inject-schema.js",
     "inject:watch": "npm-watch inject:drafts",
     "demo:generate": "node scripts/generate-demo-page.js"
