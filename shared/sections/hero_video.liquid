@@ -22,17 +22,14 @@
     <!-- Video Thumbnail/Poster -->
     <div class="an-video-hero__media position-relative">
       {% if section.settings.poster_image != blank %}
-        {% include 'responsive-image',
-          image: section.settings.poster_image,
-          alt: section.settings.poster_alt_text | default: 'Video thumbnail',
-          class: 'an-video-hero__poster',
-          sizes: '100vw',
-          priority: true,
-          aspect_ratio: section.settings.poster_aspect_ratio | default: '16/9',
-          widths: '800,1200,1600,2000',
-          placeholder_type: 'hero',
-          blur_up: true
-        %}
+        <img
+          src="{{ section.settings.poster_image | image_picker_url: '1600x' }}"
+          srcset="{{ section.settings.poster_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.poster_image | image_picker_url: '1200x' }} 1200w,\n                  {{ section.settings.poster_image | image_picker_url: '1600x' }} 1600w,\n                  {{ section.settings.poster_image | image_picker_url: '2000x' }} 2000w"
+          sizes="100vw"
+          alt="{{ section.settings.poster_alt_text | default: 'Video thumbnail' }}"
+          class="an-video-hero__poster"
+          loading="eager"
+          fetchpriority="high">
       {% elsif section.settings.video != blank and section.settings.video.thumbnail_url %}
         <!-- Use video thumbnail if no poster image specified - keep as basic img for dynamic URL -->
         <img

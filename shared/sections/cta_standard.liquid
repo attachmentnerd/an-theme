@@ -6,16 +6,14 @@
     <div class="an-cta__wrapper animate-fade-up">
       {% if section.settings.image != blank %}
         <div class="an-cta__image">
-          {% include 'responsive-image',
-            image: section.settings.image,
-            alt: section.settings.image_alt | default: 'CTA image',
-            sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',
-            aspect_ratio: '16/9',
-            widths: '400,600,800,1200',
-            placeholder_type: 'feature',
-            blur_up: true,
-            class: 'an-cta__img'
-          %}
+          <img
+          src="{{ section.settings.image | image_picker_url: '800x' }}"
+          srcset="{{ section.settings.image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px"
+          alt="{{ section.settings.image_alt | default: 'CTA image' }}"
+          class="an-cta__img"
+          loading="eager"
+          >
         </div>
       {% endif %}
 

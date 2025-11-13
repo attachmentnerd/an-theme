@@ -103,16 +103,14 @@
   <!-- Responsive Background Image -->
   {% if section.settings.background_type == 'image' and section.settings.background_image != blank %}
     <div class="cta-bg-image" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; overflow: hidden;">
-      {% include 'responsive-image',
-        image: section.settings.background_image,
-        alt: '',
-        sizes: '100vw',
-        priority: true,
-        widths: '800,1200,1600,2000,2400',
-        placeholder_type: 'hero',
-        blur_up: true,
-        class: 'cta-bg-img'
-      %}
+      <img
+          src="{{ section.settings.background_image | image_picker_url: '1600x' }}"
+          srcset="{{ section.settings.background_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.background_image | image_picker_url: '1200x' }} 1200w,\n                  {{ section.settings.background_image | image_picker_url: '1600x' }} 1600w,\n                  {{ section.settings.background_image | image_picker_url: '2000x' }} 2000w,\n                  {{ section.settings.background_image | image_picker_url: '2400x' }} 2400w"
+          sizes="100vw"
+          alt="{{ '' }}"
+          class="cta-bg-img"
+          loading="eager"
+          fetchpriority="high">
     </div>
     <style>
       #{{ section.settings.section_id | default: 'cta-full-width' }}-{{ section.id }} .cta-bg-img {

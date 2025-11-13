@@ -259,17 +259,14 @@
   <div class="parallax-hero__bg" data-parallax-speed="{{ section.settings.parallax_speed | default: 0.5 }}">
     <div class="parallax-hero__image-wrapper">
       {% if section.settings.background_image != blank %}
-        {% include 'responsive-image',
-          image: section.settings.background_image,
-          alt: section.settings.image_alt | default: 'Hero background',
-          class: 'parallax-hero__image',
-          sizes: '100vw',
-          priority: section.settings.image_priority,
-          aspect_ratio: section.settings.image_aspect_ratio,
-          widths: '800,1200,1600,2000,2400',
-          placeholder_type: 'hero',
-          blur_up: true
-        %}
+        <img
+          src="{{ section.settings.background_image | image_picker_url: '1600x' }}"
+          srcset="{{ section.settings.background_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.background_image | image_picker_url: '1200x' }} 1200w,\n                  {{ section.settings.background_image | image_picker_url: '1600x' }} 1600w,\n                  {{ section.settings.background_image | image_picker_url: '2000x' }} 2000w,\n                  {{ section.settings.background_image | image_picker_url: '2400x' }} 2400w"
+          sizes="100vw"
+          alt="{{ section.settings.image_alt | default: 'Hero background' }}"
+          class="parallax-hero__image"
+          loading="eager"
+          >
       {% else %}
       <div class="parallax-hero__image" style="width: 100%; height: 100%; background: var(--c-brand-100, #E9E6FF); display: flex; align-items: center; justify-content: center;">
         <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
