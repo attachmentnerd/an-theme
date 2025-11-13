@@ -71,9 +71,9 @@
           
           <!-- CTA Buttons -->
           <div class="hero-clean__cta-wrapper {% unless section.settings.image %}text-center{% endunless %}">
-            
+
             <!-- Primary CTA -->
-            {% if section.settings.cta_text %}
+            {% if section.settings.show_primary_cta and section.settings.cta_text %}
               {% if section.settings.cta_type == 'dropdown' %}
                 <!-- Dropdown Button -->
                 <div class="hero-clean__dropdown-wrapper">
@@ -112,7 +112,7 @@
             {% endif %}
             
             <!-- Secondary CTA (Optional) -->
-            {% if section.settings.secondary_cta_text %}
+            {% if section.settings.show_secondary_cta and section.settings.secondary_cta_text %}
               <a href="{{ section.settings.secondary_cta_link }}" 
                  class="btn hero-clean__btn hero-clean__btn--{{ section.settings.secondary_cta_style }}"
                  {% if section.settings.secondary_cta_new_tab %}target="_blank" rel="noopener"{% endif %}
@@ -802,6 +802,12 @@
       "content": "Primary CTA"
     },
     {
+      "type": "checkbox",
+      "id": "show_primary_cta",
+      "label": "Show Primary CTA",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "cta_text",
       "label": "Button Text",
@@ -898,6 +904,12 @@
       "content": "Secondary CTA (Optional)"
     },
     {
+      "type": "checkbox",
+      "id": "show_secondary_cta",
+      "label": "Show Secondary CTA",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "secondary_cta_text",
       "label": "Secondary Button Text"
@@ -976,7 +988,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#FFFFFF"
+      "default": "#E9E6FF"
     },
     {
       "type": "image_picker",

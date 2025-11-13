@@ -48,11 +48,11 @@
     {% if section.settings.card_style == 'minimal' %}
       border: 1px solid var(--an-border);
       border-radius: var(--an-radius-md);
-      background-color: var(--an-white);
+      background-color: var(--c-white);
     {% elsif section.settings.card_style == 'shadow' %}
       border: none;
       border-radius: var(--an-radius-lg);
-      background-color: var(--an-white);
+      background-color: var(--c-white);
       box-shadow: var(--an-shadow-md);
     {% else %}
       border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "var(--an-border)" }};
@@ -60,7 +60,7 @@
       {% if section.settings.announcement_background_color %}
         background-color: {{ section.settings.announcement_background_color }};
       {% else %}
-        background-color: var(--an-white);
+        background-color: var(--c-white);
       {% endif %}
     {% endif %}
   }
