@@ -265,7 +265,7 @@
   <div class="container an-pill-nav__container">
     <a class="an-pill-nav__logo" href="/">
       {% if section.settings.logo_image %}
-        {% render 'responsive-image',
+        {% include 'responsive-image',
           image: section.settings.logo_image,
           alt: current_site.name | default: 'Logo',
           class: 'nav-logo',
@@ -275,7 +275,7 @@
           placeholder_type: 'logo'
         %}
       {% else %}
-        {% render 'responsive-image',
+        {% include 'responsive-image',
           image: 'https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg',
           alt: 'Attachment Nerd logo',
           sizes: '240px',
@@ -313,7 +313,7 @@
           <a class="an-pill-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
-              {% render 'responsive-image',
+              {% include 'responsive-image',
                 image: avatar_url,
                 alt: current_site_user.name | default: 'Account',
                 sizes: '44px',
