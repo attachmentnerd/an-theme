@@ -93,6 +93,7 @@
           alt="{{ section.settings.book_alt | default: 'Book cover' }}"
           class="img-fluid position-relative"
           loading="eager"
+          fetchpriority="high"
           >
                 {% else %}
                   <div style="width: 100%; aspect-ratio: 2/3; background: var(--c-brand-100); display: flex; align-items: center; justify-content: center;">

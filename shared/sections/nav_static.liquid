@@ -451,7 +451,8 @@
           {% if section.settings.logo_type == 'image' and section.settings.logo %}
             <img src="{{ section.settings.logo | image_picker_url: 'master' }}"
                  alt="{{ section.settings.logo_alt | default: current_site.title }}"
-                 loading="eager">
+                 loading="eager"
+                 fetchpriority="high">
           {% else %}
             <span class="kajabi-nav__logo-text">
               {{ section.settings.logo_text | default: current_site.title }}

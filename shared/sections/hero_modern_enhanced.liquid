@@ -145,6 +145,7 @@
                       class="img-fluid position-relative"
                       style="object-fit: {{ section.settings.image_fit }};"
                       loading="eager"
+                      fetchpriority="high"
                     >
                   {% else %}
                     <div style="width: 100%; aspect-ratio: 2/3; background: var(--c-brand-100); display: flex; align-items: center; justify-content: center;">

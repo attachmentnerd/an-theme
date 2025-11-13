@@ -15,7 +15,8 @@
             <img src="{{ section.settings.logo | image_picker_url: 'master' }}"
                  alt="{{ site.name }}"
                  class="img-fluid"
-                 loading="eager">
+                 loading="eager"
+                 fetchpriority="high">
           </a>
         {% else %}
           <a href="/" class="header__site-name">{{ site.name }}</a>
