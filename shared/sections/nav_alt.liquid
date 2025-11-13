@@ -810,6 +810,7 @@
           <img src="{{ section.settings.inverse_logo | image_picker_url: 'master' }}"
                alt="{{ section.settings.logo_alt | default: current_site.title }}"
                loading="eager"
+               fetchpriority="high"
                style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
@@ -818,18 +819,21 @@
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
                  class="img-fluid"
                  loading="eager"
+                 fetchpriority="high"
                  style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
           {% elsif logo_block and logo_block.settings.logo_image %}
             <img src="{{ logo_block.settings.logo_image | image_picker_url: 'master' }}"
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
                  class="img-fluid"
                  loading="eager"
+                 fetchpriority="high"
                  style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
           {% elsif section.settings.logo %}
             <img src="{{ section.settings.logo | image_picker_url: 'master' }}"
                  alt="{{ section.settings.logo_alt | default: current_site.title }}"
                  class="img-fluid"
                  loading="eager"
+                 fetchpriority="high"
                  style="max-height: {{ section.settings.logo_height | default: 40 }}px; width: auto;">
           {% else %}
             <span class="nav-transparent-pill__logo-text">
@@ -1038,39 +1042,46 @@
           <img src="{{ section.settings.inverse_logo | image_picker_url: 'master' }}"
                alt="{{ section.settings.logo_alt | default: current_site.title }}"
                class="img-fluid"
-               loading="eager">
+               loading="eager"
+               fetchpriority="high">
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.mobile_inverse_logo_image %}
             <img src="{{ logo_block.settings.mobile_inverse_logo_image | image_picker_url: 'master' }}"
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
                  class="img-fluid"
-                 loading="eager">
+                 loading="eager"
+               fetchpriority="high">
           {% elsif logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
             <img src="{{ logo_block.settings.inverse_logo_image | image_picker_url: 'master' }}"
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
                  class="img-fluid"
-                 loading="eager">
+                 loading="eager"
+               fetchpriority="high">
           {% elsif logo_block and logo_block.settings.mobile_logo_image %}
             <img src="{{ logo_block.settings.mobile_logo_image | image_picker_url: 'master' }}"
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
                  class="img-fluid"
-                 loading="eager">
+                 loading="eager"
+               fetchpriority="high">
           {% elsif logo_block and logo_block.settings.logo_image %}
             <img src="{{ logo_block.settings.logo_image | image_picker_url: 'master' }}"
                  alt="{{ logo_block.settings.alt_text | default: current_site.title }}"
                  class="img-fluid"
-                 loading="eager">
+                 loading="eager"
+               fetchpriority="high">
           {% elsif section.settings.mobile_logo %}
             <img src="{{ section.settings.mobile_logo | image_picker_url: 'master' }}"
                  alt="{{ section.settings.logo_alt | default: current_site.title }}"
                  class="img-fluid"
-                 loading="eager">
+                 loading="eager"
+               fetchpriority="high">
           {% elsif section.settings.logo %}
             <img src="{{ section.settings.logo | image_picker_url: 'master' }}"
                  alt="{{ section.settings.logo_alt | default: current_site.title }}"
                  class="img-fluid"
-                 loading="eager">
+                 loading="eager"
+               fetchpriority="high">
           {% else %}
             <span class="nav-transparent-pill__logo-text" style="font-size: 20px;">
               {{ section.settings.logo_text | default: current_site.title }}

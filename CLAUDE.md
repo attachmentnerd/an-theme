@@ -2149,6 +2149,7 @@ Example:
   alt="Hero image"
   class="img-fluid"
   loading="eager"
+  fetchpriority="high"
 >
 ```
 
@@ -2188,10 +2189,17 @@ Example:
    - Half on desktop: `sizes="(max-width: 767px) 100vw, 50vw"`
    - Fixed size: `sizes="400px"`
 
-2. **Prioritize hero images**:
+2. **Optimize LCP (Largest Contentful Paint) images**:
    ```liquid
-   loading="eager"  # For above-fold images
+   loading="eager"         # For above-fold images
+   fetchpriority="high"    # CRITICAL: Tells browser to prioritize this image
    ```
+
+   **ALWAYS add both `loading="eager"` AND `fetchpriority="high"` to:**
+   - Navigation logos (these are in the critical rendering path)
+   - Hero images (typically the LCP element)
+   - Above-the-fold featured images
+   - Any image visible without scrolling
 
 3. **Use lazy loading** for below-fold images:
    ```liquid
@@ -2202,3 +2210,10 @@ Example:
    - Small images (avatars): 60, 120, 180
    - Medium images (books): 280, 400, 600, 800
    - Large images (heroes): 800, 1200, 1600, 2000
+
+5. **LCP Optimization Checklist**:
+   - ✅ Image must be discoverable in initial HTML (not loaded via JavaScript)
+   - ✅ Use `loading="eager"` for above-fold images
+   - ✅ Use `fetchpriority="high"` for LCP candidates
+   - ✅ Avoid lazy-loading on critical images
+   - ✅ Include proper srcset for responsive sizing
