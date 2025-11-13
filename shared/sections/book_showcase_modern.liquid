@@ -8,7 +8,7 @@
           <!-- Mock device frame with glow -->
           <div class="book-frame position-relative" style="border-radius: 16px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,.08), 0 0 48px rgba(94,59,255,.15);">
             <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
-              {% render 'responsive-image',
+              {% include 'responsive-image',
                 image: section.settings.book_image,
                 alt: 'Securely Attached',
                 class: 'img-fluid book-cover',
@@ -70,7 +70,7 @@
               <div class="d-flex align-items-center">
                 {% if section.settings.testimonial_author_image %}
                   <div kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}" class="me-3" style="width: 48px; height: 48px;">
-                                        {% render 'responsive-image',
+                                        {% include 'responsive-image',
                       image: section.settings.testimonial_author_image,
                       alt: '{{ section.settings.testimonial_author }}',
                       class: 'rounded-circle',

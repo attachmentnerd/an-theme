@@ -259,7 +259,7 @@
   <div class="parallax-hero__bg" data-parallax-speed="{{ section.settings.parallax_speed | default: 0.5 }}">
     <div class="parallax-hero__image-wrapper">
       {% if section.settings.background_image != blank %}
-        {% render 'responsive-image',
+        {% include 'responsive-image',
           image: section.settings.background_image,
           alt: section.settings.image_alt | default: 'Hero background',
           class: 'parallax-hero__image',

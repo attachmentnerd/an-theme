@@ -48,7 +48,7 @@
           <div class="item"{% if style_parts != '' %} style="{{ style_parts }}"{% endif %}>
             <div class="it-ico">
               {% if block.settings.icon_image != blank %}
-                                {% render 'responsive-image',
+                                {% include 'responsive-image',
                   image: block.settings.icon_image,
                   alt: '',
                   class: 'img-fluid',

@@ -196,7 +196,7 @@
             <!-- Icon -->
             {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
               <div class="colored-highlight__icon-wrapper">
-                {% render 'responsive-image',
+                {% include 'responsive-image',
                   image: block.settings.icon_image,
                   alt: block.settings.icon_alt,
                   sizes: '80px',

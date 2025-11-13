@@ -136,7 +136,7 @@
       {% if s.show_image and s.image != blank %}
         <div class="media">
           <div class="media-wrapper">
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: s.image,
               alt: s.image_alt | default: s.headline | escape,
               sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',

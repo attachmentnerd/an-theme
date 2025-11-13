@@ -121,7 +121,7 @@
               <div class="featured-visual">
                 {% if block.settings.use_image and block.settings.image %}
                   <div class="featured-image" style="margin: -{{ section.settings.card_padding }}px -{{ section.settings.card_padding }}px {{ section.settings.card_padding }}px;">
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
                       image: block.settings.image,
                       alt: block.settings.image_alt | default: block.settings.title,
                       class: 'featured-image__img',

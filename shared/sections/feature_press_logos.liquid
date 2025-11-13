@@ -61,7 +61,7 @@
                 {% endif %}
 
                 {% if block.settings.logo != blank %}
-                  {% render 'responsive-image',
+                  {% include 'responsive-image',
                     image: block.settings.logo,
                     alt: block.settings.name,
                     sizes: '150px',
@@ -101,7 +101,7 @@
                 {% endif %}
 
                 {% if block.settings.logo != blank %}
-                  {% render 'responsive-image',
+                  {% include 'responsive-image',
                     image: block.settings.logo,
                     alt: block.settings.name,
                     sizes: '150px',

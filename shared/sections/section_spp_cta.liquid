@@ -106,7 +106,7 @@
             {% if guar_title != blank %}
             <div class="spp-guar-head">
               {% if guarantee_avatar %}
-                {% render 'responsive-image',
+                {% include 'responsive-image',
                   image: section.settings.guarantee_avatar,
                   alt: section.settings.guarantee_avatar_alt | default: 'Guarantee badge',
                   sizes: '80px',

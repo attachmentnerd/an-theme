@@ -154,7 +154,7 @@
            title="{{ section.settings.logo_title | default: current_site.title }}"
            {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
           {% if section.settings.logo_image %}
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: section.settings.logo_image,
               alt: section.settings.image_alt,
               sizes: '200px',

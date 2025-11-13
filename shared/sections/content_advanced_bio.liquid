@@ -91,7 +91,7 @@
             <!-- Overlay Product Image -->
             {% if section.settings.overlay_image %}
               <div class="bio-overlay-image" style="bottom: {{ section.settings.overlay_position_bottom | default: '50' }}px; {{ section.settings.overlay_position_side }}: {{ section.settings.overlay_position_offset | default: '-50' }}px;">
-                                {% render 'responsive-image',
+                                {% include 'responsive-image',
                   image: section.settings.overlay_image,
                   alt: '{{ section.settings.overlay_image_alt | default: ',
                   class: 'img-fluid',
@@ -129,7 +129,7 @@
                 {% if block.type == 'logo' %}
                   <div class="logo-item" {{ block.shopify_attributes }}>
                     {% if block.settings.logo_image %}
-                                            {% render 'responsive-image',
+                                            {% include 'responsive-image',
                         image: block.settings.logo_image,
                         alt: '{{ block.settings.logo_alt | default: ',
                         class: 'img-fluid',

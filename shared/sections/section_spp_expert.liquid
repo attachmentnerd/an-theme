@@ -88,7 +88,7 @@
         {% if section.settings.image != blank %}
           <div class="media-wrap">
             <div class="frame">
-                            {% render 'responsive-image',
+                            {% include 'responsive-image',
                 image: section.settings.image,
                 alt: '{{ section.settings.image_alt | escape }}',
                 class: 'img-fluid',

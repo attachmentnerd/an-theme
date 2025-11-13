@@ -81,7 +81,7 @@
         <div class="ui-card">
           <div class="ui-card__inner">
             {% if section.settings.ui_image != blank %}
-              {% render 'responsive-image',
+              {% include 'responsive-image',
                 image: section.settings.ui_image,
                 alt: section.settings.ui_image_alt,
                 class: 'ui-card__image',
@@ -110,7 +110,7 @@
                               --element-left: {{ block.settings.left }}%;"
                        {{ block.shopify_attributes }}>
                     {% if block.settings.element_image != blank %}
-                                            {% render 'responsive-image',
+                                            {% include 'responsive-image',
                         image: block.settings.element_image,
                         alt: '{{ block.settings.element_alt }}',
                         class: 'img-fluid',

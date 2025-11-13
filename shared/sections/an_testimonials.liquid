@@ -59,7 +59,7 @@
               <div class="quote-author">
                 {% if block.settings.author_image != blank %}
                   <div class="author-image">
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
                       image: block.settings.author_image,
                       alt: block.settings.author_name | default: 'Customer photo',
                       sizes: '60px',
@@ -116,7 +116,7 @@
               <div class="featured-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
                       image: block.settings.image,
                       alt: block.settings.name | default: 'Customer photo',
                       sizes: '(max-width: 767px) 80px, 120px',
@@ -171,7 +171,7 @@
                     <div class="author d-flex align-items-center">
                       {% if block.settings.image != blank %}
                         <div class="author-image me-3">
-                          {% render 'responsive-image',
+                          {% include 'responsive-image',
                             image: block.settings.image,
                             alt: block.settings.name | default: 'Customer photo',
                             sizes: '60px',
@@ -233,7 +233,7 @@
               <div class="card-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
                       image: block.settings.image,
                       alt: block.settings.name | default: 'Customer photo',
                       sizes: '48px',

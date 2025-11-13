@@ -25,71 +25,71 @@
 {% endif %}
 {% if block.settings.social_icon_link_vimeo and block.settings.social_icon_link_vimeo != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_vimeo }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_vimeo' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'vimeo', class: 'icon-social', aria_label: 'Vimeo' %}
+    {% include 'icon', icon: 'vimeo', class: 'icon-social', aria_label: 'Vimeo' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_github and block.settings.social_icon_link_github != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_github }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_github' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'github', class: 'icon-social', aria_label: 'GitHub' %}
+    {% include 'icon', icon: 'github', class: 'icon-social', aria_label: 'GitHub' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_itunes and block.settings.social_icon_link_itunes != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_itunes }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_itunes' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'apple', class: 'icon-social', aria_label: 'Apple' %}
+    {% include 'icon', icon: 'apple', class: 'icon-social', aria_label: 'Apple' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_linkedin and block.settings.social_icon_link_linkedin != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_linkedin }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_linkedin' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'linkedin', class: 'icon-social', aria_label: 'LinkedIn' %}
+    {% include 'icon', icon: 'linkedin', class: 'icon-social', aria_label: 'LinkedIn' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_soundcloud and block.settings.social_icon_link_soundcloud != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_soundcloud }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_soundcloud' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'soundcloud', class: 'icon-social', aria_label: 'SoundCloud' %}
+    {% include 'icon', icon: 'soundcloud', class: 'icon-social', aria_label: 'SoundCloud' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_yelp and block.settings.social_icon_link_yelp != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_yelp }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_yelp' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'yelp', class: 'icon-social', aria_label: 'Yelp' %}
+    {% include 'icon', icon: 'yelp', class: 'icon-social', aria_label: 'Yelp' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_tumblr and block.settings.social_icon_link_tumblr != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_tumblr }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_tumblr' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'tumblr', class: 'icon-social', aria_label: 'Tumblr' %}
+    {% include 'icon', icon: 'tumblr', class: 'icon-social', aria_label: 'Tumblr' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_slack and block.settings.social_icon_link_slack != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_slack }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_slack' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'slack', class: 'icon-social', aria_label: 'Slack' %}
+    {% include 'icon', icon: 'slack', class: 'icon-social', aria_label: 'Slack' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_flickr and block.settings.social_icon_link_flickr != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_flickr }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_flickr' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'flickr', class: 'icon-social', aria_label: 'Flickr' %}
+    {% include 'icon', icon: 'flickr', class: 'icon-social', aria_label: 'Flickr' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_dribbble and block.settings.social_icon_link_dribbble != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_dribbble }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_dribbble' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'dribbble', class: 'icon-social', aria_label: 'Dribbble' %}
+    {% include 'icon', icon: 'dribbble', class: 'icon-social', aria_label: 'Dribbble' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_tiktok and block.settings.social_icon_link_tiktok != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_tiktok }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_tiktok' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'tiktok', class: 'icon-social', aria_label: 'TikTok' %}
+    {% include 'icon', icon: 'tiktok', class: 'icon-social', aria_label: 'TikTok' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_medium and block.settings.social_icon_link_medium != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_medium }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_medium' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'medium', class: 'icon-social', aria_label: 'Medium' %}
+    {% include 'icon', icon: 'medium', class: 'icon-social', aria_label: 'Medium' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_spotify and block.settings.social_icon_link_spotify != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_spotify }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_spotify' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'spotify', class: 'icon-social', aria_label: 'Spotify' %}
+    {% include 'icon', icon: 'spotify', class: 'icon-social', aria_label: 'Spotify' %}
   </a>
 {% endif %}
 {% if block.settings.social_icon_link_podcasts and block.settings.social_icon_link_podcasts != "" %}
   <a class="social-icons__icon social-icons__icon--{{ block.settings.social_icon_size }}" href="{{ block.settings.social_icon_link_podcasts }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'social_icon_link_podcasts' | settings_id: section: section, block: block }}">
-    {% render 'icon', icon: 'podcast', class: 'icon-social', aria_label: 'Podcast' %}
+    {% include 'icon', icon: 'podcast', class: 'icon-social', aria_label: 'Podcast' %}
   </a>
 {% endif %}

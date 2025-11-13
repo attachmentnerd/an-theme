@@ -22,7 +22,7 @@
     <!-- Video Thumbnail/Poster -->
     <div class="an-video-hero__media position-relative">
       {% if section.settings.poster_image != blank %}
-        {% render 'responsive-image',
+        {% include 'responsive-image',
           image: section.settings.poster_image,
           alt: section.settings.poster_alt_text | default: 'Video thumbnail',
           class: 'an-video-hero__poster',

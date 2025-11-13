@@ -58,7 +58,7 @@
                 <!-- Icon/Image -->
                 <div class="an-programs__icon">
                   {% if block.settings.icon != blank %}
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
                       image: block.settings.icon,
                       alt: block.settings.title | default: 'Program icon',
                       sizes: '120px',

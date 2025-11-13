@@ -12,7 +12,7 @@
           {% endif %}
           
           <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: section.settings.book_image,
               alt: 'Raising Securely Attached Kids',
               sizes: '(max-width: 767px) 280px, 400px',

@@ -53,7 +53,7 @@
 <nav class="hc-nav" role="navigation" aria-label="Main">
   <div class="container hc-nav__container">
     <a class="hc-nav__logo" href="{{ current_site.root_url | default: '/' }}">
-      {% render 'responsive-image',
+      {% include 'responsive-image',
         image: nav_logo_url,
         alt: 'Logo',
         sizes: '200px',
@@ -89,7 +89,7 @@
           <a class="hc-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
-              {% render 'responsive-image',
+              {% include 'responsive-image',
                 image: avatar_url,
                 alt: current_site_user.name,
                 sizes: '44px',

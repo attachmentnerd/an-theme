@@ -153,7 +153,7 @@
                 {% elsif block.settings.element_type == 'icon' %}
                   <div class="floating-element__icon">{{ block.settings.icon_content }}</div>
                 {% elsif block.settings.element_type == 'image' and block.settings.element_image != blank %}
-                                    {% render 'responsive-image',
+                                    {% include 'responsive-image',
                     image: block.settings.element_image,
                     alt: '{{ block.settings.element_alt }}',
                     class: 'img-fluid',

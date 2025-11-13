@@ -54,7 +54,7 @@
                   <div class="col avatar-col" style="text-align:center;">
                     {% if block.settings.avatar != blank %}
                       <div class="avatar">
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
                           image: block.settings.avatar,
                           alt: block.settings.avatar_alt,
                           sizes: '180px',

@@ -86,7 +86,7 @@
                           align-items: center;
                           justify-content: center;">
                 {% if section.settings.book_image != blank %}
-                  {% render 'responsive-image',
+                  {% include 'responsive-image',
                     image: section.settings.book_image,
                     alt: section.settings.book_alt | default: 'Book cover',
                     class: 'img-fluid position-relative',

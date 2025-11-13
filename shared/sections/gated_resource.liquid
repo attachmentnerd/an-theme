@@ -10,7 +10,7 @@
       <div class="gated-resource__preview">
         {% if section.settings.resource_image %}
           <div class="gated-resource__image">
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: section.settings.resource_image,
               alt: section.settings.title | default: 'Resource preview',
               sizes: '(max-width: 767px) 100vw, 600px',

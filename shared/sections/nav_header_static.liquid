@@ -12,7 +12,7 @@
       <div class="header__logo">
         {% if section.settings.logo %}
           <a href="/">
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: section.settings.logo,
               alt: site.name,
               sizes: '200px',

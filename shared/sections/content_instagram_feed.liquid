@@ -53,7 +53,7 @@
                 
                 <!-- Post Image -->
                 {% if block.settings.image != blank %}
-                  {% render 'responsive-image',
+                  {% include 'responsive-image',
                     image: block.settings.image,
                     alt: block.settings.caption | truncate: 100 | default: 'Instagram post',
                     sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 300px',

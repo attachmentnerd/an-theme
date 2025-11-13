@@ -69,7 +69,7 @@
              style="{% if section.settings.layout_style == 'modern' and section.settings.enable_glow %}border-radius: 16px; box-shadow: 0 0 48px rgba(94,59,255,.15);{% endif %}">
           
           {% if section.settings.book_image %}
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: section.settings.book_image,
               alt: section.settings.book_title | default: 'Book cover',
               class: 'img-fluid {% if section.settings.enable_hover_effects %}hover-lift{% endif %}',
@@ -103,7 +103,7 @@
         <!-- Award Badge (for RSAK style) -->
         {% if section.settings.award_badge_image %}
           <div class="award-badge position-absolute" style="bottom: 10px; right: 10px; z-index: 2;">
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: section.settings.award_badge_image,
               alt: 'Award badge',
               class: 'img-fluid',
@@ -211,7 +211,7 @@
                 {% if section.settings.testimonial_author %}
                   <footer class="blockquote-footer">
                     {% if section.settings.testimonial_author_image %}
-                                            {% render 'responsive-image',
+                                            {% include 'responsive-image',
                         image: section.settings.testimonial_author_image,
                         alt: '{{ section.settings.testimonial_author }}',
                         class: 'rounded-circle me-2 d-inline-block',

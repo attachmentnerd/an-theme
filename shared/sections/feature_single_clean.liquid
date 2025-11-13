@@ -124,7 +124,7 @@
                 <p>"{{ section.settings.testimonial_text }}"</p>
                 <footer>
                   {% if section.settings.testimonial_author_image %}
-                                        {% render 'responsive-image',
+                                        {% include 'responsive-image',
                       image: section.settings.testimonial_author_image,
                       alt: '{{ section.settings.testimonial_author }}',
                       class: 'testimonial__avatar',

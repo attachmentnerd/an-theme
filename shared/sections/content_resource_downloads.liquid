@@ -59,7 +59,7 @@
                 <!-- Resource Image/Icon -->
                 <div class="an-resources__visual">
                   {% if block.settings.preview_image != blank %}
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
                       image: block.settings.preview_image,
                       alt: block.settings.title | default: 'Resource preview',
                       sizes: '(max-width: 767px) 100vw, 300px',

@@ -24,7 +24,7 @@
           {% if section.settings.show_left_image and section.settings.left_image != blank %}
             <div class="col-lg-3 {% if section.settings.layout_style == 'centered' %}d-none d-lg-block{% endif %}">
               <div class="an-quote-block__image an-quote-block__image--left">
-                {% render 'responsive-image',
+                {% include 'responsive-image',
                   image: section.settings.left_image,
                   alt: section.settings.left_image_alt | default: 'Quote illustration',
                   sizes: '(max-width: 991px) 100vw, 300px',
@@ -61,7 +61,7 @@
                 <div class="an-quote-block__author">
                   {% if section.settings.author_image %}
                     <div class="an-quote-block__author-image">
-                                            {% render 'responsive-image',
+                                            {% include 'responsive-image',
                         image: section.settings.author_image,
                         alt: '{{ section.settings.author_name }}',
                         class: 'rounded-circle',
@@ -91,7 +91,7 @@
           {% if section.settings.show_right_image and section.settings.right_image != blank %}
             <div class="col-lg-3 {% if section.settings.layout_style == 'centered' %}d-none d-lg-block{% endif %}">
               <div class="an-quote-block__image an-quote-block__image--right">
-                                {% render 'responsive-image',
+                                {% include 'responsive-image',
                   image: section.settings.right_image,
                   alt: '{{ section.settings.right_image_alt | default: ',
                   class: 'img-fluid',

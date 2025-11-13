@@ -263,7 +263,7 @@
                   <div class="an-contact-form__info-block" {{ block.shopify_attributes }}>
                     {% if block.settings.icon != blank %}
                       <div class="an-contact-form__info-icon">
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
                           image: block.settings.icon,
                           alt: block.settings.title | default: 'Contact info icon',
                           sizes: '60px',

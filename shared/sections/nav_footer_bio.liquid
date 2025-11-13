@@ -47,7 +47,7 @@
             <div class="an-footer__avatar-glow"></div>
             <div class="an-footer__avatar-wrapper" kjb-settings-id="{{ 'avatar_image' | settings_id: section: section }}">
               {% if section.settings.avatar_image != blank %}
-                                {% render 'responsive-image',
+                                {% include 'responsive-image',
                   image: section.settings.avatar_image,
                   alt: '{{ section.settings.author_name | default: ',
                   class: 'an-footer__avatar',

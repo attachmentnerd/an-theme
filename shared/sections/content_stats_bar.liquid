@@ -53,7 +53,7 @@
                       </svg>
                     {% when 'custom' %}
                       {% if block.settings.custom_icon != blank %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
                           image: block.settings.custom_icon,
                           alt: block.settings.label,
                           sizes: '48px',

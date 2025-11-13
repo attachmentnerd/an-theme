@@ -220,7 +220,7 @@
         <div class="an-footer__column">
           {% if section.settings.logo_image %}
             <div class="an-footer__logo">
-              {% render 'responsive-image',
+              {% include 'responsive-image',
                 image: section.settings.logo_image,
                 alt: section.settings.logo_alt | default: 'Site logo',
                 sizes: '200px',

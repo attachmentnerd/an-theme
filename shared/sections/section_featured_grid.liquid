@@ -121,7 +121,7 @@
       <div class="col-lg-5">
         {% if section.settings.right_image != blank %}
           <div class="media-wrap">
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: section.settings.right_image,
               alt: '{{ section.settings.right_image_alt | escape }}',
               class: 'img-fluid',

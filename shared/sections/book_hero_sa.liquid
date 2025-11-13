@@ -28,7 +28,7 @@
                         border-radius: {{ section.settings.image_border_radius }}px; 
                         box-shadow: {{ section.settings.image_shadow }};">
               <div kjb-settings-id="{{ 'showcase_image' | settings_id: section: section }}">
-                {% render 'responsive-image',
+                {% include 'responsive-image',
                   image: section.settings.showcase_image,
                   alt: section.settings.image_alt | default: 'Book showcase',
                   sizes: '(max-width: 767px) 100vw, 600px',

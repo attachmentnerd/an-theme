@@ -15,7 +15,7 @@
           {% if section.settings.left_image != blank %}
             <div class="position-relative">
               <div kjb-settings-id="{{ 'left_image' | settings_id: section: section }}">
-                {% render 'responsive-image',
+                {% include 'responsive-image',
                   image: section.settings.left_image,
                   alt: section.settings.left_image_alt | default: 'Workbook preview',
                   sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',

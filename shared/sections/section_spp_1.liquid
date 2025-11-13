@@ -14,7 +14,7 @@
     {% if section.settings.cred_avatar or section.settings.credibility != blank %}
     <div class="spp-cred an-reveal">
       {% if section.settings.cred_avatar %}
-        {% render 'responsive-image',
+        {% include 'responsive-image',
           image: section.settings.cred_avatar,
           alt: section.settings.cred_avatar_alt | default: 'Program creator',
           sizes: '120px',

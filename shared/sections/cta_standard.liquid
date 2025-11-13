@@ -6,7 +6,7 @@
     <div class="an-cta__wrapper animate-fade-up">
       {% if section.settings.image != blank %}
         <div class="an-cta__image">
-          {% render 'responsive-image',
+          {% include 'responsive-image',
             image: section.settings.image,
             alt: section.settings.image_alt | default: 'CTA image',
             sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',

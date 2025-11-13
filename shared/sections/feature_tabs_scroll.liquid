@@ -90,7 +90,7 @@
                   <!-- Panel Image/Content -->
                   {% if block.settings.content_image %}
                     <div class="panel-image-container mt-4">
-                      {% render 'responsive-image',
+                      {% include 'responsive-image',
                         image: block.settings.content_image,
                         alt: block.settings.image_alt | default: 'Feature image',
                         sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',

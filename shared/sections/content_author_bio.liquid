@@ -8,7 +8,7 @@
           <div class="author-image-wrapper position-relative d-inline-block">
             {% if section.settings.author_image != blank %}
               <div kjb-settings-id="{{ 'author_image' | settings_id: section: section }}">
-                {% render 'responsive-image',
+                {% include 'responsive-image',
                   image: section.settings.author_image,
                   alt: section.settings.author_name,
                   sizes: '(max-width: 767px) 280px, 320px',

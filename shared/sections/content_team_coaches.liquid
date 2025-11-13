@@ -39,7 +39,7 @@
                 <!-- Photo with Overlap Effect -->
                 <div class="an-team__photo-wrapper card-overlap--top">
                   {% if block.settings.photo != blank %}
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
                       image: block.settings.photo,
                       alt: block.settings.name | default: 'Team member photo',
                       sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 400px',

@@ -7,7 +7,7 @@
         <div class="position-relative">
           {% if section.settings.book_image != blank %}
             <div kjb-settings-id="{{ 'book_image' | settings_id: section: section }}">
-              {% render 'responsive-image',
+              {% include 'responsive-image',
                 image: section.settings.book_image,
                 alt: 'Securely Attached',
                 sizes: '(max-width: 767px) 280px, 400px',
@@ -78,7 +78,7 @@
             <div class="d-flex align-items-center">
               {% if section.settings.testimonial_author_image %}
                 <div kjb-settings-id="{{ 'testimonial_author_image' | settings_id: section: section }}" class="me-3" style="width: 48px; height: 48px;">
-                  {% render 'responsive-image',
+                  {% include 'responsive-image',
                     image: section.settings.testimonial_author_image,
                     alt: section.settings.testimonial_author,
                     sizes: '48px',

@@ -814,7 +814,7 @@
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: logo_block.settings.inverse_logo_image,
               alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
               class: 'img-fluid',
@@ -824,7 +824,7 @@
               placeholder_type: 'logo'
             %}
           {% elsif logo_block and logo_block.settings.logo_image %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: logo_block.settings.logo_image,
               alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
               class: 'img-fluid',
@@ -834,7 +834,7 @@
               placeholder_type: 'logo'
             %}
           {% elsif section.settings.logo %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: section.settings.logo,
               alt: '{{ section.settings.logo_alt | default: current_site.title }}',
               class: 'img-fluid',
@@ -1047,7 +1047,7 @@
       <a href="/">
         {% comment %} Prefer inverse logo on mobile (section-level), then block-level inverse mobile/desktop, then defaults {% endcomment %}
         {% if section.settings.use_inverse_logo and section.settings.inverse_logo %}
-                    {% render 'responsive-image',
+                    {% include 'responsive-image',
             image: section.settings.inverse_logo,
             alt: '{{ section.settings.logo_alt | default: current_site.title }}',
             class: 'img-fluid',
@@ -1059,7 +1059,7 @@
         {% else %}
           {% assign logo_block = section.blocks | where: 'type', 'logo_image' | first %}
           {% if logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.mobile_inverse_logo_image %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: logo_block.settings.mobile_inverse_logo_image,
               alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
               class: 'img-fluid',
@@ -1069,7 +1069,7 @@
               placeholder_type: 'logo'
             %}
           {% elsif logo_block and logo_block.settings.use_block_inverse_logo and logo_block.settings.inverse_logo_image %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: logo_block.settings.inverse_logo_image,
               alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
               class: 'img-fluid',
@@ -1079,7 +1079,7 @@
               placeholder_type: 'logo'
             %}
           {% elsif logo_block and logo_block.settings.mobile_logo_image %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: logo_block.settings.mobile_logo_image,
               alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
               class: 'img-fluid',
@@ -1089,7 +1089,7 @@
               placeholder_type: 'logo'
             %}
           {% elsif logo_block and logo_block.settings.logo_image %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: logo_block.settings.logo_image,
               alt: '{{ logo_block.settings.alt_text | default: current_site.title }}',
               class: 'img-fluid',
@@ -1099,7 +1099,7 @@
               placeholder_type: 'logo'
             %}
           {% elsif section.settings.mobile_logo %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: section.settings.mobile_logo,
               alt: '{{ section.settings.logo_alt | default: current_site.title }}',
               class: 'img-fluid',
@@ -1109,7 +1109,7 @@
               placeholder_type: 'logo'
             %}
           {% elsif section.settings.logo %}
-                        {% render 'responsive-image',
+                        {% include 'responsive-image',
               image: section.settings.logo,
               alt: '{{ section.settings.logo_alt | default: current_site.title }}',
               class: 'img-fluid',
@@ -1301,7 +1301,7 @@
                          class="nav-transparent-pill__mobile-card {% unless nested_block.settings.card_image %}nav-transparent-pill__mobile-card--colored{% endunless %}"
                          {% if nested_block.settings.card_bg_color and nested_block.settings.card_image == blank %}style="background-color: {{ nested_block.settings.card_bg_color }};"{% endif %}>
                         {% if nested_block.settings.card_image %}
-                                                    {% render 'responsive-image',
+                                                    {% include 'responsive-image',
                             image: nested_block.settings.card_image,
                             alt: '{{ nested_block.settings.card_title }}',
                             class: 'nav-transparent-pill__mobile-card-image',

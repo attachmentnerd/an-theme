@@ -36,7 +36,7 @@
             <!-- Resource Image -->
             <div class="featured-resource__image-wrapper" style="{% if block.settings.image_aspect and block.settings.image_aspect != 'auto' %}aspect-ratio: {{ block.settings.image_aspect }}; height: auto;{% endif %}">
               {% if block.settings.image != blank %}
-                {% render 'responsive-image',
+                {% include 'responsive-image',
                   image: block.settings.image,
                   alt: block.settings.title | default: 'Resource image',
                   sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 400px',

@@ -449,7 +449,7 @@
       <div class="kajabi-nav__logo">
         <a href="{{ current_site.root_url }}">
           {% if section.settings.logo_type == 'image' and section.settings.logo %}
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: section.settings.logo,
               alt: section.settings.logo_alt | default: current_site.title,
               sizes: '(max-width: 767px) 200px, 300px',

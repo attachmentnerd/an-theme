@@ -35,7 +35,7 @@
         <div class="povf-pill" data-img-pos="{{ section.settings.feature1_image_position | default: 'left' }}">
           <div class="povf-pill-icon">
             {% if f1_img != blank %}
-              {% render 'responsive-image',
+              {% include 'responsive-image',
                 image: section.settings.feature1_image,
                 alt: '',
                 sizes: '48px',
@@ -52,7 +52,7 @@
         <div class="povf-pill" data-img-pos="{{ section.settings.feature2_image_position | default: 'left' }}">
           <div class="povf-pill-icon">
             {% if f2_img != blank %}
-                            {% render 'responsive-image',
+                            {% include 'responsive-image',
                 image: section.settings.feature2_image,
                 alt: '',
                 class: 'img-fluid',
@@ -71,7 +71,7 @@
         <div class="povf-pill" data-img-pos="{{ section.settings.feature3_image_position | default: 'left' }}">
           <div class="povf-pill-icon">
             {% if f3_img != blank %}
-                            {% render 'responsive-image',
+                            {% include 'responsive-image',
                 image: section.settings.feature3_image,
                 alt: '',
                 class: 'img-fluid',
