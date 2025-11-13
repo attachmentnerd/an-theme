@@ -246,17 +246,22 @@
 
       let lastScroll = 0;
       let ticking = false;
+      let headerHeight = null;
 
       const updateHeader = () => {
         const currentScroll = window.scrollY;
 
         if (currentScroll > 0) {
+          // Cache header height before adding class to avoid forced reflow
+          if (headerHeight === null) {
+            headerHeight = header.offsetHeight;
+          }
+
           header.classList.add("header--fixed");
 
           // Add padding to main for static headers
           if (header.classList.contains("header--static")) {
-            document.querySelector("main").style.paddingTop =
-              `${header.offsetHeight}px`;
+            document.querySelector("main").style.paddingTop = `${headerHeight}px`;
           }
         } else {
           header.classList.remove("header--fixed");
@@ -269,6 +274,11 @@
         lastScroll = currentScroll;
         ticking = false;
       };
+
+      // Recalculate header height on resize
+      window.addEventListener("resize", () => {
+        headerHeight = null;
+      }, { passive: true });
 
       window.addEventListener(
         "scroll",
@@ -305,37 +315,43 @@
         const menu = dropdown.querySelector(".dropdown__menu");
         if (!menu) return;
 
-        const menuRect = menu.getBoundingClientRect();
-        const triggerRect = trigger.getBoundingClientRect();
+        // Use requestAnimationFrame to batch layout reads after DOM writes
+        // This prevents forced reflow by allowing the browser to paint first
+        requestAnimationFrame(() => {
+          // Batch all layout reads together
+          const menuRect = menu.getBoundingClientRect();
+          const triggerRect = trigger.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
 
-        // Reset classes
-        menu.className = "dropdown__menu";
+          // Reset classes (DOM write)
+          menu.className = "dropdown__menu";
 
-        // Store original alignment if not already stored
-        if (!dropdown.dataset.originalClass) {
-          ["text-left", "text-center", "text-right"].forEach((align) => {
-            if (menu.classList.contains(`dropdown__menu--${align}`)) {
-              dropdown.dataset.originalClass = `dropdown__menu--${align}`;
-            }
-          });
-        }
-
-        // Check if menu would overflow viewport
-        if (menuRect.right > window.innerWidth) {
-          menu.classList.add("dropdown__menu--text-right");
-          menu.style.left = "auto";
-        } else if (menuRect.left < 0) {
-          menu.classList.add("dropdown__menu--text-left");
-          menu.style.left = "auto";
-        } else if (dropdown.dataset.originalClass) {
-          menu.classList.add(dropdown.dataset.originalClass);
-          if (
-            dropdown.dataset.originalClass === "dropdown__menu--text-center"
-          ) {
-            const offset = triggerRect.width / 2 - menuRect.width / 2;
-            menu.style.left = `${offset}px`;
+          // Store original alignment if not already stored
+          if (!dropdown.dataset.originalClass) {
+            ["text-left", "text-center", "text-right"].forEach((align) => {
+              if (menu.classList.contains(`dropdown__menu--${align}`)) {
+                dropdown.dataset.originalClass = `dropdown__menu--${align}`;
+              }
+            });
           }
-        }
+
+          // Batch all DOM writes together based on read values
+          if (menuRect.right > viewportWidth) {
+            menu.classList.add("dropdown__menu--text-right");
+            menu.style.left = "auto";
+          } else if (menuRect.left < 0) {
+            menu.classList.add("dropdown__menu--text-left");
+            menu.style.left = "auto";
+          } else if (dropdown.dataset.originalClass) {
+            menu.classList.add(dropdown.dataset.originalClass);
+            if (
+              dropdown.dataset.originalClass === "dropdown__menu--text-center"
+            ) {
+              const offset = triggerRect.width / 2 - menuRect.width / 2;
+              menu.style.left = `${offset}px`;
+            }
+          }
+        });
       };
 
       // Single delegated event listener for all dropdowns
@@ -409,13 +425,15 @@
         }
 
         if (target) {
-          // Scroll to the target with offset for sticky header
-          const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
-          const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+          // Use requestAnimationFrame to batch layout reads
+          requestAnimationFrame(() => {
+            const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
 
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
           });
         }
       }, 100); // Small delay to ensure DOM is ready
@@ -505,41 +523,44 @@
 
         e.preventDefault();
 
-        // Account for sticky header
-        const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
-        const targetPosition =
-          target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+        // Use requestAnimationFrame to batch layout reads and prevent forced reflow
+        requestAnimationFrame(() => {
+          // Batch all layout reads together
+          const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
+          const targetPosition =
+            target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
 
-        // Use native smooth scroll if available, otherwise use custom animation
-        if (supports.smoothScroll) {
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-        } else {
-          // Custom smooth scroll animation for older browsers
-          const startPosition = window.scrollY;
-          const distance = targetPosition - startPosition;
-          const duration = 500;
-          let start = null;
+          // Use native smooth scroll if available, otherwise use custom animation
+          if (supports.smoothScroll) {
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          } else {
+            // Custom smooth scroll animation for older browsers
+            const startPosition = window.scrollY;
+            const distance = targetPosition - startPosition;
+            const duration = 500;
+            let start = null;
 
-          const animation = (currentTime) => {
-            if (start === null) start = currentTime;
-            const timeElapsed = currentTime - start;
-            const run = ease(timeElapsed, startPosition, distance, duration);
-            window.scrollTo(0, run);
-            if (timeElapsed < duration) requestAnimationFrame(animation);
-          };
+            const animation = (currentTime) => {
+              if (start === null) start = currentTime;
+              const timeElapsed = currentTime - start;
+              const run = ease(timeElapsed, startPosition, distance, duration);
+              window.scrollTo(0, run);
+              if (timeElapsed < duration) requestAnimationFrame(animation);
+            };
 
-          const ease = (t, b, c, d) => {
-            t /= d / 2;
-            if (t < 1) return (c / 2) * t * t + b;
-            t--;
-            return (-c / 2) * (t * (t - 2) - 1) + b;
-          };
+            const ease = (t, b, c, d) => {
+              t /= d / 2;
+              if (t < 1) return (c / 2) * t * t + b;
+              t--;
+              return (-c / 2) * (t * (t - 2) - 1) + b;
+            };
 
-          requestAnimationFrame(animation);
-        }
+            requestAnimationFrame(animation);
+          }
+        });
       });
 
       // Handle hash on page load
