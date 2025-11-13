@@ -29,13 +29,17 @@
       {% if section.settings.image %}
         <div class="col-lg-6 {% if section.settings.image_position == 'right' %}ps-lg-5{% else %}pe-lg-5{% endif %} mb-4 mb-lg-0">
           <div class="hero-clean__image-wrapper animate-fade-up" style="{% if section.settings.image_container_height %}height: {{ section.settings.image_container_height }}px;{% endif %} {% if section.settings.image_container_width %}max-width: {{ section.settings.image_container_width }}px; margin: 0 auto;{% endif %}">
-            <img
-              src="{{ section.settings.image | image_picker_url: 'master' }}"
-              alt="{{ section.settings.image_alt | default: 'Hero image' }}"
-              class="img-fluid rounded"
-              {% if section.settings.image_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-              style="width: {% if section.settings.image_width %}{{ section.settings.image_width }}{% else %}100%{% endif %}; height: {% if section.settings.image_height %}{{ section.settings.image_height }}{% else %}auto{% endif %}; object-fit: {{ section.settings.image_fit | default: 'cover' }}; object-position: {{ section.settings.image_position | default: 'center' }}; {% if section.settings.image_aspect_ratio and section.settings.image_container_height == blank %}aspect-ratio: {{ section.settings.image_aspect_ratio }};{% endif %} box-shadow: {{ section.settings.image_shadow }};"
-            >
+            {% render 'responsive-image',
+              image: section.settings.image,
+              alt: section.settings.image_alt | default: 'Hero image',
+              class: 'img-fluid rounded',
+              sizes: '(max-width: 767px) 100vw, 50vw',
+              priority: section.settings.image_priority,
+              aspect_ratio: section.settings.image_aspect_ratio | default: '16/9',
+              widths: '400,600,800,1200',
+              placeholder_type: 'hero',
+              blur_up: true
+            %}
           </div>
         </div>
       {% endif %}

@@ -106,7 +106,15 @@
             {% if guar_title != blank %}
             <div class="spp-guar-head">
               {% if guarantee_avatar %}
-                <img class="spp-guar-avatar" src="{{ section.settings.guarantee_avatar | image_picker_url: '80x80' }}" alt="{{ section.settings.guarantee_avatar_alt | default: '' }}" loading="lazy" />
+                {% render 'responsive-image',
+                  image: section.settings.guarantee_avatar,
+                  alt: section.settings.guarantee_avatar_alt | default: 'Guarantee badge',
+                  sizes: '80px',
+                  aspect_ratio: '1/1',
+                  widths: '80,160,240',
+                  placeholder_type: 'avatar',
+                  class: 'spp-guar-avatar'
+                %}
               {% endif %}
               <div class="spp-guar-title">{{ guar_title }}</div>
             </div>

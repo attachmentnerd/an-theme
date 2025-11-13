@@ -449,9 +449,13 @@
       <div class="kajabi-nav__logo">
         <a href="{{ current_site.root_url }}">
           {% if section.settings.logo_type == 'image' and section.settings.logo %}
-            <img src="{{ section.settings.logo | image_picker_url: '360x120' }}"
-                 alt="{{ section.settings.logo_alt | default: current_site.title }}"
-                 loading="lazy">
+            {% render 'responsive-image',
+              image: section.settings.logo,
+              alt: section.settings.logo_alt | default: current_site.title,
+              sizes: '(max-width: 767px) 200px, 300px',
+              widths: '200,300,400,600',
+              placeholder_type: 'logo'
+            %}
           {% else %}
             <span class="kajabi-nav__logo-text">
               {{ section.settings.logo_text | default: current_site.title }}

@@ -1,14 +1,35 @@
 <section id="{{ section.settings.section_id | default: 'hero-about-page' }}-{{ section.id }}"
          class="about-hero-section"
-         style="{% if section.settings.background_image != blank %}
-                  background-image: url('{{ section.settings.background_image | image_picker_url: 'master' }}');
-                  background-size: {{ section.settings.background_size | default: 'cover' }};
-                  background-position: {{ section.settings.background_position | default: 'center center' }};
-                  background-repeat: {{ section.settings.background_repeat | default: 'no-repeat' }};
-                  background-attachment: {{ section.settings.background_attachment | default: 'scroll' }};
-                {% else %}
-                  background-color: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};
-                {% endif %}">
+         style="{% if section.settings.background_image == blank %}background-color: {{ section.settings.background_color | default: 'var(--c-brand-100)' }};{% endif %}">
+
+  <!-- Background Image (Responsive) -->
+  {% if section.settings.background_image != blank %}
+    <div class="about-hero-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; overflow: hidden;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        {% render 'responsive-image',
+          image: section.settings.background_image,
+          alt: '',
+          sizes: '100vw',
+          priority: true,
+          widths: '800,1200,1600,2000,2400',
+          placeholder_type: 'hero',
+          blur_up: true,
+          class: 'about-hero-bg-img'
+        %}
+      </div>
+    </div>
+    <style>
+      #{{ section.settings.section_id | default: 'hero-about-page' }}-{{ section.id }} .about-hero-bg-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: {{ section.settings.background_size | default: 'cover' }};
+        object-position: {{ section.settings.background_position | default: 'center center' }};
+      }
+    </style>
+  {% endif %}
 
   <!-- Decorative elements for warmth and trust -->
   <div class="about-hero-decorative">

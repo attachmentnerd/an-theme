@@ -90,11 +90,16 @@
                   <!-- Panel Image/Content -->
                   {% if block.settings.content_image %}
                     <div class="panel-image-container mt-4">
-                      <img src="{{ block.settings.content_image | image_picker_url: '800x450' }}"
-             alt="{{ block.settings.image_alt | default: 'Agent showcase image' | escape }}"
-             class="panel-image img-fluid"
-             loading="lazy"
-             style="object-fit: cover;">
+                      {% render 'responsive-image',
+                        image: block.settings.content_image,
+                        alt: block.settings.image_alt | default: 'Feature image',
+                        sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',
+                        aspect_ratio: '16/9',
+                        widths: '400,600,800,1200',
+                        placeholder_type: 'feature',
+                        blur_up: true,
+                        class: 'panel-image img-fluid'
+                      %}
                     </div>
                   {% endif %}
 

@@ -136,11 +136,17 @@
       {% if s.show_image and s.image != blank %}
         <div class="media">
           <div class="media-wrapper">
-            <img class="cover"
-                 src="{{ s.image | image_picker_url: 'master' }}"
-                 alt="{{ s.image_alt | default: s.headline | escape }}"
-                 {% if s.image_priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-                 decoding="async">
+            {% render 'responsive-image',
+              image: s.image,
+              alt: s.image_alt | default: s.headline | escape,
+              sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',
+              aspect_ratio: '16/9',
+              widths: '400,600,800,1200,1600',
+              placeholder_type: 'hero',
+              blur_up: true,
+              priority: s.image_priority,
+              class: 'cover'
+            %}
           </div>
         </div>
       {% endif %}

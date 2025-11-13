@@ -59,11 +59,16 @@
                 <!-- Resource Image/Icon -->
                 <div class="an-resources__visual">
                   {% if block.settings.preview_image != blank %}
-                    <img src="{{ block.settings.preview_image | image_picker_url: '800x450' }}" 
-             alt="{{ block.settings.title }}" 
-             class="an-resources__image"
-             loading="lazy"
-             style="object-fit: cover;">
+                    {% render 'responsive-image',
+                      image: block.settings.preview_image,
+                      alt: block.settings.title | default: 'Resource preview',
+                      sizes: '(max-width: 767px) 100vw, 300px',
+                      aspect_ratio: '16/9',
+                      widths: '300,400,600,800',
+                      placeholder_type: 'feature',
+                      blur_up: true,
+                      class: 'an-resources__image'
+                    %}
                   {% else %}
                     <div class="an-resources__icon-wrapper">
                       {% case block.settings.file_type %}

@@ -81,11 +81,16 @@
         <div class="ui-card">
           <div class="ui-card__inner">
             {% if section.settings.ui_image != blank %}
-              <img src="{{ section.settings.ui_image | image_picker_url: '600x338' }}" 
-                   alt="{{ section.settings.ui_image_alt }}" 
-                   class="ui-card__image"
-                   loading="lazy"
-                   style="aspect-ratio: 16/9; object-fit: cover;">
+              {% render 'responsive-image',
+                image: section.settings.ui_image,
+                alt: section.settings.ui_image_alt,
+                class: 'ui-card__image',
+                sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 500px',
+                aspect_ratio: '16/9',
+                widths: '400,600,800,1000',
+                placeholder_type: 'feature',
+                blur_up: true
+              %}
             {% else %}
               {% comment %} On-brand placeholder instead of external image {% endcomment %}
               <div class="ui-card__image" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">

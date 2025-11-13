@@ -10,9 +10,15 @@
       <div class="gated-resource__preview">
         {% if section.settings.resource_image %}
           <div class="gated-resource__image">
-            <img src="{{ section.settings.resource_image | image_picker_url: '600x' }}"
-                 alt="{{ section.settings.title }}"
-                 loading="lazy">
+            {% render 'responsive-image',
+              image: section.settings.resource_image,
+              alt: section.settings.title | default: 'Resource preview',
+              sizes: '(max-width: 767px) 100vw, 600px',
+              aspect_ratio: '4/3',
+              widths: '400,600,800',
+              placeholder_type: 'feature',
+              blur_up: true
+            %}
             {% if section.settings.show_badge %}
               <span class="gated-resource__badge">{{ section.settings.badge_text }}</span>
             {% endif %}

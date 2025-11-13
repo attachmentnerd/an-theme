@@ -36,11 +36,16 @@
             <!-- Resource Image -->
             <div class="featured-resource__image-wrapper" style="{% if block.settings.image_aspect and block.settings.image_aspect != 'auto' %}aspect-ratio: {{ block.settings.image_aspect }}; height: auto;{% endif %}">
               {% if block.settings.image != blank %}
-                <img src="{{ block.settings.image | image_picker_url: '800x450' }}" 
-             alt="{{ block.settings.title }}" 
-             class="featured-resource__image"
-             loading="lazy"
-             style="object-fit: {{ block.settings.image_fit | default: 'cover' }}; object-position: {{ block.settings.image_position | default: 'center center' }}; {% if block.settings.image_aspect and block.settings.image_aspect != 'auto' %}height: 100%;{% endif %}">
+                {% render 'responsive-image',
+                  image: block.settings.image,
+                  alt: block.settings.title | default: 'Resource image',
+                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 400px',
+                  aspect_ratio: '16/9',
+                  widths: '400,600,800,1200',
+                  placeholder_type: 'feature',
+                  blur_up: true,
+                  class: 'featured-resource__image'
+                %}
               {% else %}
                 <div class="featured-resource__placeholder">
                   <svg width="60" height="60" viewBox="0 0 24 24" fill="var(--c-brand-600)">
