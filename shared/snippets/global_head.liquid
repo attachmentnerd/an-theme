@@ -1,5 +1,13 @@
 <head>
     {% csrf_meta_tags %}
+
+    <!-- DNS Prefetch for faster CDN connections -->
+    <link rel="dns-prefetch" href="//kajabi-cdn.com">
+    <link rel="dns-prefetch" href="//kajabi-storefronts-production.kajabi-cdn.com">
+    <link rel="dns-prefetch" href="//kajabi-app-assets.kajabi-cdn.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+
     <title>
       {% if page_title %}
         {{ page_title }}
@@ -21,7 +29,8 @@
     {% endif %}
     <link rel="canonical" href="{{ canonical_url }}" />
 
-    <!-- Critical Image CSS for LCP optimization -->
+    <!-- Critical CSS - MUST load first for LCP optimization ============== -->
+    {% include 'critical_css' %}
     {% include 'critical_image_css' %}
 
     <!-- Optimized Font Loading ============================================ -->
@@ -37,11 +46,15 @@
 
     <!-- Main Theme Styles ================================================ -->
     <!-- Kajabi compiles styles.scss.liquid to styles.css automatically -->
-    {{ "styles.css" | asset_url | stylesheet_tag }}
+    <!-- Using media="print" trick to async load, then switch to "all" onload -->
+    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'styles.css' | asset_url }}"></noscript>
 
     <!-- Custom Overrides ================================================= -->
     <!-- IMPORTANT: This must load AFTER styles.scss.liquid -->
-    {{ "overrides.css" | asset_url | stylesheet_tag }}
+    <!-- Async load using same technique to prevent render blocking -->
+    <link rel="stylesheet" href="{{ 'overrides.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'overrides.css' | asset_url }}"></noscript>
 
     <!-- Animation Utilities ============================================== -->
     {% include "animation_utilities" %}
