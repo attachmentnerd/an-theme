@@ -12,16 +12,10 @@
       <div class="header__logo">
         {% if section.settings.logo %}
           <a href="/">
-            {% include 'responsive-image',
-              image: section.settings.logo,
-              alt: site.name,
-              sizes: '200px',
-              aspect_ratio: '16/9',
-              widths: '200,400',
-              placeholder_type: 'logo',
-              priority: true,
-              class: 'img-fluid'
-            %}
+            <img src="{{ section.settings.logo | image_picker_url: 'master' }}"
+                 alt="{{ site.name }}"
+                 class="img-fluid"
+                 loading="eager">
           </a>
         {% else %}
           <a href="/" class="header__site-name">{{ site.name }}</a>

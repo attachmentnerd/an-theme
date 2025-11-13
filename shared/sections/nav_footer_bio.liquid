@@ -17,11 +17,10 @@
       <div class="an-footer__brand-wrapper">
         {% if section.settings.logo_image != blank %}
           <div kjb-settings-id="{{ 'logo_image' | settings_id: section: section }}">
-            <img src="{{ section.settings.logo_image | image_picker_url: '240x80' }}" 
-             alt="{{ section.settings.logo_alt | default: 'Logo' }}" 
+            <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}"
+             alt="{{ section.settings.logo_alt | default: 'Logo' }}"
              class="an-footer__logo"
-             loading="lazy"
-             style="object-fit: cover;">
+             loading="lazy">
           </div>
         {% else %}
           <h2 class="an-footer__brand" kjb-settings-id="{{ 'brand_text' | settings_id: section: section }}">

@@ -57,7 +57,7 @@
               <div class="press-item{% if block.settings.logo != blank %} has-logo{% endif %}">
                 <div class="press-icon"{% if block.settings.icon_bg != blank %} style="background: {{ block.settings.icon_bg }}"{% endif %}>
                   {% if block.settings.logo != blank %}
-                    <img src="{{ block.settings.logo | image_picker_url: '80x' }}" alt="{{ block.settings.name | default: 'Publication' | escape }}" loading="lazy" decoding="async">
+                    <img src="{{ block.settings.logo | image_picker_url: 'master' }}" alt="{{ block.settings.name | default: 'Publication' | escape }}" loading="lazy" decoding="async">
                   {% else %}📰{% endif %}
                 </div>
                 {% if block.settings.logo == blank %}

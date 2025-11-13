@@ -17,11 +17,10 @@
           {% for block in logo_blocks %}
             {% if block.settings.logo %}
               <div class="logo-item" style="opacity: 0.7; transition: opacity 0.2s;">
-                <img src="{{ block.settings.logo | image_picker_url: '240x80' }}" 
-             alt="{{ block.settings.alt_text | default: 'Partner logo' }}" 
+                <img src="{{ block.settings.logo | image_picker_url: 'master' }}"
+             alt="{{ block.settings.alt_text | default: 'Partner logo' }}"
              class="logo-img"
-             loading="lazy"
-             style="object-fit: cover;">
+             loading="lazy">
               </div>
             {% endif %}
           {% endfor %}
