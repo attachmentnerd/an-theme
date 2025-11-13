@@ -81,16 +81,14 @@
         <div class="ui-card">
           <div class="ui-card__inner">
             {% if section.settings.ui_image != blank %}
-              {% include 'responsive-image',
-                image: section.settings.ui_image,
-                alt: section.settings.ui_image_alt,
-                class: 'ui-card__image',
-                sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 500px',
-                aspect_ratio: '16/9',
-                widths: '400,600,800,1000',
-                placeholder_type: 'feature',
-                blur_up: true
-              %}
+              <img
+          src="{{ section.settings.ui_image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.ui_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.ui_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.ui_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.ui_image | image_picker_url: '1000x' }} 1000w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 500px"
+          alt=""
+          class="ui-card__image"
+          loading="lazy"
+          >
             {% else %}
               {% comment %} On-brand placeholder instead of external image {% endcomment %}
               <div class="ui-card__image" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
@@ -110,16 +108,14 @@
                               --element-left: {{ block.settings.left }}%;"
                        {{ block.shopify_attributes }}>
                     {% if block.settings.element_image != blank %}
-                                            {% include 'responsive-image',
-                        image: block.settings.element_image,
-                        alt: '{{ block.settings.element_alt }}',
-                        class: 'img-fluid',
-                        sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                        aspect_ratio: '16/9',
-                        widths: '400,600,800,1200',
-                        placeholder_type: 'feature',
-                        blur_up: true
-                      %}
+                                            <img
+          src="{{ block.settings.element_image | image_picker_url: '400x' }}"
+          srcset="{{ block.settings.element_image | image_picker_url: '400x' }} 400w,\n                  {{ block.settings.element_image | image_picker_url: '600x' }} 600w,\n                  {{ block.settings.element_image | image_picker_url: '800x' }} 800w,\n                  {{ block.settings.element_image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="{{ block.settings.element_alt }}"
+          class="img-fluid"
+          loading="lazy"
+          >
                     {% elsif block.settings.element_content != blank %}
                       <div class="ui-element__content">
                         {{ block.settings.element_content }}

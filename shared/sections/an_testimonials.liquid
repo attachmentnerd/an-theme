@@ -59,15 +59,14 @@
               <div class="quote-author">
                 {% if block.settings.author_image != blank %}
                   <div class="author-image">
-                    {% include 'responsive-image',
-                      image: block.settings.author_image,
-                      alt: block.settings.author_name | default: 'Customer photo',
-                      sizes: '60px',
-                      aspect_ratio: '1/1',
-                      widths: '60,120,180',
-                      placeholder_type: 'avatar',
-                      class: 'rounded-circle'
-                    %}
+                    <img
+          src="{{ block.settings.author_image | image_picker_url: '60x' }}"
+          srcset="{{ block.settings.author_image | image_picker_url: '60x' }} 60w,\n                  {{ block.settings.author_image | image_picker_url: '120x' }} 120w,\n                  {{ block.settings.author_image | image_picker_url: '180x' }} 180w"
+          sizes="60px"
+          alt=""
+          class="rounded-circle"
+          loading="lazy"
+          >
                   </div>
                 {% endif %}
                 <div class="author-info">
@@ -116,15 +115,14 @@
               <div class="featured-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    {% include 'responsive-image',
-                      image: block.settings.image,
-                      alt: block.settings.name | default: 'Customer photo',
-                      sizes: '(max-width: 767px) 80px, 120px',
-                      aspect_ratio: '1/1',
-                      widths: '80,120,160,240',
-                      placeholder_type: 'avatar',
-                      class: 'rounded-circle'
-                    %}
+                    <img
+          src="{{ block.settings.image | image_picker_url: '80x' }}"
+          srcset="{{ block.settings.image | image_picker_url: '80x' }} 80w,\n                  {{ block.settings.image | image_picker_url: '120x' }} 120w,\n                  {{ block.settings.image | image_picker_url: '160x' }} 160w,\n                  {{ block.settings.image | image_picker_url: '240x' }} 240w"
+          sizes="(max-width: 767px) 80px, 120px"
+          alt=""
+          class="rounded-circle"
+          loading="lazy"
+          >
                   </div>
                 {% endif %}
                 <div class="author-info">
@@ -171,15 +169,14 @@
                     <div class="author d-flex align-items-center">
                       {% if block.settings.image != blank %}
                         <div class="author-image me-3">
-                          {% include 'responsive-image',
-                            image: block.settings.image,
-                            alt: block.settings.name | default: 'Customer photo',
-                            sizes: '60px',
-                            aspect_ratio: '1/1',
-                            widths: '60,120,180',
-                            placeholder_type: 'avatar',
-                            class: 'rounded-circle'
-                          %}
+                          <img
+          src="{{ block.settings.image | image_picker_url: '60x' }}"
+          srcset="{{ block.settings.image | image_picker_url: '60x' }} 60w,\n                  {{ block.settings.image | image_picker_url: '120x' }} 120w,\n                  {{ block.settings.image | image_picker_url: '180x' }} 180w"
+          sizes="60px"
+          alt=""
+          class="rounded-circle"
+          loading="lazy"
+          >
                         </div>
                       {% endif %}
                       <div>
@@ -233,15 +230,14 @@
               <div class="card-author">
                 {% if block.settings.image != blank %}
                   <div class="author-image">
-                    {% include 'responsive-image',
-                      image: block.settings.image,
-                      alt: block.settings.name | default: 'Customer photo',
-                      sizes: '48px',
-                      aspect_ratio: '1/1',
-                      widths: '48,96,144',
-                      placeholder_type: 'avatar',
-                      class: 'rounded-circle'
-                    %}
+                    <img
+          src="{{ block.settings.image | image_picker_url: '48x' }}"
+          srcset="{{ block.settings.image | image_picker_url: '48x' }} 48w,\n                  {{ block.settings.image | image_picker_url: '96x' }} 96w,\n                  {{ block.settings.image | image_picker_url: '144x' }} 144w"
+          sizes="48px"
+          alt=""
+          class="rounded-circle"
+          loading="lazy"
+          >
                   </div>
                 {% else %}
                   <div class="author-avatar">

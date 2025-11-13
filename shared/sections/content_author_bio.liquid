@@ -8,16 +8,14 @@
           <div class="author-image-wrapper position-relative d-inline-block">
             {% if section.settings.author_image != blank %}
               <div kjb-settings-id="{{ 'author_image' | settings_id: section: section }}">
-                {% include 'responsive-image',
-                  image: section.settings.author_image,
-                  alt: section.settings.author_name,
-                  sizes: '(max-width: 767px) 280px, 320px',
-                  aspect_ratio: '1/1',
-                  widths: '280,320,400,600',
-                  placeholder_type: 'avatar',
-                  class: 'author-image',
-                  blur_up: true
-                %}
+                <img
+          src="{{ section.settings.author_image | image_picker_url: '280x' }}"
+          srcset="{{ section.settings.author_image | image_picker_url: '280x' }} 280w,\n                  {{ section.settings.author_image | image_picker_url: '320x' }} 320w,\n                  {{ section.settings.author_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.author_image | image_picker_url: '600x' }} 600w"
+          sizes="(max-width: 767px) 280px, 320px"
+          alt=""
+          class="author-image"
+          loading="lazy"
+          >
               </div>
             {% else %}
               <div style="width: 320px; height: 320px; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 24px rgba(0,0,0,.08); background: #f5f5f5; display: flex; align-items: center; justify-content: center;">

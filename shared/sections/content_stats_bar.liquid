@@ -53,15 +53,14 @@
                       </svg>
                     {% when 'custom' %}
                       {% if block.settings.custom_icon != blank %}
-                        {% include 'responsive-image',
-                          image: block.settings.custom_icon,
-                          alt: block.settings.label,
-                          sizes: '48px',
-                          aspect_ratio: '1/1',
-                          widths: '48,96',
-                          placeholder_type: 'logo',
-                          class: 'img-fluid'
-                        %}
+                        <img
+          src="{{ block.settings.custom_icon | image_picker_url: '48x' }}"
+          srcset="{{ block.settings.custom_icon | image_picker_url: '48x' }} 48w,\n                  {{ block.settings.custom_icon | image_picker_url: '96x' }} 96w"
+          sizes="48px"
+          alt=""
+          class="img-fluid"
+          loading="lazy"
+          >
                       {% else %}
                         <!-- Placeholder custom icon -->
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">

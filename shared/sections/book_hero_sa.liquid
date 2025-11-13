@@ -28,17 +28,14 @@
                         border-radius: {{ section.settings.image_border_radius }}px; 
                         box-shadow: {{ section.settings.image_shadow }};">
               <div kjb-settings-id="{{ 'showcase_image' | settings_id: section: section }}">
-                {% include 'responsive-image',
-                  image: section.settings.showcase_image,
-                  alt: section.settings.image_alt | default: 'Book showcase',
-                  sizes: '(max-width: 767px) 100vw, 600px',
-                  aspect_ratio: '3/2',
-                  widths: '400,600,800,1200',
-                  placeholder_type: 'feature',
-                  blur_up: true,
-                  priority: section.settings.lazy_load == false,
-                  class: 'img-fluid'
-                %}
+                <img
+          src="{{ section.settings.showcase_image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.showcase_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.showcase_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.showcase_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.showcase_image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, 600px"
+          alt=""
+          class="img-fluid"
+          loading="lazy"
+          >
               </div>
             </div>
           </div>

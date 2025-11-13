@@ -53,16 +53,14 @@
                    style="padding: {{ section.settings.image_padding }}px; margin: {{ section.settings.image_margin }}px;">
                 {% if block.settings.book_image != blank %}
                   <div kjb-settings-id="{{ 'book_image' | settings_id: section: section, block: block }}">
-                    {% include 'responsive-image',
-                      image: block.settings.book_image,
-                      alt: block.settings.title | default: 'Book cover',
-                      sizes: '(max-width: 767px) 280px, 400px',
-                      aspect_ratio: '2/3',
-                      widths: '280,400,600,800',
-                      placeholder_type: 'book',
-                      blur_up: true,
-                      class: 'book-showcase__image'
-                    %}
+                    <img
+          src="{{ block.settings.book_image | image_picker_url: '280x' }}"
+          srcset="{{ block.settings.book_image | image_picker_url: '280x' }} 280w,\n                  {{ block.settings.book_image | image_picker_url: '400x' }} 400w,\n                  {{ block.settings.book_image | image_picker_url: '600x' }} 600w,\n                  {{ block.settings.book_image | image_picker_url: '800x' }} 800w"
+          sizes="(max-width: 767px) 280px, 400px"
+          alt=""
+          class="book-showcase__image"
+          loading="lazy"
+          >
                   </div>
                 {% else %}
                 <div class="book-showcase__placeholder">

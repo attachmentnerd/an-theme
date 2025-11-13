@@ -53,16 +53,14 @@
                 
                 <!-- Post Image -->
                 {% if block.settings.image != blank %}
-                  {% include 'responsive-image',
-                    image: block.settings.image,
-                    alt: block.settings.caption | truncate: 100 | default: 'Instagram post',
-                    sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 300px',
-                    aspect_ratio: '1/1',
-                    widths: '300,400,600,800',
-                    placeholder_type: 'feature',
-                    blur_up: true,
-                    class: 'an-instagram__post-image'
-                  %}
+                  <img
+          src="{{ block.settings.image | image_picker_url: '300x' }}"
+          srcset="{{ block.settings.image | image_picker_url: '300x' }} 300w,\n                  {{ block.settings.image | image_picker_url: '400x' }} 400w,\n                  {{ block.settings.image | image_picker_url: '600x' }} 600w,\n                  {{ block.settings.image | image_picker_url: '800x' }} 800w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 300px"
+          alt=""
+          class="an-instagram__post-image"
+          loading="lazy"
+          >
                 {% else %}
                   <div class="an-instagram__post-placeholder">
                     <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">

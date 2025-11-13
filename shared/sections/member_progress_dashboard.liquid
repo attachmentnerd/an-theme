@@ -246,15 +246,14 @@
             <div class="col-12 col-md-6 col-lg-{{ section.settings.columns | default: 4 }}">
               <div class="progress-card">
                 {% if product.poster_image_url and section.settings.show_images %}
-                  {% include 'responsive-image',
-                    image: product.poster_image_url,
-                    alt: product.title,
-                    sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw',
-                    aspect_ratio: '16/9',
-                    widths: '400,600,800',
-                    placeholder_type: 'feature',
-                    class: 'progress-card__image'
-                  %}
+                  <img
+          src="{{ product.poster_image_url | image_picker_url: '400x' }}"
+          srcset="{{ product.poster_image_url | image_picker_url: '400x' }} 400w,\n                  {{ product.poster_image_url | image_picker_url: '600x' }} 600w,\n                  {{ product.poster_image_url | image_picker_url: '800x' }} 800w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw"
+          alt=""
+          class="progress-card__image"
+          loading="lazy"
+          >
                 {% elsif section.settings.show_images %}
                   <div class="progress-card__image"></div>
                 {% endif %}

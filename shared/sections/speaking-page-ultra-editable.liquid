@@ -451,11 +451,18 @@
       <div class="video-wrapper">
         <div class="video-placeholder">
           {% if section.settings.video_thumbnail %}
-            {% assign image = section.settings.video_thumbnail %}
-            {% assign alt = section.settings.video_alt %}
-            {% capture sizes %}(max-width: 767px) 100vw, {{ section.settings.video_max_width }}px{% endcapture %}
-            {% assign priority = true %}
-            {% include 'responsive-image' %}
+            <img
+              src="{{ section.settings.video_thumbnail | image_picker_url: '800x' }}"
+              srcset="{{ section.settings.video_thumbnail | image_picker_url: '400x' }} 400w,
+                      {{ section.settings.video_thumbnail | image_picker_url: '600x' }} 600w,
+                      {{ section.settings.video_thumbnail | image_picker_url: '800x' }} 800w,
+                      {{ section.settings.video_thumbnail | image_picker_url: '1200x' }} 1200w"
+              sizes="(max-width: 767px) 100vw, {{ section.settings.video_max_width }}px"
+              alt="{{ section.settings.video_alt }}"
+              class="img-fluid"
+              loading="eager"
+              fetchpriority="high"
+            >
           {% endif %}
           {% if section.settings.video_url %}
           <a href="{{ section.settings.video_url }}" class="play-button" aria-label="{{ section.settings.play_button_aria }}">
@@ -474,10 +481,17 @@
       <div class="content-grid">
         <div class="content-image">
           {% if section.settings.content_image %}
-            {% assign image = section.settings.content_image %}
-            {% assign alt = section.settings.content_image_alt %}
-            {% assign sizes = '(max-width: 767px) 100vw, 50vw' %}
-            {% include 'responsive-image' %}
+            <img
+              src="{{ section.settings.content_image | image_picker_url: '600x' }}"
+              srcset="{{ section.settings.content_image | image_picker_url: '400x' }} 400w,
+                      {{ section.settings.content_image | image_picker_url: '600x' }} 600w,
+                      {{ section.settings.content_image | image_picker_url: '800x' }} 800w,
+                      {{ section.settings.content_image | image_picker_url: '1200x' }} 1200w"
+              sizes="(max-width: 767px) 100vw, 50vw"
+              alt="{{ section.settings.content_image_alt }}"
+              class="img-fluid"
+              loading="lazy"
+            >
           {% endif %}
         </div>
         <div class="content-text">
@@ -562,10 +576,17 @@
         </div>
         <div class="ready-image">
           {% if section.settings.ready_image %}
-            {% assign image = section.settings.ready_image %}
-            {% assign alt = section.settings.ready_image_alt %}
-            {% assign sizes = '(max-width: 767px) 100vw, 50vw' %}
-            {% include 'responsive-image' %}
+            <img
+              src="{{ section.settings.ready_image | image_picker_url: '600x' }}"
+              srcset="{{ section.settings.ready_image | image_picker_url: '400x' }} 400w,
+                      {{ section.settings.ready_image | image_picker_url: '600x' }} 600w,
+                      {{ section.settings.ready_image | image_picker_url: '800x' }} 800w,
+                      {{ section.settings.ready_image | image_picker_url: '1200x' }} 1200w"
+              sizes="(max-width: 767px) 100vw, 50vw"
+              alt="{{ section.settings.ready_image_alt }}"
+              class="img-fluid"
+              loading="lazy"
+            >
           {% endif %}
         </div>
       </div>
@@ -578,11 +599,17 @@
       <div class="why-grid">
         <div class="why-image">
           {% if section.settings.why_image %}
-            {% assign image = section.settings.why_image %}
-            {% assign alt = section.settings.why_image_alt %}
-            {% assign sizes = '(max-width: 767px) 100vw, 50vw' %}
-            {% include 'responsive-image' %}
-            %}
+            <img
+              src="{{ section.settings.why_image | image_picker_url: '600x' }}"
+              srcset="{{ section.settings.why_image | image_picker_url: '400x' }} 400w,
+                      {{ section.settings.why_image | image_picker_url: '600x' }} 600w,
+                      {{ section.settings.why_image | image_picker_url: '800x' }} 800w,
+                      {{ section.settings.why_image | image_picker_url: '1200x' }} 1200w"
+              sizes="(max-width: 767px) 100vw, 50vw"
+              alt="{{ section.settings.why_image_alt }}"
+              class="img-fluid"
+              loading="lazy"
+            >
           {% endif %}
         </div>
         <div class="why-content">

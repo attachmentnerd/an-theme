@@ -15,16 +15,14 @@
           {% if section.settings.left_image != blank %}
             <div class="position-relative">
               <div kjb-settings-id="{{ 'left_image' | settings_id: section: section }}">
-                {% include 'responsive-image',
-                  image: section.settings.left_image,
-                  alt: section.settings.left_image_alt | default: 'Workbook preview',
-                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px',
-                  aspect_ratio: '4/3',
-                  widths: '400,600,800,1200',
-                  placeholder_type: 'feature',
-                  blur_up: true,
-                  class: 'img-fluid rounded-lg shadow-lg'
-                %}
+                <img
+          src="{{ section.settings.left_image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.left_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.left_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.left_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.left_image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 600px"
+          alt=""
+          class="img-fluid rounded-lg shadow-lg"
+          loading="lazy"
+          >
               </div>
               {% if section.settings.show_left_badge and section.settings.left_badge_text != blank %}
                 <div class="position-absolute animate-float bg-white px-4 py-3 rounded-pill shadow-lg" style="top: -20px; right: -20px;" kjb-settings-id="{{ 'left_badge_text' | settings_id: section: section }}">

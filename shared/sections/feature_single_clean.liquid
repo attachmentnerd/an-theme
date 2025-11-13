@@ -124,15 +124,14 @@
                 <p>"{{ section.settings.testimonial_text }}"</p>
                 <footer>
                   {% if section.settings.testimonial_author_image %}
-                                        {% include 'responsive-image',
-                      image: section.settings.testimonial_author_image,
-                      alt: '{{ section.settings.testimonial_author }}',
-                      class: 'testimonial__avatar',
-                      sizes: '120px',
-                      aspect_ratio: '16/9',
-                      widths: '60,120,180,240',
-                      placeholder_type: 'avatar'
-                    %}
+                                        <img
+          src="{{ section.settings.testimonial_author_image | image_picker_url: '60x' }}"
+          srcset="{{ section.settings.testimonial_author_image | image_picker_url: '60x' }} 60w,\n                  {{ section.settings.testimonial_author_image | image_picker_url: '120x' }} 120w,\n                  {{ section.settings.testimonial_author_image | image_picker_url: '180x' }} 180w,\n                  {{ section.settings.testimonial_author_image | image_picker_url: '240x' }} 240w"
+          sizes="120px"
+          alt="{{ section.settings.testimonial_author }}"
+          class="testimonial__avatar"
+          loading="lazy"
+          >
                   {% endif %}
                   <div>
                     <cite>{{ section.settings.testimonial_author }}</cite>

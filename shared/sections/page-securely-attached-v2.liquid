@@ -184,16 +184,15 @@
                     </div>
                     <div class="book-main">
                         <!--@id=book_hero-->
-                        {% include 'responsive-image',
-                          image: section.settings.img_1_securely_attached_book_c,
-                          alt: 'Securely Attached book cover showing workbook with attachment theory exercises',
-                          sizes: '(max-width: 767px) 280px, 400px',
-                          aspect_ratio: '2/3',
-                          widths: '280,400,600,800',
-                          placeholder_type: 'book',
-                          blur_up: true,
-                          priority: true
-                        %}
+                        <img
+          src="{{ section.settings.img_1_securely_attached_book_c | image_picker_url: '280x' }}"
+          srcset="{{ section.settings.img_1_securely_attached_book_c | image_picker_url: '280x' }} 280w,\n                  {{ section.settings.img_1_securely_attached_book_c | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.img_1_securely_attached_book_c | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.img_1_securely_attached_book_c | image_picker_url: '800x' }} 800w"
+          sizes="(max-width: 767px) 280px, 400px"
+          alt="Securely Attached book cover showing workbook with attachment theory exercises"
+          class="img-fluid"
+          loading="lazy"
+          fetchpriority="high"
+          >
                     </div>
                 </div>
             </div>
@@ -311,16 +310,14 @@
                     <p class="expert-quote">{{ section.settings._expert_quote_1_eli_hands_us_clear_k }}</p>
                     <div class="expert-author">
                         <!--@id=expert_lepera-->
-                                                {% include 'responsive-image',
-                          image: section.settings.img_2_dr_nicole_lepera,
-                          alt: 'Dr. Nicole LePera',
-                          class: 'img-fluid',
-                          sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                          aspect_ratio: '16/9',
-                          widths: '400,600,800,1200',
-                          placeholder_type: 'feature',
-                          blur_up: true
-                        %}
+                                                <img
+          src="{{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.img_2_dr_nicole_lepera | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="Dr. Nicole LePera"
+          class="img-fluid"
+          loading="lazy"
+          >
                         <div class="expert-info">
                             <h4>{{ section.settings._expert_info_h4_1_dr__nicole_lepera }}</h4>
                             <p>{{ section.settings._expert_info_p_1_nyt_bestselling_auth }}</p>
@@ -331,16 +328,14 @@
                     <p class="expert-quote">{{ section.settings._expert_quote_2_an_important__user_f }}</p>
                     <div class="expert-author">
                         <!--@id=expert_sroufe-->
-                                                {% include 'responsive-image',
-                          image: section.settings.img_3_alan_sroufe,
-                          alt: 'Alan Sroufe',
-                          class: 'img-fluid',
-                          sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                          aspect_ratio: '16/9',
-                          widths: '400,600,800,1200',
-                          placeholder_type: 'feature',
-                          blur_up: true
-                        %}
+                                                <img
+          src="{{ section.settings.img_3_alan_sroufe | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.img_3_alan_sroufe | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.img_3_alan_sroufe | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.img_3_alan_sroufe | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.img_3_alan_sroufe | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="Alan Sroufe"
+          class="img-fluid"
+          loading="lazy"
+          >
                         <div class="expert-info">
                             <h4>{{ section.settings._expert_info_h4_2_alan_sroufe }}</h4>
                             <p>{{ section.settings._expert_info_p_2_professor_emeritus__ }}</p>
@@ -351,16 +346,14 @@
                     <p class="expert-quote">{{ section.settings._expert_quote_3_this_visually_engagi }}</p>
                     <div class="expert-author">
                         <!--@id=expert_becker-->
-                                                {% include 'responsive-image',
-                          image: section.settings.img_4_leslie_becker_phelps,
-                          alt: 'Leslie Becker-Phelps',
-                          class: 'img-fluid',
-                          sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                          aspect_ratio: '16/9',
-                          widths: '400,600,800,1200',
-                          placeholder_type: 'feature',
-                          blur_up: true
-                        %}
+                                                <img
+          src="{{ section.settings.img_4_leslie_becker_phelps | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.img_4_leslie_becker_phelps | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.img_4_leslie_becker_phelps | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.img_4_leslie_becker_phelps | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.img_4_leslie_becker_phelps | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="Leslie Becker-Phelps"
+          class="img-fluid"
+          loading="lazy"
+          >
                         <div class="expert-info">
                             <h4>{{ section.settings._expert_info_h4_3_leslie_becker_phelps }}</h4>
                             <p>{{ section.settings._expert_info_p_3_author_of_insecure_i }}</p>
@@ -444,16 +437,14 @@
                 <div class="author-visual">
                     <div class="author-image">
                         <!--@id=eli_author-->
-                                                {% include 'responsive-image',
-                          image: section.settings.img_5_eli_harwood_the_attachme,
-                          alt: 'Eli Harwood, The Attachment Nerd, licensed therapist and author',
-                          class: 'img-fluid',
-                          sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                          aspect_ratio: '16/9',
-                          widths: '400,600,800,1200',
-                          placeholder_type: 'feature',
-                          blur_up: true
-                        %}
+                                                <img
+          src="{{ section.settings.img_5_eli_harwood_the_attachme | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.img_5_eli_harwood_the_attachme | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.img_5_eli_harwood_the_attachme | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.img_5_eli_harwood_the_attachme | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.img_5_eli_harwood_the_attachme | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="Eli Harwood, The Attachment Nerd, licensed therapist and author"
+          class="img-fluid"
+          loading="lazy"
+          >
                     </div>
                     <div class="author-stats">
                         <div class="stat-number">{{ section.settings._stat_number_5_500_ }}</div>

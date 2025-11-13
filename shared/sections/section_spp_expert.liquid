@@ -88,16 +88,14 @@
         {% if section.settings.image != blank %}
           <div class="media-wrap">
             <div class="frame">
-                            {% include 'responsive-image',
-                image: section.settings.image,
-                alt: '{{ section.settings.image_alt | escape }}',
-                class: 'img-fluid',
-                sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                aspect_ratio: '16/9',
-                widths: '400,600,800,1200',
-                placeholder_type: 'feature',
-                blur_up: true
-              %}
+                            <img
+          src="{{ section.settings.image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="{{ section.settings.image_alt | escape }}"
+          class="img-fluid"
+          loading="lazy"
+          >
             </div>
             {% if section.settings.badge_text != blank %}
               <div class="badge-chip" style="background: {{ section.settings.badge_bg | default: 'var(--c-accent-orange, #F59E0B)' }};" kjb-settings-id="{{ 'badge_text' | settings_id: section: section }}">{{ section.settings.badge_text }}</div>

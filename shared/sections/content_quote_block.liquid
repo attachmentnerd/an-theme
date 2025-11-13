@@ -24,16 +24,14 @@
           {% if section.settings.show_left_image and section.settings.left_image != blank %}
             <div class="col-lg-3 {% if section.settings.layout_style == 'centered' %}d-none d-lg-block{% endif %}">
               <div class="an-quote-block__image an-quote-block__image--left">
-                {% include 'responsive-image',
-                  image: section.settings.left_image,
-                  alt: section.settings.left_image_alt | default: 'Quote illustration',
-                  sizes: '(max-width: 991px) 100vw, 300px',
-                  aspect_ratio: '16/9',
-                  widths: '300,400,600,800',
-                  placeholder_type: 'feature',
-                  blur_up: true,
-                  class: 'img-fluid'
-                %}
+                <img
+          src="{{ section.settings.left_image | image_picker_url: '300x' }}"
+          srcset="{{ section.settings.left_image | image_picker_url: '300x' }} 300w,\n                  {{ section.settings.left_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.left_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.left_image | image_picker_url: '800x' }} 800w"
+          sizes="(max-width: 991px) 100vw, 300px"
+          alt=""
+          class="img-fluid"
+          loading="lazy"
+          >
               </div>
             </div>
           {% endif %}
@@ -61,15 +59,14 @@
                 <div class="an-quote-block__author">
                   {% if section.settings.author_image %}
                     <div class="an-quote-block__author-image">
-                                            {% include 'responsive-image',
-                        image: section.settings.author_image,
-                        alt: '{{ section.settings.author_name }}',
-                        class: 'rounded-circle',
-                        sizes: '120px',
-                        aspect_ratio: '16/9',
-                        widths: '60,120,180,240',
-                        placeholder_type: 'avatar'
-                      %}
+                                            <img
+          src="{{ section.settings.author_image | image_picker_url: '60x' }}"
+          srcset="{{ section.settings.author_image | image_picker_url: '60x' }} 60w,\n                  {{ section.settings.author_image | image_picker_url: '120x' }} 120w,\n                  {{ section.settings.author_image | image_picker_url: '180x' }} 180w,\n                  {{ section.settings.author_image | image_picker_url: '240x' }} 240w"
+          sizes="120px"
+          alt="{{ section.settings.author_name }}"
+          class="rounded-circle"
+          loading="lazy"
+          >
                     </div>
                   {% endif %}
                   <div class="an-quote-block__author-info">
@@ -91,16 +88,14 @@
           {% if section.settings.show_right_image and section.settings.right_image != blank %}
             <div class="col-lg-3 {% if section.settings.layout_style == 'centered' %}d-none d-lg-block{% endif %}">
               <div class="an-quote-block__image an-quote-block__image--right">
-                                {% include 'responsive-image',
-                  image: section.settings.right_image,
-                  alt: '{{ section.settings.right_image_alt | default: ',
-                  class: 'img-fluid',
-                  sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                  aspect_ratio: '16/9',
-                  widths: '400,600,800,1200',
-                  placeholder_type: 'feature',
-                  blur_up: true
-                %}
+                                <img
+          src="{{ section.settings.right_image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.right_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.right_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.right_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.right_image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="{{ section.settings.right_image_alt | default: "
+          class="img-fluid"
+          loading="lazy"
+          >
               </div>
             </div>
           {% endif %}

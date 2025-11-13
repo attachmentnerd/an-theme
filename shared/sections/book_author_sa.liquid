@@ -9,15 +9,14 @@
             <div class="position-absolute" style="top: -20px; left: -20px; width: 100%; height: 100%; background: var(--c-accent-teal); opacity: 0.1; border-radius: 50%; filter: blur(40px);"></div>
             
             <div kjb-settings-id="{{ 'author_image' | settings_id: section: section }}">
-              {% include 'responsive-image',
-                image: section.settings.author_image,
-                alt: section.settings.author_alt | default: 'Author photo',
-                sizes: '(max-width: 767px) 200px, 300px',
-                aspect_ratio: '1/1',
-                widths: '200,300,400,600',
-                placeholder_type: 'avatar',
-                class: 'img-fluid position-relative'
-              %}
+              <img
+          src="{{ section.settings.author_image | image_picker_url: '200x' }}"
+          srcset="{{ section.settings.author_image | image_picker_url: '200x' }} 200w,\n                  {{ section.settings.author_image | image_picker_url: '300x' }} 300w,\n                  {{ section.settings.author_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.author_image | image_picker_url: '600x' }} 600w"
+          sizes="(max-width: 767px) 200px, 300px"
+          alt=""
+          class="img-fluid position-relative"
+          loading="lazy"
+          >
             </div>
           </div>
         </div>

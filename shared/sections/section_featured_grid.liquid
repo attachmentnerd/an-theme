@@ -121,16 +121,14 @@
       <div class="col-lg-5">
         {% if section.settings.right_image != blank %}
           <div class="media-wrap">
-                        {% include 'responsive-image',
-              image: section.settings.right_image,
-              alt: '{{ section.settings.right_image_alt | escape }}',
-              class: 'img-fluid',
-              sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-              aspect_ratio: '16/9',
-              widths: '400,600,800,1200',
-              placeholder_type: 'feature',
-              blur_up: true
-            %}
+                        <img
+          src="{{ section.settings.right_image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.right_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.right_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.right_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.right_image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt="{{ section.settings.right_image_alt | escape }}"
+          class="img-fluid"
+          loading="lazy"
+          >
             
             <div class="chips">
               {% for block in section.blocks %}

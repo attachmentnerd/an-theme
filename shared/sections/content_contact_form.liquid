@@ -263,14 +263,14 @@
                   <div class="an-contact-form__info-block" {{ block.shopify_attributes }}>
                     {% if block.settings.icon != blank %}
                       <div class="an-contact-form__info-icon">
-                        {% include 'responsive-image',
-                          image: block.settings.icon,
-                          alt: block.settings.title | default: 'Contact info icon',
-                          sizes: '60px',
-                          widths: '60,120,180',
-                          placeholder_type: 'logo',
-                          class: 'img-fluid'
-                        %}
+                        <img
+          src="{{ block.settings.icon | image_picker_url: '60x' }}"
+          srcset="{{ block.settings.icon | image_picker_url: '60x' }} 60w,\n                  {{ block.settings.icon | image_picker_url: '120x' }} 120w,\n                  {{ block.settings.icon | image_picker_url: '180x' }} 180w"
+          sizes="60px"
+          alt=""
+          class="img-fluid"
+          loading="lazy"
+          >
                       </div>
                     {% endif %}
                     <h3 class="an-contact-form__info-title">{{ block.settings.title }}</h3>

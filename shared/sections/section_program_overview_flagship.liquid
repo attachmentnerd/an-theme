@@ -35,14 +35,14 @@
         <div class="povf-pill" data-img-pos="{{ section.settings.feature1_image_position | default: 'left' }}">
           <div class="povf-pill-icon">
             {% if f1_img != blank %}
-              {% include 'responsive-image',
-                image: section.settings.feature1_image,
-                alt: '',
-                sizes: '48px',
-                aspect_ratio: '1/1',
-                widths: '48,96',
-                placeholder_type: 'logo'
-              %}
+              <img
+          src="{{ section.settings.feature1_image | image_picker_url: '48x' }}"
+          srcset="{{ section.settings.feature1_image | image_picker_url: '48x' }} 48w,\n                  {{ section.settings.feature1_image | image_picker_url: '96x' }} 96w"
+          sizes="48px"
+          alt=""
+          class="img-fluid"
+          loading="lazy"
+          >
             {% else %}
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l2.5 5 5 2.5-5 2.5L12 18l-2.5-5-5-2.5 5-2.5L12 3z" fill="currentColor" opacity=".25"/><path d="M8.5 12.5l2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             {% endif %}
@@ -52,16 +52,14 @@
         <div class="povf-pill" data-img-pos="{{ section.settings.feature2_image_position | default: 'left' }}">
           <div class="povf-pill-icon">
             {% if f2_img != blank %}
-                            {% include 'responsive-image',
-                image: section.settings.feature2_image,
-                alt: '',
-                class: 'img-fluid',
-                sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                aspect_ratio: '16/9',
-                widths: '400,600,800,1200',
-                placeholder_type: 'feature',
-                blur_up: true
-              %}
+                            <img
+          src="{{ section.settings.feature2_image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.feature2_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.feature2_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.feature2_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.feature2_image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt=""
+          class="img-fluid"
+          loading="lazy"
+          >
             {% else %}
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M8.5 12.5l2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             {% endif %}
@@ -71,16 +69,14 @@
         <div class="povf-pill" data-img-pos="{{ section.settings.feature3_image_position | default: 'left' }}">
           <div class="povf-pill-icon">
             {% if f3_img != blank %}
-                            {% include 'responsive-image',
-                image: section.settings.feature3_image,
-                alt: '',
-                class: 'img-fluid',
-                sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px',
-                aspect_ratio: '16/9',
-                widths: '400,600,800,1200',
-                placeholder_type: 'feature',
-                blur_up: true
-              %}
+                            <img
+          src="{{ section.settings.feature3_image | image_picker_url: '400x' }}"
+          srcset="{{ section.settings.feature3_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.feature3_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.feature3_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.feature3_image | image_picker_url: '1200x' }} 1200w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
+          alt=""
+          class="img-fluid"
+          loading="lazy"
+          >
             {% else %}
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16" stroke="currentColor" stroke-width="2"/><path d="M12 4v16" stroke="currentColor" stroke-width="2"/></svg>
             {% endif %}

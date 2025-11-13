@@ -59,16 +59,14 @@
                 <!-- Resource Image/Icon -->
                 <div class="an-resources__visual">
                   {% if block.settings.preview_image != blank %}
-                    {% include 'responsive-image',
-                      image: block.settings.preview_image,
-                      alt: block.settings.title | default: 'Resource preview',
-                      sizes: '(max-width: 767px) 100vw, 300px',
-                      aspect_ratio: '16/9',
-                      widths: '300,400,600,800',
-                      placeholder_type: 'feature',
-                      blur_up: true,
-                      class: 'an-resources__image'
-                    %}
+                    <img
+          src="{{ block.settings.preview_image | image_picker_url: '300x' }}"
+          srcset="{{ block.settings.preview_image | image_picker_url: '300x' }} 300w,\n                  {{ block.settings.preview_image | image_picker_url: '400x' }} 400w,\n                  {{ block.settings.preview_image | image_picker_url: '600x' }} 600w,\n                  {{ block.settings.preview_image | image_picker_url: '800x' }} 800w"
+          sizes="(max-width: 767px) 100vw, 300px"
+          alt=""
+          class="an-resources__image"
+          loading="lazy"
+          >
                   {% else %}
                     <div class="an-resources__icon-wrapper">
                       {% case block.settings.file_type %}

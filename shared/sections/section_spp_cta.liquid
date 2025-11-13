@@ -106,15 +106,14 @@
             {% if guar_title != blank %}
             <div class="spp-guar-head">
               {% if guarantee_avatar %}
-                {% include 'responsive-image',
-                  image: section.settings.guarantee_avatar,
-                  alt: section.settings.guarantee_avatar_alt | default: 'Guarantee badge',
-                  sizes: '80px',
-                  aspect_ratio: '1/1',
-                  widths: '80,160,240',
-                  placeholder_type: 'avatar',
-                  class: 'spp-guar-avatar'
-                %}
+                <img
+          src="{{ section.settings.guarantee_avatar | image_picker_url: '80x' }}"
+          srcset="{{ section.settings.guarantee_avatar | image_picker_url: '80x' }} 80w,\n                  {{ section.settings.guarantee_avatar | image_picker_url: '160x' }} 160w,\n                  {{ section.settings.guarantee_avatar | image_picker_url: '240x' }} 240w"
+          sizes="80px"
+          alt=""
+          class="spp-guar-avatar"
+          loading="lazy"
+          >
               {% endif %}
               <div class="spp-guar-title">{{ guar_title }}</div>
             </div>

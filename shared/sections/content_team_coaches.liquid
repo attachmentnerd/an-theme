@@ -39,16 +39,14 @@
                 <!-- Photo with Overlap Effect -->
                 <div class="an-team__photo-wrapper card-overlap--top">
                   {% if block.settings.photo != blank %}
-                    {% include 'responsive-image',
-                      image: block.settings.photo,
-                      alt: block.settings.name | default: 'Team member photo',
-                      sizes: '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 400px',
-                      aspect_ratio: '16/9',
-                      widths: '400,600,800',
-                      placeholder_type: 'avatar',
-                      blur_up: true,
-                      class: 'an-team__photo card-overlap__image shadow-layered'
-                    %}
+                    <img
+          src="{{ block.settings.photo | image_picker_url: '400x' }}"
+          srcset="{{ block.settings.photo | image_picker_url: '400x' }} 400w,\n                  {{ block.settings.photo | image_picker_url: '600x' }} 600w,\n                  {{ block.settings.photo | image_picker_url: '800x' }} 800w"
+          sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 400px"
+          alt=""
+          class="an-team__photo card-overlap__image shadow-layered"
+          loading="lazy"
+          >
                   {% else %}
                     <div class="an-team__photo card-overlap__image shadow-layered" style="background: #FAFAFA; display: flex; align-items: center; justify-content: center;">
                       <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">

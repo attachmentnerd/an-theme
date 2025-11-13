@@ -196,15 +196,14 @@
             <!-- Icon -->
             {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
               <div class="colored-highlight__icon-wrapper">
-                {% include 'responsive-image',
-                  image: block.settings.icon_image,
-                  alt: block.settings.icon_alt,
-                  sizes: '80px',
-                  aspect_ratio: '1/1',
-                  widths: '80,160',
-                  placeholder_type: 'logo',
-                  class: 'colored-highlight__icon'
-                %}
+                <img
+          src="{{ block.settings.icon_image | image_picker_url: '80x' }}"
+          srcset="{{ block.settings.icon_image | image_picker_url: '80x' }} 80w,\n                  {{ block.settings.icon_image | image_picker_url: '160x' }} 160w"
+          sizes="80px"
+          alt=""
+          class="colored-highlight__icon"
+          loading="lazy"
+          >
               </div>
             {% elsif block.settings.icon_type == 'emoji' and block.settings.icon_emoji != blank %}
               <div class="colored-highlight__icon-wrapper">

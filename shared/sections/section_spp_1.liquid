@@ -14,15 +14,14 @@
     {% if section.settings.cred_avatar or section.settings.credibility != blank %}
     <div class="spp-cred an-reveal">
       {% if section.settings.cred_avatar %}
-        {% include 'responsive-image',
-          image: section.settings.cred_avatar,
-          alt: section.settings.cred_avatar_alt | default: 'Program creator',
-          sizes: '120px',
-          aspect_ratio: '1/1',
-          widths: '120,240,360',
-          placeholder_type: 'avatar',
-          class: 'spp-cred-avatar'
-        %}
+        <img
+          src="{{ section.settings.cred_avatar | image_picker_url: '120x' }}"
+          srcset="{{ section.settings.cred_avatar | image_picker_url: '120x' }} 120w,\n                  {{ section.settings.cred_avatar | image_picker_url: '240x' }} 240w,\n                  {{ section.settings.cred_avatar | image_picker_url: '360x' }} 360w"
+          sizes="120px"
+          alt=""
+          class="spp-cred-avatar"
+          loading="lazy"
+          >
       {% endif %}
       {% assign chips = section.settings.credibility | strip | split: '\n' %}
       {% if chips.size > 0 and chips[0] != blank %}
