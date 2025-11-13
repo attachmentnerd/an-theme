@@ -138,9 +138,10 @@
           sizes="120px"
           alt="{{ block.settings.logo_alt | default: 'Logo' }}"
           class="img-fluid"
-          loading="lazy">
+          loading="lazy"
+          {% if block.settings.logo_width %}style="max-width: {{ block.settings.logo_width }}px;"{% endif %}>
                     {% elsif block.settings.logo_text %}
-                      <span class="logo-text" style="font-size: {{ section.settings.logo_text_size | default: '18' }}px;">
+                      <span class="logo-text" style="font-size: {% if block.settings.logo_text_size %}{{ block.settings.logo_text_size }}{% else %}{{ section.settings.logo_text_size | default: '18' }}{% endif %}px;">
                         {{ block.settings.logo_text }}
                       </span>
                     {% endif %}
@@ -410,6 +411,7 @@
 
   .logo-item img {
     height: auto;
+    max-height: {{ section.settings.logo_max_height | default: 40 }}px;
     width: auto;
     object-fit: contain;
   }
@@ -765,20 +767,22 @@
     {
       "type": "range",
       "id": "logo_max_height",
-      "label": "Logo Max Height (px)",
+      "label": "Logo Max Height (px) - Global Default",
       "min": 20,
       "max": 80,
       "step": 5,
-      "default": 40
+      "default": 40,
+      "info": "Default max height for all logos (can be overridden per logo)"
     },
     {
       "type": "range",
       "id": "logo_text_size",
-      "label": "Logo Text Size (px)",
+      "label": "Logo Text Size (px) - Global Default",
       "min": 14,
       "max": 30,
       "step": 1,
-      "default": 18
+      "default": 18,
+      "info": "Default text size for all text logos (can be overridden per logo)"
     },
     {
       "type": "header",
@@ -805,14 +809,38 @@
         },
         {
           "type": "text",
-          "id": "logo_text",
-          "label": "Logo Text (if no image)",
-          "info": "Text to display if no image is uploaded"
+          "id": "logo_alt",
+          "label": "Logo Alt Text"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "label": "Logo Width (px)",
+          "min": 60,
+          "max": 300,
+          "step": 20,
+          "default": 120,
+          "info": "Override the global logo size for this specific logo"
+        },
+        {
+          "type": "header",
+          "content": "Text Logo (if no image)"
         },
         {
           "type": "text",
-          "id": "logo_alt",
-          "label": "Logo Alt Text"
+          "id": "logo_text",
+          "label": "Logo Text",
+          "info": "Text to display if no image is uploaded"
+        },
+        {
+          "type": "range",
+          "id": "logo_text_size",
+          "label": "Text Size (px)",
+          "min": 12,
+          "max": 36,
+          "step": 2,
+          "default": 18,
+          "info": "Override the global text size for this specific logo"
         }
       ]
     }
