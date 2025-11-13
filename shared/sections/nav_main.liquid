@@ -265,15 +265,17 @@
   <div class="container an-pill-nav__container">
     <a class="an-pill-nav__logo" href="/">
       {% if section.settings.logo_image %}
-        {% include 'responsive-image',
-          image: section.settings.logo_image,
-          alt: current_site.name | default: 'Logo',
-          class: 'nav-logo',
-          sizes: '240px',
-          widths: '240,480',
-          loading: 'eager',
-          priority: true
-        %}
+        <img
+          src="{{ section.settings.logo_image | image_picker_url: '480x' }}"
+          srcset="{{ section.settings.logo_image | image_picker_url: '240x' }} 240w,
+                  {{ section.settings.logo_image | image_picker_url: '480x' }} 480w"
+          sizes="240px"
+          alt="{{ current_site.name | default: 'Logo' }}"
+          class="nav-logo"
+          loading="eager"
+          fetchpriority="high"
+          style="height: 34px; width: auto;"
+        >
       {% else %}
         <img src="https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg" alt="Attachment Nerd logo" style="height: 34px; width: auto;">
       {% endif %}
@@ -304,14 +306,15 @@
           <a class="an-pill-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
-              {% include 'responsive-image',
-                image: avatar_url,
-                alt: current_site_user.name | default: 'Account',
-                sizes: '44px',
-                aspect_ratio: '1/1',
-                widths: '44,88,132',
-                class: ''
-              %}
+              <img
+                src="{{ avatar_url | image_picker_url: '88x88' }}"
+                srcset="{{ avatar_url | image_picker_url: '44x44' }} 44w,
+                        {{ avatar_url | image_picker_url: '88x88' }} 88w,
+                        {{ avatar_url | image_picker_url: '132x132' }} 132w"
+                sizes="44px"
+                alt="{{ current_site_user.name | default: 'Account' }}"
+                style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1/1;"
+              >
             {% else %}
               {{ profile_label | slice: 0, 1 | upcase }}
             {% endif %}
