@@ -106,7 +106,7 @@
         {% for block in section.blocks %}
           <div class="featured-column {% if section.settings.enable_animations %}animate-fade-up{% endif %}"
                style="{% if section.settings.enable_animations %}animation-delay: {{ forloop.index | times: section.settings.animation_delay }}ms;{% endif %}"
-               {{ block.shopify_attributes }}>
+               >
             {% assign block_icon_bg = block.settings.icon_bg_color | default: '#2D3E50' %}
             {% if is_light_variant and block_icon_bg == '#2D3E50' %}
               {% assign block_icon_bg = '#E6EEF5' %}

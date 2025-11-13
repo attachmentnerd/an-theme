@@ -98,7 +98,7 @@
             <div class="book-showcase__feature-pills">
               {% for block in section.blocks %}
                 {% if block.type == 'feature' %}
-                  <span class="feature-pill" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+                  <span class="feature-pill" >{{ block.settings.text }}</span>
                 {% endif %}
               {% endfor %}
             </div>
@@ -106,7 +106,7 @@
             <ul class="book-showcase__features">
               {% for block in section.blocks %}
                 {% if block.type == 'feature' %}
-                  <li {{ block.shopify_attributes }}>
+                  <li >
                     {% if block.settings.icon %}
                       <i class="{{ block.settings.icon }}"></i>
                     {% endif %}
@@ -157,7 +157,7 @@
               {% if block.type == 'button' %}
                 <a href="{{ block.settings.url | default: '#' }}"
                    class="btn btn-{{ block.settings.style | default: 'secondary-modern' }}"
-                   {{ block.shopify_attributes }}>
+                   >
                   {% if block.settings.icon %}
                     <i class="{{ block.settings.icon }}"></i>
                   {% endif %}

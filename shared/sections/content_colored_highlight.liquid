@@ -192,7 +192,7 @@
     <div class="colored-highlight__grid">
       {% for block in section.blocks %}
         {% if block.type == 'highlight_card' %}
-          <div class="colored-highlight__card" id="highlight-card-{{ block.id }}" {{ block.shopify_attributes }}>
+          <div class="colored-highlight__card" id="highlight-card-{{ block.id }}" >
             <!-- Icon -->
             {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
               <div class="colored-highlight__icon-wrapper">

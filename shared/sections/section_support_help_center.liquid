@@ -24,7 +24,7 @@
       <div class="sh-cat-grid" style="gap: {{ section.settings.grid_gap }}px;">
         {% for block in section.blocks %}
           {% if block.type == 'category' %}
-          <article class="sh-cat" {{ block.shopify_attributes }}>
+          <article class="sh-cat" >
             <a class="sh-cat-link" href="{{ block.settings.url }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="sh-cat-head">
                 <div class="sh-cat-icon" style="--sh-accent: {{ block.settings.color | default: '#eef2ff' }}">{% include "icon", icon: block.settings.icon | default: 'book-open', size: 20, color: 'currentColor', aria_label: '' %}</div>
@@ -48,7 +48,7 @@
       <div class="sh-arts" style="gap: {{ section.settings.grid_gap }}px;">
         {% for block in section.blocks %}
           {% if block.type == 'article' %}
-          <article class="sh-art" {{ block.shopify_attributes }}>
+          <article class="sh-art" >
             <a class="sh-art-link" href="{{ block.settings.url }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="sh-art-top">
                 {% if block.settings.badge or block.settings.category %}
@@ -87,7 +87,7 @@
       <div class="sh-acc" id="sh-acc-{{ sid }}">
         {% for block in section.blocks %}
           {% if block.type == 'faq' %}
-          <article class="sh-q" {{ block.shopify_attributes }}>
+          <article class="sh-q" >
             <button class="sh-qbtn" type="button" aria-expanded="false" aria-controls="sh-a-{{ block.id }}" id="sh-q-{{ block.id }}">
               <span class="sh-qtxt">{{ block.settings.question }}</span>
               <span class="sh-caret" aria-hidden="true">▾</span>
@@ -114,7 +114,7 @@
         <div class="sh-contact-list">
           {% for block in section.blocks %}
             {% if block.type == 'contact' %}
-            <article class="sh-ct" {{ block.shopify_attributes }}>
+            <article class="sh-ct" >
               <div class="sh-ct-icon">{% include "icon", icon: block.settings.icon | default: 'message-circle', size: 20, color: 'currentColor', aria_label: '' %}</div>
               <div class="sh-ct-body">
                 <h4 class="sh-ct-title">{{ block.settings.title }}</h4>
@@ -135,7 +135,7 @@
             {% if block.type == 'contact_form' %}{% assign cf = block %}{% break %}{% endif %}
           {% endfor %}
           {% if cf %}
-          <article class="sh-ct sh-ct--form" {{ cf.shopify_attributes }}>
+          <article class="sh-ct sh-ct--form" >
             <div class="sh-ct-body">
               <h4 class="sh-ct-title">{{ cf.settings.title }}</h4>
               {% if cf.settings.intro %}<p class="sh-ct-desc">{{ cf.settings.intro }}</p>{% endif %}

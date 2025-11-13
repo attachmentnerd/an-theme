@@ -45,7 +45,7 @@
                   {% assign feature_index = feature_index | plus: 1 %}
                   {% if feature_index <= left_count %}
                     {% assign left_rendered = left_rendered | plus: 1 %}
-                    <div class="feature-item animate-fade-up" style="animation-delay: {{ left_rendered | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+                    <div class="feature-item animate-fade-up" style="animation-delay: {{ left_rendered | times: 0.1 }}s;" >
                       <div class="feature-icon">
                         {% if block.settings.use_emoji %}
                           <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>
@@ -76,7 +76,7 @@
                   {% assign feature_index = feature_index | plus: 1 %}
                   {% if feature_index > left_count %}
                     {% assign right_rendered = right_rendered | plus: 1 %}
-                    <div class="feature-item animate-fade-up" style="animation-delay: {{ right_rendered | times: 0.1 | plus: 0.05 }}s;" {{ block.shopify_attributes }}>
+                    <div class="feature-item animate-fade-up" style="animation-delay: {{ right_rendered | times: 0.1 | plus: 0.05 }}s;" >
                       <div class="feature-icon">
                         {% if block.settings.use_emoji %}
                           <span class="feature-emoji">{{ block.settings.emoji | default: '👉' }}</span>

@@ -45,7 +45,7 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'instagram_post' %}
-            <div class="an-instagram__post" {{ block.shopify_attributes }}>
+            <div class="an-instagram__post" >
               <a href="{{ block.settings.post_url }}" 
                  target="_blank" 
                  rel="noopener"

@@ -32,7 +32,7 @@
           <div class="feature-highlight__points">
             {% for block in section.blocks %}
               {% if block.type == 'feature_point' %}
-                <div class="feature-point" {{ block.shopify_attributes }}>
+                <div class="feature-point" >
                   <div class="feature-point__header">
                     {% if block.settings.title != blank %}
                       <h3 class="feature-point__title">{{ block.settings.title }}</h3>
@@ -59,7 +59,7 @@
                   {% endif %}
                 {% endfor %}
                 {% if has_items %}
-                <div class="feature-list" {{ block.shopify_attributes }}>
+                <div class="feature-list" >
                   {% if block.settings.title != blank %}
                     <h3 class="feature-list__title">{{ block.settings.title }}</h3>
                   {% endif %}
@@ -77,14 +77,14 @@
 
               {% elsif block.type == 'rich_text' %}
                 {% if block.settings.content != blank %}
-                  <div class="feature-richtext" {{ block.shopify_attributes }}>
+                  <div class="feature-richtext" >
                     {{ block.settings.content }}
                   </div>
                 {% endif %}
 
               {% elsif block.type == 'custom_html_block' %}
                 {% if block.settings.html != blank %}
-                  <div class="feature-html" {{ block.shopify_attributes }}>
+                  <div class="feature-html" >
                     {{ block.settings.html }}
                   </div>
                 {% endif %}
@@ -147,7 +147,7 @@
             {% if block.type == 'floating_element' %}
               <div class="floating-element floating-element--{{ block.settings.animation_style }}"
                    style="--delay: {{ block.settings.animation_delay }}s;"
-                   {{ block.shopify_attributes }}>
+                   >
                 {% if block.settings.element_type == 'text' %}
                   <div class="floating-element__text">{{ block.settings.text_content }}</div>
                 {% elsif block.settings.element_type == 'icon' %}

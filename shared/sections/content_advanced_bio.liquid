@@ -125,7 +125,7 @@
             <div class="logos-grid">
               {% for block in section.blocks %}
                 {% if block.type == 'logo' %}
-                  <div class="logo-item" {{ block.shopify_attributes }}>
+                  <div class="logo-item" >
                     {% if block.settings.logo_image %}
                                             <img
           src="{{ block.settings.logo_image | image_picker_url: '60x' }}"

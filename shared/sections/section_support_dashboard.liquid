@@ -41,7 +41,7 @@
       <div class="sd-cat-grid" style="gap: {{ section.settings.grid_gap }}px;">
         {% for block in section.blocks %}
           {% if block.type == 'category' %}
-          <article class="sd-cat-card" {{ block.shopify_attributes }}>
+          <article class="sd-cat-card" >
             <a class="sd-cat-link" href="{{ block.settings.url }}" {% if section.settings.force_new_tab or block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="sd-cat-head">
                 <div class="sd-cat-icon" style="--sd-cat-accent: {{ block.settings.color | default: '#e9eefc' }}">{% include "icon", icon: block.settings.icon | default: 'book-open', size: 22, color: 'currentColor', aria_label: '' %}</div>
@@ -65,7 +65,7 @@
         {% for block in section.blocks %}
           {% if block.type == 'faq' or block.type == 'faq_form' %}
           {% assign _tags = block.settings.tags | default: '' | strip %}
-          <article class="sd-faq" {{ block.shopify_attributes }} data-title="{{ block.settings.question | escape }}" data-tags="{{ _tags | escape }}" data-category="{{ block.settings.category | default: '' | escape }}">
+          <article class="sd-faq"  data-title="{{ block.settings.question | escape }}" data-tags="{{ _tags | escape }}" data-category="{{ block.settings.category | default: '' | escape }}">
             <h3 class="sd-faq-q">
               <button class="sd-acc-btn" type="button" aria-expanded="{% if block.settings.open %}true{% else %}false{% endif %}" aria-controls="sd-faq-a-{{ block.id }}" id="sd-faq-q-{{ block.id }}">
                 <span class="sd-acc-ico" aria-hidden="true">{% include "icon", icon: 'chevron-down', size: 18, color: 'currentColor', aria_label: '' %}</span>
@@ -133,7 +133,7 @@
         {% for block in section.blocks %}
           {% if block.type == 'article' %}
           {% assign _tags = block.settings.tags | default: '' | strip %}
-          <article class="sd-card" {{ block.shopify_attributes }} data-title="{{ block.settings.title | escape }}" data-tags="{{ _tags | escape }}" data-category="{{ block.settings.category | default: '' | escape }}">
+          <article class="sd-card"  data-title="{{ block.settings.title | escape }}" data-tags="{{ _tags | escape }}" data-category="{{ block.settings.category | default: '' | escape }}">
             <a href="{{ block.settings.url }}" class="sd-link" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if section.settings.force_new_tab or block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="sd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ section.settings.card_tint_color }}"></div>
               <div class="sd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
@@ -164,7 +164,7 @@
         <div class="sd-contact-list">
         {% for block in section.blocks %}
           {% if block.type == 'contact' %}
-          <article class="sd-ct" {{ block.shopify_attributes }}>
+          <article class="sd-ct" >
             <div class="sd-ct-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'help-circle', size: 24, color: 'currentColor', aria_label: '' %}</div>
             <div class="sd-ct-body">
               <h3 class="sd-ct-title">{{ block.settings.title }}</h3>
@@ -188,7 +188,7 @@
             {% if block.type == 'contact_form' %}{% assign cf = block %}{% break %}{% endif %}
           {% endfor %}
           {% if cf %}
-            <article class="sd-ct sd-ct--form" {{ cf.shopify_attributes }}>
+            <article class="sd-ct sd-ct--form" >
               <div class="sd-ct-body">
                 <h3 class="sd-ct-title">{{ cf.settings.title }}</h3>
                 {% if cf.settings.intro %}<p class="sd-ct-desc">{{ cf.settings.intro }}</p>{% endif %}
@@ -231,7 +231,7 @@
       <div class="sd-grid sd-grid--contact" style="gap: {{ section.settings.grid_gap }}px;">
         {% for block in section.blocks %}
           {% if block.type == 'contact' %}
-          <article class="sd-ct" {{ block.shopify_attributes }}>
+          <article class="sd-ct" >
             <div class="sd-ct-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'help-circle', size: 24, color: 'currentColor', aria_label: '' %}</div>
             <div class="sd-ct-body">
               <h3 class="sd-ct-title">{{ block.settings.title }}</h3>
