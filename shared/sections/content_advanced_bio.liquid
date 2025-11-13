@@ -93,12 +93,14 @@
               <div class="bio-overlay-image" style="bottom: {{ section.settings.overlay_position_bottom | default: '50' }}px; {{ section.settings.overlay_position_side }}: {{ section.settings.overlay_position_offset | default: '-50' }}px;">
                                 <img
           src="{{ section.settings.overlay_image | image_picker_url: '400x' }}"
-          srcset="{{ section.settings.overlay_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.overlay_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.overlay_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.overlay_image | image_picker_url: '1200x' }} 1200w"
+          srcset="{{ section.settings.overlay_image | image_picker_url: '400x' }} 400w,
+                  {{ section.settings.overlay_image | image_picker_url: '600x' }} 600w,
+                  {{ section.settings.overlay_image | image_picker_url: '800x' }} 800w,
+                  {{ section.settings.overlay_image | image_picker_url: '1200x' }} 1200w"
           sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
-          alt="{{ section.settings.overlay_image_alt | default: "
+          alt="{{ section.settings.overlay_image_alt | default: 'Product image' }}"
           class="img-fluid"
-          loading="lazy"
-          >
+          loading="lazy">
                 {% if section.settings.show_overlay_decoration %}
                   <div class="overlay-decoration">
                     <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
@@ -127,14 +129,16 @@
                 {% if block.type == 'logo' %}
                   <div class="logo-item" >
                     {% if block.settings.logo_image %}
-                                            <img
+                      <img
           src="{{ block.settings.logo_image | image_picker_url: '60x' }}"
-          srcset="{{ block.settings.logo_image | image_picker_url: '60x' }} 60w,\n                  {{ block.settings.logo_image | image_picker_url: '120x' }} 120w,\n                  {{ block.settings.logo_image | image_picker_url: '180x' }} 180w,\n                  {{ block.settings.logo_image | image_picker_url: '240x' }} 240w"
+          srcset="{{ block.settings.logo_image | image_picker_url: '60x' }} 60w,
+                  {{ block.settings.logo_image | image_picker_url: '120x' }} 120w,
+                  {{ block.settings.logo_image | image_picker_url: '180x' }} 180w,
+                  {{ block.settings.logo_image | image_picker_url: '240x' }} 240w"
           sizes="120px"
-          alt="{{ block.settings.logo_alt | default: "
+          alt="{{ block.settings.logo_alt | default: 'Logo' }}"
           class="img-fluid"
-          loading="lazy"
-          >
+          loading="lazy">
                     {% elsif block.settings.logo_text %}
                       <span class="logo-text" style="font-size: {{ section.settings.logo_text_size | default: '18' }}px;">
                         {{ block.settings.logo_text }}

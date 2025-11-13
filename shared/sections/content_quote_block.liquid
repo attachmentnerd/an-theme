@@ -88,14 +88,16 @@
           {% if section.settings.show_right_image and section.settings.right_image != blank %}
             <div class="col-lg-3 {% if section.settings.layout_style == 'centered' %}d-none d-lg-block{% endif %}">
               <div class="an-quote-block__image an-quote-block__image--right">
-                                <img
+                <img
           src="{{ section.settings.right_image | image_picker_url: '400x' }}"
-          srcset="{{ section.settings.right_image | image_picker_url: '400x' }} 400w,\n                  {{ section.settings.right_image | image_picker_url: '600x' }} 600w,\n                  {{ section.settings.right_image | image_picker_url: '800x' }} 800w,\n                  {{ section.settings.right_image | image_picker_url: '1200x' }} 1200w"
+          srcset="{{ section.settings.right_image | image_picker_url: '400x' }} 400w,
+                  {{ section.settings.right_image | image_picker_url: '600x' }} 600w,
+                  {{ section.settings.right_image | image_picker_url: '800x' }} 800w,
+                  {{ section.settings.right_image | image_picker_url: '1200x' }} 1200w"
           sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 800px"
-          alt="{{ section.settings.right_image_alt | default: "
+          alt="{{ section.settings.right_image_alt | default: 'Decorative image' }}"
           class="img-fluid"
-          loading="lazy"
-          >
+          loading="lazy">
               </div>
             </div>
           {% endif %}
