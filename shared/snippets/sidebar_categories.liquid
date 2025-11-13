@@ -1,3 +1,6 @@
+{% comment %} Define site URL - change this to update your domain {% endcomment %}
+{% assign site_url = 'https://www.attachmentnerd.com' %}
+
 <style>
   .sidebar-categories--{{ block.id }} {
     text-align: {{ block.settings.categories_text_align }};
@@ -25,23 +28,23 @@
     {{ block.settings.heading }}
   </p>
   {% if block.settings.categories_layout == "list" %}
-    <a class="sidebar-categories__link" href="/blog" kjb-settings-id="{{ 'all_tags' | settings_id: section: section, block: block }}">{{ block.settings.all_tags }}</a>
+    <a class="sidebar-categories__link" href="{{ site_url }}/blog" kjb-settings-id="{{ 'all_tags' | settings_id: section: section, block: block }}">{{ block.settings.all_tags }}</a>
     {% for tag in tags %}
       {% if tags.current == tag %}
-        <a class="sidebar-categories__tag sidebar-categories__tag--active" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+        <a class="sidebar-categories__tag sidebar-categories__tag--active" href="{{ site_url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
       {% else %}
-        <a class="sidebar-categories__tag" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+        <a class="sidebar-categories__tag" href="{{ site_url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
       {% endif %}
     {% endfor %}
   {% elsif block.settings.categories_layout == "dropdown" %}
     <div class="select-box-field form-group">
       <select id="category-select" class="form-control sidebar-categories__select">
-        <option value="{{ current_site.url }}/blog">{{ block.settings.all_tags }}</option>
+        <option value="{{ site_url }}/blog">{{ block.settings.all_tags }}</option>
         {% for tag in tags %}
           {% if tags.current == tag %}
-            <option value="{{ current_site.url }}/blog?tag={{ tag | url_encode }}" selected>{{ tag }}</option>
+            <option value="{{ site_url }}/blog?tag={{ tag | url_encode }}" selected>{{ tag }}</option>
           {% else %}
-            <option value="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</option>
+            <option value="{{ site_url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</option>
           {% endif %}
         {% endfor %}
       </select>

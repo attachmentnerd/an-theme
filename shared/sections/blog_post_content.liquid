@@ -1,3 +1,6 @@
+{% comment %} Define site URL - change this to update your domain {% endcomment %}
+{% assign site_url = 'https://www.attachmentnerd.com' %}
+
 <style>
   {% if section.settings.bg_type == "image" %}
     #section-{{ section.id }} {
@@ -120,7 +123,7 @@
                 <span class="blog-post-body__tags" kjb-settings-id="{{ 'show_tags' | settings_id: section: section }}">
                   {% if blog_post.tags.size > 0 %}
                     {% for tag in blog_post.tags %}
-                      <a class="tag" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+                      <a class="tag" href="{{ site_url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
                     {% endfor %}
                   {% endif %}
                 </span>

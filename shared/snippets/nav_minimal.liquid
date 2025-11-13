@@ -1,3 +1,6 @@
+{% comment %} Define site URL - change this to update your domain {% endcomment %}
+{% assign site_url = 'https://www.attachmentnerd.com' %}
+
 <nav id="an-minimal-nav" style="position:sticky;top:0;z-index:10001;background:#111;color:#fff;padding:8px 12px;">
   <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;">
     <a href="{{ current_site.root_url | default: '/' }}" style="display:inline-flex;align-items:center;color:#fff;text-decoration:none;font-weight:700;">
@@ -15,9 +18,9 @@
       >
       <span style="margin-left:10px;">Navigation</span>
     </a>
-    <a href="/about" style="color:#fff;text-decoration:none;">About</a>
-    <a href="/speaking" style="color:#fff;text-decoration:none;">Speaking</a>
-    <a href="/program/secure-parenting" style="margin-left:auto;background:#5e3bff;color:#fff;text-decoration:none;padding:6px 12px;border-radius:999px;">Get Started</a>
+    <a href="{{ site_url }}/about" style="color:#fff;text-decoration:none;">About</a>
+    <a href="{{ site_url }}/speaking" style="color:#fff;text-decoration:none;">Speaking</a>
+    <a href="{{ site_url }}/program/secure-parenting" style="margin-left:auto;background:#5e3bff;color:#fff;text-decoration:none;padding:6px 12px;border-radius:999px;">Get Started</a>
   </div>
 </nav>
 

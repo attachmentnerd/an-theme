@@ -1,3 +1,6 @@
+{% comment %} Define site URL - change this to update your domain {% endcomment %}
+{% assign site_url = 'https://www.attachmentnerd.com' %}
+
 <style>
   .sidebar-recent-posts--{{ block.id }} {
     text-align: {{ block.settings.recent_posts_text_align }};
@@ -32,7 +35,7 @@
       {% if block.settings.show_tags %}
         <div class="sidebar-recent-posts__tags" kjb-settings-id="{{ 'show_tags' | settings_id: section: section, block: block }}">
           {% for tag in blog_post_sidebar.tags %}
-            <a class="tag sidebar-recent-posts__tag" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+            <a class="tag sidebar-recent-posts__tag" href="{{ site_url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
           {% endfor %}
         </div>
       {% endif %}

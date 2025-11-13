@@ -1,3 +1,6 @@
+{% comment %} Define site URL - change this to update your domain {% endcomment %}
+{% assign site_url = 'https://www.attachmentnerd.com' %}
+
 {% assign videoColor = section.settings.video_player_color | default: settings.color_primary %}
 {% assign truncate_at = section.settings.truncate | default: 300 %}
 {% assign truncate_at_number = truncate_at | times: 1 %}
@@ -27,7 +30,7 @@
         <span class="blog-listing__tags" kjb-settings-id="{{ 'show_tags' | settings_id: section: section }}">
           {% if blog_post.tags.size > 0 %}
             {% for tag in blog_post.tags %}
-              <a class="tag" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+              <a class="tag" href="{{ site_url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
             {% endfor %}
           {% endif %}
         </span>

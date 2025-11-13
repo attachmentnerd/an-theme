@@ -1,3 +1,6 @@
+{% comment %} Define site URL - change this to update your domain {% endcomment %}
+{% assign site_url = 'https://www.attachmentnerd.com' %}
+
 {% include 'nav_default_links' %}
 {% assign current_path = request.path | default: '/' | downcase | replace: '//','/' %}
 {% assign login_url = '/login' %}
@@ -73,12 +76,18 @@
           {% assign url = parts[1] | strip | default: '/' %}
         {% endif %}
         {% if label != '' %}
+          {% comment %} Smart URL detection - check if URL already contains http {% endcomment %}
+          {% if url contains 'http' %}
+            {% assign final_url = url %}
+          {% else %}
+            {% assign final_url = site_url | append: url %}
+          {% endif %}
           {% assign normalized_url = url | downcase %}
           {% assign is_active = false %}
           {% if current_path == normalized_url or current_path == normalized_url | append: '/' %}
             {% assign is_active = true %}
           {% endif %}
-          <a class="hc-nav__link{% if is_active %} is-active{% endif %}" href="{{ url }}"{% if is_active %} aria-current="page"{% endif %} data-evt="nav_link_{{ label | handle }}">{{ label }}</a>
+          <a class="hc-nav__link{% if is_active %} is-active{% endif %}" href="{{ final_url }}"{% if is_active %} aria-current="page"{% endif %} data-evt="nav_link_{{ label | handle }}">{{ label }}</a>
         {% endif %}
       {% endfor %}
     </div>
@@ -86,7 +95,7 @@
     <div class="hc-nav__actions">
       {% if nav_show_login %}
         {% if current_site_user %}
-          <a class="hc-nav__avatar" href="/library" data-evt="{{ profile_event }}">
+          <a class="hc-nav__avatar" href="{{ site_url }}/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
               <img
@@ -104,7 +113,13 @@
             {% endif %}
           </a>
         {% else %}
-          <a class="hc-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}" aria-label="Login">
+          {% comment %} Smart URL detection for login_url {% endcomment %}
+          {% if login_url contains 'http' %}
+            {% assign final_login_url = login_url %}
+          {% else %}
+            {% assign final_login_url = site_url | append: login_url %}
+          {% endif %}
+          <a class="hc-nav__avatar" href="{{ final_login_url }}" data-evt="{{ profile_event }}" aria-label="Login">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
@@ -112,9 +127,20 @@
           </a>
         {% endif %}
       {% endif %}
-      <a class="hc-nav__cta" href="{{ nav_cta_url }}" data-evt="nav_cta">{{ nav_cta_label }}</a>
+      {% comment %} Smart URL detection for CTA URLs {% endcomment %}
+      {% if nav_cta_url contains 'http' %}
+        {% assign final_cta_url = nav_cta_url %}
+      {% else %}
+        {% assign final_cta_url = site_url | append: nav_cta_url %}
+      {% endif %}
+      <a class="hc-nav__cta" href="{{ final_cta_url }}" data-evt="nav_cta">{{ nav_cta_label }}</a>
       {% if nav_show_secondary %}
-        <a class="hc-nav__cta hc-nav__cta--secondary" href="{{ nav_secondary_url }}" data-evt="nav_cta_secondary">{{ nav_secondary_label }}</a>
+        {% if nav_secondary_url contains 'http' %}
+          {% assign final_secondary_url = nav_secondary_url %}
+        {% else %}
+          {% assign final_secondary_url = site_url | append: nav_secondary_url %}
+        {% endif %}
+        <a class="hc-nav__cta hc-nav__cta--secondary" href="{{ final_secondary_url }}" data-evt="nav_cta_secondary">{{ nav_secondary_label }}</a>
       {% endif %}
     </div>
 
@@ -133,16 +159,22 @@
         {% assign url = parts[1] | strip | default: '/' %}
       {% endif %}
       {% if label != '' %}
-        <a href="{{ url }}" data-evt="nav_link_mobile_{{ label | handle }}">{{ label }}</a>
+        {% comment %} Smart URL detection for mobile links {% endcomment %}
+        {% if url contains 'http' %}
+          {% assign final_mobile_url = url %}
+        {% else %}
+          {% assign final_mobile_url = site_url | append: url %}
+        {% endif %}
+        <a href="{{ final_mobile_url }}" data-evt="nav_link_mobile_{{ label | handle }}">{{ label }}</a>
       {% endif %}
     {% endfor %}
-    <a class="hc-nav__cta" href="{{ nav_cta_url }}" data-evt="nav_cta_mobile">{{ nav_cta_label }}</a>
+    <a class="hc-nav__cta" href="{{ final_cta_url }}" data-evt="nav_cta_mobile">{{ nav_cta_label }}</a>
     {% if nav_show_secondary %}
-      <a class="hc-nav__cta hc-nav__cta--secondary" href="{{ nav_secondary_url }}" data-evt="nav_cta_secondary_mobile">{{ nav_secondary_label }}</a>
+      <a class="hc-nav__cta hc-nav__cta--secondary" href="{{ final_secondary_url }}" data-evt="nav_cta_secondary_mobile">{{ nav_secondary_label }}</a>
     {% endif %}
     {% if nav_show_login %}
       {% unless current_site_user %}
-        <a class="hc-nav__avatar" href="{{ login_url }}" data-evt="{{ profile_event }}">{{ profile_label }}</a>
+        <a class="hc-nav__avatar" href="{{ final_login_url }}" data-evt="{{ profile_event }}">{{ profile_label }}</a>
       {% endunless %}
     {% endif %}
   </div>
