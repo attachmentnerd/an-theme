@@ -39,7 +39,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 3rem;
   }
 
   #an-pill-nav-{{ section.id }} .an-pill-nav__logo {
@@ -237,7 +237,17 @@
     font-size: 1.1rem;
   }
 
-  @media (max-width: 1024px) {
+  /* Medium screens - reduce button size to prevent overlap */
+  @media (max-width: 1200px) {
+    #an-pill-nav-{{ section.id }} .an-pill-nav__cta {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      min-width: 110px;
+    }
+  }
+
+  /* Tablet and below - switch to mobile menu */
+  @media (max-width: 900px) {
     #an-pill-nav-{{ section.id }} {
       padding: 0.85rem 0;
     }
@@ -252,6 +262,13 @@
 
     #an-pill-nav-{{ section.id }} .an-pill-nav__actions {
       display: none;
+    }
+  }
+
+  /* Mobile - adjust logo size */
+  @media (max-width: 640px) {
+    #an-pill-nav-{{ section.id }} .an-pill-nav__logo img {
+      height: 28px;
     }
   }
 
