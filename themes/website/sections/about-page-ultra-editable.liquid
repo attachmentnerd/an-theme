@@ -82,7 +82,8 @@
   margin-bottom: {{ section.settings.hero_title_margin }}px;
   line-height: {{ section.settings.hero_title_line_height }};
   {% if section.settings.hero_title_uppercase %}text-transform: uppercase;{% endif %}
-  {% if section.settings.hero_title_letter_spacing > 0 %}letter-spacing: {{ section.settings.hero_title_letter_spacing }}px;{% endif %}
+  {% assign hero_letter_spacing_value = section.settings.hero_title_letter_spacing | default: 0 | plus: 0 %}
+  {% if hero_letter_spacing_value > 0 %}letter-spacing: {{ hero_letter_spacing_value }}px;{% endif %}
 }
 
 .about-page-ultra .tagline {
@@ -116,7 +117,8 @@
   font-size: {{ section.settings.stat_label_size }}px;
   opacity: {{ section.settings.stat_label_opacity }};
   {% if section.settings.stat_label_uppercase %}text-transform: uppercase;{% endif %}
-  {% if section.settings.stat_label_letter_spacing > 0 %}letter-spacing: {{ section.settings.stat_label_letter_spacing }}px;{% endif %}
+  {% assign stat_letter_spacing_value = section.settings.stat_label_letter_spacing | default: 0 | plus: 0 %}
+  {% if stat_letter_spacing_value > 0 %}letter-spacing: {{ stat_letter_spacing_value }}px;{% endif %}
 }
 
 /* Story Sections */

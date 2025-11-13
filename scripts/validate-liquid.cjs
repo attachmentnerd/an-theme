@@ -82,6 +82,28 @@ const rules = [
     pattern: /alt=""\s*(?!\/?>)/,
     severity: 'warning',
     message: 'Empty alt attribute. Consider adding descriptive text for accessibility.'
+  },
+  {
+    name: 'String comparison with number',
+    pattern: /(section|block)\.settings\.\w+\s*[><=!]+\s*\d+/,
+    severity: 'error',
+    message: 'Comparing setting value to number without conversion. Use | plus: 0 to convert to number first.',
+    customCheck: (line, content, lineIndex) => {
+      // Check if there's an assign with plus: 0 conversion within 5 lines before
+      const lines = content.split('\n');
+      const match = line.match(/(section|block)\.settings\.(\w+)/);
+      if (!match) return false;
+
+      const settingName = match[2];
+      const startLine = Math.max(0, lineIndex - 5);
+
+      for (let i = startLine; i < lineIndex; i++) {
+        if (lines[i].includes('assign') && lines[i].includes(settingName) && lines[i].includes('plus: 0')) {
+          return false; // Conversion found, no error
+        }
+      }
+      return true; // No conversion found, report error
+    }
   }
 ];
 
@@ -126,6 +148,11 @@ function validateFile(filePath) {
 
     lines.forEach((line, index) => {
       if (rule.pattern.test(line)) {
+        // Run custom check if provided
+        if (rule.customCheck && !rule.customCheck(line, content, index)) {
+          return; // Custom check failed, skip this issue
+        }
+
         const issue = {
           file: filePath,
           line: index + 1,
