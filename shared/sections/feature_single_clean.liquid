@@ -18,7 +18,7 @@
 {% endcapture %}
 
 <section id="{{ section.settings.section_id | default: 'feature-single-clean' }}-{{ section.id }}" class="{{ section_classes | strip }}"
-         style="background-color: {{ section.settings.background_color | default: '#ffffff' }};
+         style="background-color: {{ section.settings.background_color | default: '#E9E6FF' }};
                 padding-top: {{ section.settings.padding_top }}px;
                 padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="container{% if section.settings.container_size == 'narrow' %} container--narrow{% endif %}">
@@ -56,12 +56,12 @@
 
           {% if layout_style == 'classic' %}
             {% if section.settings.top_badge_text != blank %}
-              <div class="book-showcase__badge book-showcase__badge--top" style="background: {{ section.settings.top_badge_color | default: 'var(--an-gold)' }}">
+              <div class="book-showcase__badge book-showcase__badge--top" style="background: {{ section.settings.top_badge_color | default: 'var(--c-accent-lemon)' }}">
                 {{ section.settings.top_badge_text }}
               </div>
             {% endif %}
             {% if section.settings.bottom_badge_text != blank %}
-              <div class="book-showcase__badge book-showcase__badge--bottom" style="background: {{ section.settings.bottom_badge_color | default: 'var(--an-coral)' }}">
+              <div class="book-showcase__badge book-showcase__badge--bottom" style="background: {{ section.settings.bottom_badge_color | default: 'var(--c-accent-peach)' }}">
                 {{ section.settings.bottom_badge_text }}
               </div>
             {% endif %}
@@ -149,7 +149,7 @@
           <div class="book-showcase__actions">
             {% if section.settings.primary_button_text != blank %}
               <a href="{{ section.settings.primary_button_url | default: '#' }}"
-                 class="btn btn-{{ section.settings.primary_button_style | default: 'primary' }} {% if layout_style == 'modern' %}btn--modern{% endif %}">
+                 class="btn {% if layout_style == 'modern' %}btn-primary-modern{% else %}btn-{{ section.settings.primary_button_style | default: 'primary' }}{% endif %}">
                 {{ section.settings.primary_button_text }}
               </a>
             {% endif %}
@@ -157,7 +157,7 @@
             {% for block in section.blocks %}
               {% if block.type == 'button' %}
                 <a href="{{ block.settings.url | default: '#' }}"
-                   class="btn btn-{{ block.settings.style | default: 'secondary' }}"
+                   class="btn btn-{{ block.settings.style | default: 'secondary-modern' }}"
                    {{ block.shopify_attributes }}>
                   {% if block.settings.icon %}
                     <i class="{{ block.settings.icon }}"></i>
@@ -178,7 +178,7 @@
 
     <!-- Optional CTA Box -->
     {% if section.settings.show_cta_box %}
-      <div class="book-showcase__cta-box mt-5" style="background: {{ section.settings.cta_background | default: 'var(--an-peach)' }}">
+      <div class="book-showcase__cta-box mt-5" style="background: {{ section.settings.cta_background | default: 'var(--c-brand-100)' }}">
         <div class="row align-items-center">
           <div class="col-lg-8">
             <h3>{{ section.settings.cta_title }}</h3>
@@ -186,7 +186,7 @@
           </div>
           <div class="col-lg-4 text-lg-end">
             <a href="{{ section.settings.cta_button_url | default: '#' }}"
-               class="btn btn-{{ section.settings.cta_button_style | default: 'primary' }}">
+               class="btn btn-{{ section.settings.cta_button_style | default: 'primary-modern' }}">
               {{ section.settings.cta_button_text }}
             </a>
           </div>
@@ -549,7 +549,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#ffffff"
+      "default": "#E9E6FF"
     },
     {
       "type": "checkbox",
@@ -638,7 +638,7 @@
       "type": "color",
       "id": "top_badge_color",
       "label": "Top Badge Color",
-      "default": "#FFC63F"
+      "default": "#FFE86B"
     },
     {
       "type": "text",
@@ -649,7 +649,7 @@
       "type": "color",
       "id": "bottom_badge_color",
       "label": "Bottom Badge Color",
-      "default": "#F57C6F"
+      "default": "#FF8BCB"
     },
     {
       "type": "header",
@@ -784,7 +784,7 @@
       "type": "color",
       "id": "cta_background",
       "label": "CTA Background Color",
-      "default": "#FFF4F0"
+      "default": "#E9E6FF"
     },
     {
       "type": "select",
