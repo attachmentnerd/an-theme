@@ -1,8 +1,27 @@
 Kajabi Theme Development Guide
 A comprehensive guide for building, organizing, and uploading Kajabi themes. Kajabi uses a Shopify-derived Liquid engine with its own objects, filters, and restrictions.
+
+## 🚨 CRITICAL: ALWAYS use {% include %} - NEVER {% render %}
+
+**Kajabi does NOT support Shopify's {% render %} tag!**
+
+```liquid
+❌ WRONG - Will break in Kajabi:
+{% render 'responsive-image', image: hero_image %}
+
+✅ CORRECT - Always use include:
+{% include 'responsive-image', image: hero_image %}
+```
+
+**Verify before committing:**
+```bash
+# This should return 0 files
+find shared/sections shared/snippets -name "*.liquid" -exec grep -l "{% render" {} \;
+```
+
 🚀 Pre-Upload Checklist
 Before uploading your theme, ensure you've completed these critical steps:
-Replace all {% render %} with {% include %}.
+✅ VERIFY NO {% render %} tags exist (use {% include %} instead).
 Change all "type": "url" to "type": "action" (in all schema files).
 Change all "type": "richtext" to "type": "rich_text".
 Add settings_validatable: true under the theme_info object in config/settings_schema.json.

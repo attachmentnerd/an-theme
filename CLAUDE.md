@@ -2,6 +2,33 @@
 
 This guide documents the CSS architecture and development conventions for the AN (Attachment Nerd) Kajabi themes to prevent breaking changes and maintain consistency.
 
+## 🚨 CRITICAL: Kajabi Liquid Syntax Requirements
+
+**ALWAYS use `{% include %}` - NEVER use `{% render %}`**
+
+Kajabi does NOT support Shopify's `{% render %}` tag. You MUST use `{% include %}` for all snippet includes.
+
+```liquid
+<!-- ❌ WRONG - Will cause errors in Kajabi -->
+{% render 'responsive-image', image: hero_image %}
+
+<!-- ✅ CORRECT - Use include instead -->
+{% include 'responsive-image', image: hero_image %}
+```
+
+**This applies to ALL snippet calls:**
+- `{% include 'responsive-image' %}`
+- `{% include 'icon' %}`
+- `{% include 'element_button' %}`
+- `{% include 'navigation_controller' %}`
+- Any custom snippets
+
+**Before committing ANY Liquid files, verify:**
+```bash
+# Check for any render tags (should return 0 files)
+find shared/sections shared/snippets -name "*.liquid" -exec grep -l "{% render" {} \;
+```
+
 ## ⚠️ IMPORTANT: Unified Architecture (v10.0.6+)
 
 **Website and Landing themes now share 100% of their components!**
