@@ -2,16 +2,16 @@
   <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;">
     <a href="{{ current_site.root_url | default: '/' }}" style="display:inline-flex;align-items:center;color:#fff;text-decoration:none;font-weight:700;">
       {% assign default_logo = 'https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2162370086/settings_images/708217-6dc8-6e80-0466-7b518dfb74c7_6a4860b8-00bb-47fd-8078-c7f4dd4e5385.png' %}
-      {% include 'responsive-image',
-        image: settings.nav_logo_url | default: default_logo,
-        alt: 'Logo',
-        sizes: '150px',
-        aspect_ratio: '16/9',
-        widths: '150,300',
-        placeholder_type: 'logo',
-        priority: true,
-        class: 'nav-minimal-logo'
-      %}
+      <img
+        src="{{ settings.nav_logo_url | default: default_logo | image_picker_url: '150x' }}"
+        srcset="{{ settings.nav_logo_url | default: default_logo | image_picker_url: '150x' }} 150w,
+                {{ settings.nav_logo_url | default: default_logo | image_picker_url: '300x' }} 300w"
+        sizes="150px"
+        alt="Logo"
+        class="nav-minimal-logo"
+        loading="eager"
+        style="height:40px;width:auto;"
+      >
       <span style="margin-left:10px;">Navigation</span>
     </a>
     <a href="/about" style="color:#fff;text-decoration:none;">About</a>

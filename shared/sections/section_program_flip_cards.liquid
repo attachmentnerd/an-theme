@@ -27,7 +27,7 @@
     <div class="pfp-grid" style="gap: {{ section.settings.card_gap }}px; grid-template-columns: repeat(auto-fit, minmax({{ section.settings.card_min_width }}, 1fr));">
       {% for block in section.blocks %}
         {% assign front_icon = block.settings.emoji | default: '🔒' %}
-        <article class="pfp-card" data-inited="0" {{ block.shopify_attributes }}>
+        <article class="pfp-card" data-inited="0" >
           <button class="pfp-inner" type="button" aria-expanded="false" aria-controls="pfp-panel-{{ s_id }}-{{ forloop.index }}">
             <span class="sr-only">Toggle details for {{ block.settings.title | default: 'Module' }}</span>
             <div class="pfp-face pfp-front">

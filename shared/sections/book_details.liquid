@@ -13,7 +13,7 @@
     <div class="book__logos">
       {% for block in section.blocks %}
         {% if block.type == 'logo' %}
-          <div class="book__logo" {{ block.shopify_attributes }}>
+          <div class="book__logo" >
             {% if block.settings.logo_image != blank %}
               <img
           src="{{ block.settings.logo_image | image_picker_url: '150x' }}"

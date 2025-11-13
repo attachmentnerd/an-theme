@@ -68,7 +68,7 @@
     <div class="spp-stack">
       {% for block in section.blocks %}
         {% if block.type == 'state' %}
-        <article class="spp-card an-reveal" data-state-index="{{ forloop.index }}" role="button" tabindex="0" aria-pressed="false" style="--grad: {{ block.settings.bg_gradient | default: 'linear-gradient(180deg, #FFFFFF 0%, #F7F6FF 100%)' }}; --ico-bg: {{ block.settings.icon_bg | default: 'linear-gradient(135deg, #FFFFFF, #F2F0FF)' }}; --ico-color: {{ block.settings.icon_color | default: 'var(--c-brand-700, #5E3BFF)' }}; --bullet-color: {{ block.settings.bullet_color | default: block.settings.icon_color | default: 'var(--c-brand-700, #5E3BFF)' }};" {{ block.shopify_attributes }}>
+        <article class="spp-card an-reveal" data-state-index="{{ forloop.index }}" role="button" tabindex="0" aria-pressed="false" style="--grad: {{ block.settings.bg_gradient | default: 'linear-gradient(180deg, #FFFFFF 0%, #F7F6FF 100%)' }}; --ico-bg: {{ block.settings.icon_bg | default: 'linear-gradient(135deg, #FFFFFF, #F2F0FF)' }}; --ico-color: {{ block.settings.icon_color | default: 'var(--c-brand-700, #5E3BFF)' }}; --bullet-color: {{ block.settings.bullet_color | default: block.settings.icon_color | default: 'var(--c-brand-700, #5E3BFF)' }};" >
           <div class="spp-card-head">
             {% if block.settings.emoji != blank %}<span class="spp-emoji" aria-hidden="true">{{ block.settings.emoji }}</span>{% endif %}
             <h3 class="spp-card-title">{{ block.settings.title | upcase }}</h3>

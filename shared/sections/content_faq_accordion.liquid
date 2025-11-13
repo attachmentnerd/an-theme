@@ -29,7 +29,7 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'faq_item' %}
-            <div class="an-faq__item animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+            <div class="an-faq__item animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;" >
               <button class="an-faq__question" aria-expanded="false" aria-controls="faq-answer-{{ block.id }}">
                 <span class="an-faq__question-text">{{ block.settings.question }}</span>
                 <span class="an-faq__icon">

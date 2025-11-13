@@ -27,7 +27,7 @@
         {% for block in section.blocks %}
           {% assign tab_select = block.settings.tab | default: '' %}
           {% if tab_select == 'g' or tab_select == '' and block.type == 'guide' %}
-          <article class="rd-card" {{ block.shopify_attributes }} style="--rd-tint-color: {{ block.settings.tint_color | default: section.settings.guides_tint_color }}; --rd-tint-o: {{ block.settings.tint_opacity | default: section.settings.guides_tint_opacity | times: 0.01 }};">
+          <article class="rd-card"  style="--rd-tint-color: {{ block.settings.tint_color | default: section.settings.guides_tint_color }}; --rd-tint-o: {{ block.settings.tint_opacity | default: section.settings.guides_tint_opacity | times: 0.01 }};">
             <a href="{{ block.settings.url }}" class="rd-link" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="rd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ block.settings.tint_color | default: section.settings.guides_tint_color }}"></div>
               <div class="rd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
@@ -51,7 +51,7 @@
         {% for block in section.blocks %}
           {% assign tab_select = block.settings.tab | default: '' %}
           {% if tab_select == 'w' or tab_select == '' and block.type == 'workshop' %}
-          <article class="rd-card rd-card--workshop" {{ block.shopify_attributes }}>
+          <article class="rd-card rd-card--workshop" >
             <a href="{{ block.settings.url }}" class="rd-link rd-link--workshop" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="rd-media rd-media--workshop" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}">
                 {% if block.settings.badge != blank %}<span class="rd-badge rd-badge--img">{{ block.settings.badge }}</span>{% endif %}
@@ -95,7 +95,7 @@
           {% assign tab_select = block.settings.tab | default: '' %}
           {% if tab_select == 'q' or tab_select == '' and block.type == 'qa' %}
           {% if section.settings.qa_layout == 'list' %}
-            <article class="rd-card rd-card--workshop" {{ block.shopify_attributes }}>
+            <article class="rd-card rd-card--workshop" >
               <a href="{{ block.settings.url }}" class="rd-link rd-link--workshop" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
                 <div class="rd-media rd-media--workshop" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}">
                   {% if block.settings.badge != blank %}<span class="rd-badge rd-badge--img">{{ block.settings.badge }}</span>{% endif %}
@@ -125,7 +125,7 @@
               </a>
             </article>
           {% else %}
-            <article class="rd-card" {{ block.shopify_attributes }} style="--rd-tint-color: {{ block.settings.tint_color | default: section.settings.qa_tint_color }}; --rd-tint-o: {{ block.settings.tint_opacity | default: section.settings.qa_tint_opacity | times: 0.01 }};">
+            <article class="rd-card"  style="--rd-tint-color: {{ block.settings.tint_color | default: section.settings.qa_tint_color }}; --rd-tint-o: {{ block.settings.tint_opacity | default: section.settings.qa_tint_opacity | times: 0.01 }};">
               <a href="{{ block.settings.url }}" class="rd-link" aria-label="{{ block.settings.cta | default: section.settings.cta_default }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
                 <div class="rd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ block.settings.tint_color | default: section.settings.qa_tint_color }}"></div>
                 <div class="rd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">

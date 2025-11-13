@@ -38,7 +38,7 @@
           {% endif %}
           {% if show_this %}
           {% assign icon = block.settings.emoji | default: '🔒' %}
-          <article class="pdm-card" {{ block.shopify_attributes }} style="--pdm-tint-color: {{ block.settings.mod_tint_color | default: section.settings.modules_tint_color }}; --pdm-tint-o: {{ block.settings.mod_tint_opacity | default: section.settings.modules_tint_opacity | times: 0.01 }};" data-status="{{ block.settings.status | default: 'none' }}">
+          <article class="pdm-card"  style="--pdm-tint-color: {{ block.settings.mod_tint_color | default: section.settings.modules_tint_color }}; --pdm-tint-o: {{ block.settings.mod_tint_opacity | default: section.settings.modules_tint_opacity | times: 0.01 }};" data-status="{{ block.settings.status | default: 'none' }}">
             <a href="{{ block.settings.url | default: '#' }}" class="pdm-link" aria-label="{{ block.settings.cta_text | default: 'Open module' }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="pdm-media" aria-hidden="true" data-bg-sm="{{ block.settings.mod_background | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.mod_background | image_picker_url: '1600x900' }}"></div>
               <div class="pdm-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
@@ -91,7 +91,7 @@
             {% endif %}
           {% endif %}
           {% if show_this %}
-          <article class="pd-card" {{ block.shopify_attributes }} style="--pd-tint-color: {{ block.settings.tint_color | default: section.settings.default_tint_color }}; --pd-tint-o: {{ block.settings.tint_opacity | default: section.settings.default_tint_opacity | times: 0.01 }};">
+          <article class="pd-card"  style="--pd-tint-color: {{ block.settings.tint_color | default: section.settings.default_tint_color }}; --pd-tint-o: {{ block.settings.tint_opacity | default: section.settings.default_tint_opacity | times: 0.01 }};">
             <a href="{{ block.settings.url }}" class="pd-card-link" aria-label="{{ block.settings.cta_text | default: 'Download' }}: {{ block.settings.title | escape }}" {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <div class="pd-thumb" aria-hidden="true">
                 {% if block.settings.bg_image %}

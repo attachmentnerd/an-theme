@@ -24,7 +24,7 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'stat' %}
-            <div class="an-stats-bar__item animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;" {{ block.shopify_attributes }}>
+            <div class="an-stats-bar__item animate-fade-up" style="animation-delay: {{ forloop.index | times: 0.1 }}s;" >
               <!-- Icon -->
               {% if block.settings.show_icon %}
                 <div class="an-stats-bar__icon" style="color: {{ section.settings.icon_color }};">

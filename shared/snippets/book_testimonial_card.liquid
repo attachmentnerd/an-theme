@@ -25,15 +25,16 @@
   <div class="testimonial-author">
     {% if testimonial.settings.author_image %}
       <div class="mb-2">
-        {% include 'responsive-image',
-          image: testimonial.settings.author_image,
-          alt: testimonial.settings.author,
-          sizes: '60px',
-          aspect_ratio: '1/1',
-          widths: '60,120',
-          placeholder_type: 'avatar',
-          class: 'rounded-circle mx-auto'
-        %}
+        <img
+          src="{{ testimonial.settings.author_image | image_picker_url: '60x' }}"
+          srcset="{{ testimonial.settings.author_image | image_picker_url: '60x' }} 60w,
+                  {{ testimonial.settings.author_image | image_picker_url: '120x' }} 120w"
+          sizes="60px"
+          alt="{{ testimonial.settings.author }}"
+          class="rounded-circle mx-auto"
+          loading="lazy"
+          style="width:60px;height:60px;object-fit:cover;"
+        >
       </div>
     {% endif %}
     

@@ -90,7 +90,7 @@
         {% if section.blocks.size > 0 %}
           {% for block in section.blocks %}
             {% if block.type == 'module' %}
-            <article class="povf-card" role="listitem" aria-label="{{ block.settings.title }}" {{ block.shopify_attributes }}>
+            <article class="povf-card" role="listitem" aria-label="{{ block.settings.title }}" >
               <div class="povf-card-header">
                 <span class="povf-step">{{ forloop.index }}</span>
                 <div class="povf-card-title">{{ block.settings.title }}</div>
