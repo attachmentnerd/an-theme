@@ -780,29 +780,26 @@ The AN themes now use a modern, modular JavaScript approach replacing the legacy
 #### Conditional Loading Strategy
 ```liquid
 <!-- In an_scripts.liquid -->
-<!-- Core always loads -->
-{{ 'an-core.js' | asset_url | script_tag }}
-{{ 'an-modules.js' | asset_url | script_tag }}
+<!-- IMPORTANT: Use kajabi_asset_url to prevent ORB (Opaque Response Blocking) -->
+<!-- Core always loads with defer for better performance -->
+<script src="{{ 'an-core.js' | kajabi_asset_url }}" defer></script>
+<script src="{{ 'an-modules.js' | kajabi_asset_url }}" defer></script>
 
-<!-- Heavy libraries load only when needed -->
-{% if page.content contains 'data-aos' %}
-  <!-- AOS loads from CDN -->
-{% endif %}
-
-{% if has_countdown %}
-  <!-- Moment.js loads from CDN -->
-{% endif %}
+<!-- Heavy libraries (AOS, Moment.js) disabled due to CSP violations -->
+<!-- Animations use CSS classes (animate-fade-up, etc.) -->
+<!-- Countdowns use native Date API in an-core.js -->
 ```
 
 #### Performance Improvements
 - **Bundle size**: 980KB → 20KB (98% reduction)
 - **jQuery**: Optional, only if Kajabi requires
-- **AOS**: Lazy loaded from CDN when needed
-- **Moment.js**: CDN loaded only for countdown sections
-- **Slick Carousel**: CDN loaded only if carousels exist
+- **AOS**: Disabled (CSP violations) - Use CSS animation classes instead
+- **Moment.js**: Disabled (CSP violations) - Native Date API used
+- **Slick Carousel**: Removed - No carousels in theme
 
 #### Migration Notes
 1. Replace `{{ "scripts.js" | asset_url | script_tag }}` with `{% include "an_scripts" %}`
+2. **CRITICAL**: Always use `kajabi_asset_url` filter for JavaScript files (not `asset_url`)
 2. All jQuery functionality replaced with vanilla JS
 3. Native Date API for countdowns (moment.js optional)
 4. CSS transitions replace jQuery animations

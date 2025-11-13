@@ -4,8 +4,9 @@
 {% endcomment %}
 
 <!-- Core AN Theme Scripts (lightweight ~20KB) -->
-{{ 'an-core.js' | asset_url | script_tag }}
-{{ 'an-modules.js' | asset_url | script_tag }}
+<!-- Using kajabi_asset_url for proper CORS headers and MIME types -->
+<script src="{{ 'an-core.js' | kajabi_asset_url }}" defer></script>
+<script src="{{ 'an-modules.js' | kajabi_asset_url }}" defer></script>
 
 <!-- Enhanced interactions -->
 {% include 'button_states' %}
