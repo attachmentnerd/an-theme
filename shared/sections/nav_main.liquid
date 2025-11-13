@@ -265,19 +265,9 @@
   <div class="container an-pill-nav__container">
     <a class="an-pill-nav__logo" href="/">
       {% if section.settings.logo_image %}
-        <img
-          src="{{ section.settings.logo_image | image_picker_url: '480x' }}"
-          srcset="{{ section.settings.logo_image | image_picker_url: '240x' }} 240w,
-                  {{ section.settings.logo_image | image_picker_url: '480x' }} 480w"
-          sizes="240px"
-          alt="{{ current_site.name | default: 'Logo' }}"
-          class="nav-logo"
-          loading="eager"
-          fetchpriority="high"
-          style="height: 34px; width: auto;"
-        >
+        <img src="{{ section.settings.logo_image | image_picker_url: 'master' }}" alt="{{ current_site.name | default: 'Logo' }}">
       {% else %}
-        <img src="https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg" alt="Attachment Nerd logo" style="height: 34px; width: auto;">
+        <img src="https://d1yqp3u9vw1jdz.cloudfront.net/attachmentnerd/attachmentnerd_logo_horizontal.svg" alt="Attachment Nerd logo">
       {% endif %}
     </a>
 
@@ -306,15 +296,7 @@
           <a class="an-pill-nav__avatar" href="/library" data-evt="{{ profile_event }}">
             {% assign avatar_url = current_site_user | avatar_url %}
             {% if avatar_url %}
-              <img
-                src="{{ avatar_url | image_picker_url: '88x88' }}"
-                srcset="{{ avatar_url | image_picker_url: '44x44' }} 44w,
-                        {{ avatar_url | image_picker_url: '88x88' }} 88w,
-                        {{ avatar_url | image_picker_url: '132x132' }} 132w"
-                sizes="44px"
-                alt="{{ current_site_user.name | default: 'Account' }}"
-                style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1/1;"
-              >
+              <img src="{{ avatar_url }}" alt="{{ current_site_user.name | default: 'Account' }}">
             {% else %}
               {{ profile_label | slice: 0, 1 | upcase }}
             {% endif %}
