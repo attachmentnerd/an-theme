@@ -221,11 +221,7 @@
           {% if section.settings.logo_image %}
             <div class="an-footer__logo">
               <img
-                src="{{ section.settings.logo_image | image_picker_url: '200x' }}"
-                srcset="{{ section.settings.logo_image | image_picker_url: '200x' }} 200w,
-                        {{ section.settings.logo_image | image_picker_url: '400x' }} 400w,
-                        {{ section.settings.logo_image | image_picker_url: '600x' }} 600w"
-                sizes="200px"
+                src="{{ section.settings.logo_image | image_picker_url: 'master' }}"
                 alt="{{ section.settings.logo_alt | default: 'Site logo' }}"
                 loading="lazy"
               >
