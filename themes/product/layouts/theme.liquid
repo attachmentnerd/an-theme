@@ -106,9 +106,9 @@
     <script defer src="{{ 'core.js' | kajabi_asset_url }}"></script>
     <script defer charset='ISO-8859-1' src='https://fast.wistia.com/assets/external/E-v1.js'></script>
     <script defer charset='ISO-8859-1' src='https://fast.wistia.com/labs/crop-fill/plugin.js'></script>
-    {%- comment -%} Removed Ouibounce and Slick JS (unused after cleanup). {%- endcomment -%}
-    <script defer src="{{ 'scripts.js' | asset_url }}"></script>
-    {%- comment -%} Removed Tether and Bootstrap JS (unused). Keep Bootstrap CSS. {%- endcomment -%}
+    {%- comment -%} Modern AN JavaScript - 98% smaller than legacy scripts.js {%- endcomment -%}
+    <script defer src="{{ 'an-core.js' | kajabi_asset_url }}"></script>
+    <script defer src="{{ 'an-modules.js' | kajabi_asset_url }}"></script>
 
     {{ settings.embedded_scripts }}
   </body>

@@ -92,7 +92,7 @@
       <div class="smart-next__block smart-next__block--right">
         <a class="smart-next__link smart-next__link--small" kjb-settings-id="{{ 'next' | settings_id: section: section }}" href="{{ sn-Url }}">
           {% element "section.settings.next" %}{{ section.settings.next }}{% endelement %}
-          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+          {% include 'icon', icon: 'chevron-right', size: 14 %}
         </a>
       </div>
     </div>

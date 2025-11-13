@@ -1,7 +1,7 @@
 <div class="progress">
   {% if is_completed %}
     <div class="progress__icon">
-      <i class="fa fa-check"></i>
+      {% include 'icon', icon: 'check', size: 16, color: 'currentColor', aria_label: 'Completed' %}
     </div>
   {% elsif percent_complete %}
     <div class="progress__bar">

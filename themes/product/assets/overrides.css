@@ -2,19 +2,39 @@
    AN Product Theme Custom Styles (Premier Base)
    Version: 24.0.0
    Base: Premier Product Theme v7.7.2
+   Last Updated: 2025-11-13
    ========================================================================== */
 
-/* AN Brand Colors */
+/* Table of Contents
+   1. CSS Variables (Brand Design System)
+   2. Typography System
+   3. Button Styles
+   4. Card System
+   5. Shadow Utilities
+   6. Spacing Utilities
+   7. Color Utilities
+   8. Layout Utilities
+   9. Animation Utilities
+   10. Progress Components
+   11. Lesson/Course Components
+   12. Responsive Utilities
+   13. Icon Styling
+   14. Premier Theme Overrides
+   */
+
+/* ==========================================================================
+   1. CSS Variables (Brand Design System)
+   ========================================================================== */
 :root {
   /* Core Brand Colors */
-  --c-brand-600: #5e3bff; /* Brand Primary - Buttons, links */
-  --c-brand-800: #4025e0; /* Brand Dark - Hover states */
-  --c-brand-100: #e9e6ff; /* Brand Light - Backgrounds */
+  --c-brand-600: #5e3bff; /* Brand Primary */
+  --c-brand-800: #4025e0; /* Brand Dark */
+  --c-brand-100: #e9e6ff; /* Brand Light */
   --c-accent-teal: #18d5e4; /* Accent Teal */
   --c-accent-peach: #ff8bcb; /* Accent Peach */
   --c-accent-lemon: #ffe86b; /* Accent Lemon */
 
-  /* Legacy AN mappings for compatibility */
+  /* Legacy AN mappings */
   --an-primary: #5e3bff;
   --an-teal: #18d5e4;
   --an-coral: #ff8bcb;
@@ -22,33 +42,175 @@
   --an-lavender: #e9e6ff;
 
   /* Text Colors */
-  --c-ink-900: #1a2d4e; /* Dark navy text */
-  --c-ink-700: #3a4a63; /* Slate text */
-  --c-ink-600: #6b7280; /* Medium gray */
+  --c-ink-900: #1a2d4e;
+  --c-ink-700: #3a4a63;
+  --c-ink-600: #6b7280;
+  --c-ink-500: #9ca3af;
 
   /* Background Colors */
-  --c-bg-light: #f8f7f5; /* Light backgrounds */
-  --c-bg-white: #ffffff; /* Pure white */
+  --c-bg-light: #f8f7f5;
+  --c-bg-white: #ffffff;
 
-  /* Spacing */
+  /* Gradients */
+  --g-brand: linear-gradient(135deg, #5e3bff 0%, #4025e0 100%);
+  --g-brand-subtle: linear-gradient(135deg, #e9e6ff 0%, #fff 100%);
+
+  /* Spacing Scale */
   --an-space-xs: 4px;
   --an-space-sm: 8px;
   --an-space-md: 16px;
   --an-space-lg: 24px;
   --an-space-xl: 32px;
+  --an-space-2xl: 48px;
+  --an-space-3xl: 64px;
 
-  /* Typography */
+  /* Typography Scale */
+  --an-font-xs: 0.75rem; /* 12px */
   --an-font-sm: 0.875rem; /* 14px */
   --an-font-base: 1rem; /* 16px */
   --an-font-lg: 1.125rem; /* 18px */
   --an-font-xl: 1.25rem; /* 20px */
   --an-font-2xl: 1.5rem; /* 24px */
+  --an-font-3xl: 1.875rem; /* 30px */
+  --an-font-4xl: 2.25rem; /* 36px */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(94, 59, 255, 0.05);
+  --shadow-md: 0 4px 12px rgba(94, 59, 255, 0.15);
+  --shadow-lg: 0 8px 25px rgba(94, 59, 255, 0.25);
+  --shadow-glow: 0 0 48px rgba(94, 59, 255, 0.15);
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
 
   /* Transitions */
+  --an-transition-fast: 150ms ease-in-out;
   --an-transition-base: 200ms ease-in-out;
+  --an-transition-slow: 300ms ease-in-out;
 }
 
-/* Update Premier theme to use AN brand colors */
+/* ==========================================================================
+   2. Typography System
+   ========================================================================== */
+body,
+.section__body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+  color: var(--c-ink-700);
+}
+
+h1,h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 500;
+  color: var(--c-ink-900);
+  line-height: 1.2;
+}
+
+/* Typography Utilities */
+.text-xs {
+  font-size: var(--an-font-xs);
+}
+.text-sm {
+  font-size: var(--an-font-sm);
+}
+.text-base {
+  font-size: var(--an-font-base);
+}
+.text-lg {
+  font-size: var(--an-font-lg);
+}
+.text-xl {
+  font-size: var(--an-font-xl);
+}
+.text-2xl {
+  font-size: var(--an-font-2xl);
+}
+.text-3xl {
+  font-size: var(--an-font-3xl);
+}
+.text-4xl {
+  font-size: var(--an-font-4xl);
+}
+
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+/* ==========================================================================
+   3. Button Styles
+   ========================================================================== */
+.btn-primary-modern {
+  background: var(--g-brand);
+  border: none;
+  color: white !important;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  transition: var(--an-transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  color: white !important;
+}
+
+.btn-secondary-modern {
+  background: white;
+  border: 2px solid var(--c-brand-600);
+  color: var(--c-brand-600) !important;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  transition: var(--an-transition-base);
+}
+
+.btn-secondary-modern:hover {
+  background: var(--c-brand-100);
+  color: var(--c-brand-800) !important;
+}
+
+.btn-an-primary {
+  background: var(--g-brand);
+  border: none;
+  color: white !important;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  transition: var(--an-transition-base);
+}
+
+.btn-an-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  color: white !important;
+}
+
+/* Premier Theme Button Overrides */
 .btn-primary,
 .btn-primary:active,
 .btn-primary:focus {
@@ -62,111 +224,193 @@
   border-color: var(--c-brand-800) !important;
 }
 
-/* Update progress bars */
-.progress-bar {
-  background: var(--c-brand-600) !important;
-}
-
-/* Update links */
-a {
-  color: var(--c-brand-600);
-}
-
-a:hover {
-  color: var(--c-brand-800);
-}
-
-/* Update form inputs focus */
-.form-control:focus,
-input:focus,
-textarea:focus {
-  border-color: var(--c-brand-600);
-  box-shadow: 0 0 0 0.2rem rgba(94, 59, 255, 0.25);
-}
-
-/* Add Attachment Nerd specific styling */
-.an-brand-header {
-  background: linear-gradient(
-    135deg,
-    var(--c-brand-600) 0%,
-    var(--c-accent-teal) 100%
-  );
-  color: white;
+/* ==========================================================================
+   4. Card System
+   ========================================================================== */
+.card-modern {
+  background: white;
+  border-radius: var(--radius-lg);
   padding: var(--an-space-lg);
-}
-
-.an-course-progress {
-  background: var(--c-brand-100);
-  padding: var(--an-space-md);
-  border-radius: 8px;
-  margin-bottom: var(--an-space-lg);
-}
-
-.an-lesson-card {
-  border: 1px solid rgba(94, 59, 255, 0.1);
-  border-radius: 8px;
-  padding: var(--an-space-md);
-  margin-bottom: var(--an-space-sm);
+  box-shadow: var(--shadow-sm);
   transition: var(--an-transition-base);
 }
 
-.an-lesson-card:hover {
-  border-color: var(--c-brand-600);
-  box-shadow: 0 4px 12px rgba(94, 59, 255, 0.15);
+.card-modern:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
-.an-completed-lesson {
-  background: var(--c-brand-100);
-  border-color: var(--c-brand-600);
-}
-
-.an-success-message {
-  background: var(--c-accent-teal);
-  color: white;
+.card-bordered {
+  border: 1px solid rgba(94, 59, 255, 0.1);
+  border-radius: var(--radius-md);
   padding: var(--an-space-md);
-  border-radius: 8px;
-  margin: var(--an-space-md) 0;
 }
 
-/* Typography improvements */
-.section__body {
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  line-height: 1.6;
+.card-elevated {
+  box-shadow: var(--shadow-md);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  font-weight: 500;
-  color: var(--c-ink-900);
+/* ==========================================================================
+   5. Shadow Utilities
+   ========================================================================== */
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
 }
 
-/* Responsive improvements */
-@media (max-width: 768px) {
-  .an-brand-header {
-    padding: var(--an-space-md);
-  }
-
-  .an-lesson-card {
-    margin-bottom: var(--an-space-md);
-  }
+.shadow-md {
+  box-shadow: var(--shadow-md);
 }
 
-/* Utility classes for shared component compatibility */
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+.shadow-none {
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   6. Spacing Utilities
+   ========================================================================== */
+/* Margin */
+.m-0 {
+  margin: 0;
+}
+.m-1 {
+  margin: var(--an-space-xs);
+}
+.m-2 {
+  margin: var(--an-space-sm);
+}
+.m-3 {
+  margin: var(--an-space-md);
+}
+.m-4 {
+  margin: var(--an-space-lg);
+}
+.m-5 {
+  margin: var(--an-space-xl);
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+.mt-1 {
+  margin-top: var(--an-space-xs);
+}
+.mt-2 {
+  margin-top: var(--an-space-sm);
+}
+.mt-3 {
+  margin-top: var(--an-space-md);
+}
+.mt-4 {
+  margin-top: var(--an-space-lg);
+}
+.mt-5 {
+  margin-top: var(--an-space-xl);
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-1 {
+  margin-bottom: var(--an-space-xs);
+}
+.mb-2 {
+  margin-bottom: var(--an-space-sm);
+}
+.mb-3 {
+  margin-bottom: var(--an-space-md);
+}
+.mb-4 {
+  margin-bottom: var(--an-space-lg);
+}
+.mb-5 {
+  margin-bottom: var(--an-space-xl);
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+.mr-auto {
+  margin-right: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Padding */
+.p-0 {
+  padding: 0;
+}
+.p-1 {
+  padding: var(--an-space-xs);
+}
+.p-2 {
+  padding: var(--an-space-sm);
+}
+.p-3 {
+  padding: var(--an-space-md);
+}
+.p-4 {
+  padding: var(--an-space-lg);
+}
+.p-5 {
+  padding: var(--an-space-xl);
+}
+
+.pt-3 {
+  padding-top: var(--an-space-md);
+}
+.pt-4 {
+  padding-top: var(--an-space-lg);
+}
+.pt-5 {
+  padding-top: var(--an-space-xl);
+}
+
+.pb-3 {
+  padding-bottom: var(--an-space-md);
+}
+.pb-4 {
+  padding-bottom: var(--an-space-lg);
+}
+.pb-5 {
+  padding-bottom: var(--an-space-xl);
+}
+
+.px-3 {
+  padding-left: var(--an-space-md);
+  padding-right: var(--an-space-md);
+}
+.px-4 {
+  padding-left: var(--an-space-lg);
+  padding-right: var(--an-space-lg);
+}
+
+.py-3 {
+  padding-top: var(--an-space-md);
+  padding-bottom: var(--an-space-md);
+}
+.py-4 {
+  padding-top: var(--an-space-lg);
+  padding-bottom: var(--an-space-lg);
+}
+.py-5 {
+  padding-top: var(--an-space-xl);
+  padding-bottom: var(--an-space-xl);
+}
+
+/* ==========================================================================
+   7. Color Utilities
+   ========================================================================== */
+/* Text Colors */
 .text-brand {
   color: var(--c-brand-600) !important;
 }
@@ -176,44 +420,368 @@ h6 {
 .text-peach {
   color: var(--c-accent-peach) !important;
 }
+.text-lemon {
+  color: var(--c-accent-lemon) !important;
+}
 .text-ink-900 {
   color: var(--c-ink-900) !important;
 }
 .text-ink-700 {
   color: var(--c-ink-700) !important;
 }
+.text-ink-600 {
+  color: var(--c-ink-600) !important;
+}
+.text-white {
+  color: white !important;
+}
 
+/* Background Colors */
 .bg-brand-100 {
   background-color: var(--c-brand-100) !important;
+}
+.bg-brand-600 {
+  background-color: var(--c-brand-600) !important;
 }
 .bg-light {
   background-color: var(--c-bg-light) !important;
 }
-
-.btn-an-primary {
-  background: linear-gradient(
-    135deg,
-    var(--c-brand-600) 0%,
-    var(--c-brand-800) 100%
-  );
-  border: none;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: var(--an-transition-base);
+.bg-white {
+  background-color: white !important;
 }
-
-.btn-an-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(94, 59, 255, 0.3);
-  color: white;
+.bg-teal {
+  background-color: var(--c-accent-teal) !important;
 }
 
 /* ==========================================================================
-   Product Category layout fixes
-   Ensure two-column layout without Bootstrap by defining col widths
+   8. Layout Utilities
    ========================================================================== */
+.d-flex {
+  display: flex;
+}
+.d-inline-flex {
+  display: inline-flex;
+}
+.d-block {
+  display: block;
+}
+.d-inline-block {
+  display: inline-block;
+}
+.d-none {
+  display: none;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+
+.align-items-center {
+  align-items: center;
+}
+.align-items-start {
+  align-items: flex-start;
+}
+.align-items-end {
+  align-items: flex-end;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.justify-content-start {
+  justify-content: flex-start;
+}
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.gap-1 {
+  gap: var(--an-space-xs);
+}
+.gap-2 {
+  gap: var(--an-space-sm);
+}
+.gap-3 {
+  gap: var(--an-space-md);
+}
+.gap-4 {
+  gap: var(--an-space-lg);
+}
+
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+
+.rounded-sm {
+  border-radius: var(--radius-sm);
+}
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+.rounded-full {
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   9. Animation Utilities
+   ========================================================================== */
+.animate-fade-in {
+  animation: fadeIn var(--an-transition-base);
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.hover-lift {
+  transition: transform var(--an-transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.hover-shadow {
+  transition: box-shadow var(--an-transition-base);
+}
+
+.hover-shadow:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.transition-all {
+  transition: all var(--an-transition-base);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   10. Progress Components
+   ========================================================================== */
+.progress-bar {
+  background: var(--c-brand-600) !important;
+  transition: width 0.4s ease-out;
+}
+
+.an-course-progress {
+  background: var(--c-brand-100);
+  padding: var(--an-space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--an-space-lg);
+}
+
+.an-progress-circle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.an-progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  font-size: var(--an-font-lg);
+  color: var(--c-brand-600);
+}
+
+/* Icon styling in progress components */
+.progress__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-brand-600);
+}
+
+.progress__icon .icon {
+  color: var(--c-brand-600);
+}
+
+/* ==========================================================================
+   11. Lesson/Course Components
+   ========================================================================== */
+.an-lesson-card {
+  border: 1px solid rgba(94, 59, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--an-space-md);
+  margin-bottom: var(--an-space-sm);
+  transition: var(--an-transition-base);
+  background: white;
+}
+
+.an-lesson-card:hover {
+  border-color: var(--c-brand-600);
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
+}
+
+.an-lesson-card.active {
+  border-color: var(--c-brand-600);
+  background: var(--c-brand-100);
+}
+
+.an-completed-lesson {
+  background: var(--c-brand-100);
+  border-color: var(--c-brand-600);
+}
+
+.an-completed-lesson .icon {
+  color: var(--c-brand-600);
+}
+
+.an-locked-lesson {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.an-locked-lesson .icon {
+  color: var(--c-ink-500);
+}
+
+.an-lesson-title {
+  font-weight: 500;
+  color: var(--c-ink-900);
+  margin-bottom: var(--an-space-xs);
+}
+
+.an-lesson-meta {
+  font-size: var(--an-font-sm);
+  color: var(--c-ink-600);
+}
+
+.an-success-message {
+  background: var(--c-accent-teal);
+  color: white;
+  padding: var(--an-space-md);
+  border-radius: var(--radius-md);
+  margin: var(--an-space-md) 0;
+  font-weight: 500;
+}
+
+.an-brand-header {
+  background: var(--g-brand);
+  color: white;
+  padding: var(--an-space-lg);
+  border-radius: var(--radius-md);
+}
+
+/* ==========================================================================
+   12. Responsive Utilities
+   ========================================================================== */
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+
+  .an-brand-header {
+    padding: var(--an-space-md);
+  }
+
+  .an-lesson-card {
+    margin-bottom: var(--an-space-md);
+  }
+
+  .text-center-mobile {
+    text-align: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .hidden-desktop {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   13. Icon Styling
+   ========================================================================== */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.icon-check {
+  color: var(--c-brand-600);
+}
+
+.icon-lock {
+  color: var(--c-ink-500);
+}
+
+.icon-play {
+  color: var(--c-brand-600);
+}
+
+.icon-download {
+  color: var(--c-ink-700);
+}
+
+/* ==========================================================================
+   14. Premier Theme Overrides
+   ========================================================================== */
+a {
+  color: var(--c-brand-600);
+  transition: color var(--an-transition-base);
+}
+
+a:hover {
+  color: var(--c-brand-800);
+}
+
+.form-control:focus,
+input:focus,
+textarea:focus {
+  border-color: var(--c-brand-600);
+  box-shadow: 0 0 0 0.2rem rgba(94, 59, 255, 0.25);
+}
+
+/* Product Category layout fixes */
 @media (min-width: 992px) {
   .section--category .section__row > .section__body.col-lg-8 {
     width: 66.666667%;
@@ -221,4 +789,28 @@ h6 {
   .section--category .section__row > .section__sidebar.col-lg-4 {
     width: 33.333333%;
   }
+}
+
+/* Improve sidebar navigation */
+.sidebar__item {
+  transition: var(--an-transition-base);
+  padding: var(--an-space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.sidebar__item:hover {
+  background: var(--c-brand-100);
+  transform: translateX(4px);
+}
+
+.sidebar__item.active {
+  background: var(--c-brand-100);
+  border-left: 3px solid var(--c-brand-600);
+}
+
+/* Video player improvements */
+.video-container {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }

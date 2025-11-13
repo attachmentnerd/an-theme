@@ -1,0 +1,179 @@
+{% comment %}
+  Product Theme Icon System - Inline SVG Icons
+
+  Usage:
+    {% include 'icon', icon: 'play', size: 24, color: '#5E3BFF' %}
+
+  Parameters:
+    - icon: (required) Icon name
+    - class: Additional CSS classes
+    - size: Icon size in pixels (default: 20)
+    - color: Icon color (default: currentColor)
+    - aria_label: Accessibility label
+{% endcomment %}
+
+{% assign icon_size = size | default: 20 %}
+{% assign icon_color = color | default: 'currentColor' %}
+{% assign icon_class = class | default: '' %}
+
+{% case icon %}
+  {% comment %} Course/Lesson Icons {% endcomment %}
+  {% when 'check' %}
+    <svg class="icon icon-check {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+
+  {% when 'check-circle' %}
+    <svg class="icon icon-check-circle {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+
+  {% when 'lock' %}
+    <svg class="icon icon-lock {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+    </svg>
+
+  {% when 'play' %}
+    <svg class="icon icon-play {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </svg>
+
+  {% when 'play-circle' %}
+    <svg class="icon icon-play-circle {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="12" r="10"></circle>
+      <polygon points="10 8 16 12 10 16 10 8" fill="{{ icon_color }}"></polygon>
+    </svg>
+
+  {% when 'video' %}
+    <svg class="icon icon-video {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polygon points="23 7 16 12 23 17 23 7"></polygon>
+      <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+    </svg>
+
+  {% when 'download' %}
+    <svg class="icon icon-download {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+
+  {% when 'file' %}
+    <svg class="icon icon-file {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+      <polyline points="13 2 13 9 20 9"></polyline>
+    </svg>
+
+  {% when 'file-text' %}
+    <svg class="icon icon-file-text {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
+
+  {% when 'file-pdf' %}
+    <svg class="icon icon-file-pdf {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <path d="M10 12h4"></path>
+      <path d="M10 16h4"></path>
+    </svg>
+
+  {% comment %} Navigation Icons {% endcomment %}
+  {% when 'chevron-left' %}
+    <svg class="icon icon-chevron-left {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+
+  {% when 'chevron-right' %}
+    <svg class="icon icon-chevron-right {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+
+  {% when 'chevron-up' %}
+    <svg class="icon icon-chevron-up {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+
+  {% when 'chevron-down' %}
+    <svg class="icon icon-chevron-down {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+
+  {% when 'menu' or 'bars' %}
+    <svg class="icon icon-menu {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+
+  {% when 'search' %}
+    <svg class="icon icon-search {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+
+  {% when 'close' or 'times' %}
+    <svg class="icon icon-close {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+
+  {% comment %} Utility Icons {% endcomment %}
+  {% when 'clock' or 'clock-o' %}
+    <svg class="icon icon-clock {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="12" r="10"></circle>
+      <polyline points="12 6 12 12 16 14"></polyline>
+    </svg>
+
+  {% when 'tag' %}
+    <svg class="icon icon-tag {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+    </svg>
+
+  {% when 'user' %}
+    <svg class="icon icon-user {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+
+  {% when 'star' %}
+    <svg class="icon icon-star {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="{{ icon_color }}" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></polygon>
+    </svg>
+
+  {% when 'book-open' %}
+    <svg class="icon icon-book-open {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+    </svg>
+
+  {% when 'graduation-cap' %}
+    <svg class="icon icon-graduation-cap {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+      <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+    </svg>
+
+  {% when 'award' or 'certificate' %}
+    <svg class="icon icon-award {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <circle cx="12" cy="8" r="7"></circle>
+      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+    </svg>
+
+  {% when 'message-circle' or 'comments' %}
+    <svg class="icon icon-message-circle {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}>
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+    </svg>
+
+  {% else %}
+    <!-- Unknown icon: {{ icon }} -->
+    <svg class="icon icon-unknown {{ icon_class }}" width="{{ icon_size }}" height="{{ icon_size }}" viewBox="0 0 24 24" fill="none" stroke="{{ icon_color }}" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+{% endcase %}

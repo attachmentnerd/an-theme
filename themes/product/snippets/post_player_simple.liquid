@@ -29,12 +29,12 @@
     <div class="media-left">
       {% if post.previous %}
         <a class="btn btn-prev btn--simple-player btn--{{ btnStyle }} btn--{{ btnSize }}" href="{{ post.previous.url }}">
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+          {% include 'icon', icon: 'chevron-left', size: 14 %}
           {% element "section.settings.previous" %}{{ section.settings.previous }}{% endelement %}
         </a>
       {% else  %}
         <a class="btn btn-prev btn--simple-player btn--{{ btnStyle }} btn--{{ btnSize }}" disabled href="#">
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+          {% include 'icon', icon: 'chevron-left', size: 14 %}
           {% element "section.settings.previous" %}{{ section.settings.previous }}{% endelement %}
         </a>
       {% endif %}
@@ -46,12 +46,12 @@
       {% if post.next %}
         <a class="btn btn-next btn--simple-player btn--{{ btnStyle }} btn--{{ btnSize }}" href="{{ post.next.url }}">
           {% element "section.settings.next" %}{{ section.settings.next }}{% endelement %}
-          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+          {% include 'icon', icon: 'chevron-right', size: 14 %}
         </a>
       {% else  %}
         <a class="btn btn-next btn--simple-player btn--{{ btnStyle }} btn--{{ btnSize }}" disabled href="#">
           {% element "section.settings.next" %}{{ section.settings.next }}{% endelement %}
-          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+          {% include 'icon', icon: 'chevron-right', size: 14 %}
         </a>
       {% endif %}
     </div>
