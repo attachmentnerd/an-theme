@@ -10,6 +10,10 @@
 {% assign current_path = request.path | default: '/' | downcase %}
 
 <style>
+  body.has-pill-nav-open {
+    overflow: hidden;
+  }
+
   #an-pill-nav-{{ section.id }} {
     {% if section.settings.is_sticky %}position: sticky; top: 0;{% else %}position: relative;{% endif %}
     z-index: 9999;
@@ -143,6 +147,14 @@
     box-shadow: 0 18px 38px -16px rgba(94, 59, 255, 0.75);
   }
 
+  #an-pill-nav-{{ section.id }} .an-pill-nav__link:focus-visible,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__cta:focus-visible,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__avatar:focus-visible,
+  #an-pill-nav-{{ section.id }} .an-pill-nav__toggle:focus-visible {
+    outline: 2px solid #5e3bff;
+    outline-offset: 2px;
+  }
+
   #an-pill-nav-{{ section.id }} .an-pill-nav__cta--secondary {
     background: #ffffff;
     color: #5e3bff;
@@ -259,6 +271,18 @@
       height: 28px;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    #an-pill-nav-{{ section.id }} {
+      transition: none;
+    }
+
+    #an-pill-nav-{{ section.id }} .an-pill-nav__link,
+    #an-pill-nav-{{ section.id }} .an-pill-nav__cta,
+    #an-pill-nav-{{ section.id }} .an-pill-nav__toggle {
+      transition: none;
+    }
+  }
 </style>
 
 <nav id="an-pill-nav-{{ section.id }}" class="an-pill-nav">
@@ -283,7 +307,8 @@
           {% endif %}
           <a href="{{ url }}"
              class="an-pill-nav__link{% if is_active %} an-pill-nav__link--active{% endif %}"
-             data-evt="nav_link_{{ block.settings.label | handle }}">
+             data-evt="nav_link_{{ block.settings.label | handle }}"
+             {% if is_active %}aria-current="page"{% endif %}>
             {{ block.settings.label }}
           </a>
         {% endif %}
@@ -361,7 +386,16 @@
     {% comment %} Render nav links in mobile drawer {% endcomment %}
     {% for block in section.blocks %}
       {% if block.type == 'nav_link' %}
-        <a href="{{ block.settings.url }}" data-evt="nav_link_mobile_{{ block.settings.label | handle }}">{{ block.settings.label }}</a>
+        {% assign url = block.settings.url | default: '/' %}
+        {% assign normalized_url = url | downcase %}
+        {% assign normalized_url_with_slash = normalized_url | append: '/' %}
+        {% assign is_active = false %}
+        {% if current_path == normalized_url or current_path == normalized_url_with_slash %}
+          {% assign is_active = true %}
+        {% endif %}
+        <a href="{{ url }}"
+           data-evt="nav_link_mobile_{{ block.settings.label | handle }}"
+           {% if is_active %}aria-current="page"{% endif %}>{{ block.settings.label }}</a>
       {% endif %}
     {% endfor %}
 
@@ -407,11 +441,17 @@
     function closeNav() {
       nav.classList.remove('is-open');
       toggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('has-pill-nav-open');
     }
 
     toggle.addEventListener('click', function () {
       var isOpen = nav.classList.toggle('is-open');
       toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen) {
+        document.body.classList.add('has-pill-nav-open');
+      } else {
+        document.body.classList.remove('has-pill-nav-open');
+      }
     });
 
     backdrop.addEventListener('click', closeNav);

@@ -46,6 +46,7 @@
 
   /* Background Colors */
   --c-bg-light: #fafafa; /* Light gray - Section backgrounds */
+  --c-surface-100: #f8f9fa; /* Surface gray - Cards, containers */
   --c-bg-lavender: #e9e6ff; /* Lavender - Hero backgrounds */
 
   /* Gradients */
@@ -218,21 +219,22 @@
      DO NOT EDIT unless updating throughout the codebase
      ========================================================================== */
 
-  /* Legacy Color Mappings */
-  --an-navy: var(--c-brand-600);
-  --an-teal: var(--c-accent-teal);
-  --an-coral: var(--c-accent-peach);
-  --an-gold: var(--c-accent-lemon);
-  --an-plum: var(--c-brand-800);
-  --an-peach: var(--c-brand-100);
-  --an-white: var(--c-white);
-  --an-grey: #f8f9fa;
-  --an-slate: var(--c-ink-700);
-  --an-primary: var(--c-brand-600);
-  --an-secondary: var(--c-accent-teal);
-  --an-text-dark: var(--c-ink-900);
-  --an-text-medium: var(--c-ink-500);
-  --an-bg-light: var(--c-brand-100);
+  /* Legacy Color Mappings - DEPRECATED: Use modern --c-* tokens */
+  /* TODO: Phase out these legacy variables in favor of modern --c-* tokens */
+  --an-navy: var(--c-brand-600); /* DEPRECATED: Use --c-brand-600 */
+  --an-teal: var(--c-accent-teal); /* DEPRECATED: Use --c-accent-teal */
+  --an-coral: var(--c-accent-peach); /* DEPRECATED: Use --c-accent-peach */
+  --an-gold: var(--c-accent-lemon); /* DEPRECATED: Use --c-accent-lemon */
+  --an-plum: var(--c-brand-800); /* DEPRECATED: Use --c-brand-800 */
+  --an-peach: var(--c-brand-100); /* DEPRECATED: Use --c-brand-100 */
+  --an-white: var(--c-white); /* DEPRECATED: Use --c-white */
+  --an-grey: var(--c-surface-100, #f8f9fa); /* DEPRECATED: Use --c-surface-100 or --c-bg-light */
+  --an-slate: var(--c-ink-700); /* DEPRECATED: Use --c-ink-700 */
+  --an-primary: var(--c-brand-600); /* DEPRECATED: Use --c-brand-600 */
+  --an-secondary: var(--c-accent-teal); /* DEPRECATED: Use --c-accent-teal */
+  --an-text-dark: var(--c-ink-900); /* DEPRECATED: Use --c-ink-900 */
+  --an-text-medium: var(--c-ink-500); /* DEPRECATED: Use --c-ink-500 */
+  --an-bg-light: var(--c-brand-100); /* DEPRECATED: Use --c-brand-100 */
 
   /* Legacy Spacing Mappings */
   --an-space-xs: var(--space-xs);
@@ -312,6 +314,35 @@
   --an-blur-xl: 24px;
   --an-ease-out: cubic-bezier(0.4, 0, 0.2, 1);
   --an-ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ========================================================================== */
+/* Accessibility Utilities                                                    */
+/* ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--c-brand-600, #5e3bff);
+  color: var(--c-white, #ffffff);
+  font-weight: var(--fw-semibold, 600);
+  border-radius: var(--radius-pill, 9999px);
+  box-shadow: var(--shadow-card, 0 4px 12px rgba(0, 0, 0, 0.05));
+  transform: translateY(-120%);
+  transition: transform var(--motion-duration-fast, 200ms) var(--motion-ease-decelerate, cubic-bezier(0, 0, 0.2, 1));
+  z-index: calc(var(--z-header, 100) + 10);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
 }
 
 /* ==========================================================================
@@ -720,18 +751,24 @@ a:hover {
   color: var(--c-ink-500) ;
 }
 
-/* Legacy color mappings */
+/* Legacy color mappings - DEPRECATED: Use modern tokens */
 .text-navy {
-  color: var(--c-brand-600) ;
+  color: var(--c-brand-600) ; /* DEPRECATED: Use .text-brand instead */
 }
 .text-coral {
-  color: var(--c-accent-peach) ;
+  color: var(--c-accent-peach) ; /* DEPRECATED: Use .text-peach instead */
 }
 .text-gold {
-  color: var(--c-accent-lemon) ;
+  color: var(--c-accent-lemon) ; /* DEPRECATED: Use .text-lemon instead */
 }
 .text-plum {
-  color: var(--c-brand-800) ;
+  color: var(--c-brand-800) ; /* DEPRECATED: Use .text-brand-dark instead */
+}
+.text-slate {
+  color: var(--c-ink-700) ; /* DEPRECATED: Use .text-ink-700 instead */
+}
+.text-grey {
+  color: var(--c-ink-500) ; /* DEPRECATED: Use .text-ink-500 instead */
 }
 
 /* Background color utilities - New brand colors */
@@ -757,18 +794,24 @@ a:hover {
   background-color: var(--c-white) ;
 }
 
-/* Legacy background mappings */
+/* Legacy background mappings - DEPRECATED: Use modern tokens */
 .bg-navy {
-  background-color: var(--c-brand-600) ;
+  background-color: var(--c-brand-600) ; /* DEPRECATED: Use .bg-brand instead */
 }
 .bg-coral {
-  background-color: var(--c-accent-peach) ;
+  background-color: var(--c-accent-peach) ; /* DEPRECATED: Use .bg-peach instead */
 }
 .bg-gold {
-  background-color: var(--c-accent-lemon) ;
+  background-color: var(--c-accent-lemon) ; /* DEPRECATED: Use .bg-lemon instead */
+}
+.bg-plum {
+  background-color: var(--c-brand-800) ; /* DEPRECATED: Use .bg-brand-dark instead */
 }
 .bg-grey {
-  background-color: var(--an-grey) !important;
+  background-color: var(--c-surface-100, #f8f9fa) !important; /* DEPRECATED: Use .bg-light or .bg-surface */
+}
+.bg-slate {
+  background-color: var(--c-ink-700) ; /* DEPRECATED: Use .bg-dark instead */
 }
 
 /* Spacing utilities */
@@ -1821,64 +1864,111 @@ label {
 }
 
 /* ==========================================================================
-   14. Comprehensive Utility Classes - Design System Powered
+   14. Comprehensive Utility Classes - Modern Design System
+   UPDATED: 2025-10-08 - Migrated to modern --c-* tokens
    ========================================================================== */
 
-/* Color utilities */
-.text-navy {
-  color: var(--an-navy) ;
+/* Color utilities - Modern tokens */
+.text-brand {
+  color: var(--c-brand-600) ;
+}
+.text-brand-dark {
+  color: var(--c-brand-800) ;
+}
+.text-brand-light {
+  color: var(--c-brand-100) ;
 }
 .text-teal {
-  color: var(--an-teal) ;
+  color: var(--c-accent-teal) ;
 }
-.text-coral {
-  color: var(--an-coral) ;
+.text-peach {
+  color: var(--c-accent-peach) ;
 }
-.text-gold {
-  color: var(--an-gold) ;
+.text-lemon {
+  color: var(--c-accent-lemon) ;
 }
-.text-plum {
-  color: var(--an-plum) ;
+.text-ink-900 {
+  color: var(--c-ink-900) ;
 }
-.text-slate {
-  color: var(--an-slate) ;
+.text-ink-700 {
+  color: var(--c-ink-700) ;
+}
+.text-ink-500 {
+  color: var(--c-ink-500) ;
 }
 .text-white {
-  color: var(--an-white) ;
-}
-.text-medium {
-  color: var(--an-text-medium) ;
+  color: var(--c-white) ;
 }
 .text-inherit {
   color: inherit !important;
 }
 
-.bg-navy {
-  background-color: var(--an-navy) ;
+/* Background utilities - Modern tokens */
+.bg-brand {
+  background-color: var(--c-brand-600) ;
+}
+.bg-brand-dark {
+  background-color: var(--c-brand-800) ;
+}
+.bg-brand-light {
+  background-color: var(--c-brand-100) ;
 }
 .bg-teal {
-  background-color: var(--an-teal) ;
-}
-.bg-coral {
-  background-color: var(--an-coral) ;
-}
-.bg-gold {
-  background-color: var(--an-gold) ;
-}
-.bg-plum {
-  background-color: var(--an-plum) ;
+  background-color: var(--c-accent-teal) ;
 }
 .bg-peach {
-  background-color: var(--an-peach) ;
+  background-color: var(--c-accent-peach) ;
 }
-.bg-grey {
-  background-color: var(--an-grey) ;
+.bg-lemon {
+  background-color: var(--c-accent-lemon) ;
+}
+.bg-light {
+  background-color: var(--c-bg-light, #fafafa) ;
+}
+.bg-surface {
+  background-color: var(--c-surface-100, #f8f9fa) ;
 }
 .bg-white {
-  background-color: var(--an-white) ;
+  background-color: var(--c-white) ;
 }
 .bg-transparent {
   background-color: transparent !important;
+}
+
+/* Legacy color utilities - DEPRECATED (Kept for compatibility) */
+.text-navy {
+  color: var(--c-brand-600) ; /* DEPRECATED: Use .text-brand */
+}
+.text-coral {
+  color: var(--c-accent-peach) ; /* DEPRECATED: Use .text-peach */
+}
+.text-gold {
+  color: var(--c-accent-lemon) ; /* DEPRECATED: Use .text-lemon */
+}
+.text-plum {
+  color: var(--c-brand-800) ; /* DEPRECATED: Use .text-brand-dark */
+}
+.text-slate {
+  color: var(--c-ink-700) ; /* DEPRECATED: Use .text-ink-700 */
+}
+.text-medium {
+  color: var(--c-ink-500) ; /* DEPRECATED: Use .text-ink-500 */
+}
+
+.bg-navy {
+  background-color: var(--c-brand-600) ; /* DEPRECATED: Use .bg-brand */
+}
+.bg-coral {
+  background-color: var(--c-accent-peach) ; /* DEPRECATED: Use .bg-peach */
+}
+.bg-gold {
+  background-color: var(--c-accent-lemon) ; /* DEPRECATED: Use .bg-lemon */
+}
+.bg-plum {
+  background-color: var(--c-brand-800) ; /* DEPRECATED: Use .bg-brand-dark */
+}
+.bg-grey {
+  background-color: var(--c-surface-100, #f8f9fa) ; /* DEPRECATED: Use .bg-light or .bg-surface */
 }
 
 /* Typography utilities */

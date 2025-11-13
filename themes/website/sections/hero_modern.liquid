@@ -172,6 +172,14 @@
       transform: translateY(0);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sa-hero-modern .animate-fade-up {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
 </style>
 
 {% schema %}
