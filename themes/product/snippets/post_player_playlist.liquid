@@ -30,7 +30,7 @@
             {% if post.id == p.id %}
               <p class="track__count active">
                 {% if post.video %}
-                  {% include 'icon', icon: 'play', size: 16 %}
+                  <i class="fa fa-play" aria-hidden="true"></i>
                 {% else %}
                   {{ forloop.index }}
                 {% endif %}
@@ -58,7 +58,7 @@
           <div class="media-right media-middle">
             {% if p.completed? %}
               <div class="progress__icon">
-                {% include 'icon', icon: 'check', size: 16, aria_label: 'Completed' %}
+                <i class="fa fa-check"></i>
               </div>
             {% endif %}
           </div>

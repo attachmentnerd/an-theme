@@ -2,11 +2,11 @@
   <div class="pag__cell pag__cell--prev">
     {% if paginate.previous %}
       <a class="pag__link pag__link--prev" href="{{ paginate.previous.url }}">
-        {% include 'icon', icon: 'chevron-left', size: 16, aria_label: 'Previous page' %}
+        <i class="fa fa-chevron-left"></i>
       </a>
     {% else %}
       <p class="pag__link pagination__link--prev pag__link--disabled">
-        {% include 'icon', icon: 'chevron-left', size: 16 %}
+        <i class="fa fa-chevron-left"></i>
       </p>
     {% endif %}
   </div>
@@ -24,11 +24,11 @@
   <div class="pag__cell pag__cell--next">
     {% if paginate.next %}
       <a class="pag__link pag__link--next" href="{{ paginate.next.url }}">
-        {% include 'icon', icon: 'chevron-right', size: 16, aria_label: 'Next page' %}
+        <i class="fa fa-chevron-right"></i>
       </a>
     {% else %}
       <p class="pag__link pag__link--next pag__link--disabled">
-        {% include 'icon', icon: 'chevron-right', size: 16 %}
+        <i class="fa fa-chevron-right"></i>
       </p>
     {% endif %}
   </div>
