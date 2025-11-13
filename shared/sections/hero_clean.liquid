@@ -29,7 +29,7 @@
       {% if section.settings.image %}
         <div class="col-lg-6 {% if section.settings.image_position == 'right' %}ps-lg-5{% else %}pe-lg-5{% endif %} mb-4 mb-lg-0">
           <div class="hero-clean__image-wrapper animate-fade-up" style="{% if section.settings.image_container_height %}height: {{ section.settings.image_container_height }}px;{% endif %} {% if section.settings.image_container_width %}max-width: {{ section.settings.image_container_width }}px; margin: 0 auto;{% endif %}">
-            {% render 'responsive-image',
+            {% include 'responsive-image',
               image: section.settings.image,
               alt: section.settings.image_alt | default: 'Hero image',
               class: 'img-fluid rounded',
