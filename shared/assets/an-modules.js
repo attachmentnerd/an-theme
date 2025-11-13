@@ -98,31 +98,36 @@
         modal.classList.remove('social-share-modal--active');
         menu.removeAttribute('style');
       } else {
-        // Position menu
-        const trigger = container.querySelector('[data-social-share-trigger="menu"] > a, [data-social-share-trigger="menu"] > button');
-        const triggerRect = trigger.getBoundingClientRect();
-        
-        const position = {
-          left: triggerRect.left + triggerRect.width / 2 - 100,
-          top: document.documentElement.scrollTop + triggerRect.bottom
-        };
+        // Use requestAnimationFrame to batch layout reads and prevent forced reflow
+        requestAnimationFrame(() => {
+          // Position menu - batch all layout reads together
+          const trigger = container.querySelector('[data-social-share-trigger="menu"] > a, [data-social-share-trigger="menu"] > button');
+          const triggerRect = trigger.getBoundingClientRect();
+          const bodyWidth = document.body.offsetWidth;
+          const scrollTop = document.documentElement.scrollTop;
 
-        // Adjust for viewport boundaries
-        if (position.left < 0) {
-          position.left = triggerRect.left;
-        } else if (position.left + 200 > document.body.offsetWidth) {
-          position.left = null;
-          position.right = document.body.offsetWidth - triggerRect.right;
-        }
+          const position = {
+            left: triggerRect.left + triggerRect.width / 2 - 100,
+            top: scrollTop + triggerRect.bottom
+          };
 
-        // Apply position
-        Object.assign(menu.style, {
-          left: position.left ? `${position.left}px` : 'auto',
-          right: position.right ? `${position.right}px` : 'auto',
-          top: `${position.top}px`
+          // Adjust for viewport boundaries
+          if (position.left < 0) {
+            position.left = triggerRect.left;
+          } else if (position.left + 200 > bodyWidth) {
+            position.left = null;
+            position.right = bodyWidth - triggerRect.right;
+          }
+
+          // Apply position (batch DOM writes)
+          Object.assign(menu.style, {
+            left: position.left ? `${position.left}px` : 'auto',
+            right: position.right ? `${position.right}px` : 'auto',
+            top: `${position.top}px`
+          });
+
+          modal.classList.add('social-share-modal--active');
         });
-
-        modal.classList.add('social-share-modal--active');
 
         // Close on backdrop click
         const closeHandler = () => {
