@@ -603,10 +603,19 @@ async function exportTheme(type, versionBump, message) {
 
   archive.pipe(output);
 
-  // Add files in theme folder (Kajabi requirement)
   const buildDir = path.join(__dirname, "..", "build", type);
-  const folderName = themeName.replace(/ /g, "_");
-  archive.directory(buildDir, folderName);
+
+  // Kajabi has different requirements for different theme types:
+  // - Landing page themes: Need files inside a named folder
+  // - Website themes: Need files at root level
+  if (type === "landing") {
+    // Landing themes: Add files in theme folder
+    const folderName = themeName.replace(/ /g, "_");
+    archive.directory(buildDir, folderName);
+  } else {
+    // Website and Product themes: Add files at root level
+    archive.directory(buildDir, false);
+  }
 
   await archive.finalize();
 
