@@ -603,9 +603,9 @@ async function exportTheme(type, versionBump, message) {
 
   archive.pipe(output);
 
-  // Add files with subdirectory structure
+  // Add files at root level (Kajabi requirement)
   const buildDir = path.join(__dirname, "..", "build", type);
-  archive.directory(buildDir, `${themeName}/`);
+  archive.directory(buildDir, false);
 
   await archive.finalize();
 

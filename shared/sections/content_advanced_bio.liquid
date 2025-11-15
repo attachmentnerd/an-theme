@@ -130,16 +130,17 @@
                   <div class="logo-item" >
                     {% if block.settings.logo_image %}
                       <img
-          src="{{ block.settings.logo_image | image_picker_url: '60x' }}"
+          src="{{ block.settings.logo_image | image_picker_url: '120x' }}"
           srcset="{{ block.settings.logo_image | image_picker_url: '60x' }} 60w,
                   {{ block.settings.logo_image | image_picker_url: '120x' }} 120w,
                   {{ block.settings.logo_image | image_picker_url: '180x' }} 180w,
-                  {{ block.settings.logo_image | image_picker_url: '240x' }} 240w"
-          sizes="120px"
+                  {{ block.settings.logo_image | image_picker_url: '240x' }} 240w,
+                  {{ block.settings.logo_image | image_picker_url: '300x' }} 300w"
+          sizes="{% if block.settings.logo_width %}{{ block.settings.logo_width }}px{% else %}120px{% endif %}"
           alt="{{ block.settings.logo_alt | default: 'Logo' }}"
           class="img-fluid"
           loading="lazy"
-          {% if block.settings.logo_width %}style="max-width: {{ block.settings.logo_width }}px;"{% endif %}>
+          {% if block.settings.logo_width %}style="max-width: {{ block.settings.logo_width }}px !important; max-height: none !important;"{% endif %}>
                     {% elsif block.settings.logo_text %}
                       <span class="logo-text" style="font-size: {% if block.settings.logo_text_size %}{{ block.settings.logo_text_size }}{% else %}{{ section.settings.logo_text_size | default: '18' }}{% endif %}px;">
                         {{ block.settings.logo_text }}
@@ -402,6 +403,7 @@
     opacity: 0.7;
     transition: opacity 0.3s ease;
     filter: grayscale(100%);
+    flex-shrink: 0; /* Prevent logos from shrinking - they'll wrap to new rows instead */
   }
 
   .logo-item:hover {
@@ -799,7 +801,7 @@
   "blocks": [
     {
       "type": "logo",
-      "name": "Content - Advanced Bio",
+      "name": "Logo",
       "elements": [
         {
           "type": "image_picker",

@@ -402,15 +402,18 @@
   document.addEventListener('DOMContentLoaded', function() {
     const dropdown = document.getElementById('heroDropdown{{ section.id }}');
     const menu = document.getElementById('heroDropdownMenu{{ section.id }}');
-    
+
     if (dropdown && menu) {
+      const menuItems = menu.querySelectorAll('.hero-clean__dropdown-item');
+      let currentFocus = -1;
+
       // Toggle dropdown on click
       dropdown.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const isOpen = menu.classList.contains('show');
-        
+
         // Close all other dropdowns
         document.querySelectorAll('.hero-clean__dropdown-menu.show').forEach(function(openMenu) {
           if (openMenu !== menu) {
@@ -418,32 +421,91 @@
             openMenu.previousElementSibling.setAttribute('aria-expanded', 'false');
           }
         });
-        
+
         // Toggle this dropdown
         if (isOpen) {
           menu.classList.remove('show');
           dropdown.setAttribute('aria-expanded', 'false');
+          currentFocus = -1;
         } else {
           menu.classList.add('show');
           dropdown.setAttribute('aria-expanded', 'true');
         }
       });
-      
+
       // Close dropdown when clicking outside
       document.addEventListener('click', function(e) {
         if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
           menu.classList.remove('show');
           dropdown.setAttribute('aria-expanded', 'false');
+          currentFocus = -1;
         }
       });
-      
-      // Close dropdown on ESC key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && menu.classList.contains('show')) {
+
+      // Close dropdown when menu item is clicked
+      menuItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          menu.classList.remove('show');
+          dropdown.setAttribute('aria-expanded', 'false');
+          currentFocus = -1;
+        });
+      });
+
+      // Keyboard navigation
+      dropdown.addEventListener('keydown', function(e) {
+        const isOpen = menu.classList.contains('show');
+
+        // Arrow down: open menu or move focus down
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (!isOpen) {
+            menu.classList.add('show');
+            dropdown.setAttribute('aria-expanded', 'true');
+          }
+          currentFocus++;
+          if (currentFocus >= menuItems.length) currentFocus = 0;
+          menuItems[currentFocus].focus();
+        }
+
+        // Arrow up: move focus up
+        if (e.key === 'ArrowUp' && isOpen) {
+          e.preventDefault();
+          currentFocus--;
+          if (currentFocus < 0) currentFocus = menuItems.length - 1;
+          menuItems[currentFocus].focus();
+        }
+
+        // Escape: close dropdown
+        if (e.key === 'Escape' && isOpen) {
+          e.preventDefault();
           menu.classList.remove('show');
           dropdown.setAttribute('aria-expanded', 'false');
           dropdown.focus();
+          currentFocus = -1;
         }
+      });
+
+      // Handle keyboard navigation within menu items
+      menuItems.forEach(function(item, index) {
+        item.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            currentFocus = (index + 1) % menuItems.length;
+            menuItems[currentFocus].focus();
+          }
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            currentFocus = (index - 1 + menuItems.length) % menuItems.length;
+            menuItems[currentFocus].focus();
+          }
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            menu.classList.remove('show');
+            dropdown.setAttribute('aria-expanded', 'false');
+            dropdown.focus();
+            currentFocus = -1;
+          }
+        });
       });
     }
   });
