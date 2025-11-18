@@ -639,6 +639,17 @@
       },
       {
         "type": "header",
+        "content": "PostHog Analytics"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_posthog_tracking",
+        "label": "Enable PostHog Event Tracking",
+        "default": true,
+        "info": "Enable detailed event tracking and user identification. PostHog is initialized site-wide via header script."
+      },
+      {
+        "type": "header",
         "content": "Script Libraries"
       },
       {

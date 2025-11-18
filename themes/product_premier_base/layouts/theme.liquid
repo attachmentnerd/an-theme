@@ -74,6 +74,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.8/js/tether.min.js"></script><!-- Tether for Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
 
+    <!-- PostHog User Identification -->
+    {% unless settings.enable_posthog_tracking == false %}
+      {% if member %}
+        <script>
+          if (typeof posthog !== 'undefined') {
+            posthog.identify('{{ member.id }}', {
+              email: '{{ member.email }}',
+              name: '{{ member.first_name }} {{ member.last_name }}',
+              first_name: '{{ member.first_name }}',
+              last_name: '{{ member.last_name }}',
+              created_at: '{{ member.created_at }}',
+              {% if member.products and member.products.size > 0 %}
+              enrolled_products: {{ member.products | map: 'title' | json }},
+              product_count: {{ member.products.size }},
+              {% endif %}
+              user_type: 'member'
+            });
+          }
+        </script>
+      {% endif %}
+    {% endunless %}
+
+    <!-- PostHog Event Tracking -->
+    {% include "posthog_events" %}
+
     {{ settings.embedded_scripts }}
+
+    <!-- Custom Body Scripts -->
+    {% if settings.body_scripts and settings.body_scripts != '' %}
+      {{ settings.body_scripts }}
+    {% endif %}
   </body>
 </html>
