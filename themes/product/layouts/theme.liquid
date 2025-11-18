@@ -110,6 +110,36 @@
     <script defer src="{{ 'scripts.js' | asset_url }}"></script>
     {%- comment -%} Removed Tether and Bootstrap JS (unused). Keep Bootstrap CSS. {%- endcomment -%}
 
+    <!-- PostHog User Identification -->
+    {% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+      {% if member %}
+        <script>
+          if (typeof posthog !== 'undefined') {
+            posthog.identify('{{ member.id }}', {
+              email: '{{ member.email }}',
+              name: '{{ member.first_name }} {{ member.last_name }}',
+              first_name: '{{ member.first_name }}',
+              last_name: '{{ member.last_name }}',
+              created_at: '{{ member.created_at }}',
+              {% if member.products and member.products.size > 0 %}
+              enrolled_products: {{ member.products | map: 'title' | json }},
+              product_count: {{ member.products.size }},
+              {% endif %}
+              user_type: 'member'
+            });
+          }
+        </script>
+      {% endif %}
+    {% endif %}
+
+    <!-- PostHog Event Tracking -->
+    {% include "posthog_events" %}
+
     {{ settings.embedded_scripts }}
+
+    <!-- Custom Body Scripts -->
+    {% if settings.body_scripts and settings.body_scripts != '' %}
+      {{ settings.body_scripts }}
+    {% endif %}
   </body>
 </html>

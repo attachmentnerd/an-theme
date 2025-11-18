@@ -1,0 +1,249 @@
+{% comment %}
+  PostHog Event Tracking
+  Tracks key user interactions across the site
+{% endcomment %}
+
+{% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+<script>
+if (typeof posthog !== 'undefined') {
+  // Track enhanced page views with context
+  posthog.capture('$pageview', {
+    page_type: '{{ template }}',
+    {% if page_title %}page_title: '{{ page_title }}',{% endif %}
+    {% if product %}
+    product_id: '{{ product.id }}',
+    product_title: '{{ product.title }}',
+    {% endif %}
+    {% if blog_post %}
+    blog_post_id: '{{ blog_post.id }}',
+    blog_post_title: '{{ blog_post.title }}',
+    {% endif %}
+    {% if member %}
+    is_logged_in: true,
+    {% else %}
+    is_logged_in: false,
+    {% endif %}
+  });
+
+  // Track CTA clicks (buttons, purchase links)
+  document.addEventListener('DOMContentLoaded', function() {
+    // Primary CTA buttons
+    document.querySelectorAll('a[href*="buy"], a[href*="enroll"], a[href*="purchase"], .btn-primary-modern, .btn-coral, .btn-primary, [class*="btn-"]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        var btnText = e.target.innerText || e.target.textContent || 'Unknown';
+        var btnHref = e.target.href || e.target.closest('a')?.href || '';
+        var sectionContext = e.target.closest('section')?.className || 'unknown-section';
+
+        posthog.capture('cta_clicked', {
+          cta_text: btnText.trim(),
+          cta_href: btnHref,
+          cta_class: e.target.className,
+          section_context: sectionContext,
+          page_type: '{{ template }}'
+        });
+      });
+    });
+
+    // Newsletter signup forms
+    document.querySelectorAll('form[data-form-type="newsletter"], form[action*="newsletter"], .newsletter-form').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        var formLocation = form.closest('section')?.className || 'unknown-section';
+        var emailInput = form.querySelector('input[type="email"]');
+
+        posthog.capture('newsletter_signup_attempted', {
+          form_location: formLocation,
+          email_provided: !!emailInput?.value,
+          page_type: '{{ template }}'
+        });
+      });
+    });
+
+    // Contact/Lead forms
+    document.querySelectorAll('form[data-form-type="contact"], form[action*="contact"], .contact-form').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        var formLocation = form.closest('section')?.className || 'unknown-section';
+
+        posthog.capture('contact_form_submitted', {
+          form_location: formLocation,
+          page_type: '{{ template }}'
+        });
+      });
+    });
+
+    // Video plays (HTML5 videos, YouTube, Vimeo)
+    document.querySelectorAll('video, iframe[src*="youtube"], iframe[src*="vimeo"]').forEach(function(video) {
+      var eventSent = false;
+
+      if (video.tagName === 'VIDEO') {
+        video.addEventListener('play', function() {
+          if (!eventSent) {
+            posthog.capture('video_played', {
+              video_src: video.src || video.currentSrc,
+              video_type: 'html5',
+              page_type: '{{ template }}'
+            });
+            eventSent = true;
+          }
+        });
+      } else if (video.tagName === 'IFRAME') {
+        // Track iframe video visibility (YouTube/Vimeo)
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting && !eventSent) {
+              var videoType = video.src.includes('youtube') ? 'youtube' : 'vimeo';
+              posthog.capture('video_viewed', {
+                video_src: video.src,
+                video_type: videoType,
+                page_type: '{{ template }}'
+              });
+              eventSent = true;
+            }
+          });
+        }, { threshold: 0.5 });
+
+        observer.observe(video);
+      }
+    });
+
+    // Book showcase interactions
+    document.querySelectorAll('.an-book-showcase a[href*="amazon"], .an-book-showcase a[href*="buy"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var bookTitle = e.target.closest('.an-book-showcase')?.querySelector('h1, h2, [class*="title"]')?.innerText || 'Unknown Book';
+        var retailer = e.target.href.includes('amazon') ? 'Amazon' : 'Other';
+
+        posthog.capture('book_purchase_clicked', {
+          book_title: bookTitle,
+          retailer: retailer,
+          link_href: e.target.href,
+          page_type: '{{ template }}'
+        });
+      });
+    });
+
+    // PWYC pricing slider interactions
+    document.querySelectorAll('.pwyc-tier-card, [class*="pricing-tier"]').forEach(function(tier) {
+      tier.addEventListener('click', function(e) {
+        var tierName = e.target.querySelector('.tier-name, h3, [class*="tier-title"]')?.innerText || 'Unknown Tier';
+        var tierPrice = e.target.querySelector('.tier-price, [class*="price"]')?.innerText || 'Unknown Price';
+
+        posthog.capture('pricing_tier_selected', {
+          tier_name: tierName,
+          tier_price: tierPrice,
+          page_type: '{{ template }}'
+        });
+      });
+    });
+
+    // Testimonial section visibility
+    var testimonialSections = document.querySelectorAll('.an-testimonials, [class*="testimonial"]');
+    if (testimonialSections.length > 0) {
+      var testimonialObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            posthog.capture('testimonials_viewed', {
+              section_class: entry.target.className,
+              page_type: '{{ template }}'
+            });
+            testimonialObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      testimonialSections.forEach(function(section) {
+        testimonialObserver.observe(section);
+      });
+    }
+
+    // Scroll depth tracking
+    var scrollDepths = [25, 50, 75, 100];
+    var scrolledDepths = [];
+
+    window.addEventListener('scroll', function() {
+      var scrollPercent = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100;
+
+      scrollDepths.forEach(function(depth) {
+        if (scrollPercent >= depth && scrolledDepths.indexOf(depth) === -1) {
+          scrolledDepths.push(depth);
+          posthog.capture('scroll_depth', {
+            depth: depth + '%',
+            page_type: '{{ template }}'
+          });
+        }
+      });
+    });
+
+    // Navigation clicks
+    document.querySelectorAll('nav a, .navigation a, [class*="nav"] a').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        posthog.capture('navigation_clicked', {
+          link_text: e.target.innerText || e.target.textContent,
+          link_href: e.target.href,
+          nav_type: e.target.closest('nav, [class*="nav"]')?.className || 'unknown',
+          page_type: '{{ template }}'
+        });
+      });
+    });
+
+    // Social share button clicks
+    document.querySelectorAll('[class*="share"], [class*="social"] a').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        var platform = 'unknown';
+        var href = e.target.href || '';
+
+        if (href.includes('facebook')) platform = 'facebook';
+        else if (href.includes('twitter') || href.includes('x.com')) platform = 'twitter';
+        else if (href.includes('linkedin')) platform = 'linkedin';
+        else if (href.includes('instagram')) platform = 'instagram';
+        else if (href.includes('pinterest')) platform = 'pinterest';
+
+        posthog.capture('social_share_clicked', {
+          platform: platform,
+          page_type: '{{ template }}',
+          {% if blog_post %}
+          content_type: 'blog_post',
+          content_title: '{{ blog_post.title }}'
+          {% else %}
+          content_type: 'page'
+          {% endif %}
+        });
+      });
+    });
+
+    // Download/resource clicks
+    document.querySelectorAll('a[href$=".pdf"], a[href$=".zip"], a[href*="download"], [class*="download"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var fileName = e.target.href.split('/').pop() || 'unknown';
+        var fileType = fileName.split('.').pop() || 'unknown';
+
+        posthog.capture('resource_downloaded', {
+          file_name: fileName,
+          file_type: fileType,
+          link_text: e.target.innerText || e.target.textContent,
+          page_type: '{{ template }}'
+        });
+      });
+    });
+
+    // Time on page tracking (send event after 30 seconds)
+    setTimeout(function() {
+      posthog.capture('engaged_user', {
+        time_on_page: '30_seconds',
+        page_type: '{{ template }}'
+      });
+    }, 30000);
+
+    // Exit intent tracking (when user moves cursor to leave)
+    var exitIntentFired = false;
+    document.addEventListener('mouseout', function(e) {
+      if (!exitIntentFired && e.clientY <= 0) {
+        exitIntentFired = true;
+        posthog.capture('exit_intent', {
+          page_type: '{{ template }}',
+          time_on_page: Math.round(performance.now() / 1000) + '_seconds'
+        });
+      }
+    });
+  });
+}
+</script>
+{% endif %}

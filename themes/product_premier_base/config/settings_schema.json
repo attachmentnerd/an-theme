@@ -194,5 +194,53 @@
         "info": ""
       }
     ]
+  },
+  {
+    "name": "Analytics & Tracking",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Google Tag Manager"
+      },
+      {
+        "type": "text",
+        "id": "gtm_id",
+        "label": "GTM Container ID",
+        "info": "Enter your Google Tag Manager container ID (e.g., GTM-XXXXXX)"
+      },
+      {
+        "type": "header",
+        "content": "PostHog Analytics"
+      },
+      {
+        "type": "text",
+        "id": "posthog_project_key",
+        "label": "PostHog Project Key",
+        "info": "Your PostHog project API key (e.g., phc_xxxxx)"
+      },
+      {
+        "type": "text",
+        "id": "posthog_api_host",
+        "label": "PostHog API Host",
+        "default": "https://app.posthog.com",
+        "info": "PostHog API host URL (use default unless self-hosting)"
+      },
+      {
+        "type": "header",
+        "content": "Custom Scripts"
+      },
+      {
+        "type": "textarea",
+        "id": "header_scripts",
+        "label": "Header Scripts",
+        "info": "Scripts to add before closing </head> tag. Do not include <script> tags."
+      },
+      {
+        "type": "textarea",
+        "id": "body_scripts",
+        "label": "Body Scripts",
+        "info": "Scripts to add before closing </body> tag. Do not include <script> tags."
+      }
+    ]
   }
 ]
