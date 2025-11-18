@@ -665,6 +665,23 @@
       },
       {
         "type": "header",
+        "content": "PostHog Analytics"
+      },
+      {
+        "type": "text",
+        "id": "posthog_project_key",
+        "label": "PostHog Project Key",
+        "info": "Your PostHog project API key (e.g., phc_xxxxx)"
+      },
+      {
+        "type": "text",
+        "id": "posthog_api_host",
+        "label": "PostHog API Host",
+        "default": "https://app.posthog.com",
+        "info": "PostHog API host URL (use default unless self-hosting)"
+      },
+      {
+        "type": "header",
         "content": "Script Libraries"
       },
       {

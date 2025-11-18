@@ -21,6 +21,28 @@
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKCGMPHT" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
+<!-- PostHog User Identification -->
+{% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+  {% if member %}
+    <script>
+      if (typeof posthog !== 'undefined') {
+        posthog.identify('{{ member.id }}', {
+          email: '{{ member.email }}',
+          name: '{{ member.first_name }} {{ member.last_name }}',
+          first_name: '{{ member.first_name }}',
+          last_name: '{{ member.last_name }}',
+          created_at: '{{ member.created_at }}',
+          {% if member.products and member.products.size > 0 %}
+          enrolled_products: {{ member.products | map: 'title' | json }},
+          product_count: {{ member.products.size }},
+          {% endif %}
+          user_type: 'member'
+        });
+      }
+    </script>
+  {% endif %}
+{% endif %}
+
 <!-- Custom Body Scripts -->
 {% if settings.body_scripts and settings.body_scripts != '' %}
   {{ settings.body_scripts }}
