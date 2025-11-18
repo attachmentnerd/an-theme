@@ -1,0 +1,385 @@
+{% comment %}
+  AN "We've Moved!" Announcement Section
+  - Uses AN theme design system
+  - Clear CTAs and reassuring messaging
+  - Fully customizable content
+{% endcomment %}
+
+<style>
+  .an-moved-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--c-bg-light);
+  }
+
+  .an-moved-section .container {
+    max-width: 800px;
+    padding: var(--space-3xl) var(--space-lg);
+  }
+
+  /* Hero */
+  .an-moved-hero {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+  }
+
+  .an-moved-hero__emoji {
+    font-size: 64px;
+    margin-bottom: var(--space-lg);
+    display: block;
+  }
+
+  .an-moved-hero__title {
+    font-size: var(--fs-display);
+    font-weight: var(--fw-bold);
+    color: var(--c-ink-900);
+    margin-bottom: var(--space-lg);
+    line-height: var(--lh-tight);
+  }
+
+  .an-moved-hero__subtitle {
+    font-size: var(--fs-body-lg);
+    color: var(--c-ink-500);
+    line-height: var(--lh-relaxed);
+  }
+
+  /* Content Cards */
+  .an-moved-card {
+    background: var(--c-white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    margin-bottom: var(--space-xl);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border-light);
+  }
+
+  .an-moved-card__icon {
+    font-size: 32px;
+    margin-bottom: var(--space-md);
+    display: block;
+  }
+
+  .an-moved-card h2 {
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-bold);
+    color: var(--c-ink-900);
+    margin-bottom: var(--space-lg);
+  }
+
+  .an-moved-card h3 {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    color: var(--c-ink-900);
+    margin: var(--space-xl) 0 var(--space-md);
+  }
+
+  .an-moved-card p,
+  .an-moved-card li {
+    font-size: var(--fs-body);
+    line-height: var(--lh-relaxed);
+    color: var(--c-ink-700);
+    margin-bottom: var(--space-md);
+  }
+
+  .an-moved-card ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-lg) 0;
+  }
+
+  .an-moved-card li {
+    padding-left: 32px;
+    position: relative;
+  }
+
+  .an-moved-card li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--c-accent-teal);
+    font-weight: var(--fw-bold);
+    font-size: 18px;
+  }
+
+  /* Highlight Box */
+  .an-moved-highlight {
+    background: var(--c-brand-100);
+    border-left: 4px solid var(--c-brand-600);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin: var(--space-lg) 0;
+  }
+
+  .an-moved-highlight p {
+    font-style: italic;
+  }
+
+  /* Steps */
+  .an-moved-steps {
+    counter-reset: step-counter;
+    margin: var(--space-lg) 0;
+  }
+
+  .an-moved-step {
+    counter-increment: step-counter;
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: var(--space-lg);
+  }
+
+  .an-moved-step::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--g-brand);
+    color: var(--c-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--fw-bold);
+    font-size: 18px;
+  }
+
+  /* Forms */
+  .an-moved-form {
+    margin-top: var(--space-lg);
+  }
+
+  .an-moved-form .form-group {
+    margin-bottom: var(--space-lg);
+  }
+
+  .an-moved-form label {
+    display: block;
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-semibold);
+    color: var(--c-ink-900);
+    margin-bottom: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .an-moved-form .form-control {
+    width: 100%;
+    padding: var(--space-md);
+    font-size: var(--fs-body);
+    color: var(--c-ink-900);
+    background: var(--c-white);
+    border: 2px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  }
+
+  .an-moved-form .form-control:focus {
+    outline: none;
+    border-color: var(--c-brand-600);
+    box-shadow: 0 0 0 3px rgba(94, 59, 255, 0.1);
+  }
+
+  .an-moved-form .form-control::placeholder {
+    color: var(--c-ink-500);
+  }
+
+  .an-moved-form .w-100 {
+    width: 100%;
+  }
+
+  .an-moved-form .text-muted {
+    color: var(--c-ink-500);
+  }
+
+  .an-moved-form .mb-3 {
+    margin-bottom: var(--space-md);
+  }
+
+  .an-moved-form .mt-3 {
+    margin-top: var(--space-md);
+  }
+
+  .an-moved-form .text-center {
+    text-align: center;
+  }
+
+  /* Email Link */
+  .an-moved-email {
+    color: var(--c-accent-teal);
+    text-decoration: none;
+    font-weight: var(--fw-semibold);
+    border-bottom: 2px solid transparent;
+    transition: border-color var(--motion-duration-fast) var(--motion-ease-out);
+  }
+
+  .an-moved-email:hover {
+    border-bottom-color: var(--c-accent-teal);
+  }
+
+  /* Closing */
+  .an-moved-closing {
+    text-align: center;
+    margin-top: var(--space-3xl);
+    padding: var(--space-2xl);
+    background: var(--c-brand-100);
+    border-radius: var(--radius-lg);
+  }
+
+  .an-moved-closing h2 {
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-bold);
+    color: var(--c-ink-900);
+    margin-bottom: var(--space-md);
+  }
+
+  .an-moved-closing p {
+    font-size: var(--fs-body-lg);
+    line-height: var(--lh-relaxed);
+    color: var(--c-ink-700);
+    margin-bottom: var(--space-sm);
+  }
+
+  .an-moved-signature {
+    font-style: italic;
+    color: var(--c-ink-500);
+    margin-top: var(--space-lg);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .an-moved-section .container {
+      padding: var(--space-2xl) var(--space-md);
+    }
+
+    .an-moved-card {
+      padding: var(--space-lg);
+    }
+
+    .an-moved-hero__emoji {
+      font-size: 48px;
+    }
+
+    .an-moved-step {
+      padding-left: 50px;
+    }
+  }
+</style>
+
+<section class="an-moved-section">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="an-moved-hero animate-fade-up">
+      <span class="an-moved-hero__emoji">⭐</span>
+      <h1 class="an-moved-hero__title">We've Moved the Attachment Nerd Community!</h1>
+      <p class="an-moved-hero__subtitle">Welcome, friend — if you landed on this page, you're probably looking for the old community. Here's the quick update:</p>
+    </div>
+
+    <!-- Card 1: The Move Announcement -->
+    <div class="an-moved-card animate-fade-up">
+      <span class="an-moved-card__icon">👉</span>
+      <p><strong>We moved everything to a brand-new home that's cleaner, faster, and easier to use. And we want to make sure you know exactly how to get inside.</strong></p>
+    </div>
+
+    <!-- Card 2: What's Inside -->
+    <div class="an-moved-card animate-fade-up">
+      <span class="an-moved-card__icon">📚</span>
+      <h2>What's Inside Your Account</h2>
+      <p>We've consolidated everything into one platform. Once you log in, you'll have access to:</p>
+
+      <ul>
+        <li>The 6-Week Secure Parenting Course</li>
+        <li>Monthly Live Q&A calls with Eli</li>
+        <li>Bi-weekly Honesty Hour support groups</li>
+        <li>Monthly Neurodiverse Collective meetups</li>
+        <li>The replay library</li>
+        <li>Class recordings and guides</li>
+        <li>The updated calendar</li>
+        <li>Everything in one clean dashboard</li>
+      </ul>
+
+      <p>One login, everything you need.</p>
+    </div>
+
+    <!-- Card 3: Password Reset Form -->
+    <div class="an-moved-card animate-fade-up">
+      <span class="an-moved-card__icon">🔐</span>
+      <h2>Set Up Your New Password</h2>
+      <p>Enter the email you used in the old Village, and we'll send you a link to create your new password:</p>
+
+      <div class="an-moved-form">
+        <form action="{{ routes.forgot_password_url }}" method="post" accept-charset="UTF-8">
+          <div class="form-group">
+            <label for="reset-email">Email Address</label>
+            <input
+              type="email"
+              id="reset-email"
+              name="user[email]"
+              class="form-control"
+              placeholder="your@email.com"
+              required
+            >
+          </div>
+          <button type="submit" class="btn btn-primary-modern w-100">
+            Send Password Reset Link
+          </button>
+          <p class="text-center mt-3" style="font-size: 14px; color: var(--c-ink-500);">
+            Check your inbox for an email with instructions to set up your new password. Then you'll be able to log in!
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Card 5: Need Help -->
+    <div class="an-moved-card animate-fade-up">
+      <span class="an-moved-card__icon">💬</span>
+      <h2>Still need access? Didn't get an email?</h2>
+      <p>No problem at all.</p>
+      <p>
+        Just email us at:
+        <a href="mailto:hello@attachmentnerd.com" class="an-moved-email">
+          hello@attachmentnerd.com
+        </a>
+      </p>
+      <p>We'll set up your access manually — it only takes us a moment.</p>
+    </div>
+
+    <!-- Card 6: Lifetime Access -->
+    <div class="an-moved-card animate-fade-up">
+      <span class="an-moved-card__icon">🎁</span>
+      <h2>Why you're getting lifetime access</h2>
+      <p>If you were ever part of our membership, you helped build Attachment Nerd from the ground up. This new program exists because of your feedback and trust.</p>
+      <p><strong>Giving you lifetime access is our thank-you.</strong></p>
+    </div>
+
+    <!-- Closing -->
+    <div class="an-moved-closing animate-fade-up">
+      <h2>Welcome to your new home.</h2>
+      <p>We're truly honored you're here.</p>
+      <p>Thank you for being such a meaningful part of the Attachment Nerd family.</p>
+      <p class="an-moved-signature">With love,<br>Eli + Team Attachment Nerd</p>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "We've Moved",
+  "class": "an-moved-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Note: Content is hard-coded for this utility page. Edit the liquid file to customize text."
+    }
+  ],
+  "presets": [
+    {
+      "name": "We've Moved",
+      "category": "Pages",
+      "description": "Announcement page for community migration"
+    }
+  ]
+}
+{% endschema %}

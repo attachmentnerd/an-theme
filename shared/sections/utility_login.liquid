@@ -27,6 +27,207 @@
     background: transparent;
     color: {{ btn_background_color }};
   }
+
+  /* Social Login Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px 0 16px;
+    color: #757575;
+    font-size: 14px;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dadce0;
+  }
+  .divider::before {
+    margin-right: 16px;
+  }
+  .divider::after {
+    margin-left: 16px;
+  }
+
+  /* --- Google Sign-In button ------------------------------------- */
+  .gsi-material-button {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-appearance: none;
+    background-image: none;
+    font-family: "Roboto", arial, sans-serif;
+    font-size: 14px;
+    height: 40px;
+    letter-spacing: 0.25px;
+    outline: none;
+    overflow: hidden;
+    padding: 0 12px;
+    position: relative;
+    text-align: center;
+    -webkit-transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+    -webkit-transition: background-color 0.218s, border-color 0.218s, -webkit-box-shadow 0.218s;
+    transition: background-color 0.218s, border-color 0.218s, -webkit-box-shadow 0.218s;
+    -o-transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+    transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+    transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s, -webkit-box-shadow 0.218s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+    max-width: 400px;
+    min-width: -webkit-min-content;
+    min-width: -moz-min-content;
+    min-width: min-content;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 1px solid transparent;
+    margin: 8px auto;
+    display: block;
+  }
+
+  /* Button width */
+  .gsi-material-button__full {
+    width: 100%;
+  }
+
+  .gsi-material-button__auto {
+    width: auto;
+  }
+
+  /* Pill shape override */
+  .gsi-material-button__pill {
+    border-radius: 20px;
+  }
+
+  /* Theme overrides */
+  .gsi-material-button__light {
+    background-color: white;
+    color: #1f1f1f;
+    border-color: #747775;
+  }
+
+  .gsi-material-button__dark {
+    background-color: #131314;
+    color: #e3e3e3;
+    border-color: #8e918f;
+  }
+
+  .gsi-material-button__neutral {
+    background-color: #f2f2f2;
+    color: #1f1f1f;
+    border: none;
+  }
+
+  /* Child elements */
+  .gsi-material-button .gsi-material-button-icon {
+    height: 20px;
+    margin-right: 12px;
+    min-width: 20px;
+    width: 20px;
+  }
+
+  .gsi-material-button .gsi-material-button-content-wrapper {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    height: 100%;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+  }
+
+  .gsi-material-button .gsi-material-button-contents {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    font-weight: 500;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    vertical-align: top;
+  }
+
+  .gsi-material-button .gsi-material-button-state {
+    -webkit-transition: opacity 0.218s;
+    -o-transition: opacity 0.218s;
+    transition: opacity 0.218s;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  /* States: hover, focus, active */
+  .gsi-material-button:not(:disabled):hover,
+  .gsi-material-button:not(:disabled):focus {
+    -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  }
+
+  .gsi-material-button__light:not(:disabled):hover .gsi-material-button-state,
+  .gsi-material-button__light:not(:disabled):focus .gsi-material-button-state {
+    background-color: #303030;
+    opacity: 0.08;
+  }
+
+  .gsi-material-button__dark:not(:disabled):hover .gsi-material-button-state,
+  .gsi-material-button__dark:not(:disabled):focus .gsi-material-button-state {
+    background-color: white;
+    opacity: 0.08;
+  }
+
+  .gsi-material-button__neutral:not(:disabled):hover .gsi-material-button-state,
+  .gsi-material-button__neutral:not(:disabled):focus .gsi-material-button-state {
+    background-color: #001d35;
+    opacity: 0.08;
+  }
+
+  .gsi-material-button:not(:disabled):active .gsi-material-button-state {
+    opacity: 0.12;
+  }
+
+  .gsi-material-button__light:not(:disabled):active .gsi-material-button-state {
+    background-color: #303030;
+  }
+
+  .gsi-material-button__dark:not(:disabled):active .gsi-material-button-state {
+    background-color: white;
+  }
+
+  .gsi-material-button__neutral:not(:disabled):active .gsi-material-button-state {
+    background-color: #001d35;
+  }
+
+  /* Icon Only Style */
+  .gsi-material-button__icon {
+    width: 40px !important;
+    min-width: 40px !important;
+    padding: 0 !important;
+  }
+
+  .gsi-material-button__icon .gsi-material-button-icon {
+    margin-right: 0 !important;
+  }
+
+  .gsi-material-button__icon .gsi-material-button-contents {
+    display: none;
+  }
 </style>
 <section id="{{ section.settings.section_id | default: 'utility-login' }}-{{ section.id }}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
 class="section
@@ -284,6 +485,103 @@ class="section
           "label": "Forgot Password Text",
           "id": "forgot_password",
           "default": "Forgot Password"
+        },
+        {
+          "type": "text",
+          "label": "Legacy Member Link Text",
+          "id": "legacy_member_text",
+          "default": "Legacy Member?"
+        }
+      ]
+    },
+    {
+      "name": "Social Login Settings",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Google Sign-In"
+        },
+        {
+          "type": "text",
+          "id": "social_divider_text",
+          "label": "Social Divider Text",
+          "default": "Or sign in with",
+          "info": "Text shown above the social login button"
+        },
+        {
+          "type": "text",
+          "id": "social_login_button_text",
+          "label": "Social Login Button Text",
+          "default": "Sign in with Google",
+          "info": "Text displayed on the Google sign-in button"
+        },
+        {
+          "type": "select",
+          "id": "social_button_style",
+          "label": "Button Style",
+          "default": "standard",
+          "options": [
+            {
+              "value": "standard",
+              "label": "Standard (with text)"
+            },
+            {
+              "value": "icon",
+              "label": "Icon Only"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "social_button_theme",
+          "label": "Button Theme",
+          "default": "light",
+          "options": [
+            {
+              "value": "light",
+              "label": "Light (White)"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            },
+            {
+              "value": "neutral",
+              "label": "Neutral (Gray)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "social_button_shape",
+          "label": "Button Shape",
+          "default": "standard",
+          "options": [
+            {
+              "value": "standard",
+              "label": "Standard (Rounded corners)"
+            },
+            {
+              "value": "pill",
+              "label": "Pill (Fully rounded)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "social_button_width",
+          "label": "Button Width",
+          "default": "auto",
+          "options": [
+            {
+              "value": "full",
+              "label": "Full Width"
+            },
+            {
+              "value": "auto",
+              "label": "Auto"
+            }
+          ]
         }
       ]
     }

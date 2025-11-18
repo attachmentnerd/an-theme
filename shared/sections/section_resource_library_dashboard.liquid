@@ -32,7 +32,7 @@
               <div class="rd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ block.settings.tint_color | default: section.settings.guides_tint_color }}"></div>
               <div class="rd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
                 {% if block.settings.badge != blank %}<span class="rd-badge">{{ block.settings.badge }}</span>{% endif %}
-                <div class="rd-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'file-text', size: 22, color: 'currentColor', aria_label: '' %}</div>
+                {% if block.settings.icon != blank %}<div class="rd-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon, size: 22, color: 'currentColor', aria_label: '' %}</div>{% endif %}
                 <h3 class="rd-title-sm">{{ block.settings.title }}</h3>
                 {% if block.settings.desc %}<p class="rd-desc">{{ block.settings.desc }}</p>{% endif %}
                 {% if block.settings.meta %}<div class="rd-meta">{% include "icon", icon: 'download', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.meta }}</div>{% endif %}
@@ -114,11 +114,14 @@
                     {% endfor %}
                   </div>
                   {% endif %}
-                  {% if block.settings.duration or block.settings.spots or block.settings.date %}
+                  {% assign _dur = block.settings.duration | default: '' | strip %}
+                  {% assign _date = block.settings.date | default: '' | strip %}
+                  {% assign _spots = block.settings.spots | default: '' | strip %}
+                  {% if _dur != '' or _spots != '' or _date != '' %}
                   <div class="rd-meta-row">
-                    {% if block.settings.duration %}<span class="rd-meta-i">{% include "icon", icon: 'clock', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.duration }}</span>{% endif %}
-                    {% if block.settings.spots %}<span class="rd-meta-i">{% include "icon", icon: 'user', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.spots }} spots</span>{% endif %}
-                    {% if block.settings.date %}<span class="rd-meta-i">{% include "icon", icon: 'calendar', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.date }}</span>{% endif %}
+                    {% if _dur != '' %}<span class="rd-meta-i">{% include "icon", icon: 'clock', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.duration }}</span>{% endif %}
+                    {% if _spots != '' %}<span class="rd-meta-i">{% include "icon", icon: 'user', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.spots }} spots</span>{% endif %}
+                    {% if _date != '' %}<span class="rd-meta-i">{% include "icon", icon: 'calendar', size: 16, color: 'currentColor', aria_label: '' %} {{ block.settings.date }}</span>{% endif %}
                   </div>
                   {% endif %}
                 </div>
@@ -130,7 +133,7 @@
                 <div class="rd-media" aria-hidden="true" data-bg-sm="{{ block.settings.bg | image_picker_url: '800x600' }}" data-bg-lg="{{ block.settings.bg | image_picker_url: '1600x900' }}" style="--placeholder-color: {{ block.settings.tint_color | default: section.settings.qa_tint_color }}"></div>
                 <div class="rd-body{% if section.settings.enable_text_contrast %} has-contrast{% endif %}" style="--text-contrast-o: {{ section.settings.text_contrast_opacity | default: 35 | times: 0.01 }}">
                   {% if block.settings.badge != blank %}<span class="rd-badge">{{ block.settings.badge }}</span>{% endif %}
-                  <div class="rd-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon | default: 'message-circle', size: 22, color: 'currentColor', aria_label: '' %}</div>
+                  {% if block.settings.icon != blank %}<div class="rd-icon" aria-hidden="true">{% include "icon", icon: block.settings.icon, size: 22, color: 'currentColor', aria_label: '' %}</div>{% endif %}
                   <h3 class="rd-title-sm">{{ block.settings.title }}</h3>
                   {% if block.settings.desc %}<p class="rd-desc">{{ block.settings.desc }}</p>{% endif %}
                   {% if block.settings.meta %}<div class="rd-meta">{{ block.settings.meta }}</div>{% endif %}
@@ -331,7 +334,7 @@
       {"type":"image_picker","id":"bg","label":"Background image"},
       {"type":"color","id":"tint_color","label":"Tint color (override)","default":""},
       {"type":"range","id":"tint_opacity","label":"Tint opacity (%)","min":0,"max":100,"step":1,"default":null},
-      {"type":"text","id":"icon","label":"Icon name","default":"file-text"},
+      {"type":"text","id":"icon","label":"Icon name (optional)","default":""},
       {"type":"text","id":"badge","label":"Badge","default":"PDF"},
       {"type":"text","id":"title","label":"Title","default":"Emergency Regulation Scripts"},
       {"type":"textarea","id":"desc","label":"Description","default":"Quick reference guide."},
@@ -345,7 +348,7 @@
       {"type":"image_picker","id":"bg","label":"Background image"},
       {"type":"color","id":"tint_color","label":"Tint color (override)","default":""},
       {"type":"range","id":"tint_opacity","label":"Tint opacity (%)","min":0,"max":100,"step":1,"default":null},
-      {"type":"text","id":"icon","label":"Icon name","default":"video"},
+      {"type":"text","id":"icon","label":"Icon name (optional)","default":""},
       {"type":"text","id":"badge","label":"Badge","default":"Replay"},
       {"type":"text","id":"title","label":"Title","default":"Live Workshop Title"},
       {"type":"textarea","id":"desc","label":"Description","default":"What you’ll learn."},
@@ -363,7 +366,7 @@
       {"type":"image_picker","id":"bg","label":"Background image"},
       {"type":"color","id":"tint_color","label":"Tint color (override)","default":""},
       {"type":"range","id":"tint_opacity","label":"Tint opacity (%)","min":0,"max":100,"step":1,"default":null},
-      {"type":"text","id":"icon","label":"Icon name","default":"message-circle"},
+      {"type":"text","id":"icon","label":"Icon name (optional)","default":""},
       {"type":"text","id":"badge","label":"Badge","default":"Q&A"},
       {"type":"text","id":"title","label":"Title","default":"Ask Eli: Topic"},
       {"type":"textarea","id":"desc","label":"Description","default":"Top answers on this topic."},

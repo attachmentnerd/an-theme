@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node scripts/preview-server.js",
-    "build": "node scripts/build-themes.js",
+    "build": "node scripts/theme-manager.js build website",
     "theme:build": "node scripts/theme-manager.js build",
     "theme:export": "node scripts/theme-manager.js export",
     "theme:version": "node scripts/theme-manager.js version",
