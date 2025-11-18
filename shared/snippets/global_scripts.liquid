@@ -22,7 +22,7 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKCGMPHT" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- PostHog User Identification -->
-{% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+{% unless settings.enable_posthog_tracking == false %}
   {% if member %}
     <script>
       if (typeof posthog !== 'undefined') {
@@ -41,7 +41,7 @@
       }
     </script>
   {% endif %}
-{% endif %}
+{% endunless %}
 
 <!-- Custom Body Scripts -->
 {% if settings.body_scripts and settings.body_scripts != '' %}

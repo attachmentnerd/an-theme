@@ -109,7 +109,7 @@
     {%- comment -%} Removed Tether and Bootstrap JS (unused). Keep Bootstrap CSS. {%- endcomment -%}
 
     <!-- PostHog User Identification -->
-    {% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+    {% unless settings.enable_posthog_tracking == false %}
       {% if member %}
         <script>
           if (typeof posthog !== 'undefined') {
@@ -128,7 +128,7 @@
           }
         </script>
       {% endif %}
-    {% endif %}
+    {% endunless %}
 
     <!-- PostHog Event Tracking -->
     {% include "posthog_events" %}

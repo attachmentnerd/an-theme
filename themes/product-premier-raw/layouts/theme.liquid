@@ -107,7 +107,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
 
     <!-- PostHog User Identification -->
-    {% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+    {% unless settings.enable_posthog_tracking == false %}
       {% if member %}
         <script>
           if (typeof posthog !== 'undefined') {
@@ -126,7 +126,7 @@
           }
         </script>
       {% endif %}
-    {% endif %}
+    {% endunless %}
 
     <!-- PostHog Event Tracking -->
     {% include "posthog_events" %}

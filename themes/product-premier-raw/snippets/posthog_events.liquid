@@ -3,26 +3,26 @@
   Tracks key user interactions across the site
 {% endcomment %}
 
-{% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+{% unless settings.enable_posthog_tracking == false %}
 <script>
 if (typeof posthog !== 'undefined') {
   // Track enhanced page views with context
   posthog.capture('$pageview', {
     page_type: '{{ template }}',
-    {% if page_title %}page_title: '{{ page_title }}',{% endif %}
+    {% if page_title %}page_title: '{{ page_title }}',{% endunless %}
     {% if product %}
     product_id: '{{ product.id }}',
     product_title: '{{ product.title }}',
-    {% endif %}
+    {% endunless %}
     {% if blog_post %}
     blog_post_id: '{{ blog_post.id }}',
     blog_post_title: '{{ blog_post.title }}',
-    {% endif %}
+    {% endunless %}
     {% if member %}
     is_logged_in: true,
     {% else %}
     is_logged_in: false,
-    {% endif %}
+    {% endunless %}
   });
 
   // Track CTA clicks (buttons, purchase links)
@@ -204,7 +204,7 @@ if (typeof posthog !== 'undefined') {
           content_title: '{{ blog_post.title }}'
           {% else %}
           content_type: 'page'
-          {% endif %}
+          {% endunless %}
         });
       });
     });
@@ -246,4 +246,4 @@ if (typeof posthog !== 'undefined') {
   });
 }
 </script>
-{% endif %}
+{% endunless %}

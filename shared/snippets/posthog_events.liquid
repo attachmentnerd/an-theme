@@ -3,7 +3,7 @@
   Tracks key user interactions across the site
 {% endcomment %}
 
-{% if settings.posthog_project_key and settings.posthog_project_key != '' %}
+{% unless settings.enable_posthog_tracking == false %}
 <script>
 if (typeof posthog !== 'undefined') {
   // Track enhanced page views with context
@@ -246,4 +246,4 @@ if (typeof posthog !== 'undefined') {
   });
 }
 </script>
-{% endif %}
+{% endunless %}
