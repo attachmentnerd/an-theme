@@ -1,0 +1,1292 @@
+<!-- Press Kit Section -->
+<section class="press-kit-section py-5 {% if section.settings.background_style == 'lavender' %}bg-lavender{% elsif section.settings.background_style == 'grey' %}bg-grey{% endif %}">
+  <div class="container" style="max-width: {{ section.settings.max_width }}px;">
+
+    {% if section.settings.show_header %}
+    <!-- Header -->
+    <div class="text-center mb-5 animate-fade-up">
+      {% if section.settings.header_label %}
+        <div class="text-uppercase text-brand-600 fw-medium mb-2" style="font-size: 14px; letter-spacing: 1px;">
+          {{ section.settings.header_label }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.header_title %}
+        <h1 class="text-ink-900 mb-3" style="font-size: var(--fs-h1);">
+          {{ section.settings.header_title }}
+        </h1>
+      {% endif %}
+
+      {% if section.settings.header_description %}
+        <p class="text-ink-700" style="font-size: var(--fs-body-lg); max-width: 700px; margin: 0 auto;">
+          {{ section.settings.header_description }}
+        </p>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Blocks -->
+    {% for block in section.blocks %}
+
+      {% case block.type %}
+
+      <!-- Quick Access Links -->
+      {% when 'quick_access' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            <div class="row g-4">
+              {% if block.settings.show_media_contact %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-2">Primary Media Contact</h3>
+                  <p class="mb-2">
+                    <strong>📧</strong>
+                    <a href="mailto:{{ block.settings.media_email }}" class="text-ink-800">
+                      {{ block.settings.media_email }}
+                    </a>
+                  </p>
+                  {% if block.settings.response_time %}
+                    <p class="text-ink-600 small mb-0">
+                      <strong>⏱</strong> {{ block.settings.response_time }}
+                    </p>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              {% if block.settings.show_speaking_contact %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-2">Speaking Requests</h3>
+                  <p class="mb-2">
+                    <strong>📧</strong>
+                    <a href="mailto:{{ block.settings.speaking_email }}" class="text-ink-800">
+                      {{ block.settings.speaking_email }}
+                    </a>
+                  </p>
+                  {% if block.settings.speaking_url %}
+                    <p class="mb-0">
+                      <strong>🌐</strong>
+                      <a href="{{ block.settings.speaking_url }}" class="text-ink-800">
+                        {{ block.settings.speaking_url_text }}
+                      </a>
+                    </p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+
+            {% if block.settings.show_assets %}
+              <div class="mt-4 pt-4" style="border-top: 1px solid rgba(26, 45, 78, 0.1);">
+                <h3 class="h5 text-brand-600 mb-3">Downloadable Assets</h3>
+                <div class="d-flex flex-wrap gap-3">
+                  {% if block.settings.asset_1_text %}
+                    <a href="{{ block.settings.asset_1_url }}" class="btn btn-sm btn-outline-primary">
+                      {{ block.settings.asset_1_icon }} {{ block.settings.asset_1_text }}
+                    </a>
+                  {% endif %}
+                  {% if block.settings.asset_2_text %}
+                    <a href="{{ block.settings.asset_2_url }}" class="btn btn-sm btn-outline-primary">
+                      {{ block.settings.asset_2_icon }} {{ block.settings.asset_2_text }}
+                    </a>
+                  {% endif %}
+                  {% if block.settings.asset_3_text %}
+                    <a href="{{ block.settings.asset_3_url }}" class="btn btn-sm btn-outline-primary">
+                      {{ block.settings.asset_3_icon }} {{ block.settings.asset_3_text }}
+                    </a>
+                  {% endif %}
+                  {% if block.settings.asset_4_text %}
+                    <a href="{{ block.settings.asset_4_url }}" class="btn btn-sm btn-outline-primary">
+                      {{ block.settings.asset_4_icon }} {{ block.settings.asset_4_text }}
+                    </a>
+                  {% endif %}
+                  {% if block.settings.asset_5_text %}
+                    <a href="{{ block.settings.asset_5_url }}" class="btn btn-sm btn-outline-primary">
+                      {{ block.settings.asset_5_icon }} {{ block.settings.asset_5_text }}
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+      <!-- Pronunciation Guide -->
+      {% when 'pronunciation' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            <div class="mb-4">
+              <h3 class="h5 text-brand-600 mb-2">Name</h3>
+              <p class="mb-1"><strong>{{ block.settings.name }}</strong></p>
+              <p class="text-ink-600">{{ block.settings.pronunciation }}</p>
+            </div>
+
+            {% if block.settings.show_preferred_reference %}
+              <div class="mb-4">
+                <h3 class="h5 text-brand-600 mb-2">Preferred Reference</h3>
+                <div class="text-ink-700">{{ block.settings.preferred_reference }}</div>
+              </div>
+            {% endif %}
+
+            {% if block.settings.show_do_not_use %}
+              <div>
+                <h3 class="h5 text-coral mb-2">Do NOT Use</h3>
+                <div class="text-ink-700">{{ block.settings.do_not_use }}</div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+      <!-- Biography -->
+      {% when 'biography' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+              <div>
+                {% if block.settings.title %}
+                  <h2 class="h3 text-ink-900 mb-1">{{ block.settings.title }}</h2>
+                {% endif %}
+                {% if block.settings.word_count %}
+                  <p class="text-ink-600 small mb-0">({{ block.settings.word_count }})</p>
+                {% endif %}
+              </div>
+              {% if block.settings.show_copy_button %}
+                <button
+                  class="btn btn-sm btn-secondary-modern copy-bio-btn"
+                  data-bio-id="bio-{{ block.id }}"
+                  onclick="copyBioToClipboard('bio-{{ block.id }}')">
+                  Copy
+                </button>
+              {% endif %}
+            </div>
+
+            <div id="bio-{{ block.id }}" class="bio-content text-ink-700" style="line-height: 1.7;">
+              {{ block.settings.bio_text }}
+            </div>
+          </div>
+        </div>
+
+      <!-- On-Air Intro Script -->
+      {% when 'intro_script' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4" style="background: linear-gradient(135deg, #E9E6FF 0%, #FFFFFF 100%);">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+              <div>
+                {% if block.settings.title %}
+                  <h2 class="h3 text-ink-900 mb-1">{{ block.settings.title }}</h2>
+                {% endif %}
+                {% if block.settings.duration %}
+                  <p class="text-ink-600 small mb-0">⏱ {{ block.settings.duration }}</p>
+                {% endif %}
+              </div>
+              {% if block.settings.show_copy_button %}
+                <button
+                  class="btn btn-sm btn-primary-modern copy-script-btn"
+                  data-script-id="script-{{ block.id }}"
+                  onclick="copyScriptToClipboard('script-{{ block.id }}')">
+                  Copy
+                </button>
+              {% endif %}
+            </div>
+
+            <div id="script-{{ block.id }}" class="script-content text-ink-800" style="line-height: 1.8; font-size: 17px;">
+              {{ block.settings.script_text }}
+            </div>
+          </div>
+        </div>
+
+      <!-- Key Facts -->
+      {% when 'key_facts' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            <div class="row g-4">
+              {% if block.settings.section_1_title %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_1_title }}</h3>
+                  <div class="text-ink-700" style="line-height: 1.8;">
+                    {{ block.settings.section_1_content }}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if block.settings.section_2_title %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_2_title }}</h3>
+                  <div class="text-ink-700" style="line-height: 1.8;">
+                    {{ block.settings.section_2_content }}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if block.settings.section_3_title %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_3_title }}</h3>
+                  <div class="text-ink-700" style="line-height: 1.8;">
+                    {{ block.settings.section_3_content }}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if block.settings.section_4_title %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_4_title }}</h3>
+                  <div class="text-ink-700" style="line-height: 1.8;">
+                    {{ block.settings.section_4_content }}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      <!-- Media Appearances -->
+      {% when 'media_appearances' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            {% if block.settings.category_title %}
+              <h3 class="h5 text-brand-600 mb-3">{{ block.settings.category_title }}</h3>
+            {% endif %}
+
+            <div class="media-list">
+              {{ block.settings.media_content }}
+            </div>
+          </div>
+        </div>
+
+      <!-- Quotes & Messages -->
+      {% when 'quotes' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            {% if block.settings.subtitle %}
+              <p class="text-ink-600 mb-4">{{ block.settings.subtitle }}</p>
+            {% endif %}
+
+            <div class="quotes-grid">
+              {% if block.settings.quote_1 %}
+                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
+                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
+                    "{{ block.settings.quote_1 }}"
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if block.settings.quote_2 %}
+                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
+                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
+                    "{{ block.settings.quote_2 }}"
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if block.settings.quote_3 %}
+                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
+                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
+                    "{{ block.settings.quote_3 }}"
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if block.settings.quote_4 %}
+                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
+                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
+                    "{{ block.settings.quote_4 }}"
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if block.settings.quote_5 %}
+                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
+                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
+                    "{{ block.settings.quote_5 }}"
+                  </p>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      <!-- Books -->
+      {% when 'book' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            <div class="row align-items-center">
+              {% if block.settings.book_cover %}
+                <div class="col-md-4 mb-4 mb-md-0">
+                  <img
+                    src="{{ block.settings.book_cover | image_picker_url: '400x' }}"
+                    srcset="{{ block.settings.book_cover | image_picker_url: '280x' }} 280w,
+                            {{ block.settings.book_cover | image_picker_url: '400x' }} 400w,
+                            {{ block.settings.book_cover | image_picker_url: '600x' }} 600w"
+                    sizes="(max-width: 767px) 280px, 400px"
+                    alt="{{ block.settings.book_title }}"
+                    class="img-fluid"
+                    style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.12);"
+                    loading="lazy">
+                </div>
+              {% endif %}
+
+              <div class="{% if block.settings.book_cover %}col-md-8{% else %}col-12{% endif %}">
+                {% if block.settings.book_title %}
+                  <h2 class="h3 text-ink-900 mb-2">{{ block.settings.book_title }}</h2>
+                {% endif %}
+
+                {% if block.settings.book_subtitle %}
+                  <p class="text-brand-600 fw-medium mb-3">{{ block.settings.book_subtitle }}</p>
+                {% endif %}
+
+                {% if block.settings.book_description %}
+                  <p class="text-ink-700 mb-3" style="line-height: 1.7;">
+                    {{ block.settings.book_description }}
+                  </p>
+                {% endif %}
+
+                {% if block.settings.book_url %}
+                  <a href="{{ block.settings.book_url }}" class="btn btn-primary-modern">
+                    {{ block.settings.book_url_text }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- Interview Topics -->
+      {% when 'interview_topics' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            {% if block.settings.subtitle %}
+              <p class="text-ink-600 mb-4">{{ block.settings.subtitle }}</p>
+            {% endif %}
+
+            <div class="topics-content text-ink-700" style="line-height: 1.8;">
+              {{ block.settings.topics_content }}
+            </div>
+          </div>
+        </div>
+
+      <!-- Sample Questions -->
+      {% when 'sample_questions' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            {% if block.settings.subtitle %}
+              <p class="text-ink-600 mb-4">{{ block.settings.subtitle }}</p>
+            {% endif %}
+
+            <div class="questions-list">
+              {{ block.settings.questions_content }}
+            </div>
+          </div>
+        </div>
+
+      <!-- Assets Section -->
+      {% when 'assets' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            <div class="assets-content text-ink-700 mb-4" style="line-height: 1.8;">
+              {{ block.settings.assets_content }}
+            </div>
+
+            {% if block.settings.photo_credit %}
+              <div class="pt-3" style="border-top: 1px solid rgba(26, 45, 78, 0.1);">
+                <p class="text-ink-600 small mb-0">
+                  <strong>Photo Credit:</strong> {{ block.settings.photo_credit }}
+                </p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+      <!-- Contact & Availability -->
+      {% when 'contact' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            <div class="row g-4">
+              {% if block.settings.media_email %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-2">Media Inquiries</h3>
+                  <p class="mb-2">
+                    <strong>📧</strong>
+                    <a href="mailto:{{ block.settings.media_email }}" class="text-ink-800">
+                      {{ block.settings.media_email }}
+                    </a>
+                  </p>
+                  {% if block.settings.availability_note %}
+                    <p class="text-ink-600 small mb-0">
+                      <strong>⏱</strong> {{ block.settings.availability_note }}
+                    </p>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              {% if block.settings.speaking_email %}
+                <div class="col-md-6">
+                  <h3 class="h5 text-brand-600 mb-2">Speaking & Events</h3>
+                  <p class="mb-2">
+                    <strong>📧</strong>
+                    <a href="mailto:{{ block.settings.speaking_email }}" class="text-ink-800">
+                      {{ block.settings.speaking_email }}
+                    </a>
+                  </p>
+                  {% if block.settings.speaking_url %}
+                    <p class="mb-0">
+                      <strong>🌐</strong>
+                      <a href="{{ block.settings.speaking_url }}" class="text-ink-800">
+                        {{ block.settings.speaking_url_display }}
+                      </a>
+                    </p>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              {% if block.settings.representation_info %}
+                <div class="col-12">
+                  <h3 class="h5 text-brand-600 mb-2">Representation</h3>
+                  <div class="text-ink-700">{{ block.settings.representation_info }}</div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      <!-- Permissions & Usage -->
+      {% when 'permissions' %}
+        <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
+          <div class="card-modern p-4" style="background: linear-gradient(135deg, #FFF4F0 0%, #FFFFFF 100%);">
+            {% if block.settings.title %}
+              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+            {% endif %}
+
+            <div class="row g-4">
+              <div class="col-md-6">
+                <h3 class="h5 text-teal mb-3">✔ You May Use</h3>
+                <div class="text-ink-700" style="line-height: 1.8;">
+                  {{ block.settings.may_use_content }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <h3 class="h5 text-coral mb-3">✘ You May Not Use</h3>
+                <div class="text-ink-700" style="line-height: 1.8;">
+                  {{ block.settings.may_not_use_content }}
+                </div>
+              </div>
+            </div>
+
+            {% if block.settings.contact_note %}
+              <div class="mt-4 pt-4" style="border-top: 1px solid rgba(26, 45, 78, 0.1);">
+                <p class="text-ink-700 mb-0">
+                  <strong>When in doubt:</strong> {{ block.settings.contact_note }}
+                </p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+      {% endcase %}
+
+    {% endfor %}
+
+  </div>
+</section>
+
+<!-- Copy to Clipboard Script -->
+<script>
+function copyBioToClipboard(bioId) {
+  const bioElement = document.getElementById(bioId);
+  const text = bioElement.innerText || bioElement.textContent;
+
+  navigator.clipboard.writeText(text).then(function() {
+    // Show success feedback
+    const btn = document.querySelector(`[data-bio-id="${bioId}"]`);
+    const originalText = btn.innerText;
+    btn.innerText = 'Copied!';
+    btn.classList.add('btn-success');
+
+    setTimeout(function() {
+      btn.innerText = originalText;
+      btn.classList.remove('btn-success');
+    }, 2000);
+  }, function(err) {
+    console.error('Could not copy text: ', err);
+  });
+}
+
+function copyScriptToClipboard(scriptId) {
+  const scriptElement = document.getElementById(scriptId);
+  const text = scriptElement.innerText || scriptElement.textContent;
+
+  navigator.clipboard.writeText(text).then(function() {
+    // Show success feedback
+    const btn = document.querySelector(`[data-script-id="${scriptId}"]`);
+    const originalText = btn.innerText;
+    btn.innerText = 'Copied!';
+    btn.classList.add('btn-success');
+
+    setTimeout(function() {
+      btn.innerText = originalText;
+      btn.classList.remove('btn-success');
+    }, 2000);
+  }, function(err) {
+    console.error('Could not copy text: ', err);
+  });
+}
+</script>
+
+<style>
+.press-kit-section .card-modern {
+  transition: transform 0.2s ease;
+}
+
+.press-kit-section .card-modern:hover {
+  transform: translateY(-2px);
+}
+
+.press-kit-block {
+  scroll-margin-top: 100px;
+}
+
+.copy-bio-btn.btn-success,
+.copy-script-btn.btn-success {
+  background: var(--c-accent-teal) !important;
+  border-color: var(--c-accent-teal) !important;
+  color: white !important;
+}
+
+.media-list ul,
+.questions-list ul,
+.topics-content ul {
+  padding-left: 1.5rem;
+  line-height: 1.8;
+}
+
+.media-list li,
+.questions-list li,
+.topics-content li {
+  margin-bottom: 0.75rem;
+  color: var(--c-ink-700);
+}
+</style>
+
+{% schema %}
+{
+  "name": "Press Kit",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show Section Header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "header_label",
+      "label": "Header Label",
+      "default": "MEDIA KIT"
+    },
+    {
+      "type": "text",
+      "id": "header_title",
+      "label": "Header Title",
+      "default": "Press & Media Resources"
+    },
+    {
+      "type": "textarea",
+      "id": "header_description",
+      "label": "Header Description",
+      "default": "Everything you need to feature Eli Harwood in your publication, podcast, or event."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width",
+      "min": 800,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background Style",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "grey",
+          "label": "Grey"
+        },
+        {
+          "value": "lavender",
+          "label": "Lavender"
+        }
+      ],
+      "default": "white"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "quick_access",
+      "name": "Quick Access Links",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Quick-Access Links"
+        },
+        {
+          "type": "header",
+          "content": "Media Contact"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_media_contact",
+          "label": "Show Media Contact",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "media_email",
+          "label": "Media Email",
+          "default": "press@attachmentnerd.com"
+        },
+        {
+          "type": "text",
+          "id": "response_time",
+          "label": "Response Time",
+          "default": "Typical Response Time: < 24 hours"
+        },
+        {
+          "type": "header",
+          "content": "Speaking Contact"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_speaking_contact",
+          "label": "Show Speaking Contact",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "speaking_email",
+          "label": "Speaking Email",
+          "default": "speaking@attachmentnerd.com"
+        },
+        {
+          "type": "text",
+          "id": "speaking_url",
+          "label": "Speaking Page URL",
+          "default": "https://attachmentnerd.com/speaking"
+        },
+        {
+          "type": "text",
+          "id": "speaking_url_text",
+          "label": "Speaking URL Display Text",
+          "default": "attachmentnerd.com/speaking"
+        },
+        {
+          "type": "header",
+          "content": "Downloadable Assets"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_assets",
+          "label": "Show Asset Links",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "asset_1_icon",
+          "label": "Asset 1 Icon",
+          "default": "📸"
+        },
+        {
+          "type": "text",
+          "id": "asset_1_text",
+          "label": "Asset 1 Text",
+          "default": "Headshots & Lifestyle Photos"
+        },
+        {
+          "type": "text",
+          "id": "asset_1_url",
+          "label": "Asset 1 URL"
+        },
+        {
+          "type": "text",
+          "id": "asset_2_icon",
+          "label": "Asset 2 Icon",
+          "default": "📚"
+        },
+        {
+          "type": "text",
+          "id": "asset_2_text",
+          "label": "Asset 2 Text",
+          "default": "Book Covers (flat & 3D)"
+        },
+        {
+          "type": "text",
+          "id": "asset_2_url",
+          "label": "Asset 2 URL"
+        },
+        {
+          "type": "text",
+          "id": "asset_3_icon",
+          "label": "Asset 3 Icon",
+          "default": "🎥"
+        },
+        {
+          "type": "text",
+          "id": "asset_3_text",
+          "label": "Asset 3 Text",
+          "default": "Video Clips & B-Roll"
+        },
+        {
+          "type": "text",
+          "id": "asset_3_url",
+          "label": "Asset 3 URL"
+        },
+        {
+          "type": "text",
+          "id": "asset_4_icon",
+          "label": "Asset 4 Icon",
+          "default": "🎨"
+        },
+        {
+          "type": "text",
+          "id": "asset_4_text",
+          "label": "Asset 4 Text",
+          "default": "Logos & Branding"
+        },
+        {
+          "type": "text",
+          "id": "asset_4_url",
+          "label": "Asset 4 URL"
+        },
+        {
+          "type": "text",
+          "id": "asset_5_icon",
+          "label": "Asset 5 Icon",
+          "default": "📄"
+        },
+        {
+          "type": "text",
+          "id": "asset_5_text",
+          "label": "Asset 5 Text",
+          "default": "Bio Pack (Short/Medium/Long)"
+        },
+        {
+          "type": "text",
+          "id": "asset_5_url",
+          "label": "Asset 5 URL"
+        }
+      ]
+    },
+    {
+      "type": "pronunciation",
+      "name": "Pronunciation Guide",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Pronunciation + How to Refer"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Eli Harwood"
+        },
+        {
+          "type": "text",
+          "id": "pronunciation",
+          "label": "Pronunciation",
+          "default": "\"Ell-ee Har-wood\" (first name like \"Ellie\")"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_preferred_reference",
+          "label": "Show Preferred Reference",
+          "default": true
+        },
+        {
+          "type": "rich_text",
+          "id": "preferred_reference",
+          "label": "Preferred Reference",
+          "default": "<ul><li>\"Eli Harwood, licensed therapist and author\"</li><li>\"Eli Harwood, known as The Attachment Nerd\"</li><li>\"The Attachment Nerd (Eli Harwood)\"</li></ul>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_do_not_use",
+          "label": "Show Do Not Use",
+          "default": true
+        },
+        {
+          "type": "rich_text",
+          "id": "do_not_use",
+          "label": "Do NOT Use",
+          "default": "<ul><li>\"Influencer\" (mischaracterizes clinical background)</li><li>\"Parenting guru\" or \"mommy blogger\"</li></ul>"
+        }
+      ]
+    },
+    {
+      "type": "biography",
+      "name": "Biography",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Bio Title",
+          "default": "Short Bio"
+        },
+        {
+          "type": "text",
+          "id": "word_count",
+          "label": "Word Count",
+          "default": "25 words",
+          "info": "Optional - displays under title"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_copy_button",
+          "label": "Show Copy Button",
+          "default": true
+        },
+        {
+          "type": "rich_text",
+          "id": "bio_text",
+          "label": "Biography Text",
+          "default": "<p>Eli Harwood, MA, LPC, is a USA TODAY bestselling author and therapist who translates attachment science into practical, real-life solutions for modern families.</p>"
+        }
+      ]
+    },
+    {
+      "type": "intro_script",
+      "name": "On-Air Intro Script",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Script Title",
+          "default": "General Audience Intro"
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Duration",
+          "default": "45 seconds",
+          "info": "Optional"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_copy_button",
+          "label": "Show Copy Button",
+          "default": true
+        },
+        {
+          "type": "rich_text",
+          "id": "script_text",
+          "label": "Script Text",
+          "default": "<p>\"Our guest today is Eli Harwood, a licensed therapist, USA TODAY bestselling author, and the creator of Attachment Nerd, a platform helping millions understand and heal their attachment patterns. With 19 years of clinical experience and a unique ability to make neuroscience funny and accessible, Eli's work focuses on breaking generational cycles, strengthening family relationships, and raising securely attached kids. She's been featured on Good Morning America, NBC News, and USA TODAY. Please welcome Eli Harwood.\"</p>"
+        }
+      ]
+    },
+    {
+      "type": "key_facts",
+      "name": "Key Facts",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Key Facts"
+        },
+        {
+          "type": "text",
+          "id": "section_1_title",
+          "label": "Section 1 Title",
+          "default": "Credentials"
+        },
+        {
+          "type": "rich_text",
+          "id": "section_1_content",
+          "label": "Section 1 Content",
+          "default": "<ul><li>Licensed Professional Counselor (LPC) – Colorado</li><li>MA Counseling Psychology – The Seattle School</li><li>Certified EMDR Therapist</li><li>19+ years clinical experience</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "section_2_title",
+          "label": "Section 2 Title",
+          "default": "Platform & Reach"
+        },
+        {
+          "type": "rich_text",
+          "id": "section_2_content",
+          "label": "Section 2 Content",
+          "default": "<ul><li>1.2M+ followers across platforms</li><li>100+ podcast appearances</li><li>Daily reach: 2M–10M monthly impressions</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "section_3_title",
+          "label": "Section 3 Title",
+          "default": "Topics"
+        },
+        {
+          "type": "rich_text",
+          "id": "section_3_content",
+          "label": "Section 3 Content",
+          "default": "<ul><li>Secure vs. gentle parenting</li><li>Breaking intergenerational patterns</li><li>Regulation for adults + kids</li><li>Rupture & repair</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "section_4_title",
+          "label": "Section 4 Title (Optional)"
+        },
+        {
+          "type": "rich_text",
+          "id": "section_4_content",
+          "label": "Section 4 Content"
+        }
+      ]
+    },
+    {
+      "type": "media_appearances",
+      "name": "Media Appearances",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Media Appearances"
+        },
+        {
+          "type": "text",
+          "id": "category_title",
+          "label": "Category Title",
+          "default": "Television"
+        },
+        {
+          "type": "rich_text",
+          "id": "media_content",
+          "label": "Media List",
+          "default": "<ul><li>Good Morning America – Attachment Parenting Segment</li><li>NBC News – Expert Commentary</li><li>The Price is Right – Contestant</li></ul>"
+        }
+      ]
+    },
+    {
+      "type": "quotes",
+      "name": "Quotes & Messages",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Key Messages & Quotes"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "For use in articles, captions, segment outlines, etc."
+        },
+        {
+          "type": "textarea",
+          "id": "quote_1",
+          "label": "Quote 1",
+          "default": "Secure attachment isn't about perfect parenting—it's about repair, connection, and being 'good enough' about 30% of the time."
+        },
+        {
+          "type": "textarea",
+          "id": "quote_2",
+          "label": "Quote 2",
+          "default": "Behavior is communication, not defiance."
+        },
+        {
+          "type": "textarea",
+          "id": "quote_3",
+          "label": "Quote 3",
+          "default": "You can't spoil a child with emotional availability."
+        },
+        {
+          "type": "textarea",
+          "id": "quote_4",
+          "label": "Quote 4",
+          "default": "Connection is your child's safest place."
+        },
+        {
+          "type": "textarea",
+          "id": "quote_5",
+          "label": "Quote 5",
+          "default": "Your attachment style isn't your destiny."
+        }
+      ]
+    },
+    {
+      "type": "book",
+      "name": "Book",
+      "elements": [
+        {
+          "type": "image_picker",
+          "id": "book_cover",
+          "label": "Book Cover Image"
+        },
+        {
+          "type": "text",
+          "id": "book_title",
+          "label": "Book Title",
+          "default": "Raising Securely Attached Kids"
+        },
+        {
+          "type": "text",
+          "id": "book_subtitle",
+          "label": "Book Subtitle",
+          "default": "USA TODAY Bestseller"
+        },
+        {
+          "type": "textarea",
+          "id": "book_description",
+          "label": "Book Description",
+          "default": "A research-backed, compassionate guide to raising emotionally healthy, resilient kids through connection, co-regulation, and repair."
+        },
+        {
+          "type": "text",
+          "id": "book_url",
+          "label": "Book URL"
+        },
+        {
+          "type": "text",
+          "id": "book_url_text",
+          "label": "Button Text",
+          "default": "Learn More"
+        }
+      ]
+    },
+    {
+      "type": "interview_topics",
+      "name": "Interview Topics",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Interview Topics & Timely Angles"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Designed for ease of pitching"
+        },
+        {
+          "type": "rich_text",
+          "id": "topics_content",
+          "label": "Topics Content",
+          "default": "<h4>Top Requested Topics</h4><ul><li>Gentle vs. secure parenting — key differences</li><li>Why millennial parents are burning out</li><li>Breaking generational cycles</li><li>Attachment styles in dating & relationships</li></ul>"
+        }
+      ]
+    },
+    {
+      "type": "sample_questions",
+      "name": "Sample Questions",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Sample Questions"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "For hosts & producers"
+        },
+        {
+          "type": "rich_text",
+          "id": "questions_content",
+          "label": "Questions List",
+          "default": "<ul><li>What is the biggest myth about attachment or gentle parenting?</li><li>Why do you say \"30% is the new 100%\" for parents?</li><li>How can parents repair after losing their cool?</li><li>What does it look like to \"break a cycle\" without burning out?</li></ul>"
+        }
+      ]
+    },
+    {
+      "type": "assets",
+      "name": "Assets Section",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Assets"
+        },
+        {
+          "type": "rich_text",
+          "id": "assets_content",
+          "label": "Assets Content",
+          "default": "<p>Included in the downloadable kit:</p><ul><li>6 high-resolution headshots</li><li>Lifestyle photography (office, speaking, home)</li><li>Book covers (flat & 3D)</li><li>Logo files</li><li>Quotes + pull graphics</li><li>B-roll & speaking clips</li><li>Social media-safe images for promo</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "photo_credit",
+          "label": "Photo Credit",
+          "info": "Optional - photographer name/credit"
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact & Availability",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Contact & Availability"
+        },
+        {
+          "type": "text",
+          "id": "media_email",
+          "label": "Media Email",
+          "default": "press@attachmentnerd.com"
+        },
+        {
+          "type": "text",
+          "id": "availability_note",
+          "label": "Availability Note",
+          "default": "Availability: Typically within 48 hours"
+        },
+        {
+          "type": "text",
+          "id": "speaking_email",
+          "label": "Speaking Email",
+          "default": "speaking@attachmentnerd.com"
+        },
+        {
+          "type": "text",
+          "id": "speaking_url",
+          "label": "Speaking URL",
+          "default": "https://attachmentnerd.com/speaking"
+        },
+        {
+          "type": "text",
+          "id": "speaking_url_display",
+          "label": "Speaking URL Display",
+          "default": "attachmentnerd.com/speaking"
+        },
+        {
+          "type": "textarea",
+          "id": "representation_info",
+          "label": "Representation Info",
+          "info": "Optional - agency or publicist info"
+        }
+      ]
+    },
+    {
+      "type": "permissions",
+      "name": "Permissions & Usage",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "Permissions & Usage"
+        },
+        {
+          "type": "rich_text",
+          "id": "may_use_content",
+          "label": "You May Use",
+          "default": "<ul><li>Eli's approved bios</li><li>Provided photos and book covers</li><li>Quotes and frameworks</li><li>The Attachment Nerd logo</li></ul>"
+        },
+        {
+          "type": "rich_text",
+          "id": "may_not_use_content",
+          "label": "You May NOT Use",
+          "default": "<ul><li>Unlicensed or unapproved photos</li><li>Edits that distort concepts</li><li>AI-generated \"Eli likeness\" images</li><li>Claims that misrepresent credentials or clinical scope</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "contact_note",
+          "label": "Contact Note",
+          "default": "press@attachmentnerd.com"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Press Kit",
+      "category": "Content",
+      "description": "Comprehensive press kit with bios, quotes, media info, and assets",
+      "blocks": [
+        {
+          "type": "quick_access"
+        },
+        {
+          "type": "pronunciation"
+        },
+        {
+          "type": "biography"
+        },
+        {
+          "type": "intro_script"
+        },
+        {
+          "type": "key_facts"
+        },
+        {
+          "type": "quotes"
+        },
+        {
+          "type": "book"
+        },
+        {
+          "type": "contact"
+        },
+        {
+          "type": "permissions"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
