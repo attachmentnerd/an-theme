@@ -119,7 +119,13 @@
         { "type": "checkbox", "id": "inline", "label": "Inline layout (<=3 fields)", "default": false },
         { "type": "form", "id": "form", "label": "Kajabi Form" },
         { "type": "text", "id": "manual_form_id", "label": "Manual Form ID" },
-        { "type": "url", "id": "thank_you", "label": "Thank You URL", "allow_blank": true },
+        { "type": "select", "id": "success_type", "label": "Success Action", "default": "message", "options": [
+          { "value": "message", "label": "Show Success Message" },
+          { "value": "redirect", "label": "Redirect to URL" }
+        ] },
+        { "type": "rich_text", "id": "success_html", "label": "Success Message (HTML)", "default": "<p>Thank you! Your submission has been received.</p>" },
+        { "type": "url", "id": "thank_you", "label": "Thank You URL (for redirect)", "allow_blank": true },
+        { "type": "checkbox", "id": "thank_you_new_tab", "label": "Open Thank You URL in new tab", "default": false },
         { "type": "text", "id": "btn_text", "label": "Button Text", "default": "Submit" },
         { "type": "text", "id": "loading_text", "label": "Loading Text", "default": "Processing..." },
         { "type": "select", "id": "btn_style", "label": "Button Style", "default": "solid", "options": [

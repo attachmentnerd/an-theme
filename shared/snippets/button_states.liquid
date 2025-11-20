@@ -144,9 +144,60 @@
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    display: block;
+  }
+
+  /* Align simple text messages with icons */
+  .form-feedback:has(> span:only-child),
+  .form-error:has(> span:only-child),
+  .success-message:has(> span:only-child),
+  .error-message:has(> span:only-child) {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+  }
+
+  /* Rich HTML content in success messages */
+  .form-feedback.success p,
+  .success-message p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .form-feedback.success h1,
+  .form-feedback.success h2,
+  .form-feedback.success h3,
+  .form-feedback.success h4,
+  .success-message h1,
+  .success-message h2,
+  .success-message h3,
+  .success-message h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--c-accent-teal);
+  }
+
+  .form-feedback.success a,
+  .success-message a {
+    color: var(--c-brand-600);
+    text-decoration: underline;
+  }
+
+  .form-feedback.success a:hover,
+  .success-message a:hover {
+    color: var(--c-brand-800);
+  }
+
+  .form-feedback.success ul,
+  .form-feedback.success ol,
+  .success-message ul,
+  .success-message ol {
+    margin: 0.5rem 0 0.5rem 1.5rem;
+    padding: 0;
+  }
+
+  .form-feedback.success li,
+  .success-message li {
+    margin-bottom: 0.25rem;
   }
 
   .form-feedback.show,
@@ -414,15 +465,27 @@
               submitBtn.classList.remove('is-loading');
               submitBtn.classList.add('is-success');
 
+              // Get success type and content
+              var formScope = form.closest('[data-form-scope]');
+              var successType = formScope ? formScope.getAttribute('data-success-type') : 'message';
+              var successHtml = formScope ? formScope.getAttribute('data-success-html') : null;
+              var customSuccess = (formScope && formScope.getAttribute('data-success-message')) || 'Success! Your message has been sent.';
+
               // Show success message
               let successMsg = form.querySelector('.form-feedback.success, .success-message');
               if (!successMsg) {
                 successMsg = document.createElement('div');
                 successMsg.className = 'form-feedback success';
-                var customSuccess = (form.closest('[data-form-scope]') && form.closest('[data-form-scope]').getAttribute('data-success-message')) || 'Success! Your message has been sent.';
-                successMsg.innerHTML = '<span>' + customSuccess + '</span>';
                 form.appendChild(successMsg);
               }
+
+              // Use custom HTML if provided and success type is 'message', otherwise use simple success message
+              if (successType === 'message' && successHtml) {
+                successMsg.innerHTML = successHtml;
+              } else {
+                successMsg.innerHTML = '<span>' + customSuccess + '</span>';
+              }
+
               successMsg.style.display = 'flex';
               successMsg.classList.add('show');
 
@@ -431,6 +494,23 @@
 
               // Re-enable fields
               fields.forEach(field => field.disabled = false);
+
+              // Handle redirect if success type is 'redirect'
+              if (successType === 'redirect') {
+                var thankYouInput = form.querySelector('input[name="thank_you_url"]');
+                var thankYouUrl = thankYouInput ? thankYouInput.value : null;
+                var openInNewTab = thankYouInput && thankYouInput.hasAttribute('data-new-tab');
+
+                if (thankYouUrl) {
+                  setTimeout(() => {
+                    if (openInNewTab) {
+                      window.open(thankYouUrl, '_blank', 'noopener,noreferrer');
+                    } else {
+                      window.location.href = thankYouUrl;
+                    }
+                  }, 1500);
+                }
+              }
 
               // Reset button after delay
               setTimeout(() => {
@@ -442,12 +522,14 @@
                   submitBtn.textContent = originalText;
                 }
 
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                  if (successMsg) {
-                    successMsg.classList.remove('show');
-                  }
-                }, 5000);
+                // Hide success message after 5 seconds (only for non-redirect success type)
+                if (successType === 'message') {
+                  setTimeout(() => {
+                    if (successMsg) {
+                      successMsg.classList.remove('show');
+                    }
+                  }, 5000);
+                }
               }, 2000);
             }, 1500);
           } else {

@@ -48,7 +48,7 @@
 {% assign f = current_site.find_form[form_id] %}
 {% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
 
-<div class="form" id="block-{{ block.id }}" data-form-scope data-success-message="{{ block.settings.success_message | default: 'Success! Your submission has been received.' | escape }}">
+<div class="form" id="block-{{ block.id }}" data-form-scope data-success-message="{{ block.settings.success_message | default: 'Success! Your submission has been received.' | escape }}" data-success-type="{{ block.settings.success_type | default: 'message' }}" {% if block.settings.success_html %}data-success-html="{{ block.settings.success_html | escape }}"{% endif %} {% if block.settings.thank_you_new_tab %}data-thank-you-new-tab="true"{% endif %}>
   <div
     kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}"
     {% element_attributes "block.settings.text" %}
@@ -58,7 +58,7 @@
   {% if f %}
     {% form f %}
       <div class="{% if block.settings.inline and f.fields.size <= 3 %}fields-wrapper{% endif %}">
-        <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}">
+        <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}"{% if block.settings.thank_you_new_tab %} data-new-tab="true"{% endif %}>
         {% for field in f.fields %}
           {% if field.input_type == 'email' and user_email != blank and block.settings.hide_email_when_logged_in != false %}
             <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
@@ -115,7 +115,7 @@
   {% else %}
     {% if form_id %}
       {% form "optin", id: form_id %}
-        <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}">
+        <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}"{% if block.settings.thank_you_new_tab %} data-new-tab="true"{% endif %}>
         {% capture user_email %}{{ current_user.email | default: current_member.email | strip }}{% endcapture %}
         {% if user_email != blank and block.settings.hide_email_when_logged_in != false %}
           <input type="hidden" name="form_submission[email]" value="{{ user_email }}">
