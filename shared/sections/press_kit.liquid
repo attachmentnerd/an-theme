@@ -1,24 +1,24 @@
-<!-- Press Kit Section -->
-<section class="press-kit-section py-5 {% if section.settings.background_style == 'lavender' %}bg-lavender{% elsif section.settings.background_style == 'grey' %}bg-grey{% endif %}">
+<!-- Press Kit Section - Modern Design -->
+<section class="press-kit-section py-5 position-relative overflow-hidden {% if section.settings.background_style == 'lavender' %}bg-lavender{% elsif section.settings.background_style == 'grey' %}bg-grey{% elsif section.settings.background_style == 'white' %}bg-white{% endif %} bg-texture bg-texture--dots bg-texture--subtle">
   <div class="container" style="max-width: {{ section.settings.max_width }}px;">
 
     {% if section.settings.show_header %}
     <!-- Header -->
     <div class="text-center mb-5 animate-fade-up">
       {% if section.settings.header_label %}
-        <div class="text-uppercase text-brand-600 fw-medium mb-2" style="font-size: 14px; letter-spacing: 1px;">
+        <div class="badge badge-brand-outline mb-3" style="font-size: 14px; letter-spacing: 1.5px;">
           {{ section.settings.header_label }}
         </div>
       {% endif %}
 
       {% if section.settings.header_title %}
-        <h1 class="text-ink-900 mb-3" style="font-size: var(--fs-h1);">
+        <h1 class="mb-3" style="font-size: var(--fs-display); color: var(--c-ink-900); font-weight: 600;">
           {{ section.settings.header_title }}
         </h1>
       {% endif %}
 
       {% if section.settings.header_description %}
-        <p class="text-ink-700" style="font-size: var(--fs-body-lg); max-width: 700px; margin: 0 auto;">
+        <p class="text-ink-700" style="font-size: var(--fs-body-lg); max-width: 700px; margin: 0 auto; line-height: 1.6;">
           {{ section.settings.header_description }}
         </p>
       {% endif %}
@@ -33,140 +33,234 @@
       <!-- Quick Access Links -->
       {% when 'quick_access' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
-            {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
-            {% endif %}
+          <div class="card-modern p-4 p-lg-5 position-relative" style="background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%); overflow: hidden;">
 
-            <div class="row g-4">
-              {% if block.settings.show_media_contact %}
-                <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-2">Primary Media Contact</h3>
-                  <p class="mb-2">
-                    <strong>📧</strong>
-                    <a href="mailto:{{ block.settings.media_email }}" class="text-ink-800">
-                      {{ block.settings.media_email }}
-                    </a>
-                  </p>
-                  {% if block.settings.response_time %}
-                    <p class="text-ink-600 small mb-0">
-                      <strong>⏱</strong> {{ block.settings.response_time }}
-                    </p>
-                  {% endif %}
+            <!-- Decorative Element -->
+            <div class="position-absolute top-0 end-0" style="width: 200px; height: 200px; background: radial-gradient(circle, rgba(94, 59, 255, 0.05) 0%, transparent 70%); border-radius: 50%; transform: translate(30%, -30%);"></div>
+
+            <div class="row align-items-center">
+              {% if block.settings.show_image and block.settings.profile_image %}
+                <div class="col-lg-3 mb-4 mb-lg-0 text-center">
+                  <div class="press-kit-image-card" style="max-width: 200px; margin: 0 auto;">
+                    <img
+                      src="{{ block.settings.profile_image | image_picker_url: '400x' }}"
+                      srcset="{{ block.settings.profile_image | image_picker_url: '200x' }} 200w,
+                              {{ block.settings.profile_image | image_picker_url: '400x' }} 400w,
+                              {{ block.settings.profile_image | image_picker_url: '600x' }} 600w"
+                      sizes="200px"
+                      alt="{{ block.settings.title }}"
+                      class="img-fluid"
+                      style="border-radius: 16px; box-shadow: 0 8px 32px rgba(94, 59, 255, 0.15);"
+                      loading="lazy">
+                  </div>
                 </div>
               {% endif %}
 
-              {% if block.settings.show_speaking_contact %}
-                <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-2">Speaking Requests</h3>
-                  <p class="mb-2">
-                    <strong>📧</strong>
-                    <a href="mailto:{{ block.settings.speaking_email }}" class="text-ink-800">
-                      {{ block.settings.speaking_email }}
-                    </a>
-                  </p>
-                  {% if block.settings.speaking_url %}
-                    <p class="mb-0">
-                      <strong>🌐</strong>
-                      <a href="{{ block.settings.speaking_url }}" class="text-ink-800">
-                        {{ block.settings.speaking_url_text }}
-                      </a>
-                    </p>
-                  {% endif %}
-                </div>
-              {% endif %}
-            </div>
+              <div class="{% if block.settings.show_image and block.settings.profile_image %}col-lg-9{% else %}col-12{% endif %}">
+                {% if block.settings.title %}
+                  <h2 class="h3 mb-4" style="color: var(--c-ink-900); font-weight: 600;">
+                    <span class="text-brand-600 me-2">📎</span>{{ block.settings.title }}
+                  </h2>
+                {% endif %}
 
-            {% if block.settings.show_assets %}
-              <div class="mt-4 pt-4" style="border-top: 1px solid rgba(26, 45, 78, 0.1);">
-                <h3 class="h5 text-brand-600 mb-3">Downloadable Assets</h3>
-                <div class="d-flex flex-wrap gap-3">
-                  {% if block.settings.asset_1_text %}
-                    <a href="{{ block.settings.asset_1_url }}" class="btn btn-sm btn-outline-primary">
-                      {{ block.settings.asset_1_icon }} {{ block.settings.asset_1_text }}
-                    </a>
+                <div class="row g-4 mb-4">
+                  {% if block.settings.show_media_contact %}
+                    <div class="col-md-6">
+                      <div class="p-3" style="background: var(--c-brand-100); border-radius: 12px; border-left: 3px solid var(--c-brand-600);">
+                        <h3 class="h6 mb-3" style="color: var(--c-brand-600); font-weight: 600;">
+                          Primary Media Contact
+                        </h3>
+                        <p class="mb-2">
+                          <strong style="color: var(--c-brand-600);">📧</strong>
+                          <a href="mailto:{{ block.settings.media_email }}" class="text-ink-800 text-decoration-none" style="font-weight: 500;">
+                            {{ block.settings.media_email }}
+                          </a>
+                        </p>
+                        {% if block.settings.response_time %}
+                          <p class="text-ink-600 small mb-0">
+                            <strong>⏱</strong> {{ block.settings.response_time }}
+                          </p>
+                        {% endif %}
+                      </div>
+                    </div>
                   {% endif %}
-                  {% if block.settings.asset_2_text %}
-                    <a href="{{ block.settings.asset_2_url }}" class="btn btn-sm btn-outline-primary">
-                      {{ block.settings.asset_2_icon }} {{ block.settings.asset_2_text }}
-                    </a>
-                  {% endif %}
-                  {% if block.settings.asset_3_text %}
-                    <a href="{{ block.settings.asset_3_url }}" class="btn btn-sm btn-outline-primary">
-                      {{ block.settings.asset_3_icon }} {{ block.settings.asset_3_text }}
-                    </a>
-                  {% endif %}
-                  {% if block.settings.asset_4_text %}
-                    <a href="{{ block.settings.asset_4_url }}" class="btn btn-sm btn-outline-primary">
-                      {{ block.settings.asset_4_icon }} {{ block.settings.asset_4_text }}
-                    </a>
-                  {% endif %}
-                  {% if block.settings.asset_5_text %}
-                    <a href="{{ block.settings.asset_5_url }}" class="btn btn-sm btn-outline-primary">
-                      {{ block.settings.asset_5_icon }} {{ block.settings.asset_5_text }}
-                    </a>
+
+                  {% if block.settings.show_speaking_contact %}
+                    <div class="col-md-6">
+                      <div class="p-3" style="background: var(--c-accent-teal); background: linear-gradient(135deg, rgba(24, 213, 228, 0.1) 0%, rgba(24, 213, 228, 0.05) 100%); border-radius: 12px; border-left: 3px solid var(--c-accent-teal);">
+                        <h3 class="h6 mb-3" style="color: var(--c-accent-teal); font-weight: 600;">
+                          Speaking Requests
+                        </h3>
+                        <p class="mb-2">
+                          <strong style="color: var(--c-accent-teal);">📧</strong>
+                          <a href="mailto:{{ block.settings.speaking_email }}" class="text-ink-800 text-decoration-none" style="font-weight: 500;">
+                            {{ block.settings.speaking_email }}
+                          </a>
+                        </p>
+                        {% if block.settings.speaking_url %}
+                          <p class="mb-0">
+                            <strong>🌐</strong>
+                            <a href="{{ block.settings.speaking_url }}" class="text-ink-800 text-decoration-none" style="font-weight: 500;">
+                              {{ block.settings.speaking_url_text }}
+                            </a>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </div>
                   {% endif %}
                 </div>
+
+                {% if block.settings.show_assets %}
+                  <div class="pt-4" style="border-top: 1px solid rgba(26, 45, 78, 0.1);">
+                    <h3 class="h6 mb-3" style="color: var(--c-brand-600); font-weight: 600;">
+                      <span class="me-2">📦</span>Downloadable Assets
+                    </h3>
+                    <div class="d-flex flex-wrap gap-2">
+                      {% if block.settings.asset_1_text %}
+                        <a href="{{ block.settings.asset_1_url }}" class="btn btn-sm btn-outline-primary hover-lift" style="transition: all 0.2s ease;">
+                          {{ block.settings.asset_1_icon }} {{ block.settings.asset_1_text }}
+                        </a>
+                      {% endif %}
+                      {% if block.settings.asset_2_text %}
+                        <a href="{{ block.settings.asset_2_url }}" class="btn btn-sm btn-outline-primary hover-lift">
+                          {{ block.settings.asset_2_icon }} {{ block.settings.asset_2_text }}
+                        </a>
+                      {% endif %}
+                      {% if block.settings.asset_3_text %}
+                        <a href="{{ block.settings.asset_3_url }}" class="btn btn-sm btn-outline-primary hover-lift">
+                          {{ block.settings.asset_3_icon }} {{ block.settings.asset_3_text }}
+                        </a>
+                      {% endif %}
+                      {% if block.settings.asset_4_text %}
+                        <a href="{{ block.settings.asset_4_url }}" class="btn btn-sm btn-outline-primary hover-lift">
+                          {{ block.settings.asset_4_icon }} {{ block.settings.asset_4_text }}
+                        </a>
+                      {% endif %}
+                      {% if block.settings.asset_5_text %}
+                        <a href="{{ block.settings.asset_5_url }}" class="btn btn-sm btn-outline-primary hover-lift">
+                          {{ block.settings.asset_5_icon }} {{ block.settings.asset_5_text }}
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
               </div>
-            {% endif %}
+            </div>
           </div>
         </div>
 
       <!-- Pronunciation Guide -->
       {% when 'pronunciation' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
-            {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
-            {% endif %}
+          <div class="card-modern p-4 p-lg-5">
+            <div class="row align-items-center">
+              {% if block.settings.show_headshot and block.settings.headshot_image %}
+                <div class="col-lg-3 mb-4 mb-lg-0 text-center">
+                  <div class="press-kit-image-card" style="max-width: 180px; margin: 0 auto;">
+                    <img
+                      src="{{ block.settings.headshot_image | image_picker_url: '360x' }}"
+                      srcset="{{ block.settings.headshot_image | image_picker_url: '180x' }} 180w,
+                              {{ block.settings.headshot_image | image_picker_url: '360x' }} 360w,
+                              {{ block.settings.headshot_image | image_picker_url: '540x' }} 540w"
+                      sizes="180px"
+                      alt="{{ block.settings.name }}"
+                      class="img-fluid rounded-circle"
+                      style="box-shadow: 0 8px 32px rgba(94, 59, 255, 0.2); border: 4px solid var(--c-brand-100);"
+                      loading="lazy">
+                  </div>
+                </div>
+              {% endif %}
 
-            <div class="mb-4">
-              <h3 class="h5 text-brand-600 mb-2">Name</h3>
-              <p class="mb-1"><strong>{{ block.settings.name }}</strong></p>
-              <p class="text-ink-600">{{ block.settings.pronunciation }}</p>
+              <div class="{% if block.settings.show_headshot and block.settings.headshot_image %}col-lg-9{% else %}col-12{% endif %}">
+                {% if block.settings.title %}
+                  <h2 class="h3 mb-4" style="color: var(--c-ink-900); font-weight: 600;">
+                    <span class="text-brand-600 me-2">🎙️</span>{{ block.settings.title }}
+                  </h2>
+                {% endif %}
+
+                <div class="mb-4 p-4" style="background: linear-gradient(135deg, var(--c-brand-100) 0%, transparent 100%); border-radius: 12px;">
+                  <h3 class="h5 mb-2" style="color: var(--c-brand-600); font-weight: 600;">Name</h3>
+                  <p class="mb-1" style="font-size: var(--fs-h2); font-weight: 600; color: var(--c-ink-900);">{{ block.settings.name }}</p>
+                  <p class="text-ink-600 mb-0" style="font-size: var(--fs-body-lg);">{{ block.settings.pronunciation }}</p>
+                </div>
+
+                {% if block.settings.show_preferred_reference %}
+                  <div class="mb-4">
+                    <h3 class="h6 mb-3" style="color: var(--c-accent-teal); font-weight: 600;">✓ Preferred Reference</h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">{{ block.settings.preferred_reference }}</div>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.show_do_not_use %}
+                  <div class="p-3" style="background: rgba(255, 139, 203, 0.1); border-radius: 12px; border-left: 3px solid var(--c-accent-peach);">
+                    <h3 class="h6 mb-2" style="color: var(--c-accent-peach); font-weight: 600;">✗ Do NOT Use</h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">{{ block.settings.do_not_use }}</div>
+                  </div>
+                {% endif %}
+              </div>
             </div>
-
-            {% if block.settings.show_preferred_reference %}
-              <div class="mb-4">
-                <h3 class="h5 text-brand-600 mb-2">Preferred Reference</h3>
-                <div class="text-ink-700">{{ block.settings.preferred_reference }}</div>
-              </div>
-            {% endif %}
-
-            {% if block.settings.show_do_not_use %}
-              <div>
-                <h3 class="h5 text-coral mb-2">Do NOT Use</h3>
-                <div class="text-ink-700">{{ block.settings.do_not_use }}</div>
-              </div>
-            {% endif %}
           </div>
         </div>
 
       <!-- Biography -->
       {% when 'biography' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
-            <div class="d-flex align-items-start justify-content-between mb-3">
-              <div>
-                {% if block.settings.title %}
-                  <h2 class="h3 text-ink-900 mb-1">{{ block.settings.title }}</h2>
-                {% endif %}
-                {% if block.settings.word_count %}
-                  <p class="text-ink-600 small mb-0">({{ block.settings.word_count }})</p>
-                {% endif %}
-              </div>
-              {% if block.settings.show_copy_button %}
-                <button
-                  class="btn btn-sm btn-secondary-modern copy-bio-btn"
-                  data-bio-id="bio-{{ block.id }}"
-                  onclick="copyBioToClipboard('bio-{{ block.id }}')">
-                  Copy
-                </button>
-              {% endif %}
-            </div>
+          <div class="card-modern p-4 p-lg-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #FFFFFF 0%, var(--c-brand-100) 100%);">
 
-            <div id="bio-{{ block.id }}" class="bio-content text-ink-700" style="line-height: 1.7;">
-              {{ block.settings.bio_text }}
+            <!-- Background Pattern -->
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="opacity: 0.03; background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%235E3BFF\" fill-opacity=\"1\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); pointer-events: none;"></div>
+
+            <div class="row align-items-start position-relative">
+              {% if block.settings.show_photo and block.settings.bio_photo %}
+                <div class="col-lg-3 mb-4 mb-lg-0">
+                  <div class="press-kit-image-card">
+                    <div style="position: relative; display: inline-block;">
+                      <img
+                        src="{{ block.settings.bio_photo | image_picker_url: '400x' }}"
+                        srcset="{{ block.settings.bio_photo | image_picker_url: '200x' }} 200w,
+                                {{ block.settings.bio_photo | image_picker_url: '400x' }} 400w,
+                                {{ block.settings.bio_photo | image_picker_url: '600x' }} 600w"
+                        sizes="(max-width: 767px) 200px, 300px"
+                        alt="{{ block.settings.title }}"
+                        class="img-fluid"
+                        style="border-radius: 16px; box-shadow: 0 12px 40px rgba(94, 59, 255, 0.2);"
+                        loading="lazy">
+
+                      <!-- Glow Effect -->
+                      <div class="position-absolute top-0 start-0 w-100 h-100" style="background: radial-gradient(circle at 30% 30%, rgba(94, 59, 255, 0.15), transparent 60%); border-radius: 16px; pointer-events: none;"></div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+
+              <div class="{% if block.settings.show_photo and block.settings.bio_photo %}col-lg-9{% else %}col-12{% endif %}">
+                <div class="d-flex align-items-start justify-content-between mb-3 flex-wrap gap-3">
+                  <div>
+                    {% if block.settings.title %}
+                      <h2 class="h3 mb-1" style="color: var(--c-ink-900); font-weight: 600;">
+                        {{ block.settings.title }}
+                      </h2>
+                    {% endif %}
+                    {% if block.settings.word_count %}
+                      <span class="badge" style="background: var(--c-brand-600); color: white; font-size: 12px;">
+                        {{ block.settings.word_count }}
+                      </span>
+                    {% endif %}
+                  </div>
+                  {% if block.settings.show_copy_button %}
+                    <button
+                      class="btn btn-sm btn-primary-modern copy-bio-btn"
+                      data-bio-id="bio-{{ block.id }}"
+                      onclick="copyBioToClipboard('bio-{{ block.id }}')">
+                      <span class="me-1">📋</span> Copy Bio
+                    </button>
+                  {% endif %}
+                </div>
+
+                <div id="bio-{{ block.id }}" class="bio-content text-ink-700" style="line-height: 1.8; font-size: 17px;">
+                  {{ block.settings.bio_text }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -174,28 +268,42 @@
       <!-- On-Air Intro Script -->
       {% when 'intro_script' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4" style="background: linear-gradient(135deg, #E9E6FF 0%, #FFFFFF 100%);">
-            <div class="d-flex align-items-start justify-content-between mb-3">
-              <div>
-                {% if block.settings.title %}
-                  <h2 class="h3 text-ink-900 mb-1">{{ block.settings.title }}</h2>
-                {% endif %}
-                {% if block.settings.duration %}
-                  <p class="text-ink-600 small mb-0">⏱ {{ block.settings.duration }}</p>
+          <div class="card-modern p-4 p-lg-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, var(--c-brand-100) 0%, #FFFFFF 50%, var(--c-accent-teal); background: linear-gradient(135deg, rgba(94,59,255,0.08) 0%, rgba(24,213,228,0.05) 100%);">
+
+            <!-- Microphone Icon Decoration -->
+            <div class="position-absolute" style="top: 20px; right: 20px; font-size: 80px; opacity: 0.1;">🎙️</div>
+
+            <div class="position-relative">
+              <div class="d-flex align-items-start justify-content-between mb-4 flex-wrap gap-3">
+                <div>
+                  {% if block.settings.title %}
+                    <h2 class="h3 mb-2" style="color: var(--c-ink-900); font-weight: 600;">
+                      <span class="text-brand-600 me-2">🎬</span>{{ block.settings.title }}
+                    </h2>
+                  {% endif %}
+                  {% if block.settings.duration %}
+                    <p class="mb-0">
+                      <span class="badge" style="background: linear-gradient(135deg, var(--c-brand-600), var(--c-brand-800)); color: white;">
+                        ⏱ {{ block.settings.duration }}
+                      </span>
+                    </p>
+                  {% endif %}
+                </div>
+                {% if block.settings.show_copy_button %}
+                  <button
+                    class="btn btn-primary-modern copy-script-btn"
+                    data-script-id="script-{{ block.id }}"
+                    onclick="copyScriptToClipboard('script-{{ block.id }}')">
+                    <span class="me-1">📋</span> Copy Script
+                  </button>
                 {% endif %}
               </div>
-              {% if block.settings.show_copy_button %}
-                <button
-                  class="btn btn-sm btn-primary-modern copy-script-btn"
-                  data-script-id="script-{{ block.id }}"
-                  onclick="copyScriptToClipboard('script-{{ block.id }}')">
-                  Copy
-                </button>
-              {% endif %}
-            </div>
 
-            <div id="script-{{ block.id }}" class="script-content text-ink-800" style="line-height: 1.8; font-size: 17px;">
-              {{ block.settings.script_text }}
+              <div class="p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+                <div id="script-{{ block.id }}" class="script-content text-ink-800" style="line-height: 1.9; font-size: 18px; font-style: italic;">
+                  {{ block.settings.script_text }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -203,44 +311,62 @@
       <!-- Key Facts -->
       {% when 'key_facts' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
+          <div class="card-modern p-4 p-lg-5">
             {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+              <h2 class="h3 mb-4" style="color: var(--c-ink-900); font-weight: 600;">
+                <span class="text-brand-600 me-2">📊</span>{{ block.settings.title }}
+              </h2>
             {% endif %}
 
             <div class="row g-4">
               {% if block.settings.section_1_title %}
                 <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_1_title }}</h3>
-                  <div class="text-ink-700" style="line-height: 1.8;">
-                    {{ block.settings.section_1_content }}
+                  <div class="p-4 h-100" style="background: linear-gradient(135deg, var(--c-brand-100) 0%, transparent 100%); border-radius: 12px; border-left: 4px solid var(--c-brand-600);">
+                    <h3 class="h5 mb-3" style="color: var(--c-brand-600); font-weight: 600;">
+                      {{ block.settings.section_1_title }}
+                    </h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">
+                      {{ block.settings.section_1_content }}
+                    </div>
                   </div>
                 </div>
               {% endif %}
 
               {% if block.settings.section_2_title %}
                 <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_2_title }}</h3>
-                  <div class="text-ink-700" style="line-height: 1.8;">
-                    {{ block.settings.section_2_content }}
+                  <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(24,213,228,0.1) 0%, transparent 100%); border-radius: 12px; border-left: 4px solid var(--c-accent-teal);">
+                    <h3 class="h5 mb-3" style="color: var(--c-accent-teal); font-weight: 600;">
+                      {{ block.settings.section_2_title }}
+                    </h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">
+                      {{ block.settings.section_2_content }}
+                    </div>
                   </div>
                 </div>
               {% endif %}
 
               {% if block.settings.section_3_title %}
                 <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_3_title }}</h3>
-                  <div class="text-ink-700" style="line-height: 1.8;">
-                    {{ block.settings.section_3_content }}
+                  <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(255,139,203,0.1) 0%, transparent 100%); border-radius: 12px; border-left: 4px solid var(--c-accent-peach);">
+                    <h3 class="h5 mb-3" style="color: var(--c-accent-peach); font-weight: 600;">
+                      {{ block.settings.section_3_title }}
+                    </h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">
+                      {{ block.settings.section_3_content }}
+                    </div>
                   </div>
                 </div>
               {% endif %}
 
               {% if block.settings.section_4_title %}
                 <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-3">{{ block.settings.section_4_title }}</h3>
-                  <div class="text-ink-700" style="line-height: 1.8;">
-                    {{ block.settings.section_4_content }}
+                  <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(255,230,107,0.15) 0%, transparent 100%); border-radius: 12px; border-left: 4px solid var(--c-accent-lemon);">
+                    <h3 class="h5 mb-3" style="color: #D4A50A; font-weight: 600;">
+                      {{ block.settings.section_4_title }}
+                    </h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">
+                      {{ block.settings.section_4_content }}
+                    </div>
                   </div>
                 </div>
               {% endif %}
@@ -251,17 +377,43 @@
       <!-- Media Appearances -->
       {% when 'media_appearances' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
-            {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
-            {% endif %}
+          <div class="card-modern p-4 p-lg-5">
+            <div class="row">
+              {% if block.settings.show_logos and block.settings.media_logo %}
+                <div class="col-lg-3 mb-4 mb-lg-0">
+                  <div class="press-kit-logo-grid">
+                    <img
+                      src="{{ block.settings.media_logo | image_picker_url: '300x' }}"
+                      srcset="{{ block.settings.media_logo | image_picker_url: '150x' }} 150w,
+                              {{ block.settings.media_logo | image_picker_url: '300x' }} 300w"
+                      sizes="150px"
+                      alt="Media logo"
+                      class="img-fluid mb-3"
+                      style="max-height: 60px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s ease;"
+                      loading="lazy"
+                      onmouseover="this.style.filter='grayscale(0%)'; this.style.opacity='1';"
+                      onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7';">
+                  </div>
+                </div>
+              {% endif %}
 
-            {% if block.settings.category_title %}
-              <h3 class="h5 text-brand-600 mb-3">{{ block.settings.category_title }}</h3>
-            {% endif %}
+              <div class="{% if block.settings.show_logos and block.settings.media_logo %}col-lg-9{% else %}col-12{% endif %}">
+                {% if block.settings.title %}
+                  <h2 class="h3 mb-4" style="color: var(--c-ink-900); font-weight: 600;">
+                    <span class="text-brand-600 me-2">📺</span>{{ block.settings.title }}
+                  </h2>
+                {% endif %}
 
-            <div class="media-list">
-              {{ block.settings.media_content }}
+                {% if block.settings.category_title %}
+                  <h3 class="h5 mb-3" style="color: var(--c-brand-600); font-weight: 600;">
+                    {{ block.settings.category_title }}
+                  </h3>
+                {% endif %}
+
+                <div class="media-list">
+                  {{ block.settings.media_content }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -269,53 +421,80 @@
       <!-- Quotes & Messages -->
       {% when 'quotes' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
+          <div class="card-modern p-4 p-lg-5" style="background: linear-gradient(135deg, #FFFFFF 0%, var(--c-brand-100) 100%);">
             {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+              <h2 class="h3 mb-2" style="color: var(--c-ink-900); font-weight: 600;">
+                <span class="text-brand-600 me-2">💬</span>{{ block.settings.title }}
+              </h2>
             {% endif %}
 
             {% if block.settings.subtitle %}
               <p class="text-ink-600 mb-4">{{ block.settings.subtitle }}</p>
             {% endif %}
 
-            <div class="quotes-grid">
+            <div class="quotes-grid row g-3">
               {% if block.settings.quote_1 %}
-                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
-                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
-                    "{{ block.settings.quote_1 }}"
-                  </p>
+                <div class="col-12">
+                  <div class="quote-card p-4" style="background: white; border-left: 4px solid var(--c-brand-600); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(8px)'; this.style.boxShadow='0 4px 20px rgba(94,59,255,0.15)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.05)';">
+                    <div class="d-flex">
+                      <span class="text-brand-600 me-3" style="font-size: 40px; line-height: 1; opacity: 0.3;">"</span>
+                      <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic; line-height: 1.7;">
+                        {{ block.settings.quote_1 }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               {% endif %}
 
               {% if block.settings.quote_2 %}
-                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
-                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
-                    "{{ block.settings.quote_2 }}"
-                  </p>
+                <div class="col-12">
+                  <div class="quote-card p-4" style="background: white; border-left: 4px solid var(--c-accent-teal); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(8px)'; this.style.boxShadow='0 4px 20px rgba(24,213,228,0.15)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.05)';">
+                    <div class="d-flex">
+                      <span class="text-accent-teal me-3" style="font-size: 40px; line-height: 1; opacity: 0.3;">"</span>
+                      <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic; line-height: 1.7;">
+                        {{ block.settings.quote_2 }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               {% endif %}
 
               {% if block.settings.quote_3 %}
-                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
-                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
-                    "{{ block.settings.quote_3 }}"
-                  </p>
+                <div class="col-12">
+                  <div class="quote-card p-4" style="background: white; border-left: 4px solid var(--c-accent-peach); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(8px)'; this.style.boxShadow='0 4px 20px rgba(255,139,203,0.15)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.05)';">
+                    <div class="d-flex">
+                      <span class="me-3" style="font-size: 40px; line-height: 1; opacity: 0.3; color: var(--c-accent-peach);">"</span>
+                      <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic; line-height: 1.7;">
+                        {{ block.settings.quote_3 }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               {% endif %}
 
               {% if block.settings.quote_4 %}
-                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
-                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
-                    "{{ block.settings.quote_4 }}"
-                  </p>
+                <div class="col-12">
+                  <div class="quote-card p-4" style="background: white; border-left: 4px solid var(--c-accent-lemon); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(8px)'; this.style.boxShadow='0 4px 20px rgba(255,230,107,0.15)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.05)';">
+                    <div class="d-flex">
+                      <span style="font-size: 40px; line-height: 1; opacity: 0.3; color: var(--c-accent-lemon); margin-right: 1rem;">"</span>
+                      <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic; line-height: 1.7;">
+                        {{ block.settings.quote_4 }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               {% endif %}
 
               {% if block.settings.quote_5 %}
-                <div class="quote-item p-3 mb-3" style="background: #FAFAFA; border-left: 4px solid var(--c-brand-600); border-radius: 8px;">
-                  <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic;">
-                    "{{ block.settings.quote_5 }}"
-                  </p>
+                <div class="col-12">
+                  <div class="quote-card p-4" style="background: white; border-left: 4px solid var(--c-brand-600); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;" onmouseover="this.style.transform='translateX(8px)'; this.style.boxShadow='0 4px 20px rgba(94,59,255,0.15)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.05)';">
+                    <div class="d-flex">
+                      <span class="text-brand-600 me-3" style="font-size: 40px; line-height: 1; opacity: 0.3;">"</span>
+                      <p class="mb-0 text-ink-800" style="font-size: 18px; font-style: italic; line-height: 1.7;">
+                        {{ block.settings.quote_5 }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               {% endif %}
             </div>
@@ -325,41 +504,60 @@
       <!-- Books -->
       {% when 'book' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
-            <div class="row align-items-center">
+          <div class="card-modern p-4 p-lg-5 position-relative overflow-hidden">
+
+            <!-- Decorative Background -->
+            <div class="position-absolute top-0 end-0" style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(94, 59, 255, 0.08) 0%, transparent 70%); border-radius: 50%; transform: translate(40%, -40%);"></div>
+
+            <div class="row align-items-center position-relative">
               {% if block.settings.book_cover %}
-                <div class="col-md-4 mb-4 mb-md-0">
-                  <img
-                    src="{{ block.settings.book_cover | image_picker_url: '400x' }}"
-                    srcset="{{ block.settings.book_cover | image_picker_url: '280x' }} 280w,
-                            {{ block.settings.book_cover | image_picker_url: '400x' }} 400w,
-                            {{ block.settings.book_cover | image_picker_url: '600x' }} 600w"
-                    sizes="(max-width: 767px) 280px, 400px"
-                    alt="{{ block.settings.book_title }}"
-                    class="img-fluid"
-                    style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.12);"
-                    loading="lazy">
+                <div class="col-lg-4 mb-4 mb-lg-0 text-center">
+                  <div class="press-kit-book-card" style="max-width: 300px; margin: 0 auto;">
+                    <div style="position: relative; display: inline-block;">
+                      <img
+                        src="{{ block.settings.book_cover | image_picker_url: '600x' }}"
+                        srcset="{{ block.settings.book_cover | image_picker_url: '300x' }} 300w,
+                                {{ block.settings.book_cover | image_picker_url: '600x' }} 600w,
+                                {{ block.settings.book_cover | image_picker_url: '900x' }} 900w"
+                        sizes="(max-width: 767px) 280px, 400px"
+                        alt="{{ block.settings.book_title }}"
+                        class="img-fluid"
+                        style="border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.2); transition: transform 0.4s ease;"
+                        loading="lazy"
+                        onmouseover="this.style.transform='scale(1.05) rotate(-2deg)';"
+                        onmouseout="this.style.transform='scale(1) rotate(0)';">
+
+                      <!-- Spotlight Effect -->
+                      <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%); border-radius: 16px; pointer-events: none;"></div>
+                    </div>
+
+                    {% if block.settings.book_subtitle %}
+                      <div class="mt-3">
+                        <span class="badge" style="background: linear-gradient(135deg, var(--c-brand-600), var(--c-brand-800)); color: white; font-size: 13px; padding: 6px 14px;">
+                          {{ block.settings.book_subtitle }}
+                        </span>
+                      </div>
+                    {% endif %}
+                  </div>
                 </div>
               {% endif %}
 
-              <div class="{% if block.settings.book_cover %}col-md-8{% else %}col-12{% endif %}">
+              <div class="{% if block.settings.book_cover %}col-lg-8{% else %}col-12{% endif %}">
                 {% if block.settings.book_title %}
-                  <h2 class="h3 text-ink-900 mb-2">{{ block.settings.book_title }}</h2>
-                {% endif %}
-
-                {% if block.settings.book_subtitle %}
-                  <p class="text-brand-600 fw-medium mb-3">{{ block.settings.book_subtitle }}</p>
+                  <h2 class="mb-3" style="font-size: var(--fs-h1); color: var(--c-ink-900); font-weight: 600;">
+                    📚 {{ block.settings.book_title }}
+                  </h2>
                 {% endif %}
 
                 {% if block.settings.book_description %}
-                  <p class="text-ink-700 mb-3" style="line-height: 1.7;">
+                  <p class="text-ink-700 mb-4" style="line-height: 1.8; font-size: 17px;">
                     {{ block.settings.book_description }}
                   </p>
                 {% endif %}
 
                 {% if block.settings.book_url %}
-                  <a href="{{ block.settings.book_url }}" class="btn btn-primary-modern">
-                    {{ block.settings.book_url_text }}
+                  <a href="{{ block.settings.book_url }}" class="btn btn-primary-modern btn-lg">
+                    {{ block.settings.book_url_text }} →
                   </a>
                 {% endif %}
               </div>
@@ -370,16 +568,18 @@
       <!-- Interview Topics -->
       {% when 'interview_topics' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
+          <div class="card-modern p-4 p-lg-5">
             {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+              <h2 class="h3 mb-2" style="color: var(--c-ink-900); font-weight: 600;">
+                <span class="text-brand-600 me-2">🎯</span>{{ block.settings.title }}
+              </h2>
             {% endif %}
 
             {% if block.settings.subtitle %}
               <p class="text-ink-600 mb-4">{{ block.settings.subtitle }}</p>
             {% endif %}
 
-            <div class="topics-content text-ink-700" style="line-height: 1.8;">
+            <div class="topics-content text-ink-700" style="line-height: 1.8; font-size: 17px;">
               {{ block.settings.topics_content }}
             </div>
           </div>
@@ -388,9 +588,11 @@
       <!-- Sample Questions -->
       {% when 'sample_questions' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
+          <div class="card-modern p-4 p-lg-5" style="background: linear-gradient(135deg, rgba(24,213,228,0.05) 0%, #FFFFFF 100%);">
             {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+              <h2 class="h3 mb-2" style="color: var(--c-ink-900); font-weight: 600;">
+                <span class="me-2" style="color: var(--c-accent-teal);">❓</span>{{ block.settings.title }}
+              </h2>
             {% endif %}
 
             {% if block.settings.subtitle %}
@@ -406,9 +608,75 @@
       <!-- Assets Section -->
       {% when 'assets' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
+          <div class="card-modern p-4 p-lg-5">
             {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
+              <h2 class="h3 mb-4" style="color: var(--c-ink-900); font-weight: 600;">
+                <span class="text-brand-600 me-2">🎨</span>{{ block.settings.title }}
+              </h2>
+            {% endif %}
+
+            {% if block.settings.show_preview_images %}
+              <div class="row g-3 mb-4">
+                {% if block.settings.preview_image_1 %}
+                  <div class="col-6 col-md-3">
+                    <div class="asset-preview-card" style="position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                      <img
+                        src="{{ block.settings.preview_image_1 | image_picker_url: '400x' }}"
+                        srcset="{{ block.settings.preview_image_1 | image_picker_url: '200x' }} 200w,
+                                {{ block.settings.preview_image_1 | image_picker_url: '400x' }} 400w"
+                        sizes="200px"
+                        alt="Asset preview"
+                        class="img-fluid"
+                        loading="lazy">
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.preview_image_2 %}
+                  <div class="col-6 col-md-3">
+                    <div class="asset-preview-card" style="position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                      <img
+                        src="{{ block.settings.preview_image_2 | image_picker_url: '400x' }}"
+                        srcset="{{ block.settings.preview_image_2 | image_picker_url: '200x' }} 200w,
+                                {{ block.settings.preview_image_2 | image_picker_url: '400x' }} 400w"
+                        sizes="200px"
+                        alt="Asset preview"
+                        class="img-fluid"
+                        loading="lazy">
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.preview_image_3 %}
+                  <div class="col-6 col-md-3">
+                    <div class="asset-preview-card" style="position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                      <img
+                        src="{{ block.settings.preview_image_3 | image_picker_url: '400x' }}"
+                        srcset="{{ block.settings.preview_image_3 | image_picker_url: '200x' }} 200w,
+                                {{ block.settings.preview_image_3 | image_picker_url: '400x' }} 400w"
+                        sizes="200px"
+                        alt="Asset preview"
+                        class="img-fluid"
+                        loading="lazy">
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.preview_image_4 %}
+                  <div class="col-6 col-md-3">
+                    <div class="asset-preview-card" style="position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                      <img
+                        src="{{ block.settings.preview_image_4 | image_picker_url: '400x' }}"
+                        srcset="{{ block.settings.preview_image_4 | image_picker_url: '200x' }} 200w,
+                                {{ block.settings.preview_image_4 | image_picker_url: '400x' }} 400w"
+                        sizes="200px"
+                        alt="Asset preview"
+                        class="img-fluid"
+                        loading="lazy">
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
             {% endif %}
 
             <div class="assets-content text-ink-700 mb-4" style="line-height: 1.8;">
@@ -418,7 +686,7 @@
             {% if block.settings.photo_credit %}
               <div class="pt-3" style="border-top: 1px solid rgba(26, 45, 78, 0.1);">
                 <p class="text-ink-600 small mb-0">
-                  <strong>Photo Credit:</strong> {{ block.settings.photo_credit }}
+                  <strong>📸 Photo Credit:</strong> {{ block.settings.photo_credit }}
                 </p>
               </div>
             {% endif %}
@@ -428,55 +696,91 @@
       <!-- Contact & Availability -->
       {% when 'contact' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4">
-            {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
-            {% endif %}
+          <div class="card-modern p-4 p-lg-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, var(--c-brand-100) 0%, #FFFFFF 100%);">
 
-            <div class="row g-4">
-              {% if block.settings.media_email %}
-                <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-2">Media Inquiries</h3>
-                  <p class="mb-2">
-                    <strong>📧</strong>
-                    <a href="mailto:{{ block.settings.media_email }}" class="text-ink-800">
-                      {{ block.settings.media_email }}
-                    </a>
-                  </p>
-                  {% if block.settings.availability_note %}
-                    <p class="text-ink-600 small mb-0">
-                      <strong>⏱</strong> {{ block.settings.availability_note }}
-                    </p>
+            <div class="row align-items-center">
+              {% if block.settings.show_contact_photo and block.settings.contact_photo %}
+                <div class="col-lg-3 mb-4 mb-lg-0 text-center">
+                  <div class="press-kit-image-card" style="max-width: 200px; margin: 0 auto;">
+                    <img
+                      src="{{ block.settings.contact_photo | image_picker_url: '400x' }}"
+                      srcset="{{ block.settings.contact_photo | image_picker_url: '200x' }} 200w,
+                              {{ block.settings.contact_photo | image_picker_url: '400x' }} 400w,
+                              {{ block.settings.contact_photo | image_picker_url: '600x' }} 600w"
+                      sizes="200px"
+                      alt="Contact"
+                      class="img-fluid rounded-circle"
+                      style="box-shadow: 0 8px 32px rgba(94, 59, 255, 0.2); border: 4px solid white;"
+                      loading="lazy">
+                  </div>
+                </div>
+              {% endif %}
+
+              <div class="{% if block.settings.show_contact_photo and block.settings.contact_photo %}col-lg-9{% else %}col-12{% endif %}">
+                {% if block.settings.title %}
+                  <h2 class="h3 mb-4" style="color: var(--c-ink-900); font-weight: 600;">
+                    <span class="text-brand-600 me-2">📬</span>{{ block.settings.title }}
+                  </h2>
+                {% endif %}
+
+                <div class="row g-4">
+                  {% if block.settings.media_email %}
+                    <div class="col-md-6">
+                      <div class="p-4" style="background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+                        <h3 class="h6 mb-3" style="color: var(--c-brand-600); font-weight: 600;">
+                          Media Inquiries
+                        </h3>
+                        <p class="mb-2">
+                          <strong style="color: var(--c-brand-600);">📧</strong>
+                          <a href="mailto:{{ block.settings.media_email }}" class="text-ink-800 text-decoration-none" style="font-weight: 500;">
+                            {{ block.settings.media_email }}
+                          </a>
+                        </p>
+                        {% if block.settings.availability_note %}
+                          <p class="text-ink-600 small mb-0">
+                            <strong>⏱</strong> {{ block.settings.availability_note }}
+                          </p>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.speaking_email %}
+                    <div class="col-md-6">
+                      <div class="p-4" style="background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+                        <h3 class="h6 mb-3" style="color: var(--c-accent-teal); font-weight: 600;">
+                          Speaking & Events
+                        </h3>
+                        <p class="mb-2">
+                          <strong style="color: var(--c-accent-teal);">📧</strong>
+                          <a href="mailto:{{ block.settings.speaking_email }}" class="text-ink-800 text-decoration-none" style="font-weight: 500;">
+                            {{ block.settings.speaking_email }}
+                          </a>
+                        </p>
+                        {% if block.settings.speaking_url %}
+                          <p class="mb-0">
+                            <strong>🌐</strong>
+                            <a href="{{ block.settings.speaking_url }}" class="text-ink-800 text-decoration-none" style="font-weight: 500;">
+                              {{ block.settings.speaking_url_display }}
+                            </a>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.representation_info %}
+                    <div class="col-12">
+                      <div class="p-4" style="background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+                        <h3 class="h6 mb-3" style="color: var(--c-accent-peach); font-weight: 600;">
+                          Representation
+                        </h3>
+                        <div class="text-ink-700">{{ block.settings.representation_info }}</div>
+                      </div>
+                    </div>
                   {% endif %}
                 </div>
-              {% endif %}
-
-              {% if block.settings.speaking_email %}
-                <div class="col-md-6">
-                  <h3 class="h5 text-brand-600 mb-2">Speaking & Events</h3>
-                  <p class="mb-2">
-                    <strong>📧</strong>
-                    <a href="mailto:{{ block.settings.speaking_email }}" class="text-ink-800">
-                      {{ block.settings.speaking_email }}
-                    </a>
-                  </p>
-                  {% if block.settings.speaking_url %}
-                    <p class="mb-0">
-                      <strong>🌐</strong>
-                      <a href="{{ block.settings.speaking_url }}" class="text-ink-800">
-                        {{ block.settings.speaking_url_display }}
-                      </a>
-                    </p>
-                  {% endif %}
-                </div>
-              {% endif %}
-
-              {% if block.settings.representation_info %}
-                <div class="col-12">
-                  <h3 class="h5 text-brand-600 mb-2">Representation</h3>
-                  <div class="text-ink-700">{{ block.settings.representation_info }}</div>
-                </div>
-              {% endif %}
+              </div>
             </div>
           </div>
         </div>
@@ -484,34 +788,51 @@
       <!-- Permissions & Usage -->
       {% when 'permissions' %}
         <div class="press-kit-block mb-5 animate-fade-up" {{ block.shopify_attributes }}>
-          <div class="card-modern p-4" style="background: linear-gradient(135deg, #FFF4F0 0%, #FFFFFF 100%);">
-            {% if block.settings.title %}
-              <h2 class="h3 text-ink-900 mb-4">{{ block.settings.title }}</h2>
-            {% endif %}
+          <div class="card-modern p-4 p-lg-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(255,139,203,0.08) 0%, #FFFFFF 100%);">
 
-            <div class="row g-4">
-              <div class="col-md-6">
-                <h3 class="h5 text-teal mb-3">✔ You May Use</h3>
-                <div class="text-ink-700" style="line-height: 1.8;">
-                  {{ block.settings.may_use_content }}
+            <!-- Warning Icon Decoration -->
+            <div class="position-absolute" style="top: 20px; right: 20px; font-size: 100px; opacity: 0.05;">⚠️</div>
+
+            <div class="position-relative">
+              {% if block.settings.title %}
+                <h2 class="h3 mb-4" style="color: var(--c-ink-900); font-weight: 600;">
+                  <span class="me-2">⚖️</span>{{ block.settings.title }}
+                </h2>
+              {% endif %}
+
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(24,213,228,0.1) 0%, white 100%); border-radius: 12px; border: 2px solid var(--c-accent-teal);">
+                    <h3 class="h5 mb-3" style="color: var(--c-accent-teal); font-weight: 600;">
+                      ✔ You May Use
+                    </h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">
+                      {{ block.settings.may_use_content }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(255,139,203,0.1) 0%, white 100%); border-radius: 12px; border: 2px solid var(--c-accent-peach);">
+                    <h3 class="h5 mb-3" style="color: var(--c-accent-peach); font-weight: 600;">
+                      ✘ You May Not Use
+                    </h3>
+                    <div class="text-ink-700" style="line-height: 1.8;">
+                      {{ block.settings.may_not_use_content }}
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <h3 class="h5 text-coral mb-3">✘ You May Not Use</h3>
-                <div class="text-ink-700" style="line-height: 1.8;">
-                  {{ block.settings.may_not_use_content }}
+              {% if block.settings.contact_note %}
+                <div class="mt-4 p-4 text-center" style="background: white; border-radius: 12px; border: 2px dashed var(--c-brand-600);">
+                  <p class="mb-2" style="color: var(--c-ink-900); font-weight: 600;">When in doubt:</p>
+                  <a href="mailto:{{ block.settings.contact_note }}" class="text-brand-600 text-decoration-none" style="font-size: 18px; font-weight: 600;">
+                    {{ block.settings.contact_note }}
+                  </a>
                 </div>
-              </div>
+              {% endif %}
             </div>
-
-            {% if block.settings.contact_note %}
-              <div class="mt-4 pt-4" style="border-top: 1px solid rgba(26, 45, 78, 0.1);">
-                <p class="text-ink-700 mb-0">
-                  <strong>When in doubt:</strong> {{ block.settings.contact_note }}
-                </p>
-              </div>
-            {% endif %}
           </div>
         </div>
 
@@ -529,15 +850,14 @@ function copyBioToClipboard(bioId) {
   const text = bioElement.innerText || bioElement.textContent;
 
   navigator.clipboard.writeText(text).then(function() {
-    // Show success feedback
     const btn = document.querySelector(`[data-bio-id="${bioId}"]`);
-    const originalText = btn.innerText;
-    btn.innerText = 'Copied!';
-    btn.classList.add('btn-success');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="me-1">✓</span> Copied!';
+    btn.style.background = 'linear-gradient(135deg, var(--c-accent-teal), #16B8C4)';
 
     setTimeout(function() {
-      btn.innerText = originalText;
-      btn.classList.remove('btn-success');
+      btn.innerHTML = originalHTML;
+      btn.style.background = '';
     }, 2000);
   }, function(err) {
     console.error('Could not copy text: ', err);
@@ -549,15 +869,14 @@ function copyScriptToClipboard(scriptId) {
   const text = scriptElement.innerText || scriptElement.textContent;
 
   navigator.clipboard.writeText(text).then(function() {
-    // Show success feedback
     const btn = document.querySelector(`[data-script-id="${scriptId}"]`);
-    const originalText = btn.innerText;
-    btn.innerText = 'Copied!';
-    btn.classList.add('btn-success');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="me-1">✓</span> Copied!';
+    btn.style.background = 'linear-gradient(135deg, var(--c-accent-teal), #16B8C4)';
 
     setTimeout(function() {
-      btn.innerText = originalText;
-      btn.classList.remove('btn-success');
+      btn.innerHTML = originalHTML;
+      btn.style.background = '';
     }, 2000);
   }, function(err) {
     console.error('Could not copy text: ', err);
@@ -566,23 +885,52 @@ function copyScriptToClipboard(scriptId) {
 </script>
 
 <style>
-.press-kit-section .card-modern {
-  transition: transform 0.2s ease;
-}
-
-.press-kit-section .card-modern:hover {
-  transform: translateY(-2px);
+/* Press Kit Modern Styles */
+.press-kit-section {
+  position: relative;
 }
 
 .press-kit-block {
   scroll-margin-top: 100px;
 }
 
-.copy-bio-btn.btn-success,
-.copy-script-btn.btn-success {
-  background: var(--c-accent-teal) !important;
-  border-color: var(--c-accent-teal) !important;
-  color: white !important;
+.press-kit-image-card img,
+.press-kit-book-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-modern {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.card-modern:hover {
+  box-shadow: 0 8px 40px rgba(94, 59, 255, 0.12);
+  transform: translateY(-4px);
+}
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(94, 59, 255, 0.2);
+}
+
+.badge-brand-outline {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 2px solid var(--c-brand-600);
+  color: var(--c-brand-600);
+  background: white;
+  border-radius: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .media-list ul,
@@ -597,6 +945,43 @@ function copyScriptToClipboard(scriptId) {
 .topics-content li {
   margin-bottom: 0.75rem;
   color: var(--c-ink-700);
+}
+
+.media-list li::marker,
+.questions-list li::marker,
+.topics-content li::marker {
+  color: var(--c-brand-600);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+  .card-modern {
+    padding: 1.5rem !important;
+  }
+
+  .press-kit-section h1 {
+    font-size: var(--fs-h1) !important;
+  }
+
+  .press-kit-section h2 {
+    font-size: var(--fs-h2) !important;
+  }
+}
+
+/* Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out;
 }
 </style>
 
@@ -673,6 +1058,21 @@ function copyScriptToClipboard(scriptId) {
           "id": "title",
           "label": "Block Title",
           "default": "Quick-Access Links"
+        },
+        {
+          "type": "header",
+          "content": "Profile Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_image",
+          "label": "Show Profile Image",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "profile_image",
+          "label": "Profile Image"
         },
         {
           "type": "header",
@@ -832,6 +1232,25 @@ function copyScriptToClipboard(scriptId) {
           "default": "Pronunciation + How to Refer"
         },
         {
+          "type": "header",
+          "content": "Headshot Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_headshot",
+          "label": "Show Headshot",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "headshot_image",
+          "label": "Headshot Image"
+        },
+        {
+          "type": "header",
+          "content": "Name Information"
+        },
+        {
           "type": "text",
           "id": "name",
           "label": "Name",
@@ -884,7 +1303,26 @@ function copyScriptToClipboard(scriptId) {
           "id": "word_count",
           "label": "Word Count",
           "default": "25 words",
-          "info": "Optional - displays under title"
+          "info": "Optional - displays as badge"
+        },
+        {
+          "type": "header",
+          "content": "Bio Photo"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_photo",
+          "label": "Show Photo",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "bio_photo",
+          "label": "Bio Photo"
+        },
+        {
+          "type": "header",
+          "content": "Biography Content"
         },
         {
           "type": "checkbox",
@@ -1000,6 +1438,17 @@ function copyScriptToClipboard(scriptId) {
           "default": "Media Appearances"
         },
         {
+          "type": "checkbox",
+          "id": "show_logos",
+          "label": "Show Media Logo",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "media_logo",
+          "label": "Media Logo"
+        },
+        {
           "type": "text",
           "id": "category_title",
           "label": "Category Title",
@@ -1079,7 +1528,7 @@ function copyScriptToClipboard(scriptId) {
         {
           "type": "text",
           "id": "book_subtitle",
-          "label": "Book Subtitle",
+          "label": "Book Subtitle/Badge",
           "default": "USA TODAY Bestseller"
         },
         {
@@ -1160,9 +1609,43 @@ function copyScriptToClipboard(scriptId) {
           "default": "Assets"
         },
         {
+          "type": "header",
+          "content": "Preview Images"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_preview_images",
+          "label": "Show Preview Images",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "preview_image_1",
+          "label": "Preview Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "preview_image_2",
+          "label": "Preview Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "preview_image_3",
+          "label": "Preview Image 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "preview_image_4",
+          "label": "Preview Image 4"
+        },
+        {
+          "type": "header",
+          "content": "Assets Content"
+        },
+        {
           "type": "rich_text",
           "id": "assets_content",
-          "label": "Assets Content",
+          "label": "Assets List",
           "default": "<p>Included in the downloadable kit:</p><ul><li>6 high-resolution headshots</li><li>Lifestyle photography (office, speaking, home)</li><li>Book covers (flat & 3D)</li><li>Logo files</li><li>Quotes + pull graphics</li><li>B-roll & speaking clips</li><li>Social media-safe images for promo</li></ul>"
         },
         {
@@ -1182,6 +1665,25 @@ function copyScriptToClipboard(scriptId) {
           "id": "title",
           "label": "Block Title",
           "default": "Contact & Availability"
+        },
+        {
+          "type": "header",
+          "content": "Contact Photo"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_contact_photo",
+          "label": "Show Contact Photo",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "contact_photo",
+          "label": "Contact Photo"
+        },
+        {
+          "type": "header",
+          "content": "Contact Information"
         },
         {
           "type": "text",
@@ -1246,7 +1748,7 @@ function copyScriptToClipboard(scriptId) {
         {
           "type": "text",
           "id": "contact_note",
-          "label": "Contact Note",
+          "label": "Contact Email",
           "default": "press@attachmentnerd.com"
         }
       ]
@@ -1256,7 +1758,7 @@ function copyScriptToClipboard(scriptId) {
     {
       "name": "Press Kit",
       "category": "Content",
-      "description": "Comprehensive press kit with bios, quotes, media info, and assets",
+      "description": "Comprehensive press kit with modern design, image support, and copy-to-clipboard features",
       "blocks": [
         {
           "type": "quick_access"
